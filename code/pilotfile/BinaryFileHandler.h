@@ -18,6 +18,12 @@ class BinaryFileHandler: public FileHandler {
 	};
 
 	SCP_vector<SectionOffset> _sectionOffsets;
+
+
+	size_t _section_start_pos = INVALID_SIZE;
+	size_t _section_end_pos = INVALID_SIZE;
+
+	bool _in_array = false;
  public:
 	explicit BinaryFileHandler(CFILE* cfp);
 
@@ -47,6 +53,32 @@ class BinaryFileHandler: public FileHandler {
 
 
 	virtual void flush() override;
+
+
+
+	virtual std::uint8_t readUByte(const char* name);
+
+	virtual std::int16_t readShort(const char* name);
+
+	virtual std::int32_t readInt(const char* name);
+
+	virtual std::uint32_t readUInt(const char* name);
+
+	virtual float readFloat(const char* name);
+
+	virtual SCP_string readString(const char* name);
+
+	virtual void readString(const char* name, char* dest, size_t max_size);
+
+	virtual void beginSectionRead();
+
+	virtual bool hasMoreSections();
+
+	virtual Section nextSection();
+
+	virtual size_t startArrayRead(const char* name, bool short_index);
+
+	virtual void endArrayRead();
 };
 }
 
