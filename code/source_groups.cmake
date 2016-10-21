@@ -526,6 +526,8 @@ set (file_root_lab
 )
 
 set(file_root_libs
+	libs/jansson.cpp
+	libs/jansson.h
 )
 
 set(file_root_libs_ffmpeg

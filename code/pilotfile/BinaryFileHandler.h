@@ -18,6 +18,7 @@ class BinaryFileHandler: public FileHandler {
 	};
 
 	SCP_vector<SectionOffset> _sectionOffsets;
+	bool _writingSections = false;
 
 
 	size_t _section_start_pos = INVALID_SIZE;
@@ -42,9 +43,13 @@ class BinaryFileHandler: public FileHandler {
 	void writeString(const char* name, const char* str) override;
 
 
+	void beginWritingSections() override;
+
 	void startSectionWrite(Section id) override;
 
 	void endSectionWrite() override;
+
+	void endWritingSections() override;
 
 
 	void startArrayWrite(const char* name, size_t size, bool short_length = false) override;
@@ -52,33 +57,36 @@ class BinaryFileHandler: public FileHandler {
 	void endArrayWrite() override;
 
 
-	virtual void flush() override;
+	void flush() override;
 
 
+	std::uint8_t readUByte(const char* name) override;
 
-	virtual std::uint8_t readUByte(const char* name);
+	std::int16_t readShort(const char* name) override;
 
-	virtual std::int16_t readShort(const char* name);
+	std::int32_t readInt(const char* name) override;
 
-	virtual std::int32_t readInt(const char* name);
+	std::uint32_t readUInt(const char* name) override;
 
-	virtual std::uint32_t readUInt(const char* name);
+	float readFloat(const char* name) override;
 
-	virtual float readFloat(const char* name);
+	SCP_string readString(const char* name) override;
 
-	virtual SCP_string readString(const char* name);
+	void readString(const char* name, char* dest, size_t max_size) override;
 
-	virtual void readString(const char* name, char* dest, size_t max_size);
+	Section beginSectionRead() override;
 
-	virtual void beginSectionRead();
+	bool hasMoreSections() override;
 
-	virtual bool hasMoreSections();
+	Section nextSection() override;
 
-	virtual Section nextSection();
+	void endSectionRead() override;
 
-	virtual size_t startArrayRead(const char* name, bool short_index);
+	size_t startArrayRead(const char* name, bool short_index) override;
 
-	virtual void endArrayRead();
+	void nextArraySection() override;
+
+	void endArrayRead() override;
 };
 }
 

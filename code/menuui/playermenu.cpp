@@ -216,7 +216,7 @@ bool valid_pilot_lang(char *callsign)
 	char pilot_lang[LCL_LANG_NAME_LEN+1], current_lang[LCL_LANG_NAME_LEN+1];
 	SCP_string filename = callsign;
 
-	filename += ".plr";
+	filename += ".json";
 	lcl_get_language_name(current_lang);
 
 	if (Pilot.verify(filename.c_str(), NULL, pilot_lang)) {
@@ -852,7 +852,7 @@ int player_select_get_last_pilot()
 
 		Get_file_list_filter = player_select_pilot_file_filter;
 
-		Player_select_num_pilots = cf_get_file_list_preallocated(MAX_PILOTS, Pilots_arr, Pilots, CF_TYPE_PLAYERS, NOX("*.plr"), CF_SORT_TIME);
+		Player_select_num_pilots = cf_get_file_list_preallocated(MAX_PILOTS, Pilots_arr, Pilots, CF_TYPE_PLAYERS, NOX("*.json"), CF_SORT_TIME);
 
 		Player_select_pilot = -1;
 		idx = 0;
@@ -890,7 +890,7 @@ void player_select_init_player_stuff(int mode)
 	// load up the list of players based upon the Player_select_mode (single or multiplayer)
 	Get_file_list_filter = player_select_pilot_file_filter;
 
-	Player_select_num_pilots = cf_get_file_list_preallocated(MAX_PILOTS, Pilots_arr, Pilots, CF_TYPE_PLAYERS, NOX("*.plr"), CF_SORT_TIME);
+	Player_select_num_pilots = cf_get_file_list_preallocated(MAX_PILOTS, Pilots_arr, Pilots, CF_TYPE_PLAYERS, NOX("*.json"), CF_SORT_TIME);
 
 	// if we have a "last_player", and they're in the list, bash them to the top of the list
 	if (Player_select_last_pilot[0] != '\0') {
