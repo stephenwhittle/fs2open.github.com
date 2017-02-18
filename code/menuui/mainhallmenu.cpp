@@ -410,6 +410,8 @@ void main_hall_init(const SCP_string &main_hall_name)
 		return;
 	}
 
+	// gameseq_post_event(GS_EVENT_SCRIPTING);
+
 	int idx;
 	SCP_string main_hall_to_load;
 

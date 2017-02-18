@@ -25,4 +25,8 @@ add_subdirectory(md5)
 
 add_subdirectory(utfcpp)
 
+include(freetype.cmake)
+
 include(FFmpeg.cmake)
+
+include(libRocket.cmake)

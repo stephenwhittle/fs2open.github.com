@@ -7,52 +7,6 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
 
-namespace {
-
-int l_cf_get_path_id(const char* n_path)
-{
-	size_t i;
-	size_t path_len = strlen(n_path);
-
-	char *buf = (char*) vm_malloc((path_len+1) * sizeof(char));
-
-	if (!buf)
-		return CF_TYPE_INVALID;
-
-	strcpy(buf, n_path);
-
-	//Remove trailing slashes; avoid buffer overflow on 1-char strings
-	i = path_len - 1;
-	while(i < std::numeric_limits<size_t>::max() && (buf[i] == '\\' || buf[i] == '/'))
-		buf[i--] = '\0';
-
-	//Remove leading slashes
-	i = 0;
-	while(i < path_len && (buf[i] == '\\' || buf[i] == '/'))
-		buf[i++] = '\0';
-
-	//Use official DIR_SEPARATOR_CHAR
-	for(i = 0; i < path_len; i++)
-	{
-		if(buf[i] == '\\' || buf[i] == '/')
-			buf[i] = DIR_SEPARATOR_CHAR;
-	}
-	for(i = 0; i < CF_MAX_PATH_TYPES; i++)
-	{
-		if(Pathtypes[i].path != NULL && !stricmp(buf, Pathtypes[i].path)) {
-			vm_free(buf);
-			buf = NULL;
-			return Pathtypes[i].index;
-		}
-	}
-
-	vm_free(buf);
-	buf = NULL;
-	return CF_TYPE_INVALID;
-}
-
-}
-
 namespace scripting {
 namespace api {
 
@@ -71,7 +25,7 @@ ADE_FUNC(deleteFile, l_CFile, "string Filename, string Path", "Deletes given fil
 
 	int path = CF_TYPE_INVALID;
 	if(n_path != NULL && strlen(n_path))
-		path = l_cf_get_path_id(n_path);
+		path = cfile_get_path_type(n_path);
 
 	if(path == CF_TYPE_INVALID)
 		return ade_set_error(L, "b", false);
@@ -89,7 +43,7 @@ ADE_FUNC(fileExists, l_CFile, "string Filename, [string Path = \"\", boolean Che
 
 	int path = CF_TYPE_ANY;
 	if(n_path != NULL && strlen(n_path))
-		path = l_cf_get_path_id(n_path);
+		path = cfile_get_path_type(n_path);
 
 	if(path == CF_TYPE_INVALID)
 		return ade_set_error(L, "b", false);
@@ -116,7 +70,7 @@ ADE_FUNC(openFile, l_CFile, "string Filename, [string Mode=\"r\", string Path = 
 
 	int path = CF_TYPE_ANY;
 	if(n_path != NULL && strlen(n_path))
-		path = l_cf_get_path_id(n_path);
+		path = cfile_get_path_type(n_path);
 
 	if(path == CF_TYPE_INVALID)
 		return ade_set_error(L, "o", l_File.Set(NULL));
@@ -144,7 +98,7 @@ ADE_FUNC(renameFile, l_CFile, "string CurrentFilename, string NewFilename, strin
 
 	int path = CF_TYPE_INVALID;
 	if(n_path != NULL && strlen(n_path))
-		path = l_cf_get_path_id(n_path);
+		path = cfile_get_path_type(n_path);
 
 	if(path == CF_TYPE_INVALID)
 		return ade_set_error(L, "b", false);
