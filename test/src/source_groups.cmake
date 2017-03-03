@@ -38,6 +38,10 @@ add_file_folder(graphics "Parse"
     parse/test_parselo.cpp
 )
 
+add_file_folder(graphics "Pilotfile"
+    pilotfile/plr.cpp
+)
+
 add_file_folder(scripting "Scripting"
     scripting/ade_args.cpp
     scripting/ScriptingTestFixture.h
