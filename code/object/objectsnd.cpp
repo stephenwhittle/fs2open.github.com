@@ -599,7 +599,7 @@ void obj_snd_do_frame()
 		float max_vol,new_vol;
 		if ( osp->instance == -1 ) {
 			if ( distance < Snds[osp->id].max ) {
-				max_vol = Snds[osp->id].default_volume;
+				max_vol = Snds[osp->id].volume_range.max();
 				if ( distance <= Snds[osp->id].min ) {
 					new_vol = max_vol;
 				}
@@ -665,7 +665,7 @@ void obj_snd_do_frame()
 		// for DirectSound3D sounds, re-establish the maximum speed based on the
 		//	speed_vol_multiplier
 		if ( sp == NULL || ( (sp != NULL) && (sp->flags[Ship::Ship_Flags::Engines_on]) ) ) {
-			snd_set_volume( osp->instance, gs->default_volume*speed_vol_multiplier*rot_vol_mult*alive_vol_mult );
+			snd_set_volume( osp->instance, gs->volume_range.next() *speed_vol_multiplier*rot_vol_mult*alive_vol_mult );
 		}
 		else {
 			// engine sound is disabled
