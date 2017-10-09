@@ -356,8 +356,18 @@ enum InterfaceSoundsIndex {
 	MIN_INTERFACE_SOUNDS        =70 //!< MIN_INTERFACE_SOUNDS
 };
 
+/**
+ * @brief Gets a pointer to the game sound with the specified handle
+ * @param handle The sound handle
+ * @return The game sound handle
+ */
 game_snd* gamesnd_get_game_sound(int handle);
 
+/**
+ * @brief Gets a pointer to the interface sound with the specified handle
+ * @param handle The sound handle
+ * @return The interface sound handle
+ */
 game_snd* gamesnd_get_interface_sound(int handle);
 
 /**
