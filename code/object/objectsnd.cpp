@@ -598,13 +598,14 @@ void obj_snd_do_frame()
 		go_ahead_flag = TRUE;
 		float max_vol,new_vol;
 		if ( osp->instance == -1 ) {
-			if ( distance < Snds[osp->id].max ) {
-				max_vol = Snds[osp->id].volume_range.max();
-				if ( distance <= Snds[osp->id].min ) {
+			if ( distance < gamesnd_get_game_sound(osp->id)->max ) {
+				max_vol = gamesnd_get_game_sound(osp->id)->volume_range.max();
+				if ( distance <= gamesnd_get_game_sound(osp->id)->min ) {
 					new_vol = max_vol;
 				}
 				else {
-					new_vol = max_vol - (distance - Snds[osp->id].min) * max_vol / (Snds[osp->id].max - Snds[osp->id].min);
+					new_vol = max_vol - (distance - gamesnd_get_game_sound(osp->id)->min) * max_vol
+						/ (gamesnd_get_game_sound(osp->id)->max - gamesnd_get_game_sound(osp->id)->min);
 				}
 
 				if ( new_vol < 0.1f ) {
@@ -636,7 +637,7 @@ void obj_snd_do_frame()
 			} // 		end if ( distance < Snds[osp->id].max )
 		} // 		if ( osp->instance == -1 )
 		else {
-			if ( distance > Snds[osp->id].max ) {
+			if ( distance > gamesnd_get_game_sound(osp->id)->max ) {
 				int sound_index = -1;
 				int idx = 0;
 

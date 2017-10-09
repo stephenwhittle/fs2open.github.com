@@ -472,7 +472,7 @@ void options_play_voice_clip()
 		Voice_vol_handle=-1;
 	}
 	auto gs = gamesnd_get_interface_sound(SND_VOICE_SLIDER_CLIP);
-	auto entry = gamesnd_choose_entry(&Snds_iface[SND_VOICE_SLIDER_CLIP]);
+	auto entry = gamesnd_choose_entry(gamesnd_get_interface_sound(SND_VOICE_SLIDER_CLIP));
 
 	snd_id = snd_load(entry, gs->flags, 0);
 
