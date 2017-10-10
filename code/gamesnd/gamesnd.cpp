@@ -741,6 +741,8 @@ static GameSoundCycleType parse_cycle_type() {
 		return GameSoundCycleType::Random;
 	} else {
 		error_display(0, "Failed to parse sound cycle type. Expected 'sequential' or 'random'. Got [%.32s]", next_tokens());
+		// Ignore everything until the end of the line. That should hopefully skip the bad token.
+		advance_to_eoln(nullptr);
 		return GameSoundCycleType::Sequential;
 	}
 }
