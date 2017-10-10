@@ -485,6 +485,7 @@ int snd_play_raw( int soundnum, float pan, float vol_scale, int priority )
 	gs.flags = GAME_SND_VOICE;
 
 	gs.volume_range = util::UniformFloatRange(1.0f);
+	gs.pitch_range = util::UniformFloatRange(1.0f);
 
 	rval = snd_play(&gs, pan, vol_scale, priority, true);
 	return rval;
