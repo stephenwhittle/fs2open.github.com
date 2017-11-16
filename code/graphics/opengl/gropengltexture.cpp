@@ -909,7 +909,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 	if (base_level != 0) {
 		glTexParameteri(tslot->texture_target, GL_TEXTURE_BASE_LEVEL, base_level);
 	}
-	glTexParameteri(tslot->texture_target, GL_TEXTURE_MAX_LEVEL, mipmap_levels);
+	glTexParameteri(tslot->texture_target, GL_TEXTURE_MAX_LEVEL, mipmap_levels - 1);
 	glTexParameteri(tslot->texture_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(tslot->texture_target, GL_TEXTURE_MIN_FILTER, min_filter);
 	glTexParameteri(tslot->texture_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
