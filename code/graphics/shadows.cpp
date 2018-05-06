@@ -13,6 +13,7 @@
 #include "graphics/shadows.h"
 #include "graphics/matrix.h"
 #include "lighting/lighting.h"
+#include "libs/renderdoc/renderdoc.h"
 #include "math/vecmat.h"
 #include "model/model.h"
 #include "model/modelrender.h"
@@ -354,11 +355,14 @@ void shadows_construct_light_frustum(light_frustum_info *shadow_data, matrix *li
 
 	shadows_construct_light_proj(shadow_data);
 }
-
+static bool captured = false;
 matrix shadows_start_render(matrix *eye_orient, vec3d *eye_pos, float fov, float aspect, float veryneardist, float neardist, float middist, float fardist)
 {	
 	if(Static_light.empty())
-		return vmd_identity_matrix; 
+		return vmd_identity_matrix;
+
+	if (!captured)
+		renderdoc::startCapture();
 	
 	auto& lp = Static_light.front();
 
@@ -391,6 +395,11 @@ matrix shadows_start_render(matrix *eye_orient, vec3d *eye_pos, float fov, float
 void shadows_end_render()
 {
 	gr_shadow_map_end();
+
+	if (!captured) {
+		renderdoc::endCapture();
+		captured = true;
+	}
 }
 
 void shadows_render_all(float fov, matrix *eye_orient, vec3d *eye_pos)
