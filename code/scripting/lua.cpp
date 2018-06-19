@@ -18,6 +18,7 @@
 #include "scripting/api/objs/hudgauge.h"
 #include "scripting/api/objs/eye.h"
 #include "scripting/api/objs/model.h"
+#include "scripting/api/objs/model_path.h"
 #include "scripting/api/objs/physics_info.h"
 #include "scripting/api/objs/sexpvar.h"
 #include "scripting/api/objs/shields.h"

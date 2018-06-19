@@ -924,7 +924,7 @@ ADE_FUNC(drawSubsystemTargetingBrackets, l_Graphics, "subsystem subsys, [boolean
 		return ADE_RETURN_NIL;
 	}
 
-	if (!sshp->IsValid())
+	if (!sshp->isSubsystemValid())
 	{
 		return ADE_RETURN_NIL;
 	}

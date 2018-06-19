@@ -1046,6 +1046,8 @@ set(file_root_scripting_api_objs
 	scripting/api/objs/message.h
 	scripting/api/objs/model.cpp
 	scripting/api/objs/model.h
+	scripting/api/objs/model_path.cpp
+	scripting/api/objs/model_path.h
 	scripting/api/objs/object.cpp
 	scripting/api/objs/object.h
 	scripting/api/objs/order.cpp

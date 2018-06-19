@@ -334,7 +334,12 @@ ADE_FUNC(getrvec, l_Object, "[boolean normalize]", "Returns the objects' current
 	return ade_set_args(L, "o", l_Vector.Set(v1));
 }
 
-ADE_FUNC(checkRayCollision, l_Object, "vector Start Point, vector End Point, [boolean Local]", "Checks the collisions between the polygons of the current object and a ray", "vector, collision info", "World collision point (local if boolean is set to true) and the specific collsision info, nil if no collisions")
+ADE_FUNC(
+    checkRayCollision, l_Object, "vector Start Point, vector End Point[, boolean Local=false]",
+    "Checks the collisions between the polygons of the current object and a ray. Start and end vectors are in world "
+    "coordinates",
+    "vector, collision info",
+    "World collision point (local if boolean is set to true) and the specific collsision info, nil if no collisions")
 {
 	object_h *objh = NULL;
 	object *obj = NULL;

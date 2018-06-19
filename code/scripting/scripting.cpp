@@ -42,7 +42,8 @@ flag_def_list Script_conditions[] =
 
 int Num_script_conditions = sizeof(Script_conditions)/sizeof(flag_def_list);
 
-flag_def_list Script_actions[] = 
+// clang-format off
+flag_def_list Script_actions[] =
 {
 	{"On Game Init",			CHA_GAMEINIT,		0},
 	{"On Splash Screen",		CHA_SPLASHSCREEN,	0},
@@ -85,7 +86,9 @@ flag_def_list Script_actions[] =
 	{ "On Beam Fire",			CHA_BEAMFIRE,		0 },
 	{ "On Simulation",			CHA_SIMULATION,		0 },
 	{ "On Load Screen",			CHA_LOADSCREEN,		0 },
+	{ "On Weapon Create",		CHA_ONWEAPONCREATE,	0 },
 };
+// clang-format on
 
 int Num_script_actions = sizeof(Script_actions)/sizeof(flag_def_list);
 int scripting_state_inited = 0;
@@ -235,7 +238,7 @@ bool ConditionedHook::AddAction(script_action *sa)
 	return true;
 }
 
-bool ConditionedHook::ConditionsValid(int action, object *objp, int more_data)
+bool ConditionedHook::ConditionsValid(ConditionalActions action, object *objp, int more_data)
 {
 	uint i;
 
@@ -418,7 +421,8 @@ bool ConditionedHook::ConditionsValid(int action, object *objp, int more_data)
 									return false;
 								break;
 							}
-
+							default:
+								break;
 						}
 					} // case CHC_WEAPONCLASS
 					break;
@@ -494,7 +498,7 @@ bool ConditionedHook::ConditionsValid(int action, object *objp, int more_data)
 	return true;
 }
 
-bool ConditionedHook::Run(script_state *sys, int action, char format, void *data)
+bool ConditionedHook::Run(script_state *sys, ConditionalActions action, char format, void *data)
 {
 	Assert(sys != NULL);
 
@@ -508,7 +512,7 @@ bool ConditionedHook::Run(script_state *sys, int action, char format, void *data
 	return true;
 }
 
-bool ConditionedHook::IsOverride(script_state *sys, int action)
+bool ConditionedHook::IsOverride(script_state *sys, ConditionalActions action)
 {
 	Assert(sys != NULL);
 	//bool b = false;
@@ -878,7 +882,7 @@ int script_state::RunBytecode(script_hook &hd, char format, void *data)
 	return 1;
 }
 
-int script_state::RunCondition(int action, char format, void *data, object *objp, int more_data)
+int script_state::RunCondition(ConditionalActions action, char format, void *data, object *objp, int more_data)
 {
 	int num = 0;
 	for(SCP_vector<ConditionedHook>::iterator chp = ConditionalHooks.begin(); chp != ConditionalHooks.end(); ++chp) 
@@ -892,7 +896,7 @@ int script_state::RunCondition(int action, char format, void *data, object *objp
 	return num;
 }
 
-bool script_state::IsConditionOverride(int action, object *objp)
+bool script_state::IsConditionOverride(ConditionalActions action, object *objp)
 {
 	//bool b = false;
 	for(SCP_vector<ConditionedHook>::iterator chp = ConditionalHooks.begin(); chp != ConditionalHooks.end(); ++chp)
