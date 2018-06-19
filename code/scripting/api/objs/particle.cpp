@@ -33,10 +33,6 @@ ADE_FUNC(__gc, l_Particle, NULL, "Removes the allocated reference of this handle
 	if (ph == NULL)
 		return ADE_RETURN_NIL;
 
-	if (!ph->isValid()) {
-		return ADE_RETURN_NIL;
-	}
-
 	// Clean up the pointer
 	delete ph;
 
