@@ -1823,7 +1823,7 @@ int multi_pxo_connect_do()
 
 		// build the tracker id string
 		memset(id_string, 0, MAX_PXO_TEXT_LEN);
-		sprintf(id_string, "%s %s", Multi_tracker_id_string, Player->callsign);
+		sprintf_safe(id_string, "%s %s", Multi_tracker_id_string, Player->callsign);
 
 		// build the ip string
 		memset(ip_string, 0, MAX_PXO_TEXT_LEN);

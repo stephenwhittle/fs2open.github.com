@@ -846,7 +846,8 @@ void mission_campaign_savefile_delete( char *cfilename )
 		return;	// no such thing as a multiplayer campaign savefile
 	}
 
-	sprintf( filename, NOX("%s.%s.csg"), Player->callsign, base ); // only support the new filename here - taylor
+	// only support the new filename here - taylor
+	sprintf_safe( filename, NOX("%s.%s.csg"), Player->callsign, base );
 
 	cf_delete( filename, CF_TYPE_PLAYERS );
 }

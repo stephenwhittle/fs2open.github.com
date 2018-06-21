@@ -12669,7 +12669,7 @@ int ship_info_lookup(const char *token)
 			return -1;
 		}
 		// assemble using parentheses
-		sprintf(name, "%s (%s)", temp1, temp2);
+		sprintf_safe(name, "%s (%s)", temp1, temp2);
 	}
 	// found a parenthesis
 	else if (*p == '(')
@@ -12679,7 +12679,7 @@ int ship_info_lookup(const char *token)
 		*p2 = '\0';
 
 		// assemble using hash
-		sprintf(name, "%s#%s", temp1, temp2);
+		sprintf_safe(name, "%s#%s", temp1, temp2);
 	}
 	// oops
 	else
