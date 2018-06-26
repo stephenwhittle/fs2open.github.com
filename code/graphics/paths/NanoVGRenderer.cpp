@@ -640,10 +640,8 @@ void NanoVGRenderer::drawTriangles(const DrawCall& call) {
 	auto mat = _trianglesMaterial;
 	materialSetTexture(mat, call.image);
 
-	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	gr_bind_uniform_buffer(uniform_block_type::NanoVGData, _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
+	                       sizeof(nanovg_draw_data), _uniformBuffer.bufferHandle());
 
 	gr_render_nanovg(&mat, PRIM_TYPE_TRIS, &_vertexLayout, call.triangleOffset, call.triangleCount, _vertexBuffer);
 }
@@ -654,10 +652,8 @@ void NanoVGRenderer::drawFill(const DrawCall& call) {
 	auto mat = _fillShapeMaterial;
 	mat.set_texture_map(TM_BASE_TYPE, -1);
 
-	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	gr_bind_uniform_buffer(uniform_block_type::NanoVGData, _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
+	                       sizeof(nanovg_draw_data), _uniformBuffer.bufferHandle());
 
 	auto pathOffset = call.pathOffset;
 	for (size_t i = 0; i < call.pathCount; ++i) {
@@ -672,9 +668,8 @@ void NanoVGRenderer::drawFill(const DrawCall& call) {
 	mat = _fillAntiAliasMaterial;
 	materialSetTexture(mat, call.image);
 	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex + 1),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	                       _uniformBuffer.getAlignerElementOffset(call.uniformIndex + 1), sizeof(nanovg_draw_data),
+	                       _uniformBuffer.bufferHandle());
 
 	// Draw fringes
 	for (size_t i = 0; i < call.pathCount; ++i) {
@@ -697,10 +692,8 @@ void NanoVGRenderer::drawConvexFill(const DrawCall& call) {
 
 	auto mat = _triangleFillMaterial;
 	materialSetTexture(mat, call.image);
-	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	gr_bind_uniform_buffer(uniform_block_type::NanoVGData, _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
+	                       sizeof(nanovg_draw_data), _uniformBuffer.bufferHandle());
 
 	auto pathOffset = call.pathOffset;
 	for (size_t i = 0; i < call.pathCount; ++i) {
@@ -731,9 +724,8 @@ void NanoVGRenderer::drawStroke(const DrawCall& call) {
 	auto mat = _strokeFillMaterial;
 	materialSetTexture(mat, call.image);
 	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex + 1),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	                       _uniformBuffer.getAlignerElementOffset(call.uniformIndex + 1), sizeof(nanovg_draw_data),
+	                       _uniformBuffer.bufferHandle());
 
 	auto pathOffset = call.pathOffset;
 
@@ -748,10 +740,8 @@ void NanoVGRenderer::drawStroke(const DrawCall& call) {
 	}
 
 	// Draw anti-aliased pixels.
-	gr_bind_uniform_buffer(uniform_block_type::NanoVGData,
-						   _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
-						   sizeof(nanovg_draw_data),
-						   _uniformBuffer.bufferHandle());
+	gr_bind_uniform_buffer(uniform_block_type::NanoVGData, _uniformBuffer.getAlignerElementOffset(call.uniformIndex),
+	                       sizeof(nanovg_draw_data), _uniformBuffer.bufferHandle());
 	mat = _strokeAntiaiasMaterial;
 	materialSetTexture(mat, call.image);
 	for (size_t i = 0; i < call.pathCount; ++i) {

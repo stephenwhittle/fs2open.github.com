@@ -28,13 +28,13 @@ class UniformBufferManager {
 
 	int _active_uniform_buffer = -1;
 	size_t _active_buffer_size = 0;
-	void* _buffer_ptr = nullptr; // Pointer to mapped data for persistently mapped buffers
+	void* _buffer_ptr          = nullptr; // Pointer to mapped data for persistently mapped buffers
 
 	size_t _active_segment = 0;
-	size_t _segment_size = 0;
+	size_t _segment_size   = 0;
 	size_t _segment_offset = 0; // Offset of the next element to be added to the buffer
 
-	int _offset_alignment = -1;
+	int _offset_alignment        = -1;
 	bool _use_persistent_mapping = false;
 
 	SCP_vector<std::pair<int, gr_sync>> _retired_buffers;
@@ -42,7 +42,8 @@ class UniformBufferManager {
 	SCP_vector<uint8_t> _temp_buffer; // Buffer for building uniform data in case persistent mapping isn't supported
 
 	void changeSegmentSize(size_t new_size);
-public:
+
+  public:
 	UniformBufferManager();
 	~UniformBufferManager();
 
