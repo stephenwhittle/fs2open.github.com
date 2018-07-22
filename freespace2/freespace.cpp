@@ -30,6 +30,7 @@
 #include "freespace.h"
 #include "freespaceresource.h"
 #include "levelpaging.h"
+#include "actions/ProgramManager.h"
 #include "anim/animplay.h"
 #include "asteroid/asteroid.h"
 #include "autopilot/autopilot.h"
@@ -3812,6 +3813,9 @@ void game_simulation_frame()
 		}
 #endif
 	}
+
+	// Run the programs on every simulation step
+	actions::ProgramManager::instance()->stepInstances();
 
 	Script_system.RunCondition(CHA_SIMULATION);
 }
