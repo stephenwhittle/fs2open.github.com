@@ -54,6 +54,7 @@
 #include "starfield/supernova.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
+#include "events/events.h"
 
 SCP_vector<std::unique_ptr<HudGauge>> default_hud_gauges;
 
@@ -2201,7 +2202,7 @@ void HudGaugeDamage::render(float  /*frametime*/)
 
 		renderString(line.name_x, line.name_y, line.name.c_str());
 		renderString(line.value_x, line.value_y, buf);
-
+		events::RenderDamageLevel(line.name.c_str(), line.strength);
 		setGaugeColor();
 	}
 
@@ -2476,6 +2477,7 @@ void HudGaugeKills::render(float  /*frametime*/)
 
 	gr_get_string_size(&w, &h, num_kills_string);
 	renderString(position[0]+text_value_offsets[0]-w, position[1]+text_value_offsets[1], num_kills_string);
+	events::RenderKillsGauge(Player->stats.m_kill_count_ok);
 }
 
 HudGaugeLag::HudGaugeLag():

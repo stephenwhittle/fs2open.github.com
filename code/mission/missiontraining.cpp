@@ -29,6 +29,7 @@
 #include "sound/audiostr.h"
 #include "sound/sound.h"
 #include "weapon/emp.h"
+#include "events/events.h"
 
 
 
@@ -319,7 +320,7 @@ void HudGaugeDirectives::render(float  /*frametime*/)
 		gr_set_color_fast(c);
 		
 		renderString(x, y, EG_OBJ1 + i, buf);
-		
+		events::RenderObjective(i, buf, mission_get_event_status(z));
 		y_count++;
 
 		if ( second_line ) {
