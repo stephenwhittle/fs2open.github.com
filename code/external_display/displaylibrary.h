@@ -4,7 +4,7 @@
 
 #include "external_display/external_display.h"
 #include "external_display/external_display_internal.h"
-#include "events/events.h"
+#include "hud_events.h"
 #include "external_dll/externalcode.h"
 
 namespace external_display

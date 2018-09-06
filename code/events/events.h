@@ -1,7 +1,6 @@
 #pragma once
 
 #include "utils/event.h"
-#include "events/hud_events.h"
 
 namespace events {
 
@@ -15,6 +14,4 @@ extern util::event<void, int, int> GameEnterState;
 
 extern util::event<void, const char*> GameMissionLoad;
 
-
-extern HUDEvents ExternalDisplay;
 }

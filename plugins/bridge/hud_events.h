@@ -1,5 +1,5 @@
 #pragma once
-
+#include "utils/event.h"
 namespace events
 {
 	class HUDEvents {
@@ -48,4 +48,8 @@ namespace events
 		#define HUD_LAG_GAUGE 38
 		*/
 	};
+
+
+
+	extern HUDEvents ExternalDisplay;
 } // namespace events
