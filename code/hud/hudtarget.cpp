@@ -5272,6 +5272,7 @@ void HudGaugeCmeasures::render(float /*frametime*/)
 	}
 	renderPrintf(position[0] + Cm_text_val_offsets[0], position[1] + Cm_text_val_offsets[1], NOX("%02d"),
 	             Player_ship->cmeasure_count);
+	events::RenderCountermeasureGauge(Player_ship->cmeasure_count);
 }
 
 HudGaugeAfterburner::HudGaugeAfterburner()
@@ -5536,6 +5537,7 @@ void HudGaugeWeaponEnergy::render(float /*frametime*/)
 				percent_left = 1.0f;
 			}
 		}
+		events::RenderWeaponEnergyGauge(percent_left);
 
 		clip_h = (int)std::lround((1.0f - percent_left) * Wenergy_h);
 
@@ -5927,7 +5929,7 @@ void HudGaugeWeapons::render(float /*frametime*/)
 
 			renderString(position[0] + Weapon_pammo_offset_x - w, name_y, EG_NULL, ammo_str);
 		}
-		events::RenderPrimaryWeapon(i, name, ammo_str, renderLinkIcon);
+		events::RenderPrimaryWeapon(i, name, sw->primary_bank_ammo[i], sw->primary_bank_capacity[i], renderLinkIcon);
 		if (i != 0) {
 			y += primary_text_h;
 		}
@@ -6013,7 +6015,7 @@ void HudGaugeWeapons::render(float /*frametime*/)
 		gr_get_string_size(&w, &h, ammo_str);
 
 		renderString(position[0] + Weapon_sammo_offset_x - w, name_y, EG_NULL, ammo_str);
-		events::RenderSecondaryWeapon(i, name, ammo_str, armed, linked, cooldown );
+		events::RenderSecondaryWeapon(i, name, sw->secondary_bank_ammo[i], sw->secondary_bank_capacity[i], armed, linked, cooldown );
 		if (i != 0)
 		{
 			y += secondary_text_h;

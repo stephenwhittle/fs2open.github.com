@@ -840,7 +840,7 @@ void HudGaugeThreatIndicator::renderLockThreat()
 	} else {
 		frame_offset = 0;
 	}
-
+	events::RenderLockWarning(frame_offset);
 	renderBitmap(lock_warn.first_frame+frame_offset, position[0] + Lock_warn_offsets[0], position[1] + Lock_warn_offsets[1]);
 }
 
