@@ -242,6 +242,7 @@ set(default_files_files
 add_file_folder("Events"
 	events/events.cpp
 	events/events.h
+	events/hud_events.h
 )
 
 # ExceptionHandler files

@@ -2,7 +2,7 @@
 #define EXTERNAL_DISPLAY_INTERNALS_H
 
 #include "globalincs/pstypes.h"
-
+#include "events/events.h"
 #include "external_display/external_display.h"
 
 namespace external_display
@@ -14,6 +14,9 @@ namespace external_display
 		{
 		public:
 			virtual ~DisplayProvider()
+			{
+			}
+			virtual void Init(events::HUDEvents* Events)
 			{
 			}
 		};

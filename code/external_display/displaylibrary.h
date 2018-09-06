@@ -34,6 +34,10 @@ namespace external_display
 
 		public:
 			DisplayLibraryProvider();
+			virtual void Init(events::HUDEvents* Events) override 
+			{
+				library.Init(Events);
+			};
 
 			virtual ~DisplayLibraryProvider();
 

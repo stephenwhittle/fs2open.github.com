@@ -18,16 +18,17 @@ namespace external_display
 
 	bool init()
 	{
-		mprintf(("Initializing head tracking...\n"));
+		mprintf(("Initializing external display...\n"));
 
-		auto tir = initProvider<display::DisplayLibraryProvider>();
-		if (tir)
+		auto Provider = initProvider<display::DisplayLibraryProvider>();
+		if (Provider)
 		{
-			currentProvider = std::move(tir);
+			Provider->Init(&events::ExternalDisplay);
+			currentProvider = std::move(Provider);
 			return true;
 		}
 
-		mprintf(("  No supported provider found, headtracking will be disabled...\n"));
+		mprintf(("No supported provider found, external display will not be used...\n"));
 		return false;
 	}
 

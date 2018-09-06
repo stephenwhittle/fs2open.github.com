@@ -185,6 +185,8 @@
 #include <SDL.h>
 #include <SDL_main.h>
 
+#include "external_display/external_display.h"
+
 extern int Om_tracker_flag; // needed for FS2OpenPXO config
 
 #ifdef WIN32
@@ -6731,7 +6733,7 @@ int game_main(int argc, char *argv[])
 	{
 		mprintf(("Headtracking is not enabled...\n"));
 	}
-
+	external_display::init();
 	game_stop_time();
 
 	if (Cmdline_spew_mission_crcs) {
