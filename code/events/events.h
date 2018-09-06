@@ -25,8 +25,14 @@ extern util::event<void, float, float, float> RenderThrottleGauge;
 extern util::event<void, bool> RenderAutoTarget;
 
 extern util::event<void, bool> RenderAutoSpeed;
-extern util::event<void, int, const char*, const char*, bool> RenderPrimaryWeapon;
-extern util::event<void, int, const char*, const char*, bool, bool, int> RenderSecondaryWeapon;
+extern util::event<void, int, const char*, int,int, bool> RenderPrimaryWeapon;
+extern util::event<void, int, const char*, int,int, bool, bool, int> RenderSecondaryWeapon;
 extern util::event<void, const char*, int, bool> RenderEscortShip;
-
+extern util::event<void, vec3d*, float> RenderRadarBlip;
+extern util::event<void, int, const char*, int> RenderObjective;
+extern util::event<void, float> RenderWeaponEnergyGauge;
+extern util::event<void, const char*,int > RenderDamageLevel;
+extern util::event<void, int> RenderCountermeasureGauge;
+extern util::event<void, int> RenderKillsGauge;
+extern util::event<void, int> RenderLockWarning;
 }
