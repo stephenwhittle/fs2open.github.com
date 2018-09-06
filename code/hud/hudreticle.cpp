@@ -21,6 +21,7 @@
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
 #include "globalincs/alphacolors.h"
+#include "events/events.h"
 
 #define NUM_RETICLE_ANIS			11		// keep up to date when modifying the number of reticle ani files
 
@@ -532,7 +533,7 @@ void HudGaugeThrottle::render(float  /*frametime*/)
 	if ( desired_speed < 0.0f ){		// so ships that go backwards don't force the indicators below where they can go
 		desired_speed = 0.0f;
 	}
-
+	events::RenderThrottleGauge(current_speed, desired_speed, max_speed);
 	desired_y_pos = position[1] + Bottom_offset_y - (int)std::lround(throttle_h*desired_speed/max_speed) - 1;
 
 	if (max_speed <= 0) {
