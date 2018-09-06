@@ -29,6 +29,7 @@
 #include "playerman/player.h"
 #include "ship/ship.h"
 #include "weapon/emp.h"
+#include "events/events.h"
 
 
 int Show_escort_view;
@@ -366,8 +367,10 @@ void HudGaugeEscort::renderIcon(int x, int y, int index)
 	}
 	*/
 
+	bool disabled = false;
 	// draw a 'D' if a ship is disabled
 	if ( (sp->flags[Ship::Ship_Flags::Disabled]) || (ship_subsys_disrupted(sp, SUBSYSTEM_ENGINE)) ) {		
+		disabled = true;
 		renderString( x + ship_status_offsets[0], y + ship_status_offsets[1], EG_NULL, XSTR( "D", 284));				
 	}
 
@@ -397,7 +400,7 @@ void HudGaugeEscort::renderIcon(int x, int y, int index)
 		}
 	}
 	renderPrintf( x+ship_integrity_offsets[0] + offset, y+ship_integrity_offsets[1], EG_NULL, "%d", screen_integrity);
-
+	events::RenderEscortShip(buf, screen_integrity, disabled);
 	//Let's be nice.
 	setGaugeColor();
 }

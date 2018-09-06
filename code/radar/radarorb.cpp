@@ -159,12 +159,15 @@ void HudGaugeRadarOrb::drawContactHtl(vec3d *pnt, int rad)
 				return;
 		}
 		g3_render_sphere(pnt,size/100.0f);
+		events::RenderRadarBlip(pnt, size / 100.0f);
+
 	}
 	else
 	{
 		g3_render_sphere(pnt,size/300.0f);
-	}
+		events::RenderRadarBlip(pnt, size / 300.0f);
 
+	}
 	//g3_draw_htl_line(&p,pnt);
 	g3_render_line_3d(false, &p, pnt);
 }

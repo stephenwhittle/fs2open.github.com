@@ -29,7 +29,8 @@ void	hud_set_wingman_status_alive( int wing_index, int wing_pos);
 void	hud_set_wingman_status_none( int wing_index, int wing_pos);
 void	hud_wingman_status_start_flash(int wing_index, int wing_pos);
 void	hud_wingman_status_set_index(wing *wingp, ship *shipp, p_object *pobjp);
-
+float	getShipHull(int wing_index, int wing_pos);
+int		getShipStatus(int wing_index, int wing_pos);
 class HudGaugeWingmanStatus: public HudGauge
 {
 protected:

@@ -1657,7 +1657,7 @@ void HudGaugeMissionTime::render(float  /*frametime*/)
 
 	minutes=(int)(mission_time/60);
 	seconds=(int)mission_time%60;
-
+	events::RenderMissionTime(minutes, seconds);
 	setGaugeColor();
 
 	// blit background frame
