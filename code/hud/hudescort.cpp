@@ -400,7 +400,7 @@ void HudGaugeEscort::renderIcon(int x, int y, int index)
 		}
 	}
 	renderPrintf( x+ship_integrity_offsets[0] + offset, y+ship_integrity_offsets[1], EG_NULL, "%d", screen_integrity);
-	events::RenderEscortShip(buf, screen_integrity, disabled);
+	events::ExternalDisplay.RenderEscortShip(buf, screen_integrity, disabled);
 	//Let's be nice.
 	setGaugeColor();
 }

@@ -533,7 +533,7 @@ void HudGaugeThrottle::render(float  /*frametime*/)
 	if ( desired_speed < 0.0f ){		// so ships that go backwards don't force the indicators below where they can go
 		desired_speed = 0.0f;
 	}
-	events::RenderThrottleGauge(current_speed, desired_speed, max_speed);
+	events::ExternalDisplay.RenderThrottleGauge(current_speed, desired_speed, max_speed);
 	desired_y_pos = position[1] + Bottom_offset_y - (int)std::lround(throttle_h*desired_speed/max_speed) - 1;
 
 	if (max_speed <= 0) {
@@ -840,7 +840,7 @@ void HudGaugeThreatIndicator::renderLockThreat()
 	} else {
 		frame_offset = 0;
 	}
-	events::RenderLockWarning(frame_offset);
+	events::ExternalDisplay.RenderLockWarning(frame_offset);
 	renderBitmap(lock_warn.first_frame+frame_offset, position[0] + Lock_warn_offsets[0], position[1] + Lock_warn_offsets[1]);
 }
 

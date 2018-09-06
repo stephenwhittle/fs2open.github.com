@@ -255,6 +255,16 @@ add_file_folder("ExternalDLL"
 	external_dll/externalcode.h
 )
 
+# ExternalDisplay files
+add_file_folder("ExternalDisplay"
+	external_display/external_display.h
+	external_display/external_display.cpp
+	external_display/displaylibrary.h
+	external_display/displaylibrary.cpp
+	external_display/external_display_internal.h
+
+)
+
 # Fireball files
 add_file_folder("Fireball"
 	fireball/fireballs.cpp

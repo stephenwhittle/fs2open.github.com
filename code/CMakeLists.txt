@@ -7,7 +7,11 @@ ADD_LIBRARY(code STATIC ${source_files} ${VOICE_REC_FILES})
 
 target_compile_features(code PUBLIC ${REQUIRED_CXX_FEATURES})
 
-INCLUDE(default_files.cmake)
+if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+     target_compile_definitions(code PUBLIC "ARCH_64BIT")
+ endif("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+
+ INCLUDE(default_files.cmake)
 
 if (MSVC)
 	target_compile_definitions(code PUBLIC "PDB_DEBUGGING=1")

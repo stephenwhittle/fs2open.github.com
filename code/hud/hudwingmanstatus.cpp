@@ -428,7 +428,7 @@ void HudGaugeWingmanStatus::renderDots(int wing_index, int screen_index, int num
 
 		} // end swtich
 
-		events::RenderWingman(wing_index, i, is_bright);
+		events::ExternalDisplay.RenderWingman(wing_index, i, is_bright);
 
 		if (bitmap > -1) {
 			renderBitmap(bitmap, sx + wingmate_offsets[i][0], sy + wingmate_offsets[i][1]);

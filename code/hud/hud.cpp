@@ -1658,7 +1658,7 @@ void HudGaugeMissionTime::render(float  /*frametime*/)
 
 	minutes=(int)(mission_time/60);
 	seconds=(int)mission_time%60;
-	events::RenderMissionTime(minutes, seconds);
+	events::ExternalDisplay.RenderMissionTime(minutes, seconds);
 	setGaugeColor();
 
 	// blit background frame
@@ -2202,7 +2202,7 @@ void HudGaugeDamage::render(float  /*frametime*/)
 
 		renderString(line.name_x, line.name_y, line.name.c_str());
 		renderString(line.value_x, line.value_y, buf);
-		events::RenderDamageLevel(line.name.c_str(), line.strength);
+		events::ExternalDisplay.RenderDamageLevel(line.name.c_str(), line.strength);
 		setGaugeColor();
 	}
 
@@ -2477,7 +2477,7 @@ void HudGaugeKills::render(float  /*frametime*/)
 
 	gr_get_string_size(&w, &h, num_kills_string);
 	renderString(position[0]+text_value_offsets[0]-w, position[1]+text_value_offsets[1], num_kills_string);
-	events::RenderKillsGauge(Player->stats.m_kill_count_ok);
+	events::ExternalDisplay.RenderKillsGauge(Player->stats.m_kill_count_ok);
 }
 
 HudGaugeLag::HudGaugeLag():
