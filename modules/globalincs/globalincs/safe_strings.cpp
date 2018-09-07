@@ -22,6 +22,30 @@
 
 #if !defined(NO_SAFE_STRINGS) && ( !defined( _MSC_VER ) || ( defined( _MSC_VER ) && _MSC_VER >= 1400 /* && !defined(NDEBUG) */ ))
 
+
+
+/* In order to compile safe_strings_test.cpp, you must have this defined on the command line */
+/* #define SAFESTRINGS_TEST_APP */
+
+/* Unlike their CRT counterparts, these do not call the invalid parameter handler
+ * However, they do call this macro
+ */
+extern void Error(const char * filename, int line, const char * format, ...);
+
+#ifndef SAFESTRINGS_TEST_APP
+
+#	ifndef __safe_strings_error_handler
+#		define __safe_strings_error_handler( val ) Error(file, line,"%s: String error. Please Report.\nTrying to put into " SIZE_T_ARG " byte buffer:\n%s", #val, sizeInBytes,strSource)
+#	endif
+
+#else
+
+/* For testing only */
+#	define __safe_strings_error_handler( errnoVal ) extern void error_handler( int errnoValue, const char* errnoStr,  const char* file, const char* function, int line );\
+																error_handler( errnoVal, #errnoVal, __FILE__, __FUNCTION__, __LINE__ );
+#endif
+
+
 /* An implementation of strcpy_s 
  * We're not going to actually fully behave like the MS debug version.
  */

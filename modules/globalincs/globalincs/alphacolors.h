@@ -10,17 +10,18 @@
 #ifndef _GLOBAL_ALPHACOLORS_HEADER_FILE
 #define _GLOBAL_ALPHACOLORS_HEADER_FILE
 
-#include "def_files/def_files.h"
-#include "graphics/2d.h"
-#include "parse/parselo.h"
-
+// #include "def_files/def_files.h"
+// #include "graphics/2d.h"
+// #include "parse/parselo.h"
+#include "globalincs/vmallocator.h"
 // -----------------------------------------------------------------------------------
 // ALPHA DEFINES/VARS
 //
 
 // Colors for UI
 // See FreeSpace.cpp for usage
-
+struct color; 
+struct team_color;
 #define INTERFACE_COLORS 13
 extern color Color_text_normal, Color_text_subselected, Color_text_selected;
 extern color Color_text_error, Color_text_error_hi, Color_text_active, Color_text_active_hi;

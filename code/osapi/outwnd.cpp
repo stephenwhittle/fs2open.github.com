@@ -23,7 +23,6 @@
 #include "osapi/DebugWindow.h"
 #include "osapi/osapi.h"
 #include "osapi/outwnd.h"
-#include "graphics/2d.h"
 #include "freespaceresource.h"
 #include "globalincs/systemvars.h"
 #include "cfile/cfilesystem.h"

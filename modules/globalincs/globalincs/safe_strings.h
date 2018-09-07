@@ -28,24 +28,6 @@ typedef int errno_t;
 
 #if ( !defined( _MSC_VER ) && !defined(NO_SAFE_STRINGS) ) || defined( _MSC_VER ) && _MSC_VER >= 1400 /*&& !defined(NDEBUG)*/ && !defined(NO_SAFE_STRINGS)
 
-/* In order to compile safe_strings_test.cpp, you must have this defined on the command line */
-/* #define SAFESTRINGS_TEST_APP */
-
-/* Unlike their CRT counterparts, these do not call the invalid parameter handler
- * However, they do call this macro
- */
-#ifndef SAFESTRINGS_TEST_APP
-
-#	ifndef __safe_strings_error_handler
-#		define __safe_strings_error_handler( val ) Error(file, line,"%s: String error. Please Report.\nTrying to put into " SIZE_T_ARG " byte buffer:\n%s", #val, sizeInBytes,strSource)
-#	endif
-
-#else
-
-/* For testing only */
-#	define __safe_strings_error_handler( errnoVal ) extern void error_handler( int errnoValue, const char* errnoStr,  const char* file, const char* function, int line );\
-																error_handler( errnoVal, #errnoVal, __FILE__, __FUNCTION__, __LINE__ );
-#endif
 
 extern errno_t scp_strcpy_s( const char* file, int line, char* strDest, size_t sizeInBytes, const char* strSource );
 extern errno_t scp_strcat_s( const char* file, int line, char* strDest, size_t sizeInBytes, const char* strSource );

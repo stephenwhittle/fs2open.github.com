@@ -8,7 +8,7 @@
 */ 
 
 #include "globalincs/alphacolors.h"
-#include "graphics/2d.h"
+// #include "graphics/2d.h"
 #include "parse/parselo.h"
 
 SCP_map<SCP_string, team_color> Team_Colors;

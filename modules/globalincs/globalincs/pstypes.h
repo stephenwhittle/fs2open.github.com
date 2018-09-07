@@ -17,7 +17,6 @@
 #include "windows_stub/config.h"
 #include "globalincs/scp_defines.h"
 #include "globalincs/toolchain.h"
-#include "utils/strings.h"
 
 #include <cstdio>    // For NULL, etc
 #include <cstdlib>
@@ -216,12 +215,9 @@ typedef struct coord2d {
 	int x,y;
 } coord2d;
 
-#include "osapi/dialogs.h"
-
 extern int Global_warning_count;
 extern int Global_error_count;
 
-#include "osapi/outwnd.h"
 
 // To debug printf do this:
 // mprintf(( "Error opening %s\n", filename ));
@@ -309,8 +305,8 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 //======================================================================================
 
 
-#include "math/fix.h"
-#include "math/floating.h"
+// #include "math/fix.h"
+// #include "math/floating.h"
 
 // Some constants for stuff
 #define MAX_FILENAME_LEN	32		// Length for filenames, ie "title.pcx"

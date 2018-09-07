@@ -311,45 +311,6 @@ add_file_folder("Generated Files"
 	${PLATFORM_CHECK_HEADER}
 )
 
-# GlobalIncs files
-add_file_folder("GlobalIncs"
-	globalincs/alphacolors.cpp
-	globalincs/alphacolors.h
-	globalincs/fsmemory.h
-	globalincs/globals.h
-	globalincs/linklist.h
-	globalincs/safe_strings.cpp
-	globalincs/safe_strings.h
-	globalincs/systemvars.cpp
-	globalincs/systemvars.h
-	globalincs/version.cpp
-	globalincs/version.h
-	globalincs/vmallocator.h
-	globalincs/flagset.h
-)
-
-IF (WIN32)
-	add_file_folder("GlobalIncs"
-		${file_root_globalincs}
-		globalincs/mspdb_callstack.cpp
-		globalincs/mspdb_callstack.h
-		globalincs/windebug.cpp
-	)
-ENDIF(WIN32)
-
-add_file_folder("GlobalIncs\\\\Memory"
-	globalincs/memory/memory.h
-	globalincs/memory/memory.cpp
-	globalincs/memory/utils.h
-)
-
-add_file_folder("GlobalIncs\\\\Toolchain"
-	globalincs/toolchain/clang.h
-	globalincs/toolchain/doxygen.h
-	globalincs/toolchain/gcc.h
-	globalincs/toolchain/mingw.h
-	globalincs/toolchain/msvc.h
-)
 
 # Graphics files
 add_file_folder("Graphics"

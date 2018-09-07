@@ -10,8 +10,6 @@
 #ifndef _OUTWND_H
 #define _OUTWND_H
 
-#include "globalincs/pstypes.h"
-
 #ifndef NDEBUG
 
 void load_filter_info(void);

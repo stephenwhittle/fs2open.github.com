@@ -54,7 +54,7 @@
 #include "starfield/supernova.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
-#include "events/events.h"
+#include "hud_events.h"
 
 SCP_vector<std::unique_ptr<HudGauge>> default_hud_gauges;
 
