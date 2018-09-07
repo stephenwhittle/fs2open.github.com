@@ -1,4 +1,4 @@
-#include "pstypes.h"
+#include "globalincs/pstypes.h"
 
 /* It is a condition of use that safe_strings.cpp, safe_strings.h, safe_strings_test.cpp remain together.
  *

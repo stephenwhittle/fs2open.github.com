@@ -318,16 +318,13 @@ add_file_folder("GlobalIncs"
 	globalincs/fsmemory.h
 	globalincs/globals.h
 	globalincs/linklist.h
-	globalincs/pstypes.h
 	globalincs/safe_strings.cpp
 	globalincs/safe_strings.h
 	globalincs/systemvars.cpp
 	globalincs/systemvars.h
-	globalincs/toolchain.h
 	globalincs/version.cpp
 	globalincs/version.h
 	globalincs/vmallocator.h
-	globalincs/scp_defines.h
 	globalincs/flagset.h
 )
 
@@ -1280,24 +1277,6 @@ add_file_folder("Ui"
 	ui/window.cpp
 )
 
-add_file_folder("Utils"
-	utils/encoding.cpp
-    utils/encoding.h
-    utils/event.h
-	utils/HeapAllocator.cpp
-	utils/HeapAllocator.h
-	utils/id.h
-	utils/RandomRange.h
-	utils/strings.h
-    utils/unicode.cpp
-    utils/unicode.h
-)
-
-# Utils files
-add_file_folder("Utils\\\\boost"
-	utils/boost/hash_combine.h
-	utils/boost/syncboundedqueue.h
-)
 
 # Weapon files
 add_file_folder("Weapon"
@@ -1322,14 +1301,3 @@ add_file_folder("Weapon"
 	weapon/weapon_flags.h
 )
 
-# Windows stubs files
-add_file_folder("Windows Stubs"
-	windows_stub/config.h
-)
-
-IF(UNIX)
-	add_file_folder("Windows Stubs"
-		${file_root_windows_stubs}
-		windows_stub/stubs.cpp
-	)
-ENDIF(UNIX)

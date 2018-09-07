@@ -1,0 +1,1 @@
+#target_sources(utils encoding.cpp HeapAllocator.cpp unicode.cpp)

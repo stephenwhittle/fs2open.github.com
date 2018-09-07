@@ -44,6 +44,7 @@
 #include "ship/subsysdamage.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
+#include "hud_events.h"
 
 // Global values for the target bracket width and height, used for debugging
 int Hud_target_w, Hud_target_h;

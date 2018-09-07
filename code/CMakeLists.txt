@@ -22,6 +22,7 @@ TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${FREESPACE_HEADERS})
 
 TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${GENERATED_SOURCE_DIR})
 TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${GENERATED_SOURCE_DIR}/code)
+TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${GENERATED_SOURCE_DIR}/modules/globalincs)
 
 target_link_libraries(code PUBLIC OpenGL)
 
@@ -44,6 +45,10 @@ target_link_libraries(code PUBLIC md5)
 target_link_libraries(code PUBLIC discord-rpc)
 
 target_link_libraries(code PUBLIC bridge)
+
+target_link_libraries(code PUBLIC utils)
+
+target_link_libraries(code PUBLIC globalincs)
 
 enable_clang_tidy(code)
 

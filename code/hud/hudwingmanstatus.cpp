@@ -21,7 +21,7 @@
 #include "ship/ship.h"
 #include "weapon/emp.h"
 
-#include "events/events.h"
+#include "hud_events.h"
 
 #define HUD_WINGMAN_STATUS_NUM_FRAMES 5
 #define BACKGROUND_LEFT 0

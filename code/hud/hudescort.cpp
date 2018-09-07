@@ -29,7 +29,7 @@
 #include "playerman/player.h"
 #include "ship/ship.h"
 #include "weapon/emp.h"
-#include "events/events.h"
+#include "hud_events.h"
 
 
 int Show_escort_view;

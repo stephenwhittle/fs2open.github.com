@@ -21,7 +21,7 @@
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
 #include "globalincs/alphacolors.h"
-#include "events/events.h"
+#include "hud_events.h"
 
 #define NUM_RETICLE_ANIS			11		// keep up to date when modifying the number of reticle ani files
 

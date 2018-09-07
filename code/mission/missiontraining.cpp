@@ -29,7 +29,7 @@
 #include "sound/audiostr.h"
 #include "sound/sound.h"
 #include "weapon/emp.h"
-#include "events/events.h"
+#include "hud_events.h"
 
 
 
