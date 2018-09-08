@@ -1,5 +1,5 @@
 #include "utils/HeapAllocator.h"
-
+#include "assert/assert.h"
 namespace {
 
 const size_t HEAP_SIZE_INCREASE = 1 * 1024 * 1024; // Always increment in 1MB steps

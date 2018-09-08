@@ -8,12 +8,9 @@
 */ 
 
 
-#include "debugconsole/console.h"
+
 #include "globalincs/pstypes.h"
 #include "globalincs/systemvars.h"
-#include "graphics/2d.h"
-#include "io/timer.h"
-#include "nebula/neb.h"
 
 
 fix Missiontime;

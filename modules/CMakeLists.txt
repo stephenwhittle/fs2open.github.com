@@ -1,3 +1,7 @@
 add_subdirectory(utils)
 add_subdirectory(globalincs)
 add_subdirectory(windows_stub)
+add_subdirectory(cfile)
+add_subdirectory(math)
+add_subdirectory(core)
+add_subdirectory(osapi)

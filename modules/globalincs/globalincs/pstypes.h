@@ -17,7 +17,6 @@
 #include "windows_stub/config.h"
 #include "globalincs/scp_defines.h"
 #include "globalincs/toolchain.h"
-#include "utils/strings.h"
 
 #include <cstdio>    // For NULL, etc
 #include <cstdlib>
@@ -216,47 +215,10 @@ typedef struct coord2d {
 	int x,y;
 } coord2d;
 
-#include "osapi/dialogs.h"
-
 extern int Global_warning_count;
 extern int Global_error_count;
 
-#include "osapi/outwnd.h"
 
-// To debug printf do this:
-// mprintf(( "Error opening %s\n", filename ));
-#ifndef NDEBUG
-#define mprintf(args) outwnd_printf2 args
-#define nprintf(args) outwnd_printf args
-#else
-#define mprintf(args)
-#define nprintf(args)
-#endif
-
-#define LOCATION __FILE__,__LINE__
-
-// To flag an error, you can do this:
-// Error( __FILE__, __LINE__, "Error opening %s", filename );
-// or,
-// Error( LOCATION, "Error opening %s", filename );
-
-/*******************NEVER UNCOMMENT Assert ************************************************/
-// Please never uncomment the functionality of Assert in debug
-// The code, as with all development like this is littered with Asserts which are designed to throw
-// up an error message if variables are out of range.
-// Disabling this functionality is dangerous, crazy values can run rampent unchecked and the longer its disabled
-// the more likely you are to have problems getting it working again.
-#if defined(NDEBUG)
-#	define Assert(expr) do { ASSUME(expr); } while (false)
-#else
-#	define Assert(expr) do {\
-		if (!(expr)) {\
-			os::dialogs::AssertMessage(#expr,__FILE__,__LINE__);\
-		}\
-		ASSUME( expr );\
-	} while (false)
-#endif
-/*******************NEVER COMMENT Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode
 #define Verify(x) do { if (!(x)){ Error(LOCATION, "Verify failure: %s\n", #x); } ASSUME(x); } while(0)
@@ -309,7 +271,6 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 //======================================================================================
 
 
-#include "math/fix.h"
 #include "math/floating.h"
 
 // Some constants for stuff
@@ -395,8 +356,6 @@ template <class T> void CAP( T& v, T mn, T mx )
 // Memory management functions
 //=========================================================
 
-#include "globalincs/fsmemory.h"
-
 class camid
 {
 private:
@@ -413,7 +372,6 @@ public:
 };
 
 #include "globalincs/vmallocator.h"
-#include "globalincs/safe_strings.h"
 
 // check to see that a passed sting is valid, ie:
 //  - has >0 length

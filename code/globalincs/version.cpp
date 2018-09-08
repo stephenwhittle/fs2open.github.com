@@ -10,8 +10,7 @@
 #include "globalincs/pstypes.h"
 #include "globalincs/version.h"
 
-#include "parse/parselo.h"
-
+ 
 namespace gameversion {
 
 bool check_at_least(const version& v) {

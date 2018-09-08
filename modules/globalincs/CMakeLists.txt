@@ -1,3 +1,10 @@
 add_library(globalincs INTERFACE)
-target_link_libraries( globalincs INTERFACE windows_stub)
+target_link_libraries( globalincs INTERFACE windows_stub math)
 target_include_directories(globalincs INTERFACE ${CMAKE_CURRENT_LIST_DIR})
+TARGET_INCLUDE_DIRECTORIES(globalincs INTERFACE ${GENERATED_SOURCE_DIR})
+
+if (MSVC)
+target_compile_definitions(globalincs INTERFACE SCP_FORMAT_STRING=_Printf_format_string_)
+else()
+target_compile_definitions(globalincs INTERFACE SCP_FORMAT_STRING=)
+endif()

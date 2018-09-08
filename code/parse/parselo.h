@@ -10,12 +10,16 @@
 #ifndef _PARSELO_H
 #define _PARSELO_H
 
+
+#include <utf8.h>
 #include "cfile/cfile.h"
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
-#include "globalincs/flagset.h"
-#include "def_files/def_files.h"
-#include "utils/unicode.h"
+
+struct default_file;
+
+namespace unicode {
+typedef uint32_t codepoint_t;
+}
 
 #include <cinttypes>
 #include <exception>

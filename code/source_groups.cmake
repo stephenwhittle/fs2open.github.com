@@ -55,17 +55,6 @@ add_file_folder("Camera"
 	camera/camera.h
 )
 
-# CFile files
-add_file_folder("CFile"
-	cfile/cfile.cpp
-	cfile/cfile.h
-	cfile/cfilearchive.cpp
-	cfile/cfilearchive.h
-	cfile/cfilelist.cpp
-	cfile/cfilesystem.cpp
-	cfile/cfilesystem.h
-)
-
 # Cmdline files
 add_file_folder("Cmdline"
 	cmdline/cmdline.cpp
@@ -324,8 +313,6 @@ add_file_folder("GlobalIncs"
 	globalincs/systemvars.h
 	globalincs/version.cpp
 	globalincs/version.h
-	globalincs/vmallocator.h
-	globalincs/flagset.h
 )
 
 IF (WIN32)
@@ -336,20 +323,6 @@ IF (WIN32)
 		globalincs/windebug.cpp
 	)
 ENDIF(WIN32)
-
-add_file_folder("GlobalIncs\\\\Memory"
-	globalincs/memory/memory.h
-	globalincs/memory/memory.cpp
-	globalincs/memory/utils.h
-)
-
-add_file_folder("GlobalIncs\\\\Toolchain"
-	globalincs/toolchain/clang.h
-	globalincs/toolchain/doxygen.h
-	globalincs/toolchain/gcc.h
-	globalincs/toolchain/mingw.h
-	globalincs/toolchain/msvc.h
-)
 
 # Graphics files
 add_file_folder("Graphics"
@@ -616,23 +589,6 @@ add_file_folder("Localization"
 	localization/localize.h
 )
 
-# Math files
-add_file_folder("Math"
-	math/bitarray.h
-	math/fix.cpp
-	math/fix.h
-	math/floating.cpp
-	math/floating.h
-	math/fvi.cpp
-	math/fvi.h
-	math/spline.cpp
-	math/spline.h
-	math/staticrand.cpp
-	math/staticrand.h
-	math/vecmat.cpp
-	math/vecmat.h
-)
-
 # MenuUI files
 add_file_folder("MenuUI"
 	menuui/barracks.cpp
@@ -849,20 +805,6 @@ add_file_folder("Object"
 add_file_folder("Observer"
 	observer/observer.cpp
 	observer/observer.h
-)
-
-# OsApi files
-add_file_folder("OsApi"
-	osapi/DebugWindow.h
-	osapi/DebugWindow.cpp
-	osapi/osapi.h
-	osapi/osapi.cpp
-	osapi/dialogs.h
-	osapi/dialogs.cpp
-	osapi/osregistry.h
-	osapi/osregistry.cpp
-	osapi/outwnd.h
-	osapi/outwnd.cpp
 )
 
 # Parse files
