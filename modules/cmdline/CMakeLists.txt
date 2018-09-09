@@ -1,5 +1,5 @@
 add_library(cmdline STATIC cmdline/cmdline.cpp)
 target_include_directories(cmdline PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 set_target_properties(cmdline PROPERTIES FOLDER "modules")
-target_link_libraries(cmdline PRIVATE jansson core)
+target_link_libraries(cmdline PRIVATE jansson core globallincs sound)
 TARGET_INCLUDE_DIRECTORIES(cmdline PRIVATE ${GENERATED_SOURCE_DIR})

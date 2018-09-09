@@ -11,10 +11,6 @@
 
 #include "globalincs/pstypes.h"
 #include "io/timer.h"
-#include "graphics/2d.h"
-#include "globalincs/alphacolors.h"
-
-#include "osapi/osapi.h"	// for multi-thread macros
 
 #include <SDL_timer.h>
 #include <climits>

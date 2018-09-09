@@ -2,7 +2,7 @@
 #include "globalincs/pstypes.h"
 #include "sound/openal.h"
 #include "osapi/osregistry.h"
-
+#include "assert/assert.h"
 #include <string>
 #include <algorithm>
 
