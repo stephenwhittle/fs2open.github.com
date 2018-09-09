@@ -55,12 +55,6 @@ add_file_folder("Camera"
 	camera/camera.h
 )
 
-# Cmdline files
-add_file_folder("Cmdline"
-	cmdline/cmdline.cpp
-	cmdline/cmdline.h
-)
-
 # CMeasure files
 add_file_folder("CMeasure"
 	cmeasure/cmeasure.cpp

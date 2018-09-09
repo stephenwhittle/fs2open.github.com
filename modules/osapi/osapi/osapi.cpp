@@ -13,7 +13,7 @@
 
 #ifdef SCP_UNIX
 #include <sys/stat.h>
-#elif defined(_WIN32)
+#elif defined(WIN32)
 #include <sys/types.h>
 #include <sys/stat.h>
 #endif

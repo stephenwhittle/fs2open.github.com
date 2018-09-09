@@ -1,5 +1,5 @@
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.4)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 # Make sure the source and binary directory are not the sample

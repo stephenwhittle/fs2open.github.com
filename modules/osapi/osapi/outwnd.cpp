@@ -52,7 +52,7 @@ FILE *Log_fp = NULL;
 const char *FreeSpace_logfilename = NULL;
 
 std::unique_ptr<osapi::DebugWindow> debugWindow;
-
+//move into other module
 void load_filter_info(void)
 {
 	FILE *fp = NULL;

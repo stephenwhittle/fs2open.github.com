@@ -9,23 +9,25 @@
 
 
 
-#include "camera/camera.h" //VIEWER_ZOOM_DEFAULT
+//#include "camera/camera.h" //VIEWER_ZOOM_DEFAULT
 #include "cmdline/cmdline.h"
-#include "globalincs/linklist.h"
-#include "globalincs/pstypes.h"
-#include "globalincs/systemvars.h"
-#include "globalincs/version.h"
-#include "hud/hudconfig.h"
-#include "network/multi.h"
-#include "scripting/scripting.h"
-#include "parse/sexp.h"
-#include "globalincs/version.h"
-#include "globalincs/pstypes.h"
-#include "osapi/osapi.h"
-#include "cfile/cfilesystem.h"
-#include "sound/speech.h"
-#include "sound/openal.h"
-#include "io/joy.h"
+#include "assert/assert.h"
+#include "project.h"
+#include "types/linklist.h"
+// #include "globalincs/pstypes.h"
+// #include "globalincs/systemvars.h"
+// #include "globalincs/version.h"
+// #include "hud/hudconfig.h"
+// #include "network/multi.h"
+// #include "scripting/scripting.h"
+// #include "parse/sexp.h"
+// #include "globalincs/version.h"
+// #include "globalincs/pstypes.h"
+// #include "osapi/osapi.h"
+// #include "cfile/cfilesystem.h"
+// #include "sound/speech.h"
+// #include "sound/openal.h"
+// #include "io/joy.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -42,6 +44,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
+#include <ctype.h>
 
 #include <jansson.h>
 

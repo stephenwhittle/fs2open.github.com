@@ -89,3 +89,8 @@ extern void outwnd_printf(const char* id, const char* format, ...);
 
 extern AssertHandler* gAssertHandler;
 #endif
+
+
+//inside asserthandler have a static unique pointer to AssertHandler implementation
+//and some sort of initialization function that takes a template parameter perhaps?
+//that way we can provide the default implementation but allow it to be overridden
