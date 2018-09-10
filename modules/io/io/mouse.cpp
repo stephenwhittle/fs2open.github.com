@@ -15,8 +15,6 @@
 #endif
 
 #include "io/mouse.h"
-#include "graphics/2d.h"
-#include "scripting/scripting.h"
 
 #define THREADED	// to use the proper set of macros
 #include "osapi/osapi.h"

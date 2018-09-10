@@ -1,5 +1,5 @@
 
-INCLUDE(source_groups.cmake)
+#INCLUDE(source_groups.cmake)
 
 INCLUDE(voice_rec.cmake)
 
@@ -11,7 +11,7 @@ if("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
      target_compile_definitions(code PUBLIC "ARCH_64BIT")
  endif("${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
 
- INCLUDE(default_files.cmake)
+ #INCLUDE(default_files.cmake)
 
 if (MSVC)
 	target_compile_definitions(code PUBLIC "PDB_DEBUGGING=1")

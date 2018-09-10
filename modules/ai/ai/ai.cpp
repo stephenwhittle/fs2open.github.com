@@ -16,7 +16,7 @@
 #include "ai/ai.h"
 #include "object/object.h"
 #include "ship/ship.h"
-
+#include "globalincs/globals.h"
 
 int Total_goal_target_names = 0;
 char Goal_target_names[MAX_GOAL_TARGET_NAMES][NAME_LENGTH];
