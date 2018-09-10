@@ -11,7 +11,7 @@ add_library(sound STATIC
     sound/voicerec.cpp
 )
 
-target_link_libraries( sound PUBLIC globalincs utils openal cmdline core)
+target_link_libraries( sound PUBLIC globalincs utils openal cmdline core ffmpeg_support)
 target_include_directories(sound PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 TARGET_INCLUDE_DIRECTORIES(sound PRIVATE ${GENERATED_SOURCE_DIR})
 set_target_properties(sound PROPERTIES FOLDER "modules")

@@ -549,15 +549,6 @@ add_file_folder("Libs\\\\Discord"
 	libs/discord/discord.cpp
 	libs/discord/discord.h
 )
-
-add_file_folder("Libs\\\\FFmpeg"
-	libs/ffmpeg/FFmpeg.cpp
-	libs/ffmpeg/FFmpeg.h
-	libs/ffmpeg/FFmpegContext.cpp
-	libs/ffmpeg/FFmpegContext.h
-	libs/ffmpeg/FFmpegHeaders.h
-)
-
 add_file_folder("Libs\\\\RenderDoc"
 	libs/renderdoc/renderdoc.cpp
 	libs/renderdoc/renderdoc.h

@@ -1,5 +1,5 @@
 
-#include "libs/ffmpeg/FFmpeg.h"
+#include "ffmpeg/FFmpeg.h"
 
 #include "FFmpegHeaders.h"
 

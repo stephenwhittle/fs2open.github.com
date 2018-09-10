@@ -7,7 +7,7 @@
 #include "sound/audiostr.h"
 #include "sound/openal.h"
 
-#include "libs/ffmpeg/FFmpegContext.h"
+#include "ffmpeg/FFmpegContext.h"
 
 #include "osapi/osapi.h"
 
