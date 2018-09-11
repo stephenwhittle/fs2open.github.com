@@ -1,5 +1,5 @@
 add_library( decals STATIC
-	CMakeLists.txt
+	
 	decals/decals.cpp
 	decals/decals.h
 )

@@ -1,5 +1,5 @@
 add_library( gamesequence STATIC
-	CMakeLists.txt
+	
 	gamesequence/gamesequence.cpp
 	gamesequence/gamesequence.h
 )

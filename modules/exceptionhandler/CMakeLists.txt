@@ -1,5 +1,5 @@
 add_library( exceptionhandler STATIC
-	CMakeLists.txt
+	
 	exceptionhandler/exceptionhandler.cpp
 	exceptionhandler/exceptionhandler.h
 )

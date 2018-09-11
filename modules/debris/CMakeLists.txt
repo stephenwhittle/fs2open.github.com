@@ -1,5 +1,5 @@
 add_library( debris STATIC
-	CMakeLists.txt
+	
 	debris/debris.cpp
 	debris/debris.h
 )

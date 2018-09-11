@@ -1,5 +1,4 @@
 add_library( controlconfig STATIC
-	CMakeLists.txt
 	controlconfig/controlsconfig.cpp
 	controlconfig/controlsconfig.h
 	controlconfig/controlsconfigcommon.cpp

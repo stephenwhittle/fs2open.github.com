@@ -1,0 +1,69 @@
+add_library( network STATIC
+	
+	network/chat_api.cpp
+	network/chat_api.h
+	network/multi.cpp
+	network/multi.h
+	network/multilag.cpp
+	network/multilag.h
+	network/multimsgs.cpp
+	network/multimsgs.h
+	network/multiteamselect.cpp
+	network/multiteamselect.h
+	network/multiui.cpp
+	network/multiui.h
+	network/multiutil.cpp
+	network/multiutil.h
+	network/multi_campaign.cpp
+	network/multi_campaign.h
+	network/multi_data.cpp
+	network/multi_data.h
+	network/multi_dogfight.cpp
+	network/multi_dogfight.h
+	network/multi_endgame.cpp
+	network/multi_endgame.h
+	network/multi_ingame.cpp
+	network/multi_ingame.h
+	network/multi_kick.cpp
+	network/multi_kick.h
+	network/multi_log.cpp
+	network/multi_log.h
+	network/multi_obj.cpp
+	network/multi_obj.h
+	network/multi_observer.cpp
+	network/multi_observer.h
+	network/multi_options.cpp
+	network/multi_options.h
+	network/multi_pause.cpp
+	network/multi_pause.h
+	network/multi_pinfo.cpp
+	network/multi_pinfo.h
+	network/multi_ping.cpp
+	network/multi_ping.h
+	network/multi_pmsg.cpp
+	network/multi_pmsg.h
+	network/multi_pxo.cpp
+	network/multi_pxo.h
+	network/multi_rate.cpp
+	network/multi_rate.h
+	network/multi_respawn.cpp
+	network/multi_respawn.h
+	network/multi_sexp.cpp
+	network/multi_sexp.h
+	network/multi_team.cpp
+	network/multi_team.h
+	network/multi_update.cpp
+	network/multi_update.h
+	network/multi_voice.cpp
+	network/multi_voice.h
+	network/multi_xfer.cpp
+	network/multi_xfer.h
+	network/psnet2.cpp
+	network/psnet2.h
+	network/stand_gui-unix.cpp
+	network/stand_gui.cpp
+	network/stand_gui.h
+)
+target_include_directories(network PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+TARGET_INCLUDE_DIRECTORIES(network PRIVATE ${GENERATED_SOURCE_DIR})
+set_target_properties(network PROPERTIES FOLDER "modules")

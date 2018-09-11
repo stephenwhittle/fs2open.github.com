@@ -1,5 +1,5 @@
 add_library( cutscene STATIC
-	CMakeLists.txt
+	
 	cutscene/cutscenes.cpp
 	cutscene/cutscenes.h
 	cutscene/Decoder.cpp

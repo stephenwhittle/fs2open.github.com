@@ -1,5 +1,5 @@
 add_library( debugconsole STATIC
-	CMakeLists.txt
+	
 	debugconsole/console.cpp
 	debugconsole/console.h
 	debugconsole/consolecmds.cpp

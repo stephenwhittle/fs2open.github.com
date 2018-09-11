@@ -1,5 +1,5 @@
 add_library( events STATIC
-	CMakeLists.txt
+	
 	events/events.cpp
 	events/events.h
 )
