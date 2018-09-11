@@ -67,3 +67,18 @@ add_library( network STATIC
 target_include_directories(network PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 TARGET_INCLUDE_DIRECTORIES(network PRIVATE ${GENERATED_SOURCE_DIR})
 set_target_properties(network PROPERTIES FOLDER "modules")
+
+
+
+
+# IF(WIN32)
+# add_file_folder("Network"
+# 	${file_root_network}
+# 	network/stand_gui.cpp
+# )
+# ELSE(WIN32)
+# add_file_folder("Network"
+# 	${file_root_network}
+# 	network/stand_gui-unix.cpp
+# )
+# ENDIF(WIN32)

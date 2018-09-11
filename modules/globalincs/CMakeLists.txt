@@ -8,3 +8,13 @@ target_compile_definitions(globalincs PUBLIC SCP_FORMAT_STRING=_Printf_format_st
 else()
 target_compile_definitions(globalincs PUBLIC SCP_FORMAT_STRING=)
 endif()
+
+
+# IF (WIN32)
+# 	add_file_folder("GlobalIncs"
+# 		${file_root_globalincs}
+# 		globalincs/mspdb_callstack.cpp
+# 		globalincs/mspdb_callstack.h
+# 		globalincs/windebug.cpp
+# 	)
+# ENDIF(WIN32)
