@@ -1,4 +1,4 @@
-#include "UniformBuffer.h"
+#include "graphics/util/UniformBuffer.h"
 
 namespace graphics {
 namespace util {

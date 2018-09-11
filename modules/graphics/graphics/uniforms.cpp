@@ -1,11 +1,11 @@
 //
 //
 
-#include "uniforms.h"
-#include "matrix.h"
-#include "light.h"
+#include "graphics/uniforms.h"
+#include "graphics/matrix.h"
+#include "graphics/light.h"
 #include "globalincs/systemvars.h"
-#include "shadows.h"
+#include "graphics/shadows.h"
 
 namespace {
 void scale_matrix(matrix4& mat, const vec3d& scale) {

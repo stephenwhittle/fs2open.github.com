@@ -1,7 +1,7 @@
 
 
-#include "UniformBufferManager.h"
-#include "uniform_structs.h"
+#include "graphics/util/UniformBufferManager.h"
+#include "graphics/util/uniform_structs.h"
 
 namespace {
 

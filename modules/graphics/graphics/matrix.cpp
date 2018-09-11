@@ -1,5 +1,5 @@
 
-#include "matrix.h"
+#include "graphics/matrix.h"
 
 transform_stack gr_model_matrix_stack;
 matrix4 gr_view_matrix;

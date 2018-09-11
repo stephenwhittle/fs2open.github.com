@@ -1,7 +1,7 @@
 //
 //
 
-#include "ShaderProgram.h"
+#include "graphics/opengl/ShaderProgram.h"
 
 #include "graphics/opengl/gropenglstate.h"
 
