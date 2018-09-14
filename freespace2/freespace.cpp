@@ -44,6 +44,7 @@
 #include "debugconsole/console.h"
 #include "decals/decals.h"
 #include "events/events.h"
+#include "external_display/external_display.h"
 #include "exceptionhandler/exceptionhandler.h"
 #include "fireball/fireballs.h"
 #include "fs2netd/fs2netd_client.h"
@@ -2035,6 +2036,8 @@ void game_init()
 	io::mouse::CursorManager::get()->showCursor(true);
 
 	mouse_set_pos(gr_screen.max_w / 2, gr_screen.max_h / 2);
+	
+	external_display::init();
 }
 
 char transfer_text[128];

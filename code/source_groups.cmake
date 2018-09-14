@@ -577,6 +577,11 @@ add_file_folder("Lab"
 	lab/wmcgui.h
 )
 
+add_file_folder("external_display"
+	external_display/external_display.cpp
+	external_display/external_display.h
+)
+
 add_file_folder("Libs"
 	libs/jansson.cpp
 	libs/jansson.h

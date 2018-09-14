@@ -4,3 +4,6 @@
 [submodule "lib/libRocket"]
 	path = lib/libRocket
 	url = https://github.com/asarium/libRocket.git
+[submodule "lib/hidapi"]
+	path = lib/hidapi
+	url = https://github.com/signal11/hidapi.git
