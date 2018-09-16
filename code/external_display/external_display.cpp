@@ -24,10 +24,15 @@ namespace external_display
 		events::RenderCountermeasureGauge.add(OnRenderCountermeasureGauge); 
 	}
 
+	uint8_t ReportBuffer[21] = {0};
 
 void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAmmo, int MaxAmmo, bool Linked )
 {
-	uint8_t ReportBuffer[20] = {0};
+	for (uint8_t ReportByte : ReportBuffer)
+	{
+		ReportByte = 0;
+	}
+
 	ReportBuffer[0] = (uint8_t) ReportID::REPORT_PRIMARYWEAPON;
 	ReportBuffer[1] =  (uint8_t)WeaponIndex; 
 	for (auto ReportIndex = 0; ReportIndex < 12; ReportIndex++)
@@ -46,7 +51,7 @@ void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAm
 	ReportBuffer[19] = (MaxAmmo/ 100) % 10; // hundreds
 
 	ReportBuffer[20] = (uint8_t) Linked;
-	hid_write(CurrentDevice, ReportBuffer, 20);
+	hid_write(CurrentDevice, ReportBuffer, 21);
 }
 void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 {
