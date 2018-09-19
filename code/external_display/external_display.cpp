@@ -2,10 +2,38 @@
 #include "events/events.h"
 #include "hidapi/hidapi.h"
 #include "osapi/outwnd.h"
-
-
+#include <thread>
+#include <vector>
+#include "external_display/readerwriterqueue.h"
 namespace external_display 
 {
+	std::atomic_flag HIDThreadEnabled= ATOMIC_FLAG_INIT;
+
+	void HIDThread(uint16_t VendorID, uint16_t ProductID, moodycamel::ReaderWriterQueue<std::vector<uint8_t>>& Queue)
+	{
+		hid_init();
+		hid_device* CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+		while (HIDThreadEnabled.test_and_set())
+		{
+			if (CurrentDevice == nullptr)
+			{
+				CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+			}
+			if (CurrentDevice != nullptr)
+			{
+				std::vector<uint8_t> ReportData;
+				if (Queue.try_dequeue(ReportData))
+				{
+					hid_write(CurrentDevice, ReportData.data(), ReportData.size());
+				}
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		}
+	}
+
+
+
+
 	void OnRenderCountermeasureGauge(int NumberOfCountermeasures);
 	void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName, int CurrentAmmo, int MaxAmmo, bool Linked);
 	void OnRenderLockWarning(int Warning);
@@ -15,17 +43,22 @@ namespace external_display
 		REPORT_PRIMARYWEAPON = 1
 	};
 	static bool ShowLockWarning = false;
-	hid_device* CurrentDevice = nullptr;
+	
+	moodycamel::ReaderWriterQueue < std::vector<uint8_t>> HIDQueue;
+	
+	void deinit() { HIDThreadEnabled.clear(); }
+
 	
 	void init() 
 	{ 
-		hid_init();
-		CurrentDevice = hid_open(1155, 22352, nullptr);
+		HIDThreadEnabled.test_and_set();
+		events::EngineShutdown.add(deinit);
+		std::thread WriteThread(HIDThread, uint16_t(1155), uint16_t(22352), std::ref(HIDQueue));
+		WriteThread.detach();
 		events::RenderPrimaryWeapon.add(OnRenderPrimaryWeapon);
 		events::RenderCountermeasureGauge.add(OnRenderCountermeasureGauge); 
 		events::RenderLockWarning.add(OnRenderLockWarning);
 	}
-
 	void OnRenderLockWarning(int Warning)
 	{
 		ShowLockWarning = (Warning != 0);
@@ -35,37 +68,31 @@ namespace external_display
 	
 void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAmmo, int MaxAmmo, bool Linked )
 {
-	if (CurrentDevice == nullptr)
-	{
-		return;
-	}
-	uint8_t ReportBuffer[21] = {0};
 
-	ReportBuffer[0] = (uint8_t) ReportID::REPORT_PRIMARYWEAPON;
-	ReportBuffer[1] =  (uint8_t)WeaponIndex; 
+	std::vector<uint8_t> ReportBuffer;
+	ReportBuffer.push_back((uint8_t) ReportID::REPORT_PRIMARYWEAPON);
+	ReportBuffer.push_back((uint8_t)WeaponIndex); 
 	for (auto ReportIndex = 0; ReportIndex < 12; ReportIndex++)
 	{
-		ReportBuffer[2+ ReportIndex] = WeaponName[ReportIndex];
-		if (ReportBuffer[2 + ReportIndex] == 0)
+		ReportBuffer.push_back(WeaponName[ReportIndex]);
+		if (WeaponName[ReportIndex] == 0)
 		{
 			break;
 		}
 	}
-	ReportBuffer[14] = CurrentAmmo % 10; //ones
-	ReportBuffer[15] = (CurrentAmmo /10) % 10; //tens
-	ReportBuffer[16] = (CurrentAmmo / 100) % 10; //hundreds
-	ReportBuffer[17] = MaxAmmo % 10;         // ones
-	ReportBuffer[18] = (MaxAmmo/ 10) % 10;  // tens
-	ReportBuffer[19] = (MaxAmmo/ 100) % 10; // hundreds
+	ReportBuffer.push_back(CurrentAmmo % 10); //ones
+	ReportBuffer.push_back((CurrentAmmo /10) % 10); //tens
+	ReportBuffer.push_back((CurrentAmmo / 100) % 10); //hundreds
+	ReportBuffer.push_back(MaxAmmo % 10);         // ones
+	ReportBuffer.push_back((MaxAmmo/ 10) % 10);  // tens
+	ReportBuffer.push_back((MaxAmmo/ 100) % 10); // hundreds
 
-	ReportBuffer[20] = (uint8_t) Linked;
-	hid_write(CurrentDevice, ReportBuffer, 21);
+	ReportBuffer.push_back((uint8_t) Linked);
+	HIDQueue.emplace(std::move(ReportBuffer));
 }
 void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 {
-	if (CurrentDevice == nullptr) {
-		return;
-	}
+	
 	static uint8_t Number[] = { 
 	0b0111111,
 	0b0000110,
@@ -79,24 +106,24 @@ void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 	0b1101111,
 	};
 
-	uint8_t ReportBuffer[5] = { 0 };
-	ReportBuffer[0] = (uint8_t)ReportID::REPORT_COUNTERMEASURES;
+	std::vector<uint8_t> ReportBuffer;
+	ReportBuffer.push_back((uint8_t)ReportID::REPORT_COUNTERMEASURES);
 	if (ShowLockWarning)
 	{
-		ReportBuffer[1] = 0b0111000;
-		ReportBuffer[2] = 0b1011100;
-		ReportBuffer[3] = 0b0111001;
-		ReportBuffer[4] = 0b1110101;
+		ReportBuffer.push_back(0b0111000);
+		ReportBuffer.push_back(0b1011100);
+		ReportBuffer.push_back(0b0111001);
+		ReportBuffer.push_back(0b1110101);
 	}
 	else 
 	{
-		ReportBuffer[1] = 0b0111001;
-		ReportBuffer[2] = 0b1101101;
-		ReportBuffer[3] = Number[(NumberOfCountermeasures / 10) % 10];
-		ReportBuffer[4] = Number[NumberOfCountermeasures % 10];
+		ReportBuffer.push_back(0b0111001);
+		ReportBuffer.push_back(0b1101101);
+		ReportBuffer.push_back(Number[(NumberOfCountermeasures / 10) % 10]);
+		ReportBuffer.push_back(Number[NumberOfCountermeasures % 10]);
 	}
 
-	hid_write(CurrentDevice, ReportBuffer, 5);
+	HIDQueue.emplace(std::move(ReportBuffer));
 
 }
 

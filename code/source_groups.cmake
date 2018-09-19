@@ -580,6 +580,9 @@ add_file_folder("Lab"
 add_file_folder("external_display"
 	external_display/external_display.cpp
 	external_display/external_display.h
+	external_display/atomicops.h
+	external_display/readerwriterqueue.h
+	
 )
 
 add_file_folder("Libs"
