@@ -31,15 +31,15 @@ namespace external_display
 		ShowLockWarning = (Warning != 0);
 	}
 
-	uint8_t ReportBuffer[21] = {0};
-
+	
 	
 void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAmmo, int MaxAmmo, bool Linked )
 {
-	for (uint8_t ReportByte : ReportBuffer)
+	if (CurrentDevice == nullptr)
 	{
-		ReportByte = 0;
+		return;
 	}
+	uint8_t ReportBuffer[21] = {0};
 
 	ReportBuffer[0] = (uint8_t) ReportID::REPORT_PRIMARYWEAPON;
 	ReportBuffer[1] =  (uint8_t)WeaponIndex; 
@@ -63,6 +63,9 @@ void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAm
 }
 void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 {
+	if (CurrentDevice == nullptr) {
+		return;
+	}
 	static uint8_t Number[] = { 
 	0b0111111,
 	0b0000110,
