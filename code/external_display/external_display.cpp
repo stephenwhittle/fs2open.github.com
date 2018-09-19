@@ -9,34 +9,38 @@ namespace external_display
 {
 	std::atomic_flag HIDThreadEnabled= ATOMIC_FLAG_INIT;
 
-	void HIDThread(uint16_t VendorID, uint16_t ProductID, moodycamel::ReaderWriterQueue<std::vector<uint8_t>>& Queue)
+std::vector<uint8_t>* QueuedValue;
+std::vector<uint8_t>* DeQueuedValue;
+
+	void HIDThread(uint16_t VendorID, uint16_t ProductID, moodycamel::BlockingReaderWriterQueue<std::vector<uint8_t>>* Queue)
 	{
 		hid_init();
 		hid_device* CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+		std::vector<uint8_t> ReportData;
 		while (HIDThreadEnabled.test_and_set())
 		{
-			if (CurrentDevice == nullptr)
+			DeQueuedValue = Queue->peek();
+			ReportData.clear();
+			if (Queue->try_dequeue(ReportData))
 			{
-				CurrentDevice = hid_open(VendorID, ProductID, nullptr);
-			}
-			if (CurrentDevice != nullptr)
-			{
-				std::vector<uint8_t> ReportData;
-				if (Queue.try_dequeue(ReportData))
-				{
-					hid_write(CurrentDevice, ReportData.data(), ReportData.size());
+				if (CurrentDevice == nullptr) {
+					CurrentDevice = hid_open(VendorID, ProductID, nullptr);
 				}
+				if (CurrentDevice != nullptr) {
+				    if (hid_write(CurrentDevice, ReportData.data(), ReportData.size()) == -1) {
+						CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+				    }
+			    }
 			}
-			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+			//std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 	}
-
-
 
 
 	void OnRenderCountermeasureGauge(int NumberOfCountermeasures);
 	void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName, int CurrentAmmo, int MaxAmmo, bool Linked);
 	void OnRenderLockWarning(int Warning);
+	void OnRenderMissionTime(int Minutes, int Seconds);
 	enum class ReportID
 	{
 		REPORT_COUNTERMEASURES = 2,
@@ -44,7 +48,7 @@ namespace external_display
 	};
 	static bool ShowLockWarning = false;
 	
-	moodycamel::ReaderWriterQueue < std::vector<uint8_t>> HIDQueue;
+	moodycamel::BlockingReaderWriterQueue <std::vector<uint8_t>> HIDQueue;
 	
 	void deinit() { HIDThreadEnabled.clear(); }
 
@@ -53,11 +57,19 @@ namespace external_display
 	{ 
 		HIDThreadEnabled.test_and_set();
 		events::EngineShutdown.add(deinit);
-		std::thread WriteThread(HIDThread, uint16_t(1155), uint16_t(22352), std::ref(HIDQueue));
+		std::vector<uint8_t> InitialValue;
+		InitialValue.push_back(2);
+		InitialValue.push_back(0b0111000);
+		InitialValue.push_back(0b1011100);
+		InitialValue.push_back(0b0111001);
+		InitialValue.push_back(0b1110101);
+		HIDQueue.enqueue(InitialValue);
+		std::thread WriteThread(HIDThread, uint16_t(1155), uint16_t(22352), &HIDQueue);
 		WriteThread.detach();
 		events::RenderPrimaryWeapon.add(OnRenderPrimaryWeapon);
-		events::RenderCountermeasureGauge.add(OnRenderCountermeasureGauge); 
+		//events::RenderCountermeasureGauge.add(OnRenderCountermeasureGauge); 
 		events::RenderLockWarning.add(OnRenderLockWarning);
+		events::RenderMissionTime.add(OnRenderMissionTime);
 	}
 	void OnRenderLockWarning(int Warning)
 	{
@@ -88,8 +100,9 @@ void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAm
 	ReportBuffer.push_back((MaxAmmo/ 100) % 10); // hundreds
 
 	ReportBuffer.push_back((uint8_t) Linked);
-	HIDQueue.emplace(std::move(ReportBuffer));
+	HIDQueue.enqueue(ReportBuffer);
 }
+
 void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 {
 	
@@ -122,9 +135,22 @@ void OnRenderCountermeasureGauge(int NumberOfCountermeasures)
 		ReportBuffer.push_back(Number[(NumberOfCountermeasures / 10) % 10]);
 		ReportBuffer.push_back(Number[NumberOfCountermeasures % 10]);
 	}
+	QueuedValue = &ReportBuffer;
+	HIDQueue.enqueue(std::move(ReportBuffer));
 
-	HIDQueue.emplace(std::move(ReportBuffer));
-
+}
+void OnRenderMissionTime(int Minutes, int Seconds)
+{
+	static uint8_t Number[] = {
+	    0b0111111, 0b0000110, 0b1011011, 0b1001111, 0b1100110, 0b1101101, 0b1111101, 0b0000111, 0b1111111, 0b1101111,
+	};
+	std::vector<uint8_t> ReportBuffer;
+	ReportBuffer.push_back(2);
+	ReportBuffer.push_back(Number[(Minutes/ 10) % 10]);
+	ReportBuffer.push_back(Number[Minutes% 10]);
+	ReportBuffer.push_back(Number[(Seconds/ 10) % 10]);
+	ReportBuffer.push_back(Number[Seconds% 10]);
+	HIDQueue.enqueue(std::move(ReportBuffer));
 }
 
 } // namespace external_display
