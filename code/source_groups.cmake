@@ -582,8 +582,7 @@ add_file_folder("external_display"
 	external_display/external_display.h
 	external_display/atomicops.h
 	external_display/readerwriterqueue.h
-	external_display/hid.cpp
-	external_display/hid.h
+
 	
 )
 

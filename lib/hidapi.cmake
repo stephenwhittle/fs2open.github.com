@@ -2,6 +2,7 @@ add_library(hidapi STATIC)
 target_include_directories(hidapi PUBLIC hidapi)
 target_include_directories(hidapi PUBLIC hidapi/hidapi)
 
+#set_source_files_properties(hidapi/windows/hid.c PROPERTIES LANGUAGE CXX)
 if(APPLE)
   target_sources(hidapi PRIVATE hidapi/mac/hid.c)
 elseif(MSVC)

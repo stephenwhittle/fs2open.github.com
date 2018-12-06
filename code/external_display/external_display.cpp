@@ -16,6 +16,10 @@ std::vector<uint8_t>* DeQueuedValue;
 	{
 		hid_init();
 		hid_device* CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+		if (CurrentDevice)
+		{
+			hid_set_nonblocking(CurrentDevice, 0);
+		}
 		std::vector<uint8_t> ReportData;
 		while (HIDThreadEnabled.test_and_set())
 		{
@@ -25,10 +29,16 @@ std::vector<uint8_t>* DeQueuedValue;
 			{
 				if (CurrentDevice == nullptr) {
 					CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+				    if (CurrentDevice) {
+					    hid_set_nonblocking(CurrentDevice, 0);
+				    }
 				}
 				if (CurrentDevice != nullptr) {
 				    if (hid_write(CurrentDevice, ReportData.data(), ReportData.size()) == -1) {
 						CurrentDevice = hid_open(VendorID, ProductID, nullptr);
+					    if (CurrentDevice) {
+						    hid_set_nonblocking(CurrentDevice, 0);
+					    }
 				    }
 			    }
 			}
