@@ -22,6 +22,7 @@
 #include "ship/subsysdamage.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
+#include "events/events.h"
 
 float Energy_levels[NUM_ENERGY_LEVELS] = {0.0f,  0.0833f, 0.167f, 0.25f, 0.333f, 0.417f, 0.5f, 0.583f, 0.667f, 0.75f, 0.833f, 0.9167f, 1.0f};
 int Weapon_energy_cheat = 0;
@@ -951,16 +952,19 @@ void HudGaugeEtsRetail::render(float  /*frametime*/)
 		Letter = Letters[0];
 		position[0] = Gauge_positions[initial_position++];
 		blitGauge(ship_p->weapon_recharge_index);
+		events::RenderETSGauge(5, Energy_levels[ship_p->weapon_recharge_index]);
 	}
 	if (!(Player_obj->flags[Object::Object_Flags::No_shields])) {
 		Letter = Letters[1];
 		position[0] = Gauge_positions[initial_position++];
 		blitGauge(ship_p->shield_recharge_index);
+		events::RenderETSGauge(6, Energy_levels[ship_p->shield_recharge_index]);
 	}
 	if (ship_has_engine_power(ship_p)) {
 		Letter = Letters[2];
 		position[0] = Gauge_positions[initial_position++];
 		blitGauge(ship_p->engine_recharge_index);
+		events::RenderETSGauge(7, Energy_levels[ship_p->engine_recharge_index]);
 	}
 }
 
@@ -1020,6 +1024,7 @@ void HudGaugeEtsWeapons::render(float  /*frametime*/)
 
 	// draw the gauges for the weapon system
 	blitGauge(ship_p->weapon_recharge_index);
+	events::RenderETSGauge(5, Energy_levels[ship_p->weapon_recharge_index]);
 }
 
 HudGaugeEtsShields::HudGaugeEtsShields():
@@ -1056,6 +1061,7 @@ void HudGaugeEtsShields::render(float  /*frametime*/)
 
 	// draw the gauge for the shield system
 	blitGauge(ship_p->shield_recharge_index);
+	events::RenderETSGauge(6, Energy_levels[ship_p->shield_recharge_index]);
 }
 
 HudGaugeEtsEngines::HudGaugeEtsEngines():
@@ -1092,4 +1098,5 @@ void HudGaugeEtsEngines::render(float  /*frametime*/)
 
 	// draw the gauge for the engine system
 	blitGauge(ship_p->engine_recharge_index);
+	events::RenderETSGauge(7, Energy_levels[ship_p->engine_recharge_index]);
 }

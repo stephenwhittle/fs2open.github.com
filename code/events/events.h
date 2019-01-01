@@ -35,4 +35,5 @@ extern util::event<void, const char*,int > RenderDamageLevel;
 extern util::event<void, int> RenderCountermeasureGauge;
 extern util::event<void, int> RenderKillsGauge;
 extern util::event<void, int> RenderLockWarning;
+extern util::event<void, int, int> RenderETSGauge;
 }

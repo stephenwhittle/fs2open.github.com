@@ -51,10 +51,14 @@ std::vector<uint8_t>* DeQueuedValue;
 	void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName, int CurrentAmmo, int MaxAmmo, bool Linked);
 	void OnRenderLockWarning(int Warning);
 	void OnRenderMissionTime(int Minutes, int Seconds);
+	void OnRenderETSGauge(int GaugeType, int Value);
 	enum class ReportID
 	{
 		REPORT_COUNTERMEASURES = 2,
-		REPORT_PRIMARYWEAPON = 1
+		REPORT_PRIMARYWEAPON = 1,
+		REPORT_ETSWEAPON = 5,
+		REPORT_ETSSHIELD = 6,
+		REPORT_ETSENGINE = 7
 	};
 	static bool ShowLockWarning = false;
 	
@@ -80,13 +84,18 @@ std::vector<uint8_t>* DeQueuedValue;
 		//events::RenderCountermeasureGauge.add(OnRenderCountermeasureGauge); 
 		events::RenderLockWarning.add(OnRenderLockWarning);
 		events::RenderMissionTime.add(OnRenderMissionTime);
+		events::RenderETSGauge.add(OnRenderETSGauge);
 	}
 	void OnRenderLockWarning(int Warning)
 	{
 		ShowLockWarning = (Warning != 0);
 	}
 
+
+void OnRenderETSGauge(int GaugeType, int Value)
+{
 	
+}
 	
 void OnRenderPrimaryWeapon(int WeaponIndex, const char* WeaponName,int CurrentAmmo, int MaxAmmo, bool Linked )
 {
