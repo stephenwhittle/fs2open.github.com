@@ -46,6 +46,7 @@ util::event<void, const char*, int> RenderDamageLevel;
 util::event<void, int> RenderCountermeasureGauge;
 util::event<void, int> RenderKillsGauge;
 util::event<void, int> RenderLockWarning;
+util::event<void, int, int> RenderETSGauge;
 /*
 
 #define HUD_MESSAGE_LINES 27
