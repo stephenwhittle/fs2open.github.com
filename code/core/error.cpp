@@ -1,5 +1,6 @@
 #include "error.h"
 #include <SimpleSignal.h>
+#include <dbgtools/callstack.h>
 #include "format.h"
 #include "path.h"
 
@@ -13,6 +14,18 @@ namespace core
 {
 	Simple::Signal<void(const char*)> error_handler;
 	Simple::Signal<void(const char*, int line, const char* msg)> warning_handler;
+	
+	void RegisterErrorHandler(std::function<void(const char*)> cb) 
+	{
+		error_handler.connect(cb);
+	}
+    
+    void RegisterWarningHandler(std::function<void(const char*, int, const char*)> cb) 
+	{
+		warning_handler.connect(cb);
+	}
+
+	
 	void Warning(const char* filename, int line, const char* format, ...)
     {
 	    Global_warning_count++;
@@ -76,12 +89,35 @@ namespace core
 		error_handler.emit(messageStream.str().c_str());
 	}
 
+	//todo: return formatted callstack with the error
 	void Error(const char* msg) 
 	{
 		error_handler.emit(msg);
 	}
 
-    void Verify(bool x, const char* msg)
+	std::string GetFormattedCallstack()
+	{
+	    void* addresses[256];
+	    int num_addresses = callstack(0, addresses, 256);
+
+	    callstack_symbol_t symbols[256];
+	    char symbols_buffer[2048];
+	    num_addresses = callstack_symbols(addresses, symbols, num_addresses, symbols_buffer, 2048);
+
+		std::string CallstackString;
+		std::string LineString;
+	    int i;
+		//only print 10 lines max
+		for (i = 0; (i < 10 ) && (i < num_addresses); ++i)
+		{
+			core::sprintf(LineString, "%s %s(%u)\n", symbols[i].function, symbols[i].file, symbols[i].line);
+			CallstackString += LineString;
+		}
+		return CallstackString;
+	}
+
+	template <typename T>
+    void Verify(T x, const char* msg)
     {
 	    if (!(x)) {
 			if (msg != nullptr)
@@ -91,9 +127,10 @@ namespace core
 			else
 			{
 				std::string formatText;
-				core::sprintf(formatText, "Verify failure: %s\n", x);
+				core::sprintf(formatText, "Verify failure!\n %s", GetFormattedCallstack().c_str());
 				error_handler.emit(formatText.c_str());
 			}
 	    }
     }
+	template void Verify<bool>(bool x, const char* msg);
 } // namespace core

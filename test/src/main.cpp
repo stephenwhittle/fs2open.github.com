@@ -29,7 +29,7 @@
 
 #include <cstdio>
 #include <windows_stub/config.h>
-
+#include <osapi/dialogs.h>
 #include "gtest/gtest.h"
 
 #ifdef main
@@ -37,6 +37,7 @@
 #endif
 
 GTEST_API_ int main(int argc, char **argv) {
+	os::dialogs::init();
 	printf("Running main() from gtest_main.cc\n");
 	testing::InitGoogleTest(&argc, argv);
 

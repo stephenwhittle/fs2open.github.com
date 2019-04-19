@@ -42,7 +42,7 @@ target_link_libraries(code PUBLIC discord-rpc)
 target_link_libraries(code PUBLIC libRocket)
 target_link_libraries(code PUBLIC hidapi)
 target_link_libraries(code PUBLIC simplesignal)
-
+target_link_libraries(code PUBLIC dbgtools)
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)
