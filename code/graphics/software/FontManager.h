@@ -1,5 +1,6 @@
 #pragma once
-
+#include <map>
+#include <vector>
 #include "globalincs/pstypes.h"
 
 #include <memory>
@@ -69,7 +70,7 @@ namespace font {
 		* @param name The name that should be searched for
 		* @return The font pointer or @c NULL when font could not be found.
 		*/
-		static FSFont *getFont(const SCP_string &name);
+		static FSFont *getFont(const std::string &name);
 
 		/**
 		* @brief Returns a pointer to the font at the specified index
@@ -110,7 +111,7 @@ namespace font {
 		* @param name The name which should be searched
 		* @return The index or -1 when font could not be found
 		*/
-		static int getFontIndex(const SCP_string &name);
+		static int getFontIndex(const std::string &name);
 
 		/**
 		* @brief Returns the index of the specified font pointer
@@ -160,7 +161,7 @@ namespace font {
 		* @param type The type of the font
 		* @return A FTGLFont pointer or @c NULL when font could not be loaded
 		*/
-		static NVGFont *loadNVGFont(const SCP_string &fileName, float fontSize = 12.0f);
+		static NVGFont *loadNVGFont(const std::string &fileName, float fontSize = 12.0f);
 
 		/**
 		* @brief Loads an old VFNT font
@@ -170,12 +171,12 @@ namespace font {
 		* @param fileName The name of the font file
 		* @return The font pointer or @c null on error
 		*/
-		static VFNTFont *loadVFNTFont(const SCP_string &fileName);
+		static VFNTFont *loadVFNTFont(const std::string &fileName);
 
 		/**
 		* @brief Loads old volition font data
 		*/
-		static font *loadFontOld(const SCP_string& name);
+		static font *loadFontOld(const std::string& name);
 
 		/**
 		*	@brief Initializes the font system
@@ -197,9 +198,9 @@ namespace font {
 
 		~FontManager() { }
 
-		static SCP_map<SCP_string, TrueTypeFontData> allocatedData;
-		static SCP_map<SCP_string, std::unique_ptr<font>> vfntFontData;
-		static SCP_vector<std::unique_ptr<FSFont>> fonts;
+		static std::map<std::string, TrueTypeFontData> allocatedData;
+		static std::map<std::string, std::unique_ptr<font>> vfntFontData;
+		static std::vector<std::unique_ptr<FSFont>> fonts;
 
 		static FSFont *currentFont;
 	};

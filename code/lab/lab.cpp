@@ -76,8 +76,8 @@ static Slider* direct_sldr = nullptr;
 static Slider* bloom_sldr = nullptr;
 
 // holds the beginning and ending indices of each specie/type of ship/weapon
-static SCP_vector<std::pair<TreeItem*, TreeItem*>> ship_list_endpoints;
-static SCP_vector<std::pair<TreeItem*, TreeItem*>> weap_list_endpoints;
+static std::vector<std::pair<TreeItem*, TreeItem*>> ship_list_endpoints;
+static std::vector<std::pair<TreeItem*, TreeItem*>> weap_list_endpoints;
 
 static TreeItem* Lab_last_selected_object = nullptr;
 
@@ -103,7 +103,7 @@ static int Lab_viewer_flags    = LAB_MODE_NONE;
 
 static int Lab_detail_texture_save = 0;
 
-SCP_string Lab_selected_mission = "None";
+std::string Lab_selected_mission = "None";
 matrix Lab_skybox_orientation   = vmd_identity_matrix;
 
 static int anim_timer_start = 0;
@@ -122,7 +122,7 @@ static float Lab_manual_rotation_speed_divisor = 100.f;
 static int Trackball_mode   = 1;
 static int Trackball_active = 0;
 
-SCP_string Lab_team_color = "<none>";
+std::string Lab_team_color = "<none>";
 
 //save the original cmdline values in case we need to reset to them
 int orig_cmdline_ambient;
@@ -478,7 +478,7 @@ void labviewer_render_model(float frametime)
 	}
 }
 
-SCP_string get_rot_mode_string(Lab_rotation_modes rotmode)
+std::string get_rot_mode_string(Lab_rotation_modes rotmode)
 {
 	switch (rotmode) {
 	case Lab_rotation_modes::Both:
@@ -494,7 +494,7 @@ SCP_string get_rot_mode_string(Lab_rotation_modes rotmode)
 	}
 }
 
-SCP_string get_rot_speed_string(float speed_divisor)
+std::string get_rot_speed_string(float speed_divisor)
 {
 	auto exp = std::lroundf(log10f(speed_divisor));
 
@@ -570,7 +570,7 @@ void labviewer_do_render(float frametime)
 	// Rotation mode
 	angles rot_angle;
 	vm_extract_angles_matrix(&rot_angle, &Lab_model_orient);
-	SCP_string text = get_rot_mode_string(Lab_rotation_mode);
+	std::string text = get_rot_mode_string(Lab_rotation_mode);
 	gr_printf_no_resize(gr_screen.center_offset_x + 2,
 	                    gr_screen.center_offset_y + gr_screen.center_h - (gr_get_font_height() * 5) - 3,
 	                    "%s Rotation speed: %s", get_rot_mode_string(Lab_rotation_mode).c_str(),
@@ -636,8 +636,8 @@ struct lab_flag {
 	T flag;
 };
 
-static SCP_vector<lab_flag<Ship::Info_Flags>> Ship_Class_Flags;
-static SCP_vector<lab_flag<Weapon::Info_Flags>> Weapon_Class_Flags;
+static std::vector<lab_flag<Ship::Info_Flags>> Ship_Class_Flags;
+static std::vector<lab_flag<Weapon::Info_Flags>> Weapon_Class_Flags;
 
 void labviewer_flags_clear()
 {
@@ -650,7 +650,7 @@ void labviewer_flags_clear()
 }
 
 template <class T>
-void labviewer_flags_add(int* X, int* Y, const char* flag_name, T flag, SCP_vector<lab_flag<T>>& flag_list)
+void labviewer_flags_add(int* X, int* Y, const char* flag_name, T flag, std::vector<lab_flag<T>>& flag_list)
 {
 	int x = 0, y = 0;
 
@@ -776,7 +776,7 @@ void labviewer_make_flags_window(Button* /*caller*/)
 		y += ntp->GetHeight() + 10;                                                                                    \
 	}
 
-static SCP_vector<Text*> Lab_variables;
+static std::vector<Text*> Lab_variables;
 
 void labviewer_close_variables_window(GUIObject* /*caller*/)
 {
@@ -808,7 +808,7 @@ void labviewer_variables_add(int* Y, const char* var_name)
 	// variable
 	Lab_variables_window->AddChild(new Text((var_name), (var_name), 0, y, VAR_POS_LEFTWIDTH));
 	// edit box
-	new_text = (Text*)Lab_variables_window->AddChild(new Text(SCP_string((var_name)) + SCP_string("Editbox"), "",
+	new_text = (Text*)Lab_variables_window->AddChild(new Text(std::string((var_name)) + std::string("Editbox"), "",
 	                                                          VAR_POS_RIGHTX, y, VAR_POS_RIGHTWIDTH, 12, T_EDITTABLE));
 
 	if (Y) {
@@ -947,7 +947,7 @@ void labviewer_populate_variables_window()
 		}                                                                                                              \
 		i++;                                                                                                           \
 	}
-extern SCP_vector<SCP_string> Hud_shield_filenames;
+extern std::vector<std::string> Hud_shield_filenames;
 
 void labviewer_update_variables_window()
 {
@@ -1752,9 +1752,9 @@ char envmap_name[MAX_FILENAME_LEN];
 
 const char* mission_ext_list[] = {".fs2"};
 
-SCP_string get_directory_or_vp(const char* path)
+std::string get_directory_or_vp(const char* path)
 {
-	SCP_string result(path);
+	std::string result(path);
 
 	// Is this a mission in a directory?
 	size_t found = result.find("data" DIR_SEPARATOR_STR "missions");
@@ -1962,11 +1962,11 @@ void labviewer_make_background_window(Button* /*caller*/)
 	Lab_background_window = (Window*)Lab_screen->Add(
 	    new Window("Mission Backgrounds", gr_screen.center_offset_x + 250, gr_screen.center_offset_y + 50));
 	Lab_background_window->SetCloseFunction(lab_background_window_close);
-	SCP_vector<SCP_string> missions;
+	std::vector<std::string> missions;
 
 	cf_get_file_list(missions, CF_TYPE_MISSIONS, NOX("*.fs2"));
 
-	SCP_map<SCP_string, SCP_vector<SCP_string>> directories;
+	std::map<std::string, std::vector<std::string>> directories;
 
 	for (const auto& filename : missions) {
 		auto res = cf_find_file_location((filename + ".fs2").c_str(), CF_TYPE_MISSIONS);
@@ -2240,7 +2240,7 @@ void lab_do_frame(float frametime)
 		}
 
 		// Due to switch scoping rules, this has to be declared here
-		SCP_map<SCP_string, team_color>::iterator color_itr = Team_Colors.find(Lab_team_color);
+		std::map<std::string, team_color>::iterator color_itr = Team_Colors.find(Lab_team_color);
 		// handle any key presses
 		switch (key) {
 			// switch between the current insignia bitmap to render with

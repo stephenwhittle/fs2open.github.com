@@ -74,8 +74,8 @@ static void convert_retail_pilot_files()
 	size_t idx, j, i;
 	size_t count, inf_count;
 	int max_convert, num_converted = 0;
-	SCP_vector<SCP_string> existing;
-	SCP_vector<SCP_string> old_files;
+	std::vector<std::string> existing;
+	std::vector<std::string> old_files;
 
 	// get list of pilots which already exist (new or converted already)
 	cf_get_file_list(existing, CF_TYPE_PLAYERS, "*.plr", CF_SORT_NONE, nullptr,
@@ -132,9 +132,9 @@ static void convert_retail_pilot_files()
 		bool inferno = (idx < inf_count);
 
 		if ( pcon->plr_convert(old_files[idx].c_str(), inferno) ) {
-			SCP_vector<SCP_string> savefiles;
+			std::vector<std::string> savefiles;
 
-			SCP_string wildcard(old_files[idx]);
+			std::string wildcard(old_files[idx]);
 			wildcard.append("*.cs2");
 
 			if (inferno) {
@@ -167,8 +167,8 @@ static void convert_retail_pilot_files()
  * This only converts the main pilot file to JSON at the moment to make debugging easier if something is wrong
  */
 static void convert_binary_pilot_files() {
-	SCP_vector<SCP_string> binary_pilots;
-	SCP_vector<SCP_string> json_pilots;
+	std::vector<std::string> binary_pilots;
+	std::vector<std::string> json_pilots;
 
 	// get list of binary pilot files
 	cf_get_file_list(binary_pilots, CF_TYPE_PLAYERS, "*.plr", 0, nullptr,

@@ -38,9 +38,9 @@ typedef struct cmission_conv_t {
 	int index;			// index into Campaign.missions[]
 	int flags;
 
-	SCP_vector<mgoal>	goals;
-	SCP_vector<mevent>	events;
-	SCP_vector<sexp_variable>	variables;
+	std::vector<mgoal>	goals;
+	std::vector<mevent>	events;
+	std::vector<sexp_variable>	variables;
 
 	scoring_special_t	stats;
 } cmission_conv_t;
@@ -57,13 +57,13 @@ typedef struct wss_unit_conv_t {
 } wss_unit_conv_t;
 
 typedef struct loadout_conv_t {
-	SCP_string filename;
-	SCP_string last_modified;
+	std::string filename;
+	std::string last_modified;
 
 	wss_unit_conv_t slot[MAX_WSS_SLOTS_CONV];
 
-	SCP_vector<int> weapon_pool;
-	SCP_vector<int> ship_pool;
+	std::vector<int> weapon_pool;
+	std::vector<int> ship_pool;
 } loadout_conv_t;
 
 
@@ -137,7 +137,7 @@ struct plr_data {
 	unsigned char hud_colors[39][4];
 
 	// control setup
-	SCP_vector<config_item> controls;
+	std::vector<config_item> controls;
 
 	int joy_axis_map_to[5];
 	int joy_invert_axis[5];
@@ -162,7 +162,7 @@ struct plr_data {
 	int detail_weapon_extras;
 
 	// variables
-	SCP_vector<sexp_variable> variables;
+	std::vector<sexp_variable> variables;
 };
 
 struct csg_data {
@@ -172,7 +172,7 @@ struct csg_data {
 	int sig;
 	int cutscenes;
 
-	SCP_string main_hall;
+	std::string main_hall;
 	int prev_mission;
 	int next_mission;
 	int loop_reentry;
@@ -181,28 +181,28 @@ struct csg_data {
 
 	int last_ship_flown_index;
 
-	SCP_vector<bool> ships_allowed;
-	SCP_vector<bool> weapons_allowed;
+	std::vector<bool> ships_allowed;
+	std::vector<bool> weapons_allowed;
 
-	SCP_vector<bool> ships_techroom;
-	SCP_vector<bool> weapons_techroom;
-	SCP_vector<bool> intel_techroom;
+	std::vector<bool> ships_techroom;
+	std::vector<bool> weapons_techroom;
+	std::vector<bool> intel_techroom;
 
-	SCP_vector<index_list_t> ship_list;
-	SCP_vector<index_list_t> weapon_list;
-	SCP_vector<index_list_t> intel_list;
-	SCP_vector<index_list_t> medals_list;
+	std::vector<index_list_t> ship_list;
+	std::vector<index_list_t> weapon_list;
+	std::vector<index_list_t> intel_list;
+	std::vector<index_list_t> medals_list;
 
-	SCP_vector<cmission_conv_t> missions;
+	std::vector<cmission_conv_t> missions;
 
-	SCP_vector<sexp_variable> variables;
+	std::vector<sexp_variable> variables;
 
 	loadout_conv_t loadout;
 
 	scoring_special_t stats;
 
-	SCP_vector<red_alert_ship_status> wingman_status;
-	SCP_string precursor_mission;
+	std::vector<red_alert_ship_status> wingman_status;
+	std::string precursor_mission;
 };
 
 class pilotfile_convert {

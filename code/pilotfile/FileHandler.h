@@ -78,7 +78,7 @@ class FileHandler {
 
 	virtual float readFloat(const char* name) = 0;
 
-	virtual SCP_string readString(const char* name) = 0;
+	virtual std::string readString(const char* name) = 0;
 
 	virtual void readString(const char* name, char* dest, size_t max_size) {
 		auto string = readString(name);

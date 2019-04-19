@@ -5,10 +5,10 @@
 namespace util {
 
 template <typename Out>
-void split_string(const SCP_string& s, char delim, Out result)
+void split_string(const std::string& s, char delim, Out result)
 {
-	SCP_stringstream ss(s);
-	SCP_string item;
+	std::stringstream ss(s);
+	std::string item;
 	while (std::getline(ss, item, delim)) {
 		if (!item.empty()) {
 			*(result++) = item;

@@ -54,7 +54,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, const c
 					// If the invalid sequence is inside the string then we try to give some context to make
 					// finding the bug easier
 					auto display_text_start = std::max(value, invalid - 32);
-					SCP_string context_text(display_text_start, invalid);
+					std::string context_text(display_text_start, invalid);
 
 					LuaError(L,
 					         "An invalid UTF-8 encoding sequence was detected! The error was detected directly "

@@ -15,7 +15,7 @@ RocketSystemInterface::RocketSystemInterface() = default;
 float RocketSystemInterface::GetElapsedTime() { return timer_get_microseconds() / 1000000.f; }
 int RocketSystemInterface::TranslateString(Rocket::Core::String& translated, const Rocket::Core::String& input)
 {
-	SCP_string lcl_translated;
+	std::string lcl_translated;
 	lcl_ext_localize(input.CString(), lcl_translated);
 
 	translated = lcl_translated.c_str();

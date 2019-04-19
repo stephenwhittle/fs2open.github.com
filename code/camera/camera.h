@@ -113,7 +113,7 @@ class subtitle
 private:
 	void clone(const subtitle &sub);
 
-	SCP_vector<SCP_string> text_lines;
+	std::vector<std::string> text_lines;
 	struct { int x; int y; } text_pos;
 
 	float display_time;
@@ -147,7 +147,7 @@ public:
 };
 
 //Some global stuff
-extern SCP_vector<subtitle> Subtitles;
+extern std::vector<subtitle> Subtitles;
 extern float VIEWER_ZOOM_DEFAULT;
 extern float Sexp_fov;
 

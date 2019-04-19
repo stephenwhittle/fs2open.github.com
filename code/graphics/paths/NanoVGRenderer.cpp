@@ -28,7 +28,7 @@
 // Planted by ksotar with blessing from asarium
 extern "C" {
 	void nvgOldCPrintf(SCP_FORMAT_STRING const char *message, ...) {
-		SCP_string buf;
+		std::string buf;
 		va_list args;
 		va_start(args, message);
 		core::vsprintf(buf, message, args);

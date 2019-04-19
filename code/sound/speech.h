@@ -25,7 +25,7 @@ bool speech_set_voice(int voice);
 
 bool speech_is_speaking();
 
-SCP_vector<SCP_string> speech_enumerate_voices();
+std::vector<std::string> speech_enumerate_voices();
 
 #else
 
@@ -39,8 +39,8 @@ inline bool speech_set_volume(unsigned short /*volume*/) { return false; }
 inline bool speech_set_voice(int /*voice*/) { return false; }
 inline bool speech_is_speaking() { return false; }
 
-inline SCP_vector<SCP_string> speech_enumerate_voices() {
-	return SCP_vector<SCP_string>();
+inline std::vector<std::string> speech_enumerate_voices() {
+	return std::vector<std::string>();
 }
 
 #endif

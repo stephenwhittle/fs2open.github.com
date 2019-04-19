@@ -16,7 +16,6 @@
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
 #include "globalincs/pstypes.h"
-#include "globalincs/vmallocator.h"
 #include "mod_table/mod_table.h"
 #include "osapi/osapi.h"
 #include "render/3d.h"
@@ -46,7 +45,7 @@ typedef struct sound	{
 	int				duration;
 } sound;
 
-SCP_vector<sound> Sounds;
+std::vector<sound> Sounds;
 
 int Sound_enabled = FALSE;				// global flag to turn sound on/off
 size_t Snd_sram;								// mem (in bytes) used up by storing sounds in system memory
@@ -72,7 +71,7 @@ struct LoopingSoundInfo {
     }
 };
 
-SCP_list<LoopingSoundInfo> currentlyLoopingSoundInfos;
+std::list<LoopingSoundInfo> currentlyLoopingSoundInfos;
 
 //For the adjust-audio-volume sexp
 float aav_voice_volume = 1.0f;
@@ -177,8 +176,8 @@ DCF(show_sounds, "Toggles display of sound debug info")
 	dc_printf("Sound debug info is %s", (Sound_spew ? "ON" : "OFF"));
 }
 
-extern SCP_vector<game_snd>	Snds;
-extern SCP_vector<game_snd>	Snds_iface;
+extern std::vector<game_snd>	Snds;
+extern std::vector<game_snd>	Snds_iface;
 
 void snd_spew_debug_info()
 {
@@ -200,7 +199,7 @@ void snd_spew_debug_info()
 		done = 0;
 
 		// what kind of sound is this
-		for(SCP_vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs){
+		for(std::vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs){
 			for (auto& entry : gs->sound_entries) {
 				if(!stricmp(entry.filename, Sounds[idx].filename)){
 					game_sounds++;
@@ -210,7 +209,7 @@ void snd_spew_debug_info()
 		}
 
 		if(!done){
-			for(SCP_vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs){
+			for(std::vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs){
 				for (auto& entry : gs->sound_entries) {
 					if(!stricmp(entry.filename, Sounds[idx].filename)) {
 						interface_sounds++;
@@ -859,7 +858,7 @@ void snd_stop(sound_handle sig)
 	if ( channel == -1 )
 		return;
 	
-	SCP_list<LoopingSoundInfo>::iterator iter = currentlyLoopingSoundInfos.begin();
+	std::list<LoopingSoundInfo>::iterator iter = currentlyLoopingSoundInfos.begin();
 	while (iter != currentlyLoopingSoundInfos.end())
 	{
 		if(iter->m_dsHandle == sig) {
@@ -912,7 +911,7 @@ void snd_set_volume(sound_handle sig, float volume)
 
 	bool isLoopingSound = false;
 
-	SCP_list<LoopingSoundInfo>::iterator iter;
+	std::list<LoopingSoundInfo>::iterator iter;
 	for (iter = currentlyLoopingSoundInfos.begin(); iter != currentlyLoopingSoundInfos.end(); ++iter) {
 		if(iter->m_dsHandle == sig) {
 			iter->m_dynamicVolume = volume;
@@ -1373,7 +1372,7 @@ void snd_do_frame()
 	adjust_volume_on_frame(&aav_voice_volume, &aav_data[AAV_VOICE]);
 	adjust_volume_on_frame(&aav_effect_volume, &aav_data[AAV_EFFECTS]);
 
-	SCP_list<LoopingSoundInfo>::iterator iter;
+	std::list<LoopingSoundInfo>::iterator iter;
 	for (iter = currentlyLoopingSoundInfos.begin(); iter != currentlyLoopingSoundInfos.end(); ++iter) {
 
 		float new_volume = iter->m_defaultVolume * iter->m_dynamicVolume * (Master_sound_volume * aav_effect_volume);

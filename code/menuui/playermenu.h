@@ -43,9 +43,9 @@ extern int Player_select_screen_active;
 // check the pilots language
 bool valid_pilot_lang(const char *callsign);
 
-SCP_vector<SCP_string> player_select_enumerate_pilots();
+std::vector<std::string> player_select_enumerate_pilots();
 
-SCP_string player_get_last_player();
+std::string player_get_last_player();
 
 void player_finish_select(const char* callsign, bool is_multi);
 

@@ -18,7 +18,7 @@ class JSONFileHandler: public FileHandler {
 
 	json_t* _currentEl = nullptr;
 
-	SCP_vector<json_t*> _elementStack;
+	std::vector<json_t*> _elementStack;
 	void pushElement(json_t* el);
 	void popElement();
 
@@ -77,7 +77,7 @@ class JSONFileHandler: public FileHandler {
 
 	float readFloat(const char* name) override;
 
-	SCP_string readString(const char* name) override;
+	std::string readString(const char* name) override;
 
 	void beginSectionRead() override;
 

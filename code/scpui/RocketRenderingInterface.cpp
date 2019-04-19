@@ -120,14 +120,14 @@ bool RocketRenderingInterface::LoadTexture(TextureHandle& texture_handle, Vector
                                            const String& source)
 {
 	GR_DEBUG_SCOPE("libRocket::LoadTexture");
-	SCP_string filename;
+	std::string filename;
 	int dir_type;
 	if (!RocketFileInterface::getCFilePath(source, filename, dir_type)) {
 		return false;
 	}
 
 	auto period_pos = filename.rfind('.');
-	if (period_pos != SCP_string::npos) {
+	if (period_pos != std::string::npos) {
 		filename = filename.substr(0, period_pos);
 	}
 

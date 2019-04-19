@@ -13,7 +13,7 @@
 
 namespace {
 struct PresenceInfo {
-	SCP_string state;
+	std::string state;
 	int64_t timestamp;
 };
 
@@ -27,11 +27,11 @@ PresenceInfo current_info;
 
 const char* APPLICATION_ID = "465270111440470016";
 
-SCP_unordered_map<SCP_string, SCP_string> campaign_name_cache;
+std::unordered_map<std::string, std::string> campaign_name_cache;
 
-SCP_string get_campaign_name(const char* filename)
+std::string get_campaign_name(const char* filename)
 {
-	SCP_string name = filename;
+	std::string name = filename;
 
 	auto iter = campaign_name_cache.find(name);
 	if (iter != campaign_name_cache.end()) {
@@ -44,7 +44,7 @@ SCP_string get_campaign_name(const char* filename)
 	return campaign_name;
 }
 
-SCP_string get_current_campaign_name()
+std::string get_current_campaign_name()
 {
 	if (Game_mode & GM_CAMPAIGN_MODE) {
 		return Campaign.name;
@@ -55,9 +55,9 @@ SCP_string get_current_campaign_name()
 	}
 }
 
-SCP_string get_details()
+std::string get_details()
 {
-	SCP_string res;
+	std::string res;
 
 	auto has_campaign = Player != nullptr && strlen(Player->current_campaign) > 0;
 	if (in_mission && !(Game_mode & GM_CAMPAIGN_MODE)) {
@@ -90,7 +90,7 @@ void update_presence() {
 	Discord_UpdatePresence(&presence);
 }
 
-void set_presence(const SCP_string& state, int64_t timestamp = 0) {
+void set_presence(const std::string& state, int64_t timestamp = 0) {
 	if (current_info.state == state && current_info.timestamp == timestamp) {
 		// No changes
 		return;
@@ -106,7 +106,7 @@ void set_presence(const SCP_string& state, int64_t timestamp = 0) {
 
 void set_game_play_presence()
 {
-	SCP_string state;
+	std::string state;
 
 	core::sprintf(state, "In mission (%d %s)", Player->stats.m_kill_count_ok,
 	        Player->stats.m_kill_count_ok == 1 ? "kill" : "kills");

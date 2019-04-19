@@ -21,7 +21,7 @@ typedef struct cutscene_info
 	bool viewable;
 } cutscene_info;
 
-extern SCP_vector<cutscene_info> Cutscenes;
+extern std::vector<cutscene_info> Cutscenes;
 
 // initializa table data
 void cutscene_init();

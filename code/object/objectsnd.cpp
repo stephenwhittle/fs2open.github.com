@@ -93,7 +93,7 @@ DCF(objsnd, "Persistent sound stuff" )
 	char buf1[4];
 	char buf2[MAX_NAME_LEN];
 	obj_snd *osp;
-	SCP_string arg;
+	std::string arg;
 
 	if (dc_optional_string_either("help", "--help")) {
 		dc_printf ("Usage: objsnd [-list]\n");
@@ -232,7 +232,7 @@ void obj_snd_stop(object *objp, int index)
 	// if index is -1, kill all sounds for this guy
 	if(index == -1){
 		// kill all sounds for this guy
-		for(SCP_vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter){
+		for(std::vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter){
 			if ( *iter == -1 ){
 				continue;
 			}
@@ -332,7 +332,7 @@ int obj_snd_stop_lowest_vol(float new_vol)
 	if ( (lowest_vol < new_vol) && (objp != NULL) ) {
 		int idx = 0;
 		// determine what index in this guy the sound is
-		for(SCP_vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
+		for(std::vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
 			if(*iter == (lowest_vol_osp - Objsnds)){
 				obj_snd_index = idx;
 				break;
@@ -615,7 +615,7 @@ void obj_snd_do_frame()
 				int idx = 0;
 
 				// determine which sound index it is for this guy
-				for(SCP_vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
+				for(std::vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
 					if(*iter == (osp - Objsnds)){
 						sound_index = idx;
 						break;
@@ -698,7 +698,7 @@ int obj_snd_assign(int objnum, gamesnd_id sndnum, vec3d *pos, int main, int flag
 
 	// try and find a valid objsound index
 	sound_index = -1;
-	for(SCP_vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
+	for(std::vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
 		if(*iter == -1){
 			sound_index = idx;
 			break;
@@ -795,7 +795,7 @@ void	obj_snd_delete_type(int objnum, gamesnd_id sndnum, ship_subsys *ss)
 
 	int idx = 0;
 	//Go through the list and get sounds that match criteria
-	for(SCP_vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
+	for(std::vector<int>::iterator iter = objp->objsnd_num.begin(); iter != objp->objsnd_num.end(); ++iter, ++idx){
 		// no sound
 		if ( *iter == -1 ){
 			continue;

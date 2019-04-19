@@ -1,7 +1,7 @@
-#include <globalincs/vmallocator.h>
+
 namespace core
 {
-	void vsprintf(SCP_string& dest, const char* format, va_list ap)
+	void vsprintf(std::string& dest, const char* format, va_list ap)
 	{
 		va_list copy;
 
@@ -25,7 +25,7 @@ namespace core
 		vsnprintf(&dest[0], dest.size() + 1, format, ap);
 	}
 
-	void sprintf(SCP_string& dest, const char* format, ...)
+	void sprintf(std::string& dest, const char* format, ...)
     {
 	    va_list args;
 	    va_start(args, format);

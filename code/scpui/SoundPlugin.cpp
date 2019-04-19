@@ -12,7 +12,7 @@ namespace {
 struct SoundDefinition {
 	interface_snd_id default_id;
 
-	SCP_unordered_map<SCP_string, interface_snd_id> state_ids;
+	std::unordered_map<std::string, interface_snd_id> state_ids;
 };
 
 SoundDefinition parse_sound_value(const String& value)
@@ -20,13 +20,13 @@ SoundDefinition parse_sound_value(const String& value)
 	SoundDefinition def{};
 
 	bool saw_default = false;
-	for (auto& part : util::split_string(SCP_string(value.CString()), ',')) {
+	for (auto& part : util::split_string(std::string(value.CString()), ',')) {
 		drop_white_space(part);
-		if (part.find(')') != SCP_string::npos) {
+		if (part.find(')') != std::string::npos) {
 			auto state_start = part.find('(');
 			auto state_end   = part.find(')');
 
-			if (state_start == SCP_string::npos || state_end == SCP_string::npos) {
+			if (state_start == std::string::npos || state_end == std::string::npos) {
 				throw std::runtime_error("Could not find both '(' and ')' for state sound!");
 			}
 
@@ -35,7 +35,7 @@ SoundDefinition parse_sound_value(const String& value)
 			if (state_start > state_end) {
 				throw std::runtime_error("')' appeared before '('!");
 			}
-			SCP_string state_name = part.substr(state_start, state_end - state_start);
+			std::string state_name = part.substr(state_start, state_end - state_start);
 			if (state_name.empty()) {
 				throw std::runtime_error("State name is empty!");
 			}
@@ -45,7 +45,7 @@ SoundDefinition parse_sound_value(const String& value)
 
 			auto snd = gamesnd_get_by_iface_name(sound_name.c_str());
 			if (!snd.isValid()) {
-				SCP_string error("Sound '");
+				std::string error("Sound '");
 				error += sound_name;
 				error += "' for state '";
 				error += state_name;
@@ -92,9 +92,9 @@ void SoundPropertyParser::Release() { delete this; }
 int SoundPlugin::GetEventClasses() { return EVT_BASIC | EVT_ELEMENT; }
 
 SoundPlugin* SoundPlugin::_instance              = nullptr;
-SCP_vector<SCP_string> SoundPlugin::_event_types = {"click",   "dblclick",  "mouseover",   "mouseout",
+std::vector<std::string> SoundPlugin::_event_types = {"click",   "dblclick",  "mouseover",   "mouseout",
                                                     "mouseup", "mousedown", "mousescroll", "scrollchange"};
-const SCP_vector<SCP_string>& SoundPlugin::getEventTypes() { return _event_types; }
+const std::vector<std::string>& SoundPlugin::getEventTypes() { return _event_types; }
 
 void SoundPlugin::OnShutdown() { delete this; }
 void SoundPlugin::OnElementCreate(Element* element)
@@ -133,7 +133,7 @@ bool SoundPlugin::PlayElementSound(Element* element, const String& event, const 
 		if (state.Empty()) {
 			sound_id = snds.default_id;
 		} else {
-			auto snd_iter = snds.state_ids.find(SCP_string(state.CString()));
+			auto snd_iter = snds.state_ids.find(std::string(state.CString()));
 
 			if (snd_iter == snds.state_ids.end()) {
 				return false;

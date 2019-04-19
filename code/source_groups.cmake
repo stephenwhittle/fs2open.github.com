@@ -318,7 +318,6 @@ add_file_folder("GlobalIncs"
 	globalincs/toolchain.h
 	globalincs/version.cpp
 	globalincs/version.h
-	globalincs/vmallocator.h
 	globalincs/scp_defines.h
 	globalincs/flagset.h
 )

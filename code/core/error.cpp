@@ -8,7 +8,7 @@ namespace core
 	Simple::Signal<void(const char*)> error_handler;
 	void Error(const char* filename, int line, const char* format, ...)
 	{
-		SCP_string formatText;
+		std::string formatText;
 		filename = core::path::clean_filename(filename);
 
 		va_list args;
@@ -16,7 +16,7 @@ namespace core
 		core::vsprintf(formatText, format, args);
 		va_end(args);
 
-		SCP_stringstream messageStream;
+		std::stringstream messageStream;
 		messageStream << "Error: " << formatText << "\n";
 		messageStream << "File: " << filename << "\n";
 		messageStream << "Line: " << line << "\n";

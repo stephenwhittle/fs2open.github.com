@@ -105,7 +105,7 @@ int Menu_pgdn_coords[GR_NUM_RESOLUTIONS][2] = {
 typedef struct mmode_item {
 	int	instance;					// instance in Ships/Wings array of this menu item
 	int	active;						// active items are in bold text -- inactive items greyed out
-	SCP_string	text;		// text to display on the menu
+	std::string	text;		// text to display on the menu
 } mmode_item;
 
 #define MAX_MENU_ITEMS		50				// max number of items in the menu
@@ -154,7 +154,7 @@ int keys_used[] = {	KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_
 #define TYPE_REPAIR_REARM_ABORT_ITEM	5
 
 
-SCP_string  Comm_order_types[NUM_COMM_ORDER_TYPES];
+std::string  Comm_order_types[NUM_COMM_ORDER_TYPES];
 comm_order Comm_orders[NUM_COMM_ORDER_ITEMS];
 
 
@@ -233,7 +233,7 @@ const char *comm_order_get_text(int item)
 	return NULL;
 }
 
-SCP_vector<squadmsg_history> Squadmsg_history; 
+std::vector<squadmsg_history> Squadmsg_history; 
 
 // forward declarations
 void hud_add_issued_order(const char *name, int order);

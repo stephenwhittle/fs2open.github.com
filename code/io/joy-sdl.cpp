@@ -14,7 +14,7 @@ using namespace os::events;
 namespace {
 typedef std::unique_ptr<Joystick> JoystickPtr;
 
-SCP_vector<JoystickPtr> joysticks;
+std::vector<JoystickPtr> joysticks;
 Joystick *currentJoystick = nullptr;
 
 bool initialized = false;
@@ -59,12 +59,12 @@ HatPosition hatBtnToEnum(int in) {
 	}
 };
 
-SCP_string getJoystickGUID(SDL_Joystick *stick)
+std::string getJoystickGUID(SDL_Joystick *stick)
 {
 	auto guid = SDL_JoystickGetGUID(stick);
 
 	const size_t GUID_STR_SIZE = 33;
-	SCP_string joystickGUID;
+	std::string joystickGUID;
 	joystickGUID.resize(GUID_STR_SIZE);
 
 	SDL_JoystickGetGUIDString(guid, &joystickGUID[0], static_cast<int>(joystickGUID.size()));
@@ -88,7 +88,7 @@ bool isCurrentJoystick(Joystick* testStick) {
 		return currentId == testStick->getDeviceId();
 	}
 
-	SCP_string guidStr(currentGUID);
+	std::string guidStr(currentGUID);
 	std::transform(begin(guidStr), end(guidStr), begin(guidStr), [](char c) { return (char)::toupper(c); });
 
 	if (testStick->getGUID() != guidStr) {
@@ -116,7 +116,7 @@ bool isCurrentJoystick(Joystick* testStick) {
 	return testStick->getDeviceId() == currentId;
 }
 
-void enumerateJoysticks(SCP_vector<JoystickPtr>& outVec)
+void enumerateJoysticks(std::vector<JoystickPtr>& outVec)
 {
 	auto num = SDL_NumJoysticks();
 	outVec.clear();
@@ -481,12 +481,12 @@ namespace joystick
 		return static_cast<int>(_hat.size());
 	}
 
-	SCP_string Joystick::getGUID() const
+	std::string Joystick::getGUID() const
 	{
 		return _guidStr;
 	}
 
-	SCP_string Joystick::getName() const
+	std::string Joystick::getName() const
 	{
 		return _name;
 	}
@@ -794,11 +794,11 @@ namespace joystick
 		SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 	}
 
-	SCP_vector<JoystickInformation> getJoystickInformations() {
-		SCP_vector<JoystickInformation> joystickInfo;
+	std::vector<JoystickInformation> getJoystickInformations() {
+		std::vector<JoystickInformation> joystickInfo;
 
 		if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0) {
-			return SCP_vector<JoystickInformation>();
+			return std::vector<JoystickInformation>();
 		}
 
 		auto num_joysticks = SDL_NumJoysticks();

@@ -12,8 +12,6 @@
 #ifndef __FS2_VERSIONING_HEADER_FILE
 #define __FS2_VERSIONING_HEADER_FILE
 
-#include "globalincs/vmallocator.h"
-
 // ----------------------------------------------------------------------------------------------------------------
 // VERSION DEFINES/VARS
 //
@@ -83,13 +81,13 @@ bool check_at_least(const version& v);
  * @param major The version to format
  * @returns A string representation of the version number
  */
-SCP_string format_version(const version& v);
+std::string format_version(const version& v);
 
 /**
  * @brief
  * @return
  */
-SCP_string get_version_string();
+std::string get_version_string();
 
 }
 

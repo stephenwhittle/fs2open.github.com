@@ -30,7 +30,7 @@ class SoundPlugin : public Rocket::Core::Plugin {
 	float _last_scrollchange_time = -1.0f;
 
 	static SoundPlugin* _instance;
-	static SCP_vector<SCP_string> _event_types;
+	static std::vector<std::string> _event_types;
 
   public:
 	SoundPlugin();
@@ -63,7 +63,7 @@ class SoundPlugin : public Rocket::Core::Plugin {
 	bool PlayElementSound(Rocket::Core::Element* element, const Rocket::Core::String& event,
 	                      const Rocket::Core::String& state = "");
 
-	static const SCP_vector<SCP_string>& getEventTypes();
+	static const std::vector<std::string>& getEventTypes();
 	static SoundPlugin* instance();
 };
 
