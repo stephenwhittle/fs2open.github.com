@@ -146,7 +146,7 @@ int joy_ff_init()
 		SDL_HapticSetGain(haptic, ff_strength);
 	} else {
 		if (ff_strength != 100) {
-			ReleaseWarning(LOCATION, "The configuration file is configured with a force feedback strength value of %d%% "
+			core::ReleaseWarning(LOCATION, "The configuration file is configured with a force feedback strength value of %d%% "
 				"but your haptic device does not support setting the global strength of the effects. All effects will be"
 				"played with full strength.", ff_strength);
 		}

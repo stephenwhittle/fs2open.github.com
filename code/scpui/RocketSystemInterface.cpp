@@ -33,7 +33,7 @@ bool RocketSystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocke
 {
 	switch (type) {
 	case Log::LT_ERROR:
-		ReleaseWarning(LOCATION, "libRocket error: %s", message.CString());
+		core::ReleaseWarning(LOCATION, "libRocket error: %s", message.CString());
 		break;
 	case Log::LT_WARNING:
 		core::Warning(LOCATION, "libRocket warning: %s", message.CString());

@@ -273,7 +273,7 @@ void persona_parse()
 	}
 
 	if ( i == MAX_PERSONA_TYPES )
-		WarningEx(LOCATION, "Unknown persona type in messages.tbl -- %s\n", type );
+		core::WarningEx(LOCATION, "Unknown persona type in messages.tbl -- %s\n", type );
 
 	char cstrtemp[NAME_LENGTH];
 	if ( optional_string("+") )
@@ -291,7 +291,7 @@ void persona_parse()
 		}
 
 		if ( j == (int)Species_info.size() )
-			WarningEx(LOCATION, "Unknown species in messages.tbl -- %s\n", cstrtemp );
+			core::WarningEx(LOCATION, "Unknown species in messages.tbl -- %s\n", cstrtemp );
 	}
 
 	if (optional_string("$Allow substitution of missing messages:")) {
@@ -391,7 +391,7 @@ void message_parse(bool importing_from_fsm)
 		msg.persona_index = message_persona_name_lookup( persona_name );
 
 		if ( msg.persona_index == -1 )
-			WarningEx(LOCATION, "Unknown persona in message %s in messages.tbl -- %s\n", msg.name, persona_name );
+			core::WarningEx(LOCATION, "Unknown persona in message %s in messages.tbl -- %s\n", msg.name, persona_name );
 	}
 
 	if ( !Fred_running)

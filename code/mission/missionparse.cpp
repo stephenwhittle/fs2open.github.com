@@ -753,7 +753,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 		if (index >= 0)
 			The_mission.ai_profile = &Ai_profiles[index];
 		else
-			WarningEx(LOCATION, "Mission: %s\nUnknown AI profile %s!", pm->name, temp );
+			core::WarningEx(LOCATION, "Mission: %s\nUnknown AI profile %s!", pm->name, temp );
 	}
 
 	Assert( The_mission.ai_profile != NULL );
@@ -888,7 +888,7 @@ void parse_player_info2(mission *pm)
 			stuff_string(str, F_NAME, NAME_LENGTH);
 			ptr->default_ship = ship_info_lookup(str);
 			if (-1 == ptr->default_ship) {
-				WarningEx(LOCATION, "Mission: %s\nUnknown default ship %s!  Defaulting to %s.", pm->name, str, Ship_info[ptr->ship_list[0]].name );
+				core::WarningEx(LOCATION, "Mission: %s\nUnknown default ship %s!  Defaulting to %s.", pm->name, str, Ship_info[ptr->ship_list[0]].name );
 				ptr->default_ship = ptr->ship_list[0]; // default to 1st in list
 			}
 			// see if the player's default ship is an allowable ship (campaign only). If not, then what
@@ -950,7 +950,7 @@ void parse_player_info2(mission *pm)
 					num_choices++; 
 				}
 				else {
-					WarningEx(LOCATION, "Weapon '%s' in weapon pool isn't allowed on player loadout! Ignoring it ...\n", Weapon_info[i].name);
+					core::WarningEx(LOCATION, "Weapon '%s' in weapon pool isn't allowed on player loadout! Ignoring it ...\n", Weapon_info[i].name);
 				}
 			}
 		}
@@ -1757,9 +1757,9 @@ void parse_dock_one_docked_object(p_object *pobjp, p_object *parent_pobjp)
 	if ((dockpoint < 0) || (parent_dockpoint < 0))
 	{
 		if (dockpoint < 0)
-			ReleaseWarning(LOCATION, "Dockpoint %s could not be found on model %s", dockpoint_name, model_get(Ship_info[Ships[objp->instance].ship_info_index].model_num)->filename);
+			core::ReleaseWarning(LOCATION, "Dockpoint %s could not be found on model %s", dockpoint_name, model_get(Ship_info[Ships[objp->instance].ship_info_index].model_num)->filename);
 		if (parent_dockpoint < 0)
-			ReleaseWarning(LOCATION, "Dockpoint %s could not be found on model %s", parent_dockpoint_name, model_get(Ship_info[Ships[parent_objp->instance].ship_info_index].model_num)->filename);
+			core::ReleaseWarning(LOCATION, "Dockpoint %s could not be found on model %s", parent_dockpoint_name, model_get(Ship_info[Ships[parent_objp->instance].ship_info_index].model_num)->filename);
 
 		return;
 	}
@@ -2718,7 +2718,7 @@ void fix_old_special_explosions(p_object *p_objp, int variable_index)
 	// check all the variables are valid
 	for ( i = variable_index; i < (variable_index + BLOCK_EXP_SIZE); i++ ) {
 		if (!( Block_variables[i].type & SEXP_VARIABLE_BLOCK )) {
-			Warning (LOCATION, "%s is using the old special explosions method but does not appear to have variables for all the values", p_objp->name);
+			core::Warning (LOCATION, "%s is using the old special explosions method but does not appear to have variables for all the values", p_objp->name);
 			return;
 		}
 	}
@@ -2743,7 +2743,7 @@ void fix_old_special_hits(p_object *p_objp, int variable_index)
 	// check all the variables are valid
 	for ( i = variable_index; i < (variable_index + BLOCK_HIT_SIZE); i++ ) {
 		if (!( Block_variables[i].type & SEXP_VARIABLE_BLOCK )) {
-			Warning (LOCATION, "%s is using the old special hitpoints method but does not appear to have variables for all the values", p_objp->name);
+			core::Warning (LOCATION, "%s is using the old special hitpoints method but does not appear to have variables for all the values", p_objp->name);
 			return;
 		}
 	}
@@ -2887,7 +2887,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 		// try and find the alternate name
 		p_objp->alt_type_index = mission_parse_lookup_alt(name);
 		if(p_objp->alt_type_index < 0)
-			WarningEx(LOCATION, "Mission %s\nError looking up alternate ship type name %s!\n", pm->name, name);
+			core::WarningEx(LOCATION, "Mission %s\nError looking up alternate ship type name %s!\n", pm->name, name);
 		else
 			mprintf(("Using alternate ship type name: %s\n", name));
 	}
@@ -2902,7 +2902,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 		// try and find the callsign
 		p_objp->callsign_index = mission_parse_lookup_callsign(name);
 		if(p_objp->callsign_index < 0)
-			WarningEx(LOCATION, "Mission %s\nError looking up callsign %s!\n", pm->name, name);
+			core::WarningEx(LOCATION, "Mission %s\nError looking up callsign %s!\n", pm->name, name);
 		else
 			mprintf(("Using callsign: %s\n", name));
 	}
@@ -3095,7 +3095,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
         parse_string_flag_list(p_objp->flags, Parse_object_flags, num_parse_object_flags, &unparsed);
         if (!unparsed.empty()) {
             for (size_t k = 0; k < unparsed.size(); ++k) {
-                WarningEx(LOCATION, "Unknown flag in parse object flags: %s", unparsed[k].c_str());
+               core:: WarningEx(LOCATION, "Unknown flag in parse object flags: %s", unparsed[k].c_str());
             }
         }
     }
@@ -3112,7 +3112,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 					p_objp->flags.set(Mission::Parse_Object_Flags::OF_No_collide);
 				}
 				else {
-					WarningEx(LOCATION, "Unknown flag in parse object flags: %s", unparsed[k].c_str());
+					core::WarningEx(LOCATION, "Unknown flag in parse object flags: %s", unparsed[k].c_str());
 				}
             }
         }
@@ -3638,7 +3638,7 @@ void parse_common_object_data(p_object	*objp)
 					strcpy(Cargo_names[Num_cargo++], cargo_name);
 				}
 				else {
-					WarningEx(LOCATION, "Maximum number of cargo names (%d) exceeded, defaulting to Nothing!", MAX_CARGO);
+					core::WarningEx(LOCATION, "Maximum number of cargo names (%d) exceeded, defaulting to Nothing!", MAX_CARGO);
 					index = 0;
 				}
 			}
@@ -5352,7 +5352,7 @@ void parse_bitmaps(mission *pm)
 			}
 
 			if (z == NUM_NEBULAS)
-				WarningEx(LOCATION, "Mission %s\nUnknown nebula %s!", pm->name, str);
+				core::WarningEx(LOCATION, "Mission %s\nUnknown nebula %s!", pm->name, str);
 
 			if (optional_string("+Color:")) {
 				stuff_string(str, F_NAME, MAX_FILENAME_LEN);
@@ -5365,7 +5365,7 @@ void parse_bitmaps(mission *pm)
 			}
 
 			if (z == NUM_NEBULA_COLORS)
-				WarningEx(LOCATION, "Mission %s\nUnknown nebula color %s!", pm->name, str);
+				core::WarningEx(LOCATION, "Mission %s\nUnknown nebula color %s!", pm->name, str);
 
 			if (optional_string("+Pitch:")){
 				stuff_int(&Nebula_pitch);
@@ -6797,19 +6797,19 @@ int mission_did_ship_arrive(p_object *objp)
 					return -1;
 
 				mission_parse_mark_non_arrival(objp);	// Goober5000
-				WarningEx(LOCATION, "Warning: Ship %s cannot arrive from docking bay of destroyed or departed %s.\n", objp->name, name);
+				core::WarningEx(LOCATION, "Warning: Ship %s cannot arrive from docking bay of destroyed or departed %s.\n", objp->name, name);
 				return -1;
 			}
 
 			// Goober5000: aha - also don't create if fighterbay is destroyed
 			if (ship_fighterbays_all_destroyed(&Ships[shipnum])) {
-				WarningEx(LOCATION, "Warning: Ship %s cannot arrive from destroyed docking bay of %s.\n", objp->name, name);
+				core::WarningEx(LOCATION, "Warning: Ship %s cannot arrive from destroyed docking bay of %s.\n", objp->name, name);
 				return -1;
 			}
 		}
 
 		if ( objp->flags[Mission::Parse_Object_Flags::SF_Cannot_arrive] ) {
-			WarningEx(LOCATION, "Warning: Ship %s cannot arrive. Ship not created.\n", objp->name);
+			core::WarningEx(LOCATION, "Warning: Ship %s cannot arrive. Ship not created.\n", objp->name);
 			return -1;
 		}
 

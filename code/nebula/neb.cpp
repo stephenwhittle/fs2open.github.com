@@ -269,7 +269,7 @@ void neb2_init()
 				strcpy_s(Neb2_bitmap_filenames[Neb2_bitmap_count++], name);
 			}
 			else {
-				WarningEx(LOCATION, "nebula.tbl\nExceeded maximum number of nebulas (%d)!\nSkipping %s.", MAX_NEB2_BITMAPS, name);
+				core::WarningEx(LOCATION, "nebula.tbl\nExceeded maximum number of nebulas (%d)!\nSkipping %s.", MAX_NEB2_BITMAPS, name);
 			}
 		}
 
@@ -284,7 +284,7 @@ void neb2_init()
 				strcpy_s(Neb2_poof_filenames[Neb2_poof_count++], name);
 			}
 			else {
-				WarningEx(LOCATION, "nebula.tbl\nExceeded maximum number of nebula poofs (%d)!\nSkipping %s.", MAX_NEB2_POOFS, name);
+				core::WarningEx(LOCATION, "nebula.tbl\nExceeded maximum number of nebula poofs (%d)!\nSkipping %s.", MAX_NEB2_POOFS, name);
 			}
 		}
 

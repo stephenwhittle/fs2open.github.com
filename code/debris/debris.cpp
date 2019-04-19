@@ -129,7 +129,7 @@ void debris_page_in()
 		species->debris_texture.bitmap_id = bm_load(species->debris_texture.filename);
 		if (species->debris_texture.bitmap_id < 0)
 		{
-			Warning( LOCATION, "Couldn't load species %s debris\ntexture, '%s'\n", species->species_name, species->debris_texture.filename);
+			core::Warning( LOCATION, "Couldn't load species %s debris\ntexture, '%s'\n", species->species_name, species->debris_texture.filename);
 		}
 
 		bm_page_in_texture(species->debris_texture.bitmap_id);

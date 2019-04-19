@@ -10010,13 +10010,13 @@ void sexp_hud_set_message(int n)
 			if(cg) {
 				cg->updateCustomGaugeText(message);
 			} else {
-				WarningEx(LOCATION, "Could not find a hud gauge named %s\n", gaugename);
+				core::WarningEx(LOCATION, "Could not find a hud gauge named %s\n", gaugename);
 			}
 			return;
 		}
 	}
 
-	WarningEx(LOCATION, "sexp_hud_set_message couldn't find a message by the name of %s in the mission\n", text);
+	core::WarningEx(LOCATION, "sexp_hud_set_message couldn't find a message by the name of %s in the mission\n", text);
 }
 
 void sexp_hud_set_directive(int n)
@@ -10028,7 +10028,7 @@ void sexp_hud_set_directive(int n)
 	message_translate_tokens(message, text);
 
 	if (strlen(message) > MESSAGE_LENGTH) {
-		WarningEx(LOCATION, "Message %s is too long for use in a HUD gauge. Please shorten it to %d characters or less.", message, MESSAGE_LENGTH);
+		core::WarningEx(LOCATION, "Message %s is too long for use in a HUD gauge. Please shorten it to %d characters or less.", message, MESSAGE_LENGTH);
 		return;
 	}
 
@@ -10036,7 +10036,7 @@ void sexp_hud_set_directive(int n)
 	if(cg) {
 		cg->updateCustomGaugeText(message);
 	} else {
-		WarningEx(LOCATION, "Could not find a hud gauge named %s\n", gaugename);
+		core::WarningEx(LOCATION, "Could not find a hud gauge named %s\n", gaugename);
 	}
 }
 
@@ -13042,7 +13042,7 @@ void multi_sexp_deal_with_ship_flag()
 		if (ship_arrived) {
 			Current_sexp_network_packet.get_ship(shipp);
 			if (shipp == NULL) {
-				WarningEx(LOCATION, "Null ship pointer in multi_sexp_deal_with_ship_flag(), tell a coder.\n");
+				core::WarningEx(LOCATION, "Null ship pointer in multi_sexp_deal_with_ship_flag(), tell a coder.\n");
 				return;
 			}
 
@@ -22734,7 +22734,7 @@ void sexp_manipulate_colgroup(int node, bool add_to_group) {
 		int group = eval_num(node);
 		
 		if (group < 0 || group > 31) {
-			WarningEx(LOCATION, "Invalid collision group id %d specified for object %s. Valid IDs range from 0 to 31.\n", group, shipp->ship_name); 
+			core::WarningEx(LOCATION, "Invalid collision group id %d specified for object %s. Valid IDs range from 0 to 31.\n", group, shipp->ship_name);
 		} else {
 			if (add_to_group) {
 				colgroup_id |= (1<<group);
@@ -22776,7 +22776,7 @@ void sexp_ship_effect(int n)
 	
 	int effect_num = get_effect_from_name(CTEXT(n));
 	if (effect_num == -1) {
-		WarningEx(LOCATION, "Invalid effect name passed to ship-effect\n");
+		core::WarningEx(LOCATION, "Invalid effect name passed to ship-effect\n");
 		return;
 	}
 	n = CDR(n);
