@@ -9,7 +9,7 @@
 
 
 #include <algorithm>
-
+#include "core/error.h"
 #include "network/multi_obj.h"
 #include "globalincs/globals.h"
 #include "freespace.h"
@@ -585,7 +585,7 @@ int multi_oo_unpack_client_data(net_player *pl, ubyte *data)
 	int offset = 0;
 
 	if (pl == NULL)
-		Error(LOCATION, "Invalid net_player pointer passed to multi_oo_unpack_client\n");
+		core::Error(LOCATION, "Invalid net_player pointer passed to multi_oo_unpack_client\n");
 	
 	memcpy(&in_flags, data, sizeof(ubyte));	
 	offset++;

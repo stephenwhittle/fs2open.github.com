@@ -8,7 +8,8 @@
 #include <parse/parselo.h>
 #include <pilotfile/pilotfile.h>
 #include <playerman/player.h>
-
+#include "core/error.h"
+#include "core/format.h"
 #include "base.h"
 
 #include "scripting/api/objs/vecmath.h"
@@ -41,7 +42,7 @@ ADE_FUNC(warning, l_Base, "string Message", "Displays a FreeSpace warning (debug
 
 ADE_FUNC(error, l_Base, "string Message", "Displays a FreeSpace error message with the string provided", NULL, NULL)
 {
-	Error(LOCATION, "%s", lua_tostring(L, -1));
+	core::Error(LOCATION, "%s", lua_tostring(L, -1));
 
 	return ADE_RETURN_NIL;
 }
@@ -283,7 +284,7 @@ ADE_FUNC(XSTR,
 	}
 
 	SCP_string xstr;
-	sprintf(xstr, "XSTR(\"%s\", %d)", text, id);
+	core::sprintf(xstr, "XSTR(\"%s\", %d)", text, id);
 
 	SCP_string translated;
 	lcl_ext_localize(xstr, translated);

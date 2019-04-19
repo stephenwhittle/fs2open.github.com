@@ -4,7 +4,7 @@
 #pragma once
 
 #include "globalincs/pstypes.h"
-
+#include "globalincs/toolchain.h"
 #include <stdexcept>
 
 struct lua_State;

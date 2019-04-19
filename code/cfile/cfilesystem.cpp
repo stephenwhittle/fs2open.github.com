@@ -32,7 +32,8 @@
 #include <unistd.h>
 #include <libgen.h>
 #endif
-
+#include "core/error.h"
+#include "core/format.h"
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
 #include "cmdline/cmdline.h"
@@ -395,7 +396,7 @@ static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 
 			SCP_string rootPath = ss.str();
 			if (rootPath.size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
-				Error(LOCATION, "The length of mod directory path '%s' exceeds the maximum of %d!\n", rootPath.c_str(), CF_MAX_PATHNAME_LENGTH);
+				core::Error(LOCATION, "The length of mod directory path '%s' exceeds the maximum of %d!\n", rootPath.c_str(), CF_MAX_PATHNAME_LENGTH);
 			}
 
 			// normalize the path to the native path format
@@ -485,7 +486,7 @@ void cf_build_root_list(const char *cdrom_dir)
 	char working_directory[CF_MAX_PATHNAME_LENGTH];
 	
 	if ( !_getcwd(working_directory, CF_MAX_PATHNAME_LENGTH ) ) {
-		Error(LOCATION, "Can't get current working directory -- %d", errno );
+		core::Error(LOCATION, "Can't get current working directory -- %d", errno );
 	}
 
 	cf_add_mod_roots(working_directory, CF_LOCATION_ROOT_GAME);
@@ -609,7 +610,7 @@ void cf_search_root_path(int root_index)
 							file->pack_offset = 0;			// Mark as a non-packed file
 
 							SCP_string file_name;
-							sprintf(file_name, "%s%s%s", search_directory.c_str(), DIR_SEPARATOR_STR, find.name);
+							core::sprintf(file_name, "%s%s%s", search_directory.c_str(), DIR_SEPARATOR_STR, find.name);
 
 							file->real_name = vm_strdup(file_name.c_str());
 

@@ -1,4 +1,5 @@
 
+#include "core/error.h"
 #include "cutscene/cutscenes.h"
 #include "freespace.h"
 #include "gamesnd/eventmusic.h"
@@ -266,7 +267,7 @@ void pilotfile::csg_read_missions()
 
 		if (missionp->num_goals > 0) {
 			missionp->goals = (mgoal *) vm_malloc( missionp->num_goals * sizeof(mgoal) );
-			Verify( missionp->goals != NULL );
+			core::Verify( missionp->goals != NULL );
 
 			memset( missionp->goals, 0, missionp->num_goals * sizeof(mgoal) );
 
@@ -281,7 +282,7 @@ void pilotfile::csg_read_missions()
 
 		if (missionp->num_events > 0) {
 			missionp->events = (mevent *) vm_malloc( missionp->num_events * sizeof(mevent) );
-			Verify( missionp->events != NULL );
+			core::Verify( missionp->events != NULL );
 
 			memset( missionp->events, 0, missionp->num_events * sizeof(mevent) );
 
@@ -296,7 +297,7 @@ void pilotfile::csg_read_missions()
 
 		if (missionp->num_variables > 0) {
 			missionp->variables = (sexp_variable *) vm_malloc( missionp->num_variables * sizeof(sexp_variable) );
-			Verify( missionp->variables != NULL );
+			core::Verify( missionp->variables != NULL );
 
 			memset( missionp->variables, 0, missionp->num_variables * sizeof(sexp_variable) );
 

@@ -1,6 +1,6 @@
 //
 //
-
+#include "core/error.h"
 #include "texturemap.h"
 #include "texture.h"
 
@@ -59,7 +59,7 @@ bool texture_map_h::IsValid() {
 		case THT_MODEL:
 			return mdl.IsValid();
 		default:
-			Error(LOCATION, "Bad type in texture_map_h; debug this.");
+			core::Error(LOCATION, "Bad type in texture_map_h; debug this.");
 			return false;
 	}
 }

@@ -1,5 +1,6 @@
 
 #include "file.h"
+#include "core/error.h"
 #include "cfile/cfilesystem.h"
 
 extern int cfread_lua_number(double *buf, CFILE *cfile);
@@ -10,7 +11,7 @@ cfile_h::cfile_h(CFILE* cfp) : _cfp(cfp) {}
 cfile_h::~cfile_h()
 {
 	if (_cfp && cf_is_valid(_cfp.get())) {
-		Error(LOCATION, "Lua file handle has been left open!\n\nSorry, I can't say anything more than that...");
+		core::Error(LOCATION, "Lua file handle has been left open!\n\nSorry, I can't say anything more than that...");
 	}
 }
 bool cfile_h::isValid() const { return _cfp != nullptr; }
@@ -124,7 +125,7 @@ ADE_FUNC(read, l_File, "number or string, ...",
 				int tell_res = cftell(cfp->get());
 				if (tell_res < 0)
 				{
-					Error(LOCATION, "Critical error reading Lua file; could not cftell.");
+					core::Error(LOCATION, "Critical error reading Lua file; could not cftell.");
 				}
 				int read_len = cfilelength(cfp->get()) - tell_res;
 

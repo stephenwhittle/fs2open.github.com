@@ -14,7 +14,7 @@
 //		2		Animating bitmap per hit, not shrink-wrapped.  Lasts full time.  Unlimited.
 //		3		Shrink-wrapped texture.  Lasts half-time.
 //		4		Shrink-wrapped texture.  Lasts full-time.
-
+#include "core/error.h"
 #include "render/3d.h"
 #include "model/model.h"
 #include "freespace.h"
@@ -792,7 +792,7 @@ void add_shield_point(int objnum, int tri_num, vec3d *hit_pos)
 	if (Num_shield_points >= MAX_SHIELD_POINTS)
 		return;
 
-	Verify(objnum < MAX_OBJECTS);
+	core::Verify(objnum < MAX_OBJECTS);
 
 	MONITOR_INC(NumShieldHits,1);
 

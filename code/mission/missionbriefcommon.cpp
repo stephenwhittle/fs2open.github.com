@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "anim/animplay.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
@@ -339,7 +339,7 @@ void brief_parse_icon_tbl()
 				errormsg += "\n";
 			}
 
-			Error(LOCATION, "%s", errormsg.c_str());
+			core::Error(LOCATION, "%s", errormsg.c_str());
 		}
 	}
 	catch (const parse::ParseException& e)

@@ -1,11 +1,13 @@
-#include "core/core.h"
+#include "core/error.h"
+#include "core/format.h"
+#include "core/path.h"
 #include "osapi/dialogs.h"
 #include "osapi/osapi.h"
 #include "parse/parselo.h"
 #include "cmdline/cmdline.h"
 #include "graphics/2d.h"
 #include "scripting/ade.h"
-
+#include "globalincs/pstypes.h"
 #include <SDL_messagebox.h>
 #include <SDL_clipboard.h>
 
@@ -89,7 +91,7 @@ namespace os
 		void AssertMessage(const char * text, const char * filename, int linenum, const char * format, ...)
 		{
 			// We only want to display the file name
-			filename = clean_filename(filename);
+			filename = core::path::clean_filename(filename);
 
 			SCP_stringstream msgStream;
 			msgStream << "Assert: \"" << text << "\"\n";
@@ -102,7 +104,7 @@ namespace os
 				va_list args;
 
 				va_start(args, format);
-				vsprintf(buffer, format, args);
+				core::vsprintf(buffer, format, args);
 				va_end(args);
 
 				msgStream << buffer << "\n";
@@ -148,7 +150,7 @@ namespace os
 
 				va_list args;
 				va_start(args, format);
-				vsprintf(formatText, format, args);
+				core::vsprintf(formatText, format, args);
 				va_end(args);
 
 				msgStream << formatText;
@@ -264,11 +266,11 @@ namespace os
 		void Error(const char * filename, int line, const char * format, ...)
 		{
 			SCP_string formatText;
-			filename = clean_filename(filename);
+			filename = core::path::clean_filename(filename);
 
 			va_list args;
 			va_start(args, format);
-			vsprintf(formatText, format, args);
+			core::vsprintf(formatText, format, args);
 			va_end(args);
 
 			SCP_stringstream messageStream;
@@ -344,7 +346,7 @@ namespace os
 		// Actual implementation of the warning function. Used by the various warning functions
 		void WarningImpl(const char* filename, int line, const SCP_string& text)
 		{
-			filename = clean_filename(filename);
+			filename = core::path::clean_filename(filename);
 
 			// output to the debug log before anything else (so that we have a complete record)
 			mprintf(("WARNING: \"%s\" at %s:%d\n", text.c_str(), filename, line));
@@ -421,7 +423,7 @@ namespace os
 			va_list args;
 
 			va_start(args, format);
-			vsprintf(msg, format, args);
+			core::vsprintf(msg, format, args);
 			va_end(args);
 
 			WarningImpl(filename, line, msg);
@@ -436,7 +438,7 @@ namespace os
 			va_list args;
 
 			va_start(args, format);
-			vsprintf(msg, format, args);
+			core::vsprintf(msg, format, args);
 			va_end(args);
 
 			WarningImpl(filename, line, msg);
@@ -451,7 +453,7 @@ namespace os
 				va_list args;
 
 				va_start(args, format);
-				vsprintf(msg, format, args);
+				core::vsprintf(msg, format, args);
 				va_end(args);
 
 				Warning(filename, line, "%s", msg.c_str());

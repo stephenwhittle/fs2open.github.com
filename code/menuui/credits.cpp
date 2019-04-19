@@ -11,6 +11,7 @@
 
 #include <cstdlib>
 
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "freespace.h"
 #include "gamesequence/gamesequence.h"
@@ -472,7 +473,7 @@ void credits_init()
 				break;
 
 			default:
-				Error(LOCATION, "Unimplemented credits position %d. Get a coder!", (int) SCP_credits_position);
+				core::Error(LOCATION, "Unimplemented credits position %d. Get a coder!", (int) SCP_credits_position);
 				break;
 		}
 	}

@@ -8,7 +8,7 @@
 */ 
 
 
-
+#include "core/error.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
 #include "bmpman/bmpman.h"
@@ -721,7 +721,7 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
 		anim_read_header(ptr, fp);
 
 		if (ptr->width < 0 || ptr->height < 0) {
-			Error(LOCATION, "Ani file %s has a faulty header and cannot be loaded.", name);
+			core::Error(LOCATION, "Ani file %s has a faulty header and cannot be loaded.", name);
 		}
 
 		if(ptr->num_keys > 0){

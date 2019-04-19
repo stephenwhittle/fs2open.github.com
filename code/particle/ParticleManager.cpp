@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <memory>
-
+#include "core/error.h"
 #include "particle/ParticleManager.h"
 
 #include "particle/effects/SingleParticleEffect.h"
@@ -63,7 +63,7 @@ ParticleEffectPtr constructEffect(const SCP_string& name, EffectType type) {
 			break;
 		}
 		default: {
-			Error(LOCATION, "Unimplemented effect type %d encountered! Get a coder!", static_cast<int>(type));
+			core::Error(LOCATION, "Unimplemented effect type %d encountered! Get a coder!", static_cast<int>(type));
 			throw std::runtime_error("Unimplemented effect type encountered!");
 		}
 	}

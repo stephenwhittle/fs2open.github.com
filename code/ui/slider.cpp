@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
@@ -182,7 +182,7 @@ void UI_DOT_SLIDER::create(UI_WINDOW *wnd, int _x, int _y, char *bm, int id, int
 	sprintf(filename, "%s%.2d", bm, hotspot);
 	first_frame = bm_load_animation(filename, &total_frames);
 	if (first_frame < 0) {
-		Error(LOCATION, "Could not load %s.ani\n", filename);
+		core::Error(LOCATION, "Could not load %s.ani\n", filename);
 		disable();
 		hide();
 		return;

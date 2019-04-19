@@ -578,7 +578,7 @@ void opengl_render_model_program(model_material* material_info, indexed_vertex_s
 
 void gr_opengl_render_model(model_material* material_info, indexed_vertex_source *vert_source, vertex_buffer* bufferp, size_t texi)
 {
-	Verify(bufferp != NULL);
+	core::Verify(bufferp != NULL);
 
 	GL_CHECK_FOR_ERRORS("start of render_buffer()");
 

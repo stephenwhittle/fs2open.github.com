@@ -13,6 +13,7 @@
 #include <windows.h>
 #endif
 
+#include "core/format.h"
 #include "globalincs/pstypes.h"
 #include "globalincs/alphacolors.h"
 #include "globalincs/systemvars.h"
@@ -54,7 +55,7 @@ void processEvents()
 template<typename... Args>
 float print_string(float x, float y, const char* fmt, Args... params) {
 	SCP_string text;
-	sprintf(text, fmt, params...);
+	core::sprintf(text, fmt, params...);
 
 	gr_string(x, y, text.c_str(), GR_RESIZE_NONE);
 

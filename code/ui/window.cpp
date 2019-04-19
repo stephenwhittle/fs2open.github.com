@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "cmdline/cmdline.h"
 #include "globalincs/alphacolors.h"
@@ -78,7 +78,7 @@ void UI_WINDOW::set_mask_bmap(const char *fname)
 	bmap = bm_load(fname);
 
 	if (bmap < 0) {
-		Error(LOCATION, "Could not load in %s!", fname);
+		core::Error(LOCATION, "Could not load in %s!", fname);
 
 	} else {
 		set_mask_bmap(bmap, fname);
@@ -128,7 +128,7 @@ void UI_WINDOW::set_foreground_bmap(const char *fname)
 	// load in the background bitmap 
 	foreground_bmap_id = bm_load(fname);
 	if (foreground_bmap_id < 0) {
-		Error(LOCATION,"Could not load in %s!",fname);
+		core::Error(LOCATION,"Could not load in %s!",fname);
 	}
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "globalincs/pstypes.h"
-
+#include "core/error.h"
 #include "mod_table/mod_table.h"
 
 #include <iterator>
@@ -120,7 +120,7 @@ octet_iterator encode(codepoint_t cp, octet_iterator buffer) {
 		try {
 			return utf8::append(cp, buffer);
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while encoding Unicode code point %" PRIu32 ": %s", (uint32_t)cp, e.what());
+			core::Error(LOCATION, "Exception while encoding Unicode code point %" PRIu32 ": %s", (uint32_t)cp, e.what());
 			return buffer;
 		}
 	} else {
@@ -146,7 +146,7 @@ size_t num_codepoints(octet_iterator start, octet_iterator end) {
 		try {
 			return static_cast<size_t>(utf8::distance(start, end));
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while counting Unicode code points: %s", e.what());
+			core::Error(LOCATION, "Exception while counting Unicode code points: %s", e.what());
 			return 0;
 		}
 	} else {

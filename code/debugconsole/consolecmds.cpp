@@ -17,6 +17,7 @@
  *  further documentation, please see console.h
  */
 
+#include "core/error.h"
 #include "debugconsole/console.h"
 #include "debugconsole/consoleparse.h"
 #include "io/key.h"
@@ -40,7 +41,7 @@ debug_command::debug_command(const char *_name, const char *_help, void(*_func)(
 	int ret = 0;
 
 	if (dc_commands_size >= DC_MAX_COMMANDS) {
-		Error(LOCATION, "Too many debug console commands! Please inform a coder to increase DC_MAX_COMMANDS.");
+		core::Error(LOCATION, "Too many debug console commands! Please inform a coder to increase DC_MAX_COMMANDS.");
 		return;
 	}
 
@@ -49,7 +50,7 @@ debug_command::debug_command(const char *_name, const char *_help, void(*_func)(
 		ret = stricmp(dc_commands[i]->name, _name);
 
 		if (ret == 0) {
-			Error(LOCATION, "Debug Command %s already exists! Please inform a coder immediately.", _name);
+			core::Error(LOCATION, "Debug Command %s already exists! Please inform a coder immediately.", _name);
 			return;
 		} else if (ret > 0) {
 			// Insert the command here

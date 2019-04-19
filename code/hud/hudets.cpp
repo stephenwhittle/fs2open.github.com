@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "freespace.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/systemvars.h"
@@ -773,7 +773,7 @@ bool validate_ship_ets_indxes(const int &ship_idx, int (&ets_indexes)[num_retail
 			break;
 
 		default:
-			Error(LOCATION, "Encountered a ship (%s) with a broken ETS", ship_p->ship_name);
+			core::Error(LOCATION, "Encountered a ship (%s) with a broken ETS", ship_p->ship_name);
 			break;
 	}
 	return true;

@@ -8,6 +8,7 @@
 
 #include <cstddef>
 
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "graphics/font.h" //for gr_force_fit_string
 #include "hud/hud.h"
@@ -508,7 +509,7 @@ void hud_positions_init()
 {
 	if(!ships_inited)
 	{
-		Error(LOCATION, "Could not initialize hudparse.cpp as ships were not inited first.");
+		core::Error(LOCATION, "Could not initialize hudparse.cpp as ships were not inited first.");
 		return;
 	}
 
@@ -1209,7 +1210,7 @@ std::unique_ptr<T> gauge_load_common(gauge_settings* settings, T* preAllocated =
 				}
 
 				if(optional_string("Offset:")) {
-					Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
+					core::Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
 				}
 
 				if ( !(settings->use_coords && use_default_pos) ) {
@@ -1379,7 +1380,7 @@ void load_gauge_custom(gauge_settings* settings)
 			}
 
 			if(optional_string("Offset:")) {
-				Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
+				core::Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
 			}
 
 			if (!use_default_pos) {
@@ -2881,7 +2882,7 @@ void load_gauge_radar_dradis(gauge_settings* settings)
 			}
 
 			if(optional_string("Offset:")) {
-				Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
+				core::Error(LOCATION, "HUD gauges table: Offset must also have Origin defined");
 			}
 
 			settings->coords[0] = (int)(settings->base_res[0] * settings->origin[0]) + settings->offset[0];

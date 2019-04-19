@@ -8,7 +8,7 @@
 */ 
 
 
-
+#include "core/error.h"
 #include "camera/camera.h" //VIEWER_ZOOM_DEFAULT
 #include "cmdline/cmdline.h"
 #include "globalincs/linklist.h"
@@ -1077,7 +1077,7 @@ cmdline_parm::~cmdline_parm()
 // returns true if it is, shows an error box and returns false if not valid.
 bool cmdline_parm::check_if_args_is_valid() {
 	if ( args == NULL ) {
-		Error(__FILE__, __LINE__, 
+		core::Error(__FILE__, __LINE__, 
 			"Command line flag passed that requires an argument, but the argument is missing!\r\n"
 			"The flag is '%s', make sure that you have an argument that follows it.\r\n"
 			"You may need to close your launcher and remove the flag manually from %s/data/cmdline_fso.cfg\r\n",

@@ -22,7 +22,7 @@
 #include "gropengltexture.h"
 #include "math/vecmat.h"
 #include "osapi/osregistry.h"
-
+#include "core/error.h"
 matrix4 GL_texture_matrix;
 
 int GL_texture_ram = 0;
@@ -107,7 +107,7 @@ void opengl_tcache_init()
 	// if we are not using sections then make sure we have the min texture size available to us
 	// 1024 is what we need with the standard resolutions - taylor
 	if (GL_max_texture_width < 1024) {
-		Error(LOCATION, "A minimum texture size of \"1024x1024\" is required for FS2_Open but only \"%ix%i\" was found.  Can not continue.", GL_max_texture_width, GL_max_texture_height);
+		core::Error(LOCATION, "A minimum texture size of \"1024x1024\" is required for FS2_Open but only \"%ix%i\" was found.  Can not continue.", GL_max_texture_width, GL_max_texture_height);
 	}
 
 	// check what mipmap filter we should be using

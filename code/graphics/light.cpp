@@ -6,7 +6,7 @@
  * source.
  *
 */
-
+#include "core/error.h"
 #include <math/bitarray.h>
 #include "cmdline/cmdline.h"
 #include "globalincs/pstypes.h"
@@ -139,7 +139,7 @@ void FSLight2GLLight(light* FSLight, gr_light* GLLight) {
 		break;
 
 	default:
-		Error(LOCATION, "Unknown light type in FSLight2GLLight. Expected was 0, 1, 2 or 3, we got %i", static_cast<int>(FSLight->type));
+		core::Error(LOCATION, "Unknown light type in FSLight2GLLight. Expected was 0, 1, 2 or 3, we got %i", static_cast<int>(FSLight->type));
 		break;
 	}
 }

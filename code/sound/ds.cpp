@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
 #include "globalincs/pstypes.h"
@@ -313,7 +313,7 @@ void ds_init_channels()
 	try {
 		Channels = new channel[MAX_CHANNELS];
 	} catch (const std::bad_alloc&) {
-		Error(LOCATION, "Unable to allocate " SIZE_T_ARG " bytes for %d audio channels.", sizeof(channel) * MAX_CHANNELS, MAX_CHANNELS);
+		core::Error(LOCATION, "Unable to allocate " SIZE_T_ARG " bytes for %d audio channels.", sizeof(channel) * MAX_CHANNELS, MAX_CHANNELS);
 	}
 }
 

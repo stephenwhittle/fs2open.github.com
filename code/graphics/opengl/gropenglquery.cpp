@@ -1,4 +1,4 @@
-
+#include "core/error.h"
 #include "graphics/opengl/gropenglquery.h"
 #include "graphics/opengl/gropengl.h"
 

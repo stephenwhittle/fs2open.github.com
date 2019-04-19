@@ -16,6 +16,7 @@
 #include <windows.h>
 #endif
 
+#include "core/error.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
 #include "bmpman/bm_internal.h"
@@ -1058,7 +1059,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 			break;
 
 		default:
-			Error(LOCATION, "Bad DDS file compression! Not using DXT1,3,5: %s", filename);
+			core::Error(LOCATION, "Bad DDS file compression! Not using DXT1,3,5: %s", filename);
 			return -1;
 		}
 	}
@@ -1516,7 +1517,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 			mprintf(("BMPMAN: Found EFF (%s) with %d frames at %d fps.\n", filename, anim_frames, anim_fps));
 		}
 		if (anim_fps == 0) {
-			Error(LOCATION, "animation (%s) has invalid fps of 0, fix this!", filename);
+			core::Error(LOCATION, "animation (%s) has invalid fps of 0, fix this!", filename);
 		}
 		anim_total_time = anim_frames / i2fl(anim_fps);
 	}
@@ -1529,13 +1530,13 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 		anim_read_header(&the_anim, img_cfp);
 
 		if (the_anim.width < 0 || the_anim.height < 0) {
-			Error(LOCATION, "Ani file %s has a faulty header and cannot be loaded.", real_filename);
+			core::Error(LOCATION, "Ani file %s has a faulty header and cannot be loaded.", real_filename);
 		}
 
 		anim_frames = the_anim.total_frames;
 		anim_fps = the_anim.fps;
 		if (anim_fps == 0) {
-			Error(LOCATION, "animation (%s) has invalid fps of 0, fix this!", filename);
+			core::Error(LOCATION, "animation (%s) has invalid fps of 0, fix this!", filename);
 		}
 		anim_total_time = anim_frames / i2fl(anim_fps);
 		anim_width = the_anim.width;
@@ -2405,7 +2406,7 @@ void bm_lock_user(int /*handle*/, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte f
 		break;
 
 	default:
-		Error(LOCATION, "Unhandled user bitmap conversion from %d to %d bpp", be->info.user.bpp, bmp->bpp);
+		core::Error(LOCATION, "Unhandled user bitmap conversion from %d to %d bpp", be->info.user.bpp, bmp->bpp);
 		break;
 	}
 

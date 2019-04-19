@@ -13,6 +13,7 @@
 #include <sstream>
 #include <climits>
 
+#include "core/error.h"
 #include "graphics/software/font_internal.h"
 #include "graphics/software/FontManager.h"
 #include "graphics/software/FSFont.h"
@@ -245,7 +246,7 @@ namespace
 			stuff_int(&default_special_char_index);
 
 			if (default_special_char_index < 0 || default_special_char_index >= MAX_SPECIAL_CHAR_IDX) {
-				Error(LOCATION, "Default special character index (%d) for font (%s), must be 0 - %u", default_special_char_index,
+				core::Error(LOCATION, "Default special character index (%d) for font (%s), must be 0 - %u", default_special_char_index,
 					  fontName.c_str(), MAX_SPECIAL_CHAR_IDX);
 			}
 
@@ -279,7 +280,7 @@ namespace
 				stuff_int(&special_char_index);
 
 				if (special_char_index < 0 || special_char_index >= MAX_SPECIAL_CHAR_IDX) {
-					Error(LOCATION, "Special character index (%d) for font (%s), language (%s) is invalid, must be 0 - %u",
+					core::Error(LOCATION, "Special character index (%d) for font (%s), language (%s) is invalid, must be 0 - %u",
 						  special_char_index, fontName.c_str(), lang_name, MAX_SPECIAL_CHAR_IDX);
 				}
 
@@ -381,7 +382,7 @@ namespace
 
 		// double check
 		if (FontManager::numberOfFonts() < 3) {
-			Error(LOCATION, "At least three fonts have to be loaded but only %d valid entries were found!", FontManager::numberOfFonts());
+			core::Error(LOCATION, "At least three fonts have to be loaded but only %d valid entries were found!", FontManager::numberOfFonts());
 		}
 	}
 }
@@ -449,7 +450,7 @@ namespace font
 		}
 		catch (const parse::ParseException& e)
 		{
-			Error(LOCATION, "Failed to setup font parsing. This may be caused by an empty fonts.tbl file.\nError message: %s", e.what());
+			core::Error(LOCATION, "Failed to setup font parsing. This may be caused by an empty fonts.tbl file.\nError message: %s", e.what());
 			firstFont = "";
 		}
 	}

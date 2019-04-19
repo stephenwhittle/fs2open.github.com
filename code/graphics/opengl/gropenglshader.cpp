@@ -7,7 +7,7 @@
  *
 */
 
-
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
 #include "def_files/def_files.h"
@@ -440,7 +440,7 @@ static void handle_includes_impl(SCP_vector<SCP_string>& include_stack,
 			auto second_quote = line.find('"', first_quote + 1);
 
 			if (first_quote == SCP_string::npos || second_quote == SCP_string::npos) {
-				Error(LOCATION,
+				core::Error(LOCATION,
 					  "Shader %s:%d: Malformed include line. Could not find both quote charaters.",
 					  filename.c_str(),
 					  line_num);
@@ -456,7 +456,7 @@ static void handle_includes_impl(SCP_vector<SCP_string>& include_stack,
 					stack_string << "\t" << name << "\n";
 				}
 
-				Error(LOCATION,
+				core::Error(LOCATION,
 					  "Shader %s:%d: Detected cyclic include! Previous includes (top level file first):\n%s",
 					  filename.c_str(),
 					  line_num,
@@ -776,7 +776,7 @@ void opengl_compile_shader_actual(shader_type sdr, const uint &flags, opengl_sha
 		}
 		catch (const std::exception&) {
 			// Since all shaders are required a compilation failure is a fatal error
-			Error(LOCATION, "A shader failed to compile! Check the debug log for more information.");
+			core::Error(LOCATION, "A shader failed to compile! Check the debug log for more information.");
 		}
 
 		cache_program_binary(program->getShaderHandle(), shader_hash);

@@ -28,6 +28,8 @@
 #include <string>
 
 /* SCP Headers */
+#include "core/path.h"
+#include "core/error.h"
 #include "osapi/osapi.h"
 #include "globalincs/pstypes.h"
 #include "globalincs/systemvars.h"
@@ -49,17 +51,6 @@ extern void gr_activate(int active);
 //    #error _ASSERT is not defined yet for debug mode with non-MSVC compilers
   #endif
 #endif
-
-const char *clean_filename( const char *name)
-{
-	const char *p = name+strlen(name)-1;
-	// Move p to point to first letter of EXE filename
-	while( (*p!='\\') && (*p!='/') && (*p!=':') && (p>= name) )
-		p--;
-	p++;
-
-	return p;
-}
 
 
 /* MSVC2005+ callstack support
@@ -87,7 +78,7 @@ public:
 		UNREFERENCED_PARAMETER( address );
 
 		StackEntry entry;
-		entry.module = clean_filename( module );
+		entry.module = core::path::clean_filename( module );
 		entry.symbol = symbol;
 		m_stackFrames.push_back( entry );
 	}

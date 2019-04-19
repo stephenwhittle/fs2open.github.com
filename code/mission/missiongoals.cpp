@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "debugconsole/console.h"
 #include "freespace.h"
 #include "gamesequence/gamesequence.h"
@@ -312,7 +312,7 @@ int goal_text::add(const char *text)
 
 	max = MAX_GOAL_LINES - m_num_lines;
 	if (max < 1) {
-		Error(LOCATION, "Goal text space exhausted");
+		core::Error(LOCATION, "Goal text space exhausted");
 		return 0;
 	}
 
@@ -450,7 +450,7 @@ void mission_show_goals_init()
 			break;
 	
 		default:
-			Error(LOCATION, "Unknown goal priority encountered when displaying goals in mission\n");
+			core::Error(LOCATION, "Unknown goal priority encountered when displaying goals in mission\n");
 			break;
 		} // end switch
 	} // end for
@@ -627,7 +627,7 @@ int ML_objectives_init(int x, int y, int w, int h)
 				break;
 	
 			default:
-				Error(LOCATION, "Unknown goal priority encountered when displaying goals in mission\n");
+				core::Error(LOCATION, "Unknown goal priority encountered when displaying goals in mission\n");
 				break;
 		} // end switch
 	} // end for

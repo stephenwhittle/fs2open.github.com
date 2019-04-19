@@ -13,6 +13,7 @@
 #include <climits>		// this is need even when not building debug!!
 #include <type_traits>
 
+#include "core/error.h"
 #include "anim/animplay.h"
 #include "cmdline/cmdline.h"
 #include "cutscene/cutscenes.h"
@@ -994,7 +995,7 @@ void load_wing_icons(const char *filename)
 
 	first_frame = bm_load_animation(filename, &num_frames);
 	if ( first_frame == -1 ) {
-		Error(LOCATION, "Could not load icons from %s\n", filename);
+		core::Error(LOCATION, "Could not load icons from %s\n", filename);
 		return;
 	}
 

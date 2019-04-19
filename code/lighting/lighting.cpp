@@ -420,7 +420,7 @@ void light_apply_rgb( ubyte *param_r, ubyte *param_g, ubyte *param_b, const vec3
 
 		// others. BAD
 		default:
-			Error("Unknown light type in light_apply_rgb!\n");
+			core::Error("Unknown light type in light_apply_rgb!\n");
 			continue;
 		}
 

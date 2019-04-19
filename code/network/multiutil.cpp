@@ -22,6 +22,7 @@
 #endif
 #include <cctype>
 
+#include "core/error.h"
 #include "globalincs/pstypes.h"
 #include "network/multiutil.h"
 #include "globalincs/linklist.h"
@@ -762,7 +763,7 @@ int multi_create_player( int net_player_num, player *pl, const char* name, net_a
 			}
 			else
 			{
-				Error(LOCATION, "No ships have been loaded, but we are attempting to set a ship!!");
+				core::Error(LOCATION, "No ships have been loaded, but we are attempting to set a ship!!");
 			}
 		}
 	}
@@ -1576,7 +1577,7 @@ void multi_create_standalone_object()
 	objnum = observer_create(&m,&v);
 
 	if (objnum < 0) {
-		Error(LOCATION, "Failed to create standalone observer object! Please investigate!");
+		core::Error(LOCATION, "Failed to create standalone observer object! Please investigate!");
 		return;
 	}
 

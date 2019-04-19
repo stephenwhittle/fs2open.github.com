@@ -15,6 +15,8 @@
 #include <csetjmp>
 
 #include <cctype>
+#include "core/error.h"
+#include "core/format.h"
 #include "globalincs/version.h"
 #include "localization/fhash.h"
 #include "localization/localize.h"
@@ -205,7 +207,7 @@ void diag_printf(const char *format, ...)
 	va_list args;
 
 	va_start(args, format);
-	vsprintf(buffer, format, args);
+	core::vsprintf(buffer, format, args);
 	va_end(args);
 
 	nprintf(("Parse", "%s", buffer.c_str()));
@@ -292,7 +294,7 @@ void error_display(int error_level, const char *format, ...)
 	}
 
 	va_start(args, format);
-	vsprintf(error_text, format, args);
+	core::vsprintf(error_text, format, args);
 	va_end(args);
 
 	nprintf((type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str()));
@@ -300,7 +302,7 @@ void error_display(int error_level, const char *format, ...)
 	if(error_level == 0 || Cmdline_noparseerrors)
 		Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 	else
-		Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
+		core::Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 }
 
 //	Advance Mp to the next eoln character.
@@ -865,7 +867,7 @@ char* alloc_text_until(char* instr, char* endstr)
 
 	if(foundstr == NULL)
 	{
-        Error(LOCATION, "Missing [%s] in file", endstr);
+        core::Error(LOCATION, "Missing [%s] in file", endstr);
         throw parse::ParseException("End string not found");
 	}
 	else
@@ -882,7 +884,7 @@ char* alloc_text_until(char* instr, char* endstr)
 			strncpy(rstr, instr, foundstr-instr);
 			rstr[foundstr-instr] = '\0';
 		} else {
-			Error(LOCATION, "Could not allocate enough memory in alloc_text_until");
+			core::Error(LOCATION, "Could not allocate enough memory in alloc_text_until");
 		}
 
 		return rstr;
@@ -1024,7 +1026,7 @@ char* alloc_block(const char* startstr, const char* endstr, int extra_chars)
 	//Check that we left the file
 	if(level > 0)
 	{
-        Error(LOCATION, "Unclosed pair of \"%s\" and \"%s\" on line %d in file", startstr, endstr, get_line_num());
+        core::Error(LOCATION, "Unclosed pair of \"%s\" and \"%s\" on line %d in file", startstr, endstr, get_line_num());
         throw parse::ParseException("End string not found");
 	}
 	else
@@ -1081,7 +1083,7 @@ int get_string_or_variable (char *str)
 	else
 	{
 		get_string(str);
-		Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str);
+		core::Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str);
 	}
 
 	return result;
@@ -1116,7 +1118,7 @@ int get_string_or_variable (SCP_string &str)
 	else
 	{
 		get_string(str);
-		Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str.c_str());
+		core::Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str.c_str());
 	}
 
 	return result;
@@ -1207,7 +1209,7 @@ void stuff_string(char *outstr, int type, int len, const char *terminators)
 			break;
 
 		default:
-			Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
+			core::Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
 	}
 
 	if (type == F_FILESPEC) {
@@ -1289,7 +1291,7 @@ void stuff_string(SCP_string &outstr, int type, const char *terminators)
 			break;
 
 		default:
-			Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
+			core::Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
 	}
 
 	if (type == F_FILESPEC) {
@@ -2034,7 +2036,7 @@ void read_file_text(const char *filename, int mode, char *processed_text, char *
 
 	// if we are paused then processed_text and raw_text must not be NULL!!
 	if ( Parsing_paused && ((processed_text == NULL) || (raw_text == NULL)) ) {
-		Error(LOCATION, "ERROR: Neither processed_text nor raw_text may be NULL when parsing is paused!!\n");
+		core::Error(LOCATION, "ERROR: Neither processed_text nor raw_text may be NULL when parsing is paused!!\n");
 	}
 
 	// read the raw text
@@ -2058,7 +2060,7 @@ void read_file_text_from_default(const default_file& file, char *processed_text,
 
 	// if we are paused then processed_text and raw_text must not be NULL!!
 	if ( Parsing_paused && ((processed_text == NULL) || (raw_text == NULL)) ) {
-		Error(LOCATION, "ERROR: Neither \"processed_text\" nor \"raw_text\" may be NULL when parsing is paused!!\n");
+		core::Error(LOCATION, "ERROR: Neither \"processed_text\" nor \"raw_text\" may be NULL when parsing is paused!!\n");
 	}
 
 	// make sure to do this before anything else
@@ -2138,7 +2140,7 @@ void allocate_parse_text(size_t size)
 	Parse_text_raw = (char *) vm_malloc(sizeof(char) * size, memory::quiet_alloc);
 
 	if ( (Parse_text == nullptr) || (Parse_text_raw == nullptr) ) {
-		Error(LOCATION, "Unable to allocate enough memory for Mission_text!  Aborting...\n");
+		core::Error(LOCATION, "Unable to allocate enough memory for Mission_text!  Aborting...\n");
 	}
 
 	memset( Parse_text, 0, sizeof(char) * size );
@@ -2508,13 +2510,13 @@ int stuff_int_or_variable (int &i, bool positive_value)
 			}
 			else
 			{
-				Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
+				core::Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
 			}
 		}
 		else
 		{
 
-			Error(LOCATION, "Invalid variable name \"%s\" found.", str);
+			core::Error(LOCATION, "Invalid variable name \"%s\" found.", str);
 		}
 
 		// zero negative values if requested
@@ -2555,13 +2557,13 @@ int stuff_int_or_variable (int *ilp, int count, bool positive_value)
 			}
 			else
 			{
-				Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
+				core::Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
 			}
 		}
 		else
 		{
 
-			Error(LOCATION, "Invalid variable name \"%s\" found.", str);
+			core::Error(LOCATION, "Invalid variable name \"%s\" found.", str);
 		}
 
 		// zero negative values if requested
@@ -2901,7 +2903,7 @@ int stuff_int_list(int *ilp, int max_ints, int lookup_type)
 					break;
 
 				default:
-					Error(LOCATION,"Unknown lookup_type %d in stuff_int_list", lookup_type);
+					core::Error(LOCATION,"Unknown lookup_type %d in stuff_int_list", lookup_type);
 					break;
 			}
 
@@ -2978,7 +2980,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 
 	while (*Mp != ')') {
 		if (count >= max_ints) {
-			Error(LOCATION, "Loadout contains too many entries.\n");
+			core::Error(LOCATION, "Loadout contains too many entries.\n");
 		}
 
 		index = -1;
@@ -2992,7 +2994,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 			sexp_variable_index = get_index_sexp_variable_name(str);
 
 			if(sexp_variable_index<0) {
-				Error(LOCATION, "Invalid SEXP variable name \"%s\" found in stuff_loadout_list.", str);
+				core::Error(LOCATION, "Invalid SEXP variable name \"%s\" found in stuff_loadout_list.", str);
 			}
 
 			strcpy_s (str, Sexp_variables[sexp_variable_index].text);
@@ -3133,12 +3135,12 @@ void mark_int_list(int *ilp, int max_ints, int lookup_type)
 					break;
 
 				default:
-					Error(LOCATION,"Unknown lookup_type %d in mark_int_list", lookup_type);
+					core::Error(LOCATION,"Unknown lookup_type %d in mark_int_list", lookup_type);
 					break;
 			}
 
 			if ( (num < 0) || (num >= max_ints) )
-				Error(LOCATION, "Unable to find string \"%s\" in mark_int_list.\n", str);
+				core::Error(LOCATION, "Unable to find string \"%s\" in mark_int_list.\n", str);
 
 //			ilp[num] = 1;
 

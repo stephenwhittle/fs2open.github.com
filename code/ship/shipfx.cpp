@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "bmpman/bmpman.h"
 #include "cmdline/cmdline.h"
@@ -2977,7 +2977,7 @@ int CombinedVariable::getString(char *output, size_t output_max)
 	}
 	if(Type == TYPE_SOUND)
 	{
-		Error(LOCATION, "Sound CombinedVariables are not supported yet.");
+		core::Error(LOCATION, "Sound CombinedVariables are not supported yet.");
 		/*if(snd_is_valid(su_Sound))
 			snprintf(output, output_max, "%s", snd_get_filename(su_Sound));*/
 		return 1;

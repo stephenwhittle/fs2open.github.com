@@ -28,6 +28,7 @@
 #include <sys/mman.h>
 #endif
 
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "cfile/cfilesystem.h"
@@ -1353,7 +1354,7 @@ int cfwrite(const void *buf, int elsize, int nelem, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write to a VP file (unsupported)");
+		core::Error(LOCATION, "Attempt to write to a VP file (unsupported)");
 		return 0;
 	}
 
@@ -1394,7 +1395,7 @@ int cfputc(int c, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
+		core::Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
 		return EOF;
 	}
 
@@ -1438,7 +1439,7 @@ int cfputs(const char *str, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
+		core::Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
 		return EOF;
 	}
 

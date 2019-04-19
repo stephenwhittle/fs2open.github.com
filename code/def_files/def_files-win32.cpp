@@ -11,7 +11,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
+#include "core/error.h"
 struct def_file
 {
 	const char* path_type;
@@ -57,7 +57,7 @@ default_file defaults_get_file(const char *filename)
 	}
 
 	//WMC - This is really bad, because it means we have a default table missing.
-	Error(LOCATION, "Default table '%s' missing from executable - contact a coder.", filename);
+	core::Error(LOCATION, "Default table '%s' missing from executable - contact a coder.", filename);
 
 	def.data = nullptr;
 	def.data = 0;

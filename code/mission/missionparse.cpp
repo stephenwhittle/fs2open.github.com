@@ -20,7 +20,8 @@
 #include <cstdarg>
 #include <csetjmp>
 
-
+#include "core/error.h"
+#include "core/format.h"
 #include "ai/aigoals.h"
 #include "asteroid/asteroid.h"
 #include "bmpman/bmpman.h"
@@ -968,7 +969,7 @@ void parse_player_info2(mission *pm)
 	}
 
 	if ( nt != Num_teams )
-		Error(LOCATION, "Not enough ship/weapon pools for mission.  There are %d teams and only %d pools.", Num_teams, nt);
+		core::Error(LOCATION, "Not enough ship/weapon pools for mission.  There are %d teams and only %d pools.", Num_teams, nt);
 }
 
 void parse_cutscenes(mission *pm) 
@@ -1596,7 +1597,7 @@ void parse_briefing(mission * /*pm*/, int flags)
 	}
 
 	if ( nt != Num_teams )
-		Error(LOCATION, "Not enough briefings in mission file.  There are %d teams and only %d briefings.", Num_teams, nt );
+		core::Error(LOCATION, "Not enough briefings in mission file.  There are %d teams and only %d briefings.", Num_teams, nt );
 }
 
 /**
@@ -1644,7 +1645,7 @@ void parse_debriefing_new(mission * /*pm*/)
 	}
 
 	if ( nt != Num_teams )
-		Error(LOCATION, "Not enough debriefings for mission.  There are %d teams and only %d debriefings;\n", Num_teams, nt );
+		core::Error(LOCATION, "Not enough debriefings for mission.  There are %d teams and only %d debriefings;\n", Num_teams, nt );
 }
 
 void position_ship_for_knossos_warpin(object *objp)
@@ -2501,7 +2502,7 @@ void parse_bring_in_docked_wing(p_object *p_objp, int wingnum, int shipnum)
 	}
 	// how did we get more than one wave here?
 	else if (wingp->current_wave > 1)
-		Error(LOCATION, "Wing %s was created from docked ships but somehow has more than one wave!", wingp->name);
+		core::Error(LOCATION, "Wing %s was created from docked ships but somehow has more than one wave!", wingp->name);
 
 	// increment tallies
 	wingp->total_arrived_count++;
@@ -3020,7 +3021,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	{
 		stuff_int(&delay);
 		if (delay < 0)
-			Error(LOCATION, "Cannot have arrival delay < 0 (ship %s)", p_objp->name);
+			core::Error(LOCATION, "Cannot have arrival delay < 0 (ship %s)", p_objp->name);
 	}
 
 	if (!Fred_running)
@@ -3064,7 +3065,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	{
 		stuff_int(&delay);
 		if (delay < 0)
-			Error(LOCATION, "Cannot have departure delay < 0 (ship %s)", p_objp->name);
+			core::Error(LOCATION, "Cannot have departure delay < 0 (ship %s)", p_objp->name);
 	}
 
 	if (!Fred_running)
@@ -4477,7 +4478,7 @@ void parse_wing(mission *pm)
 	if (optional_string("+Arrival delay:")) {
 		stuff_int(&delay);
 		if ( delay < 0 )
-			Error(LOCATION, "Cannot have arrival delay < 0 on wing %s", wingp->name );
+			core::Error(LOCATION, "Cannot have arrival delay < 0 on wing %s", wingp->name );
 	} else
 		delay = 0;
 	saved_arrival_delay = delay;
@@ -4517,7 +4518,7 @@ void parse_wing(mission *pm)
 	if (optional_string("+Departure delay:")) {
 		stuff_int(&delay);
 		if ( delay < 0 )
-			Error(LOCATION, "Cannot have departure delay < 0 on wing %s", wingp->name );
+			core::Error(LOCATION, "Cannot have departure delay < 0 on wing %s", wingp->name );
 	} else
 		delay = 0;
 
@@ -4628,7 +4629,7 @@ void parse_wing(mission *pm)
 		wingp->net_signature = multi_assign_network_signature( MULTI_SIG_SHIP );
 		next_signature = wingp->net_signature + (wingp->wave_count * wingp->num_waves);
 		if ( next_signature > SHIP_SIG_MAX )
-			Error(LOCATION, "Too many total ships in mission (%d) for network signature assignment", SHIP_SIG_MAX);
+			core::Error(LOCATION, "Too many total ships in mission (%d) for network signature assignment", SHIP_SIG_MAX);
 		multi_set_network_signature( (ushort)next_signature, MULTI_SIG_SHIP );
 	}
 
@@ -4687,9 +4688,9 @@ void parse_wing(mission *pm)
 
 		// error checking
 		if (assigned == 0) {
-			Error(LOCATION, "Cannot load mission -- for wing %s, ship %s is not present in #Objects section.\n", wingp->name, ship_name);
+			core::Error(LOCATION, "Cannot load mission -- for wing %s, ship %s is not present in #Objects section.\n", wingp->name, ship_name);
 		} else if (assigned > 1) {
-			Error(LOCATION, "Cannot load mission -- for wing %s, ship %s is specified multiple times in wing.\n", wingp->name, ship_name);
+			core::Error(LOCATION, "Cannot load mission -- for wing %s, ship %s is specified multiple times in wing.\n", wingp->name, ship_name);
 		}
 	}
 
@@ -4813,7 +4814,7 @@ void post_process_ships_wings()
 	// error checking for custom wings
 	if (strcmp(Starting_wing_names[0], TVT_wing_names[0]) != 0)
 	{
-		Error(LOCATION, "The first starting wing and the first team-versus-team wing must have the same wing name.\n");
+		core::Error(LOCATION, "The first starting wing and the first team-versus-team wing must have the same wing name.\n");
 	}
 
 	// Goober5000 - for FRED, the ships are initialized after the wings, so we must now tell the wings
@@ -4953,7 +4954,7 @@ void parse_event(mission * /*pm*/)
 	// sanity check on the repeat count variable
 	// _argv[-1] - negative repeat count is now legal; means repeat indefinitely.
 	if ( event->repeat_count == 0 ){
-		Error (LOCATION, "Repeat count for mission event %s is 0.\nMust be >= 1 or negative!", event->name );
+		core::Error (LOCATION, "Repeat count for mission event %s is 0.\nMust be >= 1 or negative!", event->name );
 	}
 }
 
@@ -5849,7 +5850,7 @@ bool post_process_mission()
 
 				convert_sexp_to_string(sexp_str, i, SEXP_ERROR_CHECK_MODE);
 				truncate_message_lines(sexp_str, 30);
-				sprintf(error_msg, "%s.\n\nIn sexpression: %s\n(Error appears to be: %s)", sexp_error_message(result), sexp_str.c_str(), Sexp_nodes[bad_node].text);
+				core::sprintf(error_msg, "%s.\n\nIn sexpression: %s\n(Error appears to be: %s)", sexp_error_message(result), sexp_str.c_str(), Sexp_nodes[bad_node].text);
 				Warning(LOCATION, "%s", error_msg.c_str());
 
 				// syntax errors are unrecoverable, so abort
@@ -6055,7 +6056,7 @@ bool parse_main(const char *mission_name, int flags)
 			// fail situation.
 			if (!ftemp) {
 				if (!Fred_running)
-					Error( LOCATION, "Couldn't open mission '%s'\n", mission_name );
+					core::Error( LOCATION, "Couldn't open mission '%s'\n", mission_name );
 
 				Current_file_length = -1;
 				Current_file_checksum = 0;
@@ -7355,7 +7356,7 @@ int allocate_subsys_status()
 		Subsys_status = (subsys_status*)vm_realloc(Subsys_status, sizeof(subsys_status) * Subsys_status_size );
 	}
 
-	Verify( Subsys_status != NULL );
+	core::Verify( Subsys_status != NULL );
 
 	// the memset is redundant to the below assignments
 	//memset( &Subsys_status[Subsys_index], 0, sizeof(subsys_status) );

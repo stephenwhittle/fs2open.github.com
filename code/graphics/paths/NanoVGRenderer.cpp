@@ -20,6 +20,7 @@
 
 #include "NanoVGRenderer.h"
 #include "tracing/tracing.h"
+#include "core/format.h"
 
 
 #ifndef NDEBUG
@@ -30,7 +31,7 @@ extern "C" {
 		SCP_string buf;
 		va_list args;
 		va_start(args, message);
-		vsprintf(buf, message, args);
+		core::vsprintf(buf, message, args);
 		va_end(args);
 		outwnd_printf2("%s", message);
 	}

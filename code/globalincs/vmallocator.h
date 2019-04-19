@@ -19,7 +19,7 @@ using SCP_vector = std::vector< T, std::allocator< T > >;
 template< typename T >
 using SCP_list = std::list< T, std::allocator< T > >;
 
-typedef std::basic_string<char, std::char_traits<char>, std::allocator<char> > SCP_string;
+using SCP_string = std::basic_string<char, std::char_traits<char>, std::allocator<char>>;
 
 typedef std::basic_stringstream<char, std::char_traits<char>, std::allocator<char> > SCP_stringstream;
 

@@ -11,6 +11,7 @@
 
 
 #include <cstdarg>
+#include "core/format.h"
 #include "network/multi_log.h"
 #include "parse/generic_log.h"
 #include "cfile/cfile.h"
@@ -120,7 +121,7 @@ void ml_printf(const char *format, ...)
 	
 	// format the text
 	va_start(args, format);
-	vsprintf(temp, format, args);
+	core::vsprintf(temp, format, args);
 	va_end(args);
 
 	// log the string including the time

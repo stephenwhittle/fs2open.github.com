@@ -23,7 +23,7 @@
 #include <sys/stat.h>
 #include <glob.h>
 #endif
-
+#include "core/error.h"
 #include "freespace.h"
 #include "missioncampaign.h"
 #include "cfile/cfile.h"
@@ -476,7 +476,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 		}
 
 		if ( i == MAX_CAMPAIGN_TYPES )
-			Error(LOCATION, "Unknown campaign type %s!", type);
+			core::Error(LOCATION, "Unknown campaign type %s!", type);
 
 		Campaign.desc = NULL;
 		if (optional_string("+Description:"))
@@ -1545,7 +1545,7 @@ int mission_campaign_parse_is_multi(char *filename, char *name)
 			}
 		}
 
-		Error(LOCATION, "Unknown campaign type %s", temp);
+		core::Error(LOCATION, "Unknown campaign type %s", temp);
 		return -1;
 	}
 	catch (const parse::ParseException& e)

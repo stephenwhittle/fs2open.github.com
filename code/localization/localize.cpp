@@ -11,6 +11,7 @@
 
 
 #include <cctype>
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "localization/localize.h"
 #include "osapi/osregistry.h"
@@ -140,7 +141,7 @@ void lcl_init(int lang_init)
 		ret = os_config_read_string(NULL, "Language", Lcl_languages[FS2_OPEN_DEFAULT_LANGUAGE].lang_name);
 
 		if(ret == NULL){
-			Error(LOCATION, "Default language not found."); 
+			core::Error(LOCATION, "Default language not found."); 
 		}
 
 		strcpy_s(lang_string, ret);
@@ -277,7 +278,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 				error_display(0, "Invalid tstrings table index specified (%i). The index must be positive.", index);
 				return;
 			} else if (!external && (index < 0 || index >= XSTR_SIZE)) {
-				Error(LOCATION, "Invalid strings table index specified (%i)", index);
+				core::Error(LOCATION, "Invalid strings table index specified (%i)", index);
 			}
 
 			if (!external) {
@@ -382,7 +383,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 			if (p_offset != NULL) {
 				if (sscanf(p_offset, "%d%d", &offset_lo, &offset_hi) < num_offsets_on_this_line) {
 					// whatever is in the file ain't a proper offset
-					Error(LOCATION, "%s is corrupt", filename);
+					core::Error(LOCATION, "%s is corrupt", filename);
 				}
 			}
 

@@ -3,7 +3,7 @@
  * You may not sell or otherwise commercially exploit the source or things you
  * create based on the source.
  */
-
+#include "core/error.h"
 #include "gamesnd/eventmusic.h"
 #include "def_files/def_files.h"
 #include "globalincs/version.h"
@@ -70,7 +70,7 @@ void parse_mod_table(const char *filename)
 			mprintf(("Game Settings Table: Parsed target version of %s\n", gameversion::format_version(Targetted_version).c_str()));
 
 			if (!gameversion::check_at_least(Targetted_version)) {
-				Error(LOCATION, "This modification needs at least version %s of FreeSpace Open. However, the current is only %s!",
+				core::Error(LOCATION, "This modification needs at least version %s of FreeSpace Open. However, the current is only %s!",
 					gameversion::format_version(Targetted_version).c_str(),
 					gameversion::format_version(gameversion::get_executable_version()).c_str());
 			}

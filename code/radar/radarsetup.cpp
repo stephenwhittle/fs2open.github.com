@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "debugconsole/console.h"
 #include "freespace.h"
@@ -139,7 +139,7 @@ void radar_stuff_blip_info(object *objp, int is_bright, color **blip_color, int 
 			break;
 
 		default:
-			Error(LOCATION, "Illegal blip type in radar.");
+			core::Error(LOCATION, "Illegal blip type in radar.");
 			break;
 	}
 }
@@ -471,7 +471,7 @@ void HudGaugeRadar::drawRange()
 		break;
 
 	default:
-		Error(LOCATION, "Unknown radar range: %d!\n", HUD_config.rp_dist);
+		core::Error(LOCATION, "Unknown radar range: %d!\n", HUD_config.rp_dist);
 		break;
 	}
 }

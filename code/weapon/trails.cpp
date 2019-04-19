@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "globalincs/systemvars.h"
 #include "graphics/2d.h"
@@ -288,7 +288,7 @@ void trail_render( trail * trailp )
 		return;
 
 	if (nv < 3)
-		Error( LOCATION, "too few verts in trail render\n" );
+		core::Error( LOCATION, "too few verts in trail render\n" );
 
 	// there should always be three verts in the last section and 2 everyware else, therefore there should always be an odd number of verts
 	if ( (nv % 2) != 1 )
