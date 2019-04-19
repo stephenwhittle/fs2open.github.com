@@ -749,6 +749,11 @@ add_file_folder("Nebula"
 	nebula/neblightning.h
 )
 
+
+add_file_folder("core"
+	core/core.h	
+)
+
 # Network files
 add_file_folder("Network"
 	network/chat_api.cpp

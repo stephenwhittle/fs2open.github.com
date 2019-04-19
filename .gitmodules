@@ -7,3 +7,6 @@
 [submodule "lib/hidapi"]
 	path = lib/hidapi
 	url = https://github.com/signal11/hidapi.git
+[submodule "lib/SimpleSignal"]
+	path = lib/SimpleSignal
+	url = https://github.com/larspensjo/SimpleSignal.git

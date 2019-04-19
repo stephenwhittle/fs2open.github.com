@@ -33,3 +33,4 @@ add_subdirectory(discord)
 
 include(libRocket.cmake)
 include(hidapi.cmake)
+include(SimpleSignal.cmake)

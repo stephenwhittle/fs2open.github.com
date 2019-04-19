@@ -1,4 +1,4 @@
-
+#include "core/core.h"
 #include "osapi/dialogs.h"
 #include "osapi/osapi.h"
 #include "parse/parselo.h"
@@ -65,16 +65,7 @@ namespace
 		return outStream.str();
 	}
 
-	const char* clean_filename(const char* filename)
-	{
-		auto separator = strrchr(filename, DIR_SEPARATOR_CHAR);
-		if (separator != nullptr)
-		{
-			filename = separator + 1;
-		}
-
-		return filename;
-	}
+	
 
 	void set_clipboard_text(const char* text)
 	{
