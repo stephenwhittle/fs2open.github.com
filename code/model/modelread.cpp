@@ -1056,7 +1056,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 		if (ferror == 1) {
 			core::Error( LOCATION, "Can't open model file <%s>", filename );
 		} else if (ferror == 0) {
-			Warning( LOCATION, "Can't open model file <%s>", filename );
+			core::Warning( LOCATION, "Can't open model file <%s>", filename );
 		}
 
 		return -1;
@@ -1655,7 +1655,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 							*orient = vmd_identity_matrix;
 						}
 
-						Warning( LOCATION, "Improper custom orientation matrix for subsystem %s, you must define a up vector, then a forward vector", pm->submodel[n].name);
+						core::Warning( LOCATION, "Improper custom orientation matrix for subsystem %s, you must define a up vector, then a forward vector", pm->submodel[n].name);
 					}
 				} else {
 					int parent_num = pm->submodel[n].parent;
@@ -1667,7 +1667,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					}
 
 					if (strstr(props, "$fvec:") != NULL) {
-						Warning( LOCATION, "Improper custom orientation matrix for subsystem %s, you must define a up vector, then a forward vector", pm->submodel[n].name);
+						core::Warning( LOCATION, "Improper custom orientation matrix for subsystem %s, you must define a up vector, then a forward vector", pm->submodel[n].name);
 					}
 				}
 
@@ -1966,7 +1966,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 							if (bank->glow_bitmap < 0)
 							{
-								Warning( LOCATION, "Couldn't open glowpoint texture '%s'\nreferenced by model '%s'\n", glow_texture_name, pm->filename);
+								core::Warning( LOCATION, "Couldn't open glowpoint texture '%s'\nreferenced by model '%s'\n", glow_texture_name, pm->filename);
 							}
 							else
 							{
@@ -1987,12 +1987,12 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 								nprintf(( "Model", "Glow point bank %i nebula texture num is %d for '%s'\n", gpb, bank->glow_neb_bitmap, pm->filename));
 							}
 						} else {
-							Warning( LOCATION, "No glow point texture for bank '%d' referenced by model '%s'\n", gpb, pm->filename);
+							core::Warning( LOCATION, "No glow point texture for bank '%d' referenced by model '%s'\n", gpb, pm->filename);
 						}
 					} 
 					else 
 					{
-						Warning( LOCATION, "No glow point texture for bank '%d' referenced by model '%s'\n", gpb, pm->filename);
+						core::Warning( LOCATION, "No glow point texture for bank '%d' referenced by model '%s'\n", gpb, pm->filename);
 					}
 
 					for (j = 0; j < bank->num_points; j++)
@@ -3562,7 +3562,7 @@ void submodel_look_at(polymodel *pm, int mn)
 		}
 
 		if (sm->look_at_num == -2) {
-			Warning( LOCATION, "Invalid submodel name given in $look_at: property in model file <%s>. (%s looking for %s)\n", pm->filename, pm->submodel->name, sm->look_at );
+			core::Warning( LOCATION, "Invalid submodel name given in $look_at: property in model file <%s>. (%s looking for %s)\n", pm->filename, pm->submodel->name, sm->look_at );
 			sm->look_at_num = -1; // Set to -1 to not break stuff
 		}
 	}

@@ -1876,7 +1876,7 @@ void labviewer_change_background_actual()
 					}
 
 					if (z == NUM_NEBULAS)
-						WarningEx(LOCATION, "Unknown nebula %s!", str);
+						core::WarningEx(LOCATION, "Unknown nebula %s!", str);
 
 					if (optional_string("+Color:")) {
 						stuff_string(str, F_NAME, MAX_FILENAME_LEN);
@@ -1889,7 +1889,7 @@ void labviewer_change_background_actual()
 					}
 
 					if (z == NUM_NEBULA_COLORS)
-						WarningEx(LOCATION, "Unknown nebula color %s!", str);
+						core::WarningEx(LOCATION, "Unknown nebula color %s!", str);
 
 					if (optional_string("+Pitch:")) {
 						stuff_int(&Nebula_pitch);

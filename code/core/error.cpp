@@ -1,8 +1,14 @@
 #include "error.h"
 #include <SimpleSignal.h>
-#include <globalincs/pstypes.h>
 #include "format.h"
 #include "path.h"
+
+
+
+extern int Global_warning_count;
+extern int Global_error_count;
+extern int Cmdline_extra_warn;
+
 namespace core 
 {
 	Simple::Signal<void(const char*)> error_handler;
@@ -33,10 +39,25 @@ namespace core
 		    core::vsprintf(msg, format, args);
 		    va_end(args);
 
-		    Warning(filename, line, "%s", msg.c_str());
+		    warning_handler.emit(filename, line, msg.c_str());
 	    }
 #endif
     }
+
+	void ReleaseWarning(const char* filename, int line, const char* format, ...)
+    {
+	    Global_warning_count++;
+
+	    std::string msg;
+	    va_list args;
+
+	    va_start(args, format);
+	    core::vsprintf(msg, format, args);
+	    va_end(args);
+
+	    warning_handler.emit(filename, line, msg.c_str());
+    }
+
     void Error(const char* filename, int line, const char* format, ...)
 	{
 		std::string formatText;
@@ -60,14 +81,19 @@ namespace core
 		error_handler.emit(msg);
 	}
 
-    template <typename T>
-    void Verify(T x)
+    void Verify(bool x, const char* msg)
     {
 	    if (!(x)) {
-
-		    Error(LOCATION, "Verify failure: %s\n", x);
+			if (msg != nullptr)
+			{
+				error_handler.emit(msg);
+			}
+			else
+			{
+				std::string formatText;
+				core::sprintf(formatText, "Verify failure: %s\n", x);
+				error_handler.emit(formatText.c_str());
+			}
 	    }
-	    ASSUME(x);
     }
-	template void Verify<bool>(bool x);
 } // namespace core

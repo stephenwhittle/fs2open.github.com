@@ -1,3 +1,4 @@
+#pragma once
 namespace core
 {
 	void Warning(const char* filename, int line, const char* format, ...);
@@ -9,6 +10,6 @@ namespace core
 	void Error(const char* filename, int line, const char* format, ...);
 	void Error(const char* msg);
 	
-	template <typename T>
-	void Verify(T x);
-}
+	void Verify(bool x, const char* msg = nullptr);
+    
+    }

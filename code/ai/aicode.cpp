@@ -11171,7 +11171,7 @@ void process_subobjects(int objnum)
 				if(enemies_present == 1 || pss->turret_enemy_objnum >= 0)
 					ai_fire_from_turret(shipp, pss, objnum);
 			} else {
-				Warning( LOCATION, "Turret %s on ship %s has no firing points assigned to it.\nThis needs to be fixed in the model.\n", psub->name, shipp->ship_name );
+				core::Warning( LOCATION, "Turret %s on ship %s has no firing points assigned to it.\nThis needs to be fixed in the model.\n", psub->name, shipp->ship_name );
 			}
 			break;
 
@@ -12542,12 +12542,12 @@ int ai_acquire_emerge_path(object *pl_objp, int parent_objnum, int allowed_path_
 	ship_bay *bay = pm->ship_bay;
 
 	if ( bay == NULL ) {
-		WarningEx(LOCATION, "Ship %s was set to arrive from fighter bay on object %s, but no fighter bay exists on that ships' model (%s).\n", shipp->ship_name, parent_shipp->ship_name, pm->filename);
+		core::WarningEx(LOCATION, "Ship %s was set to arrive from fighter bay on object %s, but no fighter bay exists on that ships' model (%s).\n", shipp->ship_name, parent_shipp->ship_name, pm->filename);
 		return -1;
 	}
 
 	if ( bay->num_paths <= 0 ) {
-		WarningEx(LOCATION, "Ship %s was set to arrive from fighter bay on object %s, but no fighter bay paths exist on that ships' model (%s).\n", shipp->ship_name, parent_shipp->ship_name, pm->filename);
+		core::WarningEx(LOCATION, "Ship %s was set to arrive from fighter bay on object %s, but no fighter bay paths exist on that ships' model (%s).\n", shipp->ship_name, parent_shipp->ship_name, pm->filename);
 		return -1;
 	}
 

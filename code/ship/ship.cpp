@@ -1797,7 +1797,7 @@ static int parse_ship(const char* filename, bool replace)
 	// Use a template for this ship.
 	if (optional_string("+Use Template:")) {
 		if (!create_if_not_found) {
-			Warning(
+			core::Warning(
 			    LOCATION,
 			    "Both '+nocreate' and '+Use Template:' were specified for ship class '%s', ignoring '+Use Template:'\n",
 			    buf);
@@ -1870,7 +1870,7 @@ static int parse_ship_template()
 				sip->clone(Ship_templates[template_id]);
 				strcpy_s(sip->name, buf);
 			} else {
-				Warning(
+				core::Warning(
 				    LOCATION,
 				    "Unable to find ship template '%s' requested by ship template '%s', ignoring template request...",
 				    template_name, buf);
@@ -1960,7 +1960,7 @@ static void parse_ship_particle_effect(ship_info* sip, particle_effect* pe, cons
 	if (optional_string("+Max Radius:")) {
 		stuff_float(&tempf);
 		if (tempf <= 0.0f) {
-			Warning(
+			core::Warning(
 			    LOCATION,
 			    "Bad value %f, defined as %s particle radius (max) in ship '%s'.\nValue should be a positive float.\n",
 			    tempf, id_string, sip->name);
@@ -2448,7 +2448,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		if (valid)
 			strcpy_s(sip->cockpit_pof_file, temp);
 		else
-			WarningEx(LOCATION, "Ship %s\nCockpit POF file \"%s\" invalid!", sip->name, temp);
+			core::WarningEx(LOCATION, "Ship %s\nCockpit POF file \"%s\" invalid!", sip->name, temp);
 	}
 	if (optional_string("+Cockpit offset:")) {
 		stuff_vec3d(&sip->cockpit_offset);
@@ -2514,7 +2514,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		if (valid)
 			strcpy_s(sip->pof_file, temp);
 		else
-			WarningEx(LOCATION, "Ship %s\nPOF file \"%s\" invalid!", sip->name, temp);
+			core::WarningEx(LOCATION, "Ship %s\nPOF file \"%s\" invalid!", sip->name, temp);
 	}
 
 	if (optional_string("$POF file Techroom:")) {
@@ -2534,7 +2534,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		if (valid)
 			strcpy_s(sip->pof_file_tech, temp);
 		else
-			WarningEx(LOCATION, "Ship %s\nTechroom POF file \"%s\" invalid!", sip->name, temp);
+			core::WarningEx(LOCATION, "Ship %s\nTechroom POF file \"%s\" invalid!", sip->name, temp);
 	}
 
 	// ship class texture replacement - Goober5000
@@ -2589,7 +2589,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		if (valid)
 			strcpy_s(sip->pof_file_hud, temp);
 		else
-			WarningEx(LOCATION, "Ship \"%s\" POF target file \"%s\" invalid!", sip->name, temp);
+			core::WarningEx(LOCATION, "Ship \"%s\" POF target file \"%s\" invalid!", sip->name, temp);
 	}
 
 	// optional hud target LOD if not using special hud model
@@ -2813,7 +2813,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		if (optional_string("+Lightning Arc Percent:")) {
 			stuff_float(&sip->debris_arc_percent);
 			if (sip->debris_arc_percent < 0.0f || sip->debris_arc_percent > 100.0f) {
-				Warning(
+				core::Warning(
 				    LOCATION,
 				    "Lightning Arc Percent on %s '%s' should be between 0 and 100.0 (read %f). Entry will be ignored.",
 				    info_type_name, sip->name, sip->debris_arc_percent);
@@ -3797,7 +3797,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Stealth:")) {
 		sip->flags.set(Ship::Info_Flags::Stealth);
 	} else if (optional_string("$Stealth")) {
-		Warning(
+		core::Warning(
 		    LOCATION,
 		    "%s '%s' is missing the colon after \"$Stealth\". Note that you may also use the ship flag \"stealth\".",
 		    info_type_name, sip->name);
@@ -3807,7 +3807,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$max decals:")) {
 		int bogus;
 		stuff_int(&bogus);
-		WarningEx(LOCATION, "The decal system has been deactivated in FSO builds. Entries will be discarded.\n");
+		core::WarningEx(LOCATION, "The decal system has been deactivated in FSO builds. Entries will be discarded.\n");
 		mprintf(("WARNING: The decal system has been deactivated in FSO builds. Entries will be discarded.\n"));
 		// Do nothing, left in for compatibility.
 	}
@@ -4012,10 +4012,10 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		iff_data[1] = iff_lookup(iff_2);
 
 		if (iff_data[0] == -1)
-			WarningEx(LOCATION, "%s '%s'\nIFF colour seen by \"%s\" invalid!", info_type_name, sip->name, iff_1);
+			core::WarningEx(LOCATION, "%s '%s'\nIFF colour seen by \"%s\" invalid!", info_type_name, sip->name, iff_1);
 
 		if (iff_data[1] == -1)
-			WarningEx(LOCATION, "%s '%s'\nIFF colour when IFF is \"%s\" invalid!", info_type_name, sip->name, iff_2);
+			core::WarningEx(LOCATION, "%s '%s'\nIFF colour when IFF is \"%s\" invalid!", info_type_name, sip->name, iff_2);
 
 		// Set the color
 		required_string("+As Color:");
@@ -4230,7 +4230,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 				sp->armor_type_idx = armor_type_get_idx(buf);
 
 				if (sp->armor_type_idx == -1)
-					WarningEx(LOCATION, "%s '%s', subsystem %s\nInvalid armor type %s!", info_type_name, sip->name,
+					core::WarningEx(LOCATION, "%s '%s', subsystem %s\nInvalid armor type %s!", info_type_name, sip->name,
 					          sp->subobj_name, buf);
 			}
 
@@ -4247,7 +4247,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 				sp->engine_wash_pointer = get_engine_wash_pointer(name_tmp);
 
 				if (sp->engine_wash_pointer == NULL)
-					WarningEx(LOCATION, "Invalid engine wash name %s specified for subsystem %s in %s '%s'", name_tmp,
+					core::WarningEx(LOCATION, "Invalid engine wash name %s specified for subsystem %s in %s '%s'", name_tmp,
 					          sp->subobj_name, info_type_name, sip->name);
 			}
 
@@ -4426,7 +4426,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 
 			if ((sp->flags[Model::Subsystem_Flags::Autorepair_if_disabled]) &&
 			    (sp->flags[Model::Subsystem_Flags::No_autorepair_if_disabled])) {
-				Warning(
+				core::Warning(
 				    LOCATION,
 				    "\"autorepair if disabled\" flag used with \"don't autorepair if disabled\" flag on a subsystem on "
 				    "%s '%s'.\nWhichever flag would be default behavior anyway for this ship has been removed.\n",
@@ -6659,7 +6659,7 @@ static int subsys_set(int objnum, int ignore_subsys_info)
 				if (idx != -1) {
 					sinfo->subsystems[i].triggers[j].subtype = idx;
 				} else {
-					WarningEx(
+					core::WarningEx(
 					    LOCATION,
 					    "Could not find subobject %s in ship class %s. Animation triggers will not work correctly.\n",
 					    sinfo->subsystems[i].triggers[j].sub_name, sinfo->name);
@@ -8087,7 +8087,7 @@ static int thruster_glow_anim_load(generic_anim* ga)
 
 	ga->first_frame = bm_load(ga->filename);
 	if (ga->first_frame < 0) {
-		Warning(
+		core::Warning(
 		    LOCATION,
 		    "Couldn't load thruster glow animation '%s'\nPrimary glow type effect does not accept .EFF or .ANI effects",
 		    ga->filename);
