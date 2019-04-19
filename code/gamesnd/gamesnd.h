@@ -12,6 +12,8 @@
 #ifndef __GAMESND_H__
 #define __GAMESND_H__
 
+#include <vector>
+
 #include "sound/sound.h"
 #include "utils/id.h"
 
@@ -373,7 +375,7 @@ interface_snd_id gamesnd_get_by_iface_tbl_index(int index);
 void parse_game_sound(const char* tag, gamesnd_id* idx_dest);
 
 void parse_iface_sound(const char* tag, interface_snd_id* idx_dest);
-void parse_iface_sound_list(const char* tag, SCP_vector<interface_snd_id>& destination, const char* object_name, bool scp_list = false);
+void parse_iface_sound_list(const char* tag, std::vector<interface_snd_id>& destination, const char* object_name, bool scp_list = false);
 
 // this is a callback, so it needs to be a real function
 void common_play_highlight_sound();

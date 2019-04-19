@@ -1437,7 +1437,7 @@ typedef struct split_ship {
 } split_ship;
 
 
-static SCP_vector<split_ship> Split_ships;
+static std::vector<split_ship> Split_ships;
 
 static int get_split_ship()
 {
@@ -3094,7 +3094,7 @@ bool WarpParams::operator!=(const WarpParams &other)
 	return !(operator==(other));
 }
 
-SCP_vector<WarpParams> Warp_params;
+std::vector<WarpParams> Warp_params;
 
 int find_or_add_warp_params(const WarpParams &params)
 {

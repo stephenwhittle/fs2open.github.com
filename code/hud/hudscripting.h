@@ -11,7 +11,7 @@ class HudGaugeScripting: public HudGauge {
 
 	void render(float frametime) override;
 
-	void initName(SCP_string name);
+	void initName(std::string name);
 
 	const luacpp::LuaFunction& getRenderFunction() const;
 	void setRenderFunction(const luacpp::LuaFunction& renderFunction);

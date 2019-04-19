@@ -582,8 +582,8 @@ int cf_rename(const char *old_name, const char *name, int dir_type)
 // Do note that this requires the path to have normalized directory separators as defined by DIR_SEPARATOR_CHAR
 static void mkdir_recursive(const char *path) {
     size_t pre = 0, pos;
-    SCP_string tmp(path);
-    SCP_string dir;
+    std::string tmp(path);
+    std::string dir;
 
     if (tmp[tmp.size() - 1] != DIR_SEPARATOR_CHAR) {
         // force trailing / so we can handle everything in loop
@@ -1243,11 +1243,11 @@ void cfread_string_len(char *buf,int n, CFILE *file)
 	buf[len] = 0;
 }
 
-SCP_string cfread_string_len(CFILE *file)
+std::string cfread_string_len(CFILE *file)
 {
 	int len = cfread_int(file);
 
-	SCP_string str;
+	std::string str;
 	str.resize(len);
 
 	if (len)
@@ -1835,9 +1835,9 @@ int cflush(CFILE *cfile)
 	return result;
 }
 
-int cfile_get_path_type(const SCP_string& dir)
+int cfile_get_path_type(const std::string& dir)
 {
-	SCP_string buf = dir;
+	std::string buf = dir;
 
 	// Remove trailing slashes; avoid buffer overflow on 1-char strings
 	while (buf.size() > 0 && (buf[buf.size() - 1] == '\\' || buf[buf.size() - 1] == '/')) {

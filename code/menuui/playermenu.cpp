@@ -160,7 +160,7 @@ int Player_select_clone_flag;						// clone the currently selected pilot
 char Player_select_last_pilot[CALLSIGN_LEN + 10];	// callsign of the last used pilot, or none if there wasn't one
 int Player_select_last_is_multi;
 
-SCP_string Player_select_force_main_hall = "";
+std::string Player_select_force_main_hall = "";
 
 static int Player_select_no_save_pilot = 0;		// to skip save of pilot in pilot_select_close()
 
@@ -213,7 +213,7 @@ void player_select_cancel_create();
 bool valid_pilot_lang(const char *callsign)
 {
 	char pilot_lang[LCL_LANG_NAME_LEN+1], current_lang[LCL_LANG_NAME_LEN+1];
-	SCP_string filename = callsign;
+	std::string filename = callsign;
 
 	filename += ".json";
 	lcl_get_language_name(current_lang);
@@ -1391,25 +1391,25 @@ void player_tips_popup()
 	} while(ret > 0);
 }
 
-SCP_vector<SCP_string> player_select_enumerate_pilots() {
+std::vector<std::string> player_select_enumerate_pilots() {
 	// load up the list of players based upon the Player_select_mode (single or multiplayer)
 	Get_file_list_filter = player_select_pilot_file_filter;
 
-	SCP_vector<SCP_string> pilots;
+	std::vector<std::string> pilots;
 	cf_get_file_list(pilots, CF_TYPE_PLAYERS, "*.json", CF_SORT_TIME, nullptr, CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 
 	return pilots;
 }
 
-SCP_string player_get_last_player()
+std::string player_get_last_player()
 {
 	const char* last_player = os_config_read_string(nullptr, "LastPlayer", nullptr);
 
 	if (last_player == nullptr) {
 		// No last player stored
-		return SCP_string();
+		return std::string();
 	}
-	return SCP_string(last_player);
+	return std::string(last_player);
 }
 
 void player_finish_select(const char* callsign, bool is_multi) {
@@ -1442,7 +1442,7 @@ void player_finish_select(const char* callsign, bool is_multi) {
 	gameseq_post_event(GS_EVENT_MAIN_MENU);
 }
 bool player_create_new_pilot(const char* callsign, bool is_multi, const char* copy_from_callsign) {
-	SCP_string buf = callsign;
+	std::string buf = callsign;
 
 	drop_white_space(buf);
 	auto invalid_name = false;

@@ -29,7 +29,7 @@ void HudGaugeScripting::render(float /*frametime*/) {
 	                                                     l_HudGaugeDrawFuncs.Set(this)) });
 }
 
-void HudGaugeScripting::initName(SCP_string name) {
+void HudGaugeScripting::initName(std::string name) {
 	if (name.size() > NAME_LENGTH - 1) {
 		error_display(0,
 		              "Name \"%s\" is too long. May not be longer than %d! Name will be truncated",

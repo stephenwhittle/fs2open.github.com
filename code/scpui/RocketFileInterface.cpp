@@ -29,7 +29,7 @@ FileHandle RocketFileInterface::Open(const String& path)
 	}
 
 	int dir_type;
-	SCP_string name;
+	std::string name;
 
 	if (!getCFilePath(path, name, dir_type)) {
 		return 0;
@@ -70,7 +70,7 @@ bool RocketFileInterface::Seek(FileHandle file, long offset, int origin)
 }
 size_t RocketFileInterface::Tell(FileHandle file) { return (size_t)cftell((CFILE*)file); }
 size_t RocketFileInterface::Length(FileHandle file) { return (size_t)cfilelength((CFILE*)file); }
-bool RocketFileInterface::getCFilePath(const String& path_in, SCP_string& name, int& dir_type)
+bool RocketFileInterface::getCFilePath(const String& path_in, std::string& name, int& dir_type)
 {
 	String path = path_in;
 	if (path.Find("\\") != String::npos) {

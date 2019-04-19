@@ -17,7 +17,7 @@ class BinaryFileHandler: public FileHandler {
 		size_t offset;
 	};
 
-	SCP_vector<SectionOffset> _sectionOffsets;
+	std::vector<SectionOffset> _sectionOffsets;
 	bool _writingSections = false;
 
 
@@ -69,7 +69,7 @@ class BinaryFileHandler: public FileHandler {
 
 	float readFloat(const char* name) override;
 
-	SCP_string readString(const char* name) override;
+	std::string readString(const char* name) override;
 
 	void readString(const char* name, char* dest, size_t max_size) override;
 

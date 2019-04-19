@@ -39,7 +39,7 @@ class RocketFileInterface : public Rocket::Core::FileInterface {
 
 	size_t Length(Rocket::Core::FileHandle file) override;
 
-	static bool getCFilePath(const Rocket::Core::String& path, SCP_string& name, int& dir_type);
+	static bool getCFilePath(const Rocket::Core::String& path, std::string& name, int& dir_type);
 };
 
 } // namespace scpui

@@ -110,7 +110,7 @@ std::uint32_t pilot::BinaryFileHandler::readUInt(const char*) {
 float pilot::BinaryFileHandler::readFloat(const char*) {
 	return cfread_float(_cfp);
 }
-SCP_string pilot::BinaryFileHandler::readString(const char*) {
+std::string pilot::BinaryFileHandler::readString(const char*) {
 	return cfread_string_len(_cfp);
 }
 void pilot::BinaryFileHandler::readString(const char*, char* dest, size_t max_size) {

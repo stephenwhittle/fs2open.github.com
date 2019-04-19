@@ -107,7 +107,7 @@ public:
 	bool operator!=(const WarpParams &other);
 };
 
-extern SCP_vector<WarpParams> Warp_params;
+extern std::vector<WarpParams> Warp_params;
 
 extern int find_or_add_warp_params(const WarpParams &params);
 

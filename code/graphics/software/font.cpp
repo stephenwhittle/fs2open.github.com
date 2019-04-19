@@ -38,7 +38,7 @@ namespace
 
 	bool font_initialized = false;
 
-	bool parse_type(FontType &type, SCP_string &fileName)
+	bool parse_type(FontType &type, std::string &fileName)
 	{
 		int num = optional_string_either("$TrueType:", "$Font:");
 		if (num == 0)
@@ -66,10 +66,10 @@ namespace
 		}
 	}
 
-	void parse_nvg_font(const SCP_string& fontFilename)
+	void parse_nvg_font(const std::string& fontFilename)
 	{
 		float size = 8.0f;
-		SCP_string fontStr;
+		std::string fontStr;
 		bool hasName = false;
 
 		if (optional_string("+Name:"))
@@ -93,7 +93,7 @@ namespace
 		// Build name from existing values if no name is specified
 		if (!hasName)
 		{
-			SCP_stringstream ss;
+			std::stringstream ss;
 
 			ss << fontFilename << "-";
 
@@ -176,7 +176,7 @@ namespace
 			// Special characters only exist in non-Unicode mode
 			if (optional_string("+Special Character Font:"))
 			{
-				SCP_string fontName;
+				std::string fontName;
 				stuff_string(fontName, F_NAME);
 
 				fo::font* fontData = FontManager::loadFontOld(fontName.c_str());
@@ -212,7 +212,7 @@ namespace
 		nvgFont->computeFontMetrics();
 	}
 
-	void parse_vfnt_font(const SCP_string& fontFilename)
+	void parse_vfnt_font(const std::string& fontFilename)
 	{
 		VFNTFont *font = FontManager::loadVFNTFont(fontFilename);
 
@@ -222,7 +222,7 @@ namespace
 			return;
 		}
 
-		SCP_string fontName;
+		std::string fontName;
 
 		if (optional_string("+Name:"))
 		{
@@ -342,7 +342,7 @@ namespace
 			font_parse_setup(fileName);
 
 			FontType type;
-			SCP_string fontName;
+			std::string fontName;
 
 			while (parse_type(type, fontName))
 			{
@@ -439,7 +439,7 @@ namespace font
 		return w;
 	}
 
-	void stuff_first(SCP_string &firstFont)
+	void stuff_first(std::string &firstFont)
 	{
 		try
 		{
@@ -459,9 +459,9 @@ namespace font
 	{
 		int font_idx;
 
-		SCP_string input;
+		std::string input;
 		stuff_string(input, F_NAME);
-		SCP_stringstream ss(input);
+		std::stringstream ss(input);
 
 		int fontNum;
 		ss >> fontNum;
@@ -501,7 +501,7 @@ namespace font
 		return FontManager::getCurrentFont();
 	}
 
-	FSFont *get_font(const SCP_string& name)
+	FSFont *get_font(const std::string& name)
 	{
 		return FontManager::getFont(name);
 	}

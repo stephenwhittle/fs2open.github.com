@@ -7,7 +7,7 @@
 #include "core/format.h"
 
 namespace {
-const SCP_vector<std::pair<Section, const char*>> SectionMapping {
+const std::vector<std::pair<Section, const char*>> SectionMapping {
 	std::pair<Section, const char*>(Section::Unnamed, nullptr),
 	std::pair<Section, const char*>(Section::Flags, "flags"),
 	std::pair<Section, const char*>(Section::Info, "info"),
@@ -59,7 +59,7 @@ pilot::JSONFileHandler::JSONFileHandler(CFILE* cfp, bool reading) : _cfp(cfp) {
 		_rootObj = json_load_cfile(cfp, 0, &error);
 
 		if (!_rootObj) {
-			SCP_string errorStr;
+			std::string errorStr;
 			core::sprintf(errorStr, "Error while reading pilot file! %d: %s", error.line, error.text);
 			throw std::runtime_error(errorStr);
 		}
@@ -218,15 +218,15 @@ float pilot::JSONFileHandler::readFloat(const char* name) {
 
 	return (float)json_real_value(el);
 }
-SCP_string pilot::JSONFileHandler::readString(const char* name) {
+std::string pilot::JSONFileHandler::readString(const char* name) {
 	auto el = json_object_get(_currentEl, name);
 
 	if (el == nullptr || json_typeof(el) != JSON_STRING) {
 		core::Error(LOCATION, "JSON element %s must be a string but it is not valid!", name);
-		return SCP_string();
+		return std::string();
 	}
 	auto json_str = json_string_value(el);
-	SCP_string val;
+	std::string val;
 	val.assign(json_str, json_str + json_string_length(el));
 
 	return val;

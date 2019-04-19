@@ -70,6 +70,8 @@ struct WeaponStateHash {
 	}
 };
 
+template class std::unordered_map<WeaponState, particle::ParticleEffectHandle, WeaponStateHash>;
+
 typedef struct weapon {
 	int		weapon_info_index;			// index into weapon_info array
 	int		objnum;							// object number for this weapon
@@ -108,7 +110,7 @@ typedef struct weapon {
 	int		pick_big_attack_point_timestamp;	//	Timestamp at which to pick a new point to attack.
 	vec3d	big_attack_point;				//	Target-relative location of attack point.
 
-	SCP_vector<int>* cmeasure_ignore_list;
+	std::vector<int>* cmeasure_ignore_list;
 	int		cmeasure_timer;
 
 	// corkscrew info (taken out for now)
@@ -341,7 +343,7 @@ typedef struct weapon_info {
 	particle::ParticleEffectHandle piercing_impact_secondary_effect;
 
 	// Particle effect for the various states, WeaponState::NORMAL is the state for the whole lifetime, even for missiles
-	SCP_unordered_map<WeaponState, particle::ParticleEffectHandle, WeaponStateHash> state_effects;
+	std::unordered_map<WeaponState, particle::ParticleEffectHandle, WeaponStateHash> state_effects;
 
 	// EMP effect
 	float emp_intensity;					// intensity of the EMP effect
@@ -447,7 +449,7 @@ typedef struct weapon_info {
 
 	// Optional weapon failures
 	float failure_rate;
-	SCP_string failure_sub_name;
+	std::string failure_sub_name;
 	int failure_sub;
 
 	// the optional pattern of weapons that this weapon will fire
@@ -513,7 +515,7 @@ typedef struct weapon_expl_info	{
 class weapon_explosions
 {
 private:
-	SCP_vector<weapon_expl_info> ExplosionInfo;
+	std::vector<weapon_expl_info> ExplosionInfo;
 	int GetIndex(char *filename);
 
 public:
@@ -586,7 +588,7 @@ int	weapon_area_calc_damage(object *objp, vec3d *pos, float inner_rad, float out
 										float *blast, float *damage, float limit);
 
 missile_obj *missile_obj_return_address(int index);
-void find_homing_object_cmeasures(const SCP_vector<object*> &cmeasure_list);
+void find_homing_object_cmeasures(const std::vector<object*> &cmeasure_list);
 
 // THE FOLLOWING FUNCTION IS IN SHIP.CPP!!!!
 // JAS - figure out which thruster bitmap will get rendered next

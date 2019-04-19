@@ -109,7 +109,7 @@ int get_modifier_state()
 
 void load_fonts()
 {
-	SCP_vector<SCP_string> files;
+	std::vector<std::string> files;
 	cf_get_file_list(files, CF_TYPE_FONT, "*.ttf");
 
 	for (auto& name : files) {
@@ -596,7 +596,7 @@ void reloadContext(Rocket::Core::Context* context)
 	};
 
 	// Save the current status of the documents in this context
-	SCP_vector<DocumentStatus> documents;
+	std::vector<DocumentStatus> documents;
 	for (auto i = 0; i < context->GetNumDocuments(); ++i) {
 		ElementDocument* doc = context->GetDocument(i);
 		if (doc->GetSourceURL() == "") {

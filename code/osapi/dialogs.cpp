@@ -46,12 +46,12 @@ namespace
 		stream << "- Function line:\t" << (ar.linedefined ? (1 + ar.currentline - ar.linedefined) : 0) << "\n";
 	}
 
-	SCP_string truncateLines(SCP_stringstream& s, int maxLines)
+	std::string truncateLines(std::stringstream& s, int maxLines)
 	{
-		SCP_stringstream outStream;
+		std::stringstream outStream;
 		s.seekp(0, std::ios::beg);
 
-		for (SCP_string line; std::getline(s, line);)
+		for (std::string line; std::getline(s, line);)
 		{
 			outStream << line << "\n";
 
@@ -93,14 +93,14 @@ namespace os
 			// We only want to display the file name
 			filename = core::path::clean_filename(filename);
 
-			SCP_stringstream msgStream;
+			std::stringstream msgStream;
 			msgStream << "Assert: \"" << text << "\"\n";
 			msgStream << "File: " << filename << "\n";
 			msgStream << "Line: " << linenum << "\n";
 			
 			if (format != nullptr)
 			{
-				SCP_string buffer;
+				std::string buffer;
 				va_list args;
 
 				va_start(args, format);
@@ -123,7 +123,7 @@ namespace os
 			msgStream << "\n";
 			msgStream << dump_stacktrace();
 
-			SCP_string messageText = msgStream.str();
+			std::string messageText = msgStream.str();
 			set_clipboard_text(messageText.c_str());
 
 			messageText = truncateLines(msgStream, Messagebox_lines);
@@ -135,7 +135,7 @@ namespace os
 
 		void LuaError(lua_State * L, const char * format, ...)
 		{
-			SCP_stringstream msgStream;
+			std::stringstream msgStream;
 			
 			//WMC - if format is set to NULL, assume this is acting as an
 			//error handler for Lua.
@@ -146,7 +146,7 @@ namespace os
 			}
 			else
 			{
-				SCP_string formatText;
+				std::string formatText;
 
 				va_list args;
 				va_start(args, format);
@@ -215,7 +215,7 @@ namespace os
 			// truncate text
 			auto truncatedText = truncateLines(msgStream, Messagebox_lines);
 
-			SCP_stringstream boxTextStream;
+			std::stringstream boxTextStream;
 			boxTextStream << truncatedText << "\n";
 
 			boxTextStream << "\n[ This info is in the clipboard so you can paste it somewhere now ]\n";
@@ -265,7 +265,7 @@ namespace os
 
 		void Error(const char * filename, int line, const char * format, ...)
 		{
-			SCP_string formatText;
+			std::string formatText;
 			filename = core::path::clean_filename(filename);
 
 			va_list args;
@@ -273,7 +273,7 @@ namespace os
 			core::vsprintf(formatText, format, args);
 			va_end(args);
 
-			SCP_stringstream messageStream;
+			std::stringstream messageStream;
 			messageStream << "Error: " << formatText << "\n";
 			messageStream << "File: " << filename << "\n";
 			messageStream << "Line: " << line << "\n";
@@ -294,11 +294,11 @@ namespace os
 				throw ErrorException(text);
 			}
 
-			SCP_stringstream messageStream;
+			std::stringstream messageStream;
 			messageStream << text << "\n";
 			messageStream << dump_stacktrace();
 
-			SCP_string fullText = messageStream.str();
+			std::string fullText = messageStream.str();
 			set_clipboard_text(fullText.c_str());
 
 			fullText = truncateLines(messageStream, Messagebox_lines);
@@ -344,7 +344,7 @@ namespace os
 		}
 
 		// Actual implementation of the warning function. Used by the various warning functions
-		void WarningImpl(const char* filename, int line, const SCP_string& text)
+		void WarningImpl(const char* filename, int line, const std::string& text)
 		{
 			filename = core::path::clean_filename(filename);
 
@@ -360,7 +360,7 @@ namespace os
 				throw WarningException(text);
 			}
 
-			SCP_stringstream boxMsgStream;
+			std::stringstream boxMsgStream;
 			boxMsgStream << "Warning: " << text << "\n";
 			boxMsgStream << "File: " << filename << "\n";
 			boxMsgStream << "Line: " << line << "\n";
@@ -369,7 +369,7 @@ namespace os
 
 			boxMsgStream << "\n";
 
-			SCP_string boxMessage = truncateLines(boxMsgStream, Messagebox_lines);
+			std::string boxMessage = truncateLines(boxMsgStream, Messagebox_lines);
 			boxMessage += "\n[ This info is in the clipboard so you can paste it somewhere now ]\n";
 			boxMessage += "\n\nUse Debug to break into Debugger\n";
 
@@ -419,7 +419,7 @@ namespace os
 		void ReleaseWarning(const char* filename, int line, const char* format, ...) {
 			Global_warning_count++;
 
-			SCP_string msg;
+			std::string msg;
 			va_list args;
 
 			va_start(args, format);
@@ -434,7 +434,7 @@ namespace os
 			Global_warning_count++;
 
 #ifndef NDEBUG
-			SCP_string msg;
+			std::string msg;
 			va_list args;
 
 			va_start(args, format);
@@ -449,7 +449,7 @@ namespace os
 		{
 #ifndef NDEBUG
 			if (Cmdline_extra_warn) {
-				SCP_string msg;
+				std::string msg;
 				va_list args;
 
 				va_start(args, format);

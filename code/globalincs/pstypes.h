@@ -411,7 +411,6 @@ public:
 	bool isValid();
 };
 
-#include "globalincs/vmallocator.h"
 #include "globalincs/safe_strings.h"
 
 // check to see that a passed sting is valid, ie:
@@ -430,7 +429,7 @@ inline bool VALID_FNAME(const char* x) {
  * @param x The file name to check
  * @return @c true if the name is valid, @c false otherwise
  */
-inline bool VALID_FNAME(const SCP_string& x) {
+inline bool VALID_FNAME(const std::string& x) {
 	if (x.empty()) {
 		return false;
 	}
@@ -444,7 +443,7 @@ inline bool VALID_FNAME(const SCP_string& x) {
 }
 
 // Function to generate a stacktrace
-SCP_string dump_stacktrace();
+std::string dump_stacktrace();
 
 // DEBUG compile time catch for dangerous uses of memset/memcpy/memmove
 // This is disabled for VS2013 and lower since that doesn't support the necessary features

@@ -19,8 +19,8 @@ bool check_at_least(const version& v) {
 	return get_executable_version() >= v;
 }
 
-SCP_string format_version(const version& v) {
-	SCP_stringstream ss;
+std::string format_version(const version& v) {
+	std::stringstream ss;
 
 	ss << v.major << "." << v.minor << "." << v.build;
 
@@ -131,9 +131,9 @@ bool version::operator!=(const version& other) const {
 	return !(*this == other);
 }
 
-SCP_string get_version_string()
+std::string get_version_string()
 {
-	SCP_string str;
+	std::string str;
 
 	core::sprintf(str, "FreeSpace 2 Open v%s", FS_VERSION_FULL);
 

@@ -32,7 +32,7 @@ static const ubyte PLR_VERSION = 2;
 static const ubyte CSG_VERSION = 5;
 
 typedef struct index_list_t {
-	SCP_string name;
+	std::string name;
 	int index{ -1 };
 	int val{ 0 };
 } index_list_t;
@@ -59,8 +59,8 @@ typedef struct scoring_special_t {
 	_fs_time_t last_flown{ 0 };
 	_fs_time_t last_backup{ 0 };
 
-	SCP_vector<index_list_t> ship_kills;
-	SCP_vector<index_list_t> medals_earned;
+	std::vector<index_list_t> ship_kills;
+	std::vector<index_list_t> medals_earned;
 } scoring_special_t;
 
 class pilotfile {
@@ -94,7 +94,7 @@ class pilotfile {
 		// --------------------------------------------------------------------
 		CFILE *cfp;
 		std::unique_ptr<pilot::FileHandler> handler;
-		SCP_string filename;
+		std::string filename;
 		player *p;
 
 		int version;
@@ -110,10 +110,10 @@ class pilotfile {
 		// overall content list, can include reference to more than current
 		// mod/campaign provides
 		// NOTE:  order of each list **must be preserved**
-		SCP_vector<index_list_t> ship_list;
-		SCP_vector<index_list_t> weapon_list;
-		SCP_vector<index_list_t> intel_list;
-		SCP_vector<index_list_t> medals_list;
+		std::vector<index_list_t> ship_list;
+		std::vector<index_list_t> weapon_list;
+		std::vector<index_list_t> intel_list;
+		std::vector<index_list_t> medals_list;
 
 		scoring_special_t all_time_stats;
 		scoring_special_t multi_stats;

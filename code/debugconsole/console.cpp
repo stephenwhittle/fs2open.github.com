@@ -24,7 +24,7 @@
 bool Dc_debug_on;		//!< Flag used to print console and command debugging strings
 
 // Commands and History
-SCP_string dc_command_str;		//!< The entered command line, arguments and all.
+std::string dc_command_str;		//!< The entered command line, arguments and all.
 								//!< Is progressively culled from the left as commands, arguments are parsed in DCF's
 
 // Misc
@@ -55,7 +55,7 @@ const char *token_str[DCT_MAX_ITEMS] =
 	"boolean"
 };
 
-SCP_deque<SCP_string> dc_buffer;
+std::deque<std::string> dc_buffer;
 
 // Display Window
 uint DROWS = 25;
@@ -68,18 +68,18 @@ int row_height;     // Row/Line height, in pixels
 int col_width;      // Col/Character width, in pixels
 int dc_font = font::FONT1;
 
-SCP_string dc_title;
+std::string dc_title;
 
 #define SCROLL_Y_MAX (DBROWS - DROWS)
 
 // Commands and History
 uint DCMDS = 40;			// Max number of commands to remember
 
-SCP_deque<SCP_string> dc_history;
-SCP_deque<SCP_string>::iterator last_oldcommand;		// Iterator to the last old command. Is reset to the start every new command push.
+std::deque<std::string> dc_history;
+std::deque<std::string>::iterator last_oldcommand;		// Iterator to the last old command. Is reset to the start every new command push.
 
 const char dc_prompt[]= "> ";	// The prompt c_str
-SCP_string dc_command_buf;		// The command line as shown in the console. Essentially an input buffer for dc_command_str
+std::string dc_command_buf;		// The command line as shown in the console. Essentially an input buffer for dc_command_str
 
 // Local functions
 /**
@@ -90,7 +90,7 @@ void dc_init(void);
 /**
  * @brief Process the entered command string
  */
-void dc_do_command(SCP_string *cmd_str);
+void dc_do_command(std::string *cmd_str);
 
 /**
  * @brief Draws the in-game console.
@@ -103,7 +103,7 @@ void dc_draw(bool show_prompt);
  * @param [in] x		The x screen position of the command string
  * @param [in] y		The y screen position of the command string
  */
-void dc_draw_cursor( SCP_string &cmd_string, int x, int y );
+void dc_draw_cursor( std::string &cmd_string, int x, int y );
 
 /**
  * Draws the window text
@@ -117,7 +117,7 @@ void dc_draw_window(bool show_prompt);
 void dc_putc(char c);
 
 // ============================== IMPLEMENTATIONS =============================
-void dc_do_command(SCP_string *cmd_str)
+void dc_do_command(std::string *cmd_str)
 {
 	/**
 	 * Grab the first word from the cmd_str
@@ -130,7 +130,7 @@ void dc_do_command(SCP_string *cmd_str)
 	 *          Function takes care of long_help and status depending on the mode.
 	 */
 	int i;
-	SCP_string command;
+	std::string command;
 	extern debug_command* dc_commands[];	// z64: I don't like this extern here, at all. Nope nope nope.
 
 	if (cmd_str->empty()) {
@@ -193,7 +193,7 @@ void dc_draw(bool show_prompt = FALSE)
 	gr_flip();
 }
 
-void dc_draw_cursor( SCP_string &cmd_string, int x, int y )
+void dc_draw_cursor( std::string &cmd_string, int x, int y )
 {
 	int t;
 	int w, h;	// gr_string width and height
@@ -215,8 +215,8 @@ void dc_draw_window(bool show_prompt)
 	size_t buffer_lines;            // Number of lines from the buffer to draw
 	size_t i;                       // The current row we're drawing
 	size_t j;                       // The current row of the command string we're drawing
-	SCP_string out_str;             // The command string + prompt character
-	SCP_string::iterator str_it;    // Iterator to out_str
+	std::string out_str;             // The command string + prompt character
+	std::string::iterator str_it;    // Iterator to out_str
 
 	out_str = dc_prompt + dc_command_buf;
 	cmd_lines = (out_str.size() / DCOLS) + 1;
@@ -358,9 +358,9 @@ bool dc_pause_output(void)
 
 void dc_printf(const char *format, ...)
 {
-	SCP_string tmp;
+	std::string tmp;
 	va_list args;
-	SCP_string::iterator tmp_it;
+	std::string::iterator tmp_it;
 
 	va_start(args, format);
 	core::vsprintf(tmp, format, args);
@@ -373,8 +373,8 @@ void dc_printf(const char *format, ...)
 
 void dc_putc(char c)
 {
-	SCP_string* line_str = &(dc_buffer.back());
-	SCP_string temp_str;
+	std::string* line_str = &(dc_buffer.back());
+	std::string temp_str;
 	int i;
 	int w;
 
