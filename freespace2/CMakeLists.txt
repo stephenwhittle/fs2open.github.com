@@ -29,6 +29,7 @@ TARGET_LINK_LIBRARIES(Freespace2 code)
 TARGET_LINK_LIBRARIES(Freespace2 platform)
 TARGET_LINK_LIBRARIES(Freespace2 compiler)
 
+
 IF(WIN32)
 	# Link sdl main only here as it interferes with fred
 	TARGET_LINK_LIBRARIES(Freespace2 sdlmain)

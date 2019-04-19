@@ -18,7 +18,7 @@
  */
 
 #include <sal.h>
-
+#include "core/core.h"
 #define SCP_FORMAT_STRING            _Printf_format_string_
 #define SCP_FORMAT_STRING_ARGS(x,y)
 
@@ -86,8 +86,8 @@
 
 #ifndef NDEBUG
 #define UNREACHABLE(msg, ...)                                                                                          \
-	do {                                                                                                               \
-		os::dialogs::Error(__FILE__, __LINE__, msg, ##__VA_ARGS__);                                                    \
+	do {    
+		core::error_handler.emit(__FILE__, __LINE__, msg, ##__VA_ARGS__);\
 	} while (false)
 #else
 #define UNREACHABLE(msg, ...) __assume(false)

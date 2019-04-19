@@ -120,7 +120,6 @@ namespace os
 
 // Make these available in the global namespace for compatibility
 using os::dialogs::LuaError;
-using os::dialogs::Error;
 using os::dialogs::Warning;
 using os::dialogs::ReleaseWarning;
 using os::dialogs::WarningEx;
