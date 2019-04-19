@@ -27,6 +27,8 @@
  #include <sys/stat.h>
 #endif
 
+#include "core/format.h"
+#include "core/error.h"
 #include "freespace.h"
 #include "freespaceresource.h"
 #include "levelpaging.h"
@@ -943,7 +945,7 @@ void game_level_close()
 	}
 	else
 	{
-		Error(LOCATION, "Scripting Mission End override is not fully supported yet.");
+		core::Error(LOCATION, "Scripting Mission End override is not fully supported yet.");
 	}
 
 	Script_system.RunCondition(CHA_MISSIONEND);
@@ -2165,11 +2167,11 @@ void game_show_framerate()
 		process_stats.cb = sizeof(process_stats);
 
 		if (GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PPROCESS_MEMORY_COUNTERS>(&process_stats), sizeof(process_stats))) {
-			sprintf(mem_buffer, "Private Usage: " SIZE_T_ARG " Meg", static_cast<size_t>(process_stats.PrivateUsage) / 1024 / 1024);
+			core::sprintf(mem_buffer, "Private Usage: " SIZE_T_ARG " Meg", static_cast<size_t>(process_stats.PrivateUsage) / 1024 / 1024);
 			gr_string(sx, sy, mem_buffer.c_str(), GR_RESIZE_NONE);
 			sy += line_height;
 
-			sprintf(mem_buffer, "Working set size: " SIZE_T_ARG " Meg", static_cast<size_t>(process_stats.WorkingSetSize) / 1024 / 1024);
+			core::sprintf(mem_buffer, "Working set size: " SIZE_T_ARG " Meg", static_cast<size_t>(process_stats.WorkingSetSize) / 1024 / 1024);
 			gr_string(sx, sy, mem_buffer.c_str(), GR_RESIZE_NONE);
 			sy += line_height;
 			sy += line_height;
@@ -2178,15 +2180,15 @@ void game_show_framerate()
 		MEMORYSTATUSEX mem_stats;
 		mem_stats.dwLength = sizeof(mem_stats);
 		if (GlobalMemoryStatusEx(&mem_stats)) {
-			sprintf(mem_buffer, "Physical Free: %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailPhys / 1024 / 1024, mem_stats.ullTotalPhys / 1024 / 1024);
+			core::sprintf(mem_buffer, "Physical Free: %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailPhys / 1024 / 1024, mem_stats.ullTotalPhys / 1024 / 1024);
 			gr_string(sx, sy, mem_buffer.c_str(), GR_RESIZE_NONE);
 			sy += line_height;
 
-			sprintf(mem_buffer, "Pagefile Free: %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailPageFile / 1024 / 1024, mem_stats.ullTotalPageFile / 1024 / 1024);
+			core::sprintf(mem_buffer, "Pagefile Free: %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailPageFile / 1024 / 1024, mem_stats.ullTotalPageFile / 1024 / 1024);
 			gr_string(sx, sy, mem_buffer.c_str(), GR_RESIZE_NONE);
 			sy += line_height;
 
-			sprintf(mem_buffer, "Virtual Free:  %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailVirtual / 1024 / 1024, mem_stats.ullTotalVirtual / 1024 / 1024);
+			core::sprintf(mem_buffer, "Virtual Free:  %" PRIu64 " / %" PRIu64 " Meg", mem_stats.ullAvailVirtual / 1024 / 1024, mem_stats.ullTotalVirtual / 1024 / 1024);
 			gr_string(sx, sy, mem_buffer.c_str(), GR_RESIZE_NONE);
 		}
 	}
@@ -3085,7 +3087,7 @@ camid game_render_frame_setup()
 	camera *main_cam = Main_camera.getCamera();
 	if(main_cam == NULL)
 	{
-		Error(LOCATION, "Unable to generate main camera");
+		core::Error(LOCATION, "Unable to generate main camera");
 		return camid();
 	}
 
@@ -7999,13 +8001,13 @@ int actual_main(int argc, char *argv[])
 #elif !defined(DONT_CATCH_MAIN_EXCEPTIONS)
 	}
 	catch (const std::exception &ex) {
-		Error(LOCATION, "Caught std::exception in main(): '%s'!", ex.what());
+		core::Error(LOCATION, "Caught std::exception in main(): '%s'!", ex.what());
 		fprintf(stderr, "Caught std::exception in main(): '%s'!\n", ex.what());
 
 		result = EXIT_FAILURE;
 	}
 	catch (...) {
-		Error(LOCATION, "Caught exception in main()!");
+		core::Error(LOCATION, "Caught exception in main()!");
 		fprintf(stderr, "Caught exception in main()!\n");
 
 		result = EXIT_FAILURE;

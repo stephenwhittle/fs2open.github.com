@@ -23,6 +23,9 @@
 #include <cerrno>
 #include <cstdlib> /* size_t */
 
+//todo: replace with forward declaration
+#include "core/error.h"
+
 /* Because errno_t is not (yet) standard, we define it here like this */
 typedef int errno_t;
 
@@ -37,7 +40,7 @@ typedef int errno_t;
 #ifndef SAFESTRINGS_TEST_APP
 
 #	ifndef __safe_strings_error_handler
-#		define __safe_strings_error_handler( val ) Error(file, line,"%s: String error. Please Report.\nTrying to put into " SIZE_T_ARG " byte buffer:\n%s", #val, sizeInBytes,strSource)
+#		define __safe_strings_error_handler( val ) core::Error(file, line,"%s: String error. Please Report.\nTrying to put into " SIZE_T_ARG " byte buffer:\n%s", #val, sizeInBytes,strSource)
 #	endif
 
 #else

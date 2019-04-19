@@ -17,6 +17,8 @@
 #include <climits>
 #include <algorithm>
 
+#include "core/error.h"
+#include "core/format.h"
 #include "cmdline/cmdline.h"
 #include "debugconsole/console.h"
 #include "gamesequence/gamesequence.h" //WMC - for scripting hooks in gr_flip()
@@ -993,7 +995,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 				}
 
 				SCP_string videomode;
-				sprintf(videomode, "OGL -(%dx%d)x%d bit", width, height, depth);
+				core::sprintf(videomode, "OGL -(%dx%d)x%d bit", width, height, depth);
 
 				os_config_write_string(NULL, NOX("VideocardFs2open"), videomode.c_str());
 			}
@@ -1004,7 +1006,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 		// NOTE: The "ptr+5" is to skip over the initial "????-" in the video string.
 		//       If the format of that string changes you'll have to change this too!!!
 		if (sscanf(ptr + 5, "(%dx%d)x%d ", &width, &height, &depth) != 3) {
-			Error(LOCATION, "Can't understand 'VideocardFs2open' config entry!");
+			core::Error(LOCATION, "Can't understand 'VideocardFs2open' config entry!");
 		}
 	}
 
@@ -1142,7 +1144,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 		}
 	}
 	if (missing_installation) {
-		Error(LOCATION, "\nWeb cursor bitmap not found.  This is most likely due to one of three reasons:\n"
+		core::Error(LOCATION, "\nWeb cursor bitmap not found.  This is most likely due to one of three reasons:\n"
 			"    1) You're running FreeSpace Open from somewhere other than your FreeSpace 2 folder;\n"
 			"    2) You've somehow corrupted your FreeSpace 2 installation, e.g. by modifying or removing the retail VP files;\n"
 			"    3) You haven't installed FreeSpace 2 at all.  (Note that installing FreeSpace Open does NOT remove the need for a FreeSpace 2 installation.)\n"
@@ -2176,7 +2178,7 @@ void gr_print_timestamp(int x, int y, fix timestamp, int resize_mode)
 
 	// format the time information into strings
 	SCP_string time;
-	sprintf(time, "%.1d:%.2d:%.2d", (seconds / 3600) % 10, (seconds / 60) % 60, seconds % 60);
+	core::sprintf(time, "%.1d:%.2d:%.2d", (seconds / 3600) % 10, (seconds / 60) % 60, seconds % 60);
 
 	gr_string(x, y, time.c_str(), resize_mode);
 }

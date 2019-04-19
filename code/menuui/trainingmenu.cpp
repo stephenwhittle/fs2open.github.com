@@ -8,7 +8,7 @@
 */ 
 
 
-
+#include "core/error.h"
 #include "gamesequence/gamesequence.h"
 #include "graphics/2d.h"
 #include "menuui/snazzyui.h"
@@ -39,7 +39,7 @@ void training_menu_init()
 	// load in the background bitmap (filenames are hard-coded temporarily)
 	trainingMenuBitmap = bm_load(background_img_filename);
 	if (trainingMenuBitmap < 0) {
-		Error(LOCATION,"Could not load in %s!",background_img_filename);
+		core::Error(LOCATION,"Could not load in %s!",background_img_filename);
 	}
 
 	trainingMenuMask = bm_load(background_mask_filename);
@@ -47,7 +47,7 @@ void training_menu_init()
 	Training_mask_h = -1;
 
 	if (trainingMenuMask < 0) {
-		Error(LOCATION,"Could not load in %s!",background_mask_filename);
+		core::Error(LOCATION,"Could not load in %s!",background_mask_filename);
 	}
 	else {
 		// get a pointer to bitmap by using bm_lock()
@@ -111,7 +111,7 @@ void training_menu_do_frame(float  /*frametime*/)
 			// nothing selected
 			break;
 		default:
-			Error(LOCATION, "Unknown option %d in training menu screen", training_menu_choice );
+			core::Error(LOCATION, "Unknown option %d in training menu screen", training_menu_choice );
 			break;
 
 	} // end switch

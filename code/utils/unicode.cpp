@@ -2,6 +2,7 @@
 //
 
 #include "unicode.h"
+#include "core/error.h"
 
 namespace unicode {
 
@@ -25,7 +26,7 @@ text_iterator& unicode::text_iterator::operator++() {
 			// Increment by UTF-8 encoded codepoints
 			utf8::next(current_byte, range_end_byte);
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while incrementing UTF-8 sequence near '%.16s': %s", current_byte, e.what());
+			core::Error(LOCATION, "Exception while incrementing UTF-8 sequence near '%.16s': %s", current_byte, e.what());
 			return *this;
 		}
 	} else {
@@ -41,7 +42,7 @@ text_iterator& text_iterator::operator--() {
 			// Decrement by UTF-8 encoded codepoints
 			utf8::prior(current_byte, range_start_byte);
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while decrementing text iterator near '%.16s': %s", current_byte, e.what());
+			core::Error(LOCATION, "Exception while decrementing text iterator near '%.16s': %s", current_byte, e.what());
 			return *this;
 		}
 	} else {
@@ -56,7 +57,7 @@ text_iterator::value_type text_iterator::operator*() {
 		try {
 			return utf8::peek_next(current_byte, range_end_byte);
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while decoding UTF-8 sequence near '%.16s': %s", current_byte, e.what());
+			core::Error(LOCATION, "Exception while decoding UTF-8 sequence near '%.16s': %s", current_byte, e.what());
 			return 0;
 		}
 	} else {
@@ -145,7 +146,7 @@ size_t encoded_size(codepoint_t cp) {
 		try {
 			return utf8::encoded_width(cp);
 		} catch(const std::exception& e) {
-			Error(LOCATION,
+			core::Error(LOCATION,
 				  "Exception while computing encoded size of Unicode code point %" PRIu32 ": %s",
 				  (uint32_t) cp,
 				  e.what());

@@ -2,7 +2,7 @@
 //
 
 #include "ShaderProgram.h"
-
+#include "core/error.h"
 #include "graphics/opengl/gropenglstate.h"
 
 namespace {

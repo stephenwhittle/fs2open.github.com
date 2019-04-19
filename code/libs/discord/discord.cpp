@@ -1,3 +1,4 @@
+#include "core/format.h"
 #include "discord.h"
 #include "freespace.h"
 #include "events/events.h"
@@ -65,9 +66,9 @@ SCP_string get_details()
 	}
 
 	if (has_campaign && in_mission) {
-		sprintf(res, "%s: %s", get_current_campaign_name().c_str(), The_mission.name);
+		core::sprintf(res, "%s: %s", get_current_campaign_name().c_str(), The_mission.name);
 	} else if (has_campaign) {
-		sprintf(res, "Campaign %s", get_current_campaign_name().c_str());
+		core::sprintf(res, "Campaign %s", get_current_campaign_name().c_str());
 	} else if (in_mission) {
 		res = The_mission.name;
 	} else {
@@ -107,7 +108,7 @@ void set_game_play_presence()
 {
 	SCP_string state;
 
-	sprintf(state, "In mission (%d %s)", Player->stats.m_kill_count_ok,
+	core::sprintf(state, "In mission (%d %s)", Player->stats.m_kill_count_ok,
 	        Player->stats.m_kill_count_ok == 1 ? "kill" : "kills");
 
 	set_presence(state, (int64_t)time(nullptr) - f2i(Missiontime));

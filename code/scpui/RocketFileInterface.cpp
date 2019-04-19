@@ -2,7 +2,7 @@
 //
 
 #include "RocketFileInterface.h"
-
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "mod_table/mod_table.h"
 
@@ -24,7 +24,7 @@ FileHandle RocketFileInterface::Open(const String& path)
 	// In order to use libRocket correctly we need to make sure that we only have Unicode data. This is done here since
 	// a mod that uses libRocket will always open a file through this function but a mod that doesn't will not call this
 	if (!Unicode_text_mode) {
-		Error(LOCATION,
+		core::Error(LOCATION,
 		      "libRocket was used without Unicode text mode being enabled! The new UI system requires Unicode text.");
 	}
 

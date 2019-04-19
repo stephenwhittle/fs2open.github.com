@@ -20,6 +20,7 @@
 #include <direct.h>
 #endif
 
+#include "core/format.h"
 #include "osapi/DebugWindow.h"
 #include "osapi/osapi.h"
 #include "osapi/outwnd.h"
@@ -154,7 +155,7 @@ void outwnd_printf2(const char *format, ...)
 		return;
 
 	va_start(args, format);
-	vsprintf(temp, format, args);
+	core::vsprintf(temp, format, args);
 	va_end(args);
 
 	outwnd_print("General", temp.c_str());
@@ -169,7 +170,7 @@ void outwnd_printf(const char *id, const char *format, ...)
 		return;
 
 	va_start(args, format);
-	vsprintf(temp, format, args);
+	core::vsprintf(temp, format, args);
 	va_end(args);
 
 	outwnd_print(id, temp.c_str());

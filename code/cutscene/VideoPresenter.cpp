@@ -1,5 +1,5 @@
 #include "VideoPresenter.h"
-
+#include "core/error.h"
 #include "graphics/matrix.h"
 
 using namespace cutscene;

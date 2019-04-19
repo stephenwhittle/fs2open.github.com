@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "debugconsole/console.h"
 #include "gamesnd/gamesnd.h"
@@ -225,7 +225,7 @@ void obj_snd_stop(object *objp, int index)
 
 	// sanity
 	if(index >= (int) objp->objsnd_num.size()){
-		Error(LOCATION, "Object sound index %d is bigger than the actual size %d!", index, (int) objp->objsnd_num.size());
+		core::Error(LOCATION, "Object sound index %d is bigger than the actual size %d!", index, (int) objp->objsnd_num.size());
 		return;
 	}
 

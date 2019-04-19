@@ -9,7 +9,7 @@
 
 #include <cstdlib>
 #include <climits>
-
+#include "core/error.h"
 #include "freespace.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
@@ -423,7 +423,7 @@ void main_hall_init(const SCP_string &main_hall_name)
 
 	// sanity checks
 	if (Main_hall_defines.empty()) {
-		Error(LOCATION, "No main halls were loaded to initialize.");
+		core::Error(LOCATION, "No main halls were loaded to initialize.");
 	} else if (main_hall_name == "") {
 		// we were passed a blank main hall name, so load the first available main hall
 		main_hall_get_name(main_hall_to_load, 0);
@@ -507,9 +507,9 @@ void main_hall_init(const SCP_string &main_hall_name)
 	if (Main_hall_mask < 0) {
 		nprintf(("General","WARNING! Couldn't load main hall background mask %s\n", Main_hall->mask.c_str()));
 		if (gr_screen.res == 0) {
-			Error(LOCATION,"Could not load in main hall mask '%s'!\n\n(This error most likely means that you are missing required 640x480 interface art.)", Main_hall->mask.c_str());
+			core::Error(LOCATION,"Could not load in main hall mask '%s'!\n\n(This error most likely means that you are missing required 640x480 interface art.)", Main_hall->mask.c_str());
 		} else {
-			Error(LOCATION,"Could not load in main hall mask '%s'!\n\n(This error most likely means that you are missing required 1024x768 interface art.)", Main_hall->mask.c_str());
+			core::Error(LOCATION,"Could not load in main hall mask '%s'!\n\n(This error most likely means that you are missing required 1024x768 interface art.)", Main_hall->mask.c_str());
 		}
 	} else {
 		// get a pointer to bitmap by using bm_lock(), so we can feed it to he snazzy menu system
@@ -821,7 +821,7 @@ void main_hall_do(float frametime)
 				}
 				
 				if (region_action == -1) {
-					Error(LOCATION, "Region %d doesn't have an action!", code);
+					core::Error(LOCATION, "Region %d doesn't have an action!", code);
 				} else if (region_action == START_REGION) {
 					if (Player->flags & PLAYER_FLAGS_IS_MULTI) {
 						region_action = MULTIPLAYER_REGION;
@@ -1700,7 +1700,7 @@ void main_hall_maybe_blit_tooltips()
 	}
 
 	if (Main_hall_mouse_region >= (int) Main_hall->regions.size()) {
-		Error(LOCATION, "Missing region description for index %d!\n", Main_hall_mouse_region);
+		core::Error(LOCATION, "Missing region description for index %d!\n", Main_hall_mouse_region);
 	}
 
 	// set the color and blit the string
@@ -2072,7 +2072,7 @@ void parse_main_hall_table(const char* filename)
 		}
 
 		if (num_resolutions < 1) {
-			Error(LOCATION, "$Num Resolutions in %s is %d. (Must be 1 or greater)", filename, num_resolutions);
+			core::Error(LOCATION, "$Num Resolutions in %s is %d. (Must be 1 or greater)", filename, num_resolutions);
 		}
 
 		// go for it
@@ -2097,7 +2097,7 @@ void parse_main_hall_table(const char* filename)
 							m->name = temp_string;
 						}
 						else {
-							Error(LOCATION, "A mainhall with the name '%s' already exists. All mainhalls must have unique names.", temp_string);
+							core::Error(LOCATION, "A mainhall with the name '%s' already exists. All mainhalls must have unique names.", temp_string);
 						}
 					}
 					else {
@@ -2115,7 +2115,7 @@ void parse_main_hall_table(const char* filename)
 						 * may still refer to the entry with the incorrect name
 						 */
 						if (strcmp(temp_string, Main_hall_defines.at(count).at(0).name.c_str()) != 0) {
-							Error(LOCATION, "The mainhall '%s' has different names for different resolutions. All resolutions must have the same name. Either remove the hi-res entries' names entirely or set them to match the first resolution entry's name.", Main_hall_defines.at(0).at(count).name.c_str());
+							core::Error(LOCATION, "The mainhall '%s' has different names for different resolutions. All resolutions must have the same name. Either remove the hi-res entries' names entirely or set them to match the first resolution entry's name.", Main_hall_defines.at(0).at(count).name.c_str());
 						}
 					}
 
@@ -2412,7 +2412,7 @@ void parse_main_hall_table(const char* filename)
 								err_msg += Main_hall_region_map[i].name;
 							}
 
-							Error(LOCATION, "Unkown Door Region '%s'! Expected one of: %s", temp_scp_string.c_str(), err_msg.c_str());
+							core::Error(LOCATION, "Unkown Door Region '%s'! Expected one of: %s", temp_scp_string.c_str(), err_msg.c_str());
 						}
 
 						m->regions[idx].action = action;

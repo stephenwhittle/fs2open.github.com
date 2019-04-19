@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "cmeasure/cmeasure.h"
 #include "debris/debris.h"
@@ -620,7 +620,7 @@ void obj_delete(int objnum)
 		Int3();
 		break;
 	default:
-		Error( LOCATION, "Unhandled object type %d in obj_delete_all_that_should_be_dead", objp->type );
+		core::Error( LOCATION, "Unhandled object type %d in obj_delete_all_that_should_be_dead", objp->type );
 	}
 
 	// delete any dock information we still have
@@ -1152,7 +1152,7 @@ void obj_move_all_pre(object *objp, float frametime)
 		Int3();
 		break;
 	default:
-		Error(LOCATION, "Unhandled object type %d in obj_move_all_pre\n", objp->type);
+		core::Error(LOCATION, "Unhandled object type %d in obj_move_all_pre\n", objp->type);
 	}
 
 	objp->pre_move_event(objp);
@@ -1385,7 +1385,7 @@ void obj_move_all_post(object *objp, float frametime)
 			break;
 
 		default:
-		    Error(LOCATION, "Unhandled object type %d in obj_move_all_post\n", objp->type);
+		    core::Error(LOCATION, "Unhandled object type %d in obj_move_all_post\n", objp->type);
 	    }
 
 	    objp->post_move_event(objp);
@@ -1665,7 +1665,7 @@ void obj_queue_render(object* obj, model_draw_list* scene)
 	case OBJ_BEAM:
 		break;
 	default:
-		Error( LOCATION, "Unhandled obj type %d in obj_render", obj->type );
+		core::Error( LOCATION, "Unhandled obj type %d in obj_render", obj->type );
 	}
 }
 

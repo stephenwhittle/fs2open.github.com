@@ -8,7 +8,7 @@
 */ 
 
 
-
+#include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "debugconsole/console.h"
 #include "fireball/fireballs.h"
@@ -1920,7 +1920,7 @@ static void asteroid_parse_tbl()
 					msg.append(" large\n");
 					break;
 				default:
-					Error(LOCATION, "Get a coder! Math has broken!\n"
+					core::Error(LOCATION, "Get a coder! Math has broken!\n"
 						"Important numbers:\n"
 						"\ttally: " SIZE_T_ARG "\n"
 						"\tNUM_DEBRIS_SIZES: %d\n",
@@ -1946,7 +1946,7 @@ static void asteroid_parse_tbl()
 				mprintf(("%s", iter->c_str()));
 			}
 #endif
-			Error(LOCATION,
+			core::Error(LOCATION,
 				"Found " SIZE_T_ARG " asteroids/debris when " SIZE_T_ARG " expected\n\n"
 				"<Number expected> = <Number of species> * %d + %d generic asteroids\n"
 				SIZE_T_ARG " = " SIZE_T_ARG "*%d + %d\n\n"

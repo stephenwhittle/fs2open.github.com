@@ -1,3 +1,4 @@
+#include "core/error.h"
 #include "anim/packunpack.h"
 #include "globalincs/globals.h"
 #include "graphics/2d.h"
@@ -298,7 +299,7 @@ int generic_anim_stream(generic_anim *ga, const bool cache)
 	}
 	else {
 		if (anim_fps == 0) {
-			Error(LOCATION, "animation (%s) has invalid fps of zero, fix this!", ga->filename);
+			core::Error(LOCATION, "animation (%s) has invalid fps of zero, fix this!", ga->filename);
 		}
 		ga->total_time = ga->num_frames / (float) anim_fps;
 	}

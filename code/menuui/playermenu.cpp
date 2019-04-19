@@ -10,7 +10,7 @@
 
 #include <climits>
 #include <cctype>
-
+#include "core/error.h"
 #include "freespace.h"
 #include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
@@ -497,7 +497,7 @@ void player_select_close()
 
 	// now read in a the pilot data
 	if ( !Pilot.load_player(Pilots[Player_select_pilot], Player) ) {
-		Error(LOCATION,"Couldn't load pilot file, bailing");
+		core::Error(LOCATION,"Couldn't load pilot file, bailing");
 		Player = NULL;
 	} else {
 		// NOTE: this may fail if there is no current campaign, it's not fatal
@@ -593,7 +593,7 @@ void player_select_button_pressed(int n)
 
 			// attempt to read in the pilot file of the guy to be cloned
 			if ( !Pilot.load_player(Pilots[Player_select_pilot], Player) ) {
-				Error(LOCATION,"Couldn't load pilot file, bailing");
+				core::Error(LOCATION,"Couldn't load pilot file, bailing");
 				Player = NULL;
 				Int3();
 			}
@@ -1431,7 +1431,7 @@ void player_finish_select(const char* callsign, bool is_multi) {
 
 	// now read in a the pilot data
 	if ( !Pilot.load_player(callsign, Player) ) {
-		Error(LOCATION,"Couldn't load pilot file, bailing");
+		core::Error(LOCATION,"Couldn't load pilot file, bailing");
 		Player = nullptr;
 	} else {
 		// NOTE: this may fail if there is no current campaign, it's not fatal
@@ -1476,7 +1476,7 @@ bool player_create_new_pilot(const char* callsign, bool is_multi, const char* co
 	if (copy_from_callsign != nullptr) {
 		// attempt to read in the pilot file of the guy to be cloned
 		if (!Pilot.load_player(copy_from_callsign, Player)) {
-			Error(LOCATION, "Couldn't load pilot file, bailing");
+			core:: Error(LOCATION, "Couldn't load pilot file, bailing");
 			return false;
 		}
 	}

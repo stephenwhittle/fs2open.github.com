@@ -3,6 +3,8 @@
 #include "pilotfile/JSONFileHandler.h"
 #include "libs/jansson.h"
 #include "parse/parselo.h"
+#include "core/error.h"
+#include "core/format.h"
 
 namespace {
 const SCP_vector<std::pair<Section, const char*>> SectionMapping {
@@ -58,7 +60,7 @@ pilot::JSONFileHandler::JSONFileHandler(CFILE* cfp, bool reading) : _cfp(cfp) {
 
 		if (!_rootObj) {
 			SCP_string errorStr;
-			sprintf(errorStr, "Error while reading pilot file! %d: %s", error.line, error.text);
+			core::sprintf(errorStr, "Error while reading pilot file! %d: %s", error.line, error.text);
 			throw std::runtime_error(errorStr);
 		}
 	} else {
@@ -180,7 +182,7 @@ json_int_t pilot::JSONFileHandler::readInteger(const char* name) {
 	auto el = json_object_get(_currentEl, name);
 
 	if (el == nullptr || json_typeof(el) != JSON_INTEGER) {
-		Error(LOCATION, "JSON element %s must be an integer but it is not valid!", name);
+		core::Error(LOCATION, "JSON element %s must be an integer but it is not valid!", name);
 		return 0;
 	}
 
@@ -188,10 +190,10 @@ json_int_t pilot::JSONFileHandler::readInteger(const char* name) {
 }
 void pilot::JSONFileHandler::ensureExists(const char* name) {
 	if (json_typeof(_currentEl) != JSON_OBJECT) {
-		Error(LOCATION, "JSON reading requires a value with name '%s' but the current element is not an object!", name);
+		core::Error(LOCATION, "JSON reading requires a value with name '%s' but the current element is not an object!", name);
 	}
 	if (json_object_get(_currentEl, name) == nullptr) {
-		Error(LOCATION, "JSON reading requires a value with name '%s' but there is no such value!", name);
+		core::Error(LOCATION, "JSON reading requires a value with name '%s' but there is no such value!", name);
 	}
 }
 std::uint8_t pilot::JSONFileHandler::readUByte(const char* name) {
@@ -210,7 +212,7 @@ float pilot::JSONFileHandler::readFloat(const char* name) {
 	auto el = json_object_get(_currentEl, name);
 
 	if (el == nullptr || json_typeof(el) != JSON_REAL) {
-		Error(LOCATION, "JSON element %s must be a float but it is not valid!", name);
+		core::Error(LOCATION, "JSON element %s must be a float but it is not valid!", name);
 		return 0.0f;
 	}
 
@@ -220,7 +222,7 @@ SCP_string pilot::JSONFileHandler::readString(const char* name) {
 	auto el = json_object_get(_currentEl, name);
 
 	if (el == nullptr || json_typeof(el) != JSON_STRING) {
-		Error(LOCATION, "JSON element %s must be a string but it is not valid!", name);
+		core::Error(LOCATION, "JSON element %s must be a string but it is not valid!", name);
 		return SCP_string();
 	}
 	auto json_str = json_string_value(el);
@@ -234,7 +236,7 @@ void pilot::JSONFileHandler::beginSectionRead() {
 
 	auto sections = json_object_get(_currentEl, "sections");
 	if (json_typeof(sections) != JSON_OBJECT) {
-		Error(LOCATION, "Sections must be a JSON object!");
+		core::Error(LOCATION, "Sections must be a JSON object!");
 	}
 
 	pushElement(sections);
@@ -266,7 +268,7 @@ Section pilot::JSONFileHandler::nextSection() {
 
 	auto el = json_object_iter_value(_sectionIterator);
 	if (json_typeof(el) != JSON_OBJECT) {
-		Error(LOCATION, "The section element of '%s' must be an object but it's a different type!", key);
+		core::Error(LOCATION, "The section element of '%s' must be an object but it's a different type!", key);
 		return Section::Invalid;
 	}
 
@@ -296,7 +298,7 @@ size_t pilot::JSONFileHandler::startArrayRead(const char* name, bool /*short_ind
 
 	auto array = json_object_get(_currentEl, name);
 	if (json_typeof(array) != JSON_ARRAY) {
-		Error(LOCATION, "Expected an array for '%s' but it was a different type!", name);
+		core::Error(LOCATION, "Expected an array for '%s' but it was a different type!", name);
 		return 0;
 	}
 

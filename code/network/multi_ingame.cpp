@@ -11,7 +11,7 @@
 
 
 #include <climits>		// this is need even when not building debug!!
-
+#include "core/error.h"
 #include "globalincs/globals.h"
 #include "object/object.h"
 #include "ship/ship.h"
@@ -655,7 +655,7 @@ void multi_ingame_select_init()
 	// load the background bitmap
 	Multi_ingame_bitmap = bm_load(Multi_ingame_join_bitmap_fname[gr_screen.res]);
 	if(Multi_ingame_bitmap < 0)
-		Error(LOCATION, "Couldn't load background bitmap for ingame join");	
+		core::Error(LOCATION, "Couldn't load background bitmap for ingame join");
 	
 	// create the interface buttons
 	for(idx=0; idx<MULTI_INGAME_JOIN_NUM_BUTTONS; idx++) {

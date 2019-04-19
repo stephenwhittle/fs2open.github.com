@@ -1,6 +1,6 @@
 //
 //
-
+#include "core/error.h"
 #include "ship_bank.h"
 #include "weaponclass.h"
 #include "weapon/weapon.h"
@@ -73,7 +73,7 @@ ADE_INDEXER(l_WeaponBankType, "number Index", "Array of weapon banks", "weaponba
 			idx--; //Lua->FS2
 
 			if(ADE_SETTING_VAR && newbank && newbank->IsValid()) {
-				Error(LOCATION, "Tertiary bank support is still in progress");
+				core::Error(LOCATION, "Tertiary bank support is still in progress");
 				//WMC: TODO
 			}
 			break;

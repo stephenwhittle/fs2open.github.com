@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "ai/aibig.h"
 #include "asteroid/asteroid.h"
 #include "cmdline/cmdline.h"
@@ -477,7 +477,7 @@ int missile_obj_list_add(int objnum)
 			break;
 	}
 	if ( i == MAX_MISSILE_OBJS ) {
-		Error(LOCATION, "Fatal Error: Ran out of missile object nodes\n");
+		core::Error(LOCATION, "Fatal Error: Ran out of missile object nodes\n");
 		return -1;
 	}
 	
@@ -810,7 +810,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 		}
 
 		if(Num_weapon_types >= MAX_WEAPON_TYPES) {
-			Error(LOCATION, "Too many weapon classes before '%s'; maximum is %d.\n", fname, MAX_WEAPON_TYPES);
+			core::Error(LOCATION, "Too many weapon classes before '%s'; maximum is %d.\n", fname, MAX_WEAPON_TYPES);
 		}
 
 		wip = &Weapon_info[Num_weapon_types];
@@ -1352,7 +1352,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 		}
 		else
 		{
-			Error(LOCATION, "Illegal homing type = %s.\nMust be HEAT, ASPECT or JAVELIN.\n", temp_type);
+			core::Error(LOCATION, "Illegal homing type = %s.\nMust be HEAT, ASPECT or JAVELIN.\n", temp_type);
 		}
 
 	}
@@ -2939,43 +2939,43 @@ void weapon_sort_by_type()
 	// allocate the buckets
 	if (num_lasers) {
 		lasers = new weapon_info[num_lasers];
-		Verify( lasers != NULL );
+		core::Verify( lasers != NULL );
 		num_lasers = 0;
 	}
 
 	if (num_big_lasers) {
 		big_lasers = new weapon_info[num_big_lasers];
-		Verify( big_lasers != NULL );
+		core::Verify( big_lasers != NULL );
 		num_big_lasers = 0;
 	}
 
 	if (num_beams) {
 		beams = new weapon_info[num_beams];
-		Verify( beams != NULL );
+		core::Verify( beams != NULL );
 		num_beams = 0;
 	}
 
 	if (num_missiles) {
 		missiles = new weapon_info[num_missiles];
-		Verify( missiles != NULL );
+		core::Verify( missiles != NULL );
 		num_missiles = 0;
 	}
 
 	if (num_big_missiles) {
 		big_missiles = new weapon_info[num_big_missiles];
-		Verify( big_missiles != NULL );
+		core::Verify( big_missiles != NULL );
 		num_big_missiles = 0;
 	}
 
 	if (num_child_primaries) {
 		child_primaries = new weapon_info[num_child_primaries];
-		Verify( child_primaries != NULL );
+		core::Verify( child_primaries != NULL );
 		num_child_primaries = 0;
 	}
 
 	if (num_child_secondaries) {
 		child_secondaries = new weapon_info[num_child_secondaries];
-		Verify( child_secondaries != NULL );
+		core::Verify( child_secondaries != NULL );
 		num_child_secondaries = 0;
 	}
 
@@ -4889,7 +4889,7 @@ void weapon_process_post(object * obj, float frame_time)
 			play_sound = true;
 			break;
 		default:
-			Error(LOCATION, "Unknown in-flight sound status %d!", (int) wip->in_flight_play_type);
+			core::Error(LOCATION, "Unknown in-flight sound status %d!", (int) wip->in_flight_play_type);
 			break;
 		}
 

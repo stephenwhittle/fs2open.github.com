@@ -11,7 +11,8 @@
 
 
 #include <cstdarg>
-
+#include "core/format.h"
+#include "core/error.h"
 #include "cfile/cfile.h"
 #include "globalincs/globals.h"
 #include "parse/generic_log.h"
@@ -96,7 +97,7 @@ void log_printf(int logfile_type, const char *format, ...)
 	
 	// format the text
 	va_start(args, format);
-	vsprintf(temp, format, args);
+	core::vsprintf(temp, format, args);
 	va_end(args);
 	
 	// log the string

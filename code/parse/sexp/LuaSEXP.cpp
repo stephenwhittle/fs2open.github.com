@@ -1,7 +1,7 @@
 //
 //
 #include "LuaSEXP.h"
-
+#include "core/error.h"
 #include "parse/parselo.h"
 #include "parse/sexp/sexp_lookup.h"
 
@@ -250,7 +250,7 @@ int LuaSEXP::getSexpReturnValue(const LuaValueList& retVals) const {
 }
 int LuaSEXP::execute(int node) {
 	if (!_action.isValid()) {
-		Error(LOCATION,
+		core::Error(LOCATION,
 			  "Lua SEXP called without a valid action function! A script probably failed to set the action for some reason.");
 		return SEXP_CANT_EVAL;
 	}

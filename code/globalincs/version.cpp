@@ -10,7 +10,7 @@
 #include "globalincs/version.h"
 #include "globalincs/pstypes.h"
 #include "graphics/2d.h"
-
+#include "core/format.h"
 #include "parse/parselo.h"
 
 namespace gameversion {
@@ -135,7 +135,7 @@ SCP_string get_version_string()
 {
 	SCP_string str;
 
-	sprintf(str, "FreeSpace 2 Open v%s", FS_VERSION_FULL);
+	core::sprintf(str, "FreeSpace 2 Open v%s", FS_VERSION_FULL);
 
 #ifndef NDEBUG
 	str += " Debug";

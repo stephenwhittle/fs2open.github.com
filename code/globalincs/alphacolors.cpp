@@ -10,7 +10,7 @@
 #include "globalincs/alphacolors.h"
 #include "graphics/2d.h"
 #include "parse/parselo.h"
-
+#include "core/error.h"
 SCP_map<SCP_string, team_color> Team_Colors;
 SCP_vector<SCP_string> Team_Names;
 
@@ -494,7 +494,7 @@ void parse_everything_else(const char *filename)
 				stuff_string(temp, F_RAW);
 				if (temp[0] == '$') {
 					if (temp[1] == '\0') {
-						Error(LOCATION, "%s - found a '$Tag:' entry with a solitary '$'.\n", filename);
+						core::Error(LOCATION, "%s - found a '$Tag:' entry with a solitary '$'.\n", filename);
 					}
 					tag = temp[1];
 					if (temp[2] != '\0') {
@@ -502,7 +502,7 @@ void parse_everything_else(const char *filename)
 					}
 				}
 				else if (temp[0] == '\0') {
-					Error(LOCATION, "%s - found a '$Tag:' entry with no tag.\n", filename);
+					core::Error(LOCATION, "%s - found a '$Tag:' entry with no tag.\n", filename);
 				}
 				else {
 					tag = temp[0];
@@ -554,7 +554,7 @@ void parse_everything_else(const char *filename)
 							}
 						}
 						if (j == TOTAL_COLORS) {
-							Error(LOCATION, "Unknown color '%s' in %s, for definition of tag '$%c'.\n", temp.c_str(), filename, tag);
+							core::Error(LOCATION, "Unknown color '%s' in %s, for definition of tag '$%c'.\n", temp.c_str(), filename, tag);
 						}
 						Tagged_Colors[tag] = COLOR_LIST[j];
 					}
@@ -614,7 +614,7 @@ void parse_everything_else(const char *filename)
 					stuff_string(temp, F_RAW);
 					if (temp[0] == '$') {
 						if (temp[1] == '\0') {
-							Error(LOCATION, "%s - default text color '%s' entry with a solitary '$'.\n", filename, color_names[i]);
+							core::Error(LOCATION, "%s - default text color '%s' entry with a solitary '$'.\n", filename, color_names[i]);
 						}
 						*color_value[i] = temp[1];
 						if (temp[2] != '\0') {
@@ -622,7 +622,7 @@ void parse_everything_else(const char *filename)
 						}
 					}
 					else if (temp[0] == '\0') {
-						Error(LOCATION, "%s - default text color '%s' entry with no tag.\n", filename, color_names[i]);
+						core::Error(LOCATION, "%s - default text color '%s' entry with no tag.\n", filename, color_names[i]);
 					}
 					else {
 						*color_value[i] = temp[0];

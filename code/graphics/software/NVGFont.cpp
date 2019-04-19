@@ -1,4 +1,5 @@
 
+#include "core/error.h"
 #include "graphics/software/NVGFont.h"
 #include "graphics/paths/PathRenderer.h"
 
@@ -188,7 +189,7 @@ namespace font
 							int spacing;
 
 							if (m_specialCharacters == nullptr) {
-								Error(LOCATION,
+								core::Error(LOCATION,
 									  "Font %s has no special characters font! This is usually caused by ignoring a font table parsing warning.",
 									  getName().c_str());
 							}

@@ -5,7 +5,7 @@
  */ 
 
 
-
+#include "core/error.h"
 #include "object/deadobjectdock.h"
 #include "object/object.h"
 
@@ -54,12 +54,12 @@ void dock_dead_dock_objects(object *objp1, int dockpoint1, object *objp2, int do
 #ifndef NDEBUG
 	if ((dead_dock_find_instance(objp1, objp2) != NULL) || (dead_dock_find_instance(objp2, objp1) != NULL))
 	{
-		Error(LOCATION, "Trying to dock an object that's already docked!\n");
+		core::Error(LOCATION, "Trying to dock an object that's already docked!\n");
 	}
 
 	if ((dead_dock_find_instance(objp1, dockpoint1) != NULL) || (dead_dock_find_instance(objp2, dockpoint2) != NULL))
 	{
-		Error(LOCATION, "Trying to dock to a dockpoint that's in use!\n");
+		core::Error(LOCATION, "Trying to dock to a dockpoint that's in use!\n");
 	}
 #endif
 

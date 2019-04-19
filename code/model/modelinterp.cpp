@@ -10,7 +10,7 @@
 
 
 #define MODEL_LIB
-
+#include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "cmdline/cmdline.h"
 #include "debugconsole/console.h"
@@ -297,12 +297,12 @@ void model_allocate_interp_data(int n_verts, int n_norms)
 	Interp_num_norms = n_norms;
 
 	// check that everything is still usable (works in release and debug builds)
-	Verify( Interp_points != NULL );
-	Verify( Interp_splode_points != NULL );
-	Verify( Interp_verts != NULL );
-	Verify( Interp_splode_verts != NULL );
-	Verify( Interp_norms != NULL );
-	Verify( Interp_light_applied != NULL );
+	core::Verify( Interp_points != NULL );
+	core::Verify( Interp_splode_points != NULL );
+	core::Verify( Interp_verts != NULL );
+	core::Verify( Interp_splode_verts != NULL );
+	core::Verify( Interp_norms != NULL );
+	core::Verify( Interp_light_applied != NULL );
 }
 
 void interp_clear_instance()
@@ -1172,7 +1172,7 @@ void submodel_get_two_random_points(int model_num, int submodel_num, vec3d *v1, 
 	// this is not only because of the immediate div-0 error but also because of the less immediate expectation for at least one point (preferably two) to be found
 	if (nv <= 0) {
 		polymodel *pm = model_get(model_num);
-		Error(LOCATION, "Model %d ('%s') must have at least one point from submodel_get_points_internal!", model_num, (pm == NULL) ? "<null model?!?>" : pm->filename);
+		core::Error(LOCATION, "Model %d ('%s') must have at least one point from submodel_get_points_internal!", model_num, (pm == NULL) ? "<null model?!?>" : pm->filename);
 
 		// in case people ignore the error...
 		vm_vec_zero(v1);
@@ -1236,7 +1236,7 @@ void submodel_get_two_random_points_better(int model_num, int submodel_num, vec3
 
 		// this is not only because of the immediate div-0 error but also because of the less immediate expectation for at least one point (preferably two) to be found
 		if (nv <= 0) {
-			Error(LOCATION, "Model %d ('%s') must have at least one point from submodel_get_points_internal!", model_num, (pm == NULL) ? "<null model?!?>" : pm->filename);
+			core::Error(LOCATION, "Model %d ('%s') must have at least one point from submodel_get_points_internal!", model_num, (pm == NULL) ? "<null model?!?>" : pm->filename);
 
 			// in case people ignore the error...
 			vm_vec_zero(v1);
@@ -1949,7 +1949,7 @@ void interp_pack_vertex_buffers(polymodel *pm, int mn)
 	}
 
 	if ( !rval ) {
-		Error( LOCATION, "Unable to pack vertex buffer for '%s'\n", pm->filename );
+		core::Error( LOCATION, "Unable to pack vertex buffer for '%s'\n", pm->filename );
 	}
 }
 
@@ -2047,7 +2047,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 
 		// for the moment we can only support INT_MAX worth of verts per index buffer
 		if (total_verts > INT_MAX) {
-			Error( LOCATION, "Unable to generate vertex buffer data because model '%s' with %i verts is over the maximum of %i verts!\n", pm->filename, total_verts, INT_MAX);
+			core::Error( LOCATION, "Unable to generate vertex buffer data because model '%s' with %i verts is over the maximum of %i verts!\n", pm->filename, total_verts, INT_MAX);
 		}
 	}
 
@@ -2081,7 +2081,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 	poly_list *model_list = new(std::nothrow) poly_list;
 
 	if ( !model_list ) {
-		Error( LOCATION, "Unable to allocate memory for poly_list!\n" );
+		core::Error( LOCATION, "Unable to allocate memory for poly_list!\n" );
 	}
 
 	model->buffer.model_list = model_list;
@@ -2128,7 +2128,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 
 		buffer_data new_buffer(polygon_list[i].n_verts);
 
-		Verify( new_buffer.get_index() != NULL );
+		core::Verify( new_buffer.get_index() != NULL );
 
 		for (j = 0; j < polygon_list[i].n_verts; j++) {
 			first_index = model_list->find_index_fast(&polygon_list[i], j);
@@ -2151,7 +2151,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 	bool rval = model_interp_config_buffer(&pm->vert_source, &model->buffer, false);
 
 	if ( !rval ) {
-		Error( LOCATION, "Unable to configure vertex buffer for '%s'\n", pm->filename );
+		core::Error( LOCATION, "Unable to configure vertex buffer for '%s'\n", pm->filename );
 	}
 }
 

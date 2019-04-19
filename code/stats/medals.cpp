@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "debugconsole/console.h"
 #include "gamesequence/gamesequence.h"
 #include "gamesnd/gamesnd.h"
@@ -399,7 +399,7 @@ void parse_medal_tbl()
 		for (i = 0; i < Num_medals; i++)
 		{
 			if (Medals[i].kills_needed < prev_badge_kills && Medals[i].kills_needed != 0)
-				Error(LOCATION, "Badges must appear sorted by lowest kill # first in medals.tbl\nFind Allender for most information.");
+				core::Error(LOCATION, "Badges must appear sorted by lowest kill # first in medals.tbl\nFind Allender for most information.");
 
 			if (Medals[i].kills_needed > 0)
 				prev_badge_kills = Medals[i].kills_needed;

@@ -8,7 +8,8 @@
 */ 
 
 
-
+#include "core/error.h"
+#include "core/format.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
 #include "cfile/cfile.h"
@@ -556,7 +557,7 @@ int wl_get_pilot_subsys_index(p_object *pobjp)
 	}
 
 	if ( pilot_index == -1 ) {
-		Error(LOCATION,"Parse object doesn't have a pilot subsystem\n");
+		core::Error(LOCATION,"Parse object doesn't have a pilot subsystem\n");
 		return -1;
 	}
 
@@ -2011,7 +2012,7 @@ void weapon_select_init()
 
 	WeaponSelectMaskBitmap = bm_load(Wl_loadout_select_mask[Uses_apply_all_button][gr_screen.res]);
 	if (WeaponSelectMaskBitmap < 0) {
-		Error(LOCATION,"Could not load in '%s'!", Wl_loadout_select_mask[Uses_apply_all_button][gr_screen.res]);
+		core::Error(LOCATION,"Could not load in '%s'!", Wl_loadout_select_mask[Uses_apply_all_button][gr_screen.res]);
 	}
 
 	Weaponselect_mask_w = -1;
@@ -4051,7 +4052,7 @@ void wl_apply_current_loadout_to_all_ships_in_current_wing()
 			if (!eval_weapon_flag_for_game_type(sip->allowed_weapons[weapon_type_to_add]))
 			{
 				SCP_string temp;
-				sprintf(temp, XSTR("%s is unable to carry %s weaponry", 1629), ship_name, wep_display_name);
+				core::sprintf(temp, XSTR("%s is unable to carry %s weaponry", 1629), ship_name, wep_display_name);
 				error_messages.push_back(temp);
 
 				error_flag = true;
@@ -4065,9 +4066,9 @@ void wl_apply_current_loadout_to_all_ships_in_current_wing()
 				{
 					SCP_string temp;
 					if (cur_bank < MAX_SHIP_PRIMARY_BANKS)
-						sprintf(temp, XSTR("%s is unable to carry %s weaponry in primary bank %d", 1630), ship_name, wep_display_name, cur_bank+1);
+						core::sprintf(temp, XSTR("%s is unable to carry %s weaponry in primary bank %d", 1630), ship_name, wep_display_name, cur_bank+1);
 					else
-						sprintf(temp, XSTR("%s is unable to carry %s weaponry in secondary bank %d", 1631), ship_name, wep_display_name, cur_bank+1-MAX_SHIP_PRIMARY_BANKS);
+						core::sprintf(temp, XSTR("%s is unable to carry %s weaponry in secondary bank %d", 1631), ship_name, wep_display_name, cur_bank+1-MAX_SHIP_PRIMARY_BANKS);
 					error_messages.push_back(temp);
 
 					error_flag = true;
@@ -4082,7 +4083,7 @@ void wl_apply_current_loadout_to_all_ships_in_current_wing()
 			if ((result == 0) || (result == 2))
 			{
 				SCP_string temp;
-				sprintf(temp, XSTR("Insufficient %s available to arm %s", 1632), Weapon_info[weapon_type_to_add].get_display_string(), ship_name);
+				core::sprintf(temp, XSTR("Insufficient %s available to arm %s", 1632), Weapon_info[weapon_type_to_add].get_display_string(), ship_name);
 				error_messages.push_back(temp);
 
 				error_flag = true;

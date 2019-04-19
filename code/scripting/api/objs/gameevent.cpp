@@ -1,6 +1,6 @@
 
 #include "gameevent.h"
-
+#include "core/error.h"
 
 namespace scripting {
 namespace api {
@@ -48,7 +48,7 @@ ADE_VIRTVAR(Name, l_GameEvent, "string", "Game event name", "string", "Game even
 
 	if (ADE_SETTING_VAR)
 	{
-		Error(LOCATION, "Can't set game event names at this time");
+		core::Error(LOCATION, "Can't set game event names at this time");
 	}
 
 	return ade_set_args(L, "s", GS_event_text[edx]);

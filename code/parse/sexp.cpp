@@ -22,6 +22,8 @@
 #include <climits>
 #include <cstdint>
 
+#include "core/format.h"
+#include "core/error.h"
 #include "ai/aigoals.h"
 #include "asteroid/asteroid.h"
 #include "autopilot/autopilot.h"
@@ -1083,7 +1085,7 @@ void sexp_nodes_init()
 		Num_sexp_nodes += SEXP_NODE_INCREMENT - (Num_sexp_nodes % SEXP_NODE_INCREMENT);
 
 		Sexp_nodes = (sexp_node *) vm_realloc(Sexp_nodes, sizeof(sexp_node) * Num_sexp_nodes);
-		Verify(Sexp_nodes != NULL);
+		core::Verify(Sexp_nodes != NULL);
 	}
 
 	nprintf(("SEXP", "Exited function with %d nodes.\n", Num_sexp_nodes));
@@ -1156,7 +1158,7 @@ int alloc_sexp(const char *text, int type, int subtype, int first, int rest)
 		Num_sexp_nodes += SEXP_NODE_INCREMENT;
 		Sexp_nodes = (sexp_node *) vm_realloc(Sexp_nodes, sizeof(sexp_node) * Num_sexp_nodes);
 
-		Verify(Sexp_nodes != NULL);
+		core::Verify(Sexp_nodes != NULL);
 		nprintf(("SEXP", "Bumping dynamic sexp node limit from %d to %d...\n", old_size, Num_sexp_nodes));
 
 		// clear all the new sexp nodes we just allocated
@@ -1371,7 +1373,7 @@ int verify_sexp_tree(int node)
 	if ((Sexp_nodes[node].type == SEXP_NOT_USED) ||
 		(Sexp_nodes[node].first == node) ||
 		(Sexp_nodes[node].rest == node)) {
-		Error(LOCATION, "Sexp node is corrupt");
+		core::Error(LOCATION, "Sexp node is corrupt");
 		return -1;
 	}
 
@@ -3219,7 +3221,7 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 				break;
 
 			default:
-				Error(LOCATION, "Unhandled argument format");
+				core::Error(LOCATION, "Unhandled argument format");
 		}
 
 		node = Sexp_nodes[node].rest;
@@ -3351,7 +3353,7 @@ int get_sexp()
 	while (*Mp != ')') {
 		// end of string or end of file
 		if (*Mp == '\0') {
-			Error(LOCATION, "Unexpected end of sexp!");
+			core::Error(LOCATION, "Unexpected end of sexp!");
 			return -1;
 		}
 
@@ -3366,7 +3368,7 @@ int get_sexp()
 			auto len = strcspn(Mp + 1, "\"");
 			// was closing quote not found?
 			if (*(Mp + 1 + len) != '\"') {
-				Error(LOCATION, "Unexpected end of quoted string embedded in sexp!");
+				core::Error(LOCATION, "Unexpected end of quoted string embedded in sexp!");
 				return -1;
 			}
 
@@ -3377,7 +3379,7 @@ int get_sexp()
 				// reduce length by 1 for end \"
 				auto length = len - 1;
 				if (length >= 2*TOKEN_LENGTH+2) {
-					Error(LOCATION, "Variable token %s is too long. Needs to be %d characters or shorter.", Mp, 2*TOKEN_LENGTH+2 - 1);
+					core::Error(LOCATION, "Variable token %s is too long. Needs to be %d characters or shorter.", Mp, 2*TOKEN_LENGTH+2 - 1);
 					return -1;
 				}
 
@@ -3390,7 +3392,7 @@ int get_sexp()
 			} else {
 				// token is too long?
 				if (len >= TOKEN_LENGTH) {
-					Error(LOCATION, "Token %s is too long. Needs to be %d characters or shorter.", Mp, TOKEN_LENGTH - 1);
+					core::Error(LOCATION, "Token %s is too long. Needs to be %d characters or shorter.", Mp, TOKEN_LENGTH - 1);
 					return -1;
 				}
 
@@ -3418,14 +3420,14 @@ int get_sexp()
 
 				// end of string or end of file?
 				if (*Mp == '\0') {
-					Error(LOCATION, "Unexpected end of sexp!");
+					core::Error(LOCATION, "Unexpected end of sexp!");
 					return -1;
 				}
 
 				// token is too long?
 				if (len >= TOKEN_LENGTH - 1) {
 					token[TOKEN_LENGTH - 1] = '\0';
-					Error(LOCATION, "Token %s is too long. Needs to be %d characters or shorter.", token, TOKEN_LENGTH - 1);
+					core::Error(LOCATION, "Token %s is too long. Needs to be %d characters or shorter.", token, TOKEN_LENGTH - 1);
 					return -1;
 				}
 
@@ -3614,7 +3616,7 @@ int get_sexp()
 				int id = atoi(Sexp_nodes[CDR(n)].text);
 				Assert(id < 10000000);
 				SCP_string xstr;
-				sprintf(xstr, "XSTR(\"%s\", %d)", Sexp_nodes[n].text, id);
+				core::sprintf(xstr, "XSTR(\"%s\", %d)", Sexp_nodes[n].text, id);
 
 				memset(Sexp_nodes[n].text, 0, NAME_LENGTH*sizeof(char));
 				lcl_ext_localize(xstr.c_str(), Sexp_nodes[n].text, TOKEN_LENGTH - 1);
@@ -3684,7 +3686,7 @@ int stuff_sexp_variable_list()
 			type = SEXP_VARIABLE_BLOCK;
 		} else {
 			type = SEXP_VARIABLE_UNKNOWN;
-			Error(LOCATION, "SEXP variable '%s' is an unknown type!", var_name);
+			core::Error(LOCATION, "SEXP variable '%s' is an unknown type!", var_name);
 		}
 
 		// possibly get network-variable
@@ -3729,7 +3731,7 @@ int stuff_sexp_variable_list()
 			ignore_white_space();
 
 			// notify of error
-			Error(LOCATION, "Error parsing sexp variables - unknown persistence type encountered.  You can continue from here without trouble.");
+			core::Error(LOCATION, "Error parsing sexp variables - unknown persistence type encountered.  You can continue from here without trouble.");
 		}
 
 		// check if variable name already exists
@@ -3856,14 +3858,14 @@ void stuff_sexp_text_string(SCP_string &dest, int node, int mode)
 			// Error check - can be Fred or FreeSpace
 			if (mode == SEXP_ERROR_CHECK_MODE) {
 				if ( Fred_running ) {
-					sprintf(dest, "%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
+					core::sprintf(dest, "%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 				} else {
-					sprintf(dest, "%s[%s] ", Sexp_variables[sexp_variables_index].variable_name, Sexp_variables[sexp_variables_index].text);
+					core::sprintf(dest, "%s[%s] ", Sexp_variables[sexp_variables_index].variable_name, Sexp_variables[sexp_variables_index].text);
 				}
 			} else {
 				// Save as string - only  Fred
 				Assert(mode == SEXP_SAVE_MODE);
-				sprintf(dest, "@%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
+				core::sprintf(dest, "@%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 			}
 		} else {
 			// string
@@ -3873,22 +3875,22 @@ void stuff_sexp_text_string(SCP_string &dest, int node, int mode)
 			// Error check - can be Fred or FreeSpace
 			if (mode == SEXP_ERROR_CHECK_MODE) {
 				if ( Fred_running ) {
-					sprintf(dest, "%s[%s] ", Sexp_variables[sexp_variables_index].variable_name, Sexp_variables[sexp_variables_index].text);
+					core::sprintf(dest, "%s[%s] ", Sexp_variables[sexp_variables_index].variable_name, Sexp_variables[sexp_variables_index].text);
 				} else {
-					sprintf(dest, "%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
+					core::sprintf(dest, "%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 				}
 			} else {
 				// Save as string - only Fred
 				Assert(mode == SEXP_SAVE_MODE);
-				sprintf(dest, "\"@%s[%s]\" ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
+				core::sprintf(dest, "\"@%s[%s]\" ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 			}
 		}
 	} else {
 		// not a variable
 		if (Sexp_nodes[node].subtype == SEXP_ATOM_STRING) {
-			sprintf(dest, "\"%s\" ", CTEXT(node));
+			core::sprintf(dest, "\"%s\" ", CTEXT(node));
 		} else {
-			sprintf(dest, "%s ", CTEXT(node));
+			core::sprintf(dest, "%s ", CTEXT(node));
 		}
 	}
 }
@@ -7679,7 +7681,7 @@ int sexp_percent_ships_arrive_depart_destroy_disarm_disable(int n, int what)
 			else if ( what == OP_PERCENT_SHIPS_ARRIVED )
 				count += Wings[wingnum].total_arrived_count;
 			else
-				Error(LOCATION, "Invalid status check '%d' for wing '%s' in sexp_percent_ships_arrive_depart_destroy_disarm_disable", what, name);
+				core::Error(LOCATION, "Invalid status check '%d' for wing '%s' in sexp_percent_ships_arrive_depart_destroy_disarm_disable", what, name);
 		} else {
 			// must be a ship, so increment the total by 1, then determine if this ship has departed
 			total++;
@@ -7699,7 +7701,7 @@ int sexp_percent_ships_arrive_depart_destroy_disarm_disable(int n, int what)
 				if ( mission_log_get_time(LOG_SHIP_ARRIVED, name, NULL, NULL) )
 					count++;
 			} else
-				Error(LOCATION, "Invalid status check '%d' for ship '%s' in sexp_percent_ships_depart_destroy_disarm_disable", what, name);
+				core::Error(LOCATION, "Invalid status check '%d' for ship '%s' in sexp_percent_ships_depart_destroy_disarm_disable", what, name);
 
 		}
 	}
@@ -11365,7 +11367,7 @@ void sexp_next_mission(int n)
 	mission_name = CTEXT(n);
 
 	if (mission_name == NULL) {
-		Error( LOCATION, "Mission name is NULL in campaign file for next-mission command!");
+		core::Error( LOCATION, "Mission name is NULL in campaign file for next-mission command!");
 	}
 
 	for (i = 0; i < Campaign.num_missions; i++) {
@@ -11374,7 +11376,7 @@ void sexp_next_mission(int n)
 			return;
 		}
 	}
-	Error(LOCATION, "Mission name %s not found in campaign file for next-mission command", mission_name);
+	core::Error(LOCATION, "Mission name %s not found in campaign file for next-mission command", mission_name);
 }
 
 /**
@@ -20026,7 +20028,7 @@ int sexp_return_player_data(int node, int type)
 				break;
 
 			default:
-				Error(LOCATION, "return-player-data was called with invalid type %d on node %d!", type, node);
+				core::Error(LOCATION, "return-player-data was called with invalid type %d on node %d!", type, node);
 		}
 	}	
 	// AI ships also have a respawn count so we can return valid data for that at least
@@ -22452,7 +22454,7 @@ int sexp_script_eval(int node, int return_type, bool concat_args = false)
 				break;
 			}
 		default:
-			Error(LOCATION, "Bad type passed to sexp_script_eval - get a coder");
+			core::Error(LOCATION, "Bad type passed to sexp_script_eval - get a coder");
 			break;
 	}
 
@@ -22993,7 +22995,7 @@ int generate_event_log_flags_mask(int result)
 			break;
 
 		default:
-			Error(LOCATION, "SEXP has a value which isn't true or false.");	
+			core::Error(LOCATION, "SEXP has a value which isn't true or false.");	
 	}
 
 	if (( result == SEXP_TRUE ) || (result == SEXP_KNOWN_TRUE)) {
@@ -25448,7 +25450,7 @@ int eval_sexp(int cur_node, int referenced_node)
 				if (dynamicSEXP != nullptr) {
 					sexp_val = dynamicSEXP->execute(node);
 				} else {
-					Error(LOCATION, "Looking for SEXP operator, found '%s'.\n", CTEXT(cur_node));
+					core::Error(LOCATION, "Looking for SEXP operator, found '%s'.\n", CTEXT(cur_node));
 				}
 			}
 		}
@@ -25871,7 +25873,7 @@ int get_sexp_main()
 		if (buf[511] != '\0')
 			strcpy(&buf[506], "[...]");
 
-		Error(LOCATION, "Expected to find an open parenthesis in the following sexp:\n%s", buf);
+		core::Error(LOCATION, "Expected to find an open parenthesis in the following sexp:\n%s", buf);
 		return -1;
 	}
 
@@ -25884,7 +25886,7 @@ int get_sexp_main()
 		op = get_operator_index(CTEXT(start_node));
 		if (op < 0)
 		{
-			Error(LOCATION, "Can't find operator %s in operator list!\n", CTEXT(start_node));
+			core::Error(LOCATION, "Can't find operator %s in operator list!\n", CTEXT(start_node));
 			return -1;
 		}
 	}
@@ -29540,7 +29542,7 @@ void sexp_modify_variable(int n)
 	}
 	else
 	{
-		Error(LOCATION, "Invalid variable type.\n");
+		core::Error(LOCATION, "Invalid variable type.\n");
 	}
 }
 
@@ -29611,7 +29613,7 @@ void sexp_set_variable_by_index(int node)
 	}
 	else
 	{
-		Error(LOCATION, "Invalid variable type.\n");
+		core::Error(LOCATION, "Invalid variable type.\n");
 	}
 }
 

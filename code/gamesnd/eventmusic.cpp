@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "gamesnd/eventmusic.h"
 #include "globalincs/linklist.h"
@@ -1308,7 +1308,7 @@ void parse_menumusic()
 		}
 
 		if (!skip_to_start_of_string_either("$Name:", "#Menu Music End")) {
-			Error(LOCATION, "Couldn't find $Name or #Menu Music End. Music.tbl or -mus.tbm is invalid.\n");
+			core::Error(LOCATION, "Couldn't find $Name or #Menu Music End. Music.tbl or -mus.tbm is invalid.\n");
 		}
 
 		return;

@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/format.h"
 #include "asteroid/asteroid.h"
 #include "cmdline/cmdline.h"
 #include "freespace.h"
@@ -1115,7 +1115,7 @@ void brief_render(float frametime)
 		gr_get_string_size(&w, &h, The_mission.name);
 		gr_set_color_fast(&Color_normal);
 		SCP_string debugText;
-		sprintf(debugText, NOX("[filename: %s, last mod: %s]"), Mission_filename, The_mission.modified);
+		core::sprintf(debugText, NOX("[filename: %s, last mod: %s]"), Mission_filename, The_mission.modified);
 
 		gr_get_string_size(&w, NULL, debugText.c_str());
 		gr_printf_menu((gr_screen.clip_width_unscaled - w) / 2, 230, "%s", debugText.c_str());

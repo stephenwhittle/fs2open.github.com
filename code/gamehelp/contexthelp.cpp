@@ -11,6 +11,7 @@
 #include <cstring>
 #include <csetjmp>
 
+#include "core/error.h"
 #include "controlconfig/controlsconfig.h"
 #include "debugconsole/console.h"
 #include "gamehelp/contexthelp.h"
@@ -352,7 +353,7 @@ void parse_helptbl(const char *filename)
 					Warning(LOCATION, "Could not load help overlay '%s' as maximum number of help overlays was reached (Max is %d)", name, MAX_HELP_OVERLAYS);
 
 					if (!skip_to_string("$end")) {
-						Error(LOCATION, "Couldn't find $end. Help.tbl or -hlp.tbm is invalid.\n");
+						core::Error(LOCATION, "Couldn't find $end. Help.tbl or -hlp.tbm is invalid.\n");
 					}
 
 					continue;
@@ -384,7 +385,7 @@ void parse_helptbl(const char *filename)
 			}
 
 			if (help_overlaylist[overlay_id].num_resolutions < 1) {
-				Error(LOCATION, "+resolutions in %s is %d. (Must be 1 or greater)", filename, help_overlaylist[overlay_id].num_resolutions);
+				core::Error(LOCATION, "+resolutions in %s is %d. (Must be 1 or greater)", filename, help_overlaylist[overlay_id].num_resolutions);
 			}
 
 			if (optional_string("+font")) {

@@ -2909,7 +2909,7 @@ void ai_find_path(object *pl_objp, int objnum, int path_num, int exit_flag, int 
 			ship	*shipp = &Ships[objp->instance];
 			pm = model_get(Ship_info[shipp->ship_info_index].model_num);
 			if(path_num >= pm->n_paths)
-				Error(LOCATION,"ai_find_path tring to find a path (%d) that doesn't exist, on ship %s", path_num, shipp->ship_name);
+				core::Error(LOCATION,"ai_find_path tring to find a path (%d) that doesn't exist, on ship %s", path_num, shipp->ship_name);
 
 			aip->goal_objnum = objnum;
 			aip->goal_signature = objp->signature;
@@ -3191,7 +3191,7 @@ void ai_dock_with_object(object *docker, int docker_index, object *dockee, int d
 		// make sure we have a path
 		if (path_num < 0)
 		{
-			Error(LOCATION, "Cannot find a dock path for ship %s, dock index %d.  Aborting dock.\n", Ships[dockee->instance].ship_name, dockee_index);
+			core::Error(LOCATION, "Cannot find a dock path for ship %s, dock index %d.  Aborting dock.\n", Ships[dockee->instance].ship_name, dockee_index);
 			ai_mission_goal_complete(aip);
 			return;
 		}
@@ -4085,7 +4085,7 @@ float ai_path()
 		return ai_path_1();
 		break;
 	default:
-		Error(LOCATION, "Invalid path mode found: %d\n", The_mission.ai_profile->ai_path_mode);
+		core::Error(LOCATION, "Invalid path mode found: %d\n", The_mission.ai_profile->ai_path_mode);
 		return ai_path_0();
 	}
 }
@@ -10396,7 +10396,7 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 
 		default:
 		{
-			Error(LOCATION, "Unknown docking submode!");
+			core::Error(LOCATION, "Unknown docking submode!");
 			docker_index = -1;
 			dockee_index = -1;
 			break;
@@ -11190,7 +11190,7 @@ void process_subobjects(int objnum)
 		case SUBSYSTEM_ACTIVATION:
 			break;
 		default:
-			Error(LOCATION, "Illegal subsystem type.\n");
+			core::Error(LOCATION, "Illegal subsystem type.\n");
 		}
 
 		// do solar/radar/gas/activator rotation here

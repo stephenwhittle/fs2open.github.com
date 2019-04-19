@@ -2,6 +2,7 @@
 //
 
 #include "SDLGraphicsOperations.h"
+#include "core/error.h"
 
 namespace {
 void setOGLProperties(const os::ViewPortProperties& props) {
@@ -140,7 +141,7 @@ SDLGraphicsOperations::SDLGraphicsOperations() {
 #endif
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
-		Error(LOCATION, "Couldn't init SDL video: %s", SDL_GetError());
+		core::Error(LOCATION, "Couldn't init SDL video: %s", SDL_GetError());
 		return;
 	}
 }

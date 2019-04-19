@@ -1,5 +1,5 @@
 
-
+#include "core/error.h"
 #include "graphics/software/FontManager.h"
 #include "graphics/software/VFNTFont.h"
 #include "graphics/software/NVGFont.h"
@@ -216,7 +216,7 @@ namespace font
 				x = 0;
 				y += fnt->h + 2;
 				if (y + fnt->h > fnt->bm_h) {
-					Error(LOCATION, "Font too big!\n");
+					core::Error(LOCATION, "Font too big!\n");
 				}
 			}
 			fnt->bm_u[i] = x;

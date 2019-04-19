@@ -1,4 +1,5 @@
 
+#include "core/error.h"
 #include "graphics/render.h"
 #include "graphics/material.h"
 #include "graphics/matrix.h"
@@ -892,7 +893,7 @@ void gr_string(float sx, float sy, const char* s, int resize_mode, int in_length
 			}
 		}
 	} else {
-		Error(LOCATION, "Invalid type enumeration for font \"%s\". Get a coder!", currentFont->getName().c_str());
+		core::Error(LOCATION, "Invalid type enumeration for font \"%s\". Get a coder!", currentFont->getName().c_str());
 	}
 }
 

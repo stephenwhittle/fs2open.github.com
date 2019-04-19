@@ -259,7 +259,6 @@ extern int Global_error_count;
 /*******************NEVER COMMENT Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode
-#define Verify(x) do { if (!(x)){ Error(LOCATION, "Verify failure: %s\n", #x); } ASSUME(x); } while(0)
 
 // VerifyEx
 #ifndef _MSC_VER   // non MS compilers

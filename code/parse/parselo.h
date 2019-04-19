@@ -306,10 +306,6 @@ extern char *stristr(char *str, const char *substr);
 // Goober5000 (ditto)
 extern bool can_construe_as_integer(const char *text);
 
-// Goober5000 (ditto for C++)
-extern void vsprintf(SCP_string &dest, const char *format, va_list ap);
-extern void sprintf(SCP_string &dest, SCP_FORMAT_STRING const char *format, ...) SCP_FORMAT_STRING_ARGS(2, 3);
-
 // Goober5000
 extern int subsystem_stricmp(const char *str1, const char *str2);
 

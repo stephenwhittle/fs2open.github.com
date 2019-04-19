@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/format.h"
 #include "controlconfig/controlsconfig.h"
 #include "debugconsole/console.h"
 #include "freespace.h"
@@ -2165,9 +2165,9 @@ void control_config_do_frame(float frametime)
 		}
 
 		if (matching_preset >= 0) {
-			sprintf(preset_str, "Controls: %s", Control_config_preset_names[matching_preset].c_str());
+			core::sprintf(preset_str, "Controls: %s", Control_config_preset_names[matching_preset].c_str());
 		} else {
-			sprintf(preset_str, "Controls: custom");
+			core::sprintf(preset_str, "Controls: custom");
 			
 		}
 

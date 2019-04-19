@@ -7,7 +7,7 @@
  *
 */
 
-
+#include "core/format.h"
 #include "autopilot/autopilot.h"
 #include "camera/camera.h"
 #include "controlconfig/controlsconfig.h"
@@ -1813,11 +1813,11 @@ void player_generate_death_message(player *player_p)
 		case OBJ_SHOCKWAVE:
 			if (weapon_name[0])
 			{
-				sprintf(msg, XSTR( "%s was killed by a missile shockwave", 92), player_p->callsign);
+				core::sprintf(msg, XSTR( "%s was killed by a missile shockwave", 92), player_p->callsign);
 			}
 			else
 			{
-				sprintf(msg, XSTR( "%s was killed by a shockwave from %s exploding", 93), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by a shockwave from %s exploding", 93), player_p->callsign, player_p->killer_parent_name);
 			}
 			break;
 
@@ -1828,42 +1828,42 @@ void player_generate_death_message(player *player_p)
 			ship_index = ship_name_lookup(player_p->killer_parent_name, 1);
 			if ((ship_index >= 0) && (Player_ship != NULL) && (Player_ship->team == Ships[ship_index].team))
 			{
-				sprintf(msg, XSTR( "%s was killed by friendly fire from %s", 1338), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by friendly fire from %s", 1338), player_p->callsign, player_p->killer_parent_name);
 			}
 			else
 			{
-				sprintf(msg, XSTR( "%s was killed by %s", 94), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by %s", 94), player_p->callsign, player_p->killer_parent_name);
 			}
 			break;
 
 		case OBJ_SHIP:
 			if (player_p->flags & PLAYER_FLAGS_KILLED_BY_EXPLOSION)
 			{
-				sprintf(msg, XSTR( "%s was killed by a blast from %s exploding", 95), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by a blast from %s exploding", 95), player_p->callsign, player_p->killer_parent_name);
 			}
 			else if (player_p->flags & PLAYER_FLAGS_KILLED_BY_ENGINE_WASH)
 			{
-				sprintf(msg, XSTR( "%s was killed by engine wash from %s", 1494), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by engine wash from %s", 1494), player_p->callsign, player_p->killer_parent_name);
 			}
 			else
 			{
-				sprintf(msg, XSTR( "%s was killed by a collision with %s", 96), player_p->callsign, player_p->killer_parent_name);
+				core::sprintf(msg, XSTR( "%s was killed by a collision with %s", 96), player_p->callsign, player_p->killer_parent_name);
 			}
 			break;
 
 		case OBJ_DEBRIS:
-			sprintf(msg, XSTR( "%s was killed by a collision with debris", 97), player_p->callsign);
+			core::sprintf(msg, XSTR( "%s was killed by a collision with debris", 97), player_p->callsign);
 			break;
 
 		case OBJ_ASTEROID:
-			sprintf(msg, XSTR( "%s was killed by a collision with an asteroid", 98), player_p->callsign);
+			core::sprintf(msg, XSTR( "%s was killed by a collision with an asteroid", 98), player_p->callsign);
 			break;
 
 		case OBJ_BEAM:
 			if (strlen(player_p->killer_parent_name) <= 0)
 			{
 				Warning(LOCATION, "Killer_parent_name not specified for beam!");
-				sprintf(msg, XSTR( "%s was killed by a beam from an unknown source", 1081), player_p->callsign);
+				core::sprintf(msg, XSTR( "%s was killed by a beam from an unknown source", 1081), player_p->callsign);
 			}
 			else
 			{
@@ -1871,17 +1871,17 @@ void player_generate_death_message(player *player_p)
 				ship_index = ship_name_lookup(player_p->killer_parent_name, 1);
 				if ((ship_index >= 0) && (Player_ship != NULL) && (Player_ship->team == Ships[ship_index].team))
 				{
-					sprintf(msg, XSTR( "%s was destroyed by friendly beam fire from %s", 1339), player_p->callsign, player_p->killer_parent_name);
+					core::sprintf(msg, XSTR( "%s was destroyed by friendly beam fire from %s", 1339), player_p->callsign, player_p->killer_parent_name);
 				}
 				else
 				{
-					sprintf(msg, XSTR( "%s was destroyed by a beam from %s", 1082), player_p->callsign, player_p->killer_parent_name);
+					core::sprintf(msg, XSTR( "%s was destroyed by a beam from %s", 1082), player_p->callsign, player_p->killer_parent_name);
 				}			
 			}
 			break;
 
 		default:
-			sprintf(msg, XSTR( "%s was killed by unknown causes", 99), player_p->callsign);
+			core::sprintf(msg, XSTR( "%s was killed by unknown causes", 99), player_p->callsign);
 			break;
 	}
 }

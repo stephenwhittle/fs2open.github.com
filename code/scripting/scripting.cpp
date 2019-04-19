@@ -581,7 +581,7 @@ static int ohvt_isopen = 0;			//Items OHVT puts on the stack
 bool script_state::OpenHookVarTable()
 {
 	if(ohvt_isopen)
-		Error(LOCATION, "OpenHookVarTable was called twice with no call to CloseHookVarTable - missing call ahoy!");
+		core::Error(LOCATION, "OpenHookVarTable was called twice with no call to CloseHookVarTable - missing call ahoy!");
 
 	lua_pushstring(LuaState, "hv");
 	lua_gettable(LuaState, LUA_GLOBALSINDEX);
@@ -619,7 +619,7 @@ bool script_state::CloseHookVarTable()
 {
 	if(!ohvt_isopen)
 	{
-		Error(LOCATION, "CloseHookVarTable was called with no associated call to OpenHookVarTable");
+		core::Error(LOCATION, "CloseHookVarTable was called with no associated call to OpenHookVarTable");
 	}
 	int top_ldx = lua_gettop(LuaState);
 	if(top_ldx >= ohvt_poststack)
@@ -630,7 +630,7 @@ bool script_state::CloseHookVarTable()
 	}
 	else
 	{
-		Error(LOCATION, "CloseHookVarTable() was called with too few objects on the stack; get a coder. (Stack: %d OHVT post: %d OHVT num: %d", top_ldx, ohvt_poststack, ohvt_isopen);
+		core::Error(LOCATION, "CloseHookVarTable() was called with too few objects on the stack; get a coder. (Stack: %d OHVT post: %d OHVT num: %d", top_ldx, ohvt_poststack, ohvt_isopen);
 		return false;
 	}
 }

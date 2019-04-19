@@ -7,7 +7,7 @@
  *
 */ 
 
-
+#include "core/format.h"
 #include "debugconsole/console.h"
 #include "globalincs/alphacolors.h"
 #include "globalincs/version.h"
@@ -300,7 +300,7 @@ void dc_init(void)
 	dc_command_buf.reserve(MAX_CLI_LEN);
 	dc_command_buf.clear();
 
-	sprintf(dc_title, "FreeSpace Open v%s", FS_VERSION_FULL);
+	core::sprintf(dc_title, "FreeSpace Open v%s", FS_VERSION_FULL);
 	dc_printf("Debug console started.\n" );
 }
 
@@ -363,7 +363,7 @@ void dc_printf(const char *format, ...)
 	SCP_string::iterator tmp_it;
 
 	va_start(args, format);
-	vsprintf(tmp, format, args);
+	core::vsprintf(tmp, format, args);
 	va_end(args);
 
 	for (tmp_it = tmp.begin(); tmp_it != tmp.end(); ++tmp_it) {

@@ -18,7 +18,7 @@
 #endif
 
 #define MODEL_LIB
-
+#include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
@@ -1054,7 +1054,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 	if (!fp) {
 		if (ferror == 1) {
-			Error( LOCATION, "Can't open model file <%s>", filename );
+			core::Error( LOCATION, "Can't open model file <%s>", filename );
 		} else if (ferror == 0) {
 			Warning( LOCATION, "Can't open model file <%s>", filename );
 		}
@@ -1092,7 +1092,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 	id = cfread_int(fp);
 
 	if (id != POF_HEADER_ID)
-		Error( LOCATION, "Bad ID in model file <%s>",filename);
+		core::Error( LOCATION, "Bad ID in model file <%s>",filename);
 
 	// Version is major*100+minor
 	// So, major = version / 100;
@@ -1180,7 +1180,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				pm->num_debris_objects = cfread_int(fp);
 			    if (pm->num_debris_objects > MAX_DEBRIS_OBJECTS) {
-				    Error(LOCATION,
+				    core::Error(LOCATION,
 				          "Model %s specified that it contains %d debris objects but only %d are supported by the "
 				          "engine.",
 				          filename, pm->num_debris_objects, MAX_DEBRIS_OBJECTS);
@@ -1570,7 +1570,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					// Find end of number
 					parsed_string = strchr(parsed_string, ',');
 					if (parsed_string == NULL) {
-						Error( LOCATION,
+						core::Error( LOCATION,
 							"Submodel '%s' of model '%s' has an improperly formatted $uvec: declaration in its properties."
 							"\n\n$uvec: should be followed by 3 numbers separated with commas."
 							"\n\nCouldn't find first comma (,)!",
@@ -1587,7 +1587,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					// Find end of number
 					parsed_string = strchr(parsed_string, ',');
 					if (parsed_string == NULL) {
-						Error( LOCATION,
+						core::Error( LOCATION,
 							"Submodel '%s' of model '%s' has an improperly formatted $uvec: declaration in its properties."
 							"\n\n$uvec: should be followed by 3 numbers separated with commas."
 							"\n\nCouldn't find second comma (,)!",
@@ -1613,7 +1613,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						// Find end of number
 						parsed_string = strchr(parsed_string, ',');
 						if (parsed_string == NULL) {
-							Error( LOCATION,
+							core::Error( LOCATION,
 								"Submodel '%s' of model '%s' has an improperly formatted $fvec: declaration in its properties."
 								"\n\n$fvec: should be followed by 3 numbers separated with commas."
 								"\n\nCouldn't find first comma (,)!",
@@ -1630,7 +1630,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						// Find end of number
 						parsed_string = strchr(parsed_string, ',');
 						if (parsed_string == NULL) {
-							Error( LOCATION,
+							core::Error( LOCATION,
 								"Submodel '%s' of model '%s' has an improperly formatted $fvec: declaration in its properties."
 								"\n\n$fvec: should be followed by 3 numbers separated with commas."
 								"\n\nCouldn't find second comma (,)!",
@@ -1697,7 +1697,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				{
 					int nchunks = cfread_int( fp );		// Throw away nchunks
 					if ( nchunks > 0 )	{
-						Error( LOCATION, "Model '%s' is chunked.  See John or Adam!\n", pm->filename );
+						core::Error( LOCATION, "Model '%s' is chunked.  See John or Adam!\n", pm->filename );
 					}
 				}
 				pm->submodel[n].bsp_data_size = cfread_int(fp);
@@ -1772,7 +1772,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 								pm->shield.tris[i].verts[j] = cfread_int( fp );		// read in the indices into the shield_vertex list
 #ifndef NDEBUG
 								if (pm->shield.tris[i].verts[j] >= pm->shield.nverts) {
-									Error(LOCATION, "Ship %s has a bogus shield mesh.\nOnly %i vertices, index %i found.\n", filename, pm->shield.nverts, pm->shield.tris[i].verts[j]);
+									core::Error(LOCATION, "Ship %s has a bogus shield mesh.\nOnly %i vertices, index %i found.\n", filename, pm->shield.nverts, pm->shield.tris[i].verts[j]);
 								}
 #endif
 							}
@@ -1781,7 +1781,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 								pm->shield.tris[i].neighbors[j] = cfread_int( fp );	// read in the neighbor indices -- indexes into tri list
 #ifndef NDEBUG
 								if (pm->shield.tris[i].neighbors[j] >= pm->shield.ntris) {
-									Error(LOCATION, "Ship %s has a bogus shield mesh.\nOnly %i triangles, index %i found.\n", filename, pm->shield.ntris, pm->shield.tris[i].neighbors[j]);
+									core::Error(LOCATION, "Ship %s has a bogus shield mesh.\nOnly %i triangles, index %i found.\n", filename, pm->shield.ntris, pm->shield.tris[i].neighbors[j]);
 								}
 #endif
 							}
@@ -2220,7 +2220,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				n = cfread_int(fp);
 				pm->n_textures = n;
 				// Don't overwrite memory!!
-				Verify(pm->n_textures <= MAX_MODEL_TEXTURES);
+				core::Verify(pm->n_textures <= MAX_MODEL_TEXTURES);
 				//mprintf(0,"  num textures = %d\n",n);
 				for (i=0; i<n; i++ )
 				{
@@ -2649,7 +2649,7 @@ int model_load(const  char *filename, int n_subsystems, model_subsystem *subsyst
 
 	// No empty slot
 	if ( num == -1 )	{
-		Error( LOCATION, "Too many models" );
+		core::Error( LOCATION, "Too many models" );
 		return -1;
 	}
 
@@ -2990,7 +2990,7 @@ void model_maybe_fixup_subsys_path(polymodel *pm, int path_num)
 
 	Assert(mp != NULL);
 	if (mp->nverts <= 1 ) {
-		Error(LOCATION, "Subsystem Path (%s) Parent (%s) in model (%s) has less than 2 vertices/points!", mp->name, mp->parent_name, pm->filename);
+		core::Error(LOCATION, "Subsystem Path (%s) Parent (%s) in model (%s) has less than 2 vertices/points!", mp->name, mp->parent_name, pm->filename);
 	}
 	
 	index_1 = 1;
@@ -3143,7 +3143,7 @@ int model_get_parent_submodel_for_live_debris( int model_num, int live_debris_mo
 		// get next child
 		mn = child->next_sibling;
 	}
-	Error( LOCATION, "Could not find parent submodel for live debris");
+	core::Error( LOCATION, "Could not find parent submodel for live debris");
 	return -1;
 }
 

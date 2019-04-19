@@ -9,7 +9,7 @@
 
 
 
-
+#include "core/error.h"
 #include "ai/aigoals.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
@@ -680,9 +680,9 @@ void ship_select_init()
 	ShipSelectMaskBitmap = bm_load(Ship_select_background_mask_fname[gr_screen.res]);
 	if (ShipSelectMaskBitmap < 0) {
 		if (gr_screen.res == GR_640) {
-			Error(LOCATION,"Could not load in 'shipselect-m'!");
+			core::Error(LOCATION,"Could not load in 'shipselect-m'!");
 		} else if (gr_screen.res == GR_1024) {
-			Error(LOCATION,"Could not load in '2_shipselect-m'!");
+			core::Error(LOCATION,"Could not load in '2_shipselect-m'!");
 		}
 	}
 

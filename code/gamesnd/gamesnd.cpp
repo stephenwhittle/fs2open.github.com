@@ -9,7 +9,7 @@
 
 #include <sstream>
 #include <climits>
-
+#include "core/error.h"
 #include "gamesnd/gamesnd.h"
 #include "localization/localize.h"
 #include "parse/parselo.h"
@@ -1268,7 +1268,7 @@ void gamesnd_parse_soundstbl()
 			errorString.append("\n");
 		}
 
-		Error(LOCATION, "The following species are missing flyby sounds in sounds.tbl:\n%s", errorString.c_str());
+		core::Error(LOCATION, "The following species are missing flyby sounds in sounds.tbl:\n%s", errorString.c_str());
 	}
 
 	missingFlybySounds.clear();

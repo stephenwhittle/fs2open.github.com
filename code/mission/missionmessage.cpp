@@ -246,7 +246,7 @@ void persona_parse()
 	Personas = (Persona*)vm_realloc( Personas, sizeof(Persona) * (Num_personas + 1) );
 
 	if (Personas == NULL)
-		Error(LOCATION, "Not enough memory to allocate Personas!" );
+		core::Error(LOCATION, "Not enough memory to allocate Personas!" );
 
 	memset(&Personas[Num_personas], 0, sizeof(Persona));
 
@@ -2075,7 +2075,7 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 				nprintf(("MESSAGING", "looking for message for any persona of any species\n"));
 			break;
 		case -1:
-			Error(LOCATION, "Couldn't find any builtin message of type %d\n", type);
+			core::Error(LOCATION, "Couldn't find any builtin message of type %d\n", type);
 			return;
 	}
 

@@ -12,6 +12,7 @@
 
 #define MODEL_LIB
 
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "graphics/tmapper.h"
 #include "math/fvi.h"
@@ -72,7 +73,7 @@ void model_collide_allocate_point_list(int n_points)
 
 	Mc_point_list = (vec3d**) vm_malloc( sizeof(vec3d *) * n_points );
 
-	Verify( Mc_point_list != NULL );
+	core::Verify( Mc_point_list != NULL );
 }
 
 // Returns non-zero if vector from p0 to pdir 
@@ -1240,7 +1241,7 @@ int model_collide(mc_info *mc_info_obj)
 	Mc->edge_hit = 0;
 
 	if ( (Mc->flags & MC_CHECK_SHIELD) && (Mc->flags & MC_CHECK_MODEL) )	{
-		Error( LOCATION, "Checking both shield and model!\n" );
+		core::Error( LOCATION, "Checking both shield and model!\n" );
 		return 0;
 	}
 

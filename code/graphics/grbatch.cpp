@@ -5,7 +5,7 @@
  * created based on the source.
  *
 */ 
-
+#include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "cmdline/cmdline.h"
 #include "globalincs/pstypes.h"
@@ -48,8 +48,8 @@ void geometry_batcher::allocate_internal(int n_verts)
 		vert = (vertex *) vm_malloc( sizeof(vertex) * n_verts );
 		radius_list = (float *) vm_malloc( sizeof(float) * n_verts );
 
-		Verify( (vert != NULL) );
-		Verify( (radius_list != NULL) );
+		core::Verify( (vert != NULL) );
+		core::Verify( (radius_list != NULL) );
 
 		memset( vert, 0, sizeof(vertex) * n_verts );
 		memset( radius_list, 0, sizeof(float) * n_verts );
@@ -99,8 +99,8 @@ void geometry_batcher::add_allocate(int quad, int n_tri)
 		vert = (vertex *) vm_malloc( sizeof(vertex) * to_alloc );
 		radius_list = (float *) vm_malloc( sizeof(float) * to_alloc );
 
-		Verify( (vert != NULL) );
-		Verify( (radius_list != NULL) );
+		core::Verify( (vert != NULL) );
+		core::Verify( (radius_list != NULL) );
 
 		memset( vert, 0, sizeof(vertex) * to_alloc );
 		memset( radius_list, 0, sizeof(float) * to_alloc );

@@ -2,6 +2,7 @@
 #define GENERIC_SHAPE_EFFECT_H
 #pragma once
 
+#include "core/error.h"
 #include "globalincs/pstypes.h"
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleManager.h"
@@ -75,7 +76,7 @@ class GenericShapeEffect : public ParticleEffect {
 				return out;
 			}
 			default:
-				Error(LOCATION, "Unhandled direction value!");
+				core::Error(LOCATION, "Unhandled direction value!");
 				return vmd_zero_vector;
 		}
 	}

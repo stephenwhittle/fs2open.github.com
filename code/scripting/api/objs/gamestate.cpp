@@ -2,7 +2,7 @@
 //
 
 #include "gamestate.h"
-
+#include "core/error.h"
 namespace scripting {
 namespace api {
 
@@ -42,7 +42,7 @@ ADE_VIRTVAR(Name, l_GameState,"string", "Game state name", "string", "Game state
 
 	if(ADE_SETTING_VAR)
 	{
-		Error(LOCATION, "Can't set game state names at this time");
+		core::Error(LOCATION, "Can't set game state names at this time");
 	}
 
 	return ade_set_args(L, "s", GS_state_text[sdx]);

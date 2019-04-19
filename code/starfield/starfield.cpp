@@ -10,7 +10,7 @@
 
 
 #include <climits>
-
+#include "core/error.h"
 #include "cmdline/cmdline.h"
 #include "debugconsole/console.h"
 #include "freespace.h"
@@ -215,7 +215,7 @@ void stars_load_debris_vclips(debris_vclip *vclips)
 			vclips[i].nframes = 1;
 
 			if (vclips[i].bm <= 0) {
-				Error( LOCATION, "Couldn't load animation/bitmap '%s'\n", vclips[i].name );
+				core::Error( LOCATION, "Couldn't load animation/bitmap '%s'\n", vclips[i].name );
 			}
 		}
 	}

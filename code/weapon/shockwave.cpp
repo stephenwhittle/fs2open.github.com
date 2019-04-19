@@ -8,7 +8,7 @@
 */
 
 
-
+#include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/linklist.h"
@@ -528,7 +528,7 @@ void shockwave_level_init()
 		}
 
 		if (i < 0)
-			Error(LOCATION, "ERROR:  Unable to open neither 3D nor 2D default shockwaves!!");
+			core::Error(LOCATION, "ERROR:  Unable to open neither 3D nor 2D default shockwaves!!");
 
 		Default_shockwave_loaded = 1;
 	} else {
