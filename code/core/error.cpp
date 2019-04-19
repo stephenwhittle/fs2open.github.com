@@ -22,8 +22,22 @@ namespace core
 	    warning_handler.emit(filename, line, msg.c_str());
 #endif
     }
+    void WarningEx(const char* filename, int line, const char* format, ...)
+    {
+#ifndef NDEBUG
+	    if (Cmdline_extra_warn) {
+		    std::string msg;
+		    va_list args;
 
-void Error(const char* filename, int line, const char* format, ...)
+		    va_start(args, format);
+		    core::vsprintf(msg, format, args);
+		    va_end(args);
+
+		    Warning(filename, line, "%s", msg.c_str());
+	    }
+#endif
+    }
+    void Error(const char* filename, int line, const char* format, ...)
 	{
 		std::string formatText;
 		filename = core::path::clean_filename(filename);
