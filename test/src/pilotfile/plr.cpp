@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <object/object.h>
 #include <jansson.h>
-
+#include <ostream>
 #include "util/FSTestFixture.h"
 
 #include "playerman/player.h"
@@ -38,7 +38,7 @@ std::ostream& array_print(std::ostream& out, const T (& data)[SIZE]) {
 };
 
 template<typename T>
-std::ostream& operator<<(std::ostream& out, const SCP_vector<T>& data) {
+std::ostream& operator<<(std::ostream& out, const std::vector<T>& data) {
 	auto first = true;
 	out << "(";
 	for (auto& el : data) {

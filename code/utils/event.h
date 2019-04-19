@@ -3,6 +3,7 @@
 #include "globalincs/pstypes.h"
 
 #include <functional>
+#include <vector>
 
 namespace util {
 

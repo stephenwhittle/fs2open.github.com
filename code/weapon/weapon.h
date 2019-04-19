@@ -23,6 +23,7 @@
 #include "particle/ParticleManager.h"
 #include "weapon/weapon_flags.h"
 #include "decals/decals.h"
+#include <unordered_map>
 
 class object;
 class ship_subsys;
@@ -69,8 +70,6 @@ struct WeaponStateHash {
 		return static_cast<size_t>(state);
 	}
 };
-
-template class std::unordered_map<WeaponState, particle::ParticleEffectHandle, WeaponStateHash>;
 
 typedef struct weapon {
 	int		weapon_info_index;			// index into weapon_info array

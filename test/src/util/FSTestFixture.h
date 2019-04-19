@@ -4,7 +4,8 @@
 
 
 #include <cstdint>
-
+#include <string>
+#include <vector>
 namespace test {
 
 enum InitFlags {
@@ -20,7 +21,7 @@ class FSTestFixture: public ::testing::Test {
  private:
 	std::uint64_t _initFlags;
 
-	SCP_vector<std::string> _cmdlineArgs;
+	std::vector<std::string> _cmdlineArgs;
 	std::string _currentModDir;
 
 	void init_cmdline();
