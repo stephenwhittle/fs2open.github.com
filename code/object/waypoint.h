@@ -1,6 +1,6 @@
 #include "globalincs/globals.h"
 #include "globalincs/pstypes.h"
-
+#include <list>
 #ifndef _WAYPOINT_H
 #define _WAYPOINT_H
 

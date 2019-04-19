@@ -35,7 +35,7 @@
 #include <string>
 #include <particle/ParticleManager.h>
 #include <unordered_map>
-
+#include <deque>
 class object;
 class WarpEffect;
 

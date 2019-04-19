@@ -2,7 +2,8 @@
 #include <cfile/cfilesystem.h>
 #include <graphics/font.h>
 #include <gtest/gtest.h>
-
+#include <string>
+#include <vector>
 #include "util/FSTestFixture.h"
 
 class CFileInitTest : public test::FSTestFixture {
@@ -23,7 +24,7 @@ class CFileInitTest : public test::FSTestFixture {
 };
 
 TEST_F(CFileInitTest, wrong_data_case) {
-	SCP_string cfile_dir(TEST_DATA_PATH);
+	std::string cfile_dir(TEST_DATA_PATH);
 	cfile_dir += DIR_SEPARATOR_CHAR;
 	cfile_dir += "test"; // Cfile expects something after the path
 
@@ -33,7 +34,7 @@ TEST_F(CFileInitTest, wrong_data_case) {
 }
 
 TEST_F(CFileInitTest, right_data_case) {
-	SCP_string cfile_dir(TEST_DATA_PATH);
+	std::string cfile_dir(TEST_DATA_PATH);
 	cfile_dir += DIR_SEPARATOR_CHAR;
 	cfile_dir += "test"; // Cfile expects something after the path
 
@@ -63,7 +64,7 @@ class CFileTest : public test::FSTestFixture {
 };
 
 TEST_F(CFileTest, list_files_in_vps_and_dirs) {
-	SCP_vector<SCP_string> table_files;
+	std::vector<std::string> table_files;
 	extern bool Skip_memory_files;
 
 	// For this test we need to skip the memory files to keep the results consistent
@@ -128,7 +129,7 @@ TEST(CFileStandalone, test_check_location_flags) {
 }
 TEST_F(CFileTest, test_get_path_type)
 {
-	SCP_string cfile_dir(TEST_DATA_PATH);
+	std::string cfile_dir(TEST_DATA_PATH);
 	cfile_dir += DIR_SEPARATOR_CHAR;
 	cfile_dir += "test"; // Cfile expects something after the path
 

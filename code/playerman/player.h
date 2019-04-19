@@ -21,7 +21,7 @@
 #include "physics/physics.h"
 #include "sound/sound.h"
 #include "stats/scoring.h" // for scoring/stats
-
+#include <vector>
 #define MAX_KEYED_TARGETS			8		// number of hot keys available to assign targets to
 
 // player image defines
