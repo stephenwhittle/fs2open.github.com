@@ -874,7 +874,7 @@ void debrief_ui_init()
 	Background_bitmap = mission_ui_background_load(Debriefing->background[gr_screen.res], Debrief_single_name[gr_screen.res], Debrief_multi_name[gr_screen.res]);
 
 	if ( Background_bitmap < 0 ) {
-		Warning(LOCATION, "Could not load the background bitmap for debrief screen");
+		core::Warning(LOCATION, "Could not load the background bitmap for debrief screen");
 	}
 
 	Award_bg_bitmap = bm_load(Debrief_award_background[gr_screen.res]);

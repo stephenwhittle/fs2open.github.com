@@ -2978,7 +2978,7 @@ void ss_init_wing_info(int wing_num,int starting_wing_num)
 	wp = &Wings[ss_wing->wingnum];
 	// niffiwan: don't overrun the array
 	if (wp->current_count > MAX_WING_SLOTS) {
-		Warning(LOCATION, "Starting Wing '%s' has '%d' ships. Truncating ship selection to 'MAX_WING_SLOTS'\n", Starting_wing_names[ss_wing->wingnum],wp->current_count);
+		core::Warning(LOCATION, "Starting Wing '%s' has '%d' ships. Truncating ship selection to 'MAX_WING_SLOTS'\n", Starting_wing_names[ss_wing->wingnum],wp->current_count);
 		ss_wing->num_slots = MAX_WING_SLOTS;
 	} else {
 		ss_wing->num_slots = wp->current_count;
@@ -2993,7 +2993,7 @@ void ss_init_wing_info(int wing_num,int starting_wing_num)
 			if ( p_objp->wingnum == WING_INDEX(wp) ) {
 				// niffiwan: don't overrun the array
 				if (ss_wing->num_slots >= MAX_WING_SLOTS) {
-					Warning(LOCATION, "Starting Wing '%s' has more than 'MAX_WING_SLOTS' ships\n", Starting_wing_names[ss_wing->wingnum]);
+					core::Warning(LOCATION, "Starting Wing '%s' has more than 'MAX_WING_SLOTS' ships\n", Starting_wing_names[ss_wing->wingnum]);
 					break;
 				}
 				slot = &ss_wing->ss_slots[ss_wing->num_slots++];

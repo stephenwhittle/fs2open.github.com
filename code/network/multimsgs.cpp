@@ -1500,7 +1500,7 @@ void send_accept_packet(int new_player_num, int code, int ingame_join_team)
 	// add the current skill level setting on the host
 	// sanity check - reset skill level to default before sending if out of range
 	if (Game_skill_level < 0 || Game_skill_level >= NUM_SKILL_LEVELS) {
-		Warning(LOCATION, "Trying to send packet containing invalid skill level %i! Valid range 0 to %i. Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
+		core::Warning(LOCATION, "Trying to send packet containing invalid skill level %i! Valid range 0 to %i. Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
 		Game_skill_level = game_get_default_skill_level();  
 	}
 	ADD_INT(Game_skill_level);
@@ -1595,7 +1595,7 @@ void process_accept_packet(ubyte* data, header* hinfo)
 	// get the skill level setting
 	GET_INT(Game_skill_level);
 	if (Game_skill_level < 0 || Game_skill_level >= NUM_SKILL_LEVELS) {
-		Warning(LOCATION, "Received packet containing invalid skill level %i! Valid range 0 to %i.  Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
+		core::Warning(LOCATION, "Received packet containing invalid skill level %i! Valid range 0 to %i.  Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
 		Game_skill_level = game_get_default_skill_level();  
 	}
 
@@ -8468,7 +8468,7 @@ void send_sexp_packet(ubyte *sexp_packet, int num_ubytes)
 	Assert (MULTIPLAYER_MASTER);
 	// must have a bare minimum of OP, COUNT and TERMINATOR
 	if (num_ubytes < 9) {
-		Warning(LOCATION, "Invalid call to send_sexp_packet. Not enough data included!"); 
+		core::Warning(LOCATION, "Invalid call to send_sexp_packet. Not enough data included!"); 
 		return; 
 	}
 	

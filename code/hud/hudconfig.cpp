@@ -644,14 +644,14 @@ void hud_config_init_ui()
 	hud_config_synch_ui();
 	HC_background_bitmap = bm_load(Hud_config_fname[gr_screen.res]);
 	if (HC_background_bitmap < 0) {
-		Warning(LOCATION, "Error loading HUD config menu background %s", Hud_config_fname[gr_screen.res]);
+		core::Warning(LOCATION, "Error loading HUD config menu background %s", Hud_config_fname[gr_screen.res]);
 	}
 
 	HC_ui_window.create( 0, 0, gr_screen.max_w_unscaled, gr_screen.max_h_unscaled, 0 );
 
 	HC_background_bitmap_mask = bm_load(Hud_config_mask_fname[gr_screen.res]);
 	if (HC_background_bitmap_mask < 0) {
-		Warning(LOCATION, "Error loading HUD config menu mask %s", Hud_config_mask_fname[gr_screen.res]);
+		core::Warning(LOCATION, "Error loading HUD config menu mask %s", Hud_config_mask_fname[gr_screen.res]);
 		return;
 	} else {
 		HC_ui_window.set_mask_bmap(Hud_config_mask_fname[gr_screen.res]);

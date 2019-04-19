@@ -327,11 +327,11 @@ void parse_colors(const char *filename)
 					stuff_int_list(rgba, 4, RAW_INTEGER_TYPE);
 					for (j = 0; j < 4; j++) {
 						if (rgba[j] < 0) {
-							Warning(LOCATION, "RGBA value for '%s' in %s too low (%d), capping to 0.\n", color_names[i], filename, rgba[j]);
+							core::Warning(LOCATION, "RGBA value for '%s' in %s too low (%d), capping to 0.\n", color_names[i], filename, rgba[j]);
 							rgba[j] = 0;
 						}
 						else if (rgba[j] > 255) {
-							Warning(LOCATION, "RGBA value for '%s' in %s too high (%d), capping to 255.\n", color_names[i], filename, rgba[j]);
+							core::Warning(LOCATION, "RGBA value for '%s' in %s too high (%d), capping to 255.\n", color_names[i], filename, rgba[j]);
 							rgba[j] = 255;
 						}
 					}
@@ -385,7 +385,7 @@ void parse_everything_else(const char *filename)
 				temp = temp2;
 
 				if (!stricmp(temp2, "none")) {
-					Warning(LOCATION, "Team color in '%s' defined with a name of '%s'; this won't be usable due to 'None' being used for a lack of a team color by the engine.\n", filename, temp2);
+					core::Warning(LOCATION, "Team color in '%s' defined with a name of '%s'; this won't be usable due to 'None' being used for a lack of a team color by the engine.\n", filename, temp2);
 				}
 
 				if (required_string("$Team Stripe Color:")) {
@@ -449,12 +449,12 @@ void parse_everything_else(const char *filename)
 						for (j = 0; j < 4; j++) {
 							if (rgba[j] < 0)
 							{
-								Warning(LOCATION, "RGBA value for '%s' in %s too low (%d), capping to 0.\n", color_names[i], filename, rgba[j]);
+								core::Warning(LOCATION, "RGBA value for '%s' in %s too low (%d), capping to 0.\n", color_names[i], filename, rgba[j]);
 								rgba[j] = 0;
 							}
 							else if (rgba[j] > 255)
 							{
-								Warning(LOCATION, "RGBA value for '%s' in %s too high (%d), capping to 255.\n", color_names[i], filename, rgba[j]);
+								core::Warning(LOCATION, "RGBA value for '%s' in %s too high (%d), capping to 255.\n", color_names[i], filename, rgba[j]);
 								rgba[j] = 255;
 							}
 						}
@@ -472,7 +472,7 @@ void parse_everything_else(const char *filename)
 							}
 						}
 						if (j == TOTAL_COLORS) {
-							Warning(LOCATION, "Unknown color '%s' in %s, for definition of '%s'; using default ('%s').\n", temp.c_str(), filename, color_names[i], COLOR_NAMES[interface_defaults[i]]);
+							core::Warning(LOCATION, "Unknown color '%s' in %s, for definition of '%s'; using default ('%s').\n", temp.c_str(), filename, color_names[i], COLOR_NAMES[interface_defaults[i]]);
 						}
 						else {
 							Assertion(j >= 0 && j < TOTAL_COLORS, "Attempting to copy nonexistant color (%d out of 0-%d)!\n", j, TOTAL_COLORS - 1);
@@ -498,7 +498,7 @@ void parse_everything_else(const char *filename)
 					}
 					tag = temp[1];
 					if (temp[2] != '\0') {
-						Warning(LOCATION, "%s - tag '$%c' has extra text in its definition.\n", filename, tag);
+						core::Warning(LOCATION, "%s - tag '$%c' has extra text in its definition.\n", filename, tag);
 					}
 				}
 				else if (temp[0] == '\0') {
@@ -507,7 +507,7 @@ void parse_everything_else(const char *filename)
 				else {
 					tag = temp[0];
 					if (temp[1] != '\0') {
-						Warning(LOCATION, "%s - tag '$%c' has extra text in its definition.\n", filename, tag);
+						core::Warning(LOCATION, "%s - tag '$%c' has extra text in its definition.\n", filename, tag);
 					}
 				}
 
@@ -527,12 +527,12 @@ void parse_everything_else(const char *filename)
 						for (j = 0; j < 4; j++) {
 							if (rgba[j] < 0)
 							{
-								Warning(LOCATION, "RGBA value for '$%c' in %s too low (%d), capping to 0.\n", tag, filename, rgba[j]);
+								core::Warning(LOCATION, "RGBA value for '$%c' in %s too low (%d), capping to 0.\n", tag, filename, rgba[j]);
 								rgba[j] = 0;
 							}
 							else if (rgba[j] > 255)
 							{
-								Warning(LOCATION, "RGBA value for '$%c' in %s too high (%d), capping to 255.\n", tag, filename, rgba[j]);
+								core::Warning(LOCATION, "RGBA value for '$%c' in %s too high (%d), capping to 255.\n", tag, filename, rgba[j]);
 								rgba[j] = 255;
 							}
 						}
@@ -618,7 +618,7 @@ void parse_everything_else(const char *filename)
 						}
 						*color_value[i] = temp[1];
 						if (temp[2] != '\0') {
-							Warning(LOCATION, "%s - default text color '%s' has extra text after the tag '$%c'.\n", filename, color_names[i], *color_value[i]);
+							core::Warning(LOCATION, "%s - default text color '%s' has extra text after the tag '$%c'.\n", filename, color_names[i], *color_value[i]);
 						}
 					}
 					else if (temp[0] == '\0') {
@@ -627,7 +627,7 @@ void parse_everything_else(const char *filename)
 					else {
 						*color_value[i] = temp[0];
 						if (temp[1] != '\0') {
-							Warning(LOCATION, "%s - default text color '%s' has extra text after the tag '$%c'.\n", filename, color_names[i], *color_value[i]);
+							core::Warning(LOCATION, "%s - default text color '%s' has extra text after the tag '$%c'.\n", filename, color_names[i], *color_value[i]);
 						}
 					}
 					if (Tagged_Colors.find(*color_value[i]) == Tagged_Colors.end()) {

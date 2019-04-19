@@ -1129,12 +1129,12 @@ void techroom_init()
 	Tech_background_bitmap = bm_load(Tech_background_filename[gr_screen.res]);
 	if (Tech_background_bitmap < 0) {
 		// failed to load bitmap, not a good thing
-		Warning(LOCATION,"Error loading techroom background bitmap %s", Tech_background_filename[gr_screen.res]);
+		core::Warning(LOCATION,"Error loading techroom background bitmap %s", Tech_background_filename[gr_screen.res]);
 	}
 
 	Tech_background_bitmap_mask = bm_load(Tech_mask_filename[gr_screen.res]);
 	if (Tech_background_bitmap_mask < 0) {
-		Warning(LOCATION, "Error loading techroom background mask %s", Tech_mask_filename[gr_screen.res]);
+		core::Warning(LOCATION, "Error loading techroom background mask %s", Tech_mask_filename[gr_screen.res]);
 		return;
 	} else {
 		Ui_window.set_mask_bmap(Tech_mask_filename[gr_screen.res]);

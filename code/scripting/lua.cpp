@@ -136,7 +136,7 @@ int script_state::CreateLuaState()
 
 	if(L == NULL)
 	{
-		Warning(LOCATION, "Could not initialize Lua");
+		core::Warning(LOCATION, "Could not initialize Lua");
 		return 0;
 	}
 
@@ -218,7 +218,7 @@ void ade_output_toc(FILE *fp, ade_table_entry *ate)
 
 	//WMC - sanity checking
 	if(ate->Name == NULL && ate->ShortName == NULL) {
-		Warning(LOCATION, "Found ade_table_entry with no name or shortname");
+		core::Warning(LOCATION, "Found ade_table_entry with no name or shortname");
 		return;
 	}
 

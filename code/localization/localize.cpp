@@ -362,9 +362,9 @@ void parse_stringstbl_common(const char *filename, const bool external)
 			}
 
 			if (external && (Lcl_ext_str.find(index) != Lcl_ext_str.end())) {
-				Warning(LOCATION, "Tstrings table index %d used more than once", index);
+				core::Warning(LOCATION, "Tstrings table index %d used more than once", index);
 			} else if (!external && (Xstr_table[index].str != NULL)) {
-				Warning(LOCATION, "Strings table index %d used more than once", index);
+				core::Warning(LOCATION, "Strings table index %d used more than once", index);
 			}
 
 			if (external) {

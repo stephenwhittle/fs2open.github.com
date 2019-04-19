@@ -428,7 +428,7 @@ void main_hall_init(const std::string &main_hall_name)
 		// we were passed a blank main hall name, so load the first available main hall
 		main_hall_get_name(main_hall_to_load, 0);
 	} else if (main_hall_get_pointer(main_hall_name) == NULL) {
-		Warning(LOCATION, "Tried to load a main hall called '%s', but it does not exist; loading first available main hall.", main_hall_name.c_str());
+		core::Warning(LOCATION, "Tried to load a main hall called '%s', but it does not exist; loading first available main hall.", main_hall_name.c_str());
 		main_hall_get_name(main_hall_to_load, 0);
 	} else {
 		main_hall_to_load = main_hall_name;
@@ -928,7 +928,7 @@ void main_hall_do(float frametime)
 					const char *lua = it->lua_action.c_str();
 					bool success    = Script_system.EvalString(lua, lua);
 					if (!success)
-						Warning(LOCATION,
+						core::Warning(LOCATION,
 						        "mainhall '+Door Action / $Script' failed to evaluate \"%s\"; check your syntax", lua);
 					break;
 			} // END switch (code)
@@ -2130,7 +2130,7 @@ void parse_main_hall_table(const char* filename)
 					if (temp_scp_string.size() > MAIN_HALL_MAX_CHEAT_LEN) {
 						// Since the value is longer than the cheat buffer it will never match.
 
-						Warning(LOCATION, "The value '%s' for '+Cheat String:' is too long! It can be at most %d characters long.", temp_scp_string.c_str(), MAIN_HALL_MAX_CHEAT_LEN);
+						core::Warning(LOCATION, "The value '%s' for '+Cheat String:' is too long! It can be at most %d characters long.", temp_scp_string.c_str(), MAIN_HALL_MAX_CHEAT_LEN);
 					}
 
 					required_string("+Anim To Change:");

@@ -379,7 +379,7 @@ void waypoint_add_list(const char *name, std::vector<vec3d> &vec_list)
 
 	if (find_matching_waypoint_list(name) != NULL)
 	{
-		Warning(LOCATION, "Waypoint list '%s' already exists in this mission!  Not adding the new list...", name);
+		core::Warning(LOCATION, "Waypoint list '%s' already exists in this mission!  Not adding the new list...", name);
 		return;
 	}
 

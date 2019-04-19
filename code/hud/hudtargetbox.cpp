@@ -319,19 +319,19 @@ void HudGaugeTargetBox::initBitmaps(char *fname_monitor, char *fname_monitor_mas
 {
 	Monitor_frame.first_frame = bm_load_animation(fname_monitor, &Monitor_frame.num_frames);
 	if ( Monitor_frame.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname_monitor);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname_monitor);
 	}
 
 	Integrity_bar.first_frame = bm_load_animation(fname_integrity, &Integrity_bar.num_frames);
 	if ( Integrity_bar.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname_integrity);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname_integrity);
 	}
 
 	if ( strlen(fname_monitor_mask) > 0 ) {
 		Monitor_mask = bm_load_animation(fname_monitor_mask);
 
 		if ( Monitor_mask < 0 ) {
-			Warning(LOCATION, "Cannot load bitmap hud mask: %s\n", fname_monitor_mask);
+			core::Warning(LOCATION, "Cannot load bitmap hud mask: %s\n", fname_monitor_mask);
 		}
 	}
 
@@ -1391,7 +1391,7 @@ void HudGaugeExtraTargetData::initBitmaps(char *fname)
 {
 	bracket.first_frame = bm_load_animation(fname, &bracket.num_frames);
 	if ( bracket.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
 	}
 }
 
@@ -1591,7 +1591,7 @@ void get_turret_subsys_name(ship_weapon *swp, char *outstr)
 					static bool Turret_illegal_subtype_warned = false;
 					if (!Turret_illegal_subtype_warned) {
 						Turret_illegal_subtype_warned = true;
-						Warning(LOCATION, "This turret has an illegal subtype!  Trace out and fix!");
+						core::Warning(LOCATION, "This turret has an illegal subtype!  Trace out and fix!");
 					}
 					sprintf(outstr, "%s", XSTR("Turret", 1487));
 				}

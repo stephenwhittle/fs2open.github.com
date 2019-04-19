@@ -1203,7 +1203,7 @@ float find_nearest_point_on_line(vec3d *nearest_point, const vec3d *p0, const ve
 	if (mag < 0.01f) {
 		*nearest_point = *int_pnt;
 		return 9999.9f;
-		// Warning(LOCATION, "Very small magnitude in find_nearest_point_on_line.\n");
+		// core::Warning(LOCATION, "Very small magnitude in find_nearest_point_on_line.\n");
 	}
 
 	vm_vec_outer_product(&mat, &norm);

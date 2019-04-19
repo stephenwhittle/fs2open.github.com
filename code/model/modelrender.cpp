@@ -2634,7 +2634,7 @@ void model_render_queue(model_render_params *interp, model_draw_list *scene, int
 			else if (objp->type == OBJ_WEAPON)
 				pmi = model_get_instance(Weapons[objp->instance].model_instance_num);
 			else
-				Warning(LOCATION, "Unsupported object type %d for rendering intrinsic-rotate submodels!", objp->type);
+				core::Warning(LOCATION, "Unsupported object type %d for rendering intrinsic-rotate submodels!", objp->type);
 		}
 	}
 

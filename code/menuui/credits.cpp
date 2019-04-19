@@ -343,7 +343,7 @@ void credits_parse_table(const char* filename)
 			else if (!stricmp(mode, "End"))
 				SCP_credits_position = END;
 			else
-				Warning(LOCATION, "Unknown credits position mode \"%s\".", mode);
+				core::Warning(LOCATION, "Unknown credits position mode \"%s\".", mode);
 		}
 
 		ignore_white_space();

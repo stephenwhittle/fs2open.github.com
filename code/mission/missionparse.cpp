@@ -2121,7 +2121,7 @@ int parse_create_object_sub(p_object *p_objp)
 			remaining_orders = p_objp->orders_accepted & ~default_orders;
 			if (remaining_orders)
 			{
-				Warning(LOCATION, "Ship %s has orders which it will accept that are\nnot part of default orders accepted.\n\nPlease reedit this ship and change the orders again\n", shipp->ship_name);
+				core::Warning(LOCATION, "Ship %s has orders which it will accept that are\nnot part of default orders accepted.\n\nPlease reedit this ship and change the orders again\n", shipp->ship_name);
 			}
 		}
 #endif
@@ -2347,7 +2347,7 @@ int parse_create_object_sub(p_object *p_objp)
 		}
 		else
 		{
-			Warning(LOCATION, "Unable to find '%s' in ship subsys_list!", sssp->name);
+			core::Warning(LOCATION, "Unable to find '%s' in ship subsys_list!", sssp->name);
 		}
 	}
 	
@@ -2561,7 +2561,7 @@ void resolve_parse_flags(object *objp, flagset<Mission::Parse_Object_Flags> &par
         //Individual ships in wings can't be reinforcements - FUBAR
         if (shipp->wingnum >= 0)
         {
-            Warning(LOCATION, "Ship %s is a reinforcement unit but is a member of a wing. Ignoring reinforcement flag.", shipp->ship_name);
+            core::Warning(LOCATION, "Ship %s is a reinforcement unit but is a member of a wing. Ignoring reinforcement flag.", shipp->ship_name);
         }
         else
         {
@@ -2571,7 +2571,7 @@ void resolve_parse_flags(object *objp, flagset<Mission::Parse_Object_Flags> &par
 
     if ((parse_flags[Mission::Parse_Object_Flags::OF_No_shields]) && (parse_flags[Mission::Parse_Object_Flags::OF_Force_shields_on]))
     {
-        Warning(LOCATION, "The parser found a ship with both the \"force-shields-on\" and \"no-shields\" flags; this is inconsistent!");
+        core::Warning(LOCATION, "The parser found a ship with both the \"force-shields-on\" and \"no-shields\" flags; this is inconsistent!");
     }
     if (parse_flags[Mission::Parse_Object_Flags::OF_No_shields])
         objp->flags.set(Object::Object_Flags::No_shields);
@@ -2809,7 +2809,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	if (p_objp->ship_class < 0)
 	{
 		if (Fred_running) {
-			Warning(LOCATION, "Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name);
+			core::Warning(LOCATION, "Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name);
 		} 
 		else {
 			mprintf(("MISSIONS: Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name));
@@ -2847,17 +2847,17 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 
 		if (new_alt_class.ship_class < 0 ) {
 			if (!Fred_running) {
-				Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type (ships.tbl probably changed). Skipping this entry", p_objp->name); 
+				core::Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type (ships.tbl probably changed). Skipping this entry", p_objp->name); 
 				continue; 
 			}
 			else {
 				// incorrect initial values for a variable can be fixed in FRED
 				if (new_alt_class.variable_index != -1) {
-					Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type.", p_objp->name); 
+					core::Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type.", p_objp->name); 
 				}
 				// but there is little we can do if someone spelled a ship class incorrectly
 				else {
-					Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type. Skipping this entry", p_objp->name); 
+					core::Warning(LOCATION, "Ship \"%s\" has an invalid Alternate Ship Class type. Skipping this entry", p_objp->name); 
 					continue; 			
 				}
 			}
@@ -2946,7 +2946,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 
 		if (p_objp->ai_class < 0) 
 		{
-			Warning(LOCATION, "AI Class for ship %s does not exist in ai.tbl. Setting to first available class.\n", p_objp->name);
+			core::Warning(LOCATION, "AI Class for ship %s does not exist in ai.tbl. Setting to first available class.\n", p_objp->name);
 			p_objp->ai_class = 0;
 		}		
 	}
@@ -2998,7 +2998,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 		// Goober5000
 		if ((p_objp->arrival_distance <= 0) && ((p_objp->arrival_location == ARRIVE_NEAR_SHIP) || (p_objp->arrival_location == ARRIVE_IN_FRONT_OF_SHIP)))
 		{
-			Warning(LOCATION, "Arrival distance for ship %s cannot be %d.  Setting to 1.\n", p_objp->name, p_objp->arrival_distance);
+			core::Warning(LOCATION, "Arrival distance for ship %s cannot be %d.  Setting to 1.\n", p_objp->name, p_objp->arrival_distance);
 			p_objp->arrival_distance = 1;
 		}
 	}
@@ -3621,7 +3621,7 @@ void parse_common_object_data(p_object	*objp)
 				if (!subsystem_stricmp(sip->subsystems[j].subobj_name, Subsys_status[i].name))
 					break;
 			//if (j == sip->n_subsystems)
-				//Warning(LOCATION, "Ship \"%s\", class \"%s\"\nUnknown subsystem \"%s\" found in mission!", objp->name, sip->name, Subsys_status[i].name);
+				//core::Warning(LOCATION, "Ship \"%s\", class \"%s\"\nUnknown subsystem \"%s\" found in mission!", objp->name, sip->name, Subsys_status[i].name);
 		}
 
 		if (optional_string("$Damage:"))
@@ -4358,7 +4358,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 					continue;
 
 				if ( orders != Ships[wingp->ship_index[it]].orders_accepted ) {
-					Warning(LOCATION, "ships in wing %s are ignoring different player orders.  Please find Mark A\nto talk to him about this.", wingp->name );
+					core::Warning(LOCATION, "ships in wing %s are ignoring different player orders.  Please find Mark A\nto talk to him about this.", wingp->name );
 					break;
 				}
 			}
@@ -4457,7 +4457,7 @@ void parse_wing(mission *pm)
 		// Goober5000
 		if ((wingp->arrival_distance <= 0) && ((wingp->arrival_location == ARRIVE_NEAR_SHIP) || (wingp->arrival_location == ARRIVE_IN_FRONT_OF_SHIP)))
 		{
-			Warning(LOCATION, "Arrival distance for wing %s cannot be %d.  Setting to 1.\n", wingp->name, wingp->arrival_distance);
+			core::Warning(LOCATION, "Arrival distance for wing %s cannot be %d.  Setting to 1.\n", wingp->name, wingp->arrival_distance);
 			wingp->arrival_distance = 1;
 		}
 	}
@@ -4568,7 +4568,7 @@ void parse_wing(mission *pm)
             else if (!stricmp(wing_flag_strings[i], NOX("nav-carry-status")))
                 wingp->flags.set(Ship::Wing_Flags::Nav_carry);
             else
-                Warning(LOCATION, "unknown wing flag\n%s\n\nSkipping.", wing_flag_strings[i]);
+                core::Warning(LOCATION, "unknown wing flag\n%s\n\nSkipping.", wing_flag_strings[i]);
 		}
 	}
 
@@ -4672,7 +4672,7 @@ void parse_wing(mission *pm)
 
 				// Goober5000 - if this is a player start object, there shouldn't be a wing arrival delay (Mantis #2678)
 				if ((p_objp->flags[Mission::Parse_Object_Flags::OF_Player_start]) && (saved_arrival_delay != 0)) {
-					Warning(LOCATION, "Wing %s specifies an arrival delay of %ds, but it also contains a player.  The arrival delay will be reset to 0.", wingp->name, saved_arrival_delay);
+					core::Warning(LOCATION, "Wing %s specifies an arrival delay of %ds, but it also contains a player.  The arrival delay will be reset to 0.", wingp->name, saved_arrival_delay);
 					if (!Fred_running && wingp->arrival_delay > 0) {
 						// timestamp has been set, so set it again
 						wingp->arrival_delay = timestamp(0);
@@ -4925,7 +4925,7 @@ void parse_event(mission * /*pm*/)
 		// sanity check
 		if (event->team < -1 || event->team >= MAX_TVT_TEAMS) {
 			if (Fred_running && !Warned_about_team_out_of_range) {
-				Warning(LOCATION, "+Team: value was out of range in the mission file!  This was probably caused by a bug in an older version of FRED.  Using -1 for now.");
+				core::Warning(LOCATION, "+Team: value was out of range in the mission file!  This was probably caused by a bug in an older version of FRED.  Using -1 for now.");
 				Warned_about_team_out_of_range = true;
 			}
 			event->team = -1;
@@ -5020,7 +5020,7 @@ void parse_goal(mission *pm)
 		// sanity check
 		if (goalp->team < -1 || goalp->team >= Num_iffs) {
 			if (Fred_running && !Warned_about_team_out_of_range) {
-				Warning(LOCATION, "+Team: value was out of range in the mission file!  This was probably caused by a bug in an older version of FRED.  Using -1 for now.");
+				core::Warning(LOCATION, "+Team: value was out of range in the mission file!  This was probably caused by a bug in an older version of FRED.  Using -1 for now.");
 				Warned_about_team_out_of_range = true;
 			}
 			goalp->team = -1;
@@ -5125,7 +5125,7 @@ void parse_messages(mission *pm, int flags)
 		if (idx >= 0)
 			pm->command_persona = idx;
 		else
-			Warning(LOCATION, "Supplied Command Persona is invalid!  Defaulting to %s.", Personas[Default_command_persona].name);
+			core::Warning(LOCATION, "Supplied Command Persona is invalid!  Defaulting to %s.", Personas[Default_command_persona].name);
 	}
 	// end of command stuff ----------------------------------------------
 
@@ -5181,14 +5181,14 @@ void parse_reinforcement(mission *pm)
 
 	if (rforce_obj == NULL) {
 		if ((instance = wing_name_lookup(ptr->name, 1)) == -1) {
-			Warning(LOCATION, "Reinforcement %s not found as ship or wing", ptr->name);
+			core::Warning(LOCATION, "Reinforcement %s not found as ship or wing", ptr->name);
 			return;
 		}
 	} else {
 		// Individual ships in wings can't be reinforcements - FUBAR
 		if (rforce_obj->wingnum >= 0)
 		{
-			Warning(LOCATION, "Reinforcement %s is part of a wing - Ignoring reinforcement declaration", ptr->name);
+			core::Warning(LOCATION, "Reinforcement %s is part of a wing - Ignoring reinforcement declaration", ptr->name);
 			return;
 		}
 		else
@@ -5400,7 +5400,7 @@ void parse_bitmaps(mission *pm)
 		// don't allow overflow; just make sure the last background is the last read
 		if (Num_backgrounds >= MAX_BACKGROUNDS)
 		{
-			Warning(LOCATION, "Too many backgrounds in mission!  Max is %d.", MAX_BACKGROUNDS);
+			core::Warning(LOCATION, "Too many backgrounds in mission!  Max is %d.", MAX_BACKGROUNDS);
 			Num_backgrounds = MAX_BACKGROUNDS - 1;
 		}
 
@@ -5809,7 +5809,7 @@ bool post_process_mission()
 		for (i=0; i<Num_parse_names; i++) {
 			indices[i] = ship_name_lookup(Parse_names[i], 1);
 			if (indices[i] < 0)
-				Warning(LOCATION, "Ship name \"%s\" referenced, but this ship doesn't exist", Parse_names[i]);
+				core::Warning(LOCATION, "Ship name \"%s\" referenced, but this ship doesn't exist", Parse_names[i]);
 		}
 
 		for (i=0; i<MAX_SHIPS; i++) {
@@ -5851,7 +5851,7 @@ bool post_process_mission()
 				convert_sexp_to_string(sexp_str, i, SEXP_ERROR_CHECK_MODE);
 				truncate_message_lines(sexp_str, 30);
 				core::sprintf(error_msg, "%s.\n\nIn sexpression: %s\n(Error appears to be: %s)", sexp_error_message(result), sexp_str.c_str(), Sexp_nodes[bad_node].text);
-				Warning(LOCATION, "%s", error_msg.c_str());
+				core::Warning(LOCATION, "%s", error_msg.c_str());
 
 				// syntax errors are unrecoverable, so abort
 				return false;
@@ -6373,13 +6373,13 @@ void mission_parse_set_up_initial_docks()
 		docker = mission_parse_get_parse_object(Initially_docked[i].docker);
 		if (docker == NULL)
 		{
-			Warning(LOCATION, "Could not resolve initially docked object '%s'!", Initially_docked[i].docker);
+			core::Warning(LOCATION, "Could not resolve initially docked object '%s'!", Initially_docked[i].docker);
 			continue;
 		}
 		dockee = mission_parse_get_parse_object(Initially_docked[i].dockee);
 		if (dockee == NULL)
 		{
-			Warning(LOCATION, "Could not resolve docking target '%s' of initially docked object '%s'!", Initially_docked[i].dockee, Initially_docked[i].docker);
+			core::Warning(LOCATION, "Could not resolve docking target '%s' of initially docked object '%s'!", Initially_docked[i].dockee, Initially_docked[i].docker);
 			continue;
 		}
 
@@ -6396,14 +6396,14 @@ void mission_parse_set_up_initial_docks()
 		// docker point in use?
 		if (dock_find_object_at_dockpoint(docker, docker_point) != NULL)
 		{
-			Warning(LOCATION, "Trying to initially dock '%s' and '%s', but the former's dockpoint is already in use!", Initially_docked[i].docker, Initially_docked[i].dockee);
+			core::Warning(LOCATION, "Trying to initially dock '%s' and '%s', but the former's dockpoint is already in use!", Initially_docked[i].docker, Initially_docked[i].dockee);
 			continue;
 		}
 
 		// dockee point in use?
 		if (dock_find_object_at_dockpoint(dockee, dockee_point) != NULL)
 		{
-			Warning(LOCATION, "Trying to initially dock '%s' and '%s', but the latter's dockpoint is already in use!", Initially_docked[i].docker, Initially_docked[i].dockee);
+			core::Warning(LOCATION, "Trying to initially dock '%s' and '%s', but the latter's dockpoint is already in use!", Initially_docked[i].docker, Initially_docked[i].dockee);
 			continue;
 		}
 
@@ -6430,7 +6430,7 @@ void mission_parse_set_up_initial_docks()
 		// display an error if necessary
 		if (dfi.maintained_variables.int_value == 0)
 		{
-			Warning(LOCATION, "No dock leaders found in the docking group containing %s.  The group will not appear in-mission!\n", pobjp->name);
+			core::Warning(LOCATION, "No dock leaders found in the docking group containing %s.  The group will not appear in-mission!\n", pobjp->name);
 
 			// for FRED, we must arbitrarily choose a dock leader, otherwise the entire docked group will not be loaded
 			if (Fred_running)
@@ -6438,7 +6438,7 @@ void mission_parse_set_up_initial_docks()
 		}
 		else if (dfi.maintained_variables.int_value > 1)
 		{
-			Warning(LOCATION, "There are multiple dock leaders in the docking group containing the leader %s!  Setting %s as the sole leader...\n", dfi.maintained_variables.objp_value->name, dfi.maintained_variables.objp_value->name);
+			core::Warning(LOCATION, "There are multiple dock leaders in the docking group containing the leader %s!  Setting %s as the sole leader...\n", dfi.maintained_variables.objp_value->name, dfi.maintained_variables.objp_value->name);
 		}
 
 		// clear dfi stuff
@@ -6643,7 +6643,7 @@ int mission_set_arrival_location(int anchor, int location, int dist, int objnum,
 		if ( dist <= 0 )
 		{
 			// Goober5000 - default to 100
-			Warning(LOCATION, "Distance of %d is invalid in mission_set_arrival_location.  Defaulting to 100.\n", dist);
+			core::Warning(LOCATION, "Distance of %d is invalid in mission_set_arrival_location.  Defaulting to 100.\n", dist);
 			dist = 100;
 		}
 		
@@ -7507,7 +7507,7 @@ continue_outer_loop:
 	// check limit
 	if (Num_path_restrictions >= MAX_PATH_RESTRICTIONS)
 	{
-		Warning(LOCATION, "Maximum number of path restrictions reached");
+		core::Warning(LOCATION, "Maximum number of path restrictions reached");
 		return -1;
 	}
 
@@ -7915,7 +7915,7 @@ void mission_parse_lookup_alt_index(int index, char *out)
 	{
 		if (mission_parse_lookup_alt_index_warn)
 		{
-			Warning(LOCATION, "Ship with invalid alt_name.  Get a programmer");
+			core::Warning(LOCATION, "Ship with invalid alt_name.  Get a programmer");
 			mission_parse_lookup_alt_index_warn = 0;
 		}
 		return;
@@ -8003,7 +8003,7 @@ void mission_parse_lookup_callsign_index(int index, char *out)
 	{
 		if (mission_parse_lookup_callsign_index_warn)
 		{
-			Warning(LOCATION, "Ship with invalid callsign.  Get a programmer");
+			core::Warning(LOCATION, "Ship with invalid callsign.  Get a programmer");
 			mission_parse_lookup_callsign_index_warn = 0;
 		}
 		return;

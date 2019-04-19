@@ -491,7 +491,7 @@ size_t ade_table_entry::AddSubentry(ade_table_entry& n_ate) {
 void ade_table_entry::OutputMeta(FILE *fp)
 {
 	if(Name == NULL && ShortName == NULL) {
-		Warning(LOCATION, "Data entry with no name or shortname");
+		core::Warning(LOCATION, "Data entry with no name or shortname");
 		return;
 	}
 
@@ -635,7 +635,7 @@ void ade_table_entry::OutputMeta(FILE *fp)
 			}
 				break;
 			default:
-				Warning(LOCATION, "Unknown type '%c' passed to ade_table_entry::OutputMeta", Type);
+				core::Warning(LOCATION, "Unknown type '%c' passed to ade_table_entry::OutputMeta", Type);
 				FALLTHROUGH;
 			case 'b':
 			case 'd':

@@ -609,7 +609,7 @@ void generic_anim_render_variable_frame_delay(generic_anim* ga, float frametime,
 {
 	Assertion(ga->type == BM_TYPE_PNG, "only valid for apngs (currently); get a coder!");
 	if (ga->keyframe != 0) {
-		Warning(LOCATION, "apngs don't support keyframes");
+		core::Warning(LOCATION, "apngs don't support keyframes");
 		return;
 	}
 
@@ -696,7 +696,7 @@ void generic_anim_render_variable_frame_delay(generic_anim* ga, float frametime,
 void generic_anim_render(generic_anim *ga, float frametime, int x, int y, bool menu, const generic_extras *ge)
 {
 	if ((ge != nullptr) && (ga->use_hud_color == true)) {
-		Warning(LOCATION, "Monochrome generic anims can't use extra info (yet)");
+		core::Warning(LOCATION, "Monochrome generic anims can't use extra info (yet)");
 		return;
 	}
 

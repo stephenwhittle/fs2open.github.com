@@ -36,7 +36,7 @@ bool RocketSystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocke
 		ReleaseWarning(LOCATION, "libRocket error: %s", message.CString());
 		break;
 	case Log::LT_WARNING:
-		Warning(LOCATION, "libRocket warning: %s", message.CString());
+		core::Warning(LOCATION, "libRocket warning: %s", message.CString());
 		break;
 	case Log::LT_ASSERT:
 		os::dialogs::AssertMessage("libRocket assertion", LOCATION, "%s", message.CString());

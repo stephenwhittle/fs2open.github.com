@@ -643,7 +643,7 @@ static void set_subsystem_info(int model_num, model_subsystem *subsystemp, char 
 	if (prop_string(props, nullptr, "$dumb_rotate") >= 0) {
 		// no special subsystem handling needed here, but make sure we didn't specify both methods
 		if (prop_string(props, nullptr, "$rotate") >= 0) {
-			Warning(LOCATION, "Subsystem '%s' on ship %s cannot have both rotation and dumb-rotation!", dname, model_get(model_num)->filename);
+			core::Warning(LOCATION, "Subsystem '%s' on ship %s cannot have both rotation and dumb-rotation!", dname, model_get(model_num)->filename);
 		}
 	}
 	// Rotating subsystem
@@ -658,7 +658,7 @@ static void set_subsystem_info(int model_num, model_subsystem *subsystemp, char 
 		if (idx == 0 || idx == 2) {
 			float turn_time = static_cast<float>(atof(buf));
 			if (turn_time == 0.0f) {
-				Warning(LOCATION, "Rotation has a turn time of 0 for subsystem '%s' on ship %s!", dname, model_get(model_num)->filename);
+				core::Warning(LOCATION, "Rotation has a turn time of 0 for subsystem '%s' on ship %s!", dname, model_get(model_num)->filename);
 				turn_rate = 1.0f;
 			} else {
 				turn_rate = PI2 / turn_time;
@@ -802,7 +802,7 @@ void do_new_subsystem( int n_subsystems, model_subsystem *slist, int subobj_num,
 	if ( !ss_warning_shown) {
 		_splitpath(model_filename, NULL, NULL, bname, NULL);
 		// Lets still give a comment about it and not just erase it
-		Warning(LOCATION,"Not all subsystems in model \"%s\" have a record in ships.tbl.\nThis can cause game to crash.\n\nList of subsystems not found from table is in log file.\n", model_get(model_num)->filename );
+		core::Warning(LOCATION,"Not all subsystems in model \"%s\" have a record in ships.tbl.\nThis can cause game to crash.\n\nList of subsystems not found from table is in log file.\n", model_get(model_num)->filename );
 		mprintf(("Subsystem %s in model %s was not found in ships.tbl!\n", subobj_name, model_get(model_num)->filename));
 		ss_warning_shown = 1;
 	} else
@@ -1016,7 +1016,7 @@ bool maybe_swap_mins_maxs(vec3d *mins, vec3d *maxs)
 		}
 
 		// notify the user
-		Warning(LOCATION, text);
+		core::Warning(LOCATION, text);
 	}
 #endif
 
@@ -1102,7 +1102,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 	//Warning( LOCATION, "POF Version = %d", version );
 	
 	if (version < PM_COMPATIBLE_VERSION || (version/100) > PM_OBJFILE_MAJOR_VERSION)	{
-		Warning(LOCATION,"Bad version (%d) in model file <%s>",version,filename);
+		core::Warning(LOCATION,"Bad version (%d) in model file <%s>",version,filename);
 		return 0;
 	}
 
@@ -1154,7 +1154,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				// Check for unrealistic radii
 				if ( pm->rad <= 0.1f )
 				{
-					Warning(LOCATION, "Model <%s> has a radius <= 0.1f\n", filename);
+					core::Warning(LOCATION, "Model <%s> has a radius <= 0.1f\n", filename);
 				}
 
 				pm->submodel = new bsp_info[pm->n_models];
@@ -1166,7 +1166,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				// sanity first!
 				if (maybe_swap_mins_maxs(&pm->mins, &pm->maxs)) {
-					Warning(LOCATION, "Inverted bounding box on model '%s'!  Swapping values to compensate.", pm->filename);
+					core::Warning(LOCATION, "Inverted bounding box on model '%s'!  Swapping values to compensate.", pm->filename);
 				}
 				model_calc_bound_box(pm->bounding_box, &pm->mins, &pm->maxs);
 				
@@ -1202,7 +1202,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						cfread_vector( &pm->moment_of_inertia.vec.fvec, fp );
 
 						if(!is_valid_vec(&pm->moment_of_inertia.vec.rvec) || !is_valid_vec(&pm->moment_of_inertia.vec.uvec) || !is_valid_vec(&pm->moment_of_inertia.vec.fvec)) {
-							Warning(LOCATION, "Moment of inertia values for model %s are invalid. This has to be fixed.\n", pm->filename);
+							core::Warning(LOCATION, "Moment of inertia values for model %s are invalid. This has to be fixed.\n", pm->filename);
 							Int3();
 						}
 					} else {
@@ -1222,7 +1222,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						cfread_vector( &pm->moment_of_inertia.vec.fvec, fp );
 
 						if(!is_valid_vec(&pm->moment_of_inertia.vec.rvec) || !is_valid_vec(&pm->moment_of_inertia.vec.uvec) || !is_valid_vec(&pm->moment_of_inertia.vec.fvec)) {
-							Warning(LOCATION, "Moment of inertia values for model %s are invalid. This has to be fixed.\n", pm->filename);
+							core::Warning(LOCATION, "Moment of inertia values for model %s are invalid. This has to be fixed.\n", pm->filename);
 							Int3();
 						}
 
@@ -1329,12 +1329,12 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				// Check for unrealistic radii
 				if ( pm->submodel[n].rad <= 0.1f )
 				{
-					Warning(LOCATION, "Submodel <%s> in model <%s> has a radius <= 0.1f\n", pm->submodel[n].name, filename);
+					core::Warning(LOCATION, "Submodel <%s> in model <%s> has a radius <= 0.1f\n", pm->submodel[n].name, filename);
 				}
 				
 				// sanity first!
 				if (maybe_swap_mins_maxs(&pm->submodel[n].min, &pm->submodel[n].max)) {
-					Warning(LOCATION, "Inverted bounding box on submodel '%s' of model '%s'!  Swapping values to compensate.", pm->submodel[n].name, pm->filename);
+					core::Warning(LOCATION, "Inverted bounding box on submodel '%s' of model '%s'!  Swapping values to compensate.", pm->submodel[n].name, pm->filename);
 				}
 				model_calc_bound_box(pm->submodel[n].bounding_box, &pm->submodel[n].min, &pm->submodel[n].max);
 
@@ -1380,7 +1380,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					if (idx == 0) {
 						float turn_time = static_cast<float>(atof(buf));
 						if (turn_time == 0.0f) {
-							Warning(LOCATION, "Dumb-Rotation has a turn time of 0 for subsystem '%s' on ship %s!", pm->submodel[n].name, pm->filename);
+							core::Warning(LOCATION, "Dumb-Rotation has a turn time of 0 for subsystem '%s' on ship %s!", pm->submodel[n].name, pm->filename);
 							turn_rate = 1.0f;
 						} else {
 							turn_rate = PI2 / turn_time;
@@ -1427,10 +1427,10 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				// adding a warning if rotation is specified without movement axis.
 				if (pm->submodel[n].movement_axis == MOVEMENT_AXIS_NONE) {
 					if (pm->submodel[n].movement_type == MOVEMENT_TYPE_ROT) {
-						Warning(LOCATION, "Rotation without rotation axis defined on submodel '%s' of model '%s'!", pm->submodel[n].name, pm->filename);
+						core::Warning(LOCATION, "Rotation without rotation axis defined on submodel '%s' of model '%s'!", pm->submodel[n].name, pm->filename);
 					}
 					else if (pm->submodel[n].movement_type == MOVEMENT_TYPE_INTRINSIC_ROTATE) {
-						Warning(LOCATION, "Intrinsic rotation (e.g. dumb-rotate) without rotation axis defined on submodel '%s' of model '%s'!", pm->submodel[n].name, pm->filename);
+						core::Warning(LOCATION, "Intrinsic rotation (e.g. dumb-rotate) without rotation axis defined on submodel '%s' of model '%s'!", pm->submodel[n].name, pm->filename);
 					}
 				}
 
@@ -1872,19 +1872,19 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						bay->num_slots = cfread_int(fp);
 
 						if(bay->num_slots != 2) {
-							Warning(LOCATION, "Model '%s' has %d slots in dock point '%s'; models must have exactly %d slots per dock point.", filename, bay->num_slots, bay->name, 2);
+							core::Warning(LOCATION, "Model '%s' has %d slots in dock point '%s'; models must have exactly %d slots per dock point.", filename, bay->num_slots, bay->name, 2);
 						}
 
 						for (j = 0; j < bay->num_slots; j++) {
 							cfread_vector( &(bay->pnt[j]), fp );
 							cfread_vector( &(bay->norm[j]), fp );
 							if(vm_vec_mag(&(bay->norm[j])) <= 0.0f) {
-								Warning(LOCATION, "Model '%s' dock point '%s' has a null normal. ", filename, bay->name);
+								core::Warning(LOCATION, "Model '%s' dock point '%s' has a null normal. ", filename, bay->name);
 							}
 						}
 
 						if(vm_vec_same(&bay->pnt[0], &bay->pnt[1])) {
-							Warning(LOCATION, "Model '%s' has two identical docking slot positions on docking port '%s'. This is not allowed.  A new second slot position will be generated.", filename, bay->name);
+							core::Warning(LOCATION, "Model '%s' has two identical docking slot positions on docking port '%s'. This is not allowed.  A new second slot position will be generated.", filename, bay->name);
 
 							// just move the second point over by some amount
 							bay->pnt[1].xyz.z += 10.0f;
@@ -1894,7 +1894,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						vm_vec_normalized_dir(&diff, &bay->pnt[0], &bay->pnt[1]);
 						float dot = vm_vec_dot(&diff, &bay->norm[0]);
 						if(fl_abs(dot) > 0.99f) {
-							Warning(LOCATION, "Model '%s', docking port '%s' has docking slot positions that lie on the same axis as the docking normal.  This will cause a NULL VEC crash when docked to another ship.  A new docking normal will be generated.", filename, bay->name);
+							core::Warning(LOCATION, "Model '%s', docking port '%s' has docking slot positions that lie on the same axis as the docking normal.  This will cause a NULL VEC crash when docked to another ship.  A new docking normal will be generated.", filename, bay->name);
 
 							// generate a simple rotation matrix in all three dimensions (though bank is probably not needed)
 							angles a = { PI_2, PI_2, PI_2 };
@@ -2069,9 +2069,9 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 									if ( (bank->wash_info_pointer == nullptr) && (n_subsystems > 0) ) {
 										if (table_error) {
-										//	Warning(LOCATION, "No engine wash table entry in ships.tbl for ship model %s", filename);
+										//	core::Warning(LOCATION, "No engine wash table entry in ships.tbl for ship model %s", filename);
 										} else {
-											Warning(LOCATION, "Inconsistent model: Engine wash engine subsystem does not match any ship subsytem names for ship model %s", filename);
+											core::Warning(LOCATION, "Inconsistent model: Engine wash engine subsystem does not match any ship subsytem names for ship model %s", filename);
 										}
 									}
 								}
@@ -2125,7 +2125,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 								n_slots = cfread_int( fp );
 								subsystemp->turret_gun_sobj = physical_parent;
 								if(n_slots > MAX_TFP) {
-									Warning(LOCATION, "Model %s has %i turret firing points on subsystem %s, maximum is %i", pm->filename, n_slots, subsystemp->name, MAX_TFP);
+									core::Warning(LOCATION, "Model %s has %i turret firing points on subsystem %s, maximum is %i", pm->filename, n_slots, subsystemp->name, MAX_TFP);
 								}
 
 								for (j = 0; j < n_slots; j++ )	{
@@ -2344,7 +2344,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					// get the detail level
 					pm->ins[idx].detail_level = cfread_int(fp);
 					if (pm->ins[idx].detail_level < 0) {
-						Warning(LOCATION, "Model '%s': insignia uses an invalid LOD (%i)\n", pm->filename, pm->ins[idx].detail_level);
+						core::Warning(LOCATION, "Model '%s': insignia uses an invalid LOD (%i)\n", pm->filename, pm->ins[idx].detail_level);
 					}
 
 					// # of faces
@@ -2471,7 +2471,7 @@ void model_load_texture(polymodel *pm, int i, char *file)
 		tbase->LoadTexture(tmp_name, pm->filename);
 		
 		if ( tbase->GetTexture() < 0 ) {
-			Warning(LOCATION, "Couldn't open texture '%s'\nreferenced by model '%s'\n", tmp_name, pm->filename);
+			core::Warning(LOCATION, "Couldn't open texture '%s'\nreferenced by model '%s'\n", tmp_name, pm->filename);
 		}
 	}
 	// -------------------------------------------------------------------------
@@ -3085,7 +3085,7 @@ void model_set_bay_path_nums(polymodel *pm)
 				}
 				if(bay_num < 1)
 				{
-					Warning(LOCATION, "Model '%s' bay path '%s' index '%d' has an invalid bay number of %d", pm->filename, pm->paths[i].name, i, bay_num);
+					core::Warning(LOCATION, "Model '%s' bay path '%s' index '%d' has an invalid bay number of %d", pm->filename, pm->paths[i].name, i, bay_num);
 				}
 				continue;
 			}
@@ -3096,7 +3096,7 @@ void model_set_bay_path_nums(polymodel *pm)
 	}
 	if(too_many_paths)
 	{
-		Warning(LOCATION, "Model '%s' has too many bay paths - max is %d", pm->filename, MAX_SHIP_BAY_PATHS);
+		core::Warning(LOCATION, "Model '%s' has too many bay paths - max is %d", pm->filename, MAX_SHIP_BAY_PATHS);
 	}
 }
 
@@ -3170,7 +3170,7 @@ float submodel_get_radius( int modelnum, int submodelnum )
 polymodel * model_get(int model_num)
 {
 	if ( model_num < 0 ) {
-		Warning(LOCATION, "Invalid model number %d requested. Please post the call stack where an SCP coder can see it.\n", model_num);
+		core::Warning(LOCATION, "Invalid model number %d requested. Please post the call stack where an SCP coder can see it.\n", model_num);
 		return NULL;
 	}
 
@@ -5538,7 +5538,7 @@ void parse_glowpoint_table(const char *filename)
 
 					if (gpo.glow_bitmap < 0)
 					{
-						Warning(LOCATION, "Couldn't open texture '%s'\nreferenced by glowpoint present '%s'\n", glow_texture_name, gpo.name);
+						core::Warning(LOCATION, "Couldn't open texture '%s'\nreferenced by glowpoint present '%s'\n", glow_texture_name, gpo.name);
 					}
 					else
 					{
@@ -5644,7 +5644,7 @@ void parse_glowpoint_table(const char *filename)
 						vm_vec_normalize(&gpo.cone_direction);
 					}
 					else {
-						Warning(LOCATION, "Null vector specified in cone direction for glowpoint override %s. Discarding preset.", gpo.name);
+						core::Warning(LOCATION, "Null vector specified in cone direction for glowpoint override %s. Discarding preset.", gpo.name);
 						skip = true;
 					}
 					if (optional_string("+dualcone")) {
@@ -5659,7 +5659,7 @@ void parse_glowpoint_table(const char *filename)
 							vm_vec_normalize(&gpo.rotation_axis);
 						}
 						else {
-							Warning(LOCATION, "Null vector specified in rotation axis for glowpoint override %s. Discarding preset.", gpo.name);
+							core::Warning(LOCATION, "Null vector specified in rotation axis for glowpoint override %s. Discarding preset.", gpo.name);
 							skip = true;
 						}
 						required_string("$Rotation speed:");
@@ -5676,7 +5676,7 @@ void parse_glowpoint_table(const char *filename)
 				}
 				else {
 					if (!replace) {
-						Warning(LOCATION, "+nocreate not specified for glowpoint override that already exists. Discarding duplicate entry: %s", gpo.name);
+						core::Warning(LOCATION, "+nocreate not specified for glowpoint override that already exists. Discarding duplicate entry: %s", gpo.name);
 					}
 					else {
 						glowpoint_bank_overrides.erase(gpoi);

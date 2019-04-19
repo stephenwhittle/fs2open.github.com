@@ -137,7 +137,7 @@ int mission_campaign_get_info(const char *filename, char *name, int *type, int *
 			}
 
 			if (name == NULL) {
-				Warning(LOCATION, "Invalid campaign type \"%s\"\n", campaign_type);
+				core::Warning(LOCATION, "Invalid campaign type \"%s\"\n", campaign_type);
 				break;
 			}
 
@@ -195,7 +195,7 @@ int mission_campaign_get_mission_list(const char *filename, char **list, int max
 			if (num < max)
 				list[num++] = vm_strdup(name);
 			else
-				Warning(LOCATION, "Maximum number of missions exceeded (%d)!", max);
+				core::Warning(LOCATION, "Maximum number of missions exceeded (%d)!", max);
 		}
 	}
 	catch (const parse::ParseException& e)
@@ -1384,7 +1384,7 @@ void read_mission_goal_list(int num)
 
 				event_count++;
 				if (event_count > MAX_MISSION_EVENTS) {
-					Warning(LOCATION, "Maximum number of events exceeded (%d)!", MAX_MISSION_EVENTS);
+					core::Warning(LOCATION, "Maximum number of events exceeded (%d)!", MAX_MISSION_EVENTS);
 					event_count = MAX_MISSION_EVENTS;
 					break;
 				}
@@ -1412,7 +1412,7 @@ void read_mission_goal_list(int num)
 
 				count++;
 				if (count > MAX_GOALS) {
-					Warning(LOCATION, "Maximum number of goals exceeded (%d)!", MAX_GOALS);
+					core::Warning(LOCATION, "Maximum number of goals exceeded (%d)!", MAX_GOALS);
 					count = MAX_GOALS;
 					break;
 				}

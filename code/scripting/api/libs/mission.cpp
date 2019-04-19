@@ -110,7 +110,7 @@ ADE_FUNC(runSEXP, l_Mission, "string", "Runs the defined SEXP script", "boolean"
 		if (!Warned_about_runSEXP_parentheses)
 		{
 			Warned_about_runSEXP_parentheses = true;
-			Warning(LOCATION, "Invalid SEXP syntax: SEXPs must be surrounded by parentheses.  For backwards compatibility, the string has been enclosed in parentheses.  This may not be correct in all use cases.");
+			core::Warning(LOCATION, "Invalid SEXP syntax: SEXPs must be surrounded by parentheses.  For backwards compatibility, the string has been enclosed in parentheses.  This may not be correct in all use cases.");
 		}
 		// this is the old sexp handling method, which is incorrect
 		snprintf(buf, 8191, "( when ( true ) ( %s ) )", s);

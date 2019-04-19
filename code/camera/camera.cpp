@@ -226,7 +226,7 @@ void camera::set_rotation_facing(vec3d *in_target, float in_rotation_time, float
 
 		if(in_target->xyz.x == position.xyz.x && in_target->xyz.y == position.xyz.y && in_target->xyz.z == position.xyz.z)
 		{
-			Warning(LOCATION, "Camera tried to point to self");
+			core::Warning(LOCATION, "Camera tried to point to self");
 			return;
 		}
 

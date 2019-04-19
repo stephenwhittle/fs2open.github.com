@@ -80,7 +80,7 @@ int iff_init_color(int r, int g, int b)
 	// make sure we're under the limit
 	if (num_iff_colors >= MAX_IFF_COLORS)
 	{
-		Warning(LOCATION, "Too many iff colors!  Ignoring the rest...\n");
+		core::Warning(LOCATION, "Too many iff colors!  Ignoring the rest...\n");
 		return 0;
 	}
 
@@ -310,7 +310,7 @@ void iff_init()
 			// make sure we're under the limit
 			if (Num_iffs >= MAX_IFFS)
 			{
-				Warning(LOCATION, "Too many iffs in iffs_defs.tbl!  Max is %d.\n", MAX_IFFS);
+				core::Warning(LOCATION, "Too many iffs in iffs_defs.tbl!  Max is %d.\n", MAX_IFFS);
 				skip_to_start_of_string("#End", NULL);
 				break;
 			}
@@ -383,7 +383,7 @@ void iff_init()
 					else if (!stricmp(NOX("wing name hidden"), flag_strings[string_idx]))
 						iff->flags |= IFFF_WING_NAME_HIDDEN;
 					else
-						Warning(LOCATION, "Bogus string in iff flags: %s\n", flag_strings[string_idx]);
+						core::Warning(LOCATION, "Bogus string in iff flags: %s\n", flag_strings[string_idx]);
 				}
 			}
 
@@ -414,7 +414,7 @@ void iff_init()
 		if (Iff_traitor < 0)
 		{
 			Iff_traitor = 0;
-			Warning(LOCATION, "Traitor IFF %s not found in iff_defs.tbl!  Defaulting to %s.\n", traitor_name, Iff_info[Iff_traitor].iff_name);
+			core::Warning(LOCATION, "Traitor IFF %s not found in iff_defs.tbl!  Defaulting to %s.\n", traitor_name, Iff_info[Iff_traitor].iff_name);
 		}
 
 		// next get the attackees and colors
@@ -443,7 +443,7 @@ void iff_init()
 					if (target_iff >= 0)
 						iff->attackee_bitmask |= iff_get_mask(target_iff);
 					else
-						Warning(LOCATION, "Attack target IFF %s not found for IFF %s in iff_defs.tbl!\n", attack_names[cur_iff][list_index], iff->iff_name);
+						core::Warning(LOCATION, "Attack target IFF %s not found for IFF %s in iff_defs.tbl!\n", attack_names[cur_iff][list_index], iff->iff_name);
 				}
 
 				// are we within the number of colors listed?
@@ -456,7 +456,7 @@ void iff_init()
 					if (target_iff >= 0)
 						iff->observed_color_index[target_iff] = observed_color_table[cur_iff][list_index].color_index;
 					else
-						Warning(LOCATION, "Observed color IFF %s not found for IFF %s in iff_defs.tbl!\n", observed_color_table[cur_iff][list_index].iff_name, iff->iff_name);
+						core::Warning(LOCATION, "Observed color IFF %s not found for IFF %s in iff_defs.tbl!\n", observed_color_table[cur_iff][list_index].iff_name, iff->iff_name);
 				}
 			}
 

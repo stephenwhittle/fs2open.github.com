@@ -1111,7 +1111,7 @@ bool parse_soundtrack_line(int strack_idx, int pattern_idx)
 
 	//Check if we can add this pattern
 	if( pattern_idx >= MAX_PATTERNS ) {
-		Warning(LOCATION, "Too many $Name: entries for soundtrack %s", Soundtracks[strack_idx].name);
+		core::Warning(LOCATION, "Too many $Name: entries for soundtrack %s", Soundtracks[strack_idx].name);
 		return false;
 	}
 
@@ -1124,7 +1124,7 @@ bool parse_soundtrack_line(int strack_idx, int pattern_idx)
 		//If we have no more items, get out and return
 		if ( token == NULL && count != 2)
 		{
-			Warning(LOCATION, "Missing or additional field for soundtrack %s, pattern %s", Soundtracks[strack_idx].name, Pattern_info[pattern_idx].pattern_desc);
+			core::Warning(LOCATION, "Missing or additional field for soundtrack %s, pattern %s", Soundtracks[strack_idx].name, Pattern_info[pattern_idx].pattern_desc);
 			break;
 		}
 
@@ -1165,7 +1165,7 @@ void parse_soundtrack()
 	if(strack_idx < 0 && (nocreate || Num_soundtracks >= MAX_SOUNDTRACKS))
 	{
 		if(Num_soundtracks >= MAX_SOUNDTRACKS) {
-			Warning(LOCATION, "Maximum number of soundtracks reached after '%s'; max is '%d'", Soundtracks[MAX_SOUNDTRACKS-1].name, MAX_SOUNDTRACKS);
+			core::Warning(LOCATION, "Maximum number of soundtracks reached after '%s'; max is '%d'", Soundtracks[MAX_SOUNDTRACKS-1].name, MAX_SOUNDTRACKS);
 		}
 
 		//Track doesn't exist and has nocreate, so don't create it
@@ -1235,7 +1235,7 @@ void parse_soundtrack()
 
 			if(i == Num_pattern_types)
 			{
-				Warning(LOCATION, "Could not find new index for pattern %d of soundtrack '%s'", old_pattern_num, Soundtracks[strack_idx].name);
+				core::Warning(LOCATION, "Could not find new index for pattern %d of soundtrack '%s'", old_pattern_num, Soundtracks[strack_idx].name);
 			}
 
 			old_pattern_num++;
@@ -1304,7 +1304,7 @@ void parse_menumusic()
 	if(idx < 0 && (nocreate || Num_music_files >= MAX_SPOOLED_MUSIC))
 	{
 		if(Num_music_files >= MAX_SPOOLED_MUSIC) {
-			Warning(LOCATION, "Could not load spooled music file after '%s' as maximum number of spooled music was reached (Max is %d)", Spooled_music[Num_music_files - 1].name, MAX_SPOOLED_MUSIC);
+			core::Warning(LOCATION, "Could not load spooled music file after '%s' as maximum number of spooled music was reached (Max is %d)", Spooled_music[Num_music_files - 1].name, MAX_SPOOLED_MUSIC);
 		}
 
 		if (!skip_to_start_of_string_either("$Name:", "#Menu Music End")) {

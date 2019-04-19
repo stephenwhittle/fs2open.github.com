@@ -1277,7 +1277,7 @@ int model_collide(mc_info *mc_info_obj)
 
 	if ( Mc->flags & MC_CHECK_SPHERELINE ) {
 		if ( Mc->radius <= 0.0f ) {
-			Warning(LOCATION, "Attempting to collide with a sphere, but the sphere's radius is <= 0.0f!\n\n(model file is %s; submodel is %d, mc_flags are %d)", Mc_pm->filename, first_submodel, Mc->flags);
+			core::Warning(LOCATION, "Attempting to collide with a sphere, but the sphere's radius is <= 0.0f!\n\n(model file is %s; submodel is %d, mc_flags are %d)", Mc_pm->filename, first_submodel, Mc->flags);
 			return 0;
 		}
 

@@ -89,7 +89,7 @@ void jpg_output_message(j_common_ptr cinfo)
 	// don't actually output anything unless we are a debug build, let bmpman
 	// give any errors instead for release builds
 #ifndef NDEBUG
-	Warning(LOCATION, "%s %s", "JPEG Error:", buffer);
+	core::Warning(LOCATION, "%s %s", "JPEG Error:", buffer);
 #endif
 }
 

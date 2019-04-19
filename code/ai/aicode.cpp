@@ -682,7 +682,7 @@ void parse_ai_class()
 		for (int i = 0; i < NUM_SKILL_LEVELS; i++) {
 			if (aicp->ai_glide_attack_percent[i] < 0.0f || aicp->ai_glide_attack_percent[i] > 100.0f) {
 				aicp->ai_glide_attack_percent[i] = 0.0f;
-				Warning(LOCATION, "$Glide Attack Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_glide_attack_percent[i]);
+				core::Warning(LOCATION, "$Glide Attack Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_glide_attack_percent[i]);
 			}
 			aicp->ai_glide_attack_percent[i] /= 100.0;
 		}
@@ -694,7 +694,7 @@ void parse_ai_class()
 		for (int i = 0; i < NUM_SKILL_LEVELS; i++) {
 			if (aicp->ai_circle_strafe_percent[i] < 0.0f || aicp->ai_circle_strafe_percent[i] > 100.0f) {
 				aicp->ai_circle_strafe_percent[i] = 0.0f;
-				Warning(LOCATION, "$Circle Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_circle_strafe_percent[i]);
+				core::Warning(LOCATION, "$Circle Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_circle_strafe_percent[i]);
 			}
 			aicp->ai_circle_strafe_percent[i] /= 100.0;
 		}
@@ -705,7 +705,7 @@ void parse_ai_class()
 		for (int i = 0; i < NUM_SKILL_LEVELS; i++) {
 			if (aicp->ai_glide_strafe_percent[i] < 0.0f || aicp->ai_glide_strafe_percent[i] > 100.0f) {
 				aicp->ai_glide_strafe_percent[i] = 0.0f;
-				Warning(LOCATION, "$Glide Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_glide_strafe_percent[i]);
+				core::Warning(LOCATION, "$Glide Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_glide_strafe_percent[i]);
 			}
 			aicp->ai_glide_strafe_percent[i] /= 100.0;
 		}
@@ -716,7 +716,7 @@ void parse_ai_class()
 		for (int i = 0; i < NUM_SKILL_LEVELS; i++) {
 			if (aicp->ai_random_sidethrust_percent[i] < 0.0f || aicp->ai_random_sidethrust_percent[i] > 100.0f) {
 				aicp->ai_random_sidethrust_percent[i] = 0.0f;
-				Warning(LOCATION, "$Random Sidethrust Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_random_sidethrust_percent[i]);
+				core::Warning(LOCATION, "$Random Sidethrust Percent should be between 0 and 100.0 (read %f). Setting to 0.", aicp->ai_random_sidethrust_percent[i]);
 			}
 			aicp->ai_random_sidethrust_percent[i] /= 100.0;
 		}
@@ -1440,7 +1440,7 @@ void project_point_to_perimeter(vec3d *perim_point, vec3d *pos, float radius, ve
 	mag = vm_vec_mag(&v1);
 
 	if (mag == 0.0f) {
-		Warning(LOCATION, "projectable point is at center of sphere.");
+		core::Warning(LOCATION, "projectable point is at center of sphere.");
 		vm_vec_make(&v1, 0.0f, radius, 0.0f);
 	} else {
 		vm_vec_normalize(&v1);
@@ -3033,7 +3033,7 @@ void ai_do_objects_docked_stuff(object *docker, int docker_point, object *dockee
 	// make sure they're not already docked!
 	if (dock_check_find_direct_docked_object(docker, dockee))
 	{
-		Warning(LOCATION, "Call to ai_do_objects_docked_stuff when objects are already docked!  Trace out and fix!\n");
+		core::Warning(LOCATION, "Call to ai_do_objects_docked_stuff when objects are already docked!  Trace out and fix!\n");
 		return;
 	}
 
@@ -3079,7 +3079,7 @@ void ai_do_objects_undocked_stuff( object *docker, object *dockee )
 	// make sure they're not already undocked!
 	if (!dock_check_find_direct_docked_object(docker, dockee))
 	{
-		Warning(LOCATION, "Call to ai_do_objects_undocked_stuff when objects are already undocked!  Trace out and fix!\n");
+		core::Warning(LOCATION, "Call to ai_do_objects_undocked_stuff when objects are already undocked!  Trace out and fix!\n");
 		return;
 	}
 
@@ -3243,7 +3243,7 @@ void ai_start_waypoints(object *objp, waypoint_list *wp_list, int wp_flags)
 	{
 		if (aip->wp_index == INVALID_WAYPOINT_POSITION)
 		{
-			Warning(LOCATION, "aip->wp_index should have been assigned already!");
+			core::Warning(LOCATION, "aip->wp_index should have been assigned already!");
 			aip->wp_index = 0;
 		}
 		return;
@@ -4552,10 +4552,10 @@ void ai_waypoints()
 	// sanity checking for stuff that should never happen
 	if (aip->wp_index == INVALID_WAYPOINT_POSITION) {
 		if (aip->wp_list == NULL) {
-			Warning(LOCATION, "Waypoints should have been assigned already!");
+			core::Warning(LOCATION, "Waypoints should have been assigned already!");
 			ai_start_waypoints(Pl_objp, &Waypoint_lists.front(), WPF_REPEAT);
 		} else {
-			Warning(LOCATION, "Waypoints should have been started already!");
+			core::Warning(LOCATION, "Waypoints should have been started already!");
 			ai_start_waypoints(Pl_objp, aip->wp_list, WPF_REPEAT);
 		}
 	}
@@ -4609,7 +4609,7 @@ void ai_fly_to_ship()
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
 	if ( aip->mode != AIM_FLY_TO_SHIP ) {
-		Warning(LOCATION,
+		core::Warning(LOCATION,
 			"ai_fly_to_ship called for '%s' when ai_info.mode not equal to AIM_FLY_TO_SHIP. Is actually '%d'",
 			Ships[Pl_objp->instance].ship_name,
 			aip->mode);
@@ -4617,7 +4617,7 @@ void ai_fly_to_ship()
 		return;
 	}
 	if ( aip->active_goal < 0 || aip->active_goal >= MAX_AI_GOALS ) {
-		Warning(LOCATION,
+		core::Warning(LOCATION,
 			"'%s' is trying to fly-to a ship without an active AI_GOAL\n\n"
 			"Active ai mode is '%d'",
 			Ships[Pl_objp->instance].ship_name,
@@ -4627,7 +4627,7 @@ void ai_fly_to_ship()
 	}
 	Assert( aip->goals[aip->active_goal].target_name != NULL );
 	if ( aip->goals[aip->active_goal].target_name[0] == '\0' ) {
-		Warning(LOCATION, "'%s' is trying to fly-to-ship without a name for the ship", Ships[Pl_objp->instance].ship_name);
+		core::Warning(LOCATION, "'%s' is trying to fly-to-ship without a name for the ship", Ships[Pl_objp->instance].ship_name);
 		aip->mode = AIM_NONE;
 		ai_remove_ship_goal( aip, aip->active_goal ); // function sets aip->active_goal to NONE for me
 		return;
@@ -4654,7 +4654,7 @@ void ai_fly_to_ship()
 			}
 		}
 		#endif
-		Warning(LOCATION, "Ship '%s' told to fly to a ship but none of the ships it was told to fly to exist.\n"
+		core::Warning(LOCATION, "Ship '%s' told to fly to a ship but none of the ships it was told to fly to exist.\n"
 			"See log before this message for list of ships set as fly-to tagets",
 			Ships[Pl_objp->instance].ship_name);
 		aip->mode = AIM_NONE;
@@ -6607,7 +6607,7 @@ void do_random_sidethrust(ai_info *aip, ship_info *sip)
 		side_vec.x = static_randf_range((((Missiontime + static_rand(aip->shipnum)) >> 16) / strafeHoldDirAmount) , -1.0f, 1.0f);
 		side_vec.y = static_randf_range((((Missiontime + static_rand(aip->shipnum)) >> 16) / strafeHoldDirAmount) * 2, -1.0f, 1.0f);
 	} else {
-		Warning(LOCATION, "Division by zero in do_random_sidethrust averted. Please tell a coder.\n");
+		core::Warning(LOCATION, "Division by zero in do_random_sidethrust averted. Please tell a coder.\n");
 		side_vec.x = 1.0f;
 		side_vec.y = 1.0f;
 	}
@@ -10354,7 +10354,7 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 		case AIS_DOCK_1:
 		case AIS_DOCK_2:
 		case AIS_DOCK_3:
-			Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Trace out and debug.");
+			core::Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Trace out and debug.");
 			FALLTHROUGH;
 		case AIS_DOCK_0:
 		{
@@ -10372,7 +10372,7 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 		case AIS_DOCK_4A:
 		case AIS_UNDOCK_1:
 		case AIS_UNDOCK_2:
-			Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Trace out and debug.");
+			core::Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Trace out and debug.");
 			FALLTHROUGH;
 		case AIS_UNDOCK_0:
 		{
@@ -10388,7 +10388,7 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 		case AIS_UNDOCK_3:
 		case AIS_UNDOCK_4:
 		{
-			Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Additionally, dock indexes can't always be determined for AIS_UNDOCK_3 or AIS_UNDOCK_4.  Trace out and debug.");
+			core::Warning(LOCATION, "Normally dock indexes should be calculated for only AIS_DOCK_0 and AIS_UNDOCK_0.  Additionally, dock indexes can't always be determined for AIS_UNDOCK_3 or AIS_UNDOCK_4.  Trace out and debug.");
 			docker_index = -1;
 			dockee_index = -1;
 			break;
@@ -12782,7 +12782,7 @@ int ai_acquire_depart_path(object *pl_objp, int parent_objnum, int allowed_path_
 
 	if ( parent_objnum < 0 )
 	{
-		Warning(LOCATION, "In ai_acquire_depart_path(), specified a negative object number for the parent ship!  (Departing ship is %s.)  Looking for another ship...", shipp->ship_name);
+		core::Warning(LOCATION, "In ai_acquire_depart_path(), specified a negative object number for the parent ship!  (Departing ship is %s.)  Looking for another ship...", shipp->ship_name);
 
 		// try to locate a capital ship on the same team:
 		int shipnum = ship_get_ship_for_departure(shipp->team);
@@ -14361,7 +14361,7 @@ void init_aip_from_class_and_profile(ai_info *aip, ai_class *aicp, ai_profile_t 
 {
 	// since we use it so much in this function, sanity check the value for Game_skill_level
 	if (Game_skill_level < 0 || Game_skill_level >= NUM_SKILL_LEVELS) {
-		Warning(LOCATION, "Invalid skill level %i! Valid range 0 to %i. Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
+		core::Warning(LOCATION, "Invalid skill level %i! Valid range 0 to %i. Resetting to default.", Game_skill_level, NUM_SKILL_LEVELS);
 		Game_skill_level = game_get_default_skill_level();
 	}
 

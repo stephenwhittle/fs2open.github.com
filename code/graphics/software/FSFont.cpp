@@ -57,7 +57,7 @@ namespace font
 	void FSFont::checkFontMetrics() {
 		if (_height <= 1.0f)
 		{
-			Warning(LOCATION, "The height of font %s has an invalid height of %f, must be greater than one!",
+			core::Warning(LOCATION, "The height of font %s has an invalid height of %f, must be greater than one!",
 					getName().c_str(), _height);
 		}
 	}

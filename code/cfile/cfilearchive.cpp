@@ -232,7 +232,7 @@ int cfread_lua_number(double *buf, CFILE *cfile)
 	// cfread() not supported for memory-mapped files
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		core::Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return 0;
 	}
 

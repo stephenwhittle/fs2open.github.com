@@ -212,33 +212,33 @@ int LuaSEXP::getSexpReturnValue(const LuaValueList& retVals) const {
 	switch (_return_type) {
 	case OPR_NUMBER:
 		if (retVals.size() != 1) {
-			Warning(LOCATION,
+			core::Warning(LOCATION,
 					"Wrong number of return values for Lua SEXP '%s'! Expected 1, got " SIZE_T_ARG ".",
 					_name.c_str(),
 					retVals.size());
 			return 0;
 		} else if (retVals[0].getValueType() != ValueType::NUMBER) {
-			Warning(LOCATION, "Wrong return type detected for Lua SEXP '%s', expected a number.", _name.c_str());
+			core::Warning(LOCATION, "Wrong return type detected for Lua SEXP '%s', expected a number.", _name.c_str());
 			return 0;
 		} else {
 			return retVals[0].getValue<int>();
 		}
 	case OPR_BOOL:
 		if (retVals.size() != 1) {
-			Warning(LOCATION,
+			core::Warning(LOCATION,
 					"Wrong number of return values for Lua SEXP '%s'! Expected 1, got " SIZE_T_ARG ".",
 					_name.c_str(),
 					retVals.size());
 			return SEXP_FALSE;
 		} else if (retVals[0].getValueType() != ValueType::BOOLEAN) {
-			Warning(LOCATION, "Wrong return type detected for Lua SEXP '%s', expected a boolean.", _name.c_str());
+			core::Warning(LOCATION, "Wrong return type detected for Lua SEXP '%s', expected a boolean.", _name.c_str());
 			return SEXP_FALSE;
 		} else {
 			return retVals[0].getValue<bool>() ? SEXP_TRUE : SEXP_FALSE;
 		}
 	case OPR_NULL:
 		if (retVals.size() != 0) {
-			Warning(LOCATION,
+			core::Warning(LOCATION,
 					"Wrong number of return values for Lua SEXP '%s'! Expected 0, got " SIZE_T_ARG ".",
 					_name.c_str(),
 					retVals.size());

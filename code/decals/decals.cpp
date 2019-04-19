@@ -112,7 +112,7 @@ class DecalDefinition {
 		if (_diffuseBitmap == -1 && VALID_FNAME(_diffuseFilename)) {
 			_diffuseBitmap = bm_load_either(_diffuseFilename.c_str());
 			if (_diffuseBitmap == -1) {
-				Warning(LOCATION,
+				core::Warning(LOCATION,
 						"Bitmap '%s' failed to load for decal definition %s!",
 						_diffuseFilename.c_str(),
 						_name.c_str());
@@ -121,7 +121,7 @@ class DecalDefinition {
 		if (_glowBitmap == -1 && VALID_FNAME(_glowFilename)) {
 			_glowBitmap = bm_load_either(_glowFilename.c_str());
 			if (_glowBitmap == -1) {
-				Warning(LOCATION,
+				core::Warning(LOCATION,
 						"Bitmap '%s' failed to load for decal definition %s!",
 						_glowFilename.c_str(),
 						_name.c_str());
@@ -130,7 +130,7 @@ class DecalDefinition {
 		if (_normalBitmap == -1 && VALID_FNAME(_normalMapFilename)) {
 			_normalBitmap = bm_load_either(_normalMapFilename.c_str());
 			if (_normalBitmap == -1) {
-				Warning(LOCATION,
+				core::Warning(LOCATION,
 						"Bitmap '%s' failed to load for decal definition %s!",
 						_normalMapFilename.c_str(),
 						_name.c_str());

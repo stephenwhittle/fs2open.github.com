@@ -1006,7 +1006,7 @@ int check_rotvel_limit( physics_info *pi )
 		// case of normal, live ship
 		// -- Commented out by MK: Assert( vm_vec_mag_squared(&pi->max_rotvel) > ROTVEL_TOL );
 		// Assert( (pi->max_rotvel.xyz.x <= ROTVEL_CAP) && (pi->max_rotvel.xyz.y <= ROTVEL_CAP) && (pi->max_rotvel.xyz.z <= ROTVEL_CAP) );
-		//		Warning(LOCATION,"Excessive rotvel (wx: %f, wy: %f, wz:%f)\n", pi->rotvel.xyz.x, pi->rotvel.xyz.y, pi->rotvel.xyz.z);
+		//		core::Warning(LOCATION,"Excessive rotvel (wx: %f, wy: %f, wz:%f)\n", pi->rotvel.xyz.x, pi->rotvel.xyz.y, pi->rotvel.xyz.z);
 		if ( fl_abs(pi->rotvel.xyz.x) > pi->max_rotvel.xyz.x ) {
 			pi->rotvel.xyz.x = (pi->rotvel.xyz.x / fl_abs(pi->rotvel.xyz.x)) * (pi->max_rotvel.xyz.x - (float) ROTVEL_TOL);
 			change_made = 1;

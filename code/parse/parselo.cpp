@@ -300,7 +300,7 @@ void error_display(int error_level, const char *format, ...)
 	nprintf((type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str()));
 
 	if(error_level == 0 || Cmdline_noparseerrors)
-		Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
+		core::Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 	else
 		core::Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 }
@@ -452,7 +452,7 @@ int required_string(const char *pstr)
 
 	if (count == RS_MAX_TRIES) {
 		nprintf(("Error", "Error: Unable to find required token [%s]\n", pstr));
-		Warning(LOCATION, "Error: Unable to find required token [%s]\n", pstr);
+		core::Warning(LOCATION, "Error: Unable to find required token [%s]\n", pstr);
         throw parse::ParseException("Required string not found");
 	}
 
@@ -669,7 +669,7 @@ int required_string_either(const char *str1, const char *str2)
 	}
 
 	nprintf(("Error", "Error: Unable to find either required token [%s] or [%s]\n", str1, str2));
-	Warning(LOCATION, "Error: Unable to find either required token [%s] or [%s]\n", str1, str2);
+	core::Warning(LOCATION, "Error: Unable to find either required token [%s] or [%s]\n", str1, str2);
 	throw parse::ParseException("Required string not found");
 }
 
@@ -2219,7 +2219,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 			if (isLatin1 && can_reallocate) {
 				// Latin1 is the encoding of retail data and for legacy reasons we convert that to UTF-8.
 				// We still output a warning though...
-				Warning(LOCATION, "Found Latin-1 encoded file %s. This file will be automatically converted to UTF-8 but "
+				core::Warning(LOCATION, "Found Latin-1 encoded file %s. This file will be automatically converted to UTF-8 but "
 						"it may cause parsing issues with retail FS2 files since those contained invalid data.\n"
 						"To silence this warning you must convert the files to UTF-8, e.g. by using a program like iconv.",
 						filename);
@@ -2246,7 +2246,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 						// increment since the additional size required is probably pretty small
 						allocate_parse_text(Parse_text_size + 300);
 					} else {
-						Warning(LOCATION, "File reencoding failed (error code " SIZE_T_ARG ")!\n"
+						core::Warning(LOCATION, "File reencoding failed (error code " SIZE_T_ARG ")!\n"
 							"You will probably encounter encoding issues.", err);
 
 						// Copy the original data back to the mission text pointer so that we don't loose any data here
@@ -2255,7 +2255,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 					}
 				} while(true);
 			} else {
-				Warning(LOCATION, "Found invalid UTF-8 encoding in file %s at position " PTRDIFF_T_ARG "!\n"
+				core::Warning(LOCATION, "Found invalid UTF-8 encoding in file %s at position " PTRDIFF_T_ARG "!\n"
 					"This may cause parsing errors and should be fixed!", filename, invalid - raw_text);
 			}
 		}
@@ -2655,7 +2655,7 @@ void stuff_boolean(bool *b, bool a_to_eol)
 		else
 		{
 			*b = false;
-			Warning(LOCATION, "Boolean '%s' type unknown; assuming 'no/false'",token);
+			core::Warning(LOCATION, "Boolean '%s' type unknown; assuming 'no/false'",token);
 		}
 	}
 
@@ -3019,7 +3019,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 		// no ships from the current tables (when swapping mods) so don't report that as an error.
 		if (index < 0 && (lookup_type == MISSION_LOADOUT_SHIP_LIST || lookup_type == MISSION_LOADOUT_WEAPON_LIST)) {
 			// print a warning in debug mode
-			Warning(LOCATION, "Invalid type \"%s\" found in loadout of mission file...skipping", str);
+			core::Warning(LOCATION, "Invalid type \"%s\" found in loadout of mission file...skipping", str);
 			// increment counter for release FRED builds.
 			Num_unknown_loadout_classes++;
 
@@ -3030,14 +3030,14 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 		// similarly, complain if this is a valid ship or weapon class that the player can't use
 		if ((lookup_type == MISSION_LOADOUT_SHIP_LIST) && (!(Ship_info[index].flags[Ship::Info_Flags::Player_ship])) ) {
 			clean_loadout_list_entry();
-			Warning(LOCATION, "Ship type \"%s\" found in loadout of mission file. This class is not marked as a player ship...skipping", str);
+			core::Warning(LOCATION, "Ship type \"%s\" found in loadout of mission file. This class is not marked as a player ship...skipping", str);
 			continue;
 		}
 		else if ((lookup_type == MISSION_LOADOUT_WEAPON_LIST) && (!(Weapon_info[index].wi_flags[Weapon::Info_Flags::Player_allowed])) ) {
 			clean_loadout_list_entry();
 			nprintf(("Warning",  "Warning: Weapon type %s found in loadout of mission file. This class is not marked as a player allowed weapon...skipping\n", str));
 			if ( !Is_standalone )
-				Warning(LOCATION, "Weapon type \"%s\" found in loadout of mission file. This class is not marked as a player allowed weapon...skipping", str);
+				core::Warning(LOCATION, "Weapon type \"%s\" found in loadout of mission file. This class is not marked as a player allowed weapon...skipping", str);
 			continue;
 		}
 

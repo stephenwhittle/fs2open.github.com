@@ -732,7 +732,7 @@ void wl_render_overhead_view(float frametime)
 	ship_class = Wss_slots[Selected_wl_slot].ship_class;
 	if (ship_class < 0 || ship_class >= static_cast<int>(Ship_info.size()))
 	{
-		Warning(LOCATION, "Invalid ship class (%d) passed for render_overhead_view", ship_class);
+		core::Warning(LOCATION, "Invalid ship class (%d) passed for render_overhead_view", ship_class);
 		return;
 	}
 	ship_info * sip = &Ship_info[ship_class];
@@ -811,7 +811,7 @@ void wl_render_overhead_view(float frametime)
 			//Did we load anything?
 			if ( wl_ship->overhead_bitmap < 0 )
 			{
-				Warning(LOCATION, "Unable to load overhead image for ship '%s', generating one instead", sip->name);
+				core::Warning(LOCATION, "Unable to load overhead image for ship '%s', generating one instead", sip->name);
 				display_type = 1;
 			} else {
 				display_type = 0;

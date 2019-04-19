@@ -1106,7 +1106,7 @@ ADE_FUNC(drawString, l_Graphics, "string Message, [number X1, number Y1, number 
 		if (y2 >= 0 && y2 < y)
 		{
 			// Invalid y2 value
-			Warning(LOCATION, "Illegal y2 value passed to drawString. Got %d y2 value but %d for y.", y2, y);
+			core::Warning(LOCATION, "Illegal y2 value passed to drawString. Got %d y2 value but %d for y.", y2, y);
 
 			int temp = y;
 			y = y2;

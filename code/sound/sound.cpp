@@ -159,7 +159,7 @@ int snd_init()
 	return 1;
 
 Failure:
-//	Warning(LOCATION, "Sound system was unable to be initialized.  If you continue, sound will be disabled.\n");
+//	core::Warning(LOCATION, "Sound system was unable to be initialized.  If you continue, sound will be disabled.\n");
 	nprintf(( "Sound", "SOUND => Audio init unsuccessful, continuing without sound.\n" ));
 	return 0;
 }
@@ -336,7 +336,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 					// This warning was introduced in 3.8.0 and caused a few issues since a lot of mods use 3D sounds
 					// with more than one channel. This will silence the warnings for any mod that does not support
 					// 3.8.0.
-					Warning(LOCATION, "Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.", entry->filename);
+					core::Warning(LOCATION, "Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.", entry->filename);
 				} else {
 					mprintf(("Warning: Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.\n", entry->filename));
 				}

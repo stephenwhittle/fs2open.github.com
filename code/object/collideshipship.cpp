@@ -202,7 +202,7 @@ int ship_ship_check_collision(collision_info_struct *ship_ship_hit_info, vec3d *
 #ifndef NDEBUG
 		static bool Warned_about_fast_rotational_collisions = false;
 		if (!Warned_about_fast_rotational_collisions) {
-			Warning(LOCATION, "Ship '%s' rotates too quickly!  Rotational collision detection has been skipped.", heavy_sip->name);
+			core::Warning(LOCATION, "Ship '%s' rotates too quickly!  Rotational collision detection has been skipped.", heavy_sip->name);
 			Warned_about_fast_rotational_collisions = true;
 		}
 #endif

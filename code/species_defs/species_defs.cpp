@@ -224,7 +224,7 @@ void parse_species_tbl(const char *filename)
 				if (!iff_found)
 				{
 					species->default_iff = 0;
-					Warning(LOCATION, "Species %s default IFF %s not found in iff_defs.tbl!  Defaulting to %s.\n", species->species_name, temp_name, Iff_info[species->default_iff].iff_name);
+					core::Warning(LOCATION, "Species %s default IFF %s not found in iff_defs.tbl!  Defaulting to %s.\n", species->species_name, temp_name, Iff_info[species->default_iff].iff_name);
 				}
 			}
 			else if (!no_create)
@@ -233,7 +233,7 @@ void parse_species_tbl(const char *filename)
 				species->default_iff = 0;
 
 				// let them know
-				Warning(LOCATION, "$Default IFF not specified for species %s in species_defs.tbl!  Defaulting to %s.\n", species->species_name, Iff_info[species->default_iff].iff_name);
+				core::Warning(LOCATION, "$Default IFF not specified for species %s in species_defs.tbl!  Defaulting to %s.\n", species->species_name, Iff_info[species->default_iff].iff_name);
 			}
 
 			// Goober5000 - FRED color
@@ -276,7 +276,7 @@ void parse_species_tbl(const char *filename)
 				}
 
 				// let them know
-				Warning(LOCATION, "$FRED Color not specified for species %s in species_defs.tbl!  Defaulting to (%d, %d, %d).\n", species->species_name, species->fred_color.rgb.r, species->fred_color.rgb.g, species->fred_color.rgb.b);
+				core::Warning(LOCATION, "$FRED Color not specified for species %s in species_defs.tbl!  Defaulting to (%d, %d, %d).\n", species->species_name, species->fred_color.rgb.r, species->fred_color.rgb.g, species->fred_color.rgb.b);
 			}
 
 			// stuff
@@ -326,7 +326,7 @@ void parse_species_tbl(const char *filename)
 					species->awacs_multiplier = 1.0f;
 
 				// let them know
-				Warning(LOCATION, "$AwacsMultiplier not specified for species %s in species_defs.tbl!  Defaulting to %.2f.\n", species->species_name, species->awacs_multiplier);
+				core::Warning(LOCATION, "$AwacsMultiplier not specified for species %s in species_defs.tbl!  Defaulting to %.2f.\n", species->species_name, species->awacs_multiplier);
 			}
 
 			// Goober5000 - countermeasure type

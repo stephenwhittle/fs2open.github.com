@@ -129,7 +129,7 @@ void parse_ssm(const char *filename)
 				// According to fireballs.cpp, "Warp lifetime must be at least 4 seconds!"
 				if ( (s.warp_time) < 4.0f) {
 					// So let's warn them before they try to use it, shall we?
-					Warning(LOCATION, "Expected a '+WarpTime:' value equal or greater than 4.0, found '%f' in weapon '%s'.\n Setting to 4.0, please check and set to a number 4.0 or greater!\n", s.warp_time, weapon_name);
+					core::Warning(LOCATION, "Expected a '+WarpTime:' value equal or greater than 4.0, found '%f' in weapon '%s'.\n Setting to 4.0, please check and set to a number 4.0 or greater!\n", s.warp_time, weapon_name);
 					// And then make the Assert obsolete -- Zacam
 					s.warp_time = 4.0f;
 				}

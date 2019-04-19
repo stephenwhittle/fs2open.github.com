@@ -1,5 +1,7 @@
 namespace core
 {
+void Warning(const char* filename, int line, const char* format, ...);
+
 	void Error(const char* filename, int line, const char* format, ...);
 	void Error(const char* msg);
 	template <typename T>

@@ -4760,7 +4760,7 @@ int game_poll()
 				if (counter > 9999)
 				{
 					//This should pop up a dialogue or something ingame.
-					Warning(LOCATION, "Screenshot count has reached max of 9999. Resetting to 0.");
+					core::Warning(LOCATION, "Screenshot count has reached max of 9999. Resetting to 0.");
 					counter = 0;
 				}
 
@@ -7972,7 +7972,7 @@ int actual_main(int argc, char *argv[])
 #ifdef APPLE_APP
     char pathbuf[PROC_PIDPATHINFO_MAXSIZE];
     if (proc_pidpath(getppid(), pathbuf, sizeof(pathbuf)) <= 0) {
-        Warning(LOCATION, "Could not retrieve parent pidpath!");
+        core::Warning(LOCATION, "Could not retrieve parent pidpath!");
     }
     if (strcmp("/sbin/launchd", pathbuf) == 0) {
         // Finder sets the working directory to the root of the drive so we have to get a little creative

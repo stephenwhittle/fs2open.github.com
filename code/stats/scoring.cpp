@@ -89,14 +89,14 @@ void parse_rank_tbl()
 				if (optional_string("+Persona:")) {
 					stuff_int(&persona);
 					if (persona < 0) {
-						Warning(LOCATION, "Debriefing text for %s rank is assigned to an invalid persona: %i (must be 0 or greater).\n", Ranks[idx].name, persona);
+						core::Warning(LOCATION, "Debriefing text for %s rank is assigned to an invalid persona: %i (must be 0 or greater).\n", Ranks[idx].name, persona);
 						continue;
 					}
 				}
 				Ranks[idx].promotion_text[persona] = std::string(buf);
 			}
 			if (Ranks[idx].promotion_text.find(-1) == Ranks[idx].promotion_text.end()) {
-				Warning(LOCATION, "%s rank is missing default debriefing text.\n", Ranks[idx].name);
+				core::Warning(LOCATION, "%s rank is missing default debriefing text.\n", Ranks[idx].name);
 				Ranks[idx].promotion_text[-1] = "";
 			}
 			idx++;
@@ -107,7 +107,7 @@ void parse_rank_tbl()
 		// be sure that all rank points are in order
 		for (idx = 0; idx < NUM_RANKS - 1; idx++) {
 			if (Ranks[idx].points >= Ranks[idx + 1].points)
-				Warning(LOCATION, "Rank #%d (%s) has a higher \"$Points:\" value (%d) than the following rank (%s, %d points). This shouldn't actually crash FSO, but it might result in unexpected or incorrect behavior.\n", idx + 1, Ranks[idx].name, Ranks[idx].points, Ranks[idx+1].name, Ranks[idx+1].points);
+				core::Warning(LOCATION, "Rank #%d (%s) has a higher \"$Points:\" value (%d) than the following rank (%s, %d points). This shouldn't actually crash FSO, but it might result in unexpected or incorrect behavior.\n", idx + 1, Ranks[idx].name, Ranks[idx].points, Ranks[idx+1].name, Ranks[idx+1].points);
 		}
 	}
 	catch (const parse::ParseException& e)

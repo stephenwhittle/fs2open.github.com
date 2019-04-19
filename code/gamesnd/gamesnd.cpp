@@ -680,7 +680,7 @@ void parse_gamesnd_old(game_snd* gs)
 	ignore_gray_space();
 	if (stuff_int_optional(&temp, true) == 2)
 	{
-		Warning(LOCATION, "Unexpected extra value %d found for sound '%s' (filename '%s')!  Check the format of the sounds.tbl (or .tbm) entry.", temp, gs->name.c_str(), entry.filename);
+		core::Warning(LOCATION, "Unexpected extra value %d found for sound '%s' (filename '%s')!  Check the format of the sounds.tbl (or .tbm) entry.", temp, gs->name.c_str(), entry.filename);
 	}
 
 	advance_to_eoln(NULL);
@@ -931,7 +931,7 @@ void gamesnd_parse_entry(game_snd *gs, bool no_create, std::vector<game_snd> *lo
 		{
 			if (gamesnd_lookup_name(name.c_str(), *lookupVector) >= 0)
 			{
-				Warning(LOCATION, "Duplicate sound name \"%s\" found!", name.c_str());
+				core::Warning(LOCATION, "Duplicate sound name \"%s\" found!", name.c_str());
 			}
 		}
 
@@ -943,7 +943,7 @@ void gamesnd_parse_entry(game_snd *gs, bool no_create, std::vector<game_snd> *lo
 
 		if (vectorIndex < 0)
 		{
-			Warning(LOCATION, "No existing sound entry with name \"%s\" found!", name.c_str());
+			core::Warning(LOCATION, "No existing sound entry with name \"%s\" found!", name.c_str());
 			no_create = false;
 			gs->name = name;
 		}

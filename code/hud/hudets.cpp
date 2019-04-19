@@ -823,7 +823,7 @@ void HudGaugeEts::initBitmaps(char *fname)
 {
 	Ets_bar.first_frame = bm_load_animation(fname, &Ets_bar.num_frames);
 	if ( Ets_bar.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
 	}
 }
 

@@ -918,13 +918,13 @@ static void init_window_icon() {
 
 	auto icon_handle = bm_load(Window_icon_path);
 	if (icon_handle < 0) {
-		Warning(LOCATION, "Failed to load window icon '%s'!", Window_icon_path.c_str());
+		core::Warning(LOCATION, "Failed to load window icon '%s'!", Window_icon_path.c_str());
 		return;
 	}
 
 	auto surface = bm_to_sdl_surface(icon_handle);
 	if (surface == nullptr) {
-		Warning(LOCATION, "Convert icon '%s' to a SDL surface!", Window_icon_path.c_str());
+		core::Warning(LOCATION, "Convert icon '%s' to a SDL surface!", Window_icon_path.c_str());
 		bm_release(icon_handle);
 		return;
 	}

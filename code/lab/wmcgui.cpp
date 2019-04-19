@@ -142,7 +142,7 @@ bool ScreenClassInfoEntry::Parse()
 void GUISystem::ParseClassInfo(const char* filename)
 {
 	if (ClassInfoParsed) {
-		Warning(LOCATION, "Class info is being parsed twice");
+		core::Warning(LOCATION, "Class info is being parsed twice");
 		DestroyClassInfo();
 	}
 	
@@ -273,7 +273,7 @@ void ClassInfoEntry::Parse(const char* tag, int in_type)
 			if (IMG_HANDLE_IS_VALID(Handles[i].Image)) {
 				IMG_INFO(Handles[i].Image, &cw, &ch);
 				if (cw != w || ch != h) {
-					Warning(LOCATION, "Grouped image size unequal; Handle number %d under $%s: has a different size than base image type", i, tag);
+					core::Warning(LOCATION, "Grouped image size unequal; Handle number %d under $%s: has a different size than base image type", i, tag);
 				}
 			}
 		}
@@ -443,7 +443,7 @@ GUIObject* GUIScreen::Add(GUIObject* new_gauge)
 			} else {
 				//This is icky; we might cast a pointer after this.
 				//So return NULL with a warning
-				Warning(LOCATION, "Attempt to create another object with name '%s'; new object type was %d, existing object type was %d. This may cause null pointer issues.", tgp->Name.c_str(), new_gauge->Type, tgp->Type);
+				core::Warning(LOCATION, "Attempt to create another object with name '%s'; new object type was %d, existing object type was %d. This may cause null pointer issues.", tgp->Name.c_str(), new_gauge->Type, tgp->Type);
 				delete new_gauge;
 				return NULL;
 			}
@@ -2363,7 +2363,7 @@ void Text::Load()
 	} else if (SaveType & T_ST_UBYTE) {
 		SetText(*ubSavePointer);
 	} else {
-		Warning(LOCATION, "Unknown type (or no type) given in Text::Load() - nothing happened.");
+		core::Warning(LOCATION, "Unknown type (or no type) given in Text::Load() - nothing happened.");
 	}
 }
 
