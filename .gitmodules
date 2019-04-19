@@ -10,3 +10,6 @@
 [submodule "lib/SimpleSignal"]
 	path = lib/SimpleSignal
 	url = https://github.com/larspensjo/SimpleSignal.git
+[submodule "lib/dbgtools"]
+	path = lib/dbgtools
+	url = https://github.com/wc-duck/dbgtools.git

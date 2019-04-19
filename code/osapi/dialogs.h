@@ -13,6 +13,8 @@ namespace os
 {
 	namespace dialogs
 	{
+		
+
 		class DialogException : public std::runtime_error {
 		 public:
 			explicit DialogException(const std::string& msg) : std::runtime_error(msg) {}
@@ -115,7 +117,11 @@ namespace os
 		void ReleaseWarning(const char* filename, int line, SCP_FORMAT_STRING const char* format, ...) SCP_FORMAT_STRING_ARGS(3, 4);
 		
 		void Message(MessageType type, const char* message, const char* title = NULL);
+
+		void init();
 	}
+
+
 }
 
 // Make these available in the global namespace for compatibility

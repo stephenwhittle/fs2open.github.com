@@ -10,6 +10,6 @@ namespace core
 	void Error(const char* filename, int line, const char* format, ...);
 	void Error(const char* msg);
 	
-	void Verify(bool x, const char* msg = nullptr);
-    
+	template <typename T>
+	extern void Verify(T x, const char* msg = nullptr);
     }

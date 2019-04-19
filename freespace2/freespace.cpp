@@ -6705,6 +6705,8 @@ int game_main(int argc, char *argv[])
 {
 	int state;
 
+	////////
+
 	// check if networking should be disabled, this could probably be done later but the sooner the better
 	// TODO: remove this when multi is fixed to handle more than MAX_SHIP_CLASSES_MULTI
 	if ( Ship_info.size() > MAX_SHIP_CLASSES_MULTI ) {
@@ -7956,7 +7958,7 @@ int actual_main(int argc, char *argv[])
 {
 	int result = -1;
 	Assert(argc > 0);
-
+	os::dialogs::init();
 #ifdef WIN32
 	// Don't let more than one instance of FreeSpace run.
 	HWND hwnd = FindWindow(NOX("FreeSpaceClass"), NULL);

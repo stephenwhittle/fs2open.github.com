@@ -494,5 +494,13 @@ namespace os
 
 			SDL_ShowSimpleMessageBox(flags, title, message, os::getSDLMainWindow());
 		}
-	}
+        void init()
+        {
+	        core::RegisterErrorHandler(static_cast<void (*)(const char*)>(os::dialogs::Error));
+	        core::RegisterWarningHandler(os::dialogs::WarningImpl);
+        }
+	} // namespace dialogs
+
+
+
 }
