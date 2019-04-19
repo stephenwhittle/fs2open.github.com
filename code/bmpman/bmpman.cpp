@@ -396,7 +396,7 @@ DCF(bm_used, "Shows BmpMan Slot Usage") {
 					eff_pcx++;
 					break;
 				default:
-					Warning(LOCATION, "Unhandled EFF image type (%i), get a coder!", block[i].entry.info.ani.eff.type);
+					core::Warning(LOCATION, "Unhandled EFF image type (%i), get a coder!", block[i].entry.info.ani.eff.type);
 					break;
 				}
 				break;
@@ -407,7 +407,7 @@ DCF(bm_used, "Shows BmpMan Slot Usage") {
 				render_target_dynamic++;
 				break;
 			default:
-				Warning(LOCATION, "Unhandled image type (%i), get a coder!", block[i].entry.type);
+				core::Warning(LOCATION, "Unhandled image type (%i), get a coder!", block[i].entry.type);
 				break;
 			}
 		}
@@ -1141,7 +1141,7 @@ int bm_load(const char *real_filename) {
 	// safety catch for strcat...
 	// MAX_FILENAME_LEN-5 == '.' plus 3 letter ext plus NULL terminator
 	if (strlen(filename) > MAX_FILENAME_LEN - 5) {
-		Warning(LOCATION, "Passed filename, '%s', is too long to support an extension!!\n\nMaximum length, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 5);
+		core::Warning(LOCATION, "Passed filename, '%s', is too long to support an extension!!\n\nMaximum length, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 5);
 		return -1;
 	}
 
@@ -1392,7 +1392,7 @@ static int bm_load_image_data(int handle, int bpp, ubyte flags, bool nodebug)
 			break;
 
 		default:
-			Warning(LOCATION, "Unsupported type in bm_lock -- %d\n", c_type);
+			core::Warning(LOCATION, "Unsupported type in bm_lock -- %d\n", c_type);
 			return -1;
 		}
 
@@ -1454,7 +1454,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 	// safety catch for strcat...
 	// MAX_FILENAME_LEN-5 == '.' plus 3 letter ext plus NULL terminator
 	if (strlen(filename) > MAX_FILENAME_LEN - 5) {
-		Warning(LOCATION, "Passed filename, '%s', is too long to support an extension!!\n\nMaximum length, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 5);
+		core::Warning(LOCATION, "Passed filename, '%s', is too long to support an extension!!\n\nMaximum length, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 5);
 		return -1;
 	}
 
@@ -1500,7 +1500,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 	// MAX_FILENAME_LEN-10 == 5 character frame designator plus '.' plus 3 letter ext plus NULL terminator
 	// we only check for -5 here since the filename should already have the extension on it, and it must have passed the previous check
 	if (strlen(filename) > MAX_FILENAME_LEN - 5) {
-		Warning(LOCATION, "Passed filename, '%s', is too long to support an extension and frames!!\n\nMaximum length for an ANI/EFF/APNG, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 10);
+		core::Warning(LOCATION, "Passed filename, '%s', is too long to support an extension and frames!!\n\nMaximum length for an ANI/EFF/APNG, minus the extension, is %i characters.\n", filename, MAX_FILENAME_LEN - 10);
 		if (img_cfp != nullptr)
 			cfclose(img_cfp);
 		return -1;
@@ -1584,7 +1584,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 		}
 	}
 	else {
-		Warning(LOCATION, "Unsupported image type: %i", type);
+		core::Warning(LOCATION, "Unsupported image type: %i", type);
 		if (img_cfp != nullptr)
 			cfclose(img_cfp);
 		return -1;
@@ -1627,7 +1627,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 							 nullptr, &anim_width, &anim_height, &bpp, &c_type, &mm_lvl, &img_size)) {
 				// if we didn't get anything then bail out now
 				if (i == 0) {
-					Warning(LOCATION, "EFF: No frame images were found.  EFF, %s, is invalid.\n", filename);
+					core::Warning(LOCATION, "EFF: No frame images were found.  EFF, %s, is invalid.\n", filename);
 
 					if (img_cfp != nullptr)
 						cfclose(img_cfp);
@@ -1635,7 +1635,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 					return -1;
 				}
 
-				Warning(LOCATION, "EFF: Unable to load all frames for '%s', stopping at #%d\n", filename, i);
+				core::Warning(LOCATION, "EFF: Unable to load all frames for '%s', stopping at #%d\n", filename, i);
 
 				// reset total frames to current
 				anim_frames = i;
@@ -1703,28 +1703,28 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 			// We found a frame with a different size than the first frame -> this can't be used as a texture array
 			is_array = false;
 
-			Warning(LOCATION, "Animation '%s' has images that are of different sizes (currently at frame %d)."
+			core::Warning(LOCATION, "Animation '%s' has images that are of different sizes (currently at frame %d)."
 				"Performance could be improved by making all images the same size.", filename, i + 1);
 		}
 		if (first_entry->comp_type != entry->comp_type) {
 			// Different compression type
 			is_array = false;
 
-			Warning(LOCATION, "Animation '%s' has images that are of different compression formats (currently at frame %d)."
+			core::Warning(LOCATION, "Animation '%s' has images that are of different compression formats (currently at frame %d)."
 				"Performance could be improved by making all images the same compression format.", filename, i + 1);
 		}
 		if (first_entry->bm.true_bpp != entry->bm.true_bpp) {
 			// We found a frame with an incompatible pixel format
 			is_array = false;
 
-			Warning(LOCATION, "Animation '%s' has images that are of different pixel formats (currently at frame %d)."
+			core::Warning(LOCATION, "Animation '%s' has images that are of different pixel formats (currently at frame %d)."
 				"Performance could be improved by making all images the same pixel format.", filename, i + 1);
 		}
 		if (first_entry->num_mipmaps != entry->num_mipmaps) {
 			// We found a frame with a different number of mipmaps
 			is_array = false;
 
-			Warning(LOCATION, "Animation '%s' has images that have a different number of mipmaps (currently at frame %d)."
+			core::Warning(LOCATION, "Animation '%s' has images that have a different number of mipmaps (currently at frame %d)."
 				"Performance could be improved by giving all frames the same number of mipmaps.", filename, i + 1);
 		}
 	}
@@ -1829,7 +1829,7 @@ int bm_load_sub_slow(const char *real_filename, const int num_ext, const char **
 	}
 
 	// umm, that's not good...
-	Warning(LOCATION, "Could not open file %s!", res.full_name.c_str());
+	core::Warning(LOCATION, "Could not open file %s!", res.full_name.c_str());
 	return -1;
 }
 
@@ -2071,7 +2071,7 @@ void bm_lock_apng(int /*handle*/, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /
 		the_apng.reset(new apng::apng_ani(first_entry->filename));
 	}
 	catch (const apng::ApngException& e) {
-		Warning(LOCATION, "Failed to load apng: %s", e.what());
+		core::Warning(LOCATION, "Failed to load apng: %s", e.what());
 		return;
 	}
 
@@ -2092,7 +2092,7 @@ void bm_lock_apng(int /*handle*/, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /
 			the_apng->next_frame();
 		}
 		catch (const apng::ApngException& e) {
-			Warning(LOCATION, "Failed to get next apng frame: %s", e.what());
+			core::Warning(LOCATION, "Failed to get next apng frame: %s", e.what());
 			bm_release(first_frame);
 			return;
 		}

@@ -1680,7 +1680,7 @@ void labviewer_make_weap_window(Button* /*caller*/)
 		if (Weapon_info[i].subtype == WP_UNUSED) {
 			continue;
 		} else if (Weapon_info[i].subtype >= Num_weapon_subtypes) {
-			Warning(LOCATION, "Invalid weapon subtype found on weapon %s", Weapon_info[i].name);
+			core::Warning(LOCATION, "Invalid weapon subtype found on weapon %s", Weapon_info[i].name);
 			continue;
 		}
 
@@ -1924,7 +1924,7 @@ void labviewer_change_background_actual()
 			while (optional_string("$Bitmap List:") || check_for_string("$Sun:") || check_for_string("$Starbitmap:")) {
 				// don't allow overflow; just make sure the last background is the last read
 				if (Num_backgrounds >= MAX_BACKGROUNDS) {
-					Warning(LOCATION, "Too many backgrounds in mission!  Max is %d.", MAX_BACKGROUNDS);
+					core::Warning(LOCATION, "Too many backgrounds in mission!  Max is %d.", MAX_BACKGROUNDS);
 					Num_backgrounds = MAX_BACKGROUNDS - 1;
 				}
 

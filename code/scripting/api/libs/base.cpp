@@ -35,7 +35,7 @@ ADE_FUNC(print, l_Base, "string Message", "Prints a string", NULL, NULL)
 
 ADE_FUNC(warning, l_Base, "string Message", "Displays a FreeSpace warning (debug build-only) message with the string provided", NULL, NULL)
 {
-	Warning(LOCATION, "%s", lua_tostring(L, -1));
+	core::Warning(LOCATION, "%s", lua_tostring(L, -1));
 
 	return ADE_RETURN_NIL;
 }

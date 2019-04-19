@@ -221,7 +221,7 @@ ParticleEffectHandle ParticleManager::addEffect(ParticleEffectPtr effect)
 		auto index = getEffectByName(effect->getName());
 
 		if (index.isValid()) {
-			Warning(LOCATION, "Effect with name '%s' already exists!", effect->getName().c_str());
+			core::Warning(LOCATION, "Effect with name '%s' already exists!", effect->getName().c_str());
 			return index;
 		}
 	}

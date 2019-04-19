@@ -611,7 +611,7 @@ void turret_swarm_maybe_fire_missile(int shipnum)
 						}
 					}
 				} else {
-					Warning(LOCATION,	"Found turret swarm info on ship: %s with turret: %s, but signature does not match.", shipp->ship_name, subsys->system_info->subobj_name);
+					core::Warning(LOCATION,	"Found turret swarm info on ship: %s with turret: %s, but signature does not match.", shipp->ship_name, subsys->system_info->subobj_name);
 					shipp->num_turret_swarm_info--;
 					subsys->turret_swarm_num--;
 					turret_swarm_delete(subsys->turret_swarm_info_index[k]);

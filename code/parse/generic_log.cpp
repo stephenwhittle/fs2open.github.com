@@ -54,7 +54,7 @@ logfile logfiles[MAX_LOGFILES] = {
 bool logfile_init(int logfile_type)
 {
 	if((logfile_type < 0) || (logfile_type >= MAX_LOGFILES)) {
-		Warning(LOCATION, "Attempt to write illegal logfile number %d", logfile_type);
+		core::Warning(LOCATION, "Attempt to write illegal logfile number %d", logfile_type);
 		return false;
 	}
 

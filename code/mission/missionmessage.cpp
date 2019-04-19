@@ -447,7 +447,7 @@ void message_parse(bool importing_from_fsm)
 
 		if (!found) {
 			// found a mood, but it's not in the list of moods at the start of the table
-			Warning(LOCATION, "Message.tbl has an entry for mood type %s, but this mood is not in the #Moods section of the table.", buf.c_str()); 
+			core::Warning(LOCATION, "Message.tbl has an entry for mood type %s, but this mood is not in the #Moods section of the table.", buf.c_str()); 
 		}
 	}
 	else {
@@ -470,7 +470,7 @@ void message_parse(bool importing_from_fsm)
 
 			if (!found) {
 				// found a mood, but it's not in the list of moods at the start of the table
-				Warning(LOCATION, "Message.tbl has an entry for exclude mood type %s, but this mood is not in the #Moods section of the table.", parsed_moods->c_str()); 
+				core::Warning(LOCATION, "Message.tbl has an entry for exclude mood type %s, but this mood is not in the #Moods section of the table.", parsed_moods->c_str()); 
 			}
 		}
 	}
@@ -496,7 +496,7 @@ void message_frequency_parse()
 	}
 
 	if (builtin_type == -1) {
-		Warning(LOCATION, "Unknown Builtin Message Type Detected. Type : %s not supported", name);
+		core::Warning(LOCATION, "Unknown Builtin Message Type Detected. Type : %s not supported", name);
 		return;
 	}
 
@@ -632,14 +632,14 @@ void parse_msgtbl()
 				char *ptr = strchr(filename, '.');
 				if (ptr == NULL)
 				{
-					Warning(LOCATION, "Simulated speech override file '%s' was provided with no extension!", filename);
+					core::Warning(LOCATION, "Simulated speech override file '%s' was provided with no extension!", filename);
 					continue;
 				}
 
 				// test extension
 				if (stricmp(ptr, ".ogg") != 0 && stricmp(ptr, ".wav") != 0)
 				{
-					Warning(LOCATION, "Simulated speech override file '%s' was provided with an extension other than .wav or .ogg!", filename);
+					core::Warning(LOCATION, "Simulated speech override file '%s' was provided with an extension other than .wav or .ogg!", filename);
 					continue;
 				}
 

@@ -118,14 +118,14 @@ void parse_ai_profiles_tbl(const char *filename)
 				// don't create multiple profiles with the same name
 				if (previous_profile != NULL)
 				{
-					Warning(LOCATION, "An ai profile named '%s' already exists!  The new one will not be created.\n", profile_name);
+					core::Warning(LOCATION, "An ai profile named '%s' already exists!  The new one will not be created.\n", profile_name);
 				}
 				else
 				{
 					// make sure we're under the limit
 					if (Num_ai_profiles >= MAX_AI_PROFILES)
 					{
-						Warning(LOCATION, "Too many profiles in ai_profiles.tbl!  Max is %d.\n", MAX_AI_PROFILES - 1);	// -1 because one is built-in
+						core::Warning(LOCATION, "Too many profiles in ai_profiles.tbl!  Max is %d.\n", MAX_AI_PROFILES - 1);	// -1 because one is built-in
 						skip_to_string("#End", NULL);
 						break;
 					}
@@ -238,7 +238,7 @@ void parse_ai_profiles_tbl(const char *filename)
 					//While we're at it, verify the range
 					for (i = 0; i < NUM_SKILL_LEVELS; i++) {
 						if (profile->glide_attack_percent[i] < 0.0f || profile->glide_attack_percent[i] > 100.0f) {
-							Warning(LOCATION, "$Glide Attack Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->glide_attack_percent[i]);
+							core::Warning(LOCATION, "$Glide Attack Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->glide_attack_percent[i]);
 							profile->glide_attack_percent[i] = 0.0f;
 						}
 						profile->glide_attack_percent[i] /= 100.0;
@@ -251,7 +251,7 @@ void parse_ai_profiles_tbl(const char *filename)
 					//While we're at it, verify the range
 					for (i = 0; i < NUM_SKILL_LEVELS; i++) {
 						if (profile->circle_strafe_percent[i] < 0.0f || profile->circle_strafe_percent[i] > 100.0f) {
-							Warning(LOCATION, "$Circle Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->circle_strafe_percent[i]);
+							core::Warning(LOCATION, "$Circle Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->circle_strafe_percent[i]);
 							profile->circle_strafe_percent[i] = 0.0f;
 						}
 						profile->circle_strafe_percent[i] /= 100.0;
@@ -264,7 +264,7 @@ void parse_ai_profiles_tbl(const char *filename)
 					//While we're at it, verify the range
 					for (i = 0; i < NUM_SKILL_LEVELS; i++) {
 						if (profile->glide_strafe_percent[i] < 0.0f || profile->glide_strafe_percent[i] > 100.0f) {
-							Warning(LOCATION, "$Glide Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->glide_strafe_percent[i]);
+							core::Warning(LOCATION, "$Glide Strafe Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->glide_strafe_percent[i]);
 							profile->glide_strafe_percent[i] = 0.0f;
 						}
 						profile->glide_strafe_percent[i] /= 100.0;
@@ -277,7 +277,7 @@ void parse_ai_profiles_tbl(const char *filename)
 					//While we're at it, verify the range
 					for (i = 0; i < NUM_SKILL_LEVELS; i++) {
 						if (profile->random_sidethrust_percent[i] < 0.0f || profile->random_sidethrust_percent[i] > 100.0f) {
-							Warning(LOCATION, "$Random Sidethrust Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->random_sidethrust_percent[i]);
+							core::Warning(LOCATION, "$Random Sidethrust Percent should be between 0 and 100.0 (read %f). Setting to 0.", profile->random_sidethrust_percent[i]);
 							profile->random_sidethrust_percent[i] = 0.0f;
 						}
 						profile->random_sidethrust_percent[i] /= 100.0;
@@ -335,7 +335,7 @@ void parse_ai_profiles_tbl(const char *filename)
 						//Enforce range
 						if (fov_list[i] < 0.0f || fov_list[i] >= 360.0f)
 						{
-							Warning(LOCATION, "$Player Autoaim FOV should be >= 0 and < 360.0 (read %f). Setting to 0.", fov_list[i]);
+							core::Warning(LOCATION, "$Player Autoaim FOV should be >= 0 and < 360.0 (read %f). Setting to 0.", fov_list[i]);
 							fov_list[i] = 0.0f;
 						}
 
@@ -446,7 +446,7 @@ void parse_ai_profiles_tbl(const char *filename)
 						profile->ai_path_mode = j;
 					}
 					else {
-						Warning(LOCATION, "Invalid ai path mode '%s' specified", buf);
+						core::Warning(LOCATION, "Invalid ai path mode '%s' specified", buf);
 					}
 				}
 

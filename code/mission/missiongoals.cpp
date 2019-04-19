@@ -501,7 +501,7 @@ void mission_show_goals_init()
 	Goal_failed_bitmap = bm_load("ObjFail");
 
 	if (Goals_screen_bg_bitmap < 0) {
-		Warning(LOCATION, "Could not load the background bitmap: ObjectivesBG.pcx");
+		core::Warning(LOCATION, "Could not load the background bitmap: ObjectivesBG.pcx");
 	}
 }
 

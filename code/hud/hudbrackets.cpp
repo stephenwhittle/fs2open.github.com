@@ -351,7 +351,7 @@ void HudGaugeBrackets::initBitmaps(char *fname)
 {
 	attacking_dot = bm_load(fname);
 	if (attacking_dot < 0) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname);
 	}
 }
 

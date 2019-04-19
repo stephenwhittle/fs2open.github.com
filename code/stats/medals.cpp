@@ -301,7 +301,7 @@ void parse_medal_tbl()
 				temp_display.coords[GR_640].y = Default_medal_coords[GR_640][Num_medals][1];
 			}
 			else {
-				Warning(LOCATION, "No default GR_640 position for medal '%s'!", temp_medal.name);
+				core::Warning(LOCATION, "No default GR_640 position for medal '%s'!", temp_medal.name);
 				temp_display.coords[GR_640].x = 0;
 				temp_display.coords[GR_640].y = 0;
 			}
@@ -314,7 +314,7 @@ void parse_medal_tbl()
 				temp_display.coords[GR_1024].y = Default_medal_coords[GR_1024][Num_medals][1];
 			}
 			else {
-				Warning(LOCATION, "No default GR_1024 position for medal '%s'!", temp_medal.name);
+				core::Warning(LOCATION, "No default GR_1024 position for medal '%s'!", temp_medal.name);
 				temp_display.coords[GR_1024].x = 0;
 				temp_display.coords[GR_1024].y = 0;
 			}
@@ -326,7 +326,7 @@ void parse_medal_tbl()
 				strcpy_s(temp_medal.debrief_bitmap, Default_debriefing_bitmaps[Num_medals]);
 			}
 			else {
-				Warning(LOCATION, "No default debriefing bitmap for medal '%s'!", temp_medal.name);
+				core::Warning(LOCATION, "No default debriefing bitmap for medal '%s'!", temp_medal.name);
 				strcpy_s(temp_medal.debrief_bitmap, "");
 			}
 
@@ -366,14 +366,14 @@ void parse_medal_tbl()
 					if (optional_string("+Persona:")) {
 						stuff_int(&persona);
 						if (persona < 0) {
-							Warning(LOCATION, "Debriefing text for %s is assigned to an invalid persona: %i (must be 0 or greater).\n", temp_medal.name, persona);
+							core::Warning(LOCATION, "Debriefing text for %s is assigned to an invalid persona: %i (must be 0 or greater).\n", temp_medal.name, persona);
 							continue;
 						}
 					}
 					temp_medal.promotion_text[persona] = std::string(buf);
 				}
 				if (temp_medal.promotion_text.find(-1) == temp_medal.promotion_text.end()) {
-					Warning(LOCATION, "%s medal is missing default debriefing text.\n", temp_medal.name);
+					core::Warning(LOCATION, "%s medal is missing default debriefing text.\n", temp_medal.name);
 					temp_medal.promotion_text[-1] = "";
 				}
 			}
@@ -388,7 +388,7 @@ void parse_medal_tbl()
 		// be sure that we know where the rank is
 		if (Rank_medal_index < 0)
 		{
-			Warning(LOCATION, "Could not find the 'Rank' medal!");
+			core::Warning(LOCATION, "Could not find the 'Rank' medal!");
 			Rank_medal_index = 0;
 		}
 
@@ -548,7 +548,7 @@ void medal_main_init(player *pl, int mode)
 
 	Medals_bitmap = bm_load(bitmap_buf);
 	if (Medals_bitmap < 0) {
-		Warning(LOCATION, "Error loading medal background bitmap %s", bitmap_buf);
+		core::Warning(LOCATION, "Error loading medal background bitmap %s", bitmap_buf);
 	} else {
 		Init_flags |= MEDAL_BITMAP_INIT;
 	}
@@ -561,7 +561,7 @@ void medal_main_init(player *pl, int mode)
 
 	Medals_bitmap_mask = bm_load(bitmap_buf);
 	if (Medals_bitmap_mask < 0) {
-		Warning(LOCATION, "Error loading medal mask file %s", bitmap_buf);
+		core::Warning(LOCATION, "Error loading medal mask file %s", bitmap_buf);
 	} else {
 		Init_flags |= MASK_BITMAP_INIT;
 		Medals_mask = bm_lock(Medals_bitmap_mask, 8, BMP_AABITMAP | BMP_MASK_BITMAP);

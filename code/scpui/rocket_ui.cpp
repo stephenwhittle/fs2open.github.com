@@ -437,7 +437,7 @@ bool key_event_handler(const SDL_Event& evt)
 				// First we need to initialize the debugger. We use the current context for that, should work in
 				// most cases
 				if (!Rocket::Debugger::Initialise(input_context)) {
-					Warning(LOCATION, "Failed to initialize debugger!");
+					core::Warning(LOCATION, "Failed to initialize debugger!");
 					return true;
 				}
 

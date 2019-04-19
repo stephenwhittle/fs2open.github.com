@@ -474,7 +474,7 @@ static void asteroid_load(int asteroid_info_index, int asteroid_subtype)
 			if ( !Is_standalone )
 			{
 				// just log to file for standalone servers
-				Warning(LOCATION, "For asteroid '%s', detail level\nmismatch (POF needs %d)", asip->name, pm->n_detail_levels );
+				core::Warning(LOCATION, "For asteroid '%s', detail level\nmismatch (POF needs %d)", asip->name, pm->n_detail_levels );
 			}
 			else
 			{
@@ -1256,7 +1256,7 @@ static float asteroid_create_explosion(object *objp)
 	}
 
 	if (fireball_type >= Num_fireball_types) {
-		Warning(LOCATION, "Invalid fireball type %i specified for an asteroid, only %i fireball types are defined.", fireball_type, Num_fireball_types);
+		core::Warning(LOCATION, "Invalid fireball type %i specified for an asteroid, only %i fireball types are defined.", fireball_type, Num_fireball_types);
 
 		return 0;
 	}
@@ -1829,7 +1829,7 @@ static void asteroid_parse_section(asteroid_info *asip)
 
 			asip->split_info.push_back( new_split );
 		} else
-			Warning(LOCATION, "Invalid asteroid reference %i used for $Split in asteroids table, ignoring.", split_type);
+			core::Warning(LOCATION, "Invalid asteroid reference %i used for $Split in asteroids table, ignoring.", split_type);
 	}
 }
 
@@ -1891,12 +1891,12 @@ static void asteroid_parse_tbl()
 #ifdef NDEBUG
 				// Bump the warning count in release so they get something
 				// even if the message never gets displayed.
-				Warning(LOCATION, "Ignoring extra asteroid/debris");
+				core::Warning(LOCATION, "Ignoring extra asteroid/debris");
 #else
 				std::string msg("Ignoring extra asteroid/debris '");
 				msg.append(new_asteroid.name);
 				msg.append("'\n");
-				Warning(LOCATION, "%s", msg.c_str());
+				core::Warning(LOCATION, "%s", msg.c_str());
 				parsed_asteroids.push_back(msg);
 #endif
 			}

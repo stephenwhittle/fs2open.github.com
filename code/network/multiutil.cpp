@@ -759,7 +759,7 @@ int multi_create_player( int net_player_num, player *pl, const char* name, net_a
 			if(!Ship_info.empty())
 			{
 				player_ship_class = 0;
-				Warning(LOCATION, "Invalid default player ship specified in ship tables. Setting to %s", Ship_info[player_ship_class].name);
+				core::Warning(LOCATION, "Invalid default player ship specified in ship tables. Setting to %s", Ship_info[player_ship_class].name);
 			}
 			else
 			{

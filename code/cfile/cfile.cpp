@@ -1360,7 +1360,7 @@ int cfwrite(const void *buf, int elsize, int nelem, CFILE *cfile)
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		core::Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 
@@ -1401,7 +1401,7 @@ int cfputc(int c, CFILE *cfile)
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		core::Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 
@@ -1445,7 +1445,7 @@ int cfputs(const char *str, CFILE *cfile)
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		core::Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 

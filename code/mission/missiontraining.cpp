@@ -151,17 +151,17 @@ void HudGaugeDirectives::initBitmaps(char *fname_top, char *fname_middle, char *
 {
 	directives_top.first_frame = bm_load_animation(fname_top, &directives_top.num_frames);
 	if ( directives_top.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname_top);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname_top);
 	}
 
 	directives_middle.first_frame = bm_load_animation(fname_middle, &directives_middle.num_frames);
 	if ( directives_middle.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname_middle);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname_middle);
 	}
 
 	directives_bottom.first_frame = bm_load_animation(fname_bottom, &directives_bottom.num_frames);
 	if ( directives_bottom.first_frame < 0 ) {
-		Warning(LOCATION,"Cannot load hud ani: %s\n", fname_bottom);
+		core::Warning(LOCATION,"Cannot load hud ani: %s\n", fname_bottom);
 	}
 }
 

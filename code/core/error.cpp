@@ -6,7 +6,24 @@
 namespace core 
 {
 	Simple::Signal<void(const char*)> error_handler;
-	void Error(const char* filename, int line, const char* format, ...)
+	Simple::Signal<void(const char*, int line, const char* msg)> warning_handler;
+	void Warning(const char* filename, int line, const char* format, ...)
+    {
+	    Global_warning_count++;
+
+#ifndef NDEBUG
+	    std::string msg;
+	    va_list args;
+
+	    va_start(args, format);
+	    core::vsprintf(msg, format, args);
+	    va_end(args);
+
+	    warning_handler.emit(filename, line, msg.c_str());
+#endif
+    }
+
+void Error(const char* filename, int line, const char* format, ...)
 	{
 		std::string formatText;
 		filename = core::path::clean_filename(filename);

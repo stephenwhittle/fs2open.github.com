@@ -58,7 +58,7 @@ void sexp_network_packet::ensure_space_remains(size_t data_size)
 
     // At very least must include OP, COUNT, TERMINATOR 
     if (packet_end < 9 && !packet_flagged_invalid) {
-        Warning(LOCATION, "Sexp %s has attempted to write too much data to a single packet. It is advised that you split this SEXP up into smaller ones", Operators[Current_sexp_operator.back()].text.c_str());
+        core::Warning(LOCATION, "Sexp %s has attempted to write too much data to a single packet. It is advised that you split this SEXP up into smaller ones", Operators[Current_sexp_operator.back()].text.c_str());
         packet_flagged_invalid = true;
         return;
     }
@@ -94,7 +94,7 @@ void sexp_network_packet::reduce_counts(int amount)
     current_argument_count -= amount;
 
     if (sexp_bytes_left < 0 || current_argument_count < 0) {
-        Warning(LOCATION, "multi_get_x function call has read an invalid amount of data. Trace out and fix this!");
+        core::Warning(LOCATION, "multi_get_x function call has read an invalid amount of data. Trace out and fix this!");
     }
 }
 
@@ -109,7 +109,7 @@ bool sexp_network_packet::argument_count_is_valid()
             sexp_bytes_left--;
 
             if (possible_terminator == CALLBACK_TERMINATOR) {
-                Warning(LOCATION, "%s has returned to multi_sexp_eval() claiming %d arguments left. %d actually found. Trace out and fix this!", Operators[op_num].text.c_str(), current_argument_count, i);
+                core::Warning(LOCATION, "%s has returned to multi_sexp_eval() claiming %d arguments left. %d actually found. Trace out and fix this!", Operators[op_num].text.c_str(), current_argument_count, i);
                 terminator_found = true;
                 break;
             }
@@ -122,13 +122,13 @@ bool sexp_network_packet::argument_count_is_valid()
 
             if (possible_terminator != CALLBACK_TERMINATOR) {
                 // discard remainder of packet if we still haven't found the terminator as it is hopelessly corrupt
-                Warning(LOCATION, "%s has returned to multi_sexp_eval() without finding the terminator. Discarding packet! Trace out and fix this!", Operators[op_num].text.c_str());
+                core::Warning(LOCATION, "%s has returned to multi_sexp_eval() without finding the terminator. Discarding packet! Trace out and fix this!", Operators[op_num].text.c_str());
                 sexp_bytes_left = 0;
                 return false;
             }
             else {
                 // the previous SEXP hasn't removed all it's data from the packet correctly but it appears we've managed to fix it
-                Warning(LOCATION, "%s has returned to multi_sexp_eval() without removing all the data the server wrote during its callback. Trace out and fix this!", Operators[op_num].text.c_str());
+                core::Warning(LOCATION, "%s has returned to multi_sexp_eval() without removing all the data the server wrote during its callback. Trace out and fix this!", Operators[op_num].text.c_str());
                 op_num = -1;
             }
         }
@@ -253,7 +253,7 @@ bool sexp_network_packet::cannot_send_data()
     }
 
     if (!callback_started) {
-        Warning(LOCATION, "Attempt to send data in multi_sexp.cpp without first starting a callback");
+        core::Warning(LOCATION, "Attempt to send data in multi_sexp.cpp without first starting a callback");
         return true;
     }
 
@@ -460,7 +460,7 @@ bool sexp_network_packet::get_ship(int & value)
         return true;
     }
 
-    Warning(LOCATION, "Current_sexp_network_packet.get_ship called for object %d even though it is not a ship", objp->instance);
+    core::Warning(LOCATION, "Current_sexp_network_packet.get_ship called for object %d even though it is not a ship", objp->instance);
     return false;
 }
 
@@ -494,7 +494,7 @@ bool sexp_network_packet::get_object(object *& value)
         return true;
     }
 
-    Warning(LOCATION, "multi_get_object called for non-existent object");
+    core::Warning(LOCATION, "multi_get_object called for non-existent object");
     return false;
 }
 
@@ -627,7 +627,7 @@ void sexp_network_packet::finished_callback()
     // read in the terminator
     GET_DATA(terminator);
     if (terminator != CALLBACK_TERMINATOR) {
-        Warning(LOCATION, "multi_get_x function call has been called on an improperly terminated callback. Trace out and fix this!");
+        core::Warning(LOCATION, "multi_get_x function call has been called on an improperly terminated callback. Trace out and fix this!");
         // discard remainder of packet
         sexp_bytes_left = 0;
         return;
@@ -664,6 +664,6 @@ bool sexp_network_packet::sexp_discard_operator()
 void sexp_network_packet::discard_remaining_callback_data()
 {
     if (!sexp_discard_operator()) {
-        Warning(LOCATION, "Attempt to discard remaining data failed! Callback lacks proper termination. Entire packet may be corrupt. Discarding remaining packet");
+        core::Warning(LOCATION, "Attempt to discard remaining data failed! Callback lacks proper termination. Entire packet may be corrupt. Discarding remaining packet");
     }
 }

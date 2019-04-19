@@ -1166,7 +1166,7 @@ static std::vector<std::string> unix_get_single_dir_names(const std::string& par
 
 	DIR *dp;
 	if ((dp = opendir(parent.c_str())) == NULL) {
-		Warning(LOCATION, "Can't open directory '%s' when searching mod paths. Ignoring. errno=%d", parent.c_str(), errno);
+		core::Warning(LOCATION, "Can't open directory '%s' when searching mod paths. Ignoring. errno=%d", parent.c_str(), errno);
 		return ret;
 	}
 
@@ -1225,7 +1225,7 @@ static void handle_unix_modlist(char **modlist, size_t *len)
 		std::vector<std::string> this_mod_paths = unix_get_dir_names(".", cur_mod);
 		// Ignore non-existing mods for unit tests
 		if (!running_unittests && this_mod_paths.empty()) {
-			ReleaseWarning(LOCATION, "Can't find mod '%s'. Ignoring.", cur_mod);
+			Releasecore::Warning(LOCATION, "Can't find mod '%s'. Ignoring.", cur_mod);
 		}
 		mod_paths.insert(mod_paths.end(), this_mod_paths.begin(), this_mod_paths.end());
 	}

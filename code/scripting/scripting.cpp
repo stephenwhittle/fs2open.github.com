@@ -869,7 +869,7 @@ void script_state::ParseChunkSub(script_function& script_func, const char* debug
 
 		if(cfp == NULL)
 		{
-			Warning(LOCATION, "Could not load lua script file '%s'", function_name.c_str());
+			core::Warning(LOCATION, "Could not load lua script file '%s'", function_name.c_str());
 			return;
 		}
 		else
@@ -1090,7 +1090,7 @@ bool script_state::ParseCondition(const char *filename)
 
 		if(!chp->AddCondition(&sct))
 		{
-			Warning(LOCATION, "Could not add condition to conditional hook in file '%s'; you may have more than %d", filename, MAX_HOOK_CONDITIONS);
+			core::Warning(LOCATION, "Could not add condition to conditional hook in file '%s'; you may have more than %d", filename, MAX_HOOK_CONDITIONS);
 		}
 	}
 
@@ -1122,7 +1122,7 @@ bool script_state::ParseCondition(const char *filename)
 
 	if(!actions_added)
 	{
-		Warning(LOCATION, "No actions specified for conditional hook in file '%s'", filename);
+		core::Warning(LOCATION, "No actions specified for conditional hook in file '%s'", filename);
 		ConditionalHooks.pop_back();
 		return false;
 	}

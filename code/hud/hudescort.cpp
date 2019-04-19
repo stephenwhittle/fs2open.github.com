@@ -123,19 +123,19 @@ void HudGaugeEscort::initBitmaps(char *fname_top, char *fname_middle, char *fnam
 {
 	Escort_gauges[0].first_frame = bm_load_animation(fname_top, &Escort_gauges[0].num_frames);
 	if (Escort_gauges[0].first_frame == -1) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_top);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_top);
 		return;
 	}
 
 	Escort_gauges[1].first_frame = bm_load_animation(fname_middle, &Escort_gauges[1].num_frames);
 	if (Escort_gauges[1].first_frame == -1) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_middle);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_middle);
 		return;
 	}
 
 	Escort_gauges[2].first_frame = bm_load_animation(fname_bottom, &Escort_gauges[2].num_frames);
 	if (Escort_gauges[2].first_frame == -1) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_bottom);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_bottom);
 		return;
 	}
 }

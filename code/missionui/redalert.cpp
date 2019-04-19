@@ -562,7 +562,7 @@ void red_alert_bash_weapons(red_alert_ship_status *ras, p_object *pobjp)
 
 	if (sssp == NULL)
 	{
-		Warning(LOCATION, "Parse object data for ship '%s' doesn't contain the 'Pilot' subsystem!", pobjp->name);
+		core::Warning(LOCATION, "Parse object data for ship '%s' doesn't contain the 'Pilot' subsystem!", pobjp->name);
 		return;
 	}
 

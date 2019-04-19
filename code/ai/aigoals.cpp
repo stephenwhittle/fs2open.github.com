@@ -539,7 +539,7 @@ int ai_goal_find_dockpoint(int shipnum, int dock_type)
 
 	// insanity?
 	if (loop_count >= 100)
-		Warning(LOCATION, "Too many iterations while looking for a dockpoint on %s.\n", shipp->ship_name);
+		core::Warning(LOCATION, "Too many iterations while looking for a dockpoint on %s.\n", shipp->ship_name);
 
 	// if we're here, just return the first dockpoint
 	return model_find_dock_index(Ship_info[shipp->ship_info_index].model_num, dock_type);
@@ -1438,7 +1438,7 @@ int ai_mission_goal_achievable( int objnum, ai_goal *aigp )
 			aigp->wp_list = find_matching_waypoint_list(aigp->target_name);
 
 			if ( aigp->wp_list == NULL ) {
-				Warning(LOCATION, "Unknown waypoint list %s - not found in mission file.  Killing ai goal", aigp->target_name );
+				core::Warning(LOCATION, "Unknown waypoint list %s - not found in mission file.  Killing ai goal", aigp->target_name );
 				return AI_GOAL_NOT_ACHIEVABLE;
 			}
 		}
@@ -2392,7 +2392,7 @@ void ai_update_goal_references(ai_goal *goals, int type, const char *old_name, c
 				break;
 
 			default:
-				Warning(LOCATION, "unhandled FRED reference type %d in ai_update_goal_references", type);
+				core::Warning(LOCATION, "unhandled FRED reference type %d in ai_update_goal_references", type);
 				break;
 		}
 

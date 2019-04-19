@@ -2563,17 +2563,17 @@ void HudGaugeSquadMessage::initBitmaps(char *fname_top, char *fname_middle, char
 {
 	Mbox_gauge[0].first_frame = bm_load_animation(fname_top, &Mbox_gauge[0].num_frames);
 	if ( Mbox_gauge[0].first_frame == -1 ) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_top);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_top);
 	}
 	
 	Mbox_gauge[1].first_frame = bm_load_animation(fname_middle, &Mbox_gauge[1].num_frames);
 	if ( Mbox_gauge[1].first_frame == -1 ) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_middle);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_middle);
 	}
 
 	Mbox_gauge[2].first_frame = bm_load_animation(fname_bottom, &Mbox_gauge[2].num_frames);
 	if ( Mbox_gauge[2].first_frame == -1 ) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname_bottom);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname_bottom);
 	}
 }
 

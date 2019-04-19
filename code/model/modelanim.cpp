@@ -47,7 +47,7 @@ int model_anim_match_type(const char* p)
 
 	// Goober5000 - misspelling
 	if ( !strnicmp(p, "inital", 6) || !strnicmp(p, "\"inital\"", 8) ) {
-		Warning(LOCATION, "Spelling error in table file.  Please change \"inital\" to \"initial\".");
+		core::Warning(LOCATION, "Spelling error in table file.  Please change \"inital\" to \"initial\".");
 		return TRIGGER_TYPE_INITIAL;
 	}
 

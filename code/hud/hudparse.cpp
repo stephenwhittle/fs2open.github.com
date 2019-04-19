@@ -217,7 +217,7 @@ void parse_hud_gauges_tbl(const char *filename)
 			stuff_float(&Hud_unit_multiplier);
 
 			if (Hud_unit_multiplier <= 0.0f) {
-				Warning(LOCATION, "\"$Length Unit Multiplier:\" value of \"%f\" is invalid!  Resetting to default.", Hud_unit_multiplier);
+				core::Warning(LOCATION, "\"$Length Unit Multiplier:\" value of \"%f\" is invalid!  Resetting to default.", Hud_unit_multiplier);
 				Hud_unit_multiplier = 1.0f;
 			}
 		}
@@ -226,7 +226,7 @@ void parse_hud_gauges_tbl(const char *filename)
 			stuff_float(&Hud_speed_multiplier);
 
 			if (Hud_speed_multiplier <= 0.0f) {
-				Warning(LOCATION, "\"$Speed Unit Multiplier:\" value of \"%f\" is invalid!  Resetting to default.", Hud_speed_multiplier);
+				core::Warning(LOCATION, "\"$Speed Unit Multiplier:\" value of \"%f\" is invalid!  Resetting to default.", Hud_speed_multiplier);
 				Hud_speed_multiplier = 1.0f;
 			}
 		}
@@ -268,7 +268,7 @@ void parse_hud_gauges_tbl(const char *filename)
 			skip_to_start_of_string("#Gauge Config");
 
 			if (temp < 0)
-				Warning(LOCATION, "Undefined reticle style in hud_gauges.tbl!");
+				core::Warning(LOCATION, "Undefined reticle style in hud_gauges.tbl!");
 			else
 				Hud_reticle_style = temp;
 		}
@@ -2957,7 +2957,7 @@ void load_gauge_radar_dradis(gauge_settings* settings)
 
 		if (loop_snd_volume <= 0.0f)
 		{
-			Warning(LOCATION, "\"Loop Volume:\" value of \"%f\" is invalid! Must be more than zero! Resetting to default.", arrival_beep_delay);
+			core::Warning(LOCATION, "\"Loop Volume:\" value of \"%f\" is invalid! Must be more than zero! Resetting to default.", arrival_beep_delay);
 			loop_snd_volume = 1.0f;
 		}
 	}
@@ -2971,7 +2971,7 @@ void load_gauge_radar_dradis(gauge_settings* settings)
 
 		if (arrival_beep_delay < 0.0f)
 		{
-			Warning(LOCATION, "\"Minimum Beep Delay:\" value of \"%f\" is invalid! Must be more than or equal to zero! Resetting to default.", arrival_beep_delay);
+			core::Warning(LOCATION, "\"Minimum Beep Delay:\" value of \"%f\" is invalid! Must be more than or equal to zero! Resetting to default.", arrival_beep_delay);
 			arrival_beep_delay = 0.0f;
 		}
 	}
@@ -2985,7 +2985,7 @@ void load_gauge_radar_dradis(gauge_settings* settings)
 
 		if (departure_beep_delay < 0.0f)
 		{
-			Warning(LOCATION, "\"Minimum Beep Delay:\" value of \"%f\" is invalid! Must be more than or equal to zero! Resetting to default.", departure_beep_delay);
+			core::Warning(LOCATION, "\"Minimum Beep Delay:\" value of \"%f\" is invalid! Must be more than or equal to zero! Resetting to default.", departure_beep_delay);
 			departure_beep_delay = 0.0f;
 		}
 	}

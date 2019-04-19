@@ -1213,7 +1213,7 @@ void HudGaugeTalkingHead::initBitmaps(const char *fname)
 {
 	Head_frame.first_frame = bm_load_animation(fname, &Head_frame.num_frames);
 	if ( Head_frame.first_frame == -1 ) {
-		Warning(LOCATION, "Could not load in ani: %s\n", fname);
+		core::Warning(LOCATION, "Could not load in ani: %s\n", fname);
 	}
 }
 

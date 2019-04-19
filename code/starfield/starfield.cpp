@@ -434,10 +434,10 @@ void parse_startbl(const char *filename)
 				if ((idx = stars_find_bitmap(sbm.filename)) >= 0) {
 					if (sbm.xparent == Starfield_bitmaps[idx].xparent) {
 						if (!Parsing_modular_table)
-							Warning(LOCATION, "Starfield bitmap '%s' listed more than once!!  Only using the first entry!", sbm.filename);
+							core::Warning(LOCATION, "Starfield bitmap '%s' listed more than once!!  Only using the first entry!", sbm.filename);
 					}
 					else {
-						Warning(LOCATION, "Starfield bitmap '%s' already listed as a %s bitmap!!  Only using the xparent version!",
+						core::Warning(LOCATION, "Starfield bitmap '%s' already listed as a %s bitmap!!  Only using the xparent version!",
 							sbm.filename, (rc) ? "xparent" : "non-xparent");
 					}
 				}
@@ -542,7 +542,7 @@ void parse_startbl(const char *filename)
 					if (Parsing_modular_table)
 						Sun_bitmaps[idx] = sbm;
 					else
-						Warning(LOCATION, "Sun bitmap '%s' listed more than once!!  Only using the first entry!", sbm.filename);
+						core::Warning(LOCATION, "Sun bitmap '%s' listed more than once!!  Only using the first entry!", sbm.filename);
 				}
 				else {
 					Sun_bitmaps.push_back(sbm);
@@ -561,7 +561,7 @@ void parse_startbl(const char *filename)
 					strcpy_s(Debris_vclips_normal[Num_debris_normal++].name, name);
 				}
 				else {
-					Warning(LOCATION, "Could not load normal motion debris '%s'; maximum of %d exceeded.", name, MAX_DEBRIS_VCLIPS);
+					core::Warning(LOCATION, "Could not load normal motion debris '%s'; maximum of %d exceeded.", name, MAX_DEBRIS_VCLIPS);
 				}
 			}
 
@@ -577,7 +577,7 @@ void parse_startbl(const char *filename)
 					strcpy_s(Debris_vclips_nebula[Num_debris_nebula++].name, name);
 				}
 				else {
-					Warning(LOCATION, "Could not load nebula motion debris '%s'; maximum of %d exceeded.", name, MAX_DEBRIS_VCLIPS);
+					core::Warning(LOCATION, "Could not load nebula motion debris '%s'; maximum of %d exceeded.", name, MAX_DEBRIS_VCLIPS);
 				}
 			}
 
@@ -631,7 +631,7 @@ void stars_load_all_bitmaps()
 		}
 	}
 	if (mprintf_count > 0) {
-		Warning(LOCATION, "Unable to load %d starfield bitmap(s)!\n", mprintf_count);
+		core::Warning(LOCATION, "Unable to load %d starfield bitmap(s)!\n", mprintf_count);
 	}
 
 	for (idx = 0; idx < (int)Sun_bitmaps.size(); idx++) {
@@ -646,7 +646,7 @@ void stars_load_all_bitmaps()
 				sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 				if (sb->bitmap_id < 0) {
-					Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
+					core::Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
 				}
 			}
 		}
@@ -660,7 +660,7 @@ void stars_load_all_bitmaps()
 				sb->glow_bitmap = bm_load_animation(sb->glow_filename, &sb->glow_n_frames, &sb->glow_fps, nullptr, nullptr, true);
 
 				if (sb->glow_bitmap < 0) {
-					Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
+					core::Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
 				}
 			}
 		}
@@ -674,7 +674,7 @@ void stars_load_all_bitmaps()
 					sb->flare_bitmaps[i].bitmap_id = bm_load(sb->flare_bitmaps[i].filename);
 
 					if (sb->flare_bitmaps[i].bitmap_id < 0) {
-						Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
+						core::Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
 						continue;
 					}
 				}
@@ -803,7 +803,7 @@ static void environment_map_gen()
 
 	if (gr_screen.envmap_render_target >= 0) {
 		if ( !bm_release(gr_screen.envmap_render_target, 1) ) {
-			Warning(LOCATION, "Unable to release environment map render target.");
+			core::Warning(LOCATION, "Unable to release environment map render target.");
 		}
 
 		gr_screen.envmap_render_target = -1;
@@ -1909,7 +1909,7 @@ void stars_page_in()
 					sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 					if (sb->bitmap_id < 0) {
-						Warning(LOCATION, "Unable to load starfield bitmap: '%s'!\n", sb->filename);
+						core::Warning(LOCATION, "Unable to load starfield bitmap: '%s'!\n", sb->filename);
 					}
 				}
 			}
@@ -1941,7 +1941,7 @@ void stars_page_in()
 					sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 					if (sb->bitmap_id < 0) {
-						Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
+						core::Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
 					}
 				}
 			}
@@ -1955,7 +1955,7 @@ void stars_page_in()
 					sb->glow_bitmap = bm_load_animation(sb->glow_filename, &sb->glow_n_frames, &sb->glow_fps, nullptr, nullptr, true);
 
 					if (sb->glow_bitmap < 0) {
-						Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
+						core::Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
 					}
 				}
 			}
@@ -1969,7 +1969,7 @@ void stars_page_in()
 						sb->flare_bitmaps[i].bitmap_id = bm_load(sb->flare_bitmaps[i].filename);
 
 						if (sb->flare_bitmaps[i].bitmap_id < 0) {
-							Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
+							core::Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
 							continue;
 						}
 					}
@@ -2005,7 +2005,7 @@ void stars_page_in()
 				sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 				if (sb->bitmap_id < 0) {
-					Warning(LOCATION, "Unable to load starfield bitmap: '%s'!\n", sb->filename);
+					core::Warning(LOCATION, "Unable to load starfield bitmap: '%s'!\n", sb->filename);
 				}
 			}
 		}
@@ -2041,7 +2041,7 @@ void stars_page_in()
 				sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 				if (sb->bitmap_id < 0) {
-					Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
+					core::Warning(LOCATION, "Unable to load sun bitmap: '%s'!\n", sb->filename);
 				}
 			}
 		}
@@ -2055,7 +2055,7 @@ void stars_page_in()
 				sb->glow_bitmap = bm_load_animation(sb->glow_filename, &sb->glow_n_frames, &sb->glow_fps, nullptr, nullptr, true);
 
 				if (sb->glow_bitmap < 0) {
-					Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
+					core::Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", sb->glow_filename);
 				}
 			}
 		}
@@ -2069,7 +2069,7 @@ void stars_page_in()
 					sb->flare_bitmaps[i].bitmap_id = bm_load(sb->flare_bitmaps[i].filename);
 
 					if (sb->flare_bitmaps[i].bitmap_id < 0) {
-						Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
+						core::Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", sb->flare_bitmaps[i].filename);
 						continue;
 					}
 				}
@@ -2222,7 +2222,7 @@ int stars_add_sun_entry(starfield_list_entry *sun_ptr)
 	idx = stars_find_sun(sun_ptr->filename);
 
 	if (idx == -1) {
-		Warning(LOCATION, "Trying to add a sun '%s' that does not exist in stars.tbl!", sun_ptr->filename);
+		core::Warning(LOCATION, "Trying to add a sun '%s' that does not exist in stars.tbl!", sun_ptr->filename);
 		return -1;
 	}
 
@@ -2252,7 +2252,7 @@ int stars_add_sun_entry(starfield_list_entry *sun_ptr)
 				Sun_bitmaps[idx].glow_bitmap = bm_load_animation(Sun_bitmaps[idx].glow_filename, &Sun_bitmaps[idx].glow_n_frames, &Sun_bitmaps[idx].glow_fps, nullptr, nullptr, true);
 
 				if (Sun_bitmaps[idx].glow_bitmap < 0) {
-					Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", Sun_bitmaps[idx].glow_filename);
+					core::Warning(LOCATION, "Unable to load sun glow bitmap: '%s'!\n", Sun_bitmaps[idx].glow_filename);
 				}
 			}
 		}
@@ -2267,7 +2267,7 @@ int stars_add_sun_entry(starfield_list_entry *sun_ptr)
 					fbp->bitmap_id = bm_load(fbp->filename);
 
 					if (fbp->bitmap_id < 0) {
-						Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", Sun_bitmaps[idx].flare_bitmaps[i].filename);
+						core::Warning(LOCATION, "Unable to load sun flare bitmap: '%s'!\n", Sun_bitmaps[idx].flare_bitmaps[i].filename);
 						continue;
 					}
 				}
@@ -2316,7 +2316,7 @@ int stars_add_bitmap_entry(starfield_list_entry *sle)
 	idx = stars_find_bitmap(sle->filename);
 
 	if (idx == -1) {
-		Warning(LOCATION, "Trying to add a bitmap '%s' that does not exist in stars.tbl!", sle->filename);
+		core::Warning(LOCATION, "Trying to add a bitmap '%s' that does not exist in stars.tbl!", sle->filename);
 		return -1;
 	}
 
@@ -2656,7 +2656,7 @@ void stars_load_background(int background_idx)
 			}
 		}
 		if (failed_suns > 0)
-			Warning(LOCATION, "Failed to add %d sun bitmaps to the mission!", failed_suns);
+			core::Warning(LOCATION, "Failed to add %d sun bitmaps to the mission!", failed_suns);
 
 		int failed_stars = 0;
 		for (j = 0; j < background->bitmaps.size(); j++)
@@ -2668,7 +2668,7 @@ void stars_load_background(int background_idx)
 			}
 		}
 		if (failed_stars > 0)
-			Warning(LOCATION, "Failed to add %d starfield bitmaps to the mission!", failed_stars);
+			core::Warning(LOCATION, "Failed to add %d starfield bitmaps to the mission!", failed_stars);
 	}
 }
 

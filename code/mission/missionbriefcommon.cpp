@@ -291,7 +291,7 @@ void brief_parse_icon_tbl()
 		while (required_string_either("#End", "$Name:"))
 		{
 			if (Briefing_icon_info.size() >= max_icons) {
-				Warning(LOCATION, "Too many icons in icons.tbl; only the first " SIZE_T_ARG " will be used", max_icons);
+				core::Warning(LOCATION, "Too many icons in icons.tbl; only the first " SIZE_T_ARG " will be used", max_icons);
 				skip_to_start_of_string("#End");
 				break;
 			}
@@ -609,7 +609,7 @@ void brief_preload_icon_anim(brief_icon *bi)
 	if ( ga->first_frame == -1 ) {
 		ga->first_frame = bm_load_animation(ga->filename, &ga->num_frames);
 		if ( ga->first_frame < 0 )
-			Warning(LOCATION, "Failed to load icon %s!", ga->filename);
+			core::Warning(LOCATION, "Failed to load icon %s!", ga->filename);
 	}
 }
 
@@ -795,7 +795,7 @@ void brief_render_icon_line(int stage_num, int line_num)
 
 	if(bl->start_icon < 0 || bl->start_icon >= bs->num_icons)
 	{
-		Warning(LOCATION, "Start icon (%d/%d) missing for line %d in briefing stage %d", bl->start_icon, bs->num_icons, line_num, stage_num);
+		core::Warning(LOCATION, "Start icon (%d/%d) missing for line %d in briefing stage %d", bl->start_icon, bs->num_icons, line_num, stage_num);
 		//Remove line
 		bs->num_lines--;
 		for(i = line_num; i < bs->num_lines; i++)
@@ -804,7 +804,7 @@ void brief_render_icon_line(int stage_num, int line_num)
 	}
 	if(bl->end_icon < 0 || bl->end_icon >= Briefing->stages[stage_num].num_icons)
 	{
-		Warning(LOCATION, "End icon (%d/%d) missing for line %d in briefing stage %d", bl->end_icon, bs->num_icons, line_num, stage_num);
+		core::Warning(LOCATION, "End icon (%d/%d) missing for line %d in briefing stage %d", bl->end_icon, bs->num_icons, line_num, stage_num);
 		//Remove line
 		bs->num_lines--;
 		for(i = line_num; i < bs->num_lines; i++)
@@ -1430,13 +1430,13 @@ bool brief_verify_color_tag(unicode::codepoint_t color_tag)
 		std::string tag_str;
 		unicode::encode(color_tag, std::back_inserter(tag_str));
 
-		Warning(LOCATION, "Invalid text color tag '$%s' used in mission: '%s'.\n", tag_str.c_str(), Mission_filename);
+		core::Warning(LOCATION, "Invalid text color tag '$%s' used in mission: '%s'.\n", tag_str.c_str(), Mission_filename);
 		return false;
 	}
 	char char_tag = (char)color_tag;
 
 	if ( Tagged_Colors.find(char_tag) == Tagged_Colors.end() ) {
-		Warning(LOCATION, "Invalid text color tag '$%c' used in mission: '%s'.\n", char_tag, Mission_filename);
+		core::Warning(LOCATION, "Invalid text color tag '$%c' used in mission: '%s'.\n", char_tag, Mission_filename);
 		return false;
 	}
 	return true;
@@ -1670,7 +1670,7 @@ int brief_set_move_list(int new_stage, int current_stage, float time)
 
 					k = brief_get_free_move_icon();				
 					if ( k == -1 ) {
-						Warning(LOCATION, "Too many briefing icons are moving simultaneously!");
+						core::Warning(LOCATION, "Too many briefing icons are moving simultaneously!");
 						return 0;
 					}
 					imi = &Icon_movers[k];
