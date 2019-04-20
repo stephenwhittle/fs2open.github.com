@@ -19,6 +19,9 @@ TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${FREESPACE_HEADERS})
 TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${GENERATED_SOURCE_DIR})
 TARGET_INCLUDE_DIRECTORIES(code PUBLIC ${GENERATED_SOURCE_DIR}/code)
 
+
+
+
 target_link_libraries(code PUBLIC OpenGL)
 
 TARGET_LINK_LIBRARIES(code PUBLIC openal)
@@ -41,8 +44,11 @@ target_link_libraries(code PUBLIC discord-rpc)
 
 target_link_libraries(code PUBLIC libRocket)
 target_link_libraries(code PUBLIC hidapi)
-target_link_libraries(code PUBLIC simplesignal)
-target_link_libraries(code PUBLIC dbgtools)
+
+add_subdirectory(core)
+
+target_link_libraries(code PUBLIC core)
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)

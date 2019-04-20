@@ -37,13 +37,6 @@
 
 #define LOCAL static			// make module local varilable static.
 
-#ifdef _WIN32
-#define DIR_SEPARATOR_CHAR '\\'
-#define DIR_SEPARATOR_STR  "\\"
-#else
-#define DIR_SEPARATOR_CHAR '/'
-#define DIR_SEPARATOR_STR  "/"
-#endif
 
 typedef std::int32_t _fs_time_t;  // time_t here is 64-bit and we need 32-bit
 typedef std::int32_t fix;

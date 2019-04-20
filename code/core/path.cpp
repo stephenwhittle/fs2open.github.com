@@ -1,7 +1,7 @@
 
 #include "path.h"
-#include <globalincs/pstypes.h>
-
+#include "platform.h"
+#include <string>
 namespace core
 {
     namespace path
