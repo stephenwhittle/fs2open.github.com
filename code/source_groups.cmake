@@ -749,16 +749,6 @@ add_file_folder("Nebula"
 )
 
 
-add_file_folder("core"
-	core/core.h
-	core/core.cpp
-        core/format.h
-	core/format.cpp
-	core/error.h
-	core/error.cpp
-	core/path.h
-	core/path.cpp	
-)
 
 # Network files
 add_file_folder("Network"
