@@ -1,6 +1,6 @@
 #include "format.h"
 #include <cstdarg>
-
+#include <regex>
 namespace core
 {
 	void vsprintf(std::string& dest, const char* format, va_list ap)
@@ -33,6 +33,14 @@ namespace core
 	    va_start(args, format);
 	    vsprintf(dest, format, args);
 	    va_end(args);
+    }
+    std::vector<std::string> SplitStrings(const std::string& s, const std::string& delim)
+    {
+	    std::vector<std::string> Tokens;
+	    std::regex Delimiter(delim);
+	    std::copy(std::sregex_token_iterator(s.begin(), s.end(), Delimiter, -1), std::sregex_token_iterator(),
+	              std::back_inserter(Tokens));
+	    return Tokens;
     }
 
 }

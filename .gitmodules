@@ -13,3 +13,6 @@
 [submodule "lib/dbgtools"]
 	path = lib/dbgtools
 	url = https://github.com/wc-duck/dbgtools.git
+[submodule "lib/filesystem"]
+	path = lib/filesystem
+	url = https://github.com/gulrak/filesystem.git
