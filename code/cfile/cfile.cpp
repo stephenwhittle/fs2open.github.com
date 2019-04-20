@@ -28,6 +28,7 @@
 #include <sys/mman.h>
 #endif
 
+#include <core/path.h>
 #include "core/error.h"
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
@@ -54,44 +55,44 @@ cf_pathtype Pathtypes[CF_MAX_PATH_TYPES]  = {
 	{ CF_TYPE_INVALID,				NULL,																		NULL,								CF_TYPE_INVALID },
 	// Root must be index 1!!
 	{ CF_TYPE_ROOT,					"",																			".mve .ogg",						CF_TYPE_ROOT	},
-	{ CF_TYPE_DATA,					"data",																		".cfg .txt",						CF_TYPE_ROOT	},
-	{ CF_TYPE_MAPS,					"data" DIR_SEPARATOR_STR "maps",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_TEXT,					"data" DIR_SEPARATOR_STR "text",											".txt .net",						CF_TYPE_DATA	},
-	{ CF_TYPE_MODELS,				"data" DIR_SEPARATOR_STR "models",											".pof",								CF_TYPE_DATA	},
-	{ CF_TYPE_TABLES,				"data" DIR_SEPARATOR_STR "tables",											".tbl .tbm",						CF_TYPE_DATA	},
-	{ CF_TYPE_SOUNDS,				"data" DIR_SEPARATOR_STR "sounds",											".wav .ogg",						CF_TYPE_DATA	},
-	{ CF_TYPE_SOUNDS_8B22K,			"data" DIR_SEPARATOR_STR "sounds" DIR_SEPARATOR_STR "8b22k",				".wav .ogg",						CF_TYPE_SOUNDS	},
-	{ CF_TYPE_SOUNDS_16B11K,		"data" DIR_SEPARATOR_STR "sounds" DIR_SEPARATOR_STR "16b11k",				".wav .ogg",						CF_TYPE_SOUNDS	},
-	{ CF_TYPE_VOICE,				"data" DIR_SEPARATOR_STR "voice",											"",									CF_TYPE_DATA	},
-	{ CF_TYPE_VOICE_BRIEFINGS,		"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "briefing",				".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_CMD_BRIEF,		"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "command_briefings",		".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_DEBRIEFINGS,	"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "debriefing",			".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_PERSONAS,		"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "personas",				".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_SPECIAL,		"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "special",				".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_TRAINING,		"data" DIR_SEPARATOR_STR "voice" DIR_SEPARATOR_STR "training",				".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_MUSIC,				"data" DIR_SEPARATOR_STR "music",											".wav .ogg",						CF_TYPE_DATA	},
-	{ CF_TYPE_MOVIES,				"data" DIR_SEPARATOR_STR "movies",											".mve .msb .ogg .mp4 .srt .webm .png",CF_TYPE_DATA	},
-	{ CF_TYPE_INTERFACE,			"data" DIR_SEPARATOR_STR "interface",										".pcx .ani .dds .tga .eff .png .jpg",	CF_TYPE_DATA	},
-	{ CF_TYPE_FONT,					"data" DIR_SEPARATOR_STR "fonts",											".vf .ttf",							CF_TYPE_DATA	},
-	{ CF_TYPE_EFFECTS,				"data" DIR_SEPARATOR_STR "effects",											".ani .eff .pcx .neb .tga .jpg .png .dds .sdr",	CF_TYPE_DATA	},
-	{ CF_TYPE_HUD,					"data" DIR_SEPARATOR_STR "hud",												".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_PLAYERS,				"data" DIR_SEPARATOR_STR "players",											".hcf",								CF_TYPE_DATA	},
-	{ CF_TYPE_PLAYER_IMAGES,		"data" DIR_SEPARATOR_STR "players" DIR_SEPARATOR_STR "images",				".pcx .png .dds",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_SQUAD_IMAGES,			"data" DIR_SEPARATOR_STR "players" DIR_SEPARATOR_STR "squads",				".pcx .png .dds",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_SINGLE_PLAYERS,		"data" DIR_SEPARATOR_STR "players" DIR_SEPARATOR_STR "single",				".pl2 .cs2 .plr .csg .css .json",	CF_TYPE_PLAYERS	},
-	{ CF_TYPE_MULTI_PLAYERS,		"data" DIR_SEPARATOR_STR "players" DIR_SEPARATOR_STR "multi",				".plr .json",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_CACHE,				"data" DIR_SEPARATOR_STR "cache",											".clr .tmp .bx",					CF_TYPE_DATA	}, 	//clr=cached color
-	{ CF_TYPE_MULTI_CACHE,			"data" DIR_SEPARATOR_STR "multidata",										".pcx .png .dds .fs2 .txt",				CF_TYPE_DATA	},
-	{ CF_TYPE_MISSIONS,				"data" DIR_SEPARATOR_STR "missions",										".fs2 .fc2 .ntl .ssv",				CF_TYPE_DATA	},
-	{ CF_TYPE_CONFIG,				"data" DIR_SEPARATOR_STR "config",											".cfg .tbl .tbm .xml .csv",			CF_TYPE_DATA	},
-	{ CF_TYPE_DEMOS,				"data" DIR_SEPARATOR_STR "demos",											".fsd",								CF_TYPE_DATA	},
-	{ CF_TYPE_CBANIMS,				"data" DIR_SEPARATOR_STR "cbanims",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_INTEL_ANIMS,			"data" DIR_SEPARATOR_STR "intelanims",										".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_SCRIPTS,				"data" DIR_SEPARATOR_STR "scripts",											".lua .lc",							CF_TYPE_DATA	},
-	{ CF_TYPE_FICTION,				"data" DIR_SEPARATOR_STR "fiction",											".txt",								CF_TYPE_DATA	}, 
-	{ CF_TYPE_FREDDOCS,				"data" DIR_SEPARATOR_STR "freddocs",										".html",							CF_TYPE_DATA	},
-	{ CF_TYPE_INTERFACE_MARKUP,		"data" DIR_SEPARATOR_STR "interface" DIR_SEPARATOR_STR "markup",			".rml",								CF_TYPE_INTERFACE	},
-	{ CF_TYPE_INTERFACE_CSS,		"data" DIR_SEPARATOR_STR "interface" DIR_SEPARATOR_STR "css",				".rcss",							CF_TYPE_INTERFACE	},
+	{ CF_TYPE_DATA,					core::fs::path("data"),														".cfg .txt",						CF_TYPE_ROOT	},
+	{ CF_TYPE_MAPS,					core::fs::path("data") / "maps",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_TEXT,					core::fs::path("data") / "text",											".txt .net",						CF_TYPE_DATA	},
+	{ CF_TYPE_MODELS,				core::fs::path("data") / "models",											".pof",								CF_TYPE_DATA	},
+	{ CF_TYPE_TABLES,				core::fs::path("data") / "tables",											".tbl .tbm",						CF_TYPE_DATA	},
+	{ CF_TYPE_SOUNDS,				core::fs::path("data") / "sounds",											".wav .ogg",						CF_TYPE_DATA	},
+	{ CF_TYPE_SOUNDS_8B22K,			core::fs::path("data") / "sounds" / "8b22k",								".wav .ogg",						CF_TYPE_SOUNDS	},
+	{ CF_TYPE_SOUNDS_16B11K,		core::fs::path("data") / "sounds" / "16b11k",								".wav .ogg",						CF_TYPE_SOUNDS	},
+	{ CF_TYPE_VOICE,				core::fs::path("data") / "voice",											"",									CF_TYPE_DATA	},
+	{ CF_TYPE_VOICE_BRIEFINGS,		core::fs::path("data") / "voice" / "briefing",								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_CMD_BRIEF,		core::fs::path("data") / "voice" / "command_briefings",						".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_DEBRIEFINGS,	core::fs::path("data") / "voice" / "debriefing",							".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_PERSONAS,		core::fs::path("data") / "voice" / "personas",								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_SPECIAL,		core::fs::path("data") / "voice" / "special",								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_TRAINING,		core::fs::path("data") / "voice" / "training",								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_MUSIC,				core::fs::path("data") / "music",											".wav .ogg",						CF_TYPE_DATA	},
+	{ CF_TYPE_MOVIES,				core::fs::path("data") / "movies",											".mve .msb .ogg .mp4 .srt .webm .png",CF_TYPE_DATA	},
+	{ CF_TYPE_INTERFACE,			core::fs::path("data") / "interface",										".pcx .ani .dds .tga .eff .png .jpg",	CF_TYPE_DATA	},
+	{ CF_TYPE_FONT,					core::fs::path("data") / "fonts",											".vf .ttf",							CF_TYPE_DATA	},
+	{ CF_TYPE_EFFECTS,				core::fs::path("data") / "effects",											".ani .eff .pcx .neb .tga .jpg .png .dds .sdr",	CF_TYPE_DATA	},
+	{ CF_TYPE_HUD,					core::fs::path("data") / "hud",												".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_PLAYERS,				core::fs::path("data") / "players",											".hcf",								CF_TYPE_DATA	},
+	{ CF_TYPE_PLAYER_IMAGES,		core::fs::path("data") / "players" / "images",								".pcx .png .dds",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_SQUAD_IMAGES,			core::fs::path("data") / "players" / "squads",								".pcx .png .dds",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_SINGLE_PLAYERS,		core::fs::path("data") / "players" / "single",								".pl2 .cs2 .plr .csg .css .json",	CF_TYPE_PLAYERS	},
+	{ CF_TYPE_MULTI_PLAYERS,		core::fs::path("data") / "players" / "multi",								".plr .json",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_CACHE,				core::fs::path("data") / "cache",											".clr .tmp .bx",					CF_TYPE_DATA	}, 	//clr=cached color
+	{ CF_TYPE_MULTI_CACHE,			core::fs::path("data") / "multidata",										".pcx .png .dds .fs2 .txt",				CF_TYPE_DATA	},
+	{ CF_TYPE_MISSIONS,				core::fs::path("data") / "missions",										".fs2 .fc2 .ntl .ssv",				CF_TYPE_DATA	},
+	{ CF_TYPE_CONFIG,				core::fs::path("data") / "config",											".cfg .tbl .tbm .xml .csv",			CF_TYPE_DATA	},
+	{ CF_TYPE_DEMOS,				core::fs::path("data") / "demos",											".fsd",								CF_TYPE_DATA	},
+	{ CF_TYPE_CBANIMS,				core::fs::path("data") / "cbanims",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_INTEL_ANIMS,			core::fs::path("data") / "intelanims",										".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_SCRIPTS,				core::fs::path("data") / "scripts",											".lua .lc",							CF_TYPE_DATA	},
+	{ CF_TYPE_FICTION,				core::fs::path("data") / "fiction",											".txt",								CF_TYPE_DATA	}, 
+	{ CF_TYPE_FREDDOCS,				core::fs::path("data") / "freddocs",										".html",							CF_TYPE_DATA	},
+	{ CF_TYPE_INTERFACE_MARKUP,		core::fs::path("data") / "interface" / "markup",							".rml",								CF_TYPE_INTERFACE	},
+	{ CF_TYPE_INTERFACE_CSS,		core::fs::path("data") / "interface" / "css",								".rcss",							CF_TYPE_INTERFACE	},
 };
 // clang-format on
 
@@ -204,7 +205,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 
 	// are we in a root directory?		
 	if(cfile_in_root_dir(buf)){
-		os::dialogs::Message(os::dialogs::MESSAGEBOX_ERROR, "FreeSpace2/Fred2 cannot be run from a drive root directory!");
+		core::Error("FreeSpace2/Fred2 cannot be run from a drive root directory!");
 		return 1;
 	}		
 

@@ -12,6 +12,7 @@
 #ifndef _CFILESYSTEM_H
 #define _CFILESYSTEM_H
 
+#include <core/path.h>
 #include "cfile/cfile.h"
 
 // Builds a list of all the files
@@ -21,7 +22,7 @@ void cf_free_secondary_filelist();
 // Internal stuff
 typedef struct cf_pathtype {
 	int			index;					// To verify that the CF_TYPE define is correctly indexed into this array
-	const char*	path;					// Path relative to FreeSpace root, has ending backslash.
+	core::fs::path	path;					// Path relative to FreeSpace root, has ending backslash.
 	const char*	extensions;				// Extensions used in this pathtype, separated by spaces
 	int			parent_index;			// Index of this directory's parent.  Used for creating directories when writing.
 } cf_pathtype;
