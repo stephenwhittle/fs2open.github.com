@@ -3,6 +3,7 @@
 #include <dbgtools/callstack.h>
 #include "format.h"
 #include "path.h"
+#include <sstream>
 
 
 

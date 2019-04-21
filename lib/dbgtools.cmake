@@ -7,7 +7,7 @@ target_sources(dbgtools PRIVATE
 	${CMAKE_CURRENT_LIST_DIR}/dbgtools/src/fpe_ctrl.cpp
 	${CMAKE_CURRENT_LIST_DIR}/dbgtools/src/hw_breakpoint.cpp)
 if (WIN32 AND (NOT MINGW AND( NOT CYGWIN)))
-	target_link_libraries(dbgtools dbghelp)
+	target_link_libraries(dbgtools PUBLIC dbghelp)
 else()
-	target_compile_options(dbgtools -rdynamic)
+	target_compile_options(dbgtools PUBLIC -rdynamic)
 endif ()

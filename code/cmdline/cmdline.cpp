@@ -973,7 +973,8 @@ void os_init_cmdline(int argc, char *argv[])
 
 			fp = fopen(resolved_path, "rt");
 #else
-			fp = fopen("data" DIR_SEPARATOR_STR "cmdline_fso.cfg", "rt");
+			core::fs::path DataPath = core::fs::path("data") / "cmdline_fso.cfg";
+			fp = fopen(DataPath.c_str(), "rt");
 #endif
 			// if the file exists, get a single line, and deal with it
 			if (fp) {

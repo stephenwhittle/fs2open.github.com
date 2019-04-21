@@ -9,19 +9,22 @@
 
 #include <algorithm>
 #include <cerrno>
+#include <chrono>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <regex>
 #include <sstream>
-#include <chrono>
 
 #ifdef _WIN32
+#include <direct.h>
+#include <io.h>
+#include <windows.h>
 #endif
 
 #ifdef SCP_UNIX
 #include <dirent.h>
-#include <fnmatch.h> 
+#include <fnmatch.h>
 #include <glob.h>
 #include <libgen.h>
 #include <sys/stat.h>
@@ -81,7 +84,7 @@ typedef struct cf_file {
 	char name_ext[CF_MAX_FILENAME_LENGTH]; // Filename and extension
 	int root_index;                        // Where in Roots this is located
 	int pathtype_index;                    // Where in Paths this is located
-	core::fs::file_time_type write_time;                     // When it was last written
+	core::fs::file_time_type write_time;   // When it was last written
 	int size;                              // How big it is in bytes
 	int pack_offset; // For pack files, where it is at.   0 if not in a pack file.  This can be used to tell if in a
 	                 // pack file.
@@ -447,16 +450,16 @@ void cf_search_root_path(int root_index)
 		for (auto Extension : ExtensionsForPathType) {
 			std::string ExtensionPattern;
 			core::sprintf(ExtensionPattern, "\\.%s", Extension);
-			std::vector<core::fs::path> MatchingPaths = 
-				core::fs::FindFilesInDirectory(search_path,ExtensionPattern.c_str() , false);
+			std::vector<core::fs::path> MatchingPaths =
+			    core::fs::FindFilesInDirectory(search_path, ExtensionPattern.c_str(), false);
 			for (auto Path : MatchingPaths) {
-				cf_file* file = cf_create_file();
+				cf_file* file        = cf_create_file();
 				file->root_index     = root_index;
 				file->pathtype_index = i;
 				file->write_time     = core::fs::last_write_time(Path);
 				file->size           = core::fs::file_size(Path);
 				file->pack_offset    = 0; // Mark as a non-packed file
-				file->real_name = Path;
+				file->real_name      = Path;
 				num_files++;
 			}
 		}
@@ -487,13 +490,13 @@ void cf_search_root_pack(int root_index)
 	Assert(root != NULL);
 
 	// Open data
-	FILE* fp = fopen(root->path, "rb");
+	FILE* fp = std::fopen(root->path.c_str(), "rb");
 	// Read the file header
 	if (!fp) {
 		return;
 	}
 
-	if (filelength(fileno(fp)) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3))) {
+	if (core::fs::file_size(root->path) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3))) {
 		mprintf(("Skipping VP file ('%s') of invalid size...\n", root->path));
 		fclose(fp);
 		return;
@@ -517,9 +520,7 @@ void cf_search_root_pack(int root_index)
 	// Read index info
 	fseek(fp, VP_header.index_offset, SEEK_SET);
 
-	char search_path[CF_MAX_PATHNAME_LENGTH];
-
-	strcpy_s(search_path, "");
+	core::fs::path search_path;
 
 	// Go through all the files
 	int i;
@@ -527,7 +528,7 @@ void cf_search_root_pack(int root_index)
 		VP_FILE find;
 
 		if (fread(&find, sizeof(VP_FILE), 1, fp) != 1) {
-			mprintf(("Failed to read file entry (currently in directory %s)!\n", search_path));
+			mprintf(("Failed to read file entry (currently in directory %s)!\n", search_path.c_str()));
 			break;
 		}
 
@@ -537,18 +538,11 @@ void cf_search_root_pack(int root_index)
 		find.filename[sizeof(find.filename) - 1] = '\0';
 
 		if (find.size == 0) {
-			size_t search_path_len = strlen(search_path);
+			size_t search_path_len = search_path.string().length();
 			if (!stricmp(find.filename, "..")) {
-				char* p = &search_path[search_path_len - 1];
-				while ((p > search_path) && (*p != DIR_SEPARATOR_CHAR)) {
-					p--;
-				}
-				*p = 0;
+				search_path.remove_filename();
 			} else {
-				if (search_path_len && (search_path[search_path_len - 1] != DIR_SEPARATOR_CHAR)) {
-					strcat_s(search_path, DIR_SEPARATOR_STR);
-				}
-				strcat_s(search_path, find.filename);
+				search_path /= find.filename;
 			}
 
 			// mprintf(( "Current dir = '%s'\n", search_path ));
@@ -558,21 +552,23 @@ void cf_search_root_pack(int root_index)
 
 			for (j = CF_TYPE_ROOT; j < CF_MAX_PATH_TYPES; j++) {
 
-				if (!stricmp(search_path, Pathtypes[j].path.c_str())) {
-					char* ext = strrchr(find.filename, '.');
-					if (ext) {
-						if (is_ext_in_list(Pathtypes[j].extensions, ext)) {
-							// Found a file!!!!
-							cf_file* file = cf_create_file();
-							strcpy_s(file->name_ext, find.filename);
+				if (!stricmp(search_path.c_str(), Pathtypes[j].path.c_str())) {
+					std::vector<std::string> ExtensionsForPathType =
+					    core::SplitStrings(Pathtypes[i].extensions, "\\s+");
+					for (auto Extension : ExtensionsForPathType) {
+						std::string ExtensionPattern;
+						core::sprintf(ExtensionPattern, "\\.%s", Extension);
+						std::vector<core::fs::path> MatchingPaths =
+						    core::fs::FindFilesInDirectory(search_path, ExtensionPattern.c_str(), false);
+						for (auto Path : MatchingPaths) {
+							cf_file* file        = cf_create_file();
 							file->root_index     = root_index;
-							file->pathtype_index = j;
-							file->write_time     = (time_t)find.write_time;
-							file->size           = find.size;
-							file->pack_offset    = find.offset; // Mark as a packed file
-
+							file->pathtype_index = i;
+							file->write_time     = core::fs::last_write_time(Path);
+							file->size           = core::fs::file_size(Path);
+							file->pack_offset    = 0; // Mark as a non-packed file
+							file->real_name      = Path;
 							num_files++;
-							// mprintf(( "Found pack file '%s'\n", file->name_ext ));
 						}
 					}
 				}
@@ -580,7 +576,7 @@ void cf_search_root_pack(int root_index)
 		}
 	}
 
-	fclose(fp);
+	std::fclose(fp);
 
 	mprintf(("%i files\n", num_files));
 }
@@ -600,26 +596,28 @@ void cf_search_memory_root(int root_index)
 
 		int pathtype = -1;
 		for (int i = 0; i < CF_MAX_PATH_TYPES; ++i) {
-			if (Pathtypes[i].path == nullptr) {
+			if (Pathtypes[i].path.empty()) {
 				continue;
 			}
 
-			if (!strcmp(Pathtypes[i].path, default_file.path_type)) {
+			if (!strcmp(Pathtypes[i].path.c_str(), default_file.path_type)) {
 				pathtype = i;
 				break;
 			}
 		}
-		Assertion(pathtype != -1, "Default file '%s%s%s' does not use a valid path type!", default_file.path_type,
-		          DIR_SEPARATOR_STR, default_file.filename);
+
+		Assertion(pathtype != -1, "Default file '%s' does not use a valid path type!",
+		          (core::fs::path(default_file.path_type) / default_file.filename).c_str());
 
 		cf_file* file = cf_create_file();
 
 		strcpy_s(file->name_ext, default_file.filename);
 		file->root_index     = root_index;
 		file->pathtype_index = pathtype;
-		file->write_time     = time(nullptr); // Just assume that memory files were last written to just now
-		file->size           = (int)default_file.size;
-		file->data           = default_file.data;
+		file->write_time =
+		    std::chrono::system_clock::now(); // Just assume that memory files were last written to just now
+		file->size = (int)default_file.size;
+		file->data = default_file.data;
 
 		num_files++;
 	}
@@ -693,10 +691,7 @@ void cf_free_secondary_filelist()
 		if (File_blocks[i]) {
 			// Free file paths
 			for (auto& f : File_blocks[i]->files) {
-				if (f.real_name) {
-					vm_free(f.real_name);
-					f.real_name = nullptr;
-				}
+				f.real_name.clear();
 			}
 
 			vm_free(File_blocks[i]);
@@ -739,13 +734,12 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 #else
 	if (strpbrk(filespec, "/\\:")) { // do we have a full path already?
 #endif
-		FILE* fp = fopen(filespec, "rb");
-		if (fp) {
+		core::fs::path filepath(filespec);
+		if (core::fs::exists(filepath)) {
 			CFileLocation res(true);
-			res.size      = static_cast<size_t>(filelength(fileno(fp)));
+			res.size      = core::fs::file_size(filepath);
 			res.offset    = 0;
 			res.full_name = filespec;
-			fclose(fp);
 			return res;
 		}
 
@@ -788,38 +782,14 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 		if (cfs_slow_search) {
 			cf_create_default_path_string(longname, sizeof(longname) - 1, search_order[ui], filespec, localize,
 			                              location_flags);
-
-#if defined _WIN32
-			_finddata_t findstruct;
-
-			intptr_t findhandle = _findfirst(longname, &findstruct);
-			if (findhandle != -1) {
+			if (core::fs::exists(core::fs::path(longname))) {
 				CFileLocation res;
-				res.found = true;
-				res.size  = static_cast<size_t>(findstruct.size);
-
-				_findclose(findhandle);
-
+				res.found     = true;
+				res.size      = core::fs::file_size(core::fs::path(longname));
 				res.offset    = 0;
 				res.full_name = longname;
 
 				return res;
-			}
-#endif
-			{
-				FILE* fp = fopen(longname, "rb");
-
-				if (fp) {
-					CFileLocation res(true);
-					res.size = static_cast<size_t>(filelength(fileno(fp)));
-
-					fclose(fp);
-
-					res.offset    = 0;
-					res.full_name = longname;
-
-					return res;
-				}
 			}
 		}
 	}
@@ -855,9 +825,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 
 					if (f->data != nullptr) {
 						// This is an in-memory file so we just copy the pathtype name + file name
-						res.full_name = Pathtypes[f->pathtype_index].path;
-						res.full_name += DIR_SEPARATOR_STR;
-						res.full_name += f->name_ext;
+						res.full_name = Pathtypes[f->pathtype_index].path /= f->name_ext;
 					} else if (f->pack_offset < 1) {
 						// This is a real file, return the actual file path
 						res.full_name = f->real_name;
@@ -882,9 +850,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 
 			if (f->data != nullptr) {
 				// This is an in-memory file so we just copy the pathtype name + file name
-				res.full_name = Pathtypes[f->pathtype_index].path;
-				res.full_name += DIR_SEPARATOR_STR;
-				res.full_name += f->name_ext;
+				res.full_name = Pathtypes[f->pathtype_index].path /= f->name_ext;
 			} else if (f->pack_offset < 1) {
 				// This is a real file, return the actual file path
 				res.full_name = f->real_name;
@@ -997,39 +963,14 @@ CFileLocationExt cf_find_file_location_ext(const char* filename, const int ext_n
 			strcat_s(filespec, ext_list[cur_ext]);
 
 			cf_create_default_path_string(longname, sizeof(longname) - 1, search_order[ui], filespec, localize);
-
-#if defined _WIN32
-			_finddata_t findstruct;
-
-			intptr_t findhandle = _findfirst(longname, &findstruct);
-			if (findhandle != -1) {
+			core::fs::path filepath(longname);
+			if (core::fs::exists(filepath)) {
 				CFileLocationExt res(cur_ext);
-				res.found = true;
-				res.size  = static_cast<size_t>(findstruct.size);
-
-				_findclose(findhandle);
-
+				res.found     = true;
+				res.size      = core::fs::file_size(filepath);
 				res.offset    = 0;
 				res.full_name = longname;
-
 				return res;
-			}
-#endif
-			{
-				FILE* fp = fopen(longname, "rb");
-
-				if (fp) {
-					CFileLocationExt res(cur_ext);
-					res.found = true;
-					res.size  = static_cast<size_t>(filelength(fileno(fp)));
-
-					fclose(fp);
-
-					res.offset    = 0;
-					res.full_name = longname;
-
-					return res;
-				}
 			}
 		}
 	}
@@ -1121,9 +1062,7 @@ CFileLocationExt cf_find_file_location_ext(const char* filename, const int ext_n
 
 						if (f->data != nullptr) {
 							// This is an in-memory file so we just copy the pathtype name + file name
-							res.full_name = Pathtypes[f->pathtype_index].path;
-							res.full_name += DIR_SEPARATOR_STR;
-							res.full_name += f->name_ext;
+							res.full_name = Pathtypes[f->pathtype_index].path /= f->name_ext;
 						} else if (f->pack_offset < 1) {
 							// This is a real file, return the actual file path
 							res.full_name = f->real_name;
@@ -1152,9 +1091,7 @@ CFileLocationExt cf_find_file_location_ext(const char* filename, const int ext_n
 
 				if (f->data != nullptr) {
 					// This is an in-memory file so we just copy the pathtype name + file name
-					res.full_name = Pathtypes[f->pathtype_index].path;
-					res.full_name += DIR_SEPARATOR_STR;
-					res.full_name += f->name_ext;
+					res.full_name = Pathtypes[f->pathtype_index].path /= f->name_ext;
 				} else if (f->pack_offset < 1) {
 					// This is a real file, return the actual file path
 					res.full_name = f->real_name;
@@ -1230,7 +1167,7 @@ static bool verify_file_list_child()
 	}
 
 	// can not being with directory separator
-	if (Get_file_list_child[0] == DIR_SEPARATOR_CHAR) {
+	if (Get_file_list_child[0] == core::fs::path::preferred_separator) {
 		return false;
 	}
 
@@ -1302,8 +1239,6 @@ int cf_get_file_list(std::vector<std::string>& list, int pathtype, const char* f
 #if defined _WIN32
 	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
 	                              location_flags);
-	strcat_s(filespec, DIR_SEPARATOR_STR);
-	strcat_s(filespec, filter);
 
 	_finddata_t find;
 	intptr_t find_handle;
@@ -1976,40 +1911,35 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 
 		Assert(CF_TYPE_SPECIFIED(pathtype));
 
-		strncpy(path, root->path, path_max);
-
-		strcat_s(path, path_max, Pathtypes[pathtype].path);
-
-		// Don't add slash for root directory
-		if (Pathtypes[pathtype].path[0] != '\0') {
-			if (path[strlen(path) - 1] != DIR_SEPARATOR_CHAR) {
-				strcat_s(path, path_max, DIR_SEPARATOR_STR);
-			}
-		}
+		strncpy(path, root->path.c_str(), path_max);
+		core::fs::path PathObj(path);
+		PathObj /= Pathtypes[pathtype].path;
 
 		// add filename
 		if (filename) {
-			strcat_s(path, path_max, filename);
 
+			PathObj /= filename;
 			// localize filename
 			if (localize) {
 				// create copy of path
 				char path_tmp[MAX_PATH_LEN] = {0};
-				strncpy(path_tmp, path, MAX_PATH_LEN - 1);
+				strncpy(path_tmp, PathObj.c_str(), MAX_PATH_LEN - 1);
 
 				// localize the path
 				if (lcl_add_dir_to_path_with_filename(path_tmp, MAX_PATH_LEN - 1)) {
 					// verify localized path
-					FILE* fp = fopen(path, "rb");
+					FILE* fp = fopen(PathObj.c_str(), "rb");
 					if (fp) {
 						fclose(fp);
+						strncpy(path, PathObj.c_str(), PathObj.string().length());
 						return 1;
 					}
 				}
 			}
 		}
 	}
-
+	strncpy(path, PathObj.c_str(), PathObj.string().length());
+						
 	return 1;
 }
 

@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
+#include <core/path.h>
 #include "util/FSTestFixture.h"
 
 class CFileInitTest : public test::FSTestFixture {
@@ -24,9 +25,8 @@ class CFileInitTest : public test::FSTestFixture {
 };
 
 TEST_F(CFileInitTest, wrong_data_case) {
-	std::string cfile_dir(TEST_DATA_PATH);
-	cfile_dir += DIR_SEPARATOR_CHAR;
-	cfile_dir += "test"; // Cfile expects something after the path
+	core::fs::path cfile_dir(TEST_DATA_PATH);
+	cfile_dir /= "test"; // Cfile expects something after the path
 
 	ASSERT_FALSE(cfile_init(cfile_dir.c_str()));
 
@@ -34,9 +34,8 @@ TEST_F(CFileInitTest, wrong_data_case) {
 }
 
 TEST_F(CFileInitTest, right_data_case) {
-	std::string cfile_dir(TEST_DATA_PATH);
-	cfile_dir += DIR_SEPARATOR_CHAR;
-	cfile_dir += "test"; // Cfile expects something after the path
+	core::fs::path cfile_dir(TEST_DATA_PATH);
+	cfile_dir /= "test"; // Cfile expects something after the path
 
 	ASSERT_FALSE(cfile_init(cfile_dir.c_str()));
 
@@ -129,9 +128,8 @@ TEST(CFileStandalone, test_check_location_flags) {
 }
 TEST_F(CFileTest, test_get_path_type)
 {
-	std::string cfile_dir(TEST_DATA_PATH);
-	cfile_dir += DIR_SEPARATOR_CHAR;
-	cfile_dir += "test"; // Cfile expects something after the path
+	core::fs::path cfile_dir(TEST_DATA_PATH);
+	cfile_dir /= "test"; // Cfile expects something after the path
 
 	ASSERT_FALSE(cfile_init(cfile_dir.c_str()));
 

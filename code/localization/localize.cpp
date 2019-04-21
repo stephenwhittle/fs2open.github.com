@@ -533,7 +533,7 @@ int lcl_add_dir_to_path_with_filename(char *current_path, size_t path_max)
 
 	// find position of last slash and copy rest of filename (not counting slash) to temp
 	// mark end of current path with '\0', so strcat will work
-	char *last_slash = strrchr(current_path, DIR_SEPARATOR_CHAR);
+	char *last_slash = strrchr(current_path, core::fs::path::preferred_separator);
 	if (last_slash == NULL) {
 		strncpy(temp, current_path, path_max);
 		current_path[0] = '\0';
@@ -544,7 +544,7 @@ int lcl_add_dir_to_path_with_filename(char *current_path, size_t path_max)
 
 	// add extension
 	strcat_s(current_path, path_max, Lcl_languages[Lcl_current_lang].lang_ext);
-	strcat_s(current_path, path_max, DIR_SEPARATOR_STR );
+	strcat_s(current_path, 1, &core::fs::path::preferred_separator );
 
 	// copy rest of filename from temp
 	strcat_s(current_path, path_max, temp);

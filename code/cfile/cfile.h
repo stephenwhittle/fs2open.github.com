@@ -12,7 +12,7 @@
 #ifndef __CFILE_H__
 #define __CFILE_H__
 
-
+#include <core/path.h>
 #include "globalincs/pstypes.h"
 #include <vector>
 #include <string>
@@ -33,7 +33,7 @@ struct CFILE;
 
 // extra info that can be returned when getting a file listing
 typedef struct {
-	time_t write_time;
+	core::fs::file_time_type write_time;
 } file_list_info;
 
 

@@ -43,6 +43,12 @@
 char Cfile_root_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
 char Cfile_user_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
 
+
+// extra info that can be returned when getting a file listing
+typedef struct {
+	core::fs::file_time_type write_time;
+} file_list_info;
+
 // During cfile_init, verify that Pathtypes[n].index == n for each item
 // Each path must have a valid parent that can be tracable all the way back to the root
 // so that we can create directories when we need to.
