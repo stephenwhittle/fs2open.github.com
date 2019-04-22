@@ -381,8 +381,6 @@ template <class T> void CAP( T& v, T mn, T mx )
 // Memory management functions
 //=========================================================
 
-//#include "globalincs/fsmemory.h"
-
 class camid
 {
 private:
@@ -398,7 +396,7 @@ public:
 	bool isValid();
 };
 
-#include "globalincs/safe_strings.h"
+//#include "globalincs/safe_strings.h"
 
 // check to see that a passed sting is valid, ie:
 //  - has >0 length

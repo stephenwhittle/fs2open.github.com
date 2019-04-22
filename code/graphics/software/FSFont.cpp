@@ -1,5 +1,5 @@
 #include "graphics/software/FSFont.h"
-
+#include <core/error.h>
 namespace font
 {
 	FSFont::FSFont() : name(std::string("<Invalid>")), offsetTop(0.0f), offsetBottom(0.0f)

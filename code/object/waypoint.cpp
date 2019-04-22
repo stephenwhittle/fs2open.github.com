@@ -4,7 +4,7 @@
 #include "globalincs/linklist.h"
 #include "object/object.h"
 #include "object/waypoint.h"
-
+#include <core/error.h>
 //********************GLOBALS********************
 std::list<waypoint_list> Waypoint_lists;
 

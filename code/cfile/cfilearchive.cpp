@@ -22,6 +22,7 @@
 #include <winbase.h>		/* needed for memory mapping of file functions */
 #endif
 
+#include <core/error.h>
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "luaconf.h"

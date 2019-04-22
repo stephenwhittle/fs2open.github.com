@@ -6,7 +6,7 @@
 #include "globalincs/pstypes.h"
 #include "io/timer.h"
 #include "localization/localize.h"
-
+#include <core/error.h>
 using namespace Rocket::Core;
 
 namespace scpui {

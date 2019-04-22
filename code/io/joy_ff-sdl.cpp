@@ -16,7 +16,7 @@
 #include "io/joy_ff.h"
 #include "io/joy.h"
 #include "osapi/osapi.h"
-
+#include <core/error.h>
 #include "SDL_haptic.h"
 
 
