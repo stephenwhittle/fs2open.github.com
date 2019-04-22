@@ -36,6 +36,7 @@
 #include "popup/popup.h"
 #include "osapi/osapi.h"
 #include "hud/hudmessage.h"
+#include "globalincs/fsmemory.h"
 
 #ifndef WIN32
 #include <cstdio>

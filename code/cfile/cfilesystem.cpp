@@ -43,6 +43,7 @@
 #include "localization/localize.h"
 #include "osapi/osapi.h"
 #include "parse/parselo.h"
+#include "globalincs/fsmemory.h"
 
 enum CfileRootType {
 	CF_ROOTTYPE_PATH = 0,

@@ -23,6 +23,7 @@
 #include "playerman/managepilot.h"
 #include "ui/ui.h"
 #include "tracing/tracing.h"
+#include "globalincs/fsmemory.h"
 
 
 extern mission The_mission;  // need to send this info to the briefing

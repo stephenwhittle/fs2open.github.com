@@ -44,6 +44,7 @@
 #include "fs2netd/fs2netd_client.h"
 #include "menuui/mainhallmenu.h"
 #include "debugconsole/console.h"
+#include "globalincs/fsmemory.h"
 
 
 

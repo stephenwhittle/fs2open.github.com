@@ -20,6 +20,8 @@
 
 #include "libs/ffmpeg/FFmpegContext.h"
 
+#include "globalincs/fsmemory.h"
+
 
 #define MAX_STREAM_BUFFERS 4
 

@@ -44,6 +44,8 @@
 #include "network/multi_rate.h"
 #include "cmdline/cmdline.h"
 #include "math/floating.h"
+#include "globalincs/fsmemory.h"
+
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS
 //

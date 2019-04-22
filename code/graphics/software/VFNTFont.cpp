@@ -1,6 +1,7 @@
 
 #include "graphics/software/VFNTFont.h"
 #include "graphics/software/font_internal.h"
+#include "globalincs/fsmemory.h"
 
 namespace font
 {

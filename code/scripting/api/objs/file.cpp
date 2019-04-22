@@ -3,6 +3,9 @@
 #include "core/error.h"
 #include "cfile/cfilesystem.h"
 #include "osapi/dialogs.h"
+#include "globalincs/fsmemory.h"
+
+
 extern int cfread_lua_number(double *buf, CFILE *cfile);
 namespace scripting {
 namespace api {

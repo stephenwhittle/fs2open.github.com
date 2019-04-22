@@ -11,6 +11,8 @@
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
 
+#include "globalincs/fsmemory.h"
+
 namespace font
 {
 

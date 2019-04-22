@@ -21,7 +21,7 @@
 #include "parse/parselo.h"
 #include "sound/audiostr.h"
 #include "utils/encoding.h"
-
+#include "globalincs/fsmemory.h"
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
 // MISSION FICTION VIEWER DEFINES/VARS

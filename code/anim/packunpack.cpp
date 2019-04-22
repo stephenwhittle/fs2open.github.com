@@ -13,7 +13,7 @@
 #include "anim/packunpack.h"
 #include "bmpman/bmpman.h"
 #include "graphics/2d.h"
-
+#include "globalincs/fsmemory.h"
 
 const int packer_code = PACKER_CODE;
 const int transparent_code = 254;

@@ -32,7 +32,7 @@
 #include "missionui/missionweaponchoice.h"
 #include "network/multiui.h"
 #include "parse/parselo.h"
-
+#include "globalincs/fsmemory.h"
 
 
 ////////////////////////////////////////////////////////////////////

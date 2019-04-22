@@ -19,6 +19,7 @@
 #include "model/model.h"
 #include "model/modelsinc.h"
 #include "tracing/tracing.h"
+#include "globalincs/fsmemory.h"
 
 // returns 1 if a point is in an octant.
 int point_in_octant( polymodel *  /*pm*/, model_octant * oct, vec3d *vert )

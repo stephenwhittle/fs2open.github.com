@@ -31,6 +31,7 @@
 #include "ui/ui.h"
 #include "ui/uidefs.h"
 #include "math/fix.h"
+#include "globalincs/fsmemory.h"
 
 #ifndef NDEBUG
 #include "hud/hud.h"

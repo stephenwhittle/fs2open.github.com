@@ -12,6 +12,7 @@
 #include "graphics/material.h"
 #include "gropenglstate.h"
 #include "math/vecmat.h"
+#include "globalincs/fsmemory.h"
 
 extern GLfloat GL_max_anisotropy;
 

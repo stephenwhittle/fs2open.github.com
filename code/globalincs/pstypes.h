@@ -298,8 +298,6 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 //======================================================================================
 
 
-//#include "math/floating.h"
-
 // Some constants for stuff
 #define MAX_FILENAME_LEN	32		// Length for filenames, ie "title.pcx"
 #define MAX_PATH_LEN		256		// Length for pathnames, ie "c:\bitmaps\title.pcx"
@@ -383,7 +381,7 @@ template <class T> void CAP( T& v, T mn, T mx )
 // Memory management functions
 //=========================================================
 
-#include "globalincs/fsmemory.h"
+//#include "globalincs/fsmemory.h"
 
 class camid
 {

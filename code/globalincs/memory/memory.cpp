@@ -1,6 +1,7 @@
 
 #include "globalincs/pstypes.h"
 #include "core/error.h"
+#include "memory.h"
 namespace memory {
 const quiet_alloc_t quiet_alloc;
 void out_of_memory() {

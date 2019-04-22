@@ -19,6 +19,7 @@
 #include "network/psnet2.h"
 #include "debugconsole/console.h"
 #include "math/floating.h"
+#include "globalincs/fsmemory.h"
 
 
 // ----------------------------------------------------------------------------------------------------

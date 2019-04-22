@@ -24,6 +24,7 @@
 #include "math/fix.h"
 #include "osapi/osregistry.h"
 #include "core/error.h"
+#include "globalincs/fsmemory.h"
 
 matrix4 GL_texture_matrix;
 

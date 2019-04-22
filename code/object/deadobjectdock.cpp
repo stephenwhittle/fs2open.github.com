@@ -8,7 +8,7 @@
 #include "core/error.h"
 #include "object/deadobjectdock.h"
 #include "object/object.h"
-
+#include "globalincs/fsmemory.h"
 
 
 

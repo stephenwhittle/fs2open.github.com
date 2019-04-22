@@ -2,7 +2,7 @@
 //
 
 #include "GPUMemoryHeap.h"
-
+#include "globalincs/fsmemory.h"
 namespace {
 BufferType getBufferType(GpuHeap heap_type) {
 	switch(heap_type) {

@@ -24,6 +24,7 @@
 #include "object/object.h"
 #include "playerman/player.h"
 #include "debugconsole/console.h"
+#include "globalincs/fsmemory.h"
 
 
 // --------------------------------------------------------------------------------------------------

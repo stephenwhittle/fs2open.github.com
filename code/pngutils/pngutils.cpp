@@ -6,6 +6,7 @@
 #include "globalincs/pstypes.h"
 #include "graphics/2d.h"
 #include "pngutils/pngutils.h"
+#include "globalincs/fsmemory.h"
 
 struct png_status {
 	CFILE* cfp = nullptr;

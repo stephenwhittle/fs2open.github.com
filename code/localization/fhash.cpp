@@ -15,7 +15,7 @@
 #include "globalincs/pstypes.h"
 #include "localization/fhash.h"
 #include "globalincs/toolchain.h"
-
+#include "globalincs/fsmemory.h"
 
 // -----------------------------------------------------------------------------------------------
 // HASH DEFINES/VARS

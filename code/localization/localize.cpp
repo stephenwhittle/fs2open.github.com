@@ -20,7 +20,7 @@
 #include "parse/parselo.h"
 #include "playerman/player.h"
 #include "mod_table/mod_table.h"
-
+#include "globalincs/fsmemory.h"
 
 // ------------------------------------------------------------------------------------------------------------
 // LOCALIZE DEFINES/VARS

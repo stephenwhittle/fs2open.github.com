@@ -16,7 +16,7 @@
 #include "graphics/grbatch.h"
 #include "graphics/tmapper.h"
 #include "math/vecmat.h"
-
+#include "globalincs/fsmemory.h"
 //flags for point structure
 #define PF_PROJECTED 	 1	//has been projected, so sx,sy valid
 #define PF_OVERFLOW		 2	//can't project

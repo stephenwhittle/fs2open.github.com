@@ -3,6 +3,7 @@
 #include "scripting/ade_args.h"
 #include "scripting/ade.h"
 #include "mission/missiongoals.h"
+#include "globalincs/fsmemory.h"
 
 namespace scripting {
 namespace api {

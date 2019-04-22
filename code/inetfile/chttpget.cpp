@@ -38,7 +38,7 @@
 #include "osapi/osapi.h"
 #include "inetfile/inetgetfile.h"
 #include "inetfile/chttpget.h"
-
+#include "globalincs/fsmemory.h"
 
 
 #define NW_AGHBN_CANCEL		1

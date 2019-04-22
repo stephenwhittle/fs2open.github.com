@@ -18,6 +18,7 @@
 #include "parse/parselo.h"
 #include "ui/ui.h"
 #include "ui/uidefs.h"
+#include "globalincs/fsmemory.h"
 
 
 

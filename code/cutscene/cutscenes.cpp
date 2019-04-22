@@ -21,7 +21,7 @@
 #include "parse/parselo.h"
 #include "popup/popup.h"
 #include "ui/ui.h"
-
+#include "globalincs/fsmemory.h"
 
 extern int Cmdline_nomovies;
 

@@ -10,6 +10,8 @@
 #include "globalincs/pstypes.h"
 #include "network/chat_api.h"
 #include "globalincs/toolchain.h"
+#include "globalincs/fsmemory.h"
+
 #ifdef SCP_UNIX
 #include <sys/time.h>
 #include <sys/types.h>

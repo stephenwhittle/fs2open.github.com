@@ -4,6 +4,7 @@
 #include "weaponclass.h"
 #include "model.h"
 #include "weapon/weapon.h"
+#include "globalincs/fsmemory.h"
 
 namespace scripting {
 namespace api {

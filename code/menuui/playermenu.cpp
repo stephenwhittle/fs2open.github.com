@@ -33,6 +33,7 @@
 #include "playerman/player.h"
 #include "popup/popup.h"
 #include "ui/ui.h"
+#include "globalincs/fsmemory.h"
 
 #include "playermenu.h"
 #include "graphics/paths/PathRenderer.h"
