@@ -24,6 +24,8 @@
 #include <glob.h>
 #endif
 #include "core/error.h"
+#include "utils/strings.h"
+
 #include "freespace.h"
 #include "missioncampaign.h"
 #include "cfile/cfile.h"

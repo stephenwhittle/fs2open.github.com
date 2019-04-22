@@ -4,7 +4,8 @@
 #include "FrameProfiler.h"
 
 #include "globalincs/systemvars.h"
-
+#include "utils/strings.h"
+#include "globalincs/toolchain.h"
 using namespace tracing;
 
 namespace {

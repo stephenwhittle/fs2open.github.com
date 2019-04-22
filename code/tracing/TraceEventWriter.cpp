@@ -2,7 +2,7 @@
 #include "tracing/TraceEventWriter.h"
 
 #include <iomanip>
-
+#include "globalincs/toolchain.h"
 namespace
 {
 using namespace tracing;

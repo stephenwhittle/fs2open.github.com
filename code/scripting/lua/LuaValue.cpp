@@ -1,6 +1,6 @@
 #include "LuaValue.h"
 #include "LuaException.h"
-
+#include "globalincs/toolchain.h"
 namespace {
 using namespace luacpp;
 

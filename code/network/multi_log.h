@@ -13,7 +13,7 @@
 #define _FREESPACE_MULTIPLAYER_LOGFILE_HEADER_FILE
 
 #include "globalincs/pstypes.h"
-
+#include "globalincs/toolchain.h"
 // ----------------------------------------------------------------------------------------------------
 // MULTI LOGFILE DEFINES/VARS
 //

@@ -5,7 +5,7 @@
 #include "scripting/lua/LuaTable.h"
 #include "scripting/lua/LuaFunction.h"
 #include "scripting/lua/LuaConvert.h"
-
+#include "osapi/dialogs.h"
 #include "mod_table/mod_table.h"
 
 #include <utf8.h>

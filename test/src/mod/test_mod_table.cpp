@@ -4,7 +4,7 @@
 
 #include <util/FSTestFixture.h>
 #include <mod_table/mod_table.h>
-
+#include <osapi/dialogs.h>
 class ModTableTest : public test::FSTestFixture {
  public:
 	ModTableTest() : test::FSTestFixture(INIT_CFILE) {

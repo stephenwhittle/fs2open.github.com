@@ -18,6 +18,8 @@
 #include "ui/ui.h"
 #include "io/key.h"
 #include "bmpman/bmpman.h"
+#include "utils/strings.h"
+
 #include "gamesnd/gamesnd.h"
 #include "gamesequence/gamesequence.h"
 #include "cfile/cfile.h"

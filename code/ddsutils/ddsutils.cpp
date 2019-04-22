@@ -2,7 +2,7 @@
 #include "ddsutils/ddsutils.h"
 #include "cfile/cfile.h"
 #include "osapi/osregistry.h"
-
+#include "globalincs/toolchain.h"
 
 /*	Currently supported formats:
  *		DXT1a	(compressed)

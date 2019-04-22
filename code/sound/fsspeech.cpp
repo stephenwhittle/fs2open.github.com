@@ -10,7 +10,7 @@
 #include "osapi/osregistry.h"
 #include "sound/fsspeech.h"
 #include "sound/speech.h"
-
+#include "globalincs/toolchain.h"
 
 extern int Cmdline_freespace_no_sound;
 

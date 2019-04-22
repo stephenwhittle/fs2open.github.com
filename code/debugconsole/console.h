@@ -20,7 +20,7 @@
 
 #include "debugconsole/consoleparse.h"
 #include "globalincs/pstypes.h"
-
+#include "globalincs/toolchain.h"
 
 #define DC_MAX_COMMANDS 300
 

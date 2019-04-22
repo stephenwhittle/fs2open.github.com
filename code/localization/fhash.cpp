@@ -14,7 +14,7 @@
 #include <cstring>
 #include "globalincs/pstypes.h"
 #include "localization/fhash.h"
-
+#include "globalincs/toolchain.h"
 
 
 // -----------------------------------------------------------------------------------------------

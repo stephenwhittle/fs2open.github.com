@@ -2,7 +2,7 @@
 //
 
 #include "SubtitleDecoder.h"
-
+#include "globalincs/toolchain.h"
 namespace {
 
 double getFrameTime(int64_t pts, AVRational time_base) {

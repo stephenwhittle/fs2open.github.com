@@ -40,7 +40,9 @@ CHECK_FUNCTION_EXISTS(_strnicmp HAVE__STRNICMP)
 CHECK_FUNCTION_EXISTS(strlwr HAVE_STRLWR)
 
 CHECK_INCLUDE_FILE("strings.h" HAVE_STRINGS_H)
-
+if (HAVE_STRINGS_H EQUAL 0)
+unset(HAVE_STRINGS_H)
+endif()
 check_symbol_exists(snprintf "stdio.h" HAVE_SNPRINTF)
 check_symbol_exists(_snprintf "stdio.h" HAVE__SNPRINTF)
 

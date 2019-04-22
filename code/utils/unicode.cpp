@@ -3,6 +3,7 @@
 
 #include "unicode.h"
 #include "core/error.h"
+#include "globalincs/toolchain.h"
 
 namespace unicode {
 

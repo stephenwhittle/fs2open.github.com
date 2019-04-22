@@ -1,5 +1,5 @@
 #include "cutscene/Decoder.h"
-
+#include "globalincs/toolchain.h"
 #include <memory>
 
 namespace cutscene {

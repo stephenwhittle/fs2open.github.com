@@ -20,7 +20,7 @@
 
 #cmakedefine01 HAVE_STRLWR
 
-#cmakedefine01 HAVE_STRINGS_H
+#cmakedefine HAVE_STRINGS_H
 
 #cmakedefine01 HAVE_CHAR32_T
 #cmakedefine01 HAVE_UNICODE_CHAR_LITERAL

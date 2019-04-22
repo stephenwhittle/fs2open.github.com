@@ -12,7 +12,7 @@
 #include "cfile/cfile.h"
 #include "pcxutils/pcxutils.h"
 #include "bmpman/bmpman.h"
-
+#include "globalincs/toolchain.h"
 
 
 

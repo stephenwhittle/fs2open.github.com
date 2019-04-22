@@ -20,6 +20,8 @@
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
 #include "bmpman/bm_internal.h"
+#include "utils/strings.h"
+
 #include "ddsutils/ddsutils.h"
 #include "debugconsole/console.h"
 #include "globalincs/systemvars.h"

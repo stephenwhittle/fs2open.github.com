@@ -9,7 +9,7 @@
 
 #include "globalincs/pstypes.h"
 #include "network/chat_api.h"
-
+#include "globalincs/toolchain.h"
 #ifdef SCP_UNIX
 #include <sys/time.h>
 #include <sys/types.h>
@@ -29,6 +29,8 @@
 #include <winsock.h>
 typedef int socklen_t;
 #endif
+
+#include "utils/strings.h"
 
 #include <cstdio>
 

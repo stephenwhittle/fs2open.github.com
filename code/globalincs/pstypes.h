@@ -17,7 +17,6 @@
 #include "windows_stub/config.h"
 #include "globalincs/scp_defines.h"
 
-#include "utils/strings.h"
 
 #include <cstdio>    // For NULL, etc
 #include <cstdlib>
@@ -209,12 +208,11 @@ typedef struct coord2d {
 	int x,y;
 } coord2d;
 
-#include "osapi/dialogs.h"
 
 extern int Global_warning_count;
 extern int Global_error_count;
 
-#include "osapi/outwnd.h"
+//#include "osapi/outwnd.h"
 
 // To debug printf do this:
 // mprintf(( "Error opening %s\n", filename ));

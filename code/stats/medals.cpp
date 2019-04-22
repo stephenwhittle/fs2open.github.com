@@ -22,6 +22,7 @@
 #include "popup/popup.h"
 #include "stats/medals.h"
 #include "ui/ui.h"
+#include "utils/strings.h"
 
 #ifndef NDEBUG
 #include "cmdline/cmdline.h"

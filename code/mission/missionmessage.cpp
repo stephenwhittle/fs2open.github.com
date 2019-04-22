@@ -35,6 +35,7 @@
 #include "sound/fsspeech.h"
 #include "species_defs/species_defs.h"
 #include "weapon/emp.h"
+#include "utils/strings.h"
 
 std::vector<std::string> Builtin_moods;
 int Current_mission_mood;

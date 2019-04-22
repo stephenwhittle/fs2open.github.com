@@ -12,7 +12,7 @@
 #include "scripting/lua/LuaFunction.h"
 #include "scripting/lua/LuaTable.h"
 #include <utf8/checked.h>
-
+#include "osapi/dialogs.h"
 extern "C" {
 #include <lauxlib.h>
 #include <lualib.h>
