@@ -13,6 +13,7 @@
 #include "gamesequence/gamesequence.h"
 #include "freespace.h"
 #include "parse/parselo.h"
+#include <core/path.h>
 
 #ifdef SCP_UNIX
 #include <sys/stat.h>
@@ -50,7 +51,8 @@ namespace
 		}
 		else {
 			// No preferences path, try current directory
-			return "." DIR_SEPARATOR_STR;
+		    static const char current_dir[3] = {'.', core::fs::path::preferred_separator, '\0'};
+			return current_dir;
 		}
 
 	}
@@ -386,7 +388,7 @@ bool os_is_legacy_mode()
 		// Also check the modification times of the command line files in case the launcher did not change the settings
 		// file
 		path_stream.str("");
-		path_stream << getPreferencesPath() << "data" << DIR_SEPARATOR_CHAR << "cmdline_fso.cfg";
+		path_stream << getPreferencesPath() << "data" << core::fs::path::preferred_separator << "cmdline_fso.cfg";
 		new_config_time = std::max(new_config_time, get_file_modification_time(path_stream.str()));
 #ifdef SCP_UNIX
         path_stream.str("");
@@ -409,7 +411,8 @@ bool os_is_legacy_mode()
 
 		// On Windows the cmdline_fso file was stored in the game root directory which should be in the current directory
 		path_stream.str("");
-		path_stream << "." << DIR_SEPARATOR_CHAR << "data" << DIR_SEPARATOR_CHAR << "cmdline_fso.cfg";
+		path_stream << "." << core::fs::path::preferred_separator << "data" << core::fs::path::preferred_separator
+		            << "cmdline_fso.cfg";
 		old_config_time = std::max(old_config_time, get_file_modification_time(path_stream.str()));
 #endif
 
@@ -658,13 +661,13 @@ std::string os_get_config_path(const std::string& subpath)
 {
 	// Make path platform compatible
 	std::string compatiblePath(subpath);
-	std::replace(compatiblePath.begin(), compatiblePath.end(), '/', DIR_SEPARATOR_CHAR);
+	std::replace(compatiblePath.begin(), compatiblePath.end(), '/', core::fs::path::preferred_separator);
 
 	std::stringstream ss;
 
 	if (Cmdline_portable_mode) {
 		// Use the current directory
-		ss << "." << DIR_SEPARATOR_CHAR << compatiblePath;
+		ss << "." << core::fs::path::preferred_separator << compatiblePath;
 		return ss.str();
 	}
 
@@ -679,7 +682,7 @@ std::string os_get_config_path(const std::string& subpath)
 		ss << getenv("HOME") << DIR_SEPARATOR_CHAR << Osreg_user_dir_legacy;
 #endif
 
-		ss << DIR_SEPARATOR_CHAR << compatiblePath;
+		ss << core::fs::path::preferred_separator << compatiblePath;
 		return ss.str();
 	}
 

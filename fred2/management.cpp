@@ -164,7 +164,7 @@ void string_copy(char *dest, const CString &src, size_t max_len, int modify)
 	dest[len] = 0;
 }
 
-void string_copy(SCP_string &dest, const CString &src, int modify)
+void string_copy(std::string &dest, const CString &src, int modify)
 {
 	if (modify)
 		if (strcmp(src, dest.c_str()))
@@ -175,7 +175,7 @@ void string_copy(SCP_string &dest, const CString &src, int modify)
 
 // converts a multiline string (one with newlines in it) into a windows format multiline
 // string (newlines changed to '\r\n').
-void convert_multiline_string(CString &dest, const SCP_string &src)
+void convert_multiline_string(CString &dest, const std::string &src)
 {
 	dest = src.c_str();
 	dest.Replace("\n", "\r\n");
@@ -199,8 +199,8 @@ void deconvert_multiline_string(char *dest, const CString &str, int max_len)
 	replace_all(dest, "\r\n", "\n", max_len);
 }
 
-// ditto for SCP_string
-void deconvert_multiline_string(SCP_string &dest, const CString &str)
+// ditto for std::string
+void deconvert_multiline_string(std::string &dest, const CString &str)
 {
 	dest = str;
 	replace_all(dest, "\r\n", "\n");
@@ -282,7 +282,7 @@ void brief_init_colors();
 
 void fred_preload_all_briefing_icons()
 {
-	for (SCP_vector<briefing_icon_info>::iterator ii = Briefing_icon_info.begin(); ii != Briefing_icon_info.end(); ++ii)
+	for (std::vector<briefing_icon_info>::iterator ii = Briefing_icon_info.begin(); ii != Briefing_icon_info.end(); ++ii)
 	{
 		generic_anim_load(&ii->regular);
 		hud_anim_load(&ii->fade);
@@ -1241,7 +1241,7 @@ int common_object_delete(int obj)
 	char msg[255], *name;
 	int i, z, r, type;
 	object *objp;
-	SCP_list<CJumpNode>::iterator jnp;
+	std::list<CJumpNode>::iterator jnp;
 
 	type = Objects[obj].type;
 	if (type == OBJ_START) {
@@ -2020,7 +2020,7 @@ int reference_handler(char *name, int type, int obj)
 			break;
 
 		default:
-			Error(LOCATION, "Type unknown for object \"%s\".  Let Hoffos know now!", name);
+			core::Error(LOCATION, "Type unknown for object \"%s\".  Let Hoffos know now!", name);
 	}
 
 	r = query_referenced_in_sexp(type, name, &node);
@@ -2068,7 +2068,7 @@ int reference_handler(char *name, int type, int obj)
 				break;
 
 			default:  // very bad.  Someone added an sexp somewhere and didn't change this.
-				Warning(LOCATION, "\"%s\" referenced by an unknown sexp source!  "
+				core::Warning(LOCATION, "\"%s\" referenced by an unknown sexp source!  "
 					"Run for the hills and let Hoffoss know right now!", name);
 
 				delete_flag = 1;
@@ -2106,7 +2106,7 @@ int reference_handler(char *name, int type, int obj)
 				break;
 
 			default:  // very bad.  Someone added an sexp somewhere and didn't change this.
-				Error(LOCATION, "\"%s\" referenced by an unknown initial orders source!  "
+				core::Error(LOCATION, "\"%s\" referenced by an unknown initial orders source!  "
 					"Run for the hills and let Hoffoss know right now!", name);
 		}
 
@@ -2190,7 +2190,7 @@ int orders_reference_handler(int code, char *msg)
 			break;
 
 		default:  // very bad.  Someone added an sexp somewhere and didn't change this.
-			Error(LOCATION, "Unknown initial order reference source");
+			core::Error(LOCATION, "Unknown initial order reference source");
 	}
 
 	delete_flag = 1;
@@ -2283,7 +2283,7 @@ int sexp_reference_handler(int node, int code, char *msg)
 		}
 
 		default:  // very bad.  Someone added an sexp somewhere and didn't change this.
-			Error(LOCATION, "Unknown sexp reference source");
+			core::Error(LOCATION, "Unknown sexp reference source");
 	}
 
 	delete_flag = 1;
@@ -2629,7 +2629,7 @@ void stuff_special_arrival_anchor_name(char *buf, int anchor_num, int retail_for
 // Goober5000
 void update_texture_replacements(const char *old_name, const char *new_name)
 {
-	for (SCP_vector<texture_replace>::iterator ii = Fred_texture_replacements.begin(); ii != Fred_texture_replacements.end(); ++ii)
+	for (std::vector<texture_replace>::iterator ii = Fred_texture_replacements.begin(); ii != Fred_texture_replacements.end(); ++ii)
 	{
 		if (!stricmp(ii->ship_name, old_name))
 			strcpy_s(ii->ship_name, new_name);

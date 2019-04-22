@@ -6,6 +6,7 @@
  *    place of these major numbers for /any/ reason, *ever*!
  */
 
+#include <core/path.h>
 #include "cfile/cfilesystem.h"
 #include "mission/missionbriefcommon.h"
 #include "network/psnet2.h"
@@ -865,7 +866,7 @@ bool pilotfile_convert::plr_convert(const char *fname, bool inferno)
 	                              CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 
 	if (inferno) {
-		filename.append(DIR_SEPARATOR_STR);
+		filename.append(core::fs::preferred_separator_string);
 	}
 
 	filename.append(fname);

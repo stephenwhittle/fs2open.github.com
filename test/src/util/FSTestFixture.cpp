@@ -3,6 +3,8 @@
 
 #include "FSTestFixture.h"
 
+#include <core/path.h>
+#include <core/error.h>
 #include <cmdline/cmdline.h>
 #include <graphics/2d.h>
 #include <io/timer.h>
@@ -35,7 +37,7 @@ void test::FSTestFixture::SetUp() {
 
 	if (_initFlags & INIT_CFILE) {
 		std::string cfile_dir(TEST_DATA_PATH);
-		cfile_dir += DIR_SEPARATOR_CHAR;
+		cfile_dir += core::fs::path::preferred_separator;
 		cfile_dir += "test"; // Cfile expects something after the path
 
 		if (cfile_init(cfile_dir.c_str())) {
@@ -126,7 +128,7 @@ void test::FSTestFixture::init_cmdline() {
 void test::FSTestFixture::pushModDir(const std::string& mod) {
 	if (!_currentModDir.empty()) {
 		// Don't prepend a / if we are at the root or else it would be an absolute path
-		_currentModDir += DIR_SEPARATOR_CHAR;
+		_currentModDir += core::fs::path::preferred_separator;
 	}
 	_currentModDir += mod;
 

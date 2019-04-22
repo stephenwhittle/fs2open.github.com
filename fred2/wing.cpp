@@ -299,7 +299,7 @@ int create_wing() {
 	}
 
 	if (!count)  // this should never happen, so if it does, needs to be fixed now.
-		Error(LOCATION, "No valid ships were selected to form wing from");
+		core::Error(LOCATION, "No valid ships were selected to form wing from");
 
 	Wings[wing].wave_count = count;
 	Num_wings++;

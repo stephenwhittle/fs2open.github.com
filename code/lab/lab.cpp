@@ -7,6 +7,7 @@
  *
  */
 
+#include <core/path.h>
 #include "freespace.h"
 #include "cmdline/cmdline.h"
 #include "gamesequence/gamesequence.h"
@@ -1757,22 +1758,22 @@ std::string get_directory_or_vp(const char* path)
 	std::string result(path);
 
 	// Is this a mission in a directory?
-	size_t found = result.find("data" DIR_SEPARATOR_STR "missions");
+	size_t found = result.find( core::fs::path("data") / "missions");
 
 	if (found == std::string::npos) // Guess not
 	{
 		found = result.find(".vp");
 	}
 
-	auto directory_name_pos = result.rfind(DIR_SEPARATOR_CHAR, found - strlen(DIR_SEPARATOR_STR) - 1);
+	auto directory_name_pos = result.rfind(core::fs::path::preferred_separator, found - strlen(core::fs::preferred_separator_string) - 1);
 
 	result = result.substr(directory_name_pos, found - directory_name_pos);
 
-	found = result.find(DIR_SEPARATOR_CHAR);
+	found = result.find(core::fs::path::preferred_separator);
 	// Strip directory separators
 	while (found != std::string::npos) {
-		result.erase(found, strlen(DIR_SEPARATOR_STR));
-		found = result.find(DIR_SEPARATOR_CHAR);
+		result.erase(found, strlen(core::fs::preferred_separator_string));
+		found = result.find(core::fs::path::preferred_separator);
 	}
 
 	return result;

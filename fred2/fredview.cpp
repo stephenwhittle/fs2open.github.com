@@ -8,7 +8,7 @@
 */
 													
 
-
+#include <core/format.h>
 #include "stdafx.h"
 #include "FRED.h"
 
@@ -1373,7 +1373,7 @@ void CFREDView::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	CMenu menu;
 	int	objnum;
 	CPoint local = point;
-	SCP_list<CJumpNode>::iterator jnp;
+	std::list<CJumpNode>::iterator jnp;
 
 	if (button_down) {
 		cancel_drag();
@@ -2253,7 +2253,7 @@ int query_single_wing_marked()
 	while (i--) {
 		obj = wing_objects[cur_wing][i];
 		if ((Objects[obj].type != OBJ_SHIP) && (Objects[obj].type != OBJ_START))
-			Error(LOCATION, "Invalid objects detected in wing \"%s\"", Wings[cur_wing].name);
+			core::Error(LOCATION, "Invalid objects detected in wing \"%s\"", Wings[cur_wing].name);
 
 //		if (Ships[Objects[obj].instance].wingnum != cur_wing)
 //			return 0;
@@ -2836,7 +2836,7 @@ int CFREDView::global_error_check()
 		return internal_error("Num_wings is incorrect");
 	}
 
-	SCP_list<waypoint_list>::iterator ii;
+	std::list<waypoint_list>::iterator ii;
 	for (ii = Waypoint_lists.begin(); ii != Waypoint_lists.end(); ++ii) {
 		for (z=0; z<obj_count; z++){
 			if (names[z]){
@@ -3327,12 +3327,12 @@ int CFREDView::internal_error(const char *msg, ...)
 
 int CFREDView::fred_check_sexp(int sexp, int type, const char *msg, ...)
 {
-	SCP_string buf, sexp_buf, error_buf;
+	std::string buf, sexp_buf, error_buf;
 	int err = 0, z, faulty_node;
 	va_list args;
 
 	va_start(args, msg);
-	vsprintf(buf, msg, args);
+	core::vsprintf(buf, msg, args);
 	va_end(args);
 
 	if (sexp == -1)
@@ -3344,7 +3344,7 @@ int CFREDView::fred_check_sexp(int sexp, int type, const char *msg, ...)
 
 	convert_sexp_to_string(sexp_buf, sexp, SEXP_ERROR_CHECK_MODE);
 	truncate_message_lines(sexp_buf, 30);
-	sprintf(error_buf, "Error in %s: %s\n\nIn sexpression: %s\n\n(Error appears to be: %s)", buf.c_str(), sexp_error_message(z), sexp_buf.c_str(), Sexp_nodes[faulty_node].text);
+	core::sprintf(error_buf, "Error in %s: %s\n\nIn sexpression: %s\n\n(Error appears to be: %s)", buf.c_str(), sexp_error_message(z), sexp_buf.c_str(), Sexp_nodes[faulty_node].text);
 
 	if (z < 0 && z > -100)
 		err = 1;

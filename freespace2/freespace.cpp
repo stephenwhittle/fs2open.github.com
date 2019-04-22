@@ -27,6 +27,7 @@
  #include <sys/stat.h>
 #endif
 
+#include "core/path.h"
 #include "core/format.h"
 #include "core/error.h"
 #include "freespace.h"
@@ -1731,7 +1732,7 @@ void game_init()
 
 	_getcwd(whee, MAX_PATH_LEN-1);
 
-	strcat_s(whee, DIR_SEPARATOR_STR);
+	strcat_s(whee, core::fs::preferred_separator_string);
 	strcat_s(whee, EXE_FNAME);
 
 	//Initialize the libraries

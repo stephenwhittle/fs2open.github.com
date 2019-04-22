@@ -8,7 +8,7 @@
 */
 
 
-
+#include <core/format.h>
 #include "stdafx.h"
 #include "FRED.h"
 #include "CampaignTreeWnd.h"
@@ -376,12 +376,12 @@ int campaign_tree_wnd::error_checker()
 
 int campaign_tree_wnd::error(const char *msg, ...)
 {
-	SCP_string buf;
+	std::string buf;
 	va_list args;
 
 	g_err++;
 	va_start(args, msg);
-	vsprintf(buf, msg, args);
+	core::vsprintf(buf, msg, args);
 	va_end(args);
 
 	nprintf(("Error", buf.c_str()));
@@ -393,15 +393,15 @@ int campaign_tree_wnd::error(const char *msg, ...)
 
 int campaign_tree_wnd::internal_error(const char *msg, ...)
 {
-	SCP_string buf, buf2;
+	std::string buf, buf2;
 	va_list args;
 
 	g_err++;
 	va_start(args, msg);
-	vsprintf(buf, msg, args);
+	core::vsprintf(buf, msg, args);
 	va_end(args);
 
-	sprintf(buf2, "%s\n\nThis is an internal error.  Please let Hoffoss\n"
+	core::sprintf(buf2, "%s\n\nThis is an internal error.  Please let Hoffoss\n"
 		"know about this so he can fix it.  Click cancel to debug.", buf.c_str());
 
 	nprintf(("Error", buf.c_str()));
@@ -413,12 +413,12 @@ int campaign_tree_wnd::internal_error(const char *msg, ...)
 
 int campaign_tree_wnd::fred_check_sexp(int sexp, int type, char *msg, ...)
 {
-	SCP_string buf, sexp_buf, error_buf;
+	std::string buf, sexp_buf, error_buf;
 	int err = 0, z, faulty_node;
 	va_list args;
 
 	va_start(args, msg);
-	vsprintf(buf, msg, args);
+	core::vsprintf(buf, msg, args);
 	va_end(args);
 
 	if (sexp == -1)
@@ -430,7 +430,7 @@ int campaign_tree_wnd::fred_check_sexp(int sexp, int type, char *msg, ...)
 
 	convert_sexp_to_string(sexp_buf, sexp, SEXP_ERROR_CHECK_MODE);
 	truncate_message_lines(sexp_buf, 30);
-	sprintf(error_buf, "Error in %s: %s\n\nIn sexpression: %s\n\n(Error appears to be: %s)", buf.c_str(), sexp_error_message(z), sexp_buf.c_str(), Sexp_nodes[faulty_node].text);
+	core::sprintf(error_buf, "Error in %s: %s\n\nIn sexpression: %s\n\n(Error appears to be: %s)", buf.c_str(), sexp_error_message(z), sexp_buf.c_str(), Sexp_nodes[faulty_node].text);
 
 	if (z < 0 && z > -100)
 		err = 1;

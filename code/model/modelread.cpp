@@ -18,6 +18,7 @@
 #endif
 
 #define MODEL_LIB
+#include "core/path.h"
 #include "core/error.h"
 #include "asteroid/asteroid.h"
 #include "bmpman/bmpman.h"
@@ -812,7 +813,7 @@ void do_new_subsystem( int n_subsystems, model_subsystem *slist, int subobj_num,
 #ifndef NDEBUG
 	if ( ss_fp )	{
 		_splitpath(model_filename, NULL, NULL, bname, NULL);
-		mprintf(("A subsystem was found in model %s that does not have a record in ships.tbl.\nA list of subsystems for this ship will be dumped to:\n\ndata%stables%s%s.subsystems for inclusion\ninto ships.tbl.\n", model_filename, DIR_SEPARATOR_STR, DIR_SEPARATOR_STR, bname));
+		mprintf(("A subsystem was found in model %s that does not have a record in ships.tbl.\nA list of subsystems for this ship will be dumped to:\n\ndata%stables%s%s.subsystems for inclusion\ninto ships.tbl.\n", model_filename, core::fs::preferred_separator_string, core::fs::preferred_separator_string, bname));
 		char tmp_buffer[128];
 		sprintf(tmp_buffer, "$Subsystem:\t\t\t%s,1,0.0\n", subobj_name);
 		cfputs(tmp_buffer, ss_fp);

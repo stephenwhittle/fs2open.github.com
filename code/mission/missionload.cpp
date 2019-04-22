@@ -8,7 +8,7 @@
 */ 
 
 
-
+#include <core/path.h>
 #include "cfile/cfilesystem.h"
 #include "freespace.h"
 #include "gamesequence/gamesequence.h"
@@ -54,7 +54,7 @@ void ml_update_recent_missions(const char* filename)
 	}
 
 	// get a pointer to just the basename of the filename (including extension)
-	const char* p = strrchr(filename, DIR_SEPARATOR_CHAR);
+	const char* p = strrchr(filename, core::fs::path::preferred_separator);
 	if ( p == NULL ) {
 		p = filename;
 	} else {

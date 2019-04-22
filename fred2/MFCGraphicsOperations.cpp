@@ -1,13 +1,14 @@
 
 #include "MFCGraphicsOperations.h"
-
+#include <vector>
+#include <core/error.h>
 MFCViewport::MFCViewport(HWND hwnd, HDC dc): _windowHandle(hwnd), _device_context(dc)
 {
 	Assertion(hwnd != nullptr, "Invalid window handle!");
 	Assertion(dc != nullptr, "Invalid device context handle!");
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
-		Error(LOCATION, "Couldn't init SDL video: %s", SDL_GetError());
+		core::Error(LOCATION, "Couldn't init SDL video: %s", SDL_GetError());
 		return;
 	}
 }
@@ -246,7 +247,7 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 		return std::unique_ptr<os::OpenGLContext>(new MFCOpenGLContext(temp_ctx));
 	}
 	
-	SCP_vector<int> attrib_list;
+	std::vector<int> attrib_list;
 	attrib_list.push_back(WGL_CONTEXT_MAJOR_VERSION_ARB);
 	attrib_list.push_back(ctx.major_version);
 

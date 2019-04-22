@@ -13,7 +13,7 @@
 #define _SCORING_HEADER_FILE
 
 #include <ctime>
-
+#include <map>
 #include "globalincs/globals.h"
 #include "globalincs/pstypes.h"
 

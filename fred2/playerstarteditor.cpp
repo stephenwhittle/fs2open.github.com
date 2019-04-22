@@ -318,7 +318,7 @@ void player_start_editor::reset_controls()
 			ct++;
 		} else if (static_weapon_pool[selected_team][i] > 0 || (static_weapon_variable_pool[selected_team][i] != -1)) {
 			// not sure if this should be a verbal warning or not, so I'm adding both and making it verbal for now
-			Warning(LOCATION, "Weapon '%s' in weapon pool isn't allowed on player loadout!  Resetting count to 0...\n", Weapon_info[i].name);
+			core::Warning(LOCATION, "Weapon '%s' in weapon pool isn't allowed on player loadout!  Resetting count to 0...\n", Weapon_info[i].name);
 			static_weapon_pool[selected_team][i] = 0;
 			static_weapon_variable_pool[selected_team][i] = -1;
 		}

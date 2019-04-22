@@ -27,7 +27,7 @@
 #include "Management.h"
 #include "MessageEditorDlg.h"
 #include "MissionSave.h"
-
+#include <core/path.h>
 #include "ai/ai.h"
 #include "ai/aigoals.h"
 #include "cfile/cfile.h"
@@ -316,7 +316,7 @@ bool CFREDDoc::load_mission(char *pathname, int flags) {
 		// double check the used pool is empty
 		for (j = 0; j < MAX_WEAPON_TYPES; j++) {
 			if (used_pool[j] != 0) {
-				Warning(LOCATION, "%s is used in wings of team %d but was not in the loadout. Fixing now", Weapon_info[j].name, i + 1);
+				core::Warning(LOCATION, "%s is used in wings of team %d but was not in the loadout. Fixing now", Weapon_info[j].name, i + 1);
 
 				// add the weapon as a new entry
 				Team_data[i].weaponry_pool[Team_data[i].num_weapon_choices] = j;
@@ -418,11 +418,11 @@ void CFREDDoc::OnFileImportFSM() {
 
 		// get base paths
 		strcpy_s(fs1_mission_path, Fred_exe_dir);
-		ch = strrchr(fs1_mission_path, DIR_SEPARATOR_CHAR);
+		ch = strrchr(fs1_mission_path, core::fs::path::preferred_separator);
 		if (ch != NULL)
 			*ch = '\0';
 		strcpy_s(fs2_mission_path, Fred_exe_dir);
-		ch = strrchr(fs2_mission_path, DIR_SEPARATOR_CHAR);
+		ch = strrchr(fs2_mission_path, core::fs::path::preferred_separator);
 		if (ch != NULL)
 			*ch = '\0';
 
@@ -519,7 +519,7 @@ void CFREDDoc::OnFileImportFSM() {
 			continue;
 
 		// get filename
-		ch = strrchr(fs1_path, DIR_SEPARATOR_CHAR) + 1;
+		ch = strrchr(fs1_path, core::fs::path::preferred_separator) + 1;
 		if (ch != NULL)
 			strcpy_s(filename, ch);
 		else
@@ -655,7 +655,7 @@ BOOL CFREDDoc::OnSaveDocument(LPCTSTR pathname) {
 
 	SetModifiedFlag(FALSE);
 	if (!load_mission((char *) pathname))
-		Error(LOCATION, "Failed attempting to reload mission after saving.  Report this bug now!");
+		core::Error(LOCATION, "Failed attempting to reload mission after saving.  Report this bug now!");
 
 	if (Briefing_dialog) {
 		Briefing_dialog->restore_editor_state();

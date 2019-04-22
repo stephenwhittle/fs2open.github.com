@@ -10,7 +10,7 @@
 
 
 #include "stdafx.h"
-
+#include <core/format.h>
 #include "CampaignEditorDlg.h"
 #include "CampaignTreeView.h"
 #include "CampaignTreeWnd.h"
@@ -101,7 +101,7 @@ void CFred_mission_save::convert_special_tags_to_retail(char *text, int max_len)
 	replace_all(text, "$semicolon", ",", max_len);
 }
 
-void CFred_mission_save::convert_special_tags_to_retail(SCP_string &text) {
+void CFred_mission_save::convert_special_tags_to_retail(std::string &text) {
 	replace_all(text, "$quote", "''");
 	replace_all(text, "$semicolon", ",");
 }
@@ -135,7 +135,7 @@ void CFred_mission_save::convert_special_tags_to_retail() {
 }
 
 int CFred_mission_save::fout(char *format, ...) {
-	SCP_string str;
+	std::string str;
 	va_list args;
 
 	if (err) {
@@ -143,7 +143,7 @@ int CFred_mission_save::fout(char *format, ...) {
 	}
 
 	va_start(args, format);
-	vsprintf(str, format, args);
+	core::vsprintf(str, format, args);
 	va_end(args);
 
 	cfputs(str.c_str(), fp);
@@ -151,8 +151,8 @@ int CFred_mission_save::fout(char *format, ...) {
 }
 
 int CFred_mission_save::fout_ext(char *pre_str, char *format, ...) {
-	SCP_string str_scp;
-	SCP_string str_out_scp;
+	std::string str_scp;
+	std::string str_out_scp;
 	va_list args;
 	int str_id;
 
@@ -161,7 +161,7 @@ int CFred_mission_save::fout_ext(char *pre_str, char *format, ...) {
 	}
 
 	va_start(args, format);
-	vsprintf(str_scp, format, args);
+	core::vsprintf(str_scp, format, args);
 	va_end(args);
 
 	if (pre_str) {
@@ -253,7 +253,7 @@ int CFred_mission_save::fout_ext(char *pre_str, char *format, ...) {
 }
 
 int CFred_mission_save::fout_version(char *format, ...) {
-	SCP_string str_scp;
+	std::string str_scp;
 	char *ch = NULL;
 	va_list args;
 
@@ -278,7 +278,7 @@ int CFred_mission_save::fout_version(char *format, ...) {
 	}
 
 	va_start(args, format);
-	vsprintf(str_scp, format, args);
+	core::vsprintf(str_scp, format, args);
 	va_end(args);
 
 	char *str_c = vm_strdup(str_scp.c_str());
@@ -540,7 +540,7 @@ void CFred_mission_save::save_ai_goals(ai_goal *goalp, int ship) {
 		} else {
 			valid = 1;
 			if (!goalp[i].target_name) {
-				Warning(LOCATION, "Ai goal has no target where one is required");
+				core::Warning(LOCATION, "Ai goal has no target where one is required");
 
 			} else {
 				sprintf(buf, "\"%s\"", goalp[i].target_name);
@@ -556,7 +556,7 @@ void CFred_mission_save::save_ai_goals(ai_goal *goalp, int ship) {
 				case AI_GOAL_DESTROY_SUBSYSTEM:
 					if (goalp[i].docker.index == -1 || !goalp[i].docker.index) {
 						valid = 0;
-						Warning(LOCATION, "AI destroy subsystem goal invalid subsystem name\n");
+						core::Warning(LOCATION, "AI destroy subsystem goal invalid subsystem name\n");
 
 					} else {
 						sprintf(buf, "\"%s\" \"%s\"", goalp[i].target_name, goalp[i].docker.name);
@@ -568,16 +568,16 @@ void CFred_mission_save::save_ai_goals(ai_goal *goalp, int ship) {
 				case AI_GOAL_DOCK:
 					if (ship < 0) {
 						valid = 0;
-						Warning(LOCATION, "Wings aren't allowed to have a docking goal\n");
+						core::Warning(LOCATION, "Wings aren't allowed to have a docking goal\n");
 
 					} else if (goalp[i].docker.index == -1 || !goalp[i].docker.index) {
 						valid = 0;
-						Warning(LOCATION, "AI dock goal for \"%s\" has invalid docker point "
+						core::Warning(LOCATION, "AI dock goal for \"%s\" has invalid docker point "
 								"(docking with \"%s\")\n", Ships[ship].ship_name, goalp[i].target_name);
 
 					} else if (goalp[i].dockee.index == -1 || !goalp[i].dockee.index) {
 						valid = 0;
-						Warning(LOCATION, "AI dock goal for \"%s\" has invalid dockee point "
+						core::Warning(LOCATION, "AI dock goal for \"%s\" has invalid dockee point "
 								"(docking with \"%s\")\n", Ships[ship].ship_name, goalp[i].target_name);
 
 					} else {
@@ -896,7 +896,7 @@ int CFred_mission_save::save_bitmaps() {
 
 int CFred_mission_save::save_briefing() {
 	int			i, j, k, nb;
-	SCP_string	sexp_out;
+	std::string	sexp_out;
 	brief_stage	*bs;
 	brief_icon	*bi;
 
@@ -1313,7 +1313,7 @@ int CFred_mission_save::save_campaign_file(char *pathname) {
 }
 
 void CFred_mission_save::save_campaign_sexp(int node, int link_num) {
-	SCP_string sexp_out;
+	std::string sexp_out;
 	Assert(node >= 0);
 
 	// if the link num is -1, then this is a end-of-campaign location
@@ -1383,11 +1383,11 @@ int CFred_mission_save::save_cmd_briefs() {
 
 void CFred_mission_save::fso_comment_push(char *ver) {
 	if (fso_ver_comment.empty()) {
-		fso_ver_comment.push_back(SCP_string(ver));
+		fso_ver_comment.push_back(std::string(ver));
 		return;
 	}
 
-	SCP_string before = fso_ver_comment.back();
+	std::string before = fso_ver_comment.back();
 
 	int major, minor, build, revis;
 	int in_major, in_minor, in_build, in_revis;
@@ -1410,7 +1410,7 @@ void CFred_mission_save::fso_comment_push(char *ver) {
 		// the push'd version is older than our current version, so just push a copy of the previous version
 		fso_ver_comment.push_back(before);
 	} else {
-		fso_ver_comment.push_back(SCP_string(ver));
+		fso_ver_comment.push_back(std::string(ver));
 	}
 }
 
@@ -1621,7 +1621,7 @@ void CFred_mission_save::save_custom_bitmap(const char *expected_string_640, con
 
 int CFred_mission_save::save_cutscenes() {
 	char type[NAME_LENGTH];
-	SCP_string sexp_out;
+	std::string sexp_out;
 
 	// Let's just assume it has them for now - 
 	if (!(The_mission.cutscenes.empty())) {
@@ -1685,7 +1685,7 @@ int CFred_mission_save::save_cutscenes() {
 
 int CFred_mission_save::save_debriefing() {
 	int j, i;
-	SCP_string sexp_out;
+	std::string sexp_out;
 
 	for (j = 0; j < Num_teams; j++) {
 
@@ -1740,7 +1740,7 @@ int CFred_mission_save::save_debriefing() {
 }
 
 int CFred_mission_save::save_events() {
-	SCP_string sexp_out;
+	std::string sexp_out;
 	int i, j, add_flag;
 
 	fred_parse_flag = 0;
@@ -1884,7 +1884,7 @@ int CFred_mission_save::save_fiction() {
 				fout("\n\n#Fiction Viewer");
 
 			// we have multiple stages now, so save them all
-			for (SCP_vector<fiction_viewer_stage>::iterator stage = Fiction_viewer_stages.begin(); stage != Fiction_viewer_stages.end(); ++stage) {
+			for (std::vector<fiction_viewer_stage>::iterator stage = Fiction_viewer_stages.begin(); stage != Fiction_viewer_stages.end(); ++stage) {
 				fout("\n");
 
 				// save file
@@ -1929,7 +1929,7 @@ int CFred_mission_save::save_fiction() {
 
 				// save sexp formula if we have one
 				if (stage->formula >= 0 && stage->formula != Locked_sexp_true) {
-					SCP_string sexp_out;
+					std::string sexp_out;
 					convert_sexp_to_string(sexp_out, stage->formula, SEXP_SAVE_MODE);
 
 					if (optional_string_fred("$Formula:"))
@@ -1951,7 +1951,7 @@ int CFred_mission_save::save_fiction() {
 }
 
 int CFred_mission_save::save_goals() {
-	SCP_string sexp_out;
+	std::string sexp_out;
 	int i;
 
 	fred_parse_flag = 0;
@@ -2742,7 +2742,7 @@ int CFred_mission_save::save_warp_params(WarpDirection direction, ship *shipp)
 }
 
 int CFred_mission_save::save_objects() {
-	SCP_string sexp_out;
+	std::string sexp_out;
 	int i, z;
 	ai_info *aip;
 	object *objp;
@@ -2785,7 +2785,7 @@ int CFred_mission_save::save_objects() {
 
 		//alt classes stuff
 		if (Format_fs2_open != FSO_FORMAT_RETAIL) {
-			for (SCP_vector<alt_class>::iterator ii = shipp->s_alt_classes.begin(); ii != shipp->s_alt_classes.end(); ++ii) {
+			for (std::vector<alt_class>::iterator ii = shipp->s_alt_classes.begin(); ii != shipp->s_alt_classes.end(); ++ii) {
 				// is this a variable?
 				if (ii->variable_index != -1) {
 					fout("\n$Alt Ship Class: @%s", Sexp_variables[ii->variable_index].variable_name);
@@ -3383,7 +3383,7 @@ int CFred_mission_save::save_objects() {
 			bool needs_header = true;
 			fso_comment_push(";;FSO 3.6.8;;");
 
-			for (SCP_vector<texture_replace>::iterator ii = Fred_texture_replacements.begin(); ii != Fred_texture_replacements.end(); ++ii) {
+			for (std::vector<texture_replace>::iterator ii = Fred_texture_replacements.begin(); ii != Fred_texture_replacements.end(); ++ii) {
 				if (!stricmp(shipp->ship_name, ii->ship_name)) {
 					if (needs_header) {
 						if (optional_string_fred("$Texture Replace:")) {
@@ -3902,7 +3902,7 @@ int CFred_mission_save::save_waypoints() {
 	parse_comments(2);
 	fout("\t\t;! %d lists total\n", Waypoint_lists.size());
 
-	SCP_list<CJumpNode>::iterator jnp;
+	std::list<CJumpNode>::iterator jnp;
 	for (jnp = Jump_nodes.begin(); jnp != Jump_nodes.end(); ++jnp) {
 		required_string_fred("$Jump Node:", "$Jump Node Name:");
 		parse_comments(2);
@@ -3950,7 +3950,7 @@ int CFred_mission_save::save_waypoints() {
 		fso_comment_pop();
 	}
 
-	SCP_list<waypoint_list>::iterator ii;
+	std::list<waypoint_list>::iterator ii;
 	for (ii = Waypoint_lists.begin(); ii != Waypoint_lists.end(); ++ii) {
 		required_string_either_fred("$Name:", "#Messages");
 		required_string_fred("$Name:");
@@ -3974,7 +3974,7 @@ int CFred_mission_save::save_waypoints() {
 
 int CFred_mission_save::save_waypoint_list(waypoint_list *wp_list) {
 	Assert(wp_list != NULL);
-	SCP_vector<waypoint>::iterator ii;
+	std::vector<waypoint>::iterator ii;
 
 	for (ii = wp_list->get_waypoints().begin(); ii != wp_list->get_waypoints().end(); ++ii) {
 		vec3d *pos = ii->get_pos();
@@ -3985,7 +3985,7 @@ int CFred_mission_save::save_waypoint_list(waypoint_list *wp_list) {
 }
 
 int CFred_mission_save::save_wings() {
-	SCP_string sexp_out;
+	std::string sexp_out;
 	int i, j, z, ship, count = 0;
 
 	fred_parse_flag = 0;

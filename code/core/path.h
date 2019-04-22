@@ -16,5 +16,6 @@ namespace fs {
 
 namespace fs {
 	std::vector<fs::path> FindFilesInDirectory(fs::path Directory, const char* Pattern, bool Recursive);
-}
+	static const char preferred_separator_string[2] = {core::fs::path::preferred_separator, '\0'};
+} // namespace fs
 } // namespace core

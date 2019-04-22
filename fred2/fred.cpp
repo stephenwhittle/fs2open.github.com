@@ -8,7 +8,6 @@
  */
 
 
-
 #include "stdafx.h"
 #include "FRED.h"
 
@@ -21,6 +20,8 @@
 #include "CampaignEditorDlg.h"
 #include "CampaignTreeView.h"
 #include "CampaignTreeWnd.h"
+
+#include <core/path.h>
 
 #include "globalincs/mspdb_callstack.h"
 #include "graphics/2d.h"
@@ -293,7 +294,7 @@ BOOL CFREDApp::InitInstance() {
 
 	GetCurrentDirectory(MAX_PATH_LEN - 1, Fred_exe_dir);
 
-	strcat_s(Fred_exe_dir, DIR_SEPARATOR_STR);
+	strcat_s(Fred_exe_dir, core::fs::preferred_separator_string);
 	strcat_s(Fred_exe_dir, "fred2.exe");
 
 	strcpy_s(Fred_base_dir, Fred_exe_dir);

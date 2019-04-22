@@ -3,7 +3,7 @@
 #include <dbgtools/callstack.h>
 #include "format.h"
 #include "path.h"
-
+#include <sstream>
 
 
 extern int Global_warning_count;

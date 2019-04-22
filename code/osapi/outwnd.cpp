@@ -64,7 +64,7 @@ void load_filter_info(void)
 	outwnd_filter_loaded = 1;
 
 	memset( pathname, 0, sizeof(pathname) );
-	snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path, NOX("debug_filter.cfg") );
+	snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path.c_str(), NOX("debug_filter.cfg") );
 
 	fp = fopen(os_get_config_path(pathname).c_str(), "rt");
 
@@ -134,7 +134,7 @@ void save_filter_info(void)
 
 
 	memset( pathname, 0, sizeof(pathname) );
-	snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path, NOX("debug_filter.cfg") );
+	snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path.c_str(), NOX("debug_filter.cfg") );
 
 	fp = fopen(os_get_config_path(pathname).c_str(), "wt");
 
@@ -182,6 +182,7 @@ void outwnd_print(const char *id, const char *tmp)
 		// Ignore all messages when running unit tests
 		return;
 	}
+
 
 	if ( (id == NULL) || (tmp == NULL) )
 		return;
@@ -251,10 +252,10 @@ void outwnd_init()
 		}
 
 		// create data file path if it does not exist
-		_mkdir(os_get_config_path(Pathtypes[CF_TYPE_DATA].path).c_str());
+		_mkdir(os_get_config_path(Pathtypes[CF_TYPE_DATA].path.c_str()).c_str());
 
 		memset( pathname, 0, sizeof(pathname) );
-		snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path, FreeSpace_logfilename);
+		snprintf( pathname, MAX_PATH_LEN, "%s/%s", Pathtypes[CF_TYPE_DATA].path.c_str(), FreeSpace_logfilename);
 
 		auto logpath = os_get_config_path(pathname);
 

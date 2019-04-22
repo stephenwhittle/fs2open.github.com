@@ -472,7 +472,8 @@ void parse_iface_sound(const char* tag, interface_snd_id* idx_dest) {
  * @param flags See the parse_sound_flags enum
  *
  */
-void parse_iface_sound_list(const char* tag, std::vector<interface_snd_id>& destination, const char* object_name, bool scp_list)
+void parse_iface_sound_list(const char* tag, std::vector<interface_snd_id>& destination, const char* object_name,
+                            bool scp_list)
 {
 	if(optional_string(tag))
 	{
@@ -504,7 +505,7 @@ void parse_iface_sound_list(const char* tag, std::vector<interface_snd_id>& dest
 		}
 
 		//if we're using the old format, double check the size)
-		if(!scp_list&& (destination.size() != (unsigned)check))
+		if (!scp_list && (destination.size() != (unsigned)check))
 		{
 			mprintf(("%s in '%s' has " SIZE_T_ARG " entries. This does not match entered size of %i.", tag, object_name, destination.size(), check));
 		}

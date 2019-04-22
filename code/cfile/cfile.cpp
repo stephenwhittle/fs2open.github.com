@@ -52,47 +52,47 @@ char Cfile_user_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
 // clang-format off
 cf_pathtype Pathtypes[CF_MAX_PATH_TYPES]  = {
 	// What type this is          Path																			Extensions        					Parent type
-	{ CF_TYPE_INVALID,				NULL,																		NULL,								CF_TYPE_INVALID },
+	{ CF_TYPE_INVALID,				core::fs::path(),																		NULL,								CF_TYPE_INVALID },
 	// Root must be index 1!!
-	{ CF_TYPE_ROOT,					"",																			".mve .ogg",						CF_TYPE_ROOT	},
+	{ CF_TYPE_ROOT,					core::fs::path(""),																			".mve .ogg",						CF_TYPE_ROOT	},
 	{ CF_TYPE_DATA,					core::fs::path("data"),														".cfg .txt",						CF_TYPE_ROOT	},
-	{ CF_TYPE_MAPS,					core::fs::path("data") / "maps",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_TEXT,					core::fs::path("data") / "text",											".txt .net",						CF_TYPE_DATA	},
-	{ CF_TYPE_MODELS,				core::fs::path("data") / "models",											".pof",								CF_TYPE_DATA	},
-	{ CF_TYPE_TABLES,				core::fs::path("data") / "tables",											".tbl .tbm",						CF_TYPE_DATA	},
-	{ CF_TYPE_SOUNDS,				core::fs::path("data") / "sounds",											".wav .ogg",						CF_TYPE_DATA	},
-	{ CF_TYPE_SOUNDS_8B22K,			core::fs::path("data") / "sounds" / "8b22k",								".wav .ogg",						CF_TYPE_SOUNDS	},
-	{ CF_TYPE_SOUNDS_16B11K,		core::fs::path("data") / "sounds" / "16b11k",								".wav .ogg",						CF_TYPE_SOUNDS	},
-	{ CF_TYPE_VOICE,				core::fs::path("data") / "voice",											"",									CF_TYPE_DATA	},
-	{ CF_TYPE_VOICE_BRIEFINGS,		core::fs::path("data") / "voice" / "briefing",								".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_CMD_BRIEF,		core::fs::path("data") / "voice" / "command_briefings",						".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_DEBRIEFINGS,	core::fs::path("data") / "voice" / "debriefing",							".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_PERSONAS,		core::fs::path("data") / "voice" / "personas",								".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_SPECIAL,		core::fs::path("data") / "voice" / "special",								".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_VOICE_TRAINING,		core::fs::path("data") / "voice" / "training",								".wav .ogg",						CF_TYPE_VOICE	},
-	{ CF_TYPE_MUSIC,				core::fs::path("data") / "music",											".wav .ogg",						CF_TYPE_DATA	},
-	{ CF_TYPE_MOVIES,				core::fs::path("data") / "movies",											".mve .msb .ogg .mp4 .srt .webm .png",CF_TYPE_DATA	},
-	{ CF_TYPE_INTERFACE,			core::fs::path("data") / "interface",										".pcx .ani .dds .tga .eff .png .jpg",	CF_TYPE_DATA	},
-	{ CF_TYPE_FONT,					core::fs::path("data") / "fonts",											".vf .ttf",							CF_TYPE_DATA	},
-	{ CF_TYPE_EFFECTS,				core::fs::path("data") / "effects",											".ani .eff .pcx .neb .tga .jpg .png .dds .sdr",	CF_TYPE_DATA	},
-	{ CF_TYPE_HUD,					core::fs::path("data") / "hud",												".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_PLAYERS,				core::fs::path("data") / "players",											".hcf",								CF_TYPE_DATA	},
-	{ CF_TYPE_PLAYER_IMAGES,		core::fs::path("data") / "players" / "images",								".pcx .png .dds",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_SQUAD_IMAGES,			core::fs::path("data") / "players" / "squads",								".pcx .png .dds",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_SINGLE_PLAYERS,		core::fs::path("data") / "players" / "single",								".pl2 .cs2 .plr .csg .css .json",	CF_TYPE_PLAYERS	},
-	{ CF_TYPE_MULTI_PLAYERS,		core::fs::path("data") / "players" / "multi",								".plr .json",						CF_TYPE_PLAYERS	},
-	{ CF_TYPE_CACHE,				core::fs::path("data") / "cache",											".clr .tmp .bx",					CF_TYPE_DATA	}, 	//clr=cached color
-	{ CF_TYPE_MULTI_CACHE,			core::fs::path("data") / "multidata",										".pcx .png .dds .fs2 .txt",				CF_TYPE_DATA	},
-	{ CF_TYPE_MISSIONS,				core::fs::path("data") / "missions",										".fs2 .fc2 .ntl .ssv",				CF_TYPE_DATA	},
-	{ CF_TYPE_CONFIG,				core::fs::path("data") / "config",											".cfg .tbl .tbm .xml .csv",			CF_TYPE_DATA	},
-	{ CF_TYPE_DEMOS,				core::fs::path("data") / "demos",											".fsd",								CF_TYPE_DATA	},
-	{ CF_TYPE_CBANIMS,				core::fs::path("data") / "cbanims",											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_INTEL_ANIMS,			core::fs::path("data") / "intelanims",										".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
-	{ CF_TYPE_SCRIPTS,				core::fs::path("data") / "scripts",											".lua .lc",							CF_TYPE_DATA	},
-	{ CF_TYPE_FICTION,				core::fs::path("data") / "fiction",											".txt",								CF_TYPE_DATA	}, 
-	{ CF_TYPE_FREDDOCS,				core::fs::path("data") / "freddocs",										".html",							CF_TYPE_DATA	},
-	{ CF_TYPE_INTERFACE_MARKUP,		core::fs::path("data") / "interface" / "markup",							".rml",								CF_TYPE_INTERFACE	},
-	{ CF_TYPE_INTERFACE_CSS,		core::fs::path("data") / "interface" / "css",								".rcss",							CF_TYPE_INTERFACE	},
+	{ CF_TYPE_MAPS,					(core::fs::path("data") / "maps"),											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_TEXT,					(core::fs::path("data") / "text"),											".txt .net",						CF_TYPE_DATA	},
+	{ CF_TYPE_MODELS,				(core::fs::path("data") / "models"),											".pof",								CF_TYPE_DATA	},
+	{ CF_TYPE_TABLES,				(core::fs::path("data") / "tables"),											".tbl .tbm",						CF_TYPE_DATA	},
+	{ CF_TYPE_SOUNDS,				(core::fs::path("data") / "sounds"),											".wav .ogg",						CF_TYPE_DATA	},
+	{ CF_TYPE_SOUNDS_8B22K,			(core::fs::path("data") / "sounds" / "8b22k"),								".wav .ogg",						CF_TYPE_SOUNDS	},
+	{ CF_TYPE_SOUNDS_16B11K,		(core::fs::path("data") / "sounds" / "16b11k"),								".wav .ogg",						CF_TYPE_SOUNDS	},
+	{ CF_TYPE_VOICE,				(core::fs::path("data") / "voice"),											"",									CF_TYPE_DATA	},
+	{ CF_TYPE_VOICE_BRIEFINGS,		(core::fs::path("data") / "voice" / "briefing"),								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_CMD_BRIEF,		(core::fs::path("data") / "voice" / "command_briefings"),						".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_DEBRIEFINGS,	(core::fs::path("data") / "voice" / "debriefing"),							".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_PERSONAS,		(core::fs::path("data") / "voice" / "personas"),								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_SPECIAL,		(core::fs::path("data") / "voice" / "special"),								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_VOICE_TRAINING,		(core::fs::path("data") / "voice" / "training"),								".wav .ogg",						CF_TYPE_VOICE	},
+	{ CF_TYPE_MUSIC,				(core::fs::path("data") / "music"),											".wav .ogg",						CF_TYPE_DATA	},
+	{ CF_TYPE_MOVIES,				(core::fs::path("data") / "movies"),											".mve .msb .ogg .mp4 .srt .webm .png",CF_TYPE_DATA	},
+	{ CF_TYPE_INTERFACE,			(core::fs::path("data") / "interface"),										".pcx .ani .dds .tga .eff .png .jpg",	CF_TYPE_DATA	},
+	{ CF_TYPE_FONT,					(core::fs::path("data") / "fonts"),											".vf .ttf",							CF_TYPE_DATA	},
+	{ CF_TYPE_EFFECTS,				(core::fs::path("data") / "effects"),											".ani .eff .pcx .neb .tga .jpg .png .dds .sdr",	CF_TYPE_DATA	},
+	{ CF_TYPE_HUD,					(core::fs::path("data") / "hud"),												".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_PLAYERS,				(core::fs::path("data") / "players"),											".hcf",								CF_TYPE_DATA	},
+	{ CF_TYPE_PLAYER_IMAGES,		(core::fs::path("data") / "players" / "images"),								".pcx .png .dds",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_SQUAD_IMAGES,			(core::fs::path("data") / "players" / "squads"),								".pcx .png .dds",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_SINGLE_PLAYERS,		(core::fs::path("data") / "players" / "single"),								".pl2 .cs2 .plr .csg .css .json",	CF_TYPE_PLAYERS	},
+	{ CF_TYPE_MULTI_PLAYERS,		(core::fs::path("data") / "players" / "multi"),								".plr .json",						CF_TYPE_PLAYERS	},
+	{ CF_TYPE_CACHE,				(core::fs::path("data") / "cache"),											".clr .tmp .bx",					CF_TYPE_DATA	}, 	//clr=cached color
+	{ CF_TYPE_MULTI_CACHE,			(core::fs::path("data") / "multidata"),										".pcx .png .dds .fs2 .txt",				CF_TYPE_DATA	},
+	{ CF_TYPE_MISSIONS,				(core::fs::path("data") / "missions"),										".fs2 .fc2 .ntl .ssv",				CF_TYPE_DATA	},
+	{ CF_TYPE_CONFIG,				(core::fs::path("data") / "config"),											".cfg .tbl .tbm .xml .csv",			CF_TYPE_DATA	},
+	{ CF_TYPE_DEMOS,				(core::fs::path("data") / "demos"),											".fsd",								CF_TYPE_DATA	},
+	{ CF_TYPE_CBANIMS,				(core::fs::path("data") / "cbanims"),											".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_INTEL_ANIMS,			(core::fs::path("data") / "intelanims"),										".pcx .ani .eff .tga .jpg .png .dds",	CF_TYPE_DATA	},
+	{ CF_TYPE_SCRIPTS,				(core::fs::path("data") / "scripts"),											".lua .lc",							CF_TYPE_DATA	},
+	{ CF_TYPE_FICTION,				(core::fs::path("data") / "fiction"),											".txt",								CF_TYPE_DATA	}, 
+	{ CF_TYPE_FREDDOCS,				(core::fs::path("data") / "freddocs"),										".html",							CF_TYPE_DATA	},
+	{ CF_TYPE_INTERFACE_MARKUP,		(core::fs::path("data") / "interface" / "markup"),							".rml",								CF_TYPE_INTERFACE	},
+	{ CF_TYPE_INTERFACE_CSS,		(core::fs::path("data") / "interface" / "css"),								".rcss",							CF_TYPE_INTERFACE	},
 };
 // clang-format on
 
@@ -166,11 +166,11 @@ static bool cfile_in_root_dir(const char *exe_path)
 
 	do {
 		new_token = 0;
-		while (*p == DIR_SEPARATOR_CHAR) {
+		while (*p == core::fs::path::preferred_separator) {
 			p++;
 		}
 
-		while ((*p != '\0') && (*p != DIR_SEPARATOR_CHAR)) {
+		while ((*p != '\0') && (*p != core::fs::path::preferred_separator)) {
 			new_token = 1;
 			p++;
 		}
@@ -220,7 +220,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 
 	char *p;
 
-	p = strrchr(buf, DIR_SEPARATOR_CHAR);
+	p  = strrchr(buf, core::fs::path::preferred_separator);
 	*p = '\0';
 
 	cfile_chdir(buf);
@@ -586,12 +586,12 @@ static void mkdir_recursive(const char *path) {
     std::string tmp(path);
     std::string dir;
 
-    if (tmp[tmp.size() - 1] != DIR_SEPARATOR_CHAR) {
+    if (tmp[tmp.size() - 1] != core::fs::path::preferred_separator) {
         // force trailing / so we can handle everything in loop
-        tmp += DIR_SEPARATOR_CHAR;
+		tmp += core::fs::path::preferred_separator;
     }
 
-    while ((pos = tmp.find_first_of(DIR_SEPARATOR_CHAR, pre)) != std::string::npos) {
+    while ((pos = tmp.find_first_of(core::fs::path::preferred_separator, pre)) != std::string::npos) {
         dir = tmp.substr(0, pos++);
         pre = pos;
         if (dir.empty()) continue; // if leading / first time is 0 length
@@ -1853,12 +1853,12 @@ int cfile_get_path_type(const std::string& dir)
 	// Use official DIR_SEPARATOR_CHAR
 	for (char& c : buf) {
 		if (c == '\\' || c == '/') {
-			c = DIR_SEPARATOR_CHAR;
+			c = core::fs::path::preferred_separator;
 		}
 	}
 
 	for (auto& Pathtype : Pathtypes) {
-		if (Pathtype.path != nullptr && buf == Pathtype.path) {
+		if (Pathtype.path.c_str() != nullptr && buf == Pathtype.path.c_str()) {
 			return Pathtype.index;
 		}
 	}

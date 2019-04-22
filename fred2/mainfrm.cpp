@@ -111,7 +111,7 @@ void CMainFrame::init_tools() {
 	if (count == 1) {
 		return;
 	} else if (count >= 3) {
-		Warning(LOCATION, "CMainFrame::init_tools was called more than twice!  Trace out and fix.");
+		core::Warning(LOCATION, "CMainFrame::init_tools was called more than twice!  Trace out and fix.");
 		return;
 	}
 
@@ -239,13 +239,13 @@ void CMainFrame::OnFileMissionnotes() {
 void CMainFrame::OnFredHelp() {
 	auto res = cf_find_file_location("index.html", CF_TYPE_FREDDOCS);
 	if (!res.found) {
-		ReleaseWarning(LOCATION, "Could not find FRED help files!");
+		core::ReleaseWarning(LOCATION, "Could not find FRED help files!");
 		return;
 	}
 
 	if (res.offset != 0) {
 		// We need an actual file location so VP files are not valid
-		Error(LOCATION, "The FRED documentation was found in a pack (VP) file. This is not valid!");
+		core::Error(LOCATION, "The FRED documentation was found in a pack (VP) file. This is not valid!");
 		return;
 	}
 

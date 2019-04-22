@@ -12,7 +12,8 @@
 
 // 4786 is identifier truncated to 255 characters (happens all the time in Microsoft #includes) -- Goober5000
 #pragma warning(disable: 4786)
-
+#include <string>
+#include <vector>
 #include "parse/sexp.h"
 #include "parse/parselo.h"
 
@@ -97,7 +98,7 @@ class sexp_list_item
 public:
 	int type;
 	int op;
-	SCP_string text;
+	std::string text;
 	int flags;
 	sexp_list_item *next;
 
@@ -175,7 +176,7 @@ public:
 	void add_sub_tree(int node, HTREEITEM root);
 	int load_sub_tree(int index, bool valid, const char *text);
 	void hilite_item(int node);
-	SCP_string match_closest_operator(const char *str, int node);
+	std::string match_closest_operator(const char *str, int node);
 	void delete_sexp_tree_variable(const char *var_name);
 	void modify_sexp_tree_variable(const char *old_name, int sexp_var_index);
 	int get_item_index_to_var_index();
@@ -314,7 +315,7 @@ protected:
 	int flag;
 	int *modified;
 
-	SCP_vector<sexp_tree_item> tree_nodes;
+	std::vector<sexp_tree_item> tree_nodes;
 	int total_nodes;
 
 	HTREEITEM item_handle;

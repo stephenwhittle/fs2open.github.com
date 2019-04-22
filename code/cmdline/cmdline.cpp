@@ -7,7 +7,7 @@
  *
 */ 
 
-
+#include "core/path.h"
 #include "core/error.h"
 #include "camera/camera.h" //VIEWER_ZOOM_DEFAULT
 #include "cmdline/cmdline.h"
@@ -973,7 +973,7 @@ void os_init_cmdline(int argc, char *argv[])
 
 			fp = fopen(resolved_path, "rt");
 #else
-			fp = fopen("data" DIR_SEPARATOR_STR "cmdline_fso.cfg", "rt");
+			fp = fopen((core::fs::path("data") /  "cmdline_fso.cfg").c_str(), "rt");
 #endif
 			// if the file exists, get a single line, and deal with it
 			if (fp) {

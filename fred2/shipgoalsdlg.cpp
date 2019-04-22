@@ -499,7 +499,7 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 				break;
 
 			default:
-				Error(LOCATION, "Unhandled AI_GOAL_X #define %d in ship goals dialog box", mode);
+				core::Error(LOCATION, "Unhandled AI_GOAL_X #define %d in ship goals dialog box", mode);
 		}
 
 		if (flag & 0x1) {
@@ -538,7 +538,7 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 		}
 
 		if (flag & 0x4) {  // data is a waypoint path name
-			SCP_list<waypoint_list>::iterator ii;
+			std::list<waypoint_list>::iterator ii;
 			for (i = 0, ii = Waypoint_lists.begin(); ii != Waypoint_lists.end(); ++i, ++ii) {
 				if (!stricmp(goalp[item].target_name, ii->get_name())) {
 					m_data[item] = i | TYPE_PATH;
@@ -587,7 +587,7 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 
 void ShipGoalsDlg::set_item(int item, int init)
 {
-	SCP_list<waypoint_list>::iterator ii;
+	std::list<waypoint_list>::iterator ii;
 	int i, t, z, num, inst;
 	object *ptr;
 
@@ -1037,7 +1037,7 @@ void ShipGoalsDlg::update_item(int item, int multi)
 			break;
 
 		default:
-			Warning(LOCATION, "Unknown AI_GOAL type 0x%x", mode);
+			core::Warning(LOCATION, "Unknown AI_GOAL type 0x%x", mode);
 			MODIFY(goalp[item].ai_mode, AI_GOAL_NONE);
 			return;
 	}
@@ -1086,7 +1086,7 @@ void ShipGoalsDlg::update_item(int item, int multi)
 			return;
 
 		default:
-			Error(LOCATION, "Unhandled TYPE_X #define %d in ship goals dialog box", m_data[item] & TYPE_MASK);
+			core::Error(LOCATION, "Unhandled TYPE_X #define %d in ship goals dialog box", m_data[item] & TYPE_MASK);
 	}
 
 	if (stricmp(save, goalp[item].target_name))
