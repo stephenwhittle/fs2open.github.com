@@ -16,7 +16,7 @@
 #include "model/model.h"
 #include "mission/missionparse.h"
 #include "graphics/util/UniformBuffer.h"
-
+#include "math/fix.h"
 extern std::vector<light> Lights;
 extern int Num_lights;
 

@@ -22,6 +22,7 @@
 #include "io/key.h"
 #include "io/timer.h"
 #include "localization/localize.h"
+#include "math/fix.h"
 #include "menuui/credits.h"
 #include "missionui/missionscreencommon.h"
 #include "parse/parselo.h"

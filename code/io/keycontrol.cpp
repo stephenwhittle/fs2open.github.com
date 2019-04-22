@@ -20,6 +20,7 @@
 #include "playerman/player.h"
 #include "weapon/weapon.h"
 #include "hud/hud.h"
+#include "math/fix.h"
 #include "gamesequence/gamesequence.h"
 #include "mission/missiongoals.h"
 #include "hud/hudets.h"

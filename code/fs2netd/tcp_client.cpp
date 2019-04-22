@@ -27,7 +27,7 @@
 #include "io/timer.h"
 #include "globalincs/pstypes.h"
 #include "osapi/osapi.h"
-
+#include "math/fix.h"
 #include <iostream>
 #include <string>
 #include <climits>

@@ -13,7 +13,7 @@
 #include "globalincs/pstypes.h"
 #include "globalincs/systemvars.h"
 #include "ai/ai_flags.h"
-
+#include "math/fix.h"
 // AI Path types
 #define	AI_PATH_MODE_NORMAL 0
 #define	AI_PATH_MODE_ALT1	1

@@ -57,6 +57,7 @@
 #include "jumpnode/jumpnode.h"
 #include "localization/localize.h"
 #include "math/fvi.h"
+#include "math/fix.h"
 #include "menuui/techmenu.h"		// for intel stuff
 #include "mission/missionbriefcommon.h"
 #include "mission/missioncampaign.h"

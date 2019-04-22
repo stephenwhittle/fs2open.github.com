@@ -21,7 +21,7 @@
 #include "cfile/cfile.h"
 #include "math/vecmat.h"
 #include "io/cursor.h"
-
+#include "math/fix.h"
 // Forward definition
 namespace graphics {
 namespace util {

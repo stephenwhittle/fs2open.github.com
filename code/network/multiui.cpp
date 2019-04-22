@@ -17,6 +17,7 @@
 #include <netinet/in.h>
 #endif
 
+#include "math/fix.h"
 #include "network/multiui.h"
 #include "freespace.h"
 #include "network/multi.h"

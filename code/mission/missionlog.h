@@ -14,7 +14,7 @@
 
 #include "globalincs/globals.h"
 #include "globalincs/pstypes.h"
-
+#include "math/fix.h"
 // defined for different mission log entries
 
 enum LogType {

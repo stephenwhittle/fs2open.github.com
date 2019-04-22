@@ -50,7 +50,7 @@
 #include "pilotfile/pilotfile.h"
 #include "debugconsole/console.h"
 #include "network/psnet2.h"
-
+#include "math/fix.h"
 // Stupid windows workaround...
 #ifdef MessageBox
 #undef MessageBox

@@ -2,7 +2,7 @@
 #include "pilotfile/pilotfile.h"
 #include "ship/ship.h"
 #include "stats/medals.h"
-
+#include "math/fix.h"
 
 pilotfile Pilot;
 

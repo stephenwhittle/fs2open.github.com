@@ -21,6 +21,7 @@
 #include "graphics/2d.h"			// for color def
 #include "hud/hud.h"
 #include "hud/hudparse.h"
+#include "math/fix.h"
 #include "model/model.h"
 #include "model/modelanim.h"
 #include "network/multi_obj.h"

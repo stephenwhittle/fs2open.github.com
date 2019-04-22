@@ -19,7 +19,7 @@
 #include "object/waypoint.h"
 #include "physics/physics.h"
 #include "ship/ship_flags.h"
-
+#include "math/fix.h"
 class ship_weapon;
 class ship_subsys;
 class object;

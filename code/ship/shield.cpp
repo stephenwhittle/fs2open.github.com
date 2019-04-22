@@ -16,6 +16,7 @@
 //		4		Shrink-wrapped texture.  Lasts full-time.
 #include "core/error.h"
 #include "render/3d.h"
+#include "math/fix.h"
 #include "model/model.h"
 #include "freespace.h"
 #include "mission/missionparse.h"

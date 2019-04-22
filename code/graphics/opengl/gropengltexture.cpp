@@ -21,8 +21,10 @@
 #include "gropenglstate.h"
 #include "gropengltexture.h"
 #include "math/vecmat.h"
+#include "math/fix.h"
 #include "osapi/osregistry.h"
 #include "core/error.h"
+
 matrix4 GL_texture_matrix;
 
 int GL_texture_ram = 0;

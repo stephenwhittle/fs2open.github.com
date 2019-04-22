@@ -21,6 +21,7 @@
 #include "io/key.h"
 #include "io/timer.h"
 #include "localization/localize.h"
+#include "math/fix.h"
 #include "mission/missiongoals.h"
 #include "mission/missionlog.h"
 #include "missionui/missionscreencommon.h"

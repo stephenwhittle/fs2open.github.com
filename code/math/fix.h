@@ -14,6 +14,8 @@
 
 #define F1_0 65536
 #define f1_0 65536
+//todo:: move back to pstypes when pstypes has no headers?
+typedef std::int32_t fix;
 
 fix fixmul(fix a, fix b);
 fix fixdiv(fix a, fix b);

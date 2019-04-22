@@ -37,6 +37,7 @@
 #include "io/joy_ff.h"
 #include "io/timer.h"
 #include "localization/localize.h"
+#include "math/fix.h"
 #include "math/fvi.h"
 #include "math/staticrand.h"
 #include "mission/missiongoals.h"

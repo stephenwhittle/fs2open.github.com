@@ -18,6 +18,7 @@
 #include "network/multi_options.h"
 #include "io/keycontrol.h"
 #include "globalincs/globals.h"
+#include "math/fix.h"
 
 class p_object;
 struct CFILE;

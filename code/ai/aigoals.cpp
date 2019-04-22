@@ -12,6 +12,7 @@
 
 #include "ai/aigoals.h"
 #include "globalincs/linklist.h"
+#include "math/fix.h"
 #include "mission/missionlog.h"
 #include "mission/missionparse.h"
 #include "network/multi.h"

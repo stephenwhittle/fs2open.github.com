@@ -13,6 +13,7 @@
 #define _SYSTEMVARS_H
 
 #include "globalincs/pstypes.h"
+#include "math/fix.h"
 #include <cmath>
 
 #include <cstdint>

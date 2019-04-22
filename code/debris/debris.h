@@ -13,7 +13,7 @@
 #define _DEBRIS_H
 
 #include "globalincs/pstypes.h"
-
+#include "math/fix.h"
 class object;
 struct CFILE;
 class model_draw_list;

@@ -8,7 +8,7 @@
 #include "mission/missionparse.h"
 #include "parse/parselo.h"
 #include "playerman/player.h"
-
+#include "math/fix.h"
 #include "discord_rpc.h"
 
 namespace {

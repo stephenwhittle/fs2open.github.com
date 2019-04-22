@@ -24,6 +24,7 @@
 #include "io/joy_ff.h"
 #include "io/timer.h"
 #include "math/staticrand.h"
+#include "math/fix.h"
 #include "missionui/missionweaponchoice.h"
 #include "network/multi.h"
 #include "network/multimsgs.h"

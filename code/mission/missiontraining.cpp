@@ -15,6 +15,7 @@
 #include "globalincs/alphacolors.h"
 #include "hud/hudmessage.h"
 #include "io/timer.h"
+#include "math/fix.h"
 #include "mission/missiongoals.h"
 #include "mission/missionmessage.h"
 #include "mission/missionparse.h"

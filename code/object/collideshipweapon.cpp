@@ -23,7 +23,7 @@
 #include "ship/shipfx.h"
 #include "ship/shiphit.h"
 #include "weapon/weapon.h"
-
+#include "math/fix.h"
 
 extern float ai_endangered_time(object *ship_objp, object *weapon_objp);
 static int check_inside_radius_for_big_ships( object *ship, object *weapon_obj, obj_pair *pair );

@@ -13,7 +13,7 @@
 #define _TIMER_H
 
 #include "globalincs/pstypes.h"
-
+#include "math/fix.h"
 #include <cstdint>
 
 //==========================================================================

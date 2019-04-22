@@ -38,7 +38,8 @@
 
 
 typedef std::int32_t _fs_time_t;  // time_t here is 64-bit and we need 32-bit
-typedef std::int32_t fix;
+//this may still need to be here
+//typedef std::int32_t fix;
 
 // PTR compatible sizes
 typedef ptrdiff_t ptr_s;
@@ -212,8 +213,6 @@ typedef struct coord2d {
 extern int Global_warning_count;
 extern int Global_error_count;
 
-//#include "osapi/outwnd.h"
-
 // To debug printf do this:
 // mprintf(( "Error opening %s\n", filename ));
 #ifndef NDEBUG
@@ -299,7 +298,7 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 //======================================================================================
 
 
-#include "math/fix.h"
+//#include "math/fix.h"
 #include "math/floating.h"
 
 // Some constants for stuff

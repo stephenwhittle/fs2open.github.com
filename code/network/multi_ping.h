@@ -15,7 +15,7 @@
 // ------------------------------------------------------------------------------------
 // MULTIPLAYER PING DEFINES/VARS
 //
-
+#include "math/fix.h"
 struct header;
 struct net_addr;
 struct net_player;

@@ -20,6 +20,7 @@
 #include "iff_defs/iff_defs.h"
 #include "io/key.h"
 #include "io/timer.h"
+#include "math/fix.h"
 #include "mission/missionlog.h"
 #include "mission/missionmessage.h"
 #include "network/multi_pmsg.h"

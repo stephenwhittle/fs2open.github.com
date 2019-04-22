@@ -25,6 +25,7 @@
 #include "io/mouse.h"
 #include "io/timer.h"
 #include "headtracking/headtracking.h"
+#include "math/fix.h"
 #include "mission/missiongoals.h"
 #include "mission/missionmessage.h"
 #include "network/multi_obj.h"

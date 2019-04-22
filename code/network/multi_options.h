@@ -11,7 +11,7 @@
 
 #include "globalincs/pstypes.h"
 #include "psnet2.h"
-
+#include "math/fix.h"
 // local (netplayer - nonserver) options - maintained on individual clients and on the server (no need for other clients to know this guy's settings)
 #define MAX_OBJ_UPDATE_LEVELS						4					// the # of object update levels there are
 #define OBJ_UPDATE_LOW								0					// low object updates

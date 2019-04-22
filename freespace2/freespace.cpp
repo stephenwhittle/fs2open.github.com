@@ -88,6 +88,7 @@
 #include "lighting/lighting.h"
 #include "localization/localize.h"
 #include "math/staticrand.h"
+#include "math/fix.h"
 #include "menuui/barracks.h"
 #include "menuui/credits.h"
 #include "menuui/mainhallmenu.h"
