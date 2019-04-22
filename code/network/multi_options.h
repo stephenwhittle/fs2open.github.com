@@ -9,7 +9,7 @@
 #ifndef _MULTI_NETGAME_OPTIONS_HEADER_FILE
 #define _MULTI_NETGAME_OPTIONS_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "psnet2.h"
 #include "math/fix.h"
 // local (netplayer - nonserver) options - maintained on individual clients and on the server (no need for other clients to know this guy's settings)

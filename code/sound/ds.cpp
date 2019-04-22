@@ -11,7 +11,7 @@
 #include "core/error.h"
 #include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osapi.h"
 #include "sound/audiostr.h"
 #include "sound/channel.h"

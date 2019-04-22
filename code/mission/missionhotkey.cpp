@@ -15,7 +15,7 @@
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
 #include "globalincs/linklist.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/font.h"
 #include "iff_defs/iff_defs.h"
 #include "io/key.h"

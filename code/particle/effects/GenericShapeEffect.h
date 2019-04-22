@@ -3,7 +3,7 @@
 #pragma once
 
 #include "core/error.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleManager.h"
 #include "particle/util/ParticleProperties.h"

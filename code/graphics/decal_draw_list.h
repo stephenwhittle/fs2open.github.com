@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "graphics/material.h"
 #include "graphics/util/UniformBuffer.h"

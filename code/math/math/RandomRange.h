@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <random>
 #include <type_traits>

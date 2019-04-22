@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "nanovg/nanovg.h"
 
 #include "graphics/2d.h"

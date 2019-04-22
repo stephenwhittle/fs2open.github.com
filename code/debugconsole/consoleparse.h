@@ -15,7 +15,7 @@
   */
 
 #include "debugconsole/console.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <cstdarg>
 

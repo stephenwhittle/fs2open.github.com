@@ -11,7 +11,7 @@
 
 #include <cstdio>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #ifdef WIN32
 #include <windows.h>

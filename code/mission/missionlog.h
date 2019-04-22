@@ -13,7 +13,7 @@
 #define _MISSIONLOG_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/fix.h"
 // defined for different mission log entries
 

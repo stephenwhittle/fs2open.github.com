@@ -11,7 +11,7 @@
 
 #include <cstring>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "tgautils/tgautils.h"
 #include "cfile/cfile.h"
 #include "bmpman/bmpman.h"

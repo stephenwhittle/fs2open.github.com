@@ -3,7 +3,7 @@
  * create based on the source.
  */
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "def_files/def_files.h"
 

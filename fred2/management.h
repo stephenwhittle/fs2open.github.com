@@ -11,7 +11,7 @@
 #define __MANAGEMENT_H__
 
 #include "ai/aigoals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "jumpnode/jumpnode.h"
 #include "ship/ship.h"
 #include <afxmt.h>

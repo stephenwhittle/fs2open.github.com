@@ -1,5 +1,5 @@
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/openal.h"
 #include "osapi/osregistry.h"
 #include "osapi/dialogs.h"

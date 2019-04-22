@@ -31,7 +31,7 @@
 #include "core/path.h"
 #include "core/error.h"
 #include "osapi/osapi.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "cmdline/cmdline.h"
 #include "parse/parselo.h"

@@ -5,7 +5,7 @@
 #include "core/error.h"
 #include "cfile/cfile.h"
 #include "mod_table/mod_table.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 // Our Assert conflicts with the definitions inside libRocket
 #pragma push_macro("Assert")
 #undef Assert

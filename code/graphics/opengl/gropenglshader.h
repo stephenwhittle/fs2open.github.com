@@ -11,7 +11,7 @@
 #ifndef _GROPENGLSHADER_H
 #define _GROPENGLSHADER_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "graphics/opengl/gropengl.h"
 #include "graphics/material.h"

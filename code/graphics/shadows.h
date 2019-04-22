@@ -10,7 +10,7 @@
 #ifndef _SHADOWS_H
 #define _SHADOWS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "object/object.h"
 
 #define MAX_SHADOW_CASCADES 4

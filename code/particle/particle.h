@@ -12,7 +12,7 @@
 #ifndef _PARTICLE_H
 #define _PARTICLE_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "object/object.h"
 
 #include <memory>

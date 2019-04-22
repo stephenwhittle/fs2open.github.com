@@ -18,7 +18,7 @@
 #pragma warning(pop)
 
 /* SCP */
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/mspdb_callstack.h"
 
 /* Link the library that we need */

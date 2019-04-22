@@ -12,7 +12,7 @@
 #ifndef _MULTI_INGAME_JOIN_HEADER_FILE
 #define _MULTI_INGAME_JOIN_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class ship;
 struct wing;

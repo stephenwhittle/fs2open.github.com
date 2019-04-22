@@ -20,7 +20,7 @@ on how to hook it in.
 
 #ifdef _WIN32
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <windows.h>
 

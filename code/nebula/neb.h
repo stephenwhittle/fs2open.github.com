@@ -17,7 +17,7 @@
 //
 #include "camera/camera.h"
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class ship;
 class object;

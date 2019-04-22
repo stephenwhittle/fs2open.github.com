@@ -7,10 +7,10 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "def_files/def_files.h"
 #include "ai/ai_profiles.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "localization/localize.h"
 #include "parse/parselo.h"
 #include "ship/ship.h"

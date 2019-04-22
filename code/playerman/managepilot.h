@@ -10,7 +10,7 @@
 #ifndef _MANAGEPILOT_H
 #define _MANAGEPILOT_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class player;
 

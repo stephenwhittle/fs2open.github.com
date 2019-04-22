@@ -12,7 +12,7 @@
 #ifndef _MULTI_H
 #define _MULTI_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/psnet2.h"					// for PSNET_SOCKET		
 #include "network/multi_ping.h"
 #include "network/multi_options.h"

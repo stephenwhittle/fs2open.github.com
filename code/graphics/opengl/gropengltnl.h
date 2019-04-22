@@ -14,7 +14,7 @@
 #define _GROPENGLTNL_H
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gropengl.h"
 #include "graphics/shadows.h"
 #include "model/model.h"

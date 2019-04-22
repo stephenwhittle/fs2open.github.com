@@ -14,7 +14,7 @@
 #endif
 
 #include "core/format.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/alphacolors.h"
 #include "globalincs/systemvars.h"
 #include "io/cursor.h"

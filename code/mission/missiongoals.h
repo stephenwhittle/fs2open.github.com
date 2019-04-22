@@ -13,7 +13,7 @@
 #define _MISSIONGOAL_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 struct ai_goal;
 struct ai_info;

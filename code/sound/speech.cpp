@@ -48,7 +48,7 @@
 #include <cstdio>
 #pragma warning(pop)
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "utils/unicode.h"
 #include "speech.h"
 

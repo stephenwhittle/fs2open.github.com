@@ -9,7 +9,7 @@
 
 
 #include "debugconsole/console.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "graphics/2d.h"
 #include "io/timer.h"

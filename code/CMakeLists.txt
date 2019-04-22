@@ -46,8 +46,9 @@ target_link_libraries(code PUBLIC libRocket)
 target_link_libraries(code PUBLIC hidapi)
 
 add_subdirectory(core)
+add_subdirectory(math)
 
-target_link_libraries(code PUBLIC core)
+target_link_libraries(code PUBLIC core math)
 
 enable_clang_tidy(code)
 

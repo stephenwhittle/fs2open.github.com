@@ -8,7 +8,7 @@
 #include "core/error.h"
 #include "bmpman/bmpman.h"
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "graphics/grbatch.h"
 #include "render/3d.h"

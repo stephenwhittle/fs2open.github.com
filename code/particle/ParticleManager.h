@@ -2,7 +2,7 @@
 #define PARTICLE_MANAGER_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleSource.h"
 #include "particle/ParticleSourceWrapper.h"

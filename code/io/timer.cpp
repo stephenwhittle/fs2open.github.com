@@ -9,7 +9,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/timer.h"
 #include "graphics/2d.h"
 #include "globalincs/alphacolors.h"

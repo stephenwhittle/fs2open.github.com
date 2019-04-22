@@ -12,7 +12,7 @@
 #ifndef _COLLIDESTUFF_H
 #define _COLLIDESTUFF_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class object;
 struct CFILE;

@@ -12,7 +12,7 @@
 #ifndef _DEBRIS_H
 #define _DEBRIS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/fix.h"
 class object;
 struct CFILE;

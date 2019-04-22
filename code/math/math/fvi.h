@@ -12,7 +12,7 @@
 #ifndef _FVI_H
 #define _FVI_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 //finds distance from point to plane
 float fvi_point_dist_plane(const vec3d *plane_pnt, const vec3d *plane_norm, const vec3d *point);

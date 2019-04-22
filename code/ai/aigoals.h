@@ -13,7 +13,7 @@
 #define _AIGOALS_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 struct wing;
 struct ai_info;

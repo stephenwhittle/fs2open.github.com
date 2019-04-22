@@ -1,6 +1,6 @@
 #include "pstypes.h"
 #include "core/error.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 #include "safe_strings.h"
 /* It is a condition of use that safe_strings.cpp, safe_strings.h, safe_strings_test.cpp remain together.
  *

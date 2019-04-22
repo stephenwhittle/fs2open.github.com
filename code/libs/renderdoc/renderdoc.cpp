@@ -2,7 +2,7 @@
 #include "renderdoc.h"
 #include "renderdoc_app.h"
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #ifdef SCP_UNIX
 #include <dlfcn.h>

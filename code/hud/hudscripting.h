@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "hud/hud.h"
 #include "scripting/lua/LuaFunction.h"
 

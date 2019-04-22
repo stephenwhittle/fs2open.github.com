@@ -9,7 +9,7 @@
 #ifndef _BIT_ARRAY_H
 #define _BIT_ARRAY_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 
 // the following four functions are adapted from http://www.codeproject.com/cpp/BitArray.asp; their explanation

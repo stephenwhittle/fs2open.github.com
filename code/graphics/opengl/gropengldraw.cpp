@@ -7,7 +7,7 @@
  *
 */
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cmdline/cmdline.h"
 #include "freespace.h"
 #include "graphics/matrix.h"

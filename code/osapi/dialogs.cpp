@@ -7,7 +7,7 @@
 #include "cmdline/cmdline.h"
 #include "graphics/2d.h"
 #include "scripting/ade.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include <SDL_messagebox.h>
 #include <SDL_clipboard.h>
 

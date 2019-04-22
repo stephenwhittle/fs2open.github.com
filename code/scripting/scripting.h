@@ -2,7 +2,7 @@
 #define _SCRIPTING_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "scripting/ade_args.h"
 #include "scripting/lua/LuaFunction.h"

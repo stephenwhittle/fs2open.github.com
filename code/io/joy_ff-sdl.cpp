@@ -10,7 +10,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/vecmat.h"
 #include "osapi/osregistry.h"
 #include "io/joy_ff.h"

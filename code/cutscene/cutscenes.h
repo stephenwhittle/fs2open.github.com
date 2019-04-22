@@ -11,7 +11,7 @@
 #define _FREESPACE_CUTSCENES_SCREEN_HEADER_FILE
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 typedef struct cutscene_info
 {

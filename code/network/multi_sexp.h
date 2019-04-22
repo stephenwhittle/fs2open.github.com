@@ -4,7 +4,7 @@
  * create based on the source.
  */
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/psnet2.h"
 #include "network/multimsgs.h"
 #include "ship/ship.h"

@@ -12,7 +12,7 @@
 #ifndef _TRAILS_H
 #define _TRAILS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/generic.h"
 
 #define NUM_TRAIL_SECTIONS 128

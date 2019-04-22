@@ -6,7 +6,7 @@
 #pragma once
 
 #include <math/bitarray.h>
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include <math/RandomRange.h>
 
 namespace particle {

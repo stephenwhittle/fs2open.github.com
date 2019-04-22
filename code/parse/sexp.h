@@ -12,7 +12,7 @@
 
 #include <vector>
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"	// for NULL
+#include <core/pstypes.h>	// for NULL
 
 class ship_subsys;
 class ship;

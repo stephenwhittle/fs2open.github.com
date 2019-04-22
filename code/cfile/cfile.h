@@ -13,7 +13,7 @@
 #define __CFILE_H__
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include <vector>
 #include <string>
 #include <list>

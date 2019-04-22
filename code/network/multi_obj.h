@@ -15,7 +15,7 @@
 // ---------------------------------------------------------------------------------------------------
 // OBJECT UPDATE DEFINES/VARS
 //
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 struct interp_info;
 class object;

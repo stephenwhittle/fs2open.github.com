@@ -12,7 +12,7 @@
 #ifndef _MULTIPLAYER_CAMPAIGN_HEADER_FILE
 #define _MULTIPLAYER_CAMPAIGN_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // ------------------------------------------------------------------------------------
 // MULTIPLAYER CAMPAIGN DEFINES/VARS

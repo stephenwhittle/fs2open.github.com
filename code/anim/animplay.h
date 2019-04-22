@@ -13,7 +13,7 @@
 #define __ANIMPLAY_H__
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 struct anim;
 struct anim_info;

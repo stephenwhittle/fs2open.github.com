@@ -7,7 +7,7 @@
 #define PNG_SKIP_SETJMP_CHECK
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "png.h"
 
 #define PNG_ERROR_INVALID		-1

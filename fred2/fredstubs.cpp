@@ -9,7 +9,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "object/object.h"
 #include "io/key.h"
 #include "ship/ship.h"

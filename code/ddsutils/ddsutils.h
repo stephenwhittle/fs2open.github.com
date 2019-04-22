@@ -4,7 +4,7 @@
 #ifndef __DDS_H
 #define __DDS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cfile/cfile.h"
 
 

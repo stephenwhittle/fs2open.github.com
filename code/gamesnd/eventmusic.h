@@ -14,7 +14,7 @@
 #define __EVENT_MUSIC_H__
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // Identifies songs in the Soundtrack_filenames[] structure.  The order matches up with
 // what is in Pattern_info and music.tbl.  Do not modify without properly inputting to

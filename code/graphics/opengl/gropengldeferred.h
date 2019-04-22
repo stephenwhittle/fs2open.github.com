@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 void gr_opengl_deferred_init();
 

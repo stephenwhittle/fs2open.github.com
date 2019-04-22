@@ -15,7 +15,7 @@
 // ---------------------------------------------------------------------------------------
 // MULTI RESPAWN DEFINES/VARS
 //
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class object;
 struct header;

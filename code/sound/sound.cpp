@@ -15,7 +15,7 @@
 #include "gamesnd/eventmusic.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "mod_table/mod_table.h"
 #include "osapi/osapi.h"
 #include "render/3d.h"
@@ -27,7 +27,7 @@
 #include "tracing/Monitor.h"
 #include "tracing/tracing.h"
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include <math/RandomRange.h>
 #include <climits>
 

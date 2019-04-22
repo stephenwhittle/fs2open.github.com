@@ -3,7 +3,7 @@
 
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "pngutils/pngutils.h"
 #include "globalincs/fsmemory.h"

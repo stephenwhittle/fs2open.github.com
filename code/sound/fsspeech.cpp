@@ -6,11 +6,11 @@
  *
 */ 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osregistry.h"
 #include "sound/fsspeech.h"
 #include "sound/speech.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 
 extern int Cmdline_freespace_no_sound;
 

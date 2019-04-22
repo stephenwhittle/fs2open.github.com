@@ -10,7 +10,7 @@
 #define _AI_PROFILES_H_
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "ai/ai_flags.h"
 #include "math/fix.h"

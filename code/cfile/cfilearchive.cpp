@@ -26,7 +26,7 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "luaconf.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 #include <sstream>
 #include <limits>
 

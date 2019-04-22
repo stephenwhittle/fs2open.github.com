@@ -13,7 +13,7 @@
 #define _GROPENGL_H
 
 #include <glad/glad.h>
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/grinternal.h"
 
 const ubyte GL_zero_3ub[3] = { 0, 0, 0 };

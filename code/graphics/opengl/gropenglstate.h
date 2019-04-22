@@ -11,7 +11,7 @@
 #ifndef _GROPENGLSTATE_H
 #define _GROPENGLSTATE_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gropengl.h"
 #include "gropengltexture.h"
 #include "gropenglshader.h"

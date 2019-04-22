@@ -10,7 +10,7 @@
 #ifndef PXO_CHAT_API_HEADER_FILE
 #define PXO_CHAT_API_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // chat server port
 #define PXO_CHAT_PORT		7117

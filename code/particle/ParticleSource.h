@@ -2,7 +2,7 @@
 #define PARTICLE_SOURCE_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "object/object.h"
 

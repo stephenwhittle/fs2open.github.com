@@ -38,7 +38,7 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "def_files/def_files.h"
 #include "localization/localize.h"
 #include "osapi/osapi.h"

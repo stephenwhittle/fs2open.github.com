@@ -2,7 +2,7 @@
 #define PARTICLE_EFFECT_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 namespace particle {
 class ParticleSource;

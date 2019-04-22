@@ -2,7 +2,7 @@
 #define CONE_GENERATOR_EFFECT_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/RandomRange.h"
 #include <particle/ParticleEffect.h>
 #include <math/vecmat.h>

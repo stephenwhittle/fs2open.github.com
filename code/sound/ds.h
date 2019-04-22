@@ -12,7 +12,7 @@
 #ifndef __DS_H__
 #define __DS_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/ffmpeg/WaveFile.h"
 #include "utils/id.h"
 

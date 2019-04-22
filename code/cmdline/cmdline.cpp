@@ -12,7 +12,7 @@
 #include "camera/camera.h" //VIEWER_ZOOM_DEFAULT
 #include "cmdline/cmdline.h"
 #include "globalincs/linklist.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "globalincs/version.h"
 #include "hud/hudconfig.h"
@@ -20,7 +20,7 @@
 #include "scripting/scripting.h"
 #include "parse/sexp.h"
 #include "globalincs/version.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osapi.h"
 #include "cfile/cfilesystem.h"
 #include "sound/speech.h"

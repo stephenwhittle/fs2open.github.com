@@ -17,7 +17,7 @@
 #include "ai/ai.h"
 #include "fireball/fireballs.h"
 #include "globalincs/globals.h"		// for defintions of token lengths -- maybe move this elsewhere later (Goober5000 - moved to globals.h)
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"			// for color def
 #include "hud/hud.h"
 #include "hud/hudparse.h"

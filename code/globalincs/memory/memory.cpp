@@ -1,5 +1,5 @@
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "core/error.h"
 #include "memory.h"
 namespace memory {

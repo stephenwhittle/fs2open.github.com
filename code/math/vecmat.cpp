@@ -15,8 +15,8 @@
 #endif
 
 #include "math/vecmat.h"
-#include <globalincs/toolchain.h>
-#include <globalincs/pstypes.h>
+#include <core/toolchain.h>
+#include <core/pstypes.h>
 #include <math/RandomRange.h>
 #define	SMALL_NUM	1e-7
 #define	SMALLER_NUM	1e-20

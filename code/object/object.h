@@ -13,7 +13,7 @@
 #define _OBJECT_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/vecmat.h"
 #include "object/object_flags.h"
 #include "physics/physics.h"

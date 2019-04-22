@@ -12,7 +12,7 @@
 #ifndef _CFTP_HEADER_
 #define _CFTP_HEADER_
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <cstdio>
 

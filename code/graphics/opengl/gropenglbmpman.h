@@ -13,7 +13,7 @@
 #define _OGL_BMPMAN_H
 
 #include "bmpman/bmpman.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <glad/glad.h>
 

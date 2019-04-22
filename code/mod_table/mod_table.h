@@ -6,7 +6,7 @@
 
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 
 extern int Directive_wait_time;

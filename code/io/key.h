@@ -12,7 +12,7 @@
 #ifndef _KEY_H
 #define _KEY_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #define NUM_KEYS 256
 

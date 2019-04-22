@@ -14,7 +14,7 @@
 
 #include "ai/ai_profiles.h"
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "object/waypoint.h"
 #include "physics/physics.h"

@@ -23,8 +23,8 @@
 #endif
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
-#include "globalincs/toolchain.h"
+#include <core/pstypes.h>
+#include <core/toolchain.h>
 
 void cf_sort_filenames( std::vector<std::string> &list, int sort, std::vector<file_list_info> *info )
 {

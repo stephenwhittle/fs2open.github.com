@@ -44,7 +44,7 @@
 #include "hud/hudescort.h"
 #include "hud/hudmessage.h"
 #include "globalincs/alphacolors.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cfile/cfile.h"
 #include "fs2netd/fs2netd_client.h"
 #include "pilotfile/pilotfile.h"

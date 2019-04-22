@@ -12,7 +12,7 @@
 #ifndef __JOY_FF_H__
 #define __JOY_FF_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 int joy_ff_init();
 void joy_ff_shutdown();

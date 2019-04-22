@@ -19,7 +19,7 @@
 #ifndef _OSAPI_H
 #define _OSAPI_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osregistry.h"
 #include "osapi/dialogs.h"
 #include "globalincs/flagset.h"

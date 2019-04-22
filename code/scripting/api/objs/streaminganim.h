@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "scripting/ade.h"
 #include "scripting/ade_api.h"
 #include "graphics/generic.h"

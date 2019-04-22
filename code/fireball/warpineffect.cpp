@@ -11,7 +11,7 @@
 
 
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/tmapper.h"
 #include "math/vecmat.h"
 #include "mission/missionparse.h"

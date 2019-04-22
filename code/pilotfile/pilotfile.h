@@ -3,7 +3,7 @@
 #define _PILOTFILE_H
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "stats/scoring.h"
 #include "pilotfile/FileHandler.h"
 

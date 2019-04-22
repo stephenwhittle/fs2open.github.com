@@ -15,7 +15,7 @@
 // ------------------------------------------------------------------------------------------
 // MULTI XFER DEFINES/VARS
 //
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 typedef uint PSNET_SOCKET_RELIABLE;
 

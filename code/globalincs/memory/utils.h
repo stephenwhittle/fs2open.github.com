@@ -2,7 +2,7 @@
 
 #include <cstring>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 inline char *vm_strndup(const char *ptr, size_t size)
 {

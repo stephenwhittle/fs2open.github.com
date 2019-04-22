@@ -13,7 +13,7 @@
 #define __ASTEROID_H__
 
 #include "globalincs/globals.h"		// for NAME_LENGTH
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 
 class object;

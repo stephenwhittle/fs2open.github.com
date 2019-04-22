@@ -11,7 +11,7 @@
 
 #include "globalincs/alphacolors.h"
 #include "globalincs/linklist.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/mouse.h"
 #include "ship/ship.h"
 #include "weapon/weapon.h"

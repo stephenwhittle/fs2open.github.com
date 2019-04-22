@@ -12,7 +12,7 @@
 #ifndef _JPEGUTILS_H
 #define _JPEGUTILS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cfile/cfile.h"
 
 

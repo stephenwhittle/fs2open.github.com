@@ -14,7 +14,7 @@
 
 #include "gamesnd/gamesnd.h"
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/generic.h"
 #include "hud/hudparse.h"
 #include "mission/missionbriefcommon.h"

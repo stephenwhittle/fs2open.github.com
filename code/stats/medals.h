@@ -13,7 +13,7 @@
 #define FREESPACE_MEDAL_HEADER_FILE
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class scoring_struct;
 class player;

@@ -11,7 +11,7 @@
 #endif
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/timer.h"
 #include "sound/audiostr.h"
 #include "sound/ffmpeg/WaveFile.h"

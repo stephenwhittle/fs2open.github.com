@@ -2,7 +2,7 @@
 //
 //
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 
 // Our Assert conflicts with the definitions inside libRocket

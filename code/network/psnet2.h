@@ -19,7 +19,7 @@
 #include <cerrno>
 #endif
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS

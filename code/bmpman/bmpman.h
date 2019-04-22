@@ -20,7 +20,7 @@
  */
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #ifndef NDEBUG
 #define BMPMAN_NDEBUG	//!< Enables BMPMAN debugging code

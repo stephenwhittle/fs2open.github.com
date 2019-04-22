@@ -3,7 +3,7 @@
 #define _FFMPEGAUDIOREADER_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "libs/ffmpeg/FFmpegHeaders.h"
 

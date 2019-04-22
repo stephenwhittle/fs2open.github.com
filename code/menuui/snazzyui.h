@@ -15,7 +15,7 @@
 #define MAX_CHAR		150
 #define ESC_PRESSED	-2
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gamesnd/gamesnd.h"
 
 typedef struct menu_region {

@@ -10,7 +10,7 @@
 
 
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "object/object.h"
 #include "sound/channel.h"
 #include "sound/ds.h"

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "tracing/tracing.h"
 
 #include "tracing/ThreadedEventProcessor.h"

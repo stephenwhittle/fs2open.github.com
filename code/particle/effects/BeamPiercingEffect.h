@@ -3,7 +3,7 @@
 #define BEAM_PIERCING_EFFECT_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "particle/ParticleEffect.h"
 
 namespace particle {

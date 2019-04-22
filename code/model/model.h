@@ -13,7 +13,7 @@
 #define _MODEL_H
 
 #include "globalincs/globals.h"	// for NAME_LENGTH
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "gamesnd/gamesnd.h"
 #include "object/object.h"

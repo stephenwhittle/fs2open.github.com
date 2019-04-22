@@ -16,7 +16,7 @@
 	// #define MULTI_USE_LAG								
 #endif
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #ifdef _WIN32
 struct fd_set;

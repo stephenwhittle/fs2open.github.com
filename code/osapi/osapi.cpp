@@ -9,7 +9,7 @@
 
 #include <fcntl.h>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gamesequence/gamesequence.h"
 #include "freespace.h"
 #include "parse/parselo.h"

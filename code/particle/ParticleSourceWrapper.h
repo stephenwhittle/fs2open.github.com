@@ -2,7 +2,7 @@
 #define PARTICLE_PARTICLESOURCEWRAPPER_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "ParticleSource.h"
 
 enum class WeaponState : uint32_t;

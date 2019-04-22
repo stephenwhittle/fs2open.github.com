@@ -12,7 +12,7 @@
 #ifndef __FREESPACE_HUDSHIELD_H__
 #define __FREESPACE_HUDSHIELD_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "hud/hud.h"
 
 #define SHIELD_HIT_DURATION	1400	// time a shield quadrant flashes after being hit

@@ -5,7 +5,7 @@
 #define FS2_OPEN_ADE_ARGS_H
 
 #include "core/error.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/floating.h"
 #include "mod_table/mod_table.h"
 #include "scripting/ade.h"

@@ -23,7 +23,7 @@
 #include <cctype>
 
 #include "core/error.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/multiutil.h"
 #include "globalincs/linklist.h"
 #include "gamesequence/gamesequence.h"

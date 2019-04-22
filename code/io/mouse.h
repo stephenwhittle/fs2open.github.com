@@ -12,7 +12,7 @@
 #ifndef _MOUSE_H
 #define _MOUSE_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 extern int Mouse_sensitivity;
 extern int Use_mouse_to_fly;

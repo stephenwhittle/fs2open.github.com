@@ -15,7 +15,7 @@
 
 #define	ENCRYPT_NEW													// new, better encryption scheme
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "parse/encrypt.h"
 
 

@@ -12,7 +12,7 @@
 
 #include "cfile/cfile.h"
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/flagset.h"
 #include "def_files/def_files.h"
 #include "utils/unicode.h"

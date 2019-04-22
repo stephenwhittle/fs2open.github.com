@@ -17,7 +17,7 @@
 
 #include "fs2netd/protocol.h"
 #include "fs2netd/tcp_socket.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <string>
 

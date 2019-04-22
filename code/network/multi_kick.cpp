@@ -10,7 +10,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/multi.h"
 #include "network/multi_kick.h"
 #include "network/multimsgs.h"

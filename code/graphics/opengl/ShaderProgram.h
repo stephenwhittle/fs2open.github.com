@@ -3,7 +3,7 @@
 #define OPENGL_SHADER_PROGRAM_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gropenglshader.h"
 
 #include <glad/glad.h>

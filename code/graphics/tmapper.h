@@ -12,7 +12,7 @@
 #ifndef _TMAPPER_H
 #define _TMAPPER_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 /*
 struct vertex;

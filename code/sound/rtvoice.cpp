@@ -9,7 +9,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/ds.h"
 #include "sound/dscap.h"
 #include "sound/rtvoice.h"

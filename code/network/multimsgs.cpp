@@ -12,7 +12,7 @@
 
 #include <climits>
 #include "core/error.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/multimsgs.h"
 #include "network/multiutil.h"
 #include "network/multiui.h"

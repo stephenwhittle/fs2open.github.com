@@ -2,7 +2,7 @@
 #define TRACKIRPUBLIC_H_INCLUDED_
 
 #include "external_dll/externalcode.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osapi.h"
 
 #include <SDL_syswm.h>

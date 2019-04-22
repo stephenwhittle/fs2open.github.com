@@ -2,7 +2,7 @@
 #define _TRACING_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "tracing/categories.h"
 #include "tracing/scopes.h"
 

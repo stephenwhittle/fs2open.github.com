@@ -12,7 +12,7 @@
 #ifndef __SOUND_H__
 #define __SOUND_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/ds.h"
 #include <math/RandomRange.h>
 #include "utils/id.h"

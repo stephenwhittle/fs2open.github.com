@@ -11,7 +11,7 @@
 #include "math/floating.h"
 #include "math/fvi.h"
 #include "math/vecmat.h"
-#include "globalincs/toolchain.h"
+#include "core/toolchain.h"
 
 #define	SMALL_NUM	1E-6
 

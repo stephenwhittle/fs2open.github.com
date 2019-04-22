@@ -9,7 +9,7 @@
 #ifndef _SPEECH_H_
 #define _SPEECH_H_
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #if FS2_SPEECH
 

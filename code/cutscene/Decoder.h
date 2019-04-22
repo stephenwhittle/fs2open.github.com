@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "utils/boost/syncboundedqueue.h"
 
 namespace cutscene {

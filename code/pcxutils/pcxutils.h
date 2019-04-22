@@ -12,7 +12,7 @@
 #ifndef _PCXUTILS_H
 #define _PCXUTILS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cfile/cfile.h"
 
 

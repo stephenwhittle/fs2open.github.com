@@ -8,7 +8,7 @@
 */ 
 
 #include "controlconfig/controlsconfig.h" //For textify scancode
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "io/key.h"
 #include "math/fix.h"

@@ -12,7 +12,7 @@
 #ifndef __FREESPACE2_LOCALIZATION_UTILITIES_HEADER_FILE
 #define __FREESPACE2_LOCALIZATION_UTILITIES_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/font.h"
 
 // ------------------------------------------------------------------------------------------------------------

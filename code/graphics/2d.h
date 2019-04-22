@@ -16,7 +16,7 @@
 #include "osapi/osapi.h"
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/tmapper.h"
 #include "cfile/cfile.h"
 #include "math/vecmat.h"

@@ -2,7 +2,7 @@
 #ifndef HEADTRACKING_H
 #define HEADTRACKING_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 namespace headtracking
 {

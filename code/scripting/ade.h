@@ -4,7 +4,7 @@
 #ifndef FS2_OPEN_ADE_H
 #define FS2_OPEN_ADE_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "platformChecks.h"
 
 extern "C" {

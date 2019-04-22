@@ -12,7 +12,7 @@
 #ifndef _STATIC_RAND_H
 #define _STATIC_RAND_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #define	SEMIRAND_MAX_LOG	4
 #define	SEMIRAND_MAX		(2 << SEMIRAND_MAX_LOG)	//	Do not change this!  Change SEMIRAND_MAX_LOG!

@@ -4,7 +4,7 @@
 #ifndef FS2_OPEN_ENUMS_H
 #define FS2_OPEN_ENUMS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "scripting/ade_api.h"
 
 namespace scripting {

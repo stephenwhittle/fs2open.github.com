@@ -11,7 +11,7 @@
 #ifndef _GROPENGLTEXTURE_H
 #define _GROPENGLTEXTURE_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gropengl.h"
 
 #define BMPMAN_INTERNAL

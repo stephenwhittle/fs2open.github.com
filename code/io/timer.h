@@ -12,7 +12,7 @@
 #ifndef _TIMER_H
 #define _TIMER_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/fix.h"
 #include <cstdint>
 

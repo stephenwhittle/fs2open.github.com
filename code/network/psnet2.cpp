@@ -33,7 +33,7 @@
 #include <climits>
 #include <algorithm>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/psnet2.h"
 #include "network/multi.h"
 #include "network/multiutil.h"

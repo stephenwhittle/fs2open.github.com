@@ -6,7 +6,7 @@
 
 
 #include "core/error.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/bitarray.h"
 #include "mission/missionparse.h"
 #include "object/parseobjectdock.h"

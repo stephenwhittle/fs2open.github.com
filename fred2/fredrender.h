@@ -8,7 +8,7 @@
  */
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "physics/physics.h"
 
 #define BRIEFING_LOOKAT_POINT_ID	99999

@@ -15,7 +15,7 @@
 #include <ctime>
 #include <map>
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class player;
 class ship;

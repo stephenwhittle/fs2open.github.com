@@ -13,7 +13,7 @@
 #include <cstring>
 #include <csetjmp>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "jpgutils/jpgutils.h"
 #include "cfile/cfile.h"
 #include "bmpman/bmpman.h"

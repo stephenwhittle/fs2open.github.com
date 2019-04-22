@@ -17,7 +17,7 @@
 #include "fs2netd/tcp_client.h"
 #include "gamesnd/gamesnd.h"
 #include "globalincs/alphacolors.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "graphics/font.h"
 #include "io/timer.h"

@@ -4,7 +4,7 @@
 #ifndef FS2_OPEN_SEXPVAR_H
 #define FS2_OPEN_SEXPVAR_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "scripting/ade.h"
 #include "scripting/ade_api.h"
 #include <parse/sexp.h>

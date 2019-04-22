@@ -1,7 +1,7 @@
 
-#include "path.h"
+#include <core/path.h>
 
-#include "platform.h"
+#include <core/platform.h>
 
 #include <regex>
 #include <string>

@@ -13,7 +13,7 @@
 #define __SHOCKWAVE_H__
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class object;
 class model_draw_list;

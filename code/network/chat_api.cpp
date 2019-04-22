@@ -7,9 +7,9 @@
  *
 */
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/chat_api.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 #include "globalincs/fsmemory.h"
 
 #ifdef SCP_UNIX

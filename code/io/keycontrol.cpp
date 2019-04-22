@@ -10,7 +10,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/globals.h"
 #include "globalincs/linklist.h"
 #include "io/key.h"

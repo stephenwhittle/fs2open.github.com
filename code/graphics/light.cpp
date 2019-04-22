@@ -9,7 +9,7 @@
 #include "core/error.h"
 #include <math/bitarray.h>
 #include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "light.h"
 #include "matrix.h"

@@ -12,7 +12,7 @@
 #ifndef __FREESPACE_SWARM_H__
 #define __FREESPACE_SWARM_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class object;
 class ship_subsys;

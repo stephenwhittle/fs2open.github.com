@@ -8,7 +8,7 @@
 */
 
 #include "globalincs/version.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "core/format.h"
 #include "parse/parselo.h"

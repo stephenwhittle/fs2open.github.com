@@ -11,7 +11,7 @@
 #define _OBJECTSHIELD_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #define	FRONT_QUAD	1
 #define	REAR_QUAD	2

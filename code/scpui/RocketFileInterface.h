@@ -2,7 +2,7 @@
 //
 //
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // Our Assert conflicts with the definitions inside libRocket
 #pragma push_macro("Assert")

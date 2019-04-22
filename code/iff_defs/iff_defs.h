@@ -10,7 +10,7 @@
 #define _IFF_DEFS_H_
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "mission/mission_flags.h"
 

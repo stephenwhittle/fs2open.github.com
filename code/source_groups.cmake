@@ -310,12 +310,10 @@ add_file_folder("GlobalIncs"
 	globalincs/fsmemory.h
 	globalincs/globals.h
 	globalincs/linklist.h
-	globalincs/pstypes.h
 	globalincs/safe_strings.cpp
 	globalincs/safe_strings.h
 	globalincs/systemvars.cpp
 	globalincs/systemvars.h
-	globalincs/toolchain.h
 	globalincs/version.cpp
 	globalincs/version.h
 	globalincs/scp_defines.h
@@ -337,13 +335,6 @@ add_file_folder("GlobalIncs\\\\Memory"
 	globalincs/memory/utils.h
 )
 
-add_file_folder("GlobalIncs\\\\Toolchain"
-	globalincs/toolchain/clang.h
-	globalincs/toolchain/doxygen.h
-	globalincs/toolchain/gcc.h
-	globalincs/toolchain/mingw.h
-	globalincs/toolchain/msvc.h
-)
 
 # Graphics files
 add_file_folder("Graphics"
@@ -621,24 +612,6 @@ add_file_folder("Localization"
 	localization/fhash.h
 	localization/localize.cpp
 	localization/localize.h
-)
-
-# Math files
-add_file_folder("Math"
-	math/bitarray.h
-	math/fix.cpp
-	math/fix.h
-	math/floating.cpp
-	math/floating.h
-	math/fvi.cpp
-	math/fvi.h
-	math/RandomRange.h
-	math/spline.cpp
-	math/spline.h
-	math/staticrand.cpp
-	math/staticrand.h
-	math/vecmat.cpp
-	math/vecmat.h
 )
 
 # MenuUI files
@@ -1006,6 +979,8 @@ add_file_folder("Render"
 	render/3dsetup.cpp
 	render/batching.cpp
 	render/batching.h
+	render/SplineRenderer.cpp
+	render/SplineRenderer.h
 )
 
 add_file_folder("ScpUi"

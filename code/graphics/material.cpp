@@ -1,4 +1,4 @@
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/grinternal.h"
 #include "graphics/2d.h"
 #include "graphics/material.h"

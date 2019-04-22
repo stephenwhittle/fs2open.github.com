@@ -15,7 +15,7 @@
 // ------------------------------------------------------------------------------------------------------
 // TEAM SELECT DEFINES/VARS
 //
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gamesnd/gamesnd.h"
 
 struct header;

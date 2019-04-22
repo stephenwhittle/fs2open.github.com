@@ -3,7 +3,7 @@
 #define _MVC_GRAPHICS_OPERATIONS
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osapi.h"
 
 #include <glad/glad_wgl.h>

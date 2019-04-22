@@ -2,7 +2,7 @@
 #define SINGLE_PARTICLE_EFFECT_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleManager.h"
 #include "particle/util/ParticleProperties.h"

@@ -10,7 +10,7 @@
 
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #ifdef _WIN32
 #include <windows.h>

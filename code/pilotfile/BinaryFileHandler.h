@@ -5,7 +5,7 @@
 
 #include "pilotfile/FileHandler.h"
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cfile/cfile.h"
 
 namespace pilot {

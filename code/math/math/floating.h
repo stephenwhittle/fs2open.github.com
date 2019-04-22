@@ -16,7 +16,7 @@
 #include <cmath>
 #include <cfloat>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <cfloat>
 

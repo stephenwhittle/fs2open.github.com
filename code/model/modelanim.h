@@ -13,7 +13,7 @@
 #define _MODELANIM_H
 
 #include "gamesnd/gamesnd.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include <climits>
 
 #define MAX_TRIGGERED_ANIMATIONS 15

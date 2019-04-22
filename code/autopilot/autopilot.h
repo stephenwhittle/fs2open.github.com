@@ -7,7 +7,7 @@
 #if !defined(_AUTOPILOT_H_)
 #define _AUTOPILOT_H_
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "object/object.h"
 
 #include <map>

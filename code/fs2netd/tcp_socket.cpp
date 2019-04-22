@@ -12,7 +12,7 @@
 
 
 #include "fs2netd/tcp_socket.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "network/multi_log.h"
 
 

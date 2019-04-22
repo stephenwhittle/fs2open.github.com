@@ -10,7 +10,7 @@
 #define _OBJECT_DOCK_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 class object;
 

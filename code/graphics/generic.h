@@ -6,7 +6,7 @@
 #include "anim/animplay.h"
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "pngutils/pngutils.h"
 
 #define GENERIC_ANIM_DIRECTION_FORWARDS		0

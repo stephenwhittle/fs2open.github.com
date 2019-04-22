@@ -12,9 +12,9 @@
 #include <cstdlib>
 #include <memory.h>
 #include <cstring>
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "localization/fhash.h"
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 #include "globalincs/fsmemory.h"
 
 // -----------------------------------------------------------------------------------------------

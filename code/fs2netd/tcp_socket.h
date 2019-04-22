@@ -14,7 +14,7 @@
 #if !defined(__TCP_SOCKET_H_)
 #define __TCP_SOCKET_H_
 
-#include "globalincs/pstypes.h" // make sure _cdecl is defined correctly on *nix
+#include <core/pstypes.h> // make sure _cdecl is defined correctly on *nix
 
 
 int FS2NetD_ConnectToServer(const char *host, const char *port);

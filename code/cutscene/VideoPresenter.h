@@ -1,7 +1,7 @@
 #ifndef FS2_OPEN_OPENGLVIDEOPRESENTER_H
 #define FS2_OPEN_OPENGLVIDEOPRESENTER_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 #include "graphics/material.h"
 #include "cutscene/Decoder.h"

@@ -5,7 +5,7 @@
 
 #include <SDL_mouse.h>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "cmdline/cmdline.h"
 
 #include <memory>

@@ -21,7 +21,7 @@
 
 #include "cfile/cfile.h"
 #include "controlconfig/controlsconfig.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "localization/localize.h"
 #include "mission/missioncampaign.h"
 #include "missionui/redalert.h"

@@ -18,7 +18,7 @@
 #define LOGFILE_MULTI_LOG		0
 #define LOGFILE_EVENT_LOG		1
 
-#include "globalincs/toolchain.h"
+#include <core/toolchain.h>
 // ----------------------------------------------------------------------------------------------------
 // MULTI LOGFILE FUNCTIONS
 //

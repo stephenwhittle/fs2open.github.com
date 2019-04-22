@@ -2,7 +2,7 @@
 #ifndef FONT_INTERNAL_H
 #define FONT_INTERNAL_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 namespace font
 {

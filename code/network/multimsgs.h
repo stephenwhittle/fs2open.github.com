@@ -13,7 +13,7 @@
 #ifndef MULTI_MSGS_H
 #define MULTI_MSGS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <cstdint>
 

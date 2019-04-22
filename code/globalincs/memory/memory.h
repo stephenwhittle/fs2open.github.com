@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <cstdlib>
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 namespace memory
 {

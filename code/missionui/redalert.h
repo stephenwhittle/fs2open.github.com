@@ -12,7 +12,7 @@
 #ifndef __REDALERT_H__
 #define __REDALERT_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 struct CFILE;
 

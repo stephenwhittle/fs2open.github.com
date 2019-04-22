@@ -1,8 +1,8 @@
 #pragma once
 #include <map>
 #include <vector>
-#include "globalincs/pstypes.h"
-#include "globalincs/toolchain.h"
+#include <core/pstypes.h>
+#include <core/toolchain.h>
 #include <memory>
 
 namespace font {

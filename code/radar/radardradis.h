@@ -9,7 +9,7 @@
 #ifndef _RADAR_DRADIS_H
 #define _RADAR_DRADIS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "radar/radarsetup.h"
 
 class object;

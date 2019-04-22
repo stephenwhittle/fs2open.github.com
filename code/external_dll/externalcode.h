@@ -1,7 +1,7 @@
 #ifndef EXTERNALCODE_H_INCLUDED_
 #define EXTERNALCODE_H_INCLUDED_
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include <SDL_loadso.h>
 

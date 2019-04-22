@@ -12,7 +12,7 @@
 #ifndef _SYSTEMVARS_H
 #define _SYSTEMVARS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/fix.h"
 #include <cmath>
 

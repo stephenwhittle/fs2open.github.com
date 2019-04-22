@@ -3,7 +3,7 @@
 #define _WAVEFILE_H
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/audiostr.h"
 #include "sound/openal.h"
 

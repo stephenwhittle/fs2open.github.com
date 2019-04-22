@@ -11,7 +11,7 @@
 #define _MAIN_HALL_MENU_HEADER_FILE
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "gamesnd/gamesnd.h"
 
 // CommanderDJ - this is now dynamic

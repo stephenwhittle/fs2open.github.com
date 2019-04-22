@@ -13,7 +13,7 @@
 #define _UIDEFS_H
 
 #include "freespace.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/key.h"
 #include "io/mouse.h"
 

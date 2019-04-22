@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "lighting/lighting.h"
 #include "graphics/util/uniform_structs.h"
 

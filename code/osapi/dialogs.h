@@ -3,8 +3,8 @@
 #define _OSAPI_DIALOGS_H
 #pragma once
 
-#include "globalincs/pstypes.h"
-#include "globalincs/toolchain.h"
+#include <core/pstypes.h>
+#include <core/toolchain.h>
 #include <stdexcept>
 
 struct lua_State;

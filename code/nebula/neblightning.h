@@ -13,7 +13,7 @@
 #define __FS2_NEBULA_LIGHTNING_HEADER_FILE
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // ------------------------------------------------------------------------------------------------------
 // NEBULA LIGHTNING DEFINES/VARS

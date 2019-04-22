@@ -12,7 +12,7 @@
 #ifndef _FIREBALLS_H
 #define _FIREBALLS_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "model/modelrender.h"
 #include "gamesnd/gamesnd.h"
 

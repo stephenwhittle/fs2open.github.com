@@ -12,7 +12,7 @@
 #ifndef _PLAYER_SELECT_MENU_HEADER_FILE
 #define _PLAYER_SELECT_MENU_HEADER_FILE
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 // general defines
 #define PLAYER_SELECT_MODE_SINGLE	0							// looking through single player pilots

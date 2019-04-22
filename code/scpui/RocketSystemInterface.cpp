@@ -3,7 +3,7 @@
 
 #include "RocketSystemInterface.h"
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/timer.h"
 #include "localization/localize.h"
 #include <core/error.h>

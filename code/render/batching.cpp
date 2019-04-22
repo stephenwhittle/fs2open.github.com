@@ -8,7 +8,7 @@
 */
 
 #include "render/batching.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "globalincs/systemvars.h"
 #include "graphics/2d.h"
 #include "render/3d.h"

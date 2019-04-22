@@ -15,7 +15,7 @@
 #define CMD_BRIEF_STAGES_MAX	10
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/generic.h"
 
 struct anim;

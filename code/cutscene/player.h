@@ -5,7 +5,7 @@
 #include <thread>
 #include <vector>
 #include <queue>
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "sound/openal.h"
 
 #include "Decoder.h"

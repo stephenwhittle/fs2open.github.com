@@ -17,7 +17,7 @@
 #include "fs2netd/protocol.h"
 #include "fs2netd/tcp_client.h"
 #include "fs2netd/tcp_socket.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "io/timer.h"
 #include "network/multi.h"
 #include "network/multi_log.h"
@@ -25,7 +25,7 @@
 #include "playerman/player.h"
 #include "ship/ship.h"
 #include "io/timer.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "osapi/osapi.h"
 #include "math/fix.h"
 #include <iostream>

@@ -10,7 +10,7 @@
 #define __FICTION_VIEWER_H__
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/2d.h"
 
 

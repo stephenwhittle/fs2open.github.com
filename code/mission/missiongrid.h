@@ -12,7 +12,7 @@
 #ifndef __MISSIONGRID_H__
 #define __MISSIONGRID_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "physics/physics.h"
 
 #define	MAX_GRIDLINE_POINTS	201

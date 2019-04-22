@@ -15,7 +15,7 @@
 
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 
 #define PXO_PROTO_VER "2.0"

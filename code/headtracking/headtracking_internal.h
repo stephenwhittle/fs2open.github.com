@@ -1,7 +1,7 @@
 #ifndef HEADTRACKING_INTERNAL_H
 #define HEADTRACKING_INTERNAL_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "headtracking/headtracking.h"
 

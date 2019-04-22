@@ -10,7 +10,7 @@
 #ifndef __JOY_H__
 #define __JOY_H__
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 
 #include "SDL_joystick.h"
 

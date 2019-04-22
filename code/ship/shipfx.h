@@ -12,7 +12,7 @@
 #ifndef _SHIPFX_H
 #define _SHIPFX_H
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "graphics/grbatch.h"
 #include "model/modelrender.h"
 

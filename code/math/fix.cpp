@@ -14,7 +14,7 @@
 #include <windows.h>
 #endif
 
-#include "globalincs/pstypes.h"
+#include <core/pstypes.h>
 #include "math/fix.h"
 
 
