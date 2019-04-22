@@ -18,7 +18,7 @@
 #include "globalincs/linklist.h"
 #include "network/psnet2.h"
 #include "debugconsole/console.h"
-
+#include "math/floating.h"
 
 
 // ----------------------------------------------------------------------------------------------------

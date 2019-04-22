@@ -43,7 +43,7 @@
 #include "network/multi_log.h"
 #include "network/multi_rate.h"
 #include "cmdline/cmdline.h"
-
+#include "math/floating.h"
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS
 //

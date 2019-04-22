@@ -6,6 +6,7 @@
 #include "globalincs/systemvars.h"
 #include "utils/strings.h"
 #include "globalincs/toolchain.h"
+#include "math/floating.h"
 using namespace tracing;
 
 namespace {

@@ -6,6 +6,7 @@
 
 #include "core/error.h"
 #include "globalincs/pstypes.h"
+#include "math/floating.h"
 #include "mod_table/mod_table.h"
 #include "scripting/ade.h"
 #include "scripting/lua/LuaConvert.h"

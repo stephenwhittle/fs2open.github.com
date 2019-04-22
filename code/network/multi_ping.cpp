@@ -15,7 +15,7 @@
 #include "network/multimsgs.h"
 #include "io/timer.h"
 #include "globalincs/toolchain.h"
-
+#include "math/floating.h"
 
 // ------------------------------------------------------------------------------------
 // MULTIPLAYER PING DEFINES/VARS

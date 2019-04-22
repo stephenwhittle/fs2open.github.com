@@ -298,8 +298,7 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 //======================================================================================
 
 
-//#include "math/fix.h"
-#include "math/floating.h"
+//#include "math/floating.h"
 
 // Some constants for stuff
 #define MAX_FILENAME_LEN	32		// Length for filenames, ie "title.pcx"

@@ -20,7 +20,7 @@
 #include "sound/dscap.h"
 #include "sound/openal.h"
 #include "sound/sound.h" // jg18 - for enhanced sound
-
+#include "math/floating.h"
 
 typedef struct sound_buffer
 {
