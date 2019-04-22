@@ -30,7 +30,7 @@
 #include "ship/subsysdamage.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
-
+#include <core/error.h>
 extern int radar_target_id_flags;
 
 HudGaugeRadarStd::HudGaugeRadarStd():

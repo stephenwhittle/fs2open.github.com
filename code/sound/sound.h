@@ -14,7 +14,7 @@
 
 #include "globalincs/pstypes.h"
 #include "sound/ds.h"
-#include "utils/RandomRange.h"
+#include <math/RandomRange.h>
 #include "utils/id.h"
 
 // Used for keeping track which low-level sound library is being used
@@ -94,8 +94,8 @@ struct game_snd
 	GameSoundCycleType cycle_type = GameSoundCycleType::Sequential;
 	size_t last_entry_index; //!< The last sound entry used by this sound.
 
-	util::UniformFloatRange pitch_range; //!< The range of possible pitch values used randomly for this sound
-	util::UniformFloatRange volume_range; //!< The possible range of the default volume (range is (0, 1]).
+	random::UniformFloatRange pitch_range; //!< The range of possible pitch values used randomly for this sound
+	random::UniformFloatRange volume_range; //!< The possible range of the default volume (range is (0, 1]).
 
 	bool preload = false;			//!< preload sound (ie read from disk before mission starts)
 	EnhancedSoundData enhanced_sound_data;

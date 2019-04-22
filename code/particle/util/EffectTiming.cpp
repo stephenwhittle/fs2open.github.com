@@ -1,5 +1,5 @@
 #include "EffectTiming.h"
-
+#include <parse/parselo.h>
 namespace particle {
 namespace util {
 
@@ -90,7 +90,7 @@ EffectTiming EffectTiming::parseTiming() {
 		}
 		else {
 			timing.m_duration = Duration::Range;
-			timing.m_durationRange = ::util::parseUniformRange<float>(0.0f);
+			timing.m_durationRange = ::random::parseUniformRange<float>(0.0f);
 		}
 	}
 
@@ -99,7 +99,7 @@ EffectTiming EffectTiming::parseTiming() {
 			error_display(0, "+Delay is not valid for one-time effects!");
 		}
 		else {
-			timing.m_delayRange = ::util::parseUniformRange<float>(0.0f);
+			timing.m_delayRange = ::random::parseUniformRange<float>(0.0f);
 		}
 	}
 

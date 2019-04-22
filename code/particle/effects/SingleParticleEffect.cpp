@@ -2,7 +2,7 @@
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleSource.h"
 #include "particle/effects/SingleParticleEffect.h"
-
+#include <math/RandomRange.h>
 #include "bmpman/bmpman.h"
 
 /**
@@ -59,11 +59,11 @@ SingleParticleEffect* SingleParticleEffect::createInstance(int effectID, float m
 
 	auto effectPtr = new SingleParticleEffect("");
 	effectPtr->m_particleProperties.m_bitmap = effectID;
-	effectPtr->m_particleProperties.m_radius = ::util::UniformFloatRange(minSize, maxSize);
+	effectPtr->m_particleProperties.m_radius = ::random::UniformFloatRange(minSize, maxSize);
 
 	if (lifetime > 0.0f) {
 		effectPtr->m_particleProperties.m_hasLifetime = true;
-		effectPtr->m_particleProperties.m_lifetime = ::util::UniformFloatRange(lifetime);
+		effectPtr->m_particleProperties.m_lifetime = ::random::UniformFloatRange(lifetime);
 	}
 
 	return effectPtr;

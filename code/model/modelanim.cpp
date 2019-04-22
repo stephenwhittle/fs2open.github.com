@@ -14,6 +14,7 @@
 #include "network/multi.h"
 #include "ship/ship.h"
 
+#include <core/error.h>
 
 extern float flFrametime;
 

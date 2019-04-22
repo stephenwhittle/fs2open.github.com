@@ -30,6 +30,7 @@
 #include "ship/shipfx.h"
 #include "tracing/tracing.h"
 #include "weapon/weapon.h"
+#include <core/error.h>
 
 extern int Model_texturing;
 extern int Model_polys;

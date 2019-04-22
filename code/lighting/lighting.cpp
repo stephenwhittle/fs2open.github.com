@@ -18,7 +18,7 @@
 #include "math/vecmat.h"
 #include "model/modelrender.h"
 #include "render/3d.h"
-
+#include <core/error.h>
 
 std::vector<light> Lights;
 std::vector<light> Static_light;

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "particle/ParticleSource.h"
-#include "utils/RandomRange.h"
+#include "math/RandomRange.h"
 
 namespace particle {
 namespace util {
@@ -35,8 +35,8 @@ enum class Duration {
 class EffectTiming {
  private:
 	Duration m_duration;
-	::util::UniformFloatRange m_delayRange;
-	::util::UniformFloatRange m_durationRange;
+	::random::UniformFloatRange m_delayRange;
+	::random::UniformFloatRange m_durationRange;
 
 	float m_particlesPerSecond = -1.f;
  public:

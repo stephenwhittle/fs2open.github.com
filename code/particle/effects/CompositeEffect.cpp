@@ -2,7 +2,7 @@
 #include "particle/ParticleEffect.h"
 #include "particle/ParticleSource.h"
 #include "particle/effects/CompositeEffect.h"
-
+#include <parse/parselo.h>
 namespace particle {
 namespace effects {
 CompositeEffect::CompositeEffect(const std::string& name) : ParticleEffect(name) {}

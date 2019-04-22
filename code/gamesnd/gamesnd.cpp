@@ -16,6 +16,7 @@
 #include "sound/ds.h"
 #include "species_defs/species_defs.h"
 #include "tracing/tracing.h"
+#include <math/RandomRange.h>
 
 std::vector<game_snd>	Snds;
 std::vector<game_snd>	Snds_iface;
@@ -619,7 +620,7 @@ void parse_gamesnd_old(game_snd* gs)
 	auto& entry = gs->sound_entries.back();
 
 	// Default pitch is 1.0. This is set here in case we don't have a valid file name
-	gs->pitch_range = util::UniformFloatRange(1.0f);
+	gs->pitch_range = random::UniformFloatRange(1.0f);
 
 	stuff_string(entry.filename, F_NAME, MAX_FILENAME_LEN, ",");
 
@@ -640,7 +641,7 @@ void parse_gamesnd_old(game_snd* gs)
 
 	float default_volume;
 	stuff_float(&default_volume);
-	gs->volume_range = util::UniformFloatRange(default_volume);
+	gs->volume_range = random::UniformFloatRange(default_volume);
 
 	stuff_int(&is_3d);
 
@@ -768,7 +769,7 @@ void parse_gamesnd_soundset(game_snd* gs, bool no_create) {
 
 	if (required_string_no_create("+Volume:", no_create))
 	{
-		gs->volume_range = util::parseUniformRange(0.0f, 1.0f);
+		gs->volume_range = random::parseUniformRange(0.0f, 1.0f);
 	}
 
 	if (optional_string("+3D Sound:"))
@@ -817,10 +818,10 @@ void parse_gamesnd_soundset(game_snd* gs, bool no_create) {
 	}
 
 	if (optional_string("+Pitch:")) {
-		gs->pitch_range = util::parseUniformRange(0.0001f);
+		gs->pitch_range = random::parseUniformRange(0.0001f);
 	} else if (!no_create) {
 		// Default pitch is 1.0
-		gs->pitch_range = util::UniformFloatRange(1.0f);
+		gs->pitch_range = random::UniformFloatRange(1.0f);
 	}
 }
 
@@ -842,7 +843,7 @@ void parse_gamesnd_new(game_snd* gs, bool no_create)
 	stuff_string(name, F_NAME, MAX_FILENAME_LEN);
 
 	// Default pitch is 1.0. This is set here in case we don't have a valid file name
-	gs->pitch_range = util::UniformFloatRange(1.0f);
+	gs->pitch_range = random::UniformFloatRange(1.0f);
 
 	if (!stricmp(name, NOX("empty")))
 	{
@@ -871,7 +872,7 @@ void parse_gamesnd_new(game_snd* gs, bool no_create)
 	{
 		float default_volume;
 		stuff_float(&default_volume);
-		gs->volume_range = util::UniformFloatRange(default_volume);
+		gs->volume_range = random::UniformFloatRange(default_volume);
 	}
 
 	if (optional_string("+3D Sound:"))
@@ -1342,7 +1343,7 @@ game_snd_entry* gamesnd_choose_entry(game_snd* gs) {
 		if (gs->sound_entries.size() == 1) {
 			index = 0;
 		} else {
-			index = util::UniformRange<size_t>(0, gs->sound_entries.size() - 1).next();
+			index = random::UniformRange<size_t>(0, gs->sound_entries.size() - 1).next();
 		}
 		break;
 	case GameSoundCycleType::Sequential:

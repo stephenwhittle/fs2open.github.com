@@ -24,7 +24,7 @@
 #include "playerman/player.h"
 #include "ship/ship.h"
 #include "weapon/weapon.h"
-
+#include <core/error.h>
 
 // all ai goals dealt with in this code are goals that are specified through
 // sexpressions in the mission file.  They are either specified as part of a

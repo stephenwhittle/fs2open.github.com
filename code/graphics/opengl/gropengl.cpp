@@ -36,7 +36,7 @@
 #include "popup/popup.h"
 #include "tracing/tracing.h"
 #include "pngutils/pngutils.h"
-
+#include <core/error.h>
 #if defined(_WIN32)
 #include <windows.h>
 #include <windowsx.h>

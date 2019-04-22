@@ -12,7 +12,7 @@
 #include "jumpnode/jumpnode.h"
 #include "model/model.h"
 #include "model/modelrender.h"
-
+#include <core/error.h>
 std::list<CJumpNode> Jump_nodes;
 
 /**

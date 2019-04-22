@@ -8,7 +8,7 @@
 #include "parse/sexp.h"
 #include "network/multi.h"
 #include "network/multiutil.h"
-
+#include <core/error.h>
 #define CALLBACK_TERMINATOR	255
 int TEMP_DATA_SIZE = -1;
 

@@ -44,7 +44,7 @@ ADE_VIRTVAR(DefaultVolume, l_SoundEntry, "number", "The default volume of this g
 		{
 			CAP(newVal, 0.0f, 1.0f);
 
-			seh->Get()->volume_range = ::util::UniformFloatRange(newVal);
+			seh->Get()->volume_range = ::random::UniformFloatRange(newVal);
 		}
 	}
 

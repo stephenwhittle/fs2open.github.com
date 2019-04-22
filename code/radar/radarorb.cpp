@@ -31,7 +31,7 @@
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
 #include "events/events.h"
-
+#include <core/error.h>
 extern rcol Radar_color_rgb[MAX_RADAR_COLORS][MAX_RADAR_LEVELS];
 
 extern int radar_target_id_flags;

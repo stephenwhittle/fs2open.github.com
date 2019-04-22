@@ -1,13 +1,12 @@
 #pragma once
 
 #include "globalincs/pstypes.h"
-#include "parse/parselo.h"
 
 #include <random>
 #include <type_traits>
 #include <limits>
 
-namespace util {
+namespace random {
 
 /**
  * @defgroup randomUtils Random Utilities

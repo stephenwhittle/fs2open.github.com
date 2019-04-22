@@ -15,7 +15,7 @@
 #include "ship/ship.h"
 #include "weapon/swarm.h"
 #include "weapon/weapon.h"
-
+#include <core/error.h>
 
 
 #define SWARM_DIST_OFFSET			2.0f		// distance swarm missile should vary from original path

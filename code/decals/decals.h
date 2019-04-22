@@ -4,7 +4,7 @@
 
 #include "object/object.h"
 
-#include "utils/RandomRange.h"
+#include "math/RandomRange.h"
 
 namespace decals {
 
@@ -19,7 +19,7 @@ typedef int DecalReference;
 struct creation_info {
 	DecalReference definition_handle = -1;
 	float radius = -1.0f;
-	util::UniformFloatRange lifetime = ::util::UniformFloatRange(-1.0f);
+	random::UniformFloatRange lifetime = ::random::UniformFloatRange(-1.0f);
 };
 
 /**

@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4244)
 #include <ghc/filesystem.hpp>
 
 #include <vector>
@@ -19,3 +20,5 @@ namespace fs {
 	static const char preferred_separator_string[2] = {core::fs::path::preferred_separator, '\0'};
 } // namespace fs
 } // namespace core
+
+#pragma warning(default : 4244)

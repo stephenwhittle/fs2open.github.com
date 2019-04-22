@@ -7,7 +7,7 @@
 
 #include <math/bitarray.h>
 #include "globalincs/pstypes.h"
-#include "utils/RandomRange.h"
+#include <math/RandomRange.h>
 
 namespace particle {
 namespace effects {
@@ -16,7 +16,7 @@ namespace effects {
  * @ingroup particleEffects
  */
 class SphereShape {
-	::util::UniformFloatRange m_sphereRange;
+	::random::UniformFloatRange m_sphereRange;
  public:
 	SphereShape() : m_sphereRange(0.f, 1.f) {}
 

@@ -28,7 +28,7 @@
 #include "tracing/tracing.h"
 
 #include "globalincs/pstypes.h"
-
+#include <math/RandomRange.h>
 #include <climits>
 
 const unsigned int SND_ENHANCED_MAX_LIMIT = 15; // seems like a good max limit
@@ -467,8 +467,8 @@ sound_handle snd_play_raw(sound_load_id soundnum, float pan, float vol_scale, in
 //	entry.flags = GAME_SND_VOICE | GAME_SND_USE_DS3D;
 	gs.flags = GAME_SND_VOICE;
 
-	gs.volume_range = util::UniformFloatRange(1.0f);
-	gs.pitch_range = util::UniformFloatRange(1.0f);
+	gs.volume_range = random::UniformFloatRange(1.0f);
+	gs.pitch_range = random::UniformFloatRange(1.0f);
 
 	return snd_play(&gs, pan, vol_scale, priority, true);
 }

@@ -13,7 +13,7 @@
 #include "bmpman/bmpman.h"
 #include "globalincs/systemvars.h"
 #include "tracing/tracing.h"
-
+#include <parse/parselo.h>
 /**
  * @defgroup particleSystems Particle System
  */

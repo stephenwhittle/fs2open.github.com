@@ -4,7 +4,7 @@
 #include "SoundPlugin.h"
 #include "gamesnd/gamesnd.h"
 #include "utils/string_utils.h"
-
+#include <parse/parselo.h>
 using namespace Rocket::Core;
 
 namespace {

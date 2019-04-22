@@ -8,6 +8,7 @@
 #include "parse/parselo.h"
 #include "tracing/tracing.h"
 #include "ship/ship.h"
+#include <math/RandomRange.h>
 
 namespace {
 
@@ -354,10 +355,10 @@ void parseDecalReference(creation_info& dest_info, bool is_new_entry) {
 
 	if (required_string_if_new("+Lifetime:", is_new_entry)) {
 		if (optional_string("Eternal")) {
-			dest_info.lifetime = util::UniformFloatRange(-1.0f);
+			dest_info.lifetime = random::UniformFloatRange(-1.0f);
 		} else {
 			// Require at least a small lifetime so that the calculations don't have to deal with div-by-zero
-			dest_info.lifetime = util::parseUniformRange(0.0001f);
+			dest_info.lifetime = random::parseUniformRange(0.0001f);
 		}
 	}
 }

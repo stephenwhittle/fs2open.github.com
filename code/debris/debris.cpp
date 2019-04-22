@@ -30,6 +30,7 @@
 #include "species_defs/species_defs.h"
 #include "weapon/weapon.h"
 #include "tracing/Monitor.h"
+#include <core/error.h>
 
 #define MIN_RADIUS_FOR_PERSISTANT_DEBRIS	50		// ship radius at which debris from it becomes persistant
 #define DEBRIS_SOUND_DELAY						2000	// time to start debris sound after created

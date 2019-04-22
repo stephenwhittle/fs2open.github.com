@@ -632,6 +632,7 @@ add_file_folder("Math"
 	math/floating.h
 	math/fvi.cpp
 	math/fvi.h
+	math/RandomRange.h
 	math/spline.cpp
 	math/spline.h
 	math/staticrand.cpp
@@ -914,7 +915,9 @@ add_file_folder("Particle\\\\Effects"
 	particle/effects/CompositeEffect.cpp
 	particle/effects/CompositeEffect.h
 	particle/effects/ConeShape.h
+	particle/effects/ConeShape.cpp
 	particle/effects/GenericShapeEffect.h
+	particle/effects/GenericShapeEffect.cpp
 	particle/effects/ParticleEmitterEffect.cpp
 	particle/effects/ParticleEmitterEffect.h
 	particle/effects/SingleParticleEffect.cpp
@@ -1313,7 +1316,6 @@ add_file_folder("Utils"
 	utils/HeapAllocator.cpp
 	utils/HeapAllocator.h
 	utils/id.h
-	utils/RandomRange.h
 	utils/string_utils.cpp
 	utils/string_utils.h
 	utils/strings.h

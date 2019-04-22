@@ -18,7 +18,7 @@
 #include "sound/audiostr.h"
 #include "stats/medals.h"
 #include "weapon/weapon.h"
-
+#include <core/error.h>
 namespace {
 void read_multi_stats(pilot::FileHandler* handler, scoring_special_t* scoring) {
 	scoring->score = handler->readInt("score");
