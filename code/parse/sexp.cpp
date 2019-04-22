@@ -20867,7 +20867,7 @@ void sexp_debug(int node)
 		core::Warning(LOCATION, "%s", warning_message.c_str());
     #else	
 	if (!no_release_message) {	
-		Releasecore::Warning(LOCATION, "%s", warning_message.c_str());
+		core::ReleaseWarning(LOCATION, "%s", warning_message.c_str());
 	}
 	#endif
 }
