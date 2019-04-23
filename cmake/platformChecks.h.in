@@ -13,6 +13,10 @@
 
 #cmakedefine01 IS_64BIT
 
+#define LITTLE_ENDIAN 1234
+#define BIG_ENDIAN    4321
+#cmakedefine BYTE_ORDER ${BYTE_ORDER}
+
 #cmakedefine01 HAVE_STRCASECMP
 #cmakedefine01 HAVE_STRNCASECMP
 #cmakedefine01 HAVE__STRICMP

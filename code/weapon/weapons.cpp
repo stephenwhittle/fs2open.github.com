@@ -7,7 +7,7 @@
  *
 */
 
-
+#include <core/path.h>
 #include "core/error.h"
 #include "ai/aibig.h"
 #include "asteroid/asteroid.h"

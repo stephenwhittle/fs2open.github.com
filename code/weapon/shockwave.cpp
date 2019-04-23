@@ -21,7 +21,7 @@
 #include "ship/shiphit.h"
 #include "weapon/shockwave.h"
 #include "weapon/weapon.h"
-
+#include <core/path.h>
 // -----------------------------------------------------------
 // Module-wide globals
 // -----------------------------------------------------------

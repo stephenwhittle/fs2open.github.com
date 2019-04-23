@@ -11,7 +11,7 @@
 #include <core/toolchain.h>
 #include <core/pstypes.h>
 #include "math/spline.h"
-
+#include <core/error.h>
 
 
 // -------------------------------------------------------------------------------------------------

@@ -19,6 +19,7 @@
 #include "cmeasure/cmeasure.h"
 #include "core/error.h"
 #include "core/format.h"
+#include <core/path.h>
 #include "debugconsole/console.h"
 #include "def_files/def_files.h"
 #include "fireball/fireballs.h"

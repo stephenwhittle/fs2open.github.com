@@ -13,7 +13,7 @@
 #include "bmpman/bmpman.h"
 #include "ui/ui.h"
 #include "ui/uidefs.h"
-
+#include <core/path.h>
 
 // constructor
 UI_GADGET::UI_GADGET()

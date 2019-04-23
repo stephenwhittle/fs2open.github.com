@@ -9,6 +9,7 @@ include(CheckStructHasMember)
 include(CheckSymbolExists)
 include(CheckCXXSymbolExists)
 include(CheckTypeSize)
+include(TestBigEndian)
 
 CHECK_INCLUDE_FILE("execinfo.h" HAVE_EXECINFO_H)
 CHECK_INCLUDE_FILE_CXX("cxxabi.h" HAVE_CXXAPI_H)
@@ -29,6 +30,13 @@ CHECK_TYPE_SIZE("char32_t" CHAR32_T LANGUAGE CXX)
 CHECK_TYPE_SIZE("U'b'" UNICODE_CHAR_LITERAL LANGUAGE CXX)
 
 set(CMAKE_REQUIRED_FLAGS)
+
+TEST_BIG_ENDIAN(IS_BIGENDIAN)
+if (${IS_BIGENDIAN})
+	set(BYTE_ORDER BIG_ENDIAN)
+else()
+	set(BYTE_ORDER LITTLE_ENDIAN)
+endif()
 
 
 CHECK_FUNCTION_EXISTS(strcasecmp HAVE_STRCASECMP)

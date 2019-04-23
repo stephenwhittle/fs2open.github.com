@@ -8,30 +8,7 @@
 #include <cstdio>
 
 
-#include <SDL.h>
-
-#ifndef BYTE_ORDER
-#include <SDL_endian.h>
-#endif
-
-#ifndef BYTE_ORDER
-#define LITTLE_ENDIAN 1234
-#define BIG_ENDIAN    4321
-
-#if SDL_BYTEORDER == SDL_LIL_ENDIAN
-#define BYTE_ORDER   LITTLE_ENDIAN
-#elif SDL_BYTEORDER == SDL_BIG_ENDIAN
-#define BYTE_ORDER   BIG_ENDIAN
-#else
-#error unknown byte order
-#endif
-#endif  // BYTE_ORDER
-
 #if defined _WIN32
-
-#ifndef filelength
-#define filelength _filelength
-#endif
 
 #define STUB_FUNCTION nprintf(( "Warning", "STUB: %s in " __FILE__ " at line %d\n", __FUNCTION__, __LINE__))
 
@@ -77,7 +54,6 @@
 #define MAX_PATH					255
 #define _unlink(s)					unlink(s)
 
-int filelength(int fd);
 int _chdir(const char *path);
 int _getcwd(char *buffer, unsigned int len);
 int _mkdir(const char *path);

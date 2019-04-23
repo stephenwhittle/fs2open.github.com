@@ -14,8 +14,8 @@
 
 
 
-#include "windows_stub/config.h"
-#include "globalincs/scp_defines.h"
+//#include "windows_stub/config.h"
+//#include "globalincs/scp_defines.h"
 
 
 #include <cstdio>    // For NULL, etc
@@ -236,16 +236,7 @@ extern int Global_error_count;
 // up an error message if variables are out of range.
 // Disabling this functionality is dangerous, crazy values can run rampent unchecked and the longer its disabled
 // the more likely you are to have problems getting it working again.
-#if defined(NDEBUG)
-#	define Assert(expr) do { ASSUME(expr); } while (false)
-#else
-#	define Assert(expr) do {\
-		if (!(expr)) {\
-			os::dialogs::AssertMessage(#expr,__FILE__,__LINE__);\
-		}\
-		ASSUME( expr );\
-	} while (false)
-#endif
+
 /*******************NEVER COMMENT Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode
@@ -396,35 +387,6 @@ public:
 	bool isValid();
 };
 
-
-// check to see that a passed sting is valid, ie:
-//  - has >0 length
-//  - is not "none"
-//  - is not "<none>"
-inline bool VALID_FNAME(const char* x) {
-	return strlen((x)) && stricmp((x), "none") != 0 && stricmp((x), "<none>") != 0;
-}
-/**
- * @brief Checks if the specified string may be a valid file name
- *
- * @warning This only does a quick check against an empty string and a few known invalid names. It does not check if the
- * file actually exists.
- *
- * @param x The file name to check
- * @return @c true if the name is valid, @c false otherwise
- */
-inline bool VALID_FNAME(const std::string& x) {
-	if (x.empty()) {
-		return false;
-	}
-	if (!stricmp(x.c_str(), "none")) {
-		return false;
-	}
-	if (!stricmp(x.c_str(), "<none>")) {
-		return false;
-	}
-	return true;
-}
 
 // Function to generate a stacktrace
 std::string dump_stacktrace();

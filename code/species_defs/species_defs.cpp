@@ -14,7 +14,7 @@
 #include "localization/localize.h"
 #include "parse/parselo.h"
 #include "species_defs/species_defs.h"
-
+#include <core/path.h>
 
 std::vector<species_info> Species_info;
 

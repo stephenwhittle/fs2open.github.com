@@ -12,7 +12,7 @@
 #include "math/fvi.h"
 #include "math/vecmat.h"
 #include "core/toolchain.h"
-
+#include <core/error.h>
 #define	SMALL_NUM	1E-6
 
 #define	UNINITIALIZED_VALUE	-1234567.8f

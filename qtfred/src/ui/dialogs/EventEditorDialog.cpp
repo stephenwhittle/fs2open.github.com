@@ -13,6 +13,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <mission/missionmessage.h>
+#include <core/path.h>
 
 namespace fso {
 namespace fred {

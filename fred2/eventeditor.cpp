@@ -21,7 +21,7 @@
 #include "sound/audiostr.h"
 #include "localization/localize.h"
 #include "mod_table/mod_table.h"
-
+#include <core/path.h>
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;

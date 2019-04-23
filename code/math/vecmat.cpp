@@ -17,6 +17,7 @@
 #include "math/vecmat.h"
 #include <core/toolchain.h>
 #include <core/pstypes.h>
+#include <core/error.h>
 #include <math/RandomRange.h>
 #define	SMALL_NUM	1e-7
 #define	SMALLER_NUM	1e-20

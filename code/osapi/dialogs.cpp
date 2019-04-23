@@ -498,6 +498,10 @@ namespace os
         {
 	        core::RegisterErrorHandler(static_cast<void (*)(const char*)>(os::dialogs::Error));
 	        core::RegisterWarningHandler(os::dialogs::WarningImpl);
+		    core::RegisterAssertHandler([](const char* msg, const char* file, int line)
+				{
+					os::dialogs::AssertMessage(msg, file, line);
+				});
         }
 	} // namespace dialogs
 

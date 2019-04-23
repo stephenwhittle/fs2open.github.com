@@ -26,7 +26,7 @@
 #include "sound/dscap.h"
 #include "tracing/Monitor.h"
 #include "tracing/tracing.h"
-
+#include <core/path.h>
 #include <core/pstypes.h>
 #include <math/RandomRange.h>
 #include <climits>

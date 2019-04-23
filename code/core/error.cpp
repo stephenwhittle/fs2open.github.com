@@ -14,6 +14,7 @@ namespace core
 {
 	Simple::Signal<void(const char*)> error_handler;
 	Simple::Signal<void(const char*, int line, const char* msg)> warning_handler;
+    Simple::Signal<void(const char* msg, const char*, int line)> assert_handler;
 	
 	void RegisterErrorHandler(std::function<void(const char*)> cb) 
 	{
@@ -25,7 +26,9 @@ namespace core
 		warning_handler.connect(cb);
 	}
 
-	
+	void RegisterAssertHandler(std::function<void(const char* , const char*, int)> cb) { assert_handler.connect(cb); }
+
+
 	void Warning(const char* filename, int line, const char* format, ...)
     {
 	    Global_warning_count++;
@@ -95,7 +98,12 @@ namespace core
 		error_handler.emit(msg);
 	}
 
-	std::string GetFormattedCallstack()
+	void AssertImpl(const char* expr, const char* file, int line) 
+	{ 
+		assert_handler.emit(expr, file, line);
+	}
+
+    std::string GetFormattedCallstack()
 	{
 	    void* addresses[256];
 	    int num_addresses = callstack(0, addresses, 256);

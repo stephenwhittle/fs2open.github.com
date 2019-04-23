@@ -41,5 +41,22 @@ namespace fs {
 		}
 		return MatchingPaths;
 	}
+
+	bool VALID_FNAME(const char* x) { return strlen((x)) && stricmp((x), "none") != 0 && stricmp((x), "<none>") != 0; }
+
+	bool VALID_FNAME(const std::string& x)
+	{
+		if (x.empty()) {
+			return false;
+		}
+		if (!stricmp(x.c_str(), "none")) {
+			return false;
+		}
+		if (!stricmp(x.c_str(), "<none>")) {
+			return false;
+		}
+		return true;
+	}
+
 } // namespace fs
 } // namespace core
