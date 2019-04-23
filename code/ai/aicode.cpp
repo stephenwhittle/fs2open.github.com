@@ -829,7 +829,7 @@ void parse_aitbl()
 	}
 }
 
-LOCAL int ai_inited = 0;
+static int ai_inited = 0;
 
 //========================= BOOK-KEEPING FUNCTIONS =======================
 

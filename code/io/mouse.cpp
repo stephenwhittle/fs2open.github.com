@@ -26,11 +26,11 @@
 
 int mouse_inited = 0;
 
-LOCAL int Mouse_x;
-LOCAL int Mouse_y;
+static int Mouse_x;
+static int Mouse_y;
 
-LOCAL int Mouse_wheel_x;
-LOCAL int Mouse_wheel_y;
+static int Mouse_wheel_x;
+static int Mouse_wheel_y;
 
 SDL_mutex* mouse_lock;
 

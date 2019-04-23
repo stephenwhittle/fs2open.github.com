@@ -103,7 +103,11 @@ namespace core
 		assert_handler.emit(expr, file, line);
 	}
 
-    std::string GetFormattedCallstack()
+void mprintf(const char* format, ...) {}
+
+void nprintf(const char* id, const char* format, ...) {}
+
+std::string GetFormattedCallstack()
 	{
 	    void* addresses[256];
 	    int num_addresses = callstack(0, addresses, 256);

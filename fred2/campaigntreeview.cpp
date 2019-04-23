@@ -22,15 +22,15 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-LOCAL int Bx, By, Mission_dragging = -1, Mission_dropping = -1, Context_mission;
+static int Bx, By, Mission_dragging = -1, Mission_dropping = -1, Context_mission;
 int Total_links = 0;
 int CTV_button_down = 0;
 int Level_counts[MAX_LEVELS];
 int Sorted[MAX_CAMPAIGN_MISSIONS];
 campaign_tree_element Elements[MAX_CAMPAIGN_MISSIONS];
 campaign_tree_link Links[MAX_CAMPAIGN_TREE_LINKS];
-LOCAL CRect Dragging_rect;
-LOCAL CSize Rect_offset, Last_draw_size;
+static CRect Dragging_rect;
+static CSize Rect_offset, Last_draw_size;
 
 /////////////////////////////////////////////////////////////////////////////
 // campaign_tree_view

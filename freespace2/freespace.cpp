@@ -348,7 +348,7 @@ extern void ssm_process();
 // static variable to contain the time this version was built
 // commented out for now until
 // I figure out how to get the username into the file
-//LOCAL char freespace_build_time[] = "Compiled on:"__DATE__" "__TIME__" by "__USER__;
+//static char freespace_build_time[] = "Compiled on:"__DATE__" "__TIME__" by "__USER__;
 
 // defines and variables used for dumping frame for making trailers.
 #ifndef NDEBUG

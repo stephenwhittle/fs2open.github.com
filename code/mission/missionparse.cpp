@@ -80,7 +80,7 @@
 #include "missionparse.h"
 
 
-LOCAL struct {
+static struct {
 	char docker[NAME_LENGTH];
 	char dockee[NAME_LENGTH];
 	char docker_point[NAME_LENGTH];

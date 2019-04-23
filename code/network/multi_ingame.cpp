@@ -84,8 +84,8 @@
 // --------------------------------------------------------------------------------------------------
 
 
-LOCAL	int	Ingame_ships_deleted = 0;
-//LOCAL	int	Ingame_ships_to_delete[MAX_SHIPS];
+static	int	Ingame_ships_deleted = 0;
+//static	int	Ingame_ships_to_delete[MAX_SHIPS];
 
 
 // --------------------------------------------------------------------------------------------------
@@ -478,7 +478,7 @@ static int Multi_ingame_timer_coords[GR_NUM_RESOLUTIONS][2] = {
 //#define MULTI_INGAME_TIME_LEFT_Y			411
 
 #define MULTI_INGAME_TIME_SECONDS		(1000 * 15)
-LOCAL int Ingame_time_left;
+static int Ingame_time_left;
 
 // uses MULTI_JOIN_REFRESH_TIME as its timestamp
 UI_WINDOW Multi_ingame_window;											// the window object for the join screen
@@ -511,7 +511,7 @@ int Multi_ingame_ship_selected;
 #define INGAME_FINAL_TIMEOUT 4000
 
 ushort Ingame_ship_signatures[MAX_INGAME_SHIPS];
-//LOCAL int Ingame_final_timeout;
+//static int Ingame_final_timeout;
 
 //XSTR:ON
 

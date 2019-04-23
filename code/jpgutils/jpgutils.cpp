@@ -19,7 +19,6 @@
 #include "bmpman/bmpman.h"
 #include "graphics/2d.h"
 
-#undef LOCAL // fix for the jpeg header, pstypes.h has defined these macros
 
 // fix a warning where jpeg and SDL headers collide
 #ifdef HAVE_STDDEF_H

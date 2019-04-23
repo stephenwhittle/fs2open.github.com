@@ -30,11 +30,6 @@
 
 #define MAX_PLAYERS	12
 
-#ifdef LOCAL
-#undef LOCAL
-#endif
-
-#define LOCAL static			// make module local varilable static.
 
 
 typedef std::int32_t _fs_time_t;  // time_t here is 64-bit and we need 32-bit

@@ -71,7 +71,7 @@ subsys_to_render Render_subsys;
 #define REDUCER				100.0f
 #define DUP_DRAG_OF_WING	2
 
-LOCAL int Duped_wing;
+static int Duped_wing;
 
 int Autosave_disabled = 0;
 int Show_sexp_help = 1;
