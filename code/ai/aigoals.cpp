@@ -145,7 +145,7 @@ void ai_maybe_add_form_goal( wing *wingp )
 	for ( j = 0; j < wingp->current_count; j++ ) {
 		ai_info *aip;
 
-		Assert( wingp->ship_index[j] != -1 );						// get Allender
+		core::Assert(wingp->ship_index[j] != -1); // get Allender
 
 		aip = &Ai_info[Ships[wingp->ship_index[j]].ai_index];
 		// don't process Player_ship
@@ -237,7 +237,7 @@ void ai_remove_ship_goal( ai_info *aip, int index )
 	// only need to set the ai_mode for the particular goal to AI_GOAL_NONE
 	// reset ai mode to default behavior.  Might get changed next time through
 	// ai goal code look
-	Assert ( index >= 0 );			// must have a valid goal
+	core::Assert(index >= 0); // must have a valid goal
 
 	aip->goals[index].ai_mode = AI_GOAL_NONE;
 	aip->goals[index].signature = -1;
@@ -316,7 +316,7 @@ void ai_mission_wing_goal_complete( int wingnum, ai_goal *remove_goalp )
 	priority = remove_goalp->priority;
 	name = remove_goalp->target_name;
 
-	Assert ( name );			// should not be NULL!!!!
+	core::Assert(name); // should not be NULL!!!!
 
 	// remove the goal from all the ships currently in the wing
 	for (i = 0; i < wingp->current_count; i++ ) {
@@ -324,7 +324,7 @@ void ai_mission_wing_goal_complete( int wingnum, ai_goal *remove_goalp )
 		ai_info *aip;
 
 		num = wingp->ship_index[i];
-		Assert ( num >= 0 );
+		core::Assert(num >= 0);
 		aip = &Ai_info[Ships[num].ai_index];
 		for ( j = 0; j < MAX_AI_GOALS; j++ ) {
 			aigp = &(aip->goals[j]);
@@ -455,7 +455,7 @@ void ai_goal_purge_invalid_goals( ai_goal *aigp, ai_goal *goal_list, ai_info *ai
 					}
 					// otherwise we simply grab it from the ship itself
 					else {
-						Assert(aip != NULL);
+					    core::Assert(aip != NULL);
 						ai_ship_type = Ship_info[Ships[aip->shipnum].ship_info_index].class_type;
 					}
 
@@ -554,7 +554,7 @@ void ai_goal_fixup_dockpoints(ai_info *aip, ai_goal *aigp)
 {
 	int shipnum, docker_index, dockee_index;
 
-	Assert ( aip->shipnum != -1 );
+	core::Assert(aip->shipnum != -1);
 	shipnum = ship_name_lookup( aigp->target_name );
 	Assertion ( shipnum != -1, "Couldn't find ai goal's target_name (%s); get a coder!\n", aigp->target_name );
 	docker_index = -1;
@@ -625,7 +625,7 @@ void ai_goal_fixup_dockpoints(ai_info *aip, ai_goal *aigp)
 
 void ai_add_goal_sub_player(int type, int mode, int submode, char *target_name, ai_goal *aigp )
 {
-	Assert ( (type == AIG_TYPE_PLAYER_WING) || (type == AIG_TYPE_PLAYER_SHIP) );
+	core::Assert((type == AIG_TYPE_PLAYER_WING) || (type == AIG_TYPE_PLAYER_SHIP));
 
 	aigp->time = Missiontime;
 	aigp->type = type;										// from player for sure -- could be to ship or to wing
@@ -635,7 +635,7 @@ void ai_add_goal_sub_player(int type, int mode, int submode, char *target_name, 
 	if ( mode == AI_GOAL_WARP ) {
 		if (submode >= 0) {
 			aigp->wp_list = find_waypoint_list_at_index(submode);
-			Assert(aigp->wp_list != NULL);
+			core::Assert(aigp->wp_list != NULL);
 		} else {
 			aigp->wp_list = NULL;
 		}
@@ -719,7 +719,7 @@ int ai_goal_num(ai_goal *goals)
 
 void ai_add_goal_sub_scripting(int type, int mode, int submode, int priority, char *target_name, ai_goal *aigp )
 {
-	Assert ( (type == AIG_TYPE_PLAYER_WING) || (type == AIG_TYPE_PLAYER_SHIP) );
+	core::Assert((type == AIG_TYPE_PLAYER_WING) || (type == AIG_TYPE_PLAYER_SHIP));
 
 	aigp->time = Missiontime;
 	aigp->type = type;											// from player for sure -- could be to ship or to wing
@@ -825,7 +825,7 @@ void ai_add_goal_sub_sexp( int sexp, int type, ai_goal *aigp, char *actor_name )
 	int node, dummy, op;
 	char *text;
 
-	Assert ( Sexp_nodes[sexp].first != -1 );
+	core::Assert(Sexp_nodes[sexp].first != -1);
 	node = Sexp_nodes[sexp].first;
 	text = CTEXT(node);
 
@@ -1041,7 +1041,7 @@ void ai_add_goal_sub_sexp( int sexp, int type, ai_goal *aigp, char *actor_name )
  */
 int ai_find_goal_index( ai_goal* aigp, int mode, int submode, int priority )
 {
-	Assert( aigp != NULL );
+	core::Assert(aigp != NULL);
 	for ( int i = 0; i < MAX_AI_GOALS; i++ )
 	{
 		if ( aigp[ i ].ai_mode == mode &&
@@ -1062,7 +1062,7 @@ int ai_find_goal_index( ai_goal* aigp, int mode, int submode, int priority )
 int ai_remove_goal_sexp_sub( int sexp, ai_goal* aigp )
 {
 	/* Sanity check */
-	Assert( Sexp_nodes[ sexp ].first != -1 );
+	core::Assert(Sexp_nodes[sexp].first != -1);
 
 	/* The bits we're searching for in the goals list */
 	int priority = -1;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include <core/pstypes.h>
+#include "globalincs/scp_defines.h"
 #include "tracing/categories.h"
 #include "tracing/scopes.h"
 

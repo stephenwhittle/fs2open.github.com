@@ -413,7 +413,7 @@ int translate_key_to_index(const char *key, bool find_override)
 	max_scan_codes = sizeof(Scan_code_text_english) / sizeof(char *);
 
 	// look for modifiers
-	Assert(key);
+	core::Assert(key);
 	if (!strnicmp(key, "Alt", 3)) {
 		alt = 1;
 		key += 3;
@@ -916,7 +916,7 @@ void control_config_common_load_overrides()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse 'controlconfigdefaults.tbl'!  Error message = %s.\n", e.what()));
+		core::mprintf("TABLES: Unable to parse 'controlconfigdefaults.tbl'!  Error message = %s.\n", e.what());
 		return;
 	}
 

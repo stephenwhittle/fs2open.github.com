@@ -22,6 +22,7 @@
 #include "math/vecmat.h"
 #include "io/cursor.h"
 #include "math/fix.h"
+#include <globalincs/scp_defines.h>
 // Forward definition
 namespace graphics {
 namespace util {

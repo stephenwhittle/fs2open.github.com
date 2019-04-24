@@ -68,7 +68,7 @@ void cmeasure_maybe_alert_success(object *objp)
 		return;
 	}
 
-	Assert(Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Cmeasure]);
+	core::Assert(Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Cmeasure]);
 
 	if ( objp->parent == OBJ_INDEX(Player_obj) ) {
 		hud_start_text_flash(XSTR("Evaded", 1430), 800);

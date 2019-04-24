@@ -3,7 +3,7 @@
 #include "cfile/cfile.h"
 #include "osapi/osregistry.h"
 #include <core/toolchain.h>
-
+#include <core/error.h>
 /*	Currently supported formats:
  *		DXT1a	(compressed)
  *		DXT1c	(compressed)
@@ -43,7 +43,7 @@ int dds_read_header(const char *filename, CFILE *img_cfp, int *width, int *heigh
 
 	if (img_cfp == NULL) {
 		// this better not happen.. ever
-		Assert(filename != NULL);
+		core::Assert(filename != NULL);
 
 		// make sure there is an extension
 		strcpy_s(real_name, filename);
@@ -147,7 +147,7 @@ int dds_read_header(const char *filename, CFILE *img_cfp, int *width, int *heigh
 			d_size *= 6;
 		}
 
-		Assert( d_size > 0 );
+		core::Assert(d_size > 0);
 		*size = d_size;
 
 		switch (dds_header.ddpfPixelFormat.dwFourCC) {
@@ -202,7 +202,7 @@ int dds_read_header(const char *filename, CFILE *img_cfp, int *width, int *heigh
 			d_size += d_width * d_height * d_depth * (dds_header.ddpfPixelFormat.dwRGBBitCount / 8);
 		}
 
-		Assert( d_size > 0 );
+		core::Assert(d_size > 0);
 
 		if ( dds_header.ddsCaps.dwCaps2 & DDSCAPS2_CUBEMAP ) {
 			if ( !(dds_header.ddsCaps.dwCaps2 & DDSCAPS2_CUBEMAP_ALLFACES) ) {
@@ -283,7 +283,7 @@ int dds_read_bitmap(const char *filename, ubyte *data, ubyte *bpp, int cf_type)
 	char real_name[MAX_FILENAME_LEN];
 
 	// this better not happen.. ever
-	Assert(filename != NULL);
+	core::Assert(filename != NULL);
 
 	// make sure there is an extension
 	strcpy_s(real_name, filename);
@@ -300,7 +300,7 @@ int dds_read_bitmap(const char *filename, ubyte *data, ubyte *bpp, int cf_type)
 
 	// read the header -- if its at this stage, it should be legal.
 	retval = dds_read_header(real_name, cfp, &w, &h, &bits, &ct, &lvl, &size);
-	Assert(retval == DDS_ERROR_NONE);
+	core::Assert(retval == DDS_ERROR_NONE);
 
 	// this really shouldn't be needed but better safe than sorry
 	if (retval != DDS_ERROR_NONE) {
@@ -356,7 +356,7 @@ void dds_save_image(int width, int height, int bpp, int num_mipmaps, ubyte *data
 		}
 		os_config_write_uint(NULL, "ImageExportNum", count);
 	} else {
-		Assert( strlen(filename) < MAX_FILENAME_LEN-5 );
+		core::Assert(strlen(filename) < MAX_FILENAME_LEN - 5);
 
 		strcpy_s(real_filename, filename);
 
@@ -369,7 +369,7 @@ void dds_save_image(int width, int height, int bpp, int num_mipmaps, ubyte *data
 	CFILE *image = cfopen( real_filename, "wb", CFILE_NORMAL, CF_TYPE_CACHE );
 
 	if (image == NULL) {
-		mprintf(("Unable to open DDS image for saving!!\n"));
+		core::mprintf("Unable to open DDS image for saving!!\n");
 		return;
 	}
 

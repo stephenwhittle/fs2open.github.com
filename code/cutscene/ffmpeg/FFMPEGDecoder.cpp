@@ -1,5 +1,5 @@
 #include <limits>
-
+#include <core/error.h>
 #include "cutscene/ffmpeg/FFMPEGDecoder.h"
 
 #include "cfile/cfile.h"
@@ -100,7 +100,7 @@ std::string normalizeLanguage(const char* langauge_name) {
 	}
 
 	// Print to log so that we can find the actual value more easily later
-	mprintf(("FFmpeg log: Found unknown language value '%s'!\n", langauge_name));
+	core::mprintf("FFmpeg log: Found unknown language value '%s'!\n", langauge_name);
 
 	// Default to english for everything else
 	return "English";
@@ -209,7 +209,7 @@ std::unique_ptr<InputStream> openStream(const std::string& name) {
 		}
 	}
 	catch (const FFmpegException& e) {
-		mprintf(("Error opening %s: %s\n", name.c_str(), e.what()));
+		core::mprintf("Error opening %s: %s\n", name.c_str(), e.what());
 		return nullptr;
 	}
 
@@ -221,7 +221,7 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
                                                 const PlaybackProperties& properties)
 {
 	if (subt && properties.looping) {
-		mprintf(("FFmpeg: External subtitles and looping movies are not supported!\n"));
+		core::mprintf("FFmpeg: External subtitles and looping movies are not supported!\n");
 		return nullptr;
 	}
 
@@ -232,11 +232,11 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 	auto videoStream = av_find_best_stream(ctx, AVMEDIA_TYPE_VIDEO, -1, -1, &status->videoCodec, 0);
 	if (videoStream < 0) {
 		if (videoStream == AVERROR_STREAM_NOT_FOUND) {
-			mprintf(("FFmpeg: No video stream found in file!\n"));
+			core::mprintf("FFmpeg: No video stream found in file!\n");
 		} else if (videoStream == AVERROR_DECODER_NOT_FOUND) {
-			mprintf(("FFmpeg: Codec for video stream could not be found!\n"));
+			core::mprintf("FFmpeg: Codec for video stream could not be found!\n");
 		} else {
-			mprintf(("FFmpeg: Unknown error while finding video stream!\n"));
+			core::mprintf("FFmpeg: Unknown error while finding video stream!\n");
 		}
 
 		return nullptr;
@@ -248,11 +248,11 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		audioStream = av_find_best_stream(ctx, AVMEDIA_TYPE_AUDIO, -1, videoStream, &status->audioCodec, 0);
 		if (audioStream < 0) {
 			if (audioStream == AVERROR_STREAM_NOT_FOUND) {
-				mprintf(("FFmpeg: No audio stream found in file!\n"));
+				core::mprintf("FFmpeg: No audio stream found in file!\n");
 			} else if (audioStream == AVERROR_DECODER_NOT_FOUND) {
-				mprintf(("FFmpeg: Codec for audio stream could not be found!\n"));
+				core::mprintf("FFmpeg: Codec for audio stream could not be found!\n");
 			} else {
-				mprintf(("FFmpeg: Unknown error while finding audio stream!\n"));
+				core::mprintf("FFmpeg: Unknown error while finding audio stream!\n");
 			}
 		}
 	}
@@ -271,11 +271,11 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		auto subtStream = av_find_best_stream(subtCtx, AVMEDIA_TYPE_SUBTITLE, -1, -1, nullptr, 0);
 		if (subtStream < 0) {
 			if (subtStream == AVERROR_STREAM_NOT_FOUND) {
-				mprintf(("FFmpeg: No subtitle stream found in subtitle file!\n"));
+				core::mprintf("FFmpeg: No subtitle stream found in subtitle file!\n");
 			} else if (subtStream == AVERROR_DECODER_NOT_FOUND) {
-				mprintf(("FFmpeg: Codec for subtitle stream could not be found!\n"));
+				core::mprintf("FFmpeg: Codec for subtitle stream could not be found!\n");
 			} else {
-				mprintf(("FFmpeg: Unknown error while finding subtitle stream!\n"));
+				core::mprintf("FFmpeg: Unknown error while finding subtitle stream!\n");
 			}
 		} else {
 			status->subtitleStream      = subtCtx->streams[subtStream];

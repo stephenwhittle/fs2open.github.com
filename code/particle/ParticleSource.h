@@ -289,7 +289,7 @@ class ParticleSource {
 	inline ParticleEffect* getEffect() { return m_effect; }
 
 	inline void setEffect(ParticleEffect* eff) {
-		Assert(eff != nullptr);
+		core::Assert(eff != nullptr);
 		m_effect = eff;
 	}
 

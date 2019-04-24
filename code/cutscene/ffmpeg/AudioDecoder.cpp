@@ -1,5 +1,5 @@
 #include "cutscene/ffmpeg/AudioDecoder.h"
-
+#include <core/error.h>
 #include "tracing/tracing.h"
 
 namespace {
@@ -86,7 +86,7 @@ AudioDecoder::AudioDecoder(DecoderStatus* status)
 									   m_outNumSamples, OUT_SAMPLE_FORMAT);
 
 	if (ret < 0) {
-		mprintf(("FFMPEG: Failed to allocate samples array!\n"));
+		core::mprintf(("FFMPEG: Failed to allocate samples array!\n"));
 	}
 }
 
@@ -126,7 +126,7 @@ void AudioDecoder::handleDecodedFrame(AVFrame* frame) {
 		auto ret = av_samples_alloc(m_outData, &m_outLinesize, OUT_NUM_CHANNELS, m_outNumSamples,
 									OUT_SAMPLE_FORMAT, 1);
 		if (ret < 0) {
-			mprintf(("FFMPEG: Failed to allocate samples!!!"));
+			core::mprintf("FFMPEG: Failed to allocate samples!!!");
 			return;
 		}
 
@@ -137,13 +137,13 @@ void AudioDecoder::handleDecodedFrame(AVFrame* frame) {
 	auto ret = resample_convert(m_resampleCtx, m_outData, 0, m_outNumSamples,
 								(uint8_t**) frame->data, 0, frame->nb_samples);
 	if (ret < 0) {
-		mprintf(("FFMPEG: Error while converting audio!\n"));
+		core::mprintf("FFMPEG: Error while converting audio!\n");
 		return;
 	}
 
 	auto outBufsize = av_samples_get_buffer_size(&m_outLinesize, OUT_NUM_CHANNELS, ret, OUT_SAMPLE_FORMAT, 1);
 	if (outBufsize < 0) {
-		mprintf(("FFMPEG: Could not get sample buffer size!\n"));
+		core::mprintf("FFMPEG: Could not get sample buffer size!\n");
 		return;
 	}
 

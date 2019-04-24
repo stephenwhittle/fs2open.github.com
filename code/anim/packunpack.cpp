@@ -631,7 +631,7 @@ int unpack_frame_from_file(anim_instance *ai, ubyte *frame, int size, ubyte *pal
 				}
 
 				size -= count;
-				Assert(size >= 0);
+				core::Assert(size >= 0);
 
 				if (value != transparent_code ) {
 					if ( xlate_pal ) {
@@ -675,7 +675,7 @@ int unpack_frame_from_file(anim_instance *ai, ubyte *frame, int size, ubyte *pal
 					count = size;
 
 				size -= count;
-				Assert(size >= 0);
+				core::Assert(size >= 0);
 
 				if (value != transparent_code) {
 					if ( xlate_pal ){

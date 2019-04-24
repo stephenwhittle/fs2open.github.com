@@ -110,7 +110,7 @@ void cutscene_init()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "cutscenes.tbl", e.what()));
+		core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "cutscenes.tbl", e.what());
 		return;
 	}
 }
@@ -121,7 +121,7 @@ void cutscene_mark_viewable(const char* filename)
 	char cut_file[MAX_FILENAME_LEN];
 	char file[MAX_FILENAME_LEN];
 
-	Assert(filename != NULL);
+	core::Assert(filename != NULL);
 
 	// strip off extension
 	strcpy_s(file, filename);
@@ -256,7 +256,7 @@ void cutscenes_screen_play()
 	char name[MAX_FILENAME_LEN]; // *full_name 
 	int which_cutscene;
 
-	Assert((Selected_line >= 0) && (Selected_line < (int) Cutscene_list.size()));
+	core::Assert((Selected_line >= 0) && (Selected_line < (int)Cutscene_list.size()));
 	which_cutscene = Cutscene_list[Selected_line];
 
 	strcpy_s(name, Cutscenes[which_cutscene].filename);
@@ -321,7 +321,7 @@ void cutscenes_screen_scroll_screen_up()
 	if (Scroll_offset)
 	{
 		Scroll_offset--;
-		Assert(Selected_line > Scroll_offset);
+		core::Assert(Selected_line > Scroll_offset);
 		h = Cutscene_list_coords[gr_screen.res][3] / gr_get_font_height();
 		while (Selected_line >= Scroll_offset + h)
 		{
@@ -605,7 +605,7 @@ void cutscenes_screen_do_frame()
 			{
 				Text_size = split_str(src, Cutscene_desc_coords[gr_screen.res][2], Text_line_size, Text_lines,
 									  Cutscene_max_text_lines[gr_screen.res]);
-				Assert(Text_size >= 0 && Text_size < Cutscene_max_text_lines[gr_screen.res]);
+				core::Assert(Text_size >= 0 && Text_size < Cutscene_max_text_lines[gr_screen.res]);
 			}
 		}
 	}

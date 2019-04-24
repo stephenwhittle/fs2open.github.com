@@ -37,7 +37,7 @@
 
 void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, size_t pos )
 {
-	Assert(cfile != nullptr);
+	core::Assert(cfile != nullptr);
 
 	cfile->lib_offset = lib_offset;
 	cfile->raw_position = pos;
@@ -50,7 +50,7 @@ void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, 
 
 		#if defined(CHECK_POSITION) && !defined(NDEBUG)
 		auto raw_position = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(raw_position == cfile->raw_position);
+		core::Assert(raw_position == cfile->raw_position);
 		#endif
 	}
 }
@@ -65,14 +65,14 @@ void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, 
 
 int cfeof(CFILE *cfile)
 {
-	Assert(cfile != NULL);
+	core::Assert(cfile != NULL);
 
 	int result = 0;
 
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
     if (cfile->fp) {
 		auto raw_position = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(raw_position == cfile->raw_position);
+		core::Assert(raw_position == cfile->raw_position);
 	}
 	#endif
 		
@@ -92,12 +92,12 @@ int cfeof(CFILE *cfile)
 //
 int cftell( CFILE * cfile )
 {
-	Assert(cfile != NULL);
+	core::Assert(cfile != NULL);
 
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
     if (cfile->fp) {
 		auto raw_position = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(raw_position == cfile->raw_position);
+		core::Assert(raw_position == cfile->raw_position);
 	}
 	#endif
 
@@ -116,10 +116,10 @@ int cftell( CFILE * cfile )
 int cfseek( CFILE *cfile, int offset, int where )
 {
 
-	Assert(cfile != NULL);
+	core::Assert(cfile != NULL);
 
 	// TODO: seek to offset in memory mapped file
-	Assert( !cfile->mem_mapped );
+	core::Assert(!cfile->mem_mapped);
 	
 	size_t goal_position;
 
@@ -214,7 +214,7 @@ int cfread(void *buf, int elsize, int nelem, CFILE *cfile)
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
     if (cfile->fp) {
 		auto tmp_offset = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(tmp_offset==cfile->raw_position);
+		core::Assert(tmp_offset == cfile->raw_position);
 	}
 	#endif
 
@@ -260,7 +260,7 @@ int cfread_lua_number(double *buf, CFILE *cfile)
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
     if (cfile->fp) {
 		auto tmp_offset = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(tmp_offset==cfile->raw_position);
+		core::Assert(tmp_offset == cfile->raw_position);
 	}
 	#endif
 

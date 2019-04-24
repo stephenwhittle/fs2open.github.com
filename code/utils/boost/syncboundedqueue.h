@@ -19,6 +19,7 @@
 #include <condition_variable>
 #include <exception>
 
+#include <scp_compiler_detection.h>
 
 enum queue_op_status
 {

@@ -123,7 +123,7 @@ cf_file *cf_create_file()
 	
 	if ( File_blocks[block] == NULL )	{
 		File_blocks[block] = (cf_file_block *)vm_malloc( sizeof(cf_file_block) );
-		Assert( File_blocks[block] != NULL);
+		core::Assert(File_blocks[block] != NULL);
 		memset(File_blocks[block], 0, sizeof(cf_file_block));
 	}
 
@@ -155,7 +155,7 @@ cf_root *cf_create_root()
 	
 	if ( Root_blocks[block] == NULL )	{
 		Root_blocks[block] = (cf_root_block *)vm_malloc( sizeof(cf_root_block) );
-		Assert(Root_blocks[block] != NULL);
+		core::Assert(Root_blocks[block] != NULL);
 	}
 
 	Num_roots++;
@@ -285,7 +285,7 @@ void cf_build_pack_list( cf_root *root )
 			do {
 				// add the new item
 				if (!(find.attrib & _A_SUBDIR)) {					
-					Assert(root_index < temp_root_count);
+					core::Assert(root_index < temp_root_count);
 
 					// get a temp pointer
 					rptr_sort = &temp_roots_sort[root_index++];
@@ -342,7 +342,7 @@ void cf_build_pack_list( cf_root *root )
 	}
 
 	// these should always be the same
-	Assert(root_index == temp_root_count);
+	core::Assert(root_index == temp_root_count);
 
 	// sort the roots
 	std::sort(temp_roots_sort, temp_roots_sort + temp_root_count, cf_packfile_sort_func);
@@ -356,7 +356,7 @@ void cf_build_pack_list( cf_root *root )
 #ifndef NDEBUG
 		uint chksum = 0;
 		cf_chksum_pack(temp_roots_sort[i].path, &chksum);
-		mprintf(("Found root pack '%s' with a checksum of 0x%08x\n", temp_roots_sort[i].path, chksum));
+		core::mprintf("Found root pack '%s' with a checksum of 0x%08x\n", temp_roots_sort[i].path, chksum);
 #endif
 
 		// mwa -- 4/2/98 put in the next 2 lines because the path name needs to be there
@@ -561,7 +561,7 @@ void cf_search_root_path(int root_index)
 
 	cf_root *root = cf_get_root(root_index);
 
-	mprintf(( "Searching root '%s' ... ", root->path ));
+	core::mprintf("Searching root '%s' ... ", root->path);
 
 	char search_path[CF_MAX_PATHNAME_LENGTH];
 #ifdef SCP_UNIX
@@ -737,7 +737,7 @@ void cf_search_root_path(int root_index)
 #endif
 	}
 
-	mprintf(( "%i files\n", num_files ));
+	core::mprintf("%i files\n", num_files);
 }
 
 
@@ -760,7 +760,7 @@ void cf_search_root_pack(int root_index)
 	int num_files = 0;
 	cf_root *root = cf_get_root(root_index);
 
-	Assert( root != NULL );
+	core::Assert(root != NULL);
 
 	// Open data		
 	FILE *fp = fopen( root->path, "rb" );
@@ -770,16 +770,16 @@ void cf_search_root_pack(int root_index)
 	}
 
 	if ( filelength(fileno(fp)) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3)) ) {
-		mprintf(( "Skipping VP file ('%s') of invalid size...\n", root->path ));
+		core::mprintf("Skipping VP file ('%s') of invalid size...\n", root->path);
 		fclose(fp);
 		return;
 	}
 
 	VP_FILE_HEADER VP_header;
 
-	Assert( sizeof(VP_header) == 16 );
+	core::Assert(sizeof(VP_header) == 16);
 	if (fread(&VP_header, sizeof(VP_header), 1, fp) != 1) {
-		mprintf(("Skipping VP file ('%s') because the header could not be read...\n", root->path));
+		core::mprintf("Skipping VP file ('%s') because the header could not be read...\n", root->path);
 		fclose(fp);
 		return;
 	}
@@ -788,7 +788,7 @@ void cf_search_root_pack(int root_index)
 	VP_header.index_offset = INTEL_INT( VP_header.index_offset ); //-V570
 	VP_header.num_files = INTEL_INT( VP_header.num_files ); //-V570
 
-	mprintf(( "Searching root pack '%s' ... ", root->path ));
+	core::mprintf("Searching root pack '%s' ... ", root->path);
 
 	// Read index info
 	fseek(fp, VP_header.index_offset, SEEK_SET);
@@ -803,7 +803,7 @@ void cf_search_root_pack(int root_index)
 		VP_FILE find;
 
 		if (fread( &find, sizeof(VP_FILE), 1, fp ) != 1) {
-			mprintf(("Failed to read file entry (currently in directory %s)!\n", search_path));
+			core::mprintf("Failed to read file entry (currently in directory %s)!\n", search_path);
 			break;
 		}
 
@@ -858,12 +858,12 @@ void cf_search_root_pack(int root_index)
 
 	fclose(fp);
 
-	mprintf(( "%i files\n", num_files ));
+	core::mprintf("%i files\n", num_files);
 }
 
 void cf_search_memory_root(int root_index) {
 	int num_files = 0;
-	mprintf(( "Searching memory root ... " ));
+	core::mprintf("Searching memory root ... ");
 
 	auto default_files = defaults_get_all();
 	for (auto& default_file : default_files) {
@@ -901,7 +901,7 @@ void cf_search_memory_root(int root_index) {
 		num_files++;
 	}
 
-	mprintf(( "%i files\n", num_files ));
+	core::mprintf("%i files\n", num_files);
 }
 
 void cf_build_file_list()
@@ -943,7 +943,7 @@ void cf_build_secondary_filelist(const char *cdrom_dir)
 		File_blocks[i] = NULL;
 	}
 
-	mprintf(( "Building file index...\n" ));
+	core::mprintf("Building file index...\n");
 	
 	// build the list of searchable roots
 	cf_build_root_list(cdrom_dir);	
@@ -951,7 +951,7 @@ void cf_build_secondary_filelist(const char *cdrom_dir)
 	// build the list of files themselves
 	cf_build_file_list();
 
-	mprintf(( "Found %d roots and %d files.\n", Num_roots, Num_files ));
+	core::mprintf("Found %d roots and %d files.\n", Num_roots, Num_files);
 }
 
 void cf_free_secondary_filelist()
@@ -1004,7 +1004,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 	int cfs_slow_search = 0;
 	char longname[MAX_PATH_LEN];
 
-	Assert( (filespec != NULL) && (strlen(filespec) > 0) ); //-V805
+	core::Assert((filespec != NULL) && (strlen(filespec) > 0)); //-V805
 
 	// see if we have something other than just a filename
 	// our current rules say that any file that specifies a direct
@@ -1210,8 +1210,8 @@ CFileLocationExt cf_find_file_location_ext( const char *filename, const int ext_
 	char filespec[MAX_FILENAME_LEN];
 	char *p = NULL;
 	
-	Assert( (filename != NULL) && (strlen(filename) < MAX_FILENAME_LEN) );
-	Assert( (ext_list != NULL) && (ext_num > 1) );	// if we are searching for just one ext
+	core::Assert((filename != NULL) && (strlen(filename) < MAX_FILENAME_LEN));
+	core::Assert((ext_list != NULL) && (ext_num > 1)); // if we are searching for just one ext
 													// then this is the wrong function to use
 
 
@@ -1798,7 +1798,7 @@ int cf_get_file_list(int max, char** list, int pathtype, const char* filter, int
 		return 0;
 	}
 
-	Assert(list);
+	core::Assert(list);
 
 	if (!info && (sort == CF_SORT_TIME)) {
 		info = (file_list_info *) vm_malloc(sizeof(file_list_info) * max);
@@ -2210,7 +2210,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 	}
 
 	if (sort != CF_SORT_NONE) {
-		Assert(list);
+		core::Assert(list);
 		cf_sort_filenames( num_files, list, sort, info );
 	}
 
@@ -2263,12 +2263,12 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 		}
 
 		if (!root) {
-			Assert( filename != NULL );
+			core::Assert(filename != NULL);
 			strncpy(path, filename, path_max);
 			return 1;
 		}
 
-		Assert(CF_TYPE_SPECIFIED(pathtype));
+		core::Assert(CF_TYPE_SPECIFIED(pathtype));
 
 		strncpy(path, root->path, path_max);
 
@@ -2346,12 +2346,12 @@ int cf_create_default_path_string(std::string& path, int pathtype, const char* f
 		}
 
 		if (!root) {
-			Assert( filename != NULL );
+			core::Assert(filename != NULL);
 			path.assign(filename);
 			return 1;
 		}
 
-		Assert(CF_TYPE_SPECIFIED(pathtype));
+		core::Assert(CF_TYPE_SPECIFIED(pathtype));
 		std::ostringstream s_path;
 
 		s_path << root->path;

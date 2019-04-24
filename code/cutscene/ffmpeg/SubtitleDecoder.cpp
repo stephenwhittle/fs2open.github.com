@@ -3,6 +3,7 @@
 
 #include "SubtitleDecoder.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace {
 
 double getFrameTime(int64_t pts, AVRational time_base) {
@@ -54,7 +55,7 @@ void SubtitleDecoder::finishDecoding() {
 void SubtitleDecoder::pushSubtitleFrame(AVPacket* packet, AVSubtitle* subtitle) {
 	if (subtitle->format != 1) {
 		// Non-text subtitles are not supported yet.
-		mprintf(("FFmpeg: Detected a non-text subtitle! This is not supported yet!\n"));
+		core::mprintf("FFmpeg: Detected a non-text subtitle! This is not supported yet!\n");
 		return;
 	}
 	if (subtitle->num_rects < 1) {
@@ -82,7 +83,7 @@ void SubtitleDecoder::pushSubtitleFrame(AVPacket* packet, AVSubtitle* subtitle) 
 	auto subtitle_rect = subtitle->rects[0];
 	if (subtitle_rect->type == SUBTITLE_BITMAP) {
 		// Same as above, non-text subtitles are not supported yet.
-		mprintf(("FFmpeg: Detected a non-text subtitle! This is not supported yet!\n"));
+		core::mprintf("FFmpeg: Detected a non-text subtitle! This is not supported yet!\n");
 		return;
 	} else if (subtitle_rect->type == SUBTITLE_TEXT) {
 		// Subtitle does not need to be processed any further
@@ -109,7 +110,7 @@ void SubtitleDecoder::pushSubtitleFrame(AVPacket* packet, AVSubtitle* subtitle) 
 			newline_pos = processed_text.find("\\N");
 		}
 	} else {
-		mprintf(("FFmpeg: Detected unknown subtitle name in movie!\n"));
+		core::mprintf("FFmpeg: Detected unknown subtitle name in movie!\n");
 		return;
 	}
 

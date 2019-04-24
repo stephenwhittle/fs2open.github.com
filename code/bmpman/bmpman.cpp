@@ -186,7 +186,7 @@ float bitmap_lookup::map_texture_address(float address)
 
 float bitmap_lookup::get_channel_alpha(float u, float v)
 {
-	Assert( Bitmap_data != NULL );
+	core::Assert(Bitmap_data != NULL);
 
 	int x = fl2i(map_texture_address(u) * (Width-1));
 	int y = fl2i(map_texture_address(v) * (Height-1));
@@ -436,7 +436,7 @@ DCF(bm_used, "Shows BmpMan Slot Usage") {
 	text << "\n";
 
 	// TODO consider converting 1's to monospace to make debug console output prettier
-	mprintf(("%s", text.str().c_str())); // log for ease for copying data
+	core::mprintf("%s", text.str().c_str()); // log for ease for copying data
 	dc_printf("%s", text.str().c_str()); // instant gratification
 }
 
@@ -523,9 +523,9 @@ void bm_close() {
 
 int bm_create(int bpp, int w, int h, void *data, int flags) {
 	if (bpp == 8) {
-		Assert(flags & BMP_AABITMAP);
+		core::Assert(flags & BMP_AABITMAP);
 	} else {
-		Assert((bpp == 16) || (bpp == 24) || (bpp == 32));
+		core::Assert((bpp == 16) || (bpp == 24) || (bpp == 32));
 	}
 
 	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
@@ -585,13 +585,13 @@ void bm_convert_format(bitmap *bmp, ubyte flags) {
 		return;
 
 	if (Is_standalone) {
-		Assert(bmp->bpp == 8);
+		core::Assert(bmp->bpp == 8);
 		return;
 	} else {
 		if (flags & BMP_AABITMAP)
-			Assert(bmp->bpp == 8);
+			core::Assert(bmp->bpp == 8);
 		else
-			Assert((bmp->bpp == 16) || (bmp->bpp == 32));
+			core::Assert((bmp->bpp == 16) || (bmp->bpp == 32));
 	}
 
 	// maybe swizzle to be an xparent texture
@@ -799,7 +799,7 @@ void bm_get_components(ubyte *pixel, ubyte *r, ubyte *g, ubyte *b, ubyte *a) {
 	if (a != NULL) {
 		*a = 1;
 
-		Assert(!bit_32);
+		core::Assert(!bit_32);
 		if (!(((unsigned short*)pixel)[0] & 0x8000)) {
 			*a = 0;
 		}
@@ -1023,7 +1023,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 		int dds_error = dds_read_header(filename, img_cfp, w, h, bpp, &dds_ct, mm_lvl, size);
 
 		if (dds_error != DDS_ERROR_NONE) {
-			mprintf(("DDS ERROR: Couldn't open '%s' -- %s\n", filename, dds_error_string(dds_error)));
+			core::mprintf("DDS ERROR: Couldn't open '%s' -- %s\n", filename, dds_error_string(dds_error));
 			return -1;
 		}
 
@@ -1069,7 +1069,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 	else if (type == BM_TYPE_TGA) {
 		int tga_error = targa_read_header(filename, img_cfp, w, h, bpp, NULL);
 		if (tga_error != TARGA_ERROR_NONE) {
-			mprintf(("tga: Couldn't open '%s'\n", filename));
+			core::mprintf("tga: Couldn't open '%s'\n", filename);
 			return -1;
 		}
 	}
@@ -1077,7 +1077,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 	else if (type == BM_TYPE_PNG) {
 		int png_error = png_read_header(filename, img_cfp, w, h, bpp, NULL);
 		if (png_error != PNG_ERROR_NONE) {
-			mprintf(("png: Couldn't open '%s'\n", filename));
+			core::mprintf("png: Couldn't open '%s'\n", filename);
 			return -1;
 		}
 	}
@@ -1085,7 +1085,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 	else if (type == BM_TYPE_JPG) {
 		int jpg_error = jpeg_read_header(filename, img_cfp, w, h, bpp, NULL);
 		if (jpg_error != JPEG_ERROR_NONE) {
-			mprintf(("jpg: Couldn't open '%s'\n", filename));
+			core::mprintf("jpg: Couldn't open '%s'\n", filename);
 			return -1;
 		}
 	}
@@ -1093,7 +1093,7 @@ static int bm_load_info(BM_TYPE type, const char *filename, CFILE *img_cfp, int 
 	else if (type == BM_TYPE_PCX) {
 		int pcx_error = pcx_read_header(filename, img_cfp, w, h, bpp, NULL);
 		if (pcx_error != PCX_ERROR_NONE) {
-			mprintf(("pcx: Couldn't open '%s'\n", filename));
+			core::mprintf("pcx: Couldn't open '%s'\n", filename);
 			return -1;
 		}
 	}
@@ -1129,7 +1129,7 @@ int bm_load(const char *real_filename) {
 	strncpy(filename, real_filename, MAX_FILENAME_LEN - 1);
 	char *p = strrchr(filename, '.');
 	if (p) {
-		mprintf(("Someone passed an extension to bm_load for file '%s'\n", real_filename));
+		core::mprintf("Someone passed an extension to bm_load for file '%s'\n", real_filename);
 		*p = 0;
 	}
 
@@ -1163,7 +1163,7 @@ int bm_load(const char *real_filename) {
 		type = bm_type_list[rval];
 	}
 
-	Assert(type != BM_TYPE_NONE);
+	core::Assert(type != BM_TYPE_NONE);
 
 	// Find an open slot
 	free_slot = find_block_of(1);
@@ -1259,7 +1259,7 @@ bool bm_load_and_parse_eff(const char *filename, int dir_type, int *nframes, int
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("BMPMAN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+		core::mprintf("BMPMAN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		unpause_parse();
 		return false;
 	}
@@ -1278,13 +1278,13 @@ bool bm_load_and_parse_eff(const char *filename, int dir_type, int *nframes, int
 	} else if (!stricmp(NOX("pcx"), ext)) {
 		c_type = BM_TYPE_PCX;
 	} else {
-		mprintf(("BMPMAN: Unknown file type in EFF parse!\n"));
+		core::mprintf("BMPMAN: Unknown file type in EFF parse!\n");
 		return false;
 	}
 
 	// did we do anything?
 	if (c_type == BM_TYPE_NONE || frames == 0) {
-		mprintf(("BMPMAN: EFF parse ERROR!\n"));
+		core::mprintf("BMPMAN: EFF parse ERROR!\n");
 		return false;
 	}
 
@@ -1322,16 +1322,16 @@ static int bm_load_image_data(int handle, int bpp, ubyte flags, bool nodebug)
 
 	// don't do a bpp check here since it could be different in OGL - taylor
 	if (bmp->data == 0) {
-		Assert(be->ref_count == 1);
+		core::Assert(be->ref_count == 1);
 
 		if (be->type != BM_TYPE_USER && !nodebug) {
 			if (bmp->data == 0)
-				nprintf(("BmpMan", "Loading %s for the first time.\n", be->filename));
+				core::nprintf("BmpMan", "Loading %s for the first time.\n", be->filename);
 		}
 
 		if (!Bm_paging) {
 			if (be->type != BM_TYPE_USER && !nodebug)
-				nprintf(("Paging", "Loading %s (%dx%dx%d)\n", be->filename, bmp->w, bmp->h, true_bpp));
+				core::nprintf("Paging", "Loading %s (%dx%dx%d)\n", be->filename, bmp->w, bmp->h, true_bpp);
 		}
 
 		// select proper format
@@ -1442,7 +1442,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 	strncpy(filename, real_filename, MAX_FILENAME_LEN - 1);
 	char *p = strchr(filename, '.');
 	if (p) {
-		mprintf(("Someone passed an extension to bm_load_animation for file '%s'\n", real_filename));
+		core::mprintf("Someone passed an extension to bm_load_animation for file '%s'\n", real_filename);
 		*p = 0;
 	}
 
@@ -1511,12 +1511,12 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 	// it's an effect file, any readable image type with eff being txt
 	if (type == BM_TYPE_EFF) {
 		if (!bm_load_and_parse_eff(filename, dir_type, &anim_frames, &anim_fps, &key, &eff_type)) {
-			mprintf(("BMPMAN: Error reading EFF\n"));
+			core::mprintf("BMPMAN: Error reading EFF\n");
 			if (img_cfp != nullptr)
 				cfclose(img_cfp);
 			return -1;
 		} else {
-			mprintf(("BMPMAN: Found EFF (%s) with %d frames at %d fps.\n", filename, anim_frames, anim_fps));
+			core::mprintf("BMPMAN: Found EFF (%s) with %d frames at %d fps.\n", filename, anim_frames, anim_fps);
 		}
 		if (anim_fps == 0) {
 			core::Error(LOCATION, "animation (%s) has invalid fps of 0, fix this!", filename);
@@ -1550,7 +1550,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 		//other anis only have the first frame
 		if (the_anim.num_keys == 2) {
 			the_anim.keys = (key_frame*)vm_malloc(sizeof(key_frame) * the_anim.num_keys);
-			Assert(the_anim.keys != NULL);
+			core::Assert(the_anim.keys != NULL);
 
 			for (i = 0; i<the_anim.num_keys; i++) {
 				the_anim.keys[i].frame_num = 0;
@@ -1567,7 +1567,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 		}
 	}
 	else if (type == BM_TYPE_PNG) {
-		nprintf(("apng", "Loading apng: %s\n", filename));
+		core::nprintf("apng", "Loading apng: %s\n", filename);
 		try {
 			apng::apng_ani the_apng = apng::apng_ani(filename);
 			anim_frames = the_apng.nframes;
@@ -1579,7 +1579,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 			img_size = the_apng.imgsize();
 		}
 		catch (const apng::ApngException& e) {
-			mprintf(("Failed to load apng: %s\n", e.what() ));
+			core::mprintf("Failed to load apng: %s\n", e.what());
 			if (img_cfp != nullptr)
 				cfclose(img_cfp);
 			return -1;
@@ -1854,19 +1854,19 @@ bitmap * bm_lock(int handle, int bpp, ubyte flags, bool nodebug) {
 	// otherwise do it as normal
 	else {
 		if (flags & BMP_AABITMAP) {
-			Assert(bpp == 8);
+			core::Assert(bpp == 8);
 		} else if ((flags & BMP_TEX_NONCOMP) && (!(flags & BMP_TEX_COMP))) {
-			Assert(bpp >= 16);  // cheating but bpp passed isn't what we normally end up with
+			core::Assert(bpp >= 16); // cheating but bpp passed isn't what we normally end up with
 		} else if ((flags & BMP_TEX_DXT1) || (flags & BMP_TEX_DXT3) || (flags & BMP_TEX_DXT5)) {
-			Assert(bpp >= 16); // cheating but bpp passed isn't what we normally end up with
+			core::Assert(bpp >= 16); // cheating but bpp passed isn't what we normally end up with
 		} else if (flags & BMP_TEX_CUBEMAP) {
-			Assert((be->type == BM_TYPE_CUBEMAP_DDS) ||
+			core::Assert((be->type == BM_TYPE_CUBEMAP_DDS) ||
 				(be->type == BM_TYPE_CUBEMAP_DXT1) ||
 				(be->type == BM_TYPE_CUBEMAP_DXT3) ||
 				(be->type == BM_TYPE_CUBEMAP_DXT5));
-			Assert(bpp >= 16);
+			core::Assert(bpp >= 16);
 		} else {
-			Assert(0);		//?
+			core::Assert(0); //?
 		}
 	}
 
@@ -1875,10 +1875,10 @@ bitmap * bm_lock(int handle, int bpp, ubyte flags, bool nodebug) {
 	// If you hit this assert, chances are that someone freed the
 	// wrong bitmap and now someone is trying to use that bitmap.
 	// See John.
-	Assert(be->type != BM_TYPE_NONE);
+	core::Assert(be->type != BM_TYPE_NONE);
 
 	// Increment ref count for bitmap since lock was made on it.
-	Assert(be->ref_count >= 0);
+	core::Assert(be->ref_count >= 0);
 	be->ref_count++;					// Lock it before we page in data; this prevents a callback from freeing this
 	// as it gets read in
 
@@ -1952,12 +1952,12 @@ void bm_lock_ani(int /*handle*/, bitmap_slot *bs, bitmap* /*bmp*/, int bpp, ubyt
 	nframes = first_entry->info.ani.num_frames;
 
 	if ((the_anim = anim_load(first_entry->filename, first_entry->dir_type)) == nullptr) {
-		nprintf(("BMPMAN", "Error opening %s in bm_lock\n", be->filename));
+		core::nprintf("BMPMAN", "Error opening %s in bm_lock\n", be->filename);
 		return;
 	}
 
 	if ((the_anim_instance = init_anim_instance(the_anim, bpp)) == nullptr) {
-		nprintf(("BMPMAN", "Error opening %s in bm_lock\n", be->filename));
+		core::nprintf("BMPMAN", "Error opening %s in bm_lock\n", be->filename);
 		anim_free(the_anim);
 		return;
 	}
@@ -1972,7 +1972,7 @@ void bm_lock_ani(int /*handle*/, bitmap_slot *bs, bitmap* /*bmp*/, int bpp, ubyt
 	size = bm->w * bm->h * (bpp >> 3);
 	be->mem_taken = (size_t)size;
 
-	Assert(size > 0);
+	core::Assert(size > 0);
 
 	for (i = 0; i<nframes; i++) {
 		auto slot = bm_get_slot(first_frame + i);
@@ -2123,8 +2123,8 @@ void bm_lock_dds(int handle, bitmap_slot *bs, bitmap *bmp, int /*bpp*/, ubyte /*
 	// free any existing data
 	bm_free_data(bs);
 
-	Assert(be->mem_taken > 0);
-	Assert(&be->bm == bmp);
+	core::Assert(be->mem_taken > 0);
+	core::Assert(&be->bm == bmp);
 
 	data = (ubyte*)bm_malloc(handle, be->mem_taken);
 
@@ -2172,7 +2172,7 @@ void bm_lock_dds(int handle, bitmap_slot *bs, bitmap *bmp, int /*bpp*/, ubyte /*
 	}
 
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 }
 
@@ -2193,7 +2193,7 @@ void bm_lock_jpg(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /*flag
 	d_size = (bpp >> 3);
 
 	// allocate bitmap data
-	Assert(be->mem_taken > 0);
+	core::Assert(be->mem_taken > 0);
 	data = (ubyte*)bm_malloc(handle, be->mem_taken);
 
 	if (data == NULL)
@@ -2205,7 +2205,7 @@ void bm_lock_jpg(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /*flag
 	bmp->data = (ptr_u)data;
 	bmp->palette = NULL;
 
-	Assert(&be->bm == bmp);
+	core::Assert(&be->bm == bmp);
 
 	// make sure we are using the correct filename in the case of an EFF.
 	// this will populate filename[] whether it's EFF or not
@@ -2219,7 +2219,7 @@ void bm_lock_jpg(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /*flag
 	}
 
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 }
 
@@ -2240,13 +2240,13 @@ void bm_lock_pcx(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte flags)
 	bmp->palette = NULL;
 	memset(data, 0, be->mem_taken);
 
-	Assert(&be->bm == bmp);
+	core::Assert(&be->bm == bmp);
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 
 	// some sanity checks on flags
-	Assert(!((flags & BMP_AABITMAP) && (flags & BMP_TEX_ANY)));						// no aabitmap textures
+	core::Assert(!((flags & BMP_AABITMAP) && (flags & BMP_TEX_ANY))); // no aabitmap textures
 
 	// make sure we are using the correct filename in the case of an EFF.
 	// this will populate filename[] whether it's EFF or not
@@ -2260,7 +2260,7 @@ void bm_lock_pcx(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte flags)
 	}
 
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 
 	bmp->flags = 0;
@@ -2281,7 +2281,7 @@ void bm_lock_png(int handle, bitmap_slot *bs, bitmap *bmp, int /*bpp*/, ubyte /*
 	bm_free_data(bs);
 
 	// allocate bitmap data
-	Assert(bmp->w * bmp->h > 0);
+	core::Assert(bmp->w * bmp->h > 0);
 
 	//if it's not 32-bit, we expand when we read it
 	bmp->bpp = 32;
@@ -2294,7 +2294,7 @@ void bm_lock_png(int handle, bitmap_slot *bs, bitmap *bmp, int /*bpp*/, ubyte /*
 	bmp->data = (ptr_u)data;
 	bmp->palette = NULL;
 
-	Assert(&be->bm == bmp);
+	core::Assert(&be->bm == bmp);
 
 	// make sure we are using the correct filename in the case of an EFF.
 	// this will populate filename[] whether it's EFF or not
@@ -2309,7 +2309,7 @@ void bm_lock_png(int handle, bitmap_slot *bs, bitmap *bmp, int /*bpp*/, ubyte /*
 	}
 
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 }
 
@@ -2326,16 +2326,16 @@ void bm_lock_tga(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte flags)
 	bpp = be->bm.true_bpp;
 
 	if (Is_standalone) {
-		Assert(bpp == 8);
+		core::Assert(bpp == 8);
 	} else {
-		Assert((bpp == 16) || (bpp == 24) || (bpp == 32));
+		core::Assert((bpp == 16) || (bpp == 24) || (bpp == 32));
 	}
 
 	// allocate bitmap data
 	byte_size = (bpp >> 3);
 
-	Assert(byte_size);
-	Assert(be->mem_taken > 0);
+	core::Assert(byte_size);
+	core::Assert(be->mem_taken > 0);
 
 	data = (ubyte*)bm_malloc(handle, static_cast<size_t>(bmp->w * bmp->h * byte_size));
 
@@ -2349,9 +2349,9 @@ void bm_lock_tga(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte flags)
 	bmp->data = (ptr_u)data;
 	bmp->palette = NULL;
 
-	Assert(&be->bm == bmp);
+	core::Assert(&be->bm == bmp);
 #ifdef BMPMAN_NDEBUG
-	Assert(be->data_size > 0);
+	core::Assert(be->data_size > 0);
 #endif
 
 	int tga_error;
@@ -2401,7 +2401,7 @@ void bm_lock_user(int /*handle*/, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte f
 		break;
 
 	case 8:			// Going from 8 bpp to something (probably only for aabitmaps)
-		Assert(flags & BMP_AABITMAP);
+		core::Assert(flags & BMP_AABITMAP);
 		bmp->bpp = bpp;
 		bmp->flags = be->info.user.flags;
 		bmp->data = (ptr_u)be->info.user.data;
@@ -2434,7 +2434,7 @@ int bm_make_render_target(int width, int height, int flags) {
 	if (!gr_bm_make_render_target(n, &w, &h, &bpp, &mm_lvl, flags))
 		return -1;
 
-	Assert(mm_lvl > 0);
+	core::Assert(mm_lvl > 0);
 
 	if (flags & BMP_FLAG_RENDER_TARGET_STATIC) {
 		// data size
@@ -2485,7 +2485,7 @@ void *bm_malloc(int n, size_t size) {
 
 #ifdef BMPMAN_NDEBUG
 	auto entry = bm_get_entry(n);
-	Assert(entry->data_size == 0);
+	core::Assert(entry->data_size == 0);
 	entry->data_size += size;
 	bm_texture_ram += size;
 #endif
@@ -2499,7 +2499,7 @@ void bm_page_in_aabitmap(int handle, int nframes) {
 	if (handle == -1)
 		return;
 
-	Assert(bm_get_entry(handle)->handle == handle);
+	core::Assert(bm_get_entry(handle)->handle == handle);
 
 	for (i = 0; i<nframes; i++) {
 		auto frame_entry = bm_get_entry(handle + i);

@@ -25,7 +25,7 @@
 #include "cfile/cfile.h"
 #include <core/pstypes.h>
 #include <core/toolchain.h>
-
+#include <core/error.h>
 void cf_sort_filenames( std::vector<std::string> &list, int sort, std::vector<file_list_info> *info )
 {
 	// NOTE: This really needs to be updated to C++ style sorting at some point
@@ -66,7 +66,7 @@ void cf_sort_filenames( std::vector<std::string> &list, int sort, std::vector<fi
 		return;
 
 	} else if (sort == CF_SORT_TIME) {
-		Assert(info);
+		core::Assert(info);
 		incr = n / 2;
 		while (incr > 0) {
 			for (i=incr; i<n; i++) {
@@ -102,7 +102,7 @@ void cf_sort_filenames( std::vector<std::string> &list, int sort, std::vector<fi
 		return;
 	}
 
-	nprintf(("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort));
+	core::nprintf("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort);
 }
 
 // Sorts a list of filenames using the specified sorting method (CF_SORT_*).
@@ -148,7 +148,7 @@ void cf_sort_filenames( int n, char **list, int sort, file_list_info *info )
 		return;
 
 	} else if (sort == CF_SORT_TIME) {
-		Assert(info);
+		core::Assert(info);
 		incr = n / 2;
 		while (incr > 0) {
 			for (i=incr; i<n; i++) {
@@ -199,5 +199,5 @@ void cf_sort_filenames( int n, char **list, int sort, file_list_info *info )
 		return;
 	}
 
-	nprintf(("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort));
+	core::nprintf("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort);
 }

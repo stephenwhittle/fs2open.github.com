@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <core/pstypes.h>
+#include <scp_compiler_detection.h>
 #include "utils/boost/syncboundedqueue.h"
 
 namespace cutscene {

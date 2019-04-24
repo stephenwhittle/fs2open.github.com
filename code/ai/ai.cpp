@@ -49,7 +49,7 @@ int ai_get_slot(int shipnum)
  */
 void ai_free_slot(int ai_index)
 {
-	Assert( (ai_index >= 0) && (ai_index < MAX_AI_INFO) );
+	core::Assert( (ai_index >= 0) && (ai_index < MAX_AI_INFO) );
 
 	Ai_info[ai_index].shipnum = -1;
 }
@@ -69,23 +69,23 @@ void set_wingnum(int objnum, int wingnum)
 {
 	int	shipnum, ai_index;
 
-	Assert(Objects[objnum].type == OBJ_SHIP);
+	core::Assert(Objects[objnum].type == OBJ_SHIP);
 
 	shipnum = Objects[objnum].instance;
 
-	Assert((shipnum >= 0) && (shipnum < MAX_SHIPS));
+	core::Assert((shipnum >= 0) && (shipnum < MAX_SHIPS));
 
 	ai_index = Ships[shipnum].ai_index;
 
-	Assert( (ai_index >= 0) && (ai_index < MAX_AI_INFO) );
+	core::Assert( (ai_index >= 0) && (ai_index < MAX_AI_INFO) );
 
 	Ai_info[ai_index].wing = wingnum;
 }
 
 char *ai_get_goal_target_name(const char *name, int *index)
 {
-	Assert(name != NULL);
-	Assert(index != NULL);
+	core::Assert(name != NULL);
+	core::Assert(index != NULL);
 	int i;
 
 	for (i=0; i < Total_goal_target_names; i++)
@@ -94,7 +94,7 @@ char *ai_get_goal_target_name(const char *name, int *index)
 			return Goal_target_names[i];
 		}
 
-	Assert(Total_goal_target_names < MAX_GOAL_TARGET_NAMES);
+	core::Assert(Total_goal_target_names < MAX_GOAL_TARGET_NAMES);
 	Assertion(strlen(name) <= NAME_LENGTH - 1, "Goal target name %s is too long. Needs to be 31 characters or less.", name);
 	i = Total_goal_target_names++;
 	strcpy_s(Goal_target_names[i], name);

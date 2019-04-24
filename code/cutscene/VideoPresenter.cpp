@@ -1,7 +1,7 @@
 #include "VideoPresenter.h"
 #include "core/error.h"
 #include "graphics/matrix.h"
-
+#include <graphics/2d.h>
 using namespace cutscene;
 using namespace cutscene::player;
 

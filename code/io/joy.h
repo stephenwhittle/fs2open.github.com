@@ -11,7 +11,7 @@
 #define __JOY_H__
 
 #include <core/pstypes.h>
-
+#include <SDL.h>
 #include "SDL_joystick.h"
 
 // z64: Moved up here for compatibility. Bye bye, organization!

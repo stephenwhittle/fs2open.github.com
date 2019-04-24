@@ -113,7 +113,7 @@ vec3d *NavPoint::GetPosition()
 	if (flags & NP_WAYPOINT)
 	{
 		waypoint *wpt = find_waypoint_at_index((waypoint_list*) target_obj, waypoint_num-1);
-		Assert(wpt != NULL);
+		core::Assert(wpt != NULL);
 		return wpt->get_pos();
 	}
 	else
@@ -230,7 +230,7 @@ bool StartAutopilot()
 			if ( shipp->is_dying_or_departing() )
 				continue;
 
-			Assert(shipp->ai_index != -1);
+			core::Assert(shipp->ai_index != -1);
 			ai_info* support_ship_aip = &(Ai_info[Ships[objp->instance].ai_index]);
 
 			// is support ship trying to rearm-repair
@@ -863,7 +863,7 @@ void EndAutoPilot()
 		CinematicStarted = false;
 	}
 
-	Assert( CurrentNav >= 0 );
+	core::Assert(CurrentNav >= 0);
 
 	int goal = 0;
 	char *goal_name = NULL;
@@ -1010,7 +1010,7 @@ void nav_warp(bool prewarp=false)
 	/* calcuate the speed that everyone is supposed to be going so that there
 	is no need for anyone to accelerate or decelerate (most obvious with
 	the player's fighter slowing down as it changes the camera pan speed). */
-	Assert( Ai_info[Ships[Autopilot_flight_leader->instance].ai_index].waypoint_speed_cap > 0 );
+	core::Assert(Ai_info[Ships[Autopilot_flight_leader->instance].ai_index].waypoint_speed_cap > 0);
 	vm_vec_scale(&velocity, (float)Ai_info[Ships[Autopilot_flight_leader->instance].ai_index].waypoint_speed_cap);
 
 	// Find all ships that are supposed to autopilot with the player and move them
@@ -1304,7 +1304,8 @@ void parse_autopilot_table(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", (filename) ? filename : "<default autopilot.tbl>", e.what()));
+		core::mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n",
+		               (filename) ? filename : "<default autopilot.tbl>", e.what()));
 		return;
 	}
 }
@@ -1376,7 +1377,7 @@ bool AddNav_Ship(char *Nav, char *TargetName, int flags)
 	strcpy_s(tnav.m_NavName, Nav);
 	tnav.flags = NP_SHIP | flags;
 
-	Assert(!(tnav.flags & NP_WAYPOINT));
+	core::Assert(!(tnav.flags & NP_WAYPOINT));
 
 
 	for (i = 0; i < MAX_SHIPS; i++)
@@ -1422,7 +1423,7 @@ bool AddNav_Waypoint(char *Nav, char *WP_Path, int node, int flags)
 	strcpy_s(tnav.m_NavName, Nav);
 	tnav.flags = NP_WAYPOINT | flags;
 
-	Assert(!(tnav.flags & NP_SHIP));
+	core::Assert(!(tnav.flags & NP_SHIP));
 
 	tnav.target_obj = find_matching_waypoint_list(WP_Path);
 	tnav.waypoint_num = node;
@@ -1453,7 +1454,7 @@ int Nav_Get_Flags(char *Nav)
 //Generic
 bool Nav_Set_Flag(char *Nav, int flag)
 {
-	Assert(!(flag & NP_VALIDTYPE));
+	core::Assert(!(flag & NP_VALIDTYPE));
 	int nav = FindNav(Nav);
 
 	if (nav != -1)
@@ -1469,7 +1470,7 @@ bool Nav_Set_Flag(char *Nav, int flag)
 
 bool Nav_UnSet_Flag(char *Nav, int flag)
 {
-	Assert(!(flag & NP_VALIDTYPE));
+	core::Assert(!(flag & NP_VALIDTYPE));
 
 	int nav = FindNav(Nav);
 

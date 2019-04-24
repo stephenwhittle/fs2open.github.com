@@ -142,10 +142,10 @@ void anim_play_init(anim_play_struct *aps, anim *a_info, int x, int y, int base_
  */
 anim_instance *anim_play(anim_play_struct *aps)
 {
-	Assert( aps->anim_info != NULL );
-	Assert( aps->start_at >= 0 );
-	Assert( aps->stop_at < aps->anim_info->total_frames );
-	Assert( !(aps->looped && aps->ping_pong) );  // shouldn't have these both set at once
+	core::Assert( aps->anim_info != NULL );
+	core::Assert( aps->start_at >= 0 );
+	core::Assert( aps->stop_at < aps->anim_info->total_frames );
+	core::Assert( !(aps->looped && aps->ping_pong) );  // shouldn't have these both set at once
 
 	MONITOR_INC(NumANIPlayed, 1);
 
@@ -153,7 +153,7 @@ anim_instance *anim_play(anim_play_struct *aps)
 
 	// Find next free anim instance slot on queue
 	instance = GET_FIRST(&anim_free_list);
-	Assert( instance != &anim_free_list );  // shouldn't have the dummy element
+	core::Assert( instance != &anim_free_list );  // shouldn't have the dummy element
 
 	// remove instance from the free list
 	list_remove( &anim_free_list, instance );
@@ -170,7 +170,7 @@ anim_instance *anim_play(anim_play_struct *aps)
 		instance->file_offset = instance->parent->file_offset;
 	}
 	instance->frame = (ubyte *) vm_malloc(instance->parent->width * instance->parent->height * 2);
-	Assert( instance->frame != NULL );
+	core::Assert( instance->frame != NULL );
 	memset( instance->frame, 0, instance->parent->width * instance->parent->height * 2 );
 	instance->time_elapsed = 0.0f;
 	instance->stop_at = aps->stop_at;
@@ -259,7 +259,7 @@ int anim_show_next_frame(anim_instance *instance, float frametime)
 	int aabitmap = 0;
 	int bpp = 16;
 
-	Assert( instance != NULL );
+	core::Assert( instance != NULL );
 
 	instance->time_elapsed += frametime;
 
@@ -372,8 +372,8 @@ int anim_show_next_frame(anim_instance *instance, float frametime)
 			frame_diff = 1;
 		}
 	}		
-	Assert(frame_diff >= 0);
-	Assert( instance->frame_num >= 0 && instance->frame_num < instance->parent->total_frames );
+	core::Assert(frame_diff >= 0);
+	core::Assert(instance->frame_num >= 0 && instance->frame_num < instance->parent->total_frames);
 
 	// if the anim is paused, ignore all the above changes and still display this frame
 	if(instance->paused || Anim_paused){
@@ -433,7 +433,8 @@ int anim_show_next_frame(anim_instance *instance, float frametime)
 
 			// see if we had an error during decode (corrupted anim stream)
 			if ( (temp == NULL) && (temp_file_offset < 0) ) {
-				mprintf(("ANI: Fatal ERROR at frame %i!!  Aborting playback of \"%s\"...\n", instance->frame_num, instance->parent->name));
+				core::mprintf(("ANI: Fatal ERROR at frame %i!!  Aborting playback of \"%s\"...\n", instance->frame_num,
+				               instance->parent->name));
 
 				// return -1 to end all playing of this anim instanc
 				return -1;
@@ -504,7 +505,7 @@ int anim_show_next_frame(anim_instance *instance, float frametime)
 		}
 		else {
 			g3_rotate_vertex(&image_vertex,instance->world_pos);
-			Assert(instance->radius != 0.0f);
+			core::Assert(instance->radius != 0.0f);
 			//g3_draw_bitmap(&image_vertex, 0, instance->radius*1.5f, TMAP_FLAG_TEXTURED | TMAP_HTL_2D);
 			material mat_params;
 			material_set_unlit(&mat_params, bitmap_id, 1.0f, false, false);
@@ -527,7 +528,7 @@ int anim_show_next_frame(anim_instance *instance, float frametime)
  */
 void anim_release_render_instance(anim_instance* instance)
 {
-	Assert( instance != NULL );
+	core::Assert(instance != NULL);
 
 	if (instance->frame != NULL)
 		vm_free(instance->frame);
@@ -643,7 +644,7 @@ void anim_read_header(anim *ptr, CFILE *fp)
 
 	if (diff != 0) {
 		if (ptr->height > 16) {
-			mprintf(("ANI %s with size %dx%d (%.1f%% wasted)\n", ptr->name, ptr->width, ptr->height, waste));
+			core::mprintf("ANI %s with size %dx%d (%.1f%% wasted)\n", ptr->name, ptr->width, ptr->height, waste);
 		}
 	}
 #endif
@@ -681,7 +682,7 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
 	int			count,idx;
 	char name[_MAX_PATH];
 
-	Assert( real_filename != NULL );
+	core::Assert(real_filename != NULL);
 
 	strcpy_s( name, real_filename );
 	char *p = strchr( name, '.' );
@@ -704,12 +705,12 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
 			return NULL;
 
 		ptr = (anim *) vm_malloc(sizeof(anim));
-		Assert(ptr);
+		core::Assert(ptr);
 
 		ptr->flags = 0;
 		ptr->next = first_anim;
 		first_anim = ptr;
-		Assert(strlen(name) < _MAX_PATH - 1);
+		core::Assert(strlen(name) < _MAX_PATH - 1);
 		strcpy_s(ptr->name, name);
 		ptr->instance_count = 0;
 		ptr->width = 0;
@@ -726,7 +727,7 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
 
 		if(ptr->num_keys > 0){
 			ptr->keys = (key_frame*)vm_malloc(sizeof(key_frame) * ptr->num_keys);
-			Assert(ptr->keys != NULL);
+			core::Assert(ptr->keys != NULL);
 		} 			
 
 		// store how long the anim should take on playback (in seconds)
@@ -773,7 +774,7 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
 				ptr->data = NULL;
 				ptr->cache_file_offset = ptr->file_offset;
 				ptr->cache = (ubyte*)vm_malloc(ANI_STREAM_CACHE_SIZE+2);
-				Assert(ptr->cache);
+				core::Assert(ptr->cache);
 				cfseek(ptr->cfile_ptr, offset, CF_SEEK_SET);
 				cfread(ptr->cache, ANI_STREAM_CACHE_SIZE, 1, ptr->cfile_ptr);
 			} else {
@@ -806,7 +807,7 @@ anim *anim_load(const char *real_filename, int cf_dir_type, int file_mapped)
  */
 int anim_free(anim *ptr)
 {
-	Assert ( ptr != NULL );
+	core::Assert(ptr != NULL);
 	anim *list, **prev_anim;
 
 	list = first_anim;
@@ -841,7 +842,7 @@ int anim_free(anim *ptr)
 		}
 	}
 	else {
-		Assert(ptr->data);
+		core::Assert(ptr->data);
 		if (ptr->data != NULL) {
 			vm_free(ptr->data);
 			ptr->data = NULL;
@@ -909,7 +910,7 @@ void anim_ignore_next_frametime()
 
 int anim_instance_is_streamed(anim_instance *ai)
 {
-	Assert(ai);
+	core::Assert(ai);
 	return ( ai->parent->flags & ANF_STREAMED );
 }
 
@@ -918,9 +919,9 @@ unsigned char anim_instance_get_byte(anim_instance *ai, int offset)
 	int absolute_offset;
 	anim *parent;
 	
-	Assert(ai);
-	Assert(ai->parent->cfile_ptr);
-	Assert(ai->parent->flags & ANF_STREAMED);
+	core::Assert(ai);
+	core::Assert(ai->parent->cfile_ptr);
+	core::Assert(ai->parent->flags & ANF_STREAMED);
 
 	parent = ai->parent;
 	absolute_offset = ai->file_offset + offset;
