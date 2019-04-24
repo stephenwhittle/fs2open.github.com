@@ -264,7 +264,7 @@ void HudGaugeRadarDradis::drawBlips(int blip_type, int bright, int distort)
 	vec3d pos;
 	float alpha;
 	
-	Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
+core::Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
 	
 	//long frametime = timer_get_approx_seconds();
 	// Need to set font.

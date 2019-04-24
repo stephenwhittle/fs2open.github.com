@@ -33,7 +33,7 @@ static long double Timer_to_nanoseconds;
 
 static uint64_t get_performance_counter()
 {
-	Assertion(Timer_inited, "This function can only be used when the timer system is initialized!");
+core::Assertion(Timer_inited, "This function can only be used when the timer system is initialized!");
 
 	auto counter = SDL_GetPerformanceCounter();
 

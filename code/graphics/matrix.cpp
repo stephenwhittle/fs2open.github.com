@@ -66,7 +66,7 @@ static void create_orthographic_projection_matrix(matrix4* out, float left, floa
 
 void gr_start_instance_matrix(const vec3d *offset, const matrix *rotation)
 {
-	Assert( htl_view_matrix_set );
+core::Assert( htl_view_matrix_set );
 
 	if (offset == NULL) {
 		offset = &vmd_zero_vector;
@@ -86,7 +86,7 @@ void gr_start_instance_matrix(const vec3d *offset, const matrix *rotation)
 
 void gr_start_angles_instance_matrix(const vec3d *pos, const angles *rotation)
 {
-	Assert(htl_view_matrix_set);
+core::Assert(htl_view_matrix_set);
 
 	matrix m;
 	vm_angles_2_matrix(&m, rotation);
@@ -96,7 +96,7 @@ void gr_start_angles_instance_matrix(const vec3d *pos, const angles *rotation)
 
 void gr_end_instance_matrix()
 {
-	Assert(htl_view_matrix_set);
+core::Assert(htl_view_matrix_set);
 
 	gr_model_matrix_stack.pop();
 
@@ -146,7 +146,7 @@ void gr_end_proj_matrix() {
 
 void gr_set_view_matrix(const vec3d *pos, const matrix *orient)
 {
-	Assert(modelview_matrix_depth == 1);
+core::Assert(modelview_matrix_depth == 1);
 
 	gr_view_matrix = create_view_matrix(pos, orient);
 
@@ -181,7 +181,7 @@ void gr_set_view_matrix(const vec3d *pos, const matrix *orient)
 
 void gr_end_view_matrix()
 {
-	Assert(modelview_matrix_depth == 2);
+core::Assert(modelview_matrix_depth == 2);
 
 	gr_model_matrix_stack.clear();
 	vm_matrix4_set_identity(&gr_view_matrix);
@@ -201,8 +201,8 @@ void gr_set_2d_matrix(/*int x, int y, int w, int h*/)
 		return;
 	}
 
-	Assert( htl_2d_matrix_set == 0 );
-	Assert( htl_2d_matrix_depth == 0 );
+core::Assert( htl_2d_matrix_set == 0 );
+core::Assert( htl_2d_matrix_depth == 0 );
 
 	// the viewport needs to be the full screen size since glOrtho() is relative to it
 	gr_set_viewport(0, 0, gr_screen.max_w, gr_screen.max_h);
@@ -236,7 +236,7 @@ void gr_end_2d_matrix()
 	if (!htl_2d_matrix_set)
 		return;
 
-	Assert( htl_2d_matrix_depth == 1 );
+core::Assert( htl_2d_matrix_depth == 1 );
 
 	// reset viewport to what it was originally set to by the proj matrix
 	gr_set_viewport(gr_screen.offset_x, (gr_screen.max_h - gr_screen.offset_y - gr_screen.clip_height), gr_screen.clip_width, gr_screen.clip_height);

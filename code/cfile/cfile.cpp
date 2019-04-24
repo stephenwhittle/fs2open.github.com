@@ -162,7 +162,7 @@ static bool cfile_in_root_dir(const char *exe_path)
 	int token_count = 0;
 	const char *p = exe_path;
 
-	Assert(exe_path != NULL);
+core::Assert(exe_path != NULL);
 
 	do {
 		new_token = 0;
@@ -335,7 +335,7 @@ int cfile_push_chdir(int type)
 
 	_getcwd(OriginalDirectory, CFILE_ROOT_DIRECTORY_LEN - 1);
 
-	Assert(Cfile_stack_pos < CFILE_STACK_MAX);
+core::Assert(Cfile_stack_pos < CFILE_STACK_MAX);
 
 	if (Cfile_stack_pos >= CFILE_STACK_MAX) {
 		return -1;
@@ -368,7 +368,7 @@ int cfile_chdir(const char *dir)
 
 int cfile_pop_dir()
 {
-	Assert(Cfile_stack_pos);
+core::Assert(Cfile_stack_pos);
 
 	if ( !Cfile_stack_pos )
 		return -1;
@@ -383,7 +383,7 @@ int cfile_flush_dir(int dir_type)
 {
 	int del_count;
 
-	Assert( CF_TYPE_SPECIFIED(dir_type) );
+core::Assert( CF_TYPE_SPECIFIED(dir_type) );
 
 	// attempt to change the directory to the passed type
 	if(cfile_push_chdir(dir_type)){
@@ -449,10 +449,10 @@ char *cf_add_ext(const char *filename, const char *ext)
 
 	size_t flen = strlen(filename);
 	size_t elen = strlen(ext);
-	Assert(flen < MAX_PATH_LEN);
+core::Assert(flen < MAX_PATH_LEN);
 	strcpy_s(path, filename);
 	if ((flen < 4) || stricmp(path + flen - elen, ext) != 0) {
-		Assert(flen + elen < MAX_PATH_LEN);
+	core::Assert(flen + elen < MAX_PATH_LEN);
 		strcat_s(path, ext);
 	}
 
@@ -472,7 +472,7 @@ int cf_delete(const char *filename, int path_type, uint32_t location_flags)
 {
 	char longname[MAX_PATH_LEN];
 
-	Assert(CF_TYPE_SPECIFIED(path_type));
+core::Assert(CF_TYPE_SPECIFIED(path_type));
 
 	cf_create_default_path_string(longname, sizeof(longname) - 1, path_type, filename, false, location_flags);
 
@@ -485,7 +485,7 @@ int cf_access(const char *filename, int dir_type, int mode)
 {
 	char longname[MAX_PATH_LEN];
 
-	Assert( CF_TYPE_SPECIFIED(dir_type) );
+core::Assert( CF_TYPE_SPECIFIED(dir_type) );
 
 	cf_create_default_path_string( longname, sizeof(longname)-1, dir_type, filename );
 
@@ -536,7 +536,7 @@ void cf_attrib(const char *filename, int set, int clear, int dir_type)
 {
 	char longname[MAX_PATH_LEN];
 
-	Assert( CF_TYPE_SPECIFIED(dir_type) );
+core::Assert( CF_TYPE_SPECIFIED(dir_type) );
 
 	cf_create_default_path_string( longname, sizeof(longname)-1, dir_type, filename );
 
@@ -553,7 +553,7 @@ void cf_attrib(const char *filename, int set, int clear, int dir_type)
 
 int cf_rename(const char *old_name, const char *name, int dir_type)
 {
-	Assert( CF_TYPE_SPECIFIED(dir_type) );
+core::Assert( CF_TYPE_SPECIFIED(dir_type) );
 
 	int ret_code;
 	char old_longname[_MAX_PATH];
@@ -609,12 +609,12 @@ void cf_create_directory(int dir_type, uint32_t location_flags)
 	char longname[MAX_PATH_LEN];
 	struct stat statbuf;
 
-	Assertion( CF_TYPE_SPECIFIED(dir_type), "Invalid dir_type passed to cf_create_directory." );
+core::Assertion( CF_TYPE_SPECIFIED(dir_type), "Invalid dir_type passed to cf_create_directory." );
 
 	int current_dir = dir_type;
 
 	do {
-		Assert( num_dirs < CF_MAX_PATH_TYPES );		// Invalid Pathtypes data?
+	core::Assert( num_dirs < CF_MAX_PATH_TYPES );		// Invalid Pathtypes data?
 
 		dir_tree[num_dirs++] = current_dir;
 		current_dir = Pathtypes[current_dir].parent_index;
@@ -662,8 +662,8 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 
 	//================================================
 	// Check that all the parameters make sense
-	Assert(file_path && strlen(file_path));
-	Assert( mode != NULL );
+core::Assert(file_path && strlen(file_path));
+core::Assert( mode != NULL );
 	
 	// Can only open read-only binary files in memory mapped mode.
 	if ( (type & CFILE_MEMORY_MAPPED) && strcmp(mode,"rb") != 0 ) {
@@ -688,14 +688,14 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 			strcpy_s(longname, file_path );
 		} else {
 			// Path type given?
-			Assert( dir_type != CF_TYPE_ANY );
+		core::Assert( dir_type != CF_TYPE_ANY );
 
 			// Create the directory if necessary
 			cf_create_directory(dir_type, location_flags);
 
 			cf_create_default_path_string(longname, sizeof(longname) - 1, dir_type, file_path, false, location_flags);
 		}
-		Assert( !(type & CFILE_MEMORY_MAPPED) );
+	core::Assert( !(type & CFILE_MEMORY_MAPPED) );
 
 		// JOHN: TODO, you should create the path if it doesn't exist.
 		
@@ -801,8 +801,8 @@ CFILE *_cfopen_special(const char* source, int line, const char *file_path, cons
 		return NULL;
 	}
 
-	Assert( file_path && strlen(file_path) );
-	Assert( mode != NULL );
+core::Assert( file_path && strlen(file_path) );
+core::Assert( mode != NULL );
 
 	// cfopen_special() only supports reading files, not creating them
 	if ( strchr(mode, 'w') ) {
@@ -898,23 +898,23 @@ int cfclose( CFILE * cfile )
 {
 	int result;
 
-	Assert(cfile != NULL);
+core::Assert(cfile != NULL);
 
 	result = 0;
 	if ( cfile->data && cfile->mem_mapped ) {
 		// close memory mapped file
 #if defined _WIN32
 		result = UnmapViewOfFile((void*)cfile->data);
-		Assert(result);
+	core::Assert(result);
 		result = CloseHandle(cfile->hInFile);
-		Assert(result);	// Ensure file handle is closed properly
+	core::Assert(result);	// Ensure file handle is closed properly
 		result = CloseHandle(cfile->hMapFile);
-		Assert(result);	// Ensure file handle is closed properly
+	core::Assert(result);	// Ensure file handle is closed properly
 		result = 0;
 #elif defined SCP_UNIX
 		// FIXME: result is wrong after munmap() but it is successful
 		//result = munmap(cfile->data, cfile->data_length);
-		//Assert(result);
+		/core::Assert(result);
 		// This const_cast is safe since the pointer returned by mmap was also non-const
 		munmap(const_cast<void*>(cfile->data), cfile->data_length);
 		if ( cfile->fp != nullptr)
@@ -922,7 +922,7 @@ int cfclose( CFILE * cfile )
 #endif
 
 	} else if ( cfile->fp != nullptr )	{
-		Assert(cfile->fp != nullptr);
+	core::Assert(cfile->fp != nullptr);
 		result = fclose(cfile->fp);
 	} else {
 		// VP  do nothing
@@ -1063,7 +1063,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 		} 
 	
 		cfp->data = (ubyte*)MapViewOfFile(cfp->hMapFile, FILE_MAP_READ, 0, 0, 0);
-		Assert( cfp->data != NULL );
+	core::Assert( cfp->data != NULL );
 #elif defined SCP_UNIX
 		cfp->fp = fp;
 		cfp->data_length = filelength(fileno(fp));
@@ -1073,7 +1073,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 		                 MAP_SHARED,                // flags
 		                 fileno(fp),                // fd
 		                 0);                        // offset
-		Assert(cfp->data != nullptr);
+	core::Assert(cfp->data != nullptr);
 #endif
 
 		return cfp;
@@ -1118,8 +1118,8 @@ int cf_get_dir_type(CFILE *cfile)
 
 const void *cf_returndata(CFILE *cfile)
 {
-	Assert(cfile != NULL);
-	Assert(cfile->data != nullptr);
+core::Assert(cfile != NULL);
+core::Assert(cfile->data != nullptr);
 	return cfile->data;
 }
 
@@ -1127,7 +1127,7 @@ const void *cf_returndata(CFILE *cfile)
 // if 'len' is 0 then this check will be disabled
 void cf_set_max_read_len( CFILE * cfile, size_t len )
 {
-	Assert( cfile != NULL );
+core::Assert( cfile != NULL );
 
 	if (len) {
 		cfile->max_read_len = cfile->raw_position + len;
@@ -1237,7 +1237,7 @@ void cfread_string_len(char *buf,int n, CFILE *file)
 {
 	int len;
 	len = cfread_int(file);
-	Assertion( (len < n), "len: %i, n: %i", len, n );
+core::Assertion( (len < n), "len: %i, n: %i", len, n );
 	if (len)
 		cfread(buf, len, 1, file);
 
@@ -1327,15 +1327,15 @@ int cfwrite_string_len(const char *buf, CFILE *file)
 
 // Get the filelength
 int cfilelength(CFILE* cfile) {
-	Assert(cfile != NULL);
+core::Assert(cfile != NULL);
 
 	// TODO: return length of memory mapped file
-	Assert(!cfile->mem_mapped);
+core::Assert(!cfile->mem_mapped);
 
 	// cfile->size gets set at cfopen
 
 	// The rest of the code still uses ints, do an overflow check to detect cases where this fails
-	Assertion(cfile->size <= static_cast<size_t>(std::numeric_limits<int>::max()),
+core::Assertion(cfile->size <= static_cast<size_t>(std::numeric_limits<int>::max()),
 	          "Integer overflow in cfilelength! A file is too large (but I don't know which...).");
 	return (int) cfile->size;
 }
@@ -1377,7 +1377,7 @@ int cfwrite(const void *buf, int elsize, int nelem, CFILE *cfile)
 	}
 
 #if defined(CHECK_SIZE) && !defined(NDEBUG)
-	Assert( cfile->size == filelength(fileno(cfile->fp)) );
+core::Assert( cfile->size == filelength(fileno(cfile->fp)) );
 #endif
 
 	return (int)(bytes_written / elsize);
@@ -1407,7 +1407,7 @@ int cfputc(int c, CFILE *cfile)
 	}
 
 	// writing not supported for memory-mapped files
-	Assert( !cfile->data );
+core::Assert( !cfile->data );
 
 	int result = fputc(c, cfile->fp);
 
@@ -1419,7 +1419,7 @@ int cfputc(int c, CFILE *cfile)
 	}
 
 #if defined(CHECK_SIZE) && !defined(NDEBUG)
-	Assert( cfile->size == filelength(fileno(cfile->fp)) );
+core::Assert( cfile->size == filelength(fileno(cfile->fp)) );
 #endif
 
 	return result;	
@@ -1460,7 +1460,7 @@ int cfputs(const char *str, CFILE *cfile)
 	}
 
 #if defined(CHECK_SIZE) && !defined(NDEBUG)
-	Assert( cfile->size == filelength(fileno(cfile->fp)) );
+core::Assert( cfile->size == filelength(fileno(cfile->fp)) );
 #endif
 
 	return result;	
@@ -1497,9 +1497,9 @@ int cfgetc(CFILE *cfile)
 //
 char *cfgets(char *buf, int n, CFILE *cfile)
 {
-	Assert(cfile != NULL);
-	Assert(buf != NULL);
-	Assert(n > 0 );
+core::Assert(cfile != NULL);
+core::Assert(buf != NULL);
+core::Assert(n > 0 );
 
 	char * t = buf;
 	int i, c;
@@ -1602,10 +1602,10 @@ static int cf_chksum_do(CFILE *cfile, ushort *chk_short, uint *chk_long, int max
 	// determine whether we're doing a short or long checksum
 	is_long = 0;
 	if(chk_short){
-		Assert(!chk_long);		
+	core::Assert(!chk_long);		
 		*chk_short = 0;
 	} else {
-		Assert(chk_long);
+	core::Assert(chk_long);
 		is_long = 1;
 		*chk_long = 0;
 	}
@@ -1683,7 +1683,7 @@ int cf_chksum_pack(const char *filename, uint *chk_long, bool full)
 			max_size = safe_size;
 		}
 
-		Assertion(max_size > header_offset,
+	core::Assertion(max_size > header_offset,
 			"max_size (" SIZE_T_ARG ") > header_offset in packfile %s", max_size, filename);
 		max_size -= header_offset;
 
@@ -1821,12 +1821,12 @@ int cf_chksum_long(CFILE *file, uint *chksum, int max_size)
 //			1 - failure
 int cflush(CFILE *cfile)
 {
-	Assert(cfile != NULL);
+core::Assert(cfile != NULL);
 
 	// not supported for memory mapped files
-	Assert( !cfile->data );
+core::Assert( !cfile->data );
 
-	Assert(cfile->fp != nullptr);
+core::Assert(cfile->fp != nullptr);
 
 	int result = fflush(cfile->fp);
 

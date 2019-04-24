@@ -203,7 +203,7 @@ NVGcontext* createNanoVGContext() {
 }
 
 void deleteNanoVGContext(NVGcontext* context) {
-	Assertion(context != nullptr, "Invalid context passed!");
+core::Assertion(context != nullptr, "Invalid context passed!");
 
 	nvgDeleteInternal(context);
 }
@@ -374,7 +374,7 @@ void NanoVGRenderer::renderTriangles(NVGpaint* paint, NVGscissor* scissor, const
 	auto uniformData = &_uniformData[call->uniformIndex];
 	auto succcess = convertPaint(uniformData, paint, scissor, 1.0f, 1.0f, -1.0f);
 
-	Assertion(succcess, "Failed to convert paint, probably caused by an invalid texture handle.");
+core::Assertion(succcess, "Failed to convert paint, probably caused by an invalid texture handle.");
 
 	uniformData->type = NanoVGShaderType::Image;
 }
@@ -474,9 +474,9 @@ int NanoVGRenderer::createTexture(int type, int w, int h, int imageFlags, const 
 		bpp = 8;
 	}
 
-	Assertion(!(imageFlags & NVG_IMAGE_REPEATX), "Repeat X is not supported yet!");
-	Assertion(!(imageFlags & NVG_IMAGE_REPEATY), "Repeat Y is not supported yet!");
-	Assertion(!(imageFlags & NVG_IMAGE_GENERATE_MIPMAPS), "Generate Mipmaps is not supported yet!");
+core::Assertion(!(imageFlags & NVG_IMAGE_REPEATX), "Repeat X is not supported yet!");
+core::Assertion(!(imageFlags & NVG_IMAGE_REPEATY), "Repeat Y is not supported yet!");
+core::Assertion(!(imageFlags & NVG_IMAGE_GENERATE_MIPMAPS), "Generate Mipmaps is not supported yet!");
 
 	std::unique_ptr<uint8_t[]> data_buffer(new uint8_t[w * h * bpp]);
 	if (data != nullptr) {

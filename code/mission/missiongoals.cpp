@@ -239,7 +239,7 @@ void goal_screen_scroll_down();
 
 void goal_list::add(mission_goal *m)
 {
-	Assert(count < MAX_GOALS_PER_LIST);
+core::Assert(count < MAX_GOALS_PER_LIST);
 	list[count++] = m;
 }
 
@@ -339,7 +339,7 @@ void goal_text::display(int n, int y)
 	if ((n < 0) || (n >= m_num_lines) || (m_line_sizes[n] < 1))
 		return;  // out of range, don't draw anything
 
-	Assert(m_line_sizes[n] < MAX_GOAL_TEXT);
+core::Assert(m_line_sizes[n] < MAX_GOAL_TEXT);
 	y += Goal_screen_text_y;
 	if (*m_lines[n] == '*') {  // header line
 		gr_set_color_fast(&Color_text_heading);
@@ -765,8 +765,8 @@ void mission_goal_status_change( int goal_num, int new_status)
 {
 	int type;
 
-	Assert(goal_num < Num_goals);
-	Assert((new_status == GOAL_FAILED) || (new_status == GOAL_COMPLETE));
+core::Assert(goal_num < Num_goals);
+core::Assert((new_status == GOAL_FAILED) || (new_status == GOAL_COMPLETE));
 
 	// if in a multiplayer game, send a status change to clients
 	if ( MULTIPLAYER_MASTER ){

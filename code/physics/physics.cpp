@@ -157,9 +157,9 @@ void physics_sim_rot(matrix * orient, physics_info * pi, float sim_time )
 	float		rotdamp;
 	float		shock_fraction_time_left;
 
-	Assert(is_valid_matrix(orient));
-	Assert(is_valid_vec(&pi->rotvel));
-	Assert(is_valid_vec(&pi->desired_rotvel));
+core::Assert(is_valid_matrix(orient));
+core::Assert(is_valid_vec(&pi->rotvel));
+core::Assert(is_valid_vec(&pi->desired_rotvel));
 
 	// Handle special case of shockwave
 	shock_amplitude = 0.0f;
@@ -181,7 +181,7 @@ void physics_sim_rot(matrix * orient, physics_info * pi, float sim_time )
 	apply_physics( rotdamp, pi->desired_rotvel.xyz.y, pi->rotvel.xyz.y, sim_time, &new_vel.xyz.y, NULL );
 	apply_physics( rotdamp, pi->desired_rotvel.xyz.z, pi->rotvel.xyz.z, sim_time, &new_vel.xyz.z, NULL );
 
-	Assert(is_valid_vec(&new_vel));
+core::Assert(is_valid_vec(&new_vel));
 
 	pi->rotvel = new_vel;
 
@@ -1004,8 +1004,8 @@ int check_rotvel_limit( physics_info *pi )
 	int change_made = 0;
 	if ( !(pi->flags & PF_DEAD_DAMP) ) {
 		// case of normal, live ship
-		// -- Commented out by MK: Assert( vm_vec_mag_squared(&pi->max_rotvel) > ROTVEL_TOL );
-		// Assert( (pi->max_rotvel.xyz.x <= ROTVEL_CAP) && (pi->max_rotvel.xyz.y <= ROTVEL_CAP) && (pi->max_rotvel.xyz.z <= ROTVEL_CAP) );
+		// -- Commented out by MK:core::Assert( vm_vec_mag_squared(&pi->max_rotvel) > ROTVEL_TOL );
+		//core::Assert( (pi->max_rotvel.xyz.x <= ROTVEL_CAP) && (pi->max_rotvel.xyz.y <= ROTVEL_CAP) && (pi->max_rotvel.xyz.z <= ROTVEL_CAP) );
 		//		core::Warning(LOCATION,"Excessive rotvel (wx: %f, wy: %f, wz:%f)\n", pi->rotvel.xyz.x, pi->rotvel.xyz.y, pi->rotvel.xyz.z);
 		if ( fl_abs(pi->rotvel.xyz.x) > pi->max_rotvel.xyz.x ) {
 			pi->rotvel.xyz.x = (pi->rotvel.xyz.x / fl_abs(pi->rotvel.xyz.x)) * (pi->max_rotvel.xyz.x - (float) ROTVEL_TOL);

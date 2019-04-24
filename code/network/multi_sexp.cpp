@@ -85,7 +85,7 @@ void sexp_network_packet::ensure_space_remains(size_t data_size)
         argument_count_index = argument_count_index - sub_packet_size;
     }
 
-    Assert(argument_count_index >= 0);
+   core::Assert(argument_count_index >= 0);
 }
 
 void sexp_network_packet::reduce_counts(int amount)
@@ -180,7 +180,7 @@ void sexp_network_packet::start_callback()
     //Write OP into the Type buffer.
     type[packet_size] = packet_data_type::SEXP_OPERATOR;
     //Write the SEXP_Operator number into the data buffer.
-    Assert(!Current_sexp_operator.empty());
+   core::Assert(!Current_sexp_operator.empty());
     ADD_INT(Current_sexp_operator.back());
 
     //Store the next data index as we'll need it later to write the COUNT.
@@ -238,8 +238,8 @@ void sexp_network_packet::sexp_flush_packet()
     if (packet_size == 0) {
         return;
     }
-    Assert(type[packet_size - 1] == packet_data_type::DATA_TERMINATES);
-    Assert(!packet_flagged_invalid);
+   core::Assert(type[packet_size - 1] == packet_data_type::DATA_TERMINATES);
+   core::Assert(!packet_flagged_invalid);
 
     send_sexp_packet(data, packet_size);
 
@@ -608,7 +608,7 @@ int sexp_network_packet::get_next_operator()
     GET_INT(current_argument_count);
     sexp_bytes_left -= sizeof(int);
 
-    Assert(sexp_bytes_left);
+   core::Assert(sexp_bytes_left);
     return op_num;
 
 }
@@ -622,7 +622,7 @@ void sexp_network_packet::finished_callback()
 {
     ubyte terminator;
 
-    Assert(current_argument_count == 0);
+   core::Assert(current_argument_count == 0);
 
     // read in the terminator
     GET_DATA(terminator);

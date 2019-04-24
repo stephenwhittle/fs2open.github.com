@@ -246,7 +246,7 @@ int get_line_num()
 	while (p < stoploc)
 	{
 		if (*p == '\0')
-			Assert(0);
+		core::Assert(0);
 
 		if ( !incomment && (*p == COMMENT_CHAR) )
 			incomment = 1;
@@ -310,7 +310,7 @@ void advance_to_eoln(const char *more_terminators)
 {
 	char	terminators[128];
 
-	Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
+core::Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
 
 	terminators[0] = EOLN;
 	terminators[1] = 0;
@@ -543,7 +543,7 @@ int optional_string_either(const char *str1, const char *str2)
 // generic parallel to required_string_one_of
 int optional_string_one_of(int arg_count, ...)
 {
-	Assertion(arg_count > 0, "optional_string_one_of() called with arg_count of %d; get a coder!\n", arg_count);
+core::Assertion(arg_count > 0, "optional_string_one_of() called with arg_count of %d; get a coder!\n", arg_count);
 	int idx, found = -1;
 	char *pstr;
 	va_list vl;
@@ -683,7 +683,7 @@ int required_string_either(const char *str1, const char *str2)
  */
 int required_string_one_of(int arg_count, ...)
 {
-	Assertion(arg_count > 0, "required_string_one_of() called with arg_count of %d; get a coder!\n", arg_count);
+core::Assertion(arg_count > 0, "required_string_one_of() called with arg_count of %d; get a coder!\n", arg_count);
 	int count = 0;
 	int idx;
 	char *expected;
@@ -765,7 +765,7 @@ void copy_to_eoln(char *outstr, const char *more_terminators, const char *instr,
 	char	ch;
 	char	terminators[128];
 
-	Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
+core::Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
 
 	terminators[0] = EOLN;
 	terminators[1] = 0;
@@ -791,7 +791,7 @@ void copy_to_eoln(std::string &outstr, const char *more_terminators, const char 
 	char	ch;
 	char	terminators[128];
 
-	Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
+core::Assert((more_terminators == NULL) || (strlen(more_terminators) < 125));
 
 	terminators[0] = EOLN;
 	terminators[1] = 0;
@@ -862,7 +862,7 @@ void copy_to_next_white(std::string &outstr, char *instr)
 //Returns a null-terminated character string allocated with vm_malloc() with the data
 char* alloc_text_until(char* instr, char* endstr)
 {
-	Assert(instr && endstr);
+core::Assert(instr && endstr);
 	char *foundstr = stristr(instr, endstr);
 
 	if(foundstr == NULL)
@@ -897,7 +897,7 @@ char* alloc_text_until(char* instr, char* endstr)
 void copy_text_until(char *outstr, char *instr, const char *endstr, int max_chars)
 {
 	char *foundstr;
-	Assert(outstr && instr && endstr);
+core::Assert(outstr && instr && endstr);
 
 	foundstr = stristr(instr, endstr);
 
@@ -924,7 +924,7 @@ void copy_text_until(char *outstr, char *instr, const char *endstr, int max_char
 void copy_text_until(std::string &outstr, char *instr, const char *endstr)
 {
 	char *foundstr;
-	Assert(instr && endstr);
+core::Assert(instr && endstr);
 
 	foundstr = stristr(instr, endstr);
 
@@ -987,8 +987,8 @@ void stuff_string_until(std::string &outstr, const char *endstr)
 //extra_chars indicates extra malloc space that should be allocated.
 char* alloc_block(const char* startstr, const char* endstr, int extra_chars)
 {
-	Assert(startstr != NULL && endstr != NULL);
-	Assert(stricmp(startstr, endstr));
+core::Assert(startstr != NULL && endstr != NULL);
+core::Assert(stricmp(startstr, endstr));
 
 	char* rval = NULL;
 	auto elen = strlen(endstr);
@@ -1069,8 +1069,8 @@ int get_string_or_variable (char *str)
 		int sexp_variable_index = get_index_sexp_variable_name(str);
 
 		// We only want String variables
-		Assertion (sexp_variable_index != -1, "Didn't find variable name \"%s\"", str);
-		Assert (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING);
+	core::Assertion (sexp_variable_index != -1, "Didn't find variable name \"%s\"", str);
+	core::Assert (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING);
 
 		result = PARSING_FOUND_VARIABLE;
 	}
@@ -1104,8 +1104,8 @@ int get_string_or_variable (std::string &str)
 		int sexp_variable_index = get_index_sexp_variable_name(str);
 
 		// We only want String variables
-		Assertion (sexp_variable_index != -1, "Didn't find variable name \"%s\"", str.c_str());
-		Assert (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING);
+	core::Assertion (sexp_variable_index != -1, "Didn't find variable name \"%s\"", str.c_str());
+	core::Assert (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING);
 
 		result = PARSING_FOUND_VARIABLE;
 	}
@@ -1164,7 +1164,7 @@ void stuff_string(char *outstr, int type, int len, const char *terminators)
 	int tag_id;
 
 	// make sure we have enough room
-	Assert( final_len > 0 );
+core::Assert( final_len > 0 );
 
 	// make sure it's zero'd out
 	memset( outstr, 0, len );
@@ -1328,7 +1328,7 @@ void stuff_string_line(char *outstr, int len)
 	int final_len = len - 1;
 	int tag_id;
 
-	Assert( final_len > 0 );
+core::Assert( final_len > 0 );
 
 	// read in a line
 	copy_to_eoln(read_str, "\n", Mp, read_len);
@@ -1388,7 +1388,7 @@ char *stuff_and_malloc_string(int type, char *terminators)
 
 void stuff_malloc_string(char **dest, int type, char *terminators)
 {
-	Assert(dest != NULL); //wtf?
+core::Assert(dest != NULL); //wtf?
 
 	char *new_val = stuff_and_malloc_string(type, terminators);
 
@@ -1857,11 +1857,11 @@ bool matches_version_specific_tag(const char *line_start, bool &compatible_versi
 
 	const char *ch = line_start + 6;
 	while ((*ch) != ';') {
-		Assertion((*ch) != '\0', "String that was already guaranteed to end with semicolons did not end with semicolons; it's possible we have fallen into an alternate universe. Failing string: [%s]\n", line_start);
+	core::Assertion((*ch) != '\0', "String that was already guaranteed to end with semicolons did not end with semicolons; it's possible we have fallen into an alternate universe. Failing string: [%s]\n", line_start);
 		ch++;
 	}
 	ch++;
-	Assertion((*ch) == ';', "String that was guaranteed to have double semicolons did not; it's possible we have fallen into an alternate universe. Failing string: [%s]\n", line_start);
+core::Assertion((*ch) == ';', "String that was guaranteed to have double semicolons did not; it's possible we have fallen into an alternate universe. Failing string: [%s]\n", line_start);
 	ch++;
 
 	tag_len = (int)(ch - line_start);
@@ -2090,7 +2090,7 @@ void read_file_text_from_default(const default_file& file, char *processed_text,
 
 void stop_parse()
 {
-	Assert( !Parsing_paused );
+core::Assert( !Parsing_paused );
 
 	if (Parse_text != nullptr) {
 		vm_free(Parse_text);
@@ -2107,7 +2107,7 @@ void stop_parse()
 
 void allocate_parse_text(size_t size)
 {
-	Assert( size > 0 );
+core::Assert( size > 0 );
 
 	// Make sure that there is space for the terminating null character
 	size += 1;
@@ -2155,7 +2155,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 	CFILE	*mf;
 	int	file_is_encrypted;
 
-	Assert(filename);
+core::Assert(filename);
 
 	mf = cfopen(filename, "rb", CFILE_NORMAL, mode);
 	if (mf == NULL)
@@ -2194,7 +2194,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 		int	unscrambled_len;
 		char	*scrambled_text;
 		scrambled_text = (char*)vm_malloc(file_len+1);
-		Assert(scrambled_text);
+	core::Assert(scrambled_text);
 		cfread(scrambled_text, file_len, 1, mf);
 		// unscramble text
 		unencrypt(scrambled_text, file_len, raw_text, &unscrambled_len);
@@ -2281,8 +2281,8 @@ void process_raw_file_text(char *processed_text, char *raw_text)
 	if (raw_text == NULL)
 		raw_text = Parse_text_raw;
 
-	Assert( processed_text != NULL );
-	Assert( raw_text != NULL );
+core::Assert( processed_text != NULL );
+core::Assert( raw_text != NULL );
 
 	mp = processed_text;
 	mp_raw = raw_text;
@@ -2331,7 +2331,7 @@ void process_raw_file_text(char *processed_text, char *raw_text)
 
 		//	If you hit this assert, it is probably telling you the obvious.  The file
 		//	you are trying to read is truly too large.  Look at *filename to see the file name.
-		Assert(mp_raw - file_text_raw + strlen(outbuf) < PARSE_TEXT_SIZE);
+	core::Assert(mp_raw - file_text_raw + strlen(outbuf) < PARSE_TEXT_SIZE);
 		strcpy_s(mp_raw, outbuf);
 		mp_raw += strlen(outbuf);
 
@@ -2737,7 +2737,7 @@ void stuff_ubyte(ubyte *i)
 
 int parse_string_flag_list(int *dest, flag_def_list defs[], int defs_size)
 {
-	Assert(dest!=NULL);	//wtf?
+core::Assert(dest!=NULL);	//wtf?
 
 	char (*slp)[NAME_LENGTH] = (char(*)[32])new char[defs_size*NAME_LENGTH];
 	int num_strings = stuff_string_list(slp, defs_size);
@@ -2781,7 +2781,7 @@ int stuff_string_list(std::vector<std::string>& slp)
 		if(*Mp != '\"') {
 			error_display(0, "Missing quotation marks in string list.");
 		}
-		//Assert ( *Mp == '\"' );					// should always be enclosed in quotes
+		/core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
 
 		buf = "";
 		get_string( buf );
@@ -2810,11 +2810,11 @@ int stuff_string_list(char slp[][NAME_LENGTH], int max_strings)
 	ignore_white_space();
 
 	while (*Mp != ')') {
-		Assert ( count < max_strings );
+	core::Assert ( count < max_strings );
 		if(*Mp != '\"') {
 			error_display(0, "Missing quotation marks in string list.");
 		}
-		//Assert ( *Mp == '\"' );					// should always be enclosed in quotes
+		/core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
 
 		if (count < max_strings) {
 			get_string( slp[count++] );
@@ -2854,7 +2854,7 @@ const char* get_lookup_type_name(int lookup_type)
 // For example, (1) () (1 2 3) ( 1 ) are legal integer lists.
 int stuff_int_list(int *ilp, int max_ints, int lookup_type)
 {
-	Assertion(max_ints > 0, "Requested to parse an integer list with a maximum of 0 entries!");
+core::Assertion(max_ints > 0, "Requested to parse an integer list with a maximum of 0 entries!");
 
 	int	count = 0, ok_flag = 1, dummy;
 	ignore_white_space();
@@ -2990,7 +2990,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 		// if we've got a variable get the variable index and copy it's value into str so that regardless of whether we found
 		// a variable or not it now holds the name of the ship or weapon we're interested in.
 		if (variable_found) {
-			Assert (lookup_type != CAMPAIGN_LOADOUT_SHIP_LIST );
+		core::Assert (lookup_type != CAMPAIGN_LOADOUT_SHIP_LIST );
 			sexp_variable_index = get_index_sexp_variable_name(str);
 
 			if(sexp_variable_index<0) {
@@ -3083,7 +3083,7 @@ size_t stuff_float_list(float* flp, size_t max_floats)
 	ignore_white_space();
 	while(*Mp != ')')
 	{
-		Assert(count < max_floats);
+	core::Assert(count < max_floats);
 		if (count < max_floats) {
 			stuff_float(&flp[count++]);
 		} else {
@@ -3148,7 +3148,7 @@ void mark_int_list(int *ilp, int max_ints, int lookup_type)
 			int	tval;
 
 			stuff_int(&tval);
-			Assert((tval >= 0) && (tval < max_ints));
+		core::Assert((tval >= 0) && (tval < max_ints));
 			if (tval >= 0 && tval < max_ints) {
 				ilp[tval] = 1;
 			}
@@ -3211,7 +3211,7 @@ int stuff_vec3d_list(vec3d *vlp, int max_vecs)
 	ignore_white_space();
 
 	while (*Mp != ')') {
-		Assert(count < max_vecs);
+	core::Assert(count < max_vecs);
 		if (count < max_vecs) {
 			stuff_parenthesized_vec3d(&vlp[count++]);
 		} else {
@@ -3274,7 +3274,7 @@ void stuff_matrix(matrix *mp)
  */
 int string_lookup(const char *str1, const char* const *strlist, size_t max, const char *description, bool say_errors) {
 	for (size_t i=0; i<max; i++) {
-		Assert(strlen(strlist[i]) != 0); //-V805
+	core::Assert(strlen(strlist[i]) != 0); //-V805
 
 		if (!stricmp(str1, strlist[i]))
 			return (int)i;
@@ -3346,7 +3346,7 @@ void find_and_stuff_or_add(const char *id, int *addr, int f_type, char *strlist[
 
 	if (*addr == -1)  // not in list, so lets try and add it.
 	{
-		Assert(*total < max);
+	core::Assert(*total < max);
 		strcpy(strlist[*total], token);
 		*addr = (*total)++;
 	}
@@ -3356,7 +3356,7 @@ void find_and_stuff_or_add(const char *id, int *addr, int f_type, char *strlist[
 // with the currently parsing file
 void pause_parse()
 {
-	Assert( !Parsing_paused );
+core::Assert( !Parsing_paused );
 	if (Parsing_paused)
 		return;
 
@@ -3373,7 +3373,7 @@ void pause_parse()
 // unpause parsing to continue with previously parsing file
 void unpause_parse()
 {
-	Assert( Parsing_paused );
+core::Assert( Parsing_paused );
 	if (!Parsing_paused)
 		return;
 
@@ -3417,8 +3417,8 @@ char *split_str_once(char *src, int max_pixel_w)
 	char *brk = NULL;
 	int i, w, len, last_was_white = 0;
 
-	Assert(src);
-	Assert(max_pixel_w > 0);
+core::Assert(src);
+core::Assert(max_pixel_w > 0);
 
 	gr_get_string_size(&w, NULL, src);
 	if ( (w <= max_pixel_w) && !strstr(src, "\n") ) {
@@ -3502,11 +3502,11 @@ int split_str(const char *src, int max_pixel_w, int *n_chars, const char **p_str
 	int ignore_until_whitespace, buf_index;
 
 	// check our assumptions..
-	Assert(src != NULL);
-	Assert(n_chars != NULL);
-	Assert(p_str != NULL);
-	Assert(max_lines > 0);
-	Assert(max_pixel_w > 0);
+core::Assert(src != NULL);
+core::Assert(n_chars != NULL);
+core::Assert(p_str != NULL);
+core::Assert(max_lines > 0);
+core::Assert(max_pixel_w > 0);
 
 	memset(buffer, 0, sizeof(buffer));
 	buf_index = 0;
@@ -3580,7 +3580,7 @@ int split_str(const char *src, int max_pixel_w, int *n_chars, const char **p_str
 		}
 
 		auto encoded_width = unicode::encoded_size(cp);
-		Assertion(buf_index + encoded_width < SPLIT_STR_BUFFER_SIZE,
+	core::Assertion(buf_index + encoded_width < SPLIT_STR_BUFFER_SIZE,
 				  "buffer overflow in split_str: screen width causes this text to be longer than %d characters!",
 				  SPLIT_STR_BUFFER_SIZE - 1);
 
@@ -3603,7 +3603,7 @@ int split_str(const char *src, int max_pixel_w, int *n_chars, const char **p_str
 			}
 
 			n_chars[line_num] = (int)(end - p_str[line_num]);  // track length of line
-			Assert(n_chars[line_num]);
+		core::Assert(n_chars[line_num]);
 			line_num++;
 			if (line_num < max_lines) {
 				p_str[line_num] = NULL;
@@ -3618,7 +3618,7 @@ int split_str(const char *src, int max_pixel_w, int *n_chars, const char **p_str
 
 	if (!new_line && p_str[line_num]) {
 		n_chars[line_num] = (int)(iter.pos() - p_str[line_num]);  // track length of line
-		Assert(n_chars[line_num]);
+	core::Assert(n_chars[line_num]);
 		line_num++;
 	}
 
@@ -3633,8 +3633,8 @@ int split_str(const char *src, int max_pixel_w, std::vector<int> &n_chars, std::
 	int ignore_until_whitespace = 0, buf_index = 0;
 
 	// check our assumptions..
-	Assert(src != NULL);
-	Assert(max_pixel_w > 0);
+core::Assert(src != NULL);
+core::Assert(max_pixel_w > 0);
 
 	memset(buffer, 0, sizeof(buffer));
 
@@ -3703,7 +3703,7 @@ int split_str(const char *src, int max_pixel_w, std::vector<int> &n_chars, std::
 		}
 
 		auto encoded_width = unicode::encoded_size(cp);
-		Assertion(buf_index + encoded_width < SPLIT_STR_BUFFER_SIZE,
+	core::Assertion(buf_index + encoded_width < SPLIT_STR_BUFFER_SIZE,
 				  "buffer overflow in split_str: screen width causes this text to be longer than %d characters!",
 				  SPLIT_STR_BUFFER_SIZE - 1);
 
@@ -3726,7 +3726,7 @@ int split_str(const char *src, int max_pixel_w, std::vector<int> &n_chars, std::
 			}
 
 			n_chars.push_back((int)(end - p_str[line_num]));  // track length of line
-			Assert(n_chars[line_num]);
+		core::Assert(n_chars[line_num]);
 			line_num++;
 			new_line = 1;
 
@@ -3738,7 +3738,7 @@ int split_str(const char *src, int max_pixel_w, std::vector<int> &n_chars, std::
 
 	if (!new_line && p_str[line_num]) {
 		n_chars.push_back((int)(iter.pos() - p_str[line_num]));  // track length of line
-		Assert(n_chars[line_num]);
+	core::Assert(n_chars[line_num]);
 		line_num++;
 	}
 
@@ -3749,7 +3749,7 @@ int split_str(const char *src, int max_pixel_w, std::vector<int> &n_chars, std::
 // accounts for the dumb communications != communication, etc.
 int subsystem_stricmp(const char *str1, const char *str2)
 {
-	Assert(str1 && str2);
+core::Assert(str1 && str2);
 
 	// ensure len-1 will be valid
 	if (!*str1 || !*str2)
@@ -3782,8 +3782,8 @@ int subsystem_stricmp(const char *str1, const char *str2)
 const char *stristr(const char *str, const char *substr)
 {
 	// check for null and insanity
-	Assert(str);
-	Assert(substr);
+core::Assert(str);
+core::Assert(substr);
 	if (str == NULL || substr == NULL || *substr == '\0')
 		return NULL;
 
@@ -3831,8 +3831,8 @@ stristr_continue_outer_loop:
 char *stristr(char *str, const char *substr)
 {
 	// check for null and insanity
-	Assert(str);
-	Assert(substr);
+core::Assert(str);
+core::Assert(substr);
 	if (str == NULL || substr == NULL || *substr == '\0')
 		return NULL;
 
@@ -3902,7 +3902,7 @@ bool can_construe_as_integer(const char *text)
 bool end_string_at_first_hash_symbol(char *src)
 {
 	char *p;
-	Assert(src);
+core::Assert(src);
 
 	p = get_pointer_to_first_hash_symbol(src);
 	if (p)
@@ -3936,14 +3936,14 @@ bool end_string_at_first_hash_symbol(std::string &src)
 // Goober5000
 char *get_pointer_to_first_hash_symbol(char *src)
 {
-	Assert(src);
+core::Assert(src);
 	return strchr(src, '#');
 }
 
 // Goober5000
 const char *get_pointer_to_first_hash_symbol(const char *src)
 {
-	Assert(src);
+core::Assert(src);
 	return strchr(src, '#');
 }
 
@@ -3957,7 +3957,7 @@ int get_index_of_first_hash_symbol(std::string &src)
 // Goober5000
 ptrdiff_t replace_one(char *str, const char *oldstr, const char *newstr, size_t max_len, ptrdiff_t range)
 {
-	Assert(str && oldstr && newstr);
+core::Assert(str && oldstr && newstr);
 
 	// search
 	char *ch = stristr(str, oldstr);
@@ -4082,7 +4082,7 @@ std::string& replace_all(std::string& context, const char* from, const char* to)
 int strextcmp(const char *s1, const char *s2)
 {
 	// sanity check
-	Assert( (s1 != NULL) && (s2 != NULL) );
+core::Assert( (s1 != NULL) && (s2 != NULL) );
 
 	// find last '.' in both strings
 	char *s1_end = (char *)strrchr(s1, '.');
@@ -4137,7 +4137,7 @@ bool drop_extension(std::string &str)
 //WMC
 void backspace(char* src)
 {
-	Assert(src!= NULL);		//this would be bad
+core::Assert(src!= NULL);		//this would be bad
 
 	char *dest = src;
 	src++;
@@ -4222,7 +4222,7 @@ int scan_fso_version_string(const char *text, int *major, int *minor, int *build
 // Goober5000 - used for long Warnings, Errors, and FRED error messages with SEXPs
 void truncate_message_lines(std::string &text, int num_allowed_lines)
 {
-	Assert(num_allowed_lines > 0);
+core::Assert(num_allowed_lines > 0);
 	size_t find_from = 0;
 
 	while (find_from < text.size())

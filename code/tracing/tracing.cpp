@@ -130,7 +130,7 @@ void submit_event(trace_event* evt) {
 }
 
 void process_gpu_events() {
-	Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
+core::Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
 
 	if (gpu_start_query >= 0) {
 		if (gr_query_value_available(gpu_start_query)) {
@@ -249,13 +249,13 @@ void process_events() {
 	}
 }
 void frame_profile_process_frame() {
-	Assertion(frameProfiler, "Frame profiling must be enabled for this function!");
+core::Assertion(frameProfiler, "Frame profiling must be enabled for this function!");
 
 	return frameProfiler->processFrame();
 }
 
 std::string get_frame_profile_output() {
-	Assertion(frameProfiler, "Frame profiling must be enabled for this function!");
+core::Assertion(frameProfiler, "Frame profiling must be enabled for this function!");
 
 	return frameProfiler->getContent();
 }
@@ -298,7 +298,7 @@ void start(const Category& category, trace_event* evt) {
 	evt->event_id = ++current_id;
 
 	if (do_gpu_queries && category.usesGPUCounter()) {
-		Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
+	core::Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
 
 		gpu_trace_event gpu_event;
 		gpu_event.base_evt.category = &category;
@@ -323,8 +323,8 @@ void end(trace_event* evt) {
 		return;
 	}
 
-	Assertion(evt->pid == get_pid(), "Complete events must be generated from the same process!");
-	Assertion(evt->tid == get_tid(), "Complete events must be generated from the same thread!");
+core::Assertion(evt->pid == get_pid(), "Complete events must be generated from the same process!");
+core::Assertion(evt->tid == get_tid(), "Complete events must be generated from the same thread!");
 
 	evt->duration = timer_get_nanoseconds() - evt->timestamp;
 	evt->end_event_id = ++current_id;
@@ -334,7 +334,7 @@ void end(trace_event* evt) {
 
 	// Create GPU events
 	if (do_gpu_queries && evt->category->usesGPUCounter()) {
-		Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
+	core::Assertion(get_tid() == main_thread_id, "This function must be called from the main thread!");
 
 		gpu_trace_event gpu_event;
 		gpu_event.base_evt.category = evt->category;

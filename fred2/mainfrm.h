@@ -61,7 +61,7 @@ private:
 	/**
 	 * @brief Measures the given item
 	 *
-	 * @details Er, actually does nothing other than Assert that the style of the combo box is LBS_ONWERDRAWFIXED and CBS_HASSTRINGS
+	 * @details Er, actually does nothing other thancore::Assert that the style of the combo box is LBS_ONWERDRAWFIXED and CBS_HASSTRINGS
 	 */
 	void MeasureItem(LPMEASUREITEMSTRUCT);
 };
@@ -93,9 +93,9 @@ public:
 
 #ifdef _DEBUG
 	/**
-	 * @brief Asserts the window is valid
+	 * @briefcore::Asserts the window is valid
 	 */
-	virtual void AssertValid() const;
+	virtual voidcore::AssertValid() const;
 
 	/**
 	 * @brief Presumably called when a stack dump is required

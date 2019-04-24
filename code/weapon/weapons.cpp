@@ -250,7 +250,7 @@ int weapon_explosions::Load(char *filename, int expected_lods)
 	int nframes, nfps;
 	weapon_expl_info new_wei;
 
-	Assert( expected_lods <= MAX_WEAPON_EXPL_LOD );
+core::Assert( expected_lods <= MAX_WEAPON_EXPL_LOD );
 
 	//Check if it exists
 	int idx = GetIndex(filename);
@@ -397,7 +397,7 @@ int weapon_explosions::GetAnim(int weapon_expl_index, vec3d *pos, float size)
 		g3_end_frame();
 
 	best_lod = MIN(best_lod, wei->lod_count - 1);
-	Assert( (best_lod >= 0) && (best_lod < MAX_WEAPON_EXPL_LOD) );
+core::Assert( (best_lod >= 0) && (best_lod < MAX_WEAPON_EXPL_LOD) );
 
 	return wei->lod[best_lod].bitmap_id;
 }
@@ -497,7 +497,7 @@ int missile_obj_list_add(int objnum)
  */
 void missle_obj_list_remove(int index)
 {
-	Assert(index >= 0 && index < MAX_MISSILE_OBJS);
+core::Assert(index >= 0 && index < MAX_MISSILE_OBJS);
 	list_remove(&Missile_obj_list, &Missile_objs[index]);	
 	Missile_objs[index].flags = 0;
 }
@@ -508,7 +508,7 @@ void missle_obj_list_remove(int index)
  */
 missile_obj *missile_obj_return_address(int index)
 {
-	Assert(index >= 0 && index < MAX_MISSILE_OBJS);
+core::Assert(index >= 0 && index < MAX_MISSILE_OBJS);
 	return &Missile_objs[index];
 }
 
@@ -2788,7 +2788,7 @@ void translate_spawn_types()
             {
                 int	spawn_type = Weapon_info[i].spawn_info[j].spawn_type;
 
-                Assert( spawn_type < Num_spawn_types );
+               core::Assert( spawn_type < Num_spawn_types );
 
                 for (k = 0; k < Num_weapon_types; k++) 
                 {
@@ -3194,7 +3194,7 @@ void weapon_release_bitmaps()
 
 bool weapon_is_used(int weapon_index)
 {
-	Assert( (weapon_index >= 0) || (weapon_index < Num_weapon_types) );
+core::Assert( (weapon_index >= 0) || (weapon_index < Num_weapon_types) );
 	return (used_weapons[weapon_index] > 0);
 }
 
@@ -3594,10 +3594,10 @@ void weapon_delete(object *obj)
 
 	num = obj->instance;
 
-	Assert( Weapons[num].objnum == OBJ_INDEX(obj));
+core::Assert( Weapons[num].objnum == OBJ_INDEX(obj));
 	wp = &Weapons[num];
 
-	Assert(wp->weapon_info_index >= 0);
+core::Assert(wp->weapon_info_index >= 0);
 	wp->weapon_info_index = -1;
 	if (wp->swarm_index >= 0) {
 		swarm_delete(wp->swarm_index);
@@ -3637,7 +3637,7 @@ void weapon_delete(object *obj)
 
 	wp->objnum = -1;
 	Num_weapons--;
-	Assert(Num_weapons >= 0);
+core::Assert(Num_weapons >= 0);
 }
 
 /**
@@ -3654,7 +3654,7 @@ void weapon_maybe_play_warning(weapon *wp)
 				 (Weapon_info[wp->weapon_info_index].wi_flags[Weapon::Info_Flags::Homing_javelin]) ) {
 				snd_play(gamesnd_get_game_sound(ship_get_sound(Player_obj, GameSounds::HEATLOCK_WARN)));
 			} else {
-				Assert(Weapon_info[wp->weapon_info_index].wi_flags[Weapon::Info_Flags::Homing_aspect]);
+			core::Assert(Weapon_info[wp->weapon_info_index].wi_flags[Weapon::Info_Flags::Homing_aspect]);
 				snd_play(gamesnd_get_game_sound(ship_get_sound(Player_obj, GameSounds::ASPECTLOCK_WARN)));
 			}
 		}
@@ -3959,7 +3959,7 @@ void find_homing_object_by_sig(object *weapon_objp, int sig)
 
 bool aspect_should_lose_target(weapon* wp)
 {
-	Assert(wp != NULL);
+core::Assert(wp != NULL);
 	
 	if (wp->homing_object->signature != wp->target_sig) {
 		if (wp->homing_object->type == OBJ_WEAPON)
@@ -3992,8 +3992,8 @@ void weapon_home(object *obj, int num, float frame_time)
 	weapon_info	*wip;
 	object		*hobjp;
 
-	Assert(obj->type == OBJ_WEAPON);
-	Assert(obj->instance == num);
+core::Assert(obj->type == OBJ_WEAPON);
+core::Assert(obj->instance == num);
 	wp = &Weapons[num];
 	wip = &Weapon_info[wp->weapon_info_index];
 	hobjp = Weapons[num].homing_object;
@@ -4211,7 +4211,7 @@ void weapon_home(object *obj, int num, float frame_time)
 		if ( (wp->homing_subsys != NULL) && !(wip->wi_flags[Weapon::Info_Flags::Non_subsys_homing]) && hobjp->type == OBJ_SHIP) {
 			get_subsystem_world_pos(hobjp, Weapons[num].homing_subsys, &target_pos);
 			wp->homing_pos = target_pos;	// store the homing position in weapon data
-			Assert( !vm_is_vec_nan(&wp->homing_pos) );
+		core::Assert( !vm_is_vec_nan(&wp->homing_pos) );
 		} else {
 			float	fov;
 			float	dist;
@@ -4289,7 +4289,7 @@ void weapon_home(object *obj, int num, float frame_time)
 				}
 
 				wp->homing_pos = target_pos;
-				Assert( !vm_is_vec_nan(&wp->homing_pos) );
+			core::Assert( !vm_is_vec_nan(&wp->homing_pos) );
 			} else
 				target_pos = wp->homing_pos;
 		}
@@ -4378,7 +4378,7 @@ void weapon_home(object *obj, int num, float frame_time)
 			obj->phys_info.speed *= t*t;
 		}
 
-		Assert( obj->phys_info.speed > 0.0f );
+	core::Assert( obj->phys_info.speed > 0.0f );
 
 		vm_vec_copy_scale( &obj->phys_info.desired_vel, &obj->orient.vec.fvec, obj->phys_info.speed);
 
@@ -4594,14 +4594,14 @@ void weapon_process_post(object * obj, float frame_time)
 
 	MONITOR_INC( NumWeapons, 1 );	
 	
-	Assert(obj->type == OBJ_WEAPON);
+core::Assert(obj->type == OBJ_WEAPON);
 
 	num = obj->instance;
 
 #ifndef NDEBUG
 	int objnum;
 	objnum = OBJ_INDEX(obj);
-	Assert( Weapons[num].objnum == objnum );
+core::Assert( Weapons[num].objnum == objnum );
 #endif
 
 	wp = &Weapons[num];
@@ -4920,7 +4920,7 @@ void weapon_set_tracking_info(int weapon_objnum, int parent_objnum, int target_o
 		return;
 	}
 
-	Assert(Objects[weapon_objnum].type == OBJ_WEAPON);
+core::Assert(Objects[weapon_objnum].type == OBJ_WEAPON);
 
 	wp = &Weapons[Objects[weapon_objnum].instance];
 	wip = &Weapon_info[wp->weapon_info_index];
@@ -4931,7 +4931,7 @@ void weapon_set_tracking_info(int weapon_objnum, int parent_objnum, int target_o
 
 	if (parent_objnum >= 0) {
 		parent_objp = &Objects[parent_objnum];
-		Assert(parent_objp->type == OBJ_SHIP);
+	core::Assert(parent_objp->type == OBJ_SHIP);
 	} else {
 		parent_objp = NULL;
 	}
@@ -4987,7 +4987,7 @@ void weapon_set_tracking_info(int weapon_objnum, int parent_objnum, int target_o
 						if (wp->homing_subsys == NULL) {
 							wp->homing_object = &obj_used_list;
 						} else {
-							Assert(wp->homing_subsys->parent_objnum == target_objnum);
+						core::Assert(wp->homing_subsys->parent_objnum == target_objnum);
 							wp->homing_object = &Objects[target_objnum];
 							weapon_maybe_play_warning(wp);
 						}
@@ -5032,13 +5032,13 @@ void weapon_set_tracking_info(int weapon_objnum, int parent_objnum, int target_o
 
 size_t* get_pointer_to_weapon_fire_pattern_index(int weapon_type, ship* shipp, ship_subsys * src_turret)
 {
-	Assert( shipp != NULL );
+core::Assert( shipp != NULL );
 	ship_weapon* ship_weapon_p = &(shipp->weapons);
 	if(src_turret)
 	{
 		ship_weapon_p = &src_turret->weapons;
 	}
-	Assert( ship_weapon_p != NULL );
+core::Assert( ship_weapon_p != NULL );
 
 	// search for the corresponding bank pattern index for the weapon_type that is being fired.
 	// Note: Because a weapon_type may not be unique to a weapon bank per ship this search may attribute
@@ -5070,7 +5070,7 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
 	weapon		*wp;
 	weapon_info	*wip;
 
-	Assert(weapon_type >= 0 && weapon_type < Num_weapon_types);
+core::Assert(weapon_type >= 0 && weapon_type < Num_weapon_types);
 
 	wip = &Weapon_info[weapon_type];
 
@@ -5090,14 +5090,14 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
 		// using substitution
 
 		// get to the instance of the gun
-		Assertion( parent_objp->type == OBJ_SHIP, "Expected type OBJ_SHIP, got %d", parent_objp->type );
-		Assertion( (parent_objp->instance < MAX_SHIPS) && (parent_objp->instance >= 0),
+	core::Assertion( parent_objp->type == OBJ_SHIP, "Expected type OBJ_SHIP, got %d", parent_objp->type );
+	core::Assertion( (parent_objp->instance < MAX_SHIPS) && (parent_objp->instance >= 0),
 			"Ship index is %d, which is out of range [%d,%d)", parent_objp->instance, 0, MAX_SHIPS);
 		ship* parent_shipp = &(Ships[parent_objp->instance]);
-		Assert( parent_shipp != NULL );
+	core::Assert( parent_shipp != NULL );
 
 		size_t *position = get_pointer_to_weapon_fire_pattern_index(weapon_type, parent_shipp, src_turret);
-		Assertion( position != NULL, "'%s' is trying to fire a weapon that is not selected", Ships[parent_objp->instance].ship_name );
+	core::Assertion( position != NULL, "'%s' is trying to fire a weapon that is not selected", Ships[parent_objp->instance].ship_name );
 
 		size_t curr_pos = *position;
 		if (((Weapon_info[weapon_type].subtype == WP_LASER && Player_ship->flags[Ship::Ship_Flags::Primary_linked]) || 
@@ -5207,7 +5207,7 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
     default_flags.set(Object::Object_Flags::Physics);
 
 	objnum = obj_create( OBJ_WEAPON, parent_objnum, n, orient, pos, 2.0f, default_flags);
-	Assert(objnum >= 0);
+core::Assert(objnum >= 0);
 	objp = &Objects[objnum];
 
 	// Create laser n!
@@ -5230,8 +5230,8 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
 
 	// we don't necessarily need a parent
 	if(parent_objp != NULL){
-		Assert(parent_objp->type == OBJ_SHIP);	//	Get Mike, a non-ship has fired a weapon!
-		Assert((parent_objp->instance >= 0) && (parent_objp->instance < MAX_SHIPS));
+	core::Assert(parent_objp->type == OBJ_SHIP);	//	Get Mike, a non-ship has fired a weapon!
+	core::Assert((parent_objp->instance >= 0) && (parent_objp->instance < MAX_SHIPS));
 		wp->team = Ships[parent_objp->instance].team;
 		wp->species = Ship_info[Ships[parent_objp->instance].ship_info_index].species;
 	} else {
@@ -5343,7 +5343,7 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
 
 	if ( wip->render_type == WRT_POF ) {
 		// this should have been checked above, but let's be extra sure
-		Assert(wip->model_num >= 0);
+	core::Assert(wip->model_num >= 0);
 
 		objp->radius = model_get_radius(wip->model_num);
 
@@ -5417,7 +5417,7 @@ int weapon_create( vec3d * pos, matrix * porient, int weapon_type, int parent_ob
 	if (wip->wi_flags[Weapon::Info_Flags::Local_ssm])
 	{
 
-		Assert(parent_objp);		//local ssms must have a parent
+	core::Assert(parent_objp);		//local ssms must have a parent
 
 		wp->lssm_warpout_time=timestamp(wip->lssm_warpout_delay);
 		wp->lssm_warpin_time=timestamp(wip->lssm_warpout_delay + wip->lssm_warpin_delay);
@@ -5532,18 +5532,18 @@ void spawn_child_weapons(object *objp)
 	weapon_info	*wip, *child_wip;
 	vec3d	*opos, *fvec;
 
-	Assertion(objp->type == OBJ_WEAPON || objp->type == OBJ_BEAM, "spawn_child_weapons() doesn't make sense for non-weapon non-beam objects; get a coder!\n");
-	Assertion(objp->instance >= 0, "spawn_child_weapons() called with an object with an instance of %d; get a coder!\n", objp->instance);
-	Assertion(!(objp->type == OBJ_WEAPON) || (objp->instance < MAX_WEAPONS), "spawn_child_weapons() called with a weapon with an instance of %d while MAX_WEAPONS is %d; get a coder!\n", objp->instance, MAX_WEAPONS);
-	Assertion(!(objp->type == OBJ_BEAM) || (objp->instance < MAX_BEAMS), "spawn_child_weapons() called with a beam with an instance of %d while MAX_BEAMS is %d; get a coder!\n", objp->instance, MAX_BEAMS);
+core::Assertion(objp->type == OBJ_WEAPON || objp->type == OBJ_BEAM, "spawn_child_weapons() doesn't make sense for non-weapon non-beam objects; get a coder!\n");
+core::Assertion(objp->instance >= 0, "spawn_child_weapons() called with an object with an instance of %d; get a coder!\n", objp->instance);
+core::Assertion(!(objp->type == OBJ_WEAPON) || (objp->instance < MAX_WEAPONS), "spawn_child_weapons() called with a weapon with an instance of %d while MAX_WEAPONS is %d; get a coder!\n", objp->instance, MAX_WEAPONS);
+core::Assertion(!(objp->type == OBJ_BEAM) || (objp->instance < MAX_BEAMS), "spawn_child_weapons() called with a beam with an instance of %d while MAX_BEAMS is %d; get a coder!\n", objp->instance, MAX_BEAMS);
 
 	if (objp->type == OBJ_WEAPON) {
 		wp = &Weapons[objp->instance];
-		Assertion((wp->weapon_info_index >= 0) && (wp->weapon_info_index < Num_weapon_types), "Invalid weapon_info_index of %d; get a coder!\n", wp->weapon_info_index);
+	core::Assertion((wp->weapon_info_index >= 0) && (wp->weapon_info_index < Num_weapon_types), "Invalid weapon_info_index of %d; get a coder!\n", wp->weapon_info_index);
 		wip = &Weapon_info[wp->weapon_info_index];
 	} else if (objp->type == OBJ_BEAM) {
 		bp = &Beams[objp->instance];
-		Assertion((bp->weapon_info_index >= 0) && (bp->weapon_info_index < Num_weapon_types), "Invalid weapon_info_index of %d; get a coder!\n", bp->weapon_info_index);
+	core::Assertion((bp->weapon_info_index >= 0) && (bp->weapon_info_index < Num_weapon_types), "Invalid weapon_info_index of %d; get a coder!\n", bp->weapon_info_index);
 		wip = &Weapon_info[bp->weapon_info_index];
 	} else {	// Let's make sure we don't do screwball things in a release build if this gets called with a non-weapon non-beam.
 		return;
@@ -5902,7 +5902,7 @@ int weapon_area_calc_damage(object *objp, vec3d *pos, float inner_rad, float out
 		}
 
 		// AL 2-24-98: drop off damage relative to square of distance
-		Assert(dist_to_outer_rad_squared <= total_dist_squared);
+	core::Assert(dist_to_outer_rad_squared <= total_dist_squared);
 		*damage = max_damage * dist_to_outer_rad_squared/total_dist_squared;
 		*blast =  (dist - outer_rad) * max_blast /(inner_rad - outer_rad);
 	}
@@ -5936,7 +5936,7 @@ void weapon_area_apply_blast(vec3d * /*force_apply_pos*/, object *ship_objp, vec
 	vm_vec_sub(&vec_ship_to_impact, blast_pos, &ship_objp->pos);
 
 	pm = model_get(Ship_info[Ships[ship_objp->instance].ship_info_index].model_num);
-	Assert ( pm != NULL );
+core::Assert ( pm != NULL );
 
 	if (make_shockwave) {
 		physics_apply_shock (&force, blast, &ship_objp->phys_info, &ship_objp->orient, &pm->mins, &pm->maxs, pm->rad);
@@ -6043,7 +6043,7 @@ void weapon_do_area_effect(object *wobjp, shockwave_create_info *sci, vec3d *pos
 //3: weapon is outside arm radius from target ship
 bool weapon_armed(weapon *wp, bool hit_target)
 {
-	Assert(wp != NULL);
+core::Assert(wp != NULL);
 
 	weapon_info *wip = &Weapon_info[wp->weapon_info_index];
 
@@ -6088,11 +6088,11 @@ bool weapon_armed(weapon *wp, bool hit_target)
  */
 void weapon_hit( object * weapon_obj, object * other_obj, vec3d * hitpos, int quadrant, vec3d* hitnormal )
 {
-	Assert(weapon_obj != NULL);
+core::Assert(weapon_obj != NULL);
 	if(weapon_obj == NULL){
 		return;
 	}
-	Assert((weapon_obj->type == OBJ_WEAPON) && (weapon_obj->instance >= 0) && (weapon_obj->instance < MAX_WEAPONS));
+core::Assert((weapon_obj->type == OBJ_WEAPON) && (weapon_obj->instance >= 0) && (weapon_obj->instance < MAX_WEAPONS));
 	if((weapon_obj->type != OBJ_WEAPON) || (weapon_obj->instance < 0) || (weapon_obj->instance >= MAX_WEAPONS)){
 		return;
 	}
@@ -6108,7 +6108,7 @@ void weapon_hit( object * weapon_obj, object * other_obj, vec3d * hitpos, int qu
 	ship		*shipp;
 	int         objnum;
 
-	Assert((weapon_type >= 0) && (weapon_type < MAX_WEAPON_TYPES));
+core::Assert((weapon_type >= 0) && (weapon_type < MAX_WEAPON_TYPES));
 	if((weapon_type < 0) || (weapon_type >= MAX_WEAPON_TYPES)){
 		return;
 	}
@@ -6214,10 +6214,10 @@ void weapon_hit( object * weapon_obj, object * other_obj, vec3d * hitpos, int qu
 	// For all objects that had this weapon as a target, wipe it out, forcing find of a new enemy
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		other_objp = &Objects[so->objnum];
-		Assert(other_objp->instance != -1);
+	core::Assert(other_objp->instance != -1);
         
 		shipp = &Ships[other_objp->instance];
-		Assert(shipp->ai_index != -1);
+	core::Assert(shipp->ai_index != -1);
         
 		ai_info	*aip = &Ai_info[shipp->ai_index];
         
@@ -6291,11 +6291,11 @@ void weapon_hit( object * weapon_obj, object * other_obj, vec3d * hitpos, int qu
 
 void weapon_detonate(object *objp)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 	if(objp == NULL){
 		return;
 	}
-	Assert((objp->type == OBJ_WEAPON) && (objp->instance >= 0));
+core::Assert((objp->type == OBJ_WEAPON) && (objp->instance >= 0));
 	if((objp->type != OBJ_WEAPON) || (objp->instance < 0)){
 		return;
 	}	
@@ -6344,7 +6344,7 @@ void weapon_mark_as_used(int weapon_type)
 	if ( used_weapons == NULL )
 		return;
 
-	Assert( weapon_type < MAX_WEAPON_TYPES );
+core::Assert( weapon_type < MAX_WEAPON_TYPES );
 
 	if (weapon_type < Num_weapon_types) {
 		used_weapons[weapon_type]++;
@@ -6362,7 +6362,7 @@ void weapons_page_in()
 
 	int i, j, idx;
 
-	Assert( used_weapons != NULL );
+core::Assert( used_weapons != NULL );
 
 	// for weapons in weaponry pool
 	for (i = 0; i < Num_teams; i++) {
@@ -6433,7 +6433,7 @@ void weapons_page_in()
 			}
 
 			default:
-				Assertion(wip->render_type != WRT_POF && wip->render_type != WRT_LASER, "Weapon %s does not have a valid rendering type. Type passed: %d\n", wip->name, wip->render_type);	// Invalid weapon rendering type.
+			core::Assertion(wip->render_type != WRT_POF && wip->render_type != WRT_LASER, "Weapon %s does not have a valid rendering type. Type passed: %d\n", wip->name, wip->render_type);	// Invalid weapon rendering type.
 		}
 
 		wip->external_model_num = -1;
@@ -6500,7 +6500,7 @@ void weapons_page_in_cheats()
 	if ( Cmdline_load_all_weapons )
 		return;
 
-	Assert( used_weapons != NULL );
+core::Assert( used_weapons != NULL );
 
 	// force a page in of all muzzle flashes
 	mflash_page_in(true);
@@ -6551,7 +6551,7 @@ void weapons_page_in_cheats()
  */
 bool weapon_page_in(int weapon_type)
 {
-	Assert(used_weapons != NULL);
+core::Assert(used_weapons != NULL);
 
 	if (weapon_type < 0 || weapon_type >= Num_weapon_types) {
 		return false;
@@ -6620,7 +6620,7 @@ bool weapon_page_in(int weapon_type)
 		}
 
 		default:
-			Assertion(wip->render_type != WRT_POF && wip->render_type != WRT_LASER, "Weapon %s does not have a valid rendering type. Type passed: %d\n", wip->name, wip->render_type);	// Invalid weapon rendering type.
+		core::Assertion(wip->render_type != WRT_POF && wip->render_type != WRT_LASER, "Weapon %s does not have a valid rendering type. Type passed: %d\n", wip->name, wip->render_type);	// Invalid weapon rendering type.
 		}
 
 		wip->external_model_num = -1;
@@ -6695,10 +6695,10 @@ void weapon_get_laser_color(color *c, object *objp)
 		return;
 
 	// sanity
-	Assert(objp != NULL);
-	Assert(objp->type == OBJ_WEAPON);
-	Assert(objp->instance >= 0);
-	Assert(Weapons[objp->instance].weapon_info_index >= 0);
+core::Assert(objp != NULL);
+core::Assert(objp->type == OBJ_WEAPON);
+core::Assert(objp->instance >= 0);
+core::Assert(Weapons[objp->instance].weapon_info_index >= 0);
 
 	if ( (objp == NULL) || (objp->type != OBJ_WEAPON) || (objp->instance < 0) || (Weapons[objp->instance].weapon_info_index < 0) )
 		return;
@@ -6751,10 +6751,10 @@ void weapon_maybe_spew_particle(object *obj)
 	int idx;
 
 	// check some stuff
-	Assert(obj->type == OBJ_WEAPON);
-	Assert(obj->instance >= 0);
-	Assert(Weapons[obj->instance].weapon_info_index >= 0);
-	Assert(Weapon_info[Weapons[obj->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Particle_spew]);
+core::Assert(obj->type == OBJ_WEAPON);
+core::Assert(obj->instance >= 0);
+core::Assert(Weapons[obj->instance].weapon_info_index >= 0);
+core::Assert(Weapon_info[Weapons[obj->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Particle_spew]);
 	
 	wp = &Weapons[obj->instance];
 	wip = &Weapon_info[wp->weapon_info_index];
@@ -7168,8 +7168,8 @@ float weapon_get_damage_scale(weapon_info *wip, object *wep, object *target)
 	int is_big_damage_ship = 0;
 
 	// Goober5000 - additional sanity (target can be NULL)
-	Assert(wip);
-	Assert(wep);
+core::Assert(wip);
+core::Assert(wep);
 
 	// sanity
 	if((wip == NULL) || (wep == NULL) || (target == NULL)){
@@ -7201,7 +7201,7 @@ float weapon_get_damage_scale(weapon_info *wip, object *wep, object *target)
 		ship_info *sip;
 
 		// get some info on the ship
-		Assert((target->instance >= 0) && (target->instance < MAX_SHIPS));
+	core::Assert((target->instance >= 0) && (target->instance < MAX_SHIPS));
 		if((target->instance < 0) || (target->instance >= MAX_SHIPS)){
 			return total_scale;
 		}
@@ -7304,7 +7304,7 @@ void weapon_render(object* obj, model_draw_list *scene)
 
 	MONITOR_INC(NumWeaponsRend, 1);
 
-	Assert(obj->type == OBJ_WEAPON);
+core::Assert(obj->type == OBJ_WEAPON);
 
 	num = obj->instance;
 	wp = &Weapons[num];
@@ -7482,7 +7482,7 @@ void validate_SSM_entries()
 	for (it = Delayed_SSM_names.begin(); it != Delayed_SSM_names.end(); ++it) {
 		delayed_ssm_data *dat = &Delayed_SSM_data[*it];
 		wi = weapon_info_lookup(it->c_str());
-		Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
+	core::Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
 		wip = &Weapon_info[wi];
 		nprintf(("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index));
 		wip->SSM_index = ssm_info_lookup(dat->ssm_entry.c_str());
@@ -7499,7 +7499,7 @@ void validate_SSM_entries()
 	for (it = Delayed_SSM_indices.begin(); it != Delayed_SSM_indices.end(); ++it) {
 		delayed_ssm_index_data *dat = &Delayed_SSM_indices_data[*it];
 		wi = weapon_info_lookup(it->c_str());
-		Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
+	core::Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
 		wip = &Weapon_info[wi];
 		nprintf(("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index));
 		if (wip->SSM_index < -1 || wip->SSM_index >= static_cast<int>(Ssm_info.size())) {

@@ -1092,7 +1092,7 @@ void multi_pxo_init(int use_last_channel)
 
 	// load up the private channel bitmap
 	Multi_pxo_com_bitmap = bm_load(Multi_pxo_com_fname[gr_screen.res]);
-	Assert(Multi_pxo_com_bitmap != -1);
+core::Assert(Multi_pxo_com_bitmap != -1);
 
 	// create the interface window
 	Multi_pxo_window.create(0, 0, gr_screen.max_w_unscaled, gr_screen.max_h_unscaled, 0);
@@ -1822,7 +1822,7 @@ int multi_pxo_connect_do()
 	// if we already tried and failed, sit around until the user presses cancel
 	if(!mpxo_failed){	
 		// try and connect to the server	
-		Assert(Player);		
+	core::Assert(Player);		
 
 		// build the tracker id string
 		memset(id_string, 0, MAX_PXO_TEXT_LEN);
@@ -2537,7 +2537,7 @@ void multi_pxo_blit_channels()
 
 		// make sure the name fits
 		memset(chan_name, 0, MAX_PXO_TEXT_LEN);
-		Assert(moveup->name);
+	core::Assert(moveup->name);
 		strcpy_s(chan_name,moveup->name);
 		font::force_fit_string(chan_name, MAX_PXO_TEXT_LEN-1, Multi_pxo_chan_coords[gr_screen.res][2] - Multi_pxo_chan_column_offsets[gr_screen.res][CHAN_PLAYERS_COLUMN]);
 
@@ -2798,7 +2798,7 @@ void multi_pxo_del_player(char *name)
 		if(!stricmp(name,lookup->name)){			
 			// if this is the only item on the list, free stuff up
 			if(lookup->next == lookup){
-				Assert(lookup == Multi_pxo_players);
+			core::Assert(lookup == Multi_pxo_players);
 				vm_free(lookup);
 				Multi_pxo_players = NULL;
 				multi_pxo_clear_players();
@@ -2839,7 +2839,7 @@ void multi_pxo_del_player(char *name)
 
 			// new player
 			Multi_pxo_player_count--;
-			Assert(Multi_pxo_player_count >= 0);
+		core::Assert(Multi_pxo_player_count >= 0);
 				
 			// we're done now
 			return;
@@ -3034,7 +3034,7 @@ void multi_pxo_chat_init()
 		new_line = (chat_line*)vm_malloc(sizeof(chat_line));	
 		
 		// clear the line out
-		Assert(new_line != NULL);		
+	core::Assert(new_line != NULL);		
 		if(new_line == NULL){
 			return;
 		}
@@ -3112,7 +3112,7 @@ void multi_pxo_chat_add_line(const char *txt, int mode)
 	chat_line *temp;
 	
 	// copy in the text
-	Assert(Multi_pxo_chat_add != NULL);
+core::Assert(Multi_pxo_chat_add != NULL);
 	strncpy(Multi_pxo_chat_add->text, txt, MAX_CHAT_LINE_LEN);
 	Multi_pxo_chat_add->mode = mode;
 
@@ -3203,7 +3203,7 @@ void multi_pxo_chat_process_incoming(const char *txt,int mode)
 
 	// split the text up into as many lines as necessary
 	n_lines = split_str(msg_total, Multi_pxo_chat_coords[gr_screen.res][2] - 5, n_chars, p_str, 3);
-	Assert((n_lines != -1) && (n_lines <= 20));
+core::Assert((n_lines != -1) && (n_lines <= 20));
 	if((n_lines < 0) || (n_lines > 20)) {
 		return;
 	}
@@ -3354,7 +3354,7 @@ void multi_pxo_goto_bottom()
 		// otherwise move back the right # of items
 		backup = Multi_pxo_chat_add;	
 		for(idx=0; idx<Multi_pxo_max_chat_display[gr_screen.res]; idx++){
-			Assert(backup->prev != NULL);
+		core::Assert(backup->prev != NULL);
 			backup = backup->prev;		
 		}
 
@@ -3646,7 +3646,7 @@ void multi_pxo_motd_add_text(const char *text)
 	}
 
 	// make sure its motd text
-	Assert(multi_pxo_is_motd_text(text));
+core::Assert(multi_pxo_is_motd_text(text));
 	if(!multi_pxo_is_motd_text(text)){
 		return;
 	}
@@ -3870,7 +3870,7 @@ void multi_pxo_com_set_bottom_text(const char *txt)
  */
 void multi_pxo_priv_init()
 {
-	Assert(Multi_pxo_mode != MULTI_PXO_MODE_PRIVATE);
+core::Assert(Multi_pxo_mode != MULTI_PXO_MODE_PRIVATE);
 
 	// initialize the common dialog with the passed max input length
 	multi_pxo_com_init(MULTI_PXO_PRIV_MAX_TEXT_LEN);
@@ -4042,7 +4042,7 @@ char name_lookup[MAX_PXO_TEXT_LEN];
  */
 void multi_pxo_find_init()
 {
-	Assert(Multi_pxo_mode != MULTI_PXO_MODE_FIND);
+core::Assert(Multi_pxo_mode != MULTI_PXO_MODE_FIND);
 
 	// initialize the common dialog with the passed max input length
 	multi_pxo_com_init(MAX_PLAYER_NAME_LEN);	
@@ -4579,7 +4579,7 @@ void multi_pxo_pinfo_init()
 	Multi_pxo_pinfo_window.set_mask_bmap(Multi_pxo_pinfo_mask_fname[gr_screen.res]);	
 	
 	Multi_pxo_pinfo_bitmap = bm_load(Multi_pxo_pinfo_fname[gr_screen.res]);
-	Assert(Multi_pxo_pinfo_bitmap != -1);
+core::Assert(Multi_pxo_pinfo_bitmap != -1);
 
 	// create the interface buttons
 	for(idx=0; idx<MULTI_PXO_PINFO_NUM_BUTTONS; idx++){
@@ -4910,7 +4910,7 @@ void multi_pxo_help_load()
 	// read in the text file
 	in = NULL;
 	in = cfopen(MULTI_PXO_HELP_FILE,"rt",CFILE_NORMAL,CF_TYPE_DATA);			
-	Assert(in != NULL);
+core::Assert(in != NULL);
 	if(in == NULL){
 		return;
 	}
@@ -4935,7 +4935,7 @@ void multi_pxo_help_load()
 		// skip to the next page if necessary
 		if(cp->num_lines == Multi_pxo_lines_pp[gr_screen.res]){			
 			Multi_pxo_help_num_pages++;
-			Assert(Multi_pxo_help_num_pages < MULTI_PXO_MAX_PAGES);
+		core::Assert(Multi_pxo_help_num_pages < MULTI_PXO_MAX_PAGES);
 			if(Multi_pxo_help_num_pages >= MULTI_PXO_MAX_PAGES){
 				Multi_pxo_help_num_pages--;
 				break;

@@ -104,7 +104,7 @@ static int targa_copy_data(char *to, char *from, int pixels, int fromsize, int t
 		}
 		return tosize*pixels;
 	} else {
-		Assert(fromsize == tosize);
+	core::Assert(fromsize == tosize);
 		memcpy(to, from, pixels * fromsize);
 		return tosize*pixels;
 	}
@@ -420,7 +420,7 @@ int targa_read_header(const char *real_filename, CFILE *img_cfp, int *w, int *h,
 	}
 	
 	if ( (header.pixel_depth != 16) && (header.pixel_depth != 24) && (header.pixel_depth != 32) ) {
-		Assertion( (header.pixel_depth != 16) && (header.pixel_depth != 24) && (header.pixel_depth != 32), "Invalid colour depth (%d) in header of tga file %s\n", header.pixel_depth, real_filename );
+	core::Assertion( (header.pixel_depth != 16) && (header.pixel_depth != 24) && (header.pixel_depth != 32), "Invalid colour depth (%d) in header of tga file %s\n", header.pixel_depth, real_filename );
 		return TARGA_ERROR_READING;
 	}
 
@@ -454,7 +454,7 @@ int targa_uncompress( ubyte *dst, ubyte *src, int bitmap_width, int bytes_per_pi
 		int run_count = *src_pixels++;
 
 		// Make sure writing this next run will not overflow the buffer 
-		Assert(pixel_count + (run_count & 0x7f) + 1 <= bitmap_width );
+	core::Assert(pixel_count + (run_count & 0x7f) + 1 <= bitmap_width );
 		
 		// If the run is encoded... 
 		if ( run_count & 0x80 ) {
@@ -482,7 +482,7 @@ int targa_uncompress( ubyte *dst, ubyte *src, int bitmap_width, int bytes_per_pi
 		}
 	}
 
-	Assert( pixel_count == bitmap_width );
+core::Assert( pixel_count == bitmap_width );
 
 	return (int)(src_pixels - src);
 }
@@ -497,7 +497,7 @@ int targa_uncompress( ubyte *dst, ubyte *src, int bitmap_width, int bytes_per_pi
 //
 int targa_read_bitmap(const char *real_filename, ubyte *image_data, ubyte *palette, int dest_size, int cf_type)
 {
-	Assert(real_filename);
+core::Assert(real_filename);
 	targa_header header;
 	targa_footer footer;
 	CFILE *targa_file;
@@ -576,7 +576,7 @@ int targa_read_bitmap(const char *real_filename, ubyte *image_data, ubyte *palet
 	int bytes_per_pixel = (header.pixel_depth>>3);
 
 	// we're only allowing 2 bytes per pixel (16 bit compressed), unless Cmdline_jpgtga is used
-	Assert( (bytes_per_pixel == 2) || (bytes_per_pixel == 3) || (bytes_per_pixel == 4) );
+core::Assert( (bytes_per_pixel == 2) || (bytes_per_pixel == 3) || (bytes_per_pixel == 4) );
 
 	if ( (bytes_per_pixel < 2) || (bytes_per_pixel > 4) ) {
 		cfclose(targa_file);
@@ -604,9 +604,9 @@ int targa_read_bitmap(const char *real_filename, ubyte *image_data, ubyte *palet
 		Int3();
 
 		// Determine the size of the color map
-		Assert(header.cmap_depth==24);
-		Assert(header.cmap_length<=256);
-		Assert(palette);
+	core::Assert(header.cmap_depth==24);
+	core::Assert(header.cmap_length<=256);
+	core::Assert(palette);
 
 		// Read the color map data
 		int i;
@@ -633,10 +633,10 @@ int targa_read_bitmap(const char *real_filename, ubyte *image_data, ubyte *palet
 
 	int bytes_remaining = cfilelength(targa_file) - cftell(targa_file) - xfile_offset;
 
-	Assert(bytes_remaining > 0);
+core::Assert(bytes_remaining > 0);
 
 	ubyte *fileptr = (ubyte*)vm_malloc(bytes_remaining);
-	Assert(fileptr);
+core::Assert(fileptr);
 	if(fileptr == NULL){
 		return TARGA_ERROR_READING;
 	}
@@ -700,7 +700,7 @@ int targa_read_bitmap(const char *real_filename, ubyte *image_data, ubyte *palet
 //
 int targa_write_bitmap(char *real_filename, ubyte *data, ubyte * /*palette*/, int w, int h, int bpp)
 {
-	Assert(bpp == 24);
+core::Assert(bpp == 24);
 	char filename[MAX_FILENAME_LEN];
 	CFILE *f;
 	int bytes_per_pixel = (bpp >> 3);
@@ -755,7 +755,7 @@ int targa_write_bitmap(char *real_filename, ubyte *data, ubyte * /*palette*/, in
 
 	ubyte *compressed_data;
 	compressed_data = (ubyte*)vm_malloc(w * h * bytes_per_pixel);
-	Assert(compressed_data);
+core::Assert(compressed_data);
 	if(compressed_data == NULL){
 		cfclose(f);
 		return -1;

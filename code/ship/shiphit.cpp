@@ -214,15 +214,15 @@ void do_subobj_destroyed_stuff( ship *ship_p, ship_subsys *subsys, vec3d* hitpos
 	// engines).  So, my solution is to encode the ship_info index, and the subsystem index into one
 	// integer, and pass that as the "index" parameter to add_entry.  We'll use that information to
 	// print out the info in the mission log.
-	Assert( ship_p->ship_info_index < 65535 );
+core::Assert( ship_p->ship_info_index < 65535 );
 
 	// get the "index" of this subsystem in the ship info structure.
 	for ( i = 0; i < sip->n_subsystems; i++ ) {
 		if ( &(sip->subsystems[i]) == psub )
 			break;
 	}
-	Assert( i < sip->n_subsystems );
-	Assert( i < 65535 );
+core::Assert( i < sip->n_subsystems );
+core::Assert( i < 65535 );
 	log_index = ((ship_p->ship_info_index << 16) & 0xffff0000) | (i & 0xffff);
 
 	// Don't log, display info, or play sounds about the activation subsytem
@@ -351,7 +351,7 @@ static float subsys_get_range(object *other_obj, ship_subsys *subsys)
 {
 	float	range;
 
-	Assert(subsys);	// Goober5000
+core::Assert(subsys);	// Goober5000
 
 	if ((other_obj) && (other_obj->type == OBJ_SHOCKWAVE)) {	// Goober5000 - check for NULL when via sexp
 		range = shockwave_get_max_radius(other_obj->instance) * 0.75f;	//	Shockwaves were too lethal to subsystems.
@@ -462,8 +462,8 @@ float do_subobj_hit_stuff(object *ship_objp, object *other_obj, vec3d *hitpos, i
 		*hull_should_apply_armor = true;
 	}
 
-	Assert(ship_objp);	// Goober5000 (but other_obj might be NULL via sexp)
-	Assert(hitpos);		// Goober5000
+core::Assert(ship_objp);	// Goober5000 (but other_obj might be NULL via sexp)
+core::Assert(hitpos);		// Goober5000
 
 	ship_p = &Ships[ship_objp->instance];
 
@@ -531,9 +531,9 @@ float do_subobj_hit_stuff(object *ship_objp, object *other_obj, vec3d *hitpos, i
 		//See process_debug_keys() in keycontrol.cpp for details. 
 		if (damage < 0.0f) {
 			// single player or multiplayer
-			Assert(Player_ai->targeted_subsys != NULL);
+		core::Assert(Player_ai->targeted_subsys != NULL);
 			if ( (subsys == Player_ai->targeted_subsys) && (subsys->current_hits > 0.0f) ) {
-				Assert(mss->type == (int) -damage);
+			core::Assert(mss->type == (int) -damage);
 				if (!(subsys->flags[Ship::Subsystem_Flags::No_aggregate])) {
 					ship_p->subsys_info[mss->type].aggregate_current_hits -= subsys->current_hits;
 					if (ship_p->subsys_info[mss->type].aggregate_current_hits < 0.0f) {
@@ -646,7 +646,7 @@ float do_subobj_hit_stuff(object *ship_objp, object *other_obj, vec3d *hitpos, i
 			}
 		}
 
-		Assert(min_index != -1);
+	core::Assert(min_index != -1);
 
 		float	damage_to_apply = 0.0f;
 		subsystem = subsys_list[min_index].ptr;
@@ -654,7 +654,7 @@ float do_subobj_hit_stuff(object *ship_objp, object *other_obj, vec3d *hitpos, i
 		dist = subsys_list[min_index].dist;
 		subsys_list[min_index].dist = 9999999.9f;	//	Make sure we don't use this one again.
 
-		Assert(range > 0.0f);	// Goober5000 - avoid div-0 below
+	core::Assert(range > 0.0f);	// Goober5000 - avoid div-0 below
 
 		// only do this for the closest affected subsystem
 		if ( (j == 0) && (!(parent_armor_flags & SAF_IGNORE_SS_ARMOR))) {
@@ -979,8 +979,8 @@ float apply_damage_to_ship(object *objp, float damage)
 //	Do music processing for a ship hit.
 static void ship_hit_music(object *ship_objp, object *other_obj)
 {
-	Assert(ship_objp);	// Goober5000
-	Assert(other_obj);	// Goober5000
+core::Assert(ship_objp);	// Goober5000
+core::Assert(other_obj);	// Goober5000
 
 	ship* ship_p = &Ships[ship_objp->instance];
 	object *parent;
@@ -1058,8 +1058,8 @@ void ship_hit_sparks_no_rotate(object *ship_objp, vec3d *hitpos)
 // limited for fighter by hull % others by radius.
 int get_max_sparks(object* ship_objp)
 {
-	Assert(ship_objp->type == OBJ_SHIP);
-	Assert((ship_objp->instance >= 0) && (ship_objp->instance < MAX_SHIPS));
+core::Assert(ship_objp->type == OBJ_SHIP);
+core::Assert((ship_objp->instance >= 0) && (ship_objp->instance < MAX_SHIPS));
 	if(ship_objp->type != OBJ_SHIP){
 		return 1;
 	}
@@ -1095,8 +1095,8 @@ int get_max_sparks(object* ship_objp)
 // helper function to std::sort, sorting spark pairs by distance
 static int spark_compare(const spark_pair &pair1, const spark_pair &pair2)
 {
-	Assert(pair1.dist >= 0);
-	Assert(pair2.dist >= 0);
+core::Assert(pair1.dist >= 0);
+core::Assert(pair2.dist >= 0);
 
 	return (pair1.dist < pair2.dist);
 }
@@ -1110,11 +1110,11 @@ static int choose_next_spark(object *ship_objp, vec3d *hitpos)
 	ship *shipp = &Ships[ship_objp->instance];
 
 	// only choose next spark when all slots are full
-	Assert(get_max_sparks(ship_objp) == Ships[ship_objp->instance].num_hits);
+core::Assert(get_max_sparks(ship_objp) == Ships[ship_objp->instance].num_hits);
 
 	// get num_sparks
 	num_sparks = shipp->num_hits;
-	Assert(num_sparks <= MAX_SHIP_HITS);
+core::Assert(num_sparks <= MAX_SHIP_HITS);
 
 	// get num_spark_paris -- only sort these
 	num_spark_pairs = (num_sparks * num_sparks - num_sparks) / 2;
@@ -1159,7 +1159,7 @@ static int choose_next_spark(object *ship_objp, vec3d *hitpos)
 			spark_pairs[count++].dist = vm_vec_dist_squared(&world_hitpos[i], &world_hitpos[j]);
 		}
 	}
-	Assert(count == num_spark_pairs);
+core::Assert(count == num_spark_pairs);
 
 	// sort pairs
 	std::sort(spark_pairs, spark_pairs + count, spark_compare);
@@ -1326,7 +1326,7 @@ static void player_died_start(object *killer_objp)
 	vec3d	*side_vec;
 	float		dist;
 
-	Assert(other_objp != NULL);
+core::Assert(other_objp != NULL);
 
 	if (Player_obj == other_objp) {
 		dist = 50.0f;
@@ -1379,8 +1379,8 @@ void ship_generic_kill_stuff( object *objp, float percent_killed )
 	int	delta_time;
 	ship	*sp;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS );
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS );
 	if((objp->type != OBJ_SHIP) || (objp->instance < 0) || (objp->instance >= MAX_SHIPS)){
 		return;
 	}
@@ -1452,7 +1452,7 @@ void ship_generic_kill_stuff( object *objp, float percent_killed )
 		vapChance = sip->vaporize_chance;
 
 	if (sp->flags[Ship::Ship_Flags::Vaporize] || frand() < vapChance) {
-		// Assert(Ship_info[sp->ship_info_index].flags & SIF_SMALL_SHIP);
+		//core::Assert(Ship_info[sp->ship_info_index].flags & SIF_SMALL_SHIP);
 
 		// LIVE FOR 100 MS
 		sp->final_death_time = timestamp(100);
@@ -1528,11 +1528,11 @@ static void ship_vaporize(ship *shipp)
 	object *ship_objp;
 
 	// sanity
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 	if(shipp == NULL){
 		return;
 	}
-	Assert((shipp->objnum >= 0) && (shipp->objnum < MAX_OBJECTS));
+core::Assert((shipp->objnum >= 0) && (shipp->objnum < MAX_OBJECTS));
 	if((shipp->objnum < 0) || (shipp->objnum >= MAX_OBJECTS)){
 		return;
 	}
@@ -1545,7 +1545,7 @@ static void ship_vaporize(ship *shipp)
 //	*ship_objp was hit and we've determined he's been killed!  By *other_obj!
 void ship_hit_kill(object *ship_objp, object *other_obj, float percent_killed, int self_destruct)
 {
-	Assert(ship_objp);	// Goober5000 - but not other_obj, not only for sexp but also for self-destruct
+core::Assert(ship_objp);	// Goober5000 - but not other_obj, not only for sexp but also for self-destruct
 
 	if(Script_system.IsConditionOverride(CHA_DEATH, ship_objp))
 	{
@@ -1599,7 +1599,7 @@ void ship_hit_kill(object *ship_objp, object *other_obj, float percent_killed, i
 			}
 			// if the object isn't around, the try to find the object in the list of ships which has exited			
 			if ( objp != END_OF_LIST(&obj_used_list) ) {
-				Assert ( (objp->type == OBJ_SHIP ) || (objp->type == OBJ_GHOST) );					// I suppose that this should be true
+			core::Assert ( (objp->type == OBJ_SHIP ) || (objp->type == OBJ_GHOST) );					// I suppose that this should be true
 				killer_ship_name = Ships[objp->instance].ship_name;
 
 				killer_objp = objp;
@@ -1696,7 +1696,7 @@ void ship_hit_kill(object *ship_objp, object *other_obj, float percent_killed, i
 // function to simply explode a ship where it is currently at
 void ship_self_destruct( object *objp )
 {	
-	Assert ( objp->type == OBJ_SHIP );
+core::Assert ( objp->type == OBJ_SHIP );
 
 	// try and find a player
 	if((Game_mode & GM_MULTIPLAYER) && (multi_find_player_by_object(objp) >= 0)){
@@ -1848,10 +1848,10 @@ static int maybe_shockwave_damage_adjust(object *ship_objp, object *other_obj, f
 	float max_damage;
 	float inner_radius, outer_radius;
 
-	Assert(ship_objp);	// Goober5000 (but not other_obj in case of sexp)
-	Assert(damage);		// Goober5000
+core::Assert(ship_objp);	// Goober5000 (but not other_obj in case of sexp)
+core::Assert(damage);		// Goober5000
 
-	Assert(ship_objp->type == OBJ_SHIP);
+core::Assert(ship_objp->type == OBJ_SHIP);
 
 	if (!other_obj) {
 		return 0;
@@ -1965,11 +1965,11 @@ static void ship_do_damage(object *ship_objp, object *other_obj, vec3d *hitpos, 
 	int other_obj_is_ship;
 	float difficulty_scale_factor = 1.0f;
 
-	Assert(ship_objp);	// Goober5000
-	Assert(hitpos);		// Goober5000
+core::Assert(ship_objp);	// Goober5000
+core::Assert(hitpos);		// Goober5000
 
-	Assert(ship_objp->instance >= 0);
-	Assert(ship_objp->type == OBJ_SHIP);
+core::Assert(ship_objp->instance >= 0);
+core::Assert(ship_objp->type == OBJ_SHIP);
 	shipp = &Ships[ship_objp->instance];
 
 	// maybe adjust damage done by shockwave for BIG|HUGE
@@ -2039,7 +2039,7 @@ static void ship_do_damage(object *ship_objp, object *other_obj, vec3d *hitpos, 
 		// now the actual checks
 		if (other_obj->type == OBJ_BEAM)
 		{
-			Assert((beam_get_weapon_info_index(other_obj) >= 0) && (beam_get_weapon_info_index(other_obj) < Num_weapon_types));
+		core::Assert((beam_get_weapon_info_index(other_obj) >= 0) && (beam_get_weapon_info_index(other_obj) < Num_weapon_types));
 			if (((Weapon_info[beam_get_weapon_info_index(other_obj)].subtype != WP_LASER) || special_check) && (Player_obj != NULL) && (ship_objp == Player_obj))
 			{
 				ship_hit_pain(damage * difficulty_scale_factor, quadrant);
@@ -2047,7 +2047,7 @@ static void ship_do_damage(object *ship_objp, object *other_obj, vec3d *hitpos, 
 		}
 		if (other_obj_is_weapon)
 		{
-			Assert((Weapons[other_obj->instance].weapon_info_index > -1) && (Weapons[other_obj->instance].weapon_info_index < Num_weapon_types));
+		core::Assert((Weapons[other_obj->instance].weapon_info_index > -1) && (Weapons[other_obj->instance].weapon_info_index < Num_weapon_types));
 			if (((Weapon_info[Weapons[other_obj->instance].weapon_info_index].subtype != WP_LASER) || special_check) && (Player_obj != NULL) && (ship_objp == Player_obj))
 			{
 				ship_hit_pain(damage * difficulty_scale_factor, quadrant);
@@ -2334,11 +2334,11 @@ static void ship_do_damage(object *ship_objp, object *other_obj, vec3d *hitpos, 
 	if(other_obj_is_weapon)
 	{
 		weapon_info *wip;
-		Assert(other_obj->instance >= 0);
+	core::Assert(other_obj->instance >= 0);
 		if (other_obj->instance < 0) {
 			return;
 		}
-		Assert(Weapons[other_obj->instance].weapon_info_index >= 0);
+	core::Assert(Weapons[other_obj->instance].weapon_info_index >= 0);
 		if (Weapons[other_obj->instance].weapon_info_index < 0) {
 			return;
 		}
@@ -2380,8 +2380,8 @@ void ship_apply_tag(int ship_num, int tag_level, float tag_time, object *target,
 	else if (tag_level == 3)
 	{
 		// tag C creates an SSM strike, yay -Bobboau
-		Assert(target);
-		Assert(start);
+	core::Assert(target);
+	core::Assert(start);
 		if (ssm_index < 0)	// TAG-C? Is that you? -MageKing17
 			return;
 
@@ -2395,8 +2395,8 @@ void ship_apply_tag(int ship_num, int tag_level, float tag_time, object *target,
 // if quadrant is not -1, then that part of the shield takes damage properly.
 void ship_apply_local_damage(object *ship_objp, object *other_obj, vec3d *hitpos, float damage, int quadrant, bool create_spark, int submodel_num, vec3d *hit_normal)
 {
-	Assert(ship_objp);	// Goober5000
-	Assert(other_obj);	// Goober5000
+core::Assert(ship_objp);	// Goober5000
+core::Assert(other_obj);	// Goober5000
 
 	ship *ship_p = &Ships[ship_objp->instance];
     weapon *wp = &Weapons[other_obj->instance];
@@ -2437,7 +2437,7 @@ void ship_apply_local_damage(object *ship_objp, object *other_obj, vec3d *hitpos
 		else if (other_obj->type == OBJ_BEAM)
 			wip = &Weapon_info[Beams[other_obj->instance].weapon_info_index];
 
-		Assert(wip != NULL);
+	core::Assert(wip != NULL);
 
 		if (wip->wi_flags[Weapon::Info_Flags::Tag]) {
 			// ssm stuff
@@ -2487,7 +2487,7 @@ void ship_apply_local_damage(object *ship_objp, object *other_obj, vec3d *hitpos
 				else if (other_obj->type == OBJ_BEAM)
 					wip = &Weapon_info[Beams[other_obj->instance].weapon_info_index];
 
-				Assert(wip != NULL);
+			core::Assert(wip != NULL);
 
 				if (wip->wi_flags[Weapon::Info_Flags::Training]) {
 					create_sparks = false;
@@ -2519,7 +2519,7 @@ void ship_apply_local_damage(object *ship_objp, object *other_obj, vec3d *hitpos
 // assume damage is non-directional and will apply it correctly.   
 void ship_apply_global_damage(object *ship_objp, object *other_obj, vec3d *force_center, float damage )
 {
-	Assert(ship_objp);	// Goober5000 (but not other_obj in case of sexp)
+core::Assert(ship_objp);	// Goober5000 (but not other_obj in case of sexp)
 
 	vec3d tmp, world_hitpos;
 	global_damage = true;

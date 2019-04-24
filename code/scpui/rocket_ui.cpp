@@ -21,9 +21,9 @@
 #include "scpui/elements/AnimationElement.h"
 #include "scripting/scripting.h"
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Controls.h>
 #include <Rocket/Core.h>
@@ -33,7 +33,7 @@
 #include <Rocket/Controls/Lua/Controls.h>
 #include <Rocket/Core/Lua/Interpreter.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 #include <codecvt>
 #include <locale>
@@ -640,7 +640,7 @@ void reloadAllContexts()
 
 void enableInput(Rocket::Core::Context* main_ctx)
 {
-	Assertion(main_ctx != nullptr, "Invalid context pointer detected!");
+core::Assertion(main_ctx != nullptr, "Invalid context pointer detected!");
 
 	if (input_context != nullptr) {
 		// If we still have an active context, disable the input on the previous context

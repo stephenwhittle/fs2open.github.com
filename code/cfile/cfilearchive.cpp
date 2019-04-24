@@ -102,7 +102,7 @@ int cftell( CFILE * cfile )
 	#endif
 
 	// The rest of the code still uses ints, do an overflow check to detect cases where this fails
-	Assertion(cfile->raw_position <= static_cast<size_t>(std::numeric_limits<int>::max()),
+	core::Assertion(cfile->raw_position <= static_cast<size_t>(std::numeric_limits<int>::max()),
 		"Integer overflow in cftell, a file is probably too large (but I don't know which one).");
 	return (int) cfile->raw_position;
 }
@@ -148,16 +148,19 @@ int cfseek( CFILE *cfile, int offset, int where )
 	if (cfile->fp) {
 		// If we have a file pointer we can also seek in that file
 		result = fseek(cfile->fp, (long)goal_position, SEEK_SET );
-		Assertion(goal_position >= cfile->lib_offset, "Invalid offset values detected while seeking! Goal was " SIZE_T_ARG ", lib_offset is " SIZE_T_ARG ".", goal_position, cfile->lib_offset);
+		core::Assertion(goal_position >= cfile->lib_offset,
+		                "Invalid offset values detected while seeking! Goal was " SIZE_T_ARG
+		                ", lib_offset is " SIZE_T_ARG ".",
+		                goal_position, cfile->lib_offset);
 	}
 	// If we only have a data pointer this will do all the work
 	cfile->raw_position = goal_position - cfile->lib_offset;
-	Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
+	core::Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
 
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
 	if (cfile->fp) {
 		auto tmp_offset = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(tmp_offset == cfile->raw_position);
+		core::Assert(tmp_offset == cfile->raw_position);
 	}
 	#endif
 
@@ -181,7 +184,7 @@ int cfread(void *buf, int elsize, int nelem, CFILE *cfile)
 		return 0;
 
 	if ( (cfile->raw_position+size) > cfile->size ) {
-		Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
+		core::Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
 		size = cfile->size - cfile->raw_position;
 		if ( size < 1 ) {
 			return 0;
@@ -208,7 +211,7 @@ int cfread(void *buf, int elsize, int nelem, CFILE *cfile)
 	}
 	if ( bytes_read > 0 )	{
 		cfile->raw_position += bytes_read;
-		Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
+		core::Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
 	}		
 
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
@@ -255,7 +258,7 @@ int cfread_lua_number(double *buf, CFILE *cfile)
 		advance = (size_t) read;
 	}
 	cfile->raw_position += advance;
-	Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
+	core::Assertion(cfile->raw_position <= cfile->size, "Invalid raw_position value detected!");
 
 	#if defined(CHECK_POSITION) && !defined(NDEBUG)
     if (cfile->fp) {

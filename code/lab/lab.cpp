@@ -655,7 +655,7 @@ void labviewer_flags_add(int* X, int* Y, const char* flag_name, T flag, std::vec
 {
 	int x = 0, y = 0;
 
-	Assert((Lab_flags_window != nullptr) && (flag_name != nullptr));
+core::Assert((Lab_flags_window != nullptr) && (flag_name != nullptr));
 
 	lab_flag<T> new_flag;
 
@@ -800,7 +800,7 @@ void labviewer_variables_add(int* Y, const char* var_name)
 	int y = 0;
 	Text* new_text;
 
-	Assert((Lab_variables_window != nullptr) && (var_name != nullptr));
+core::Assert((Lab_variables_window != nullptr) && (var_name != nullptr));
 
 	if (Y) {
 		y = *Y;
@@ -931,17 +931,17 @@ void labviewer_populate_variables_window()
 
 #define VAR_SET_VALUE(value)                                                                                           \
 	{                                                                                                                  \
-		Assert(i < Lab_variables.size());                                                                              \
+	core::Assert(i < Lab_variables.size());                                                                              \
 		Lab_variables[i]->SetText((value));                                                                            \
 		i++;                                                                                                           \
 	}
 
 #define VAR_SET_VALUE_SAVE(value, max_size)                                                                            \
 	{                                                                                                                  \
-		Assert(i < Lab_variables.size());                                                                              \
+	core::Assert(i < Lab_variables.size());                                                                              \
 		Lab_variables[i]->SetText((value));                                                                            \
 		if ((max_size) < 1) {                                                                                          \
-			Assert((max_size) == 0);                                                                                   \
+		core::Assert((max_size) == 0);                                                                                   \
 			Lab_variables[i]->SetSaveLoc(&(value), T_ST_ONENTER);                                                      \
 		} else {                                                                                                       \
 			Lab_variables[i]->SetSaveLoc(&(value), T_ST_ONENTER, (max_size), 0);                                       \
@@ -969,7 +969,7 @@ void labviewer_update_variables_window()
 	// IMPORTANT NOTE: If you add something here, make sure you add it to labviewer_populate_variables_window() as well!
 	// ship variables ...
 	if (Lab_mode == LAB_MODE_SHIP) {
-		Assert(Lab_selected_index < static_cast<int>(Ship_info.size()));
+	core::Assert(Lab_selected_index < static_cast<int>(Ship_info.size()));
 		ship_info* sip = &Ship_info[Lab_selected_index];
 
 		VAR_SET_VALUE(sip->name);
@@ -1016,7 +1016,7 @@ void labviewer_update_variables_window()
 	}
 	// weapon variables ...
 	else if (Lab_mode == LAB_MODE_WEAPON) {
-		Assert(Lab_selected_index < Num_weapon_types);
+	core::Assert(Lab_selected_index < Num_weapon_types);
 		weapon_info* wip = &Weapon_info[Lab_selected_index];
 
 		VAR_SET_VALUE(wip->get_display_string());
@@ -1079,7 +1079,7 @@ void labviewer_make_variables_window(Button* /*caller*/)
 void labviewer_change_detail_texture(Tree* caller)
 {
 	int slider_pos = (int)(caller->GetSelectedItem()->GetData());
-	Assert((slider_pos >= 0) && (slider_pos <= MAX_DETAIL_LEVEL));
+core::Assert((slider_pos >= 0) && (slider_pos <= MAX_DETAIL_LEVEL));
 
 	Detail.hardware_textures = slider_pos;
 }
@@ -1131,7 +1131,7 @@ void labviewer_make_render_options_window(Button* /*caller*/)
 
 	Lab_render_options_window = (Window*)Lab_screen->Add(new Window(
 	    "Render Options", gr_screen.center_offset_x + gr_screen.center_w - 300, gr_screen.center_offset_y + 200));
-	Assert(Lab_render_options_window != nullptr);
+core::Assert(Lab_render_options_window != nullptr);
 
 	// add all of the flags that we want/need...
 
@@ -1291,7 +1291,7 @@ void labviewer_make_material_override_window(Button* /*caller*/)
 
 	Lab_material_override_window =
 	    (Window*)Lab_screen->Add(new Window("Material Override", gr_screen.max_w - 300, 200));
-	Assert(Lab_material_override_window != nullptr);
+core::Assert(Lab_material_override_window != nullptr);
 
 	// add all of the flags that we want/need...
 
@@ -1531,7 +1531,7 @@ void labviewer_change_ship_lod(Tree* caller)
 	}
 	int ship_index = caller->GetSelectedItem()->GetData();
 
-	Assert(ship_index >= 0);
+core::Assert(ship_index >= 0);
 
 	if (Lab_selected_object == -1) {
 		// Goober5000 - The lab loads subsystems into its special lab-specific vector, but normally subsystems are
@@ -1586,7 +1586,7 @@ void labviewer_change_ship(Tree* caller)
 void labviewer_show_tech_model(Tree* caller)
 {
 	int weap_index = (int)(caller->GetSelectedItem()->GetParentItem()->GetData());
-	Assert(weap_index >= 0);
+core::Assert(weap_index >= 0);
 
 	labviewer_change_model(Weapon_info[weap_index].tech_model, caller->GetSelectedItem()->GetData(), weap_index);
 }
@@ -1594,7 +1594,7 @@ void labviewer_show_tech_model(Tree* caller)
 void labviewer_show_external_model(Tree* caller)
 {
 	int weap_index = (int)(caller->GetSelectedItem()->GetParentItem()->GetData());
-	Assert(weap_index >= 0);
+core::Assert(weap_index >= 0);
 
 	labviewer_change_model(Weapon_info[weap_index].external_model_name, caller->GetSelectedItem()->GetData(),
 	                       weap_index);
@@ -1610,7 +1610,7 @@ void labviewer_change_weapon(Tree* caller)
 	int weap_index           = caller->GetSelectedItem()->GetData();
 	Lab_last_selected_object = caller->GetSelectedItem();
 
-	Assert(weap_index >= 0);
+core::Assert(weap_index >= 0);
 
 	if (Lab_selected_object != -1)
 		obj_delete(Lab_selected_object);
@@ -2157,7 +2157,7 @@ void lab_init()
 	// the default insignia bitmap
 	Lab_insignia_index = 0;
 	if (Num_pilot_squad_images > 0) {
-		Assert((Lab_insignia_index < Num_pilot_squad_images));
+	core::Assert((Lab_insignia_index < Num_pilot_squad_images));
 
 		Lab_insignia_bitmap = bm_load_duplicate(Pilot_squad_image_names[Lab_insignia_index]);
 	}
@@ -2251,7 +2251,7 @@ void lab_do_frame(float frametime)
 			}
 
 			Lab_insignia_index = (Lab_insignia_index + 1) % Num_pilot_squad_images;
-			Assert((Lab_insignia_index >= 0) && (Lab_insignia_index < Num_pilot_squad_images));
+		core::Assert((Lab_insignia_index >= 0) && (Lab_insignia_index < Num_pilot_squad_images));
 
 			if (Lab_insignia_bitmap >= 0) {
 				bm_release(Lab_insignia_bitmap);

@@ -155,9 +155,9 @@ bool Timer::Create (uint nPeriod, uint nRes, ptr_u dwUser, TIMERCALLBACK pfnCall
 {
 	bool bRtn = true;    // assume success
 
-	Assert(pfnCallback);
-	Assert(nPeriod > 10);
-	Assert(nPeriod >= nRes);
+core::Assert(pfnCallback);
+core::Assert(nPeriod > 10);
+core::Assert(nPeriod >= nRes);
 
 	m_nPeriod = nPeriod;
 	m_nRes = nRes;
@@ -247,7 +247,7 @@ bool AudioStream::Create (char *pszFilename)
 {
 	bool fRtn = true;    // assume success
 
-	Assert(pszFilename);
+core::Assert(pszFilename);
 
 	Init_Data();
 
@@ -258,7 +258,7 @@ bool AudioStream::Create (char *pszFilename)
 
 		// Create a new WaveFile object
 		m_pwavefile.reset(new ffmpeg::WaveFile());
-		Assert(m_pwavefile);
+	core::Assert(m_pwavefile);
 
 		if (m_pwavefile) {
 			// Open given file
@@ -784,25 +784,25 @@ void audiostream_init()
 	// disk during a load/cue
 	if ( Wavedata_load_buffer == NULL ) {
 		Wavedata_load_buffer = (ubyte*)vm_malloc(BIGBUF_SIZE);
-		Assert(Wavedata_load_buffer != NULL);
+	core::Assert(Wavedata_load_buffer != NULL);
 	}
 
 	// Allocate memory for the buffer which holds the uncompressed wave data that is streamed from the
 	// disk during a service interval
 	if ( Wavedata_service_buffer == NULL ) {
 		Wavedata_service_buffer = (ubyte*)vm_malloc(BIGBUF_SIZE);
-		Assert(Wavedata_service_buffer != NULL);
+	core::Assert(Wavedata_service_buffer != NULL);
 	}
 
 	// Allocate memory for the buffer which holds the compressed wave data that is read from the hard disk
 	if ( Compressed_buffer == NULL ) {
 		Compressed_buffer = (ubyte*)vm_malloc(COMPRESSED_BUFFER_SIZE);
-		Assert(Compressed_buffer != NULL);
+	core::Assert(Compressed_buffer != NULL);
 	}
 
 	if ( Compressed_service_buffer == NULL ) {
 		Compressed_service_buffer = (ubyte*)vm_malloc(COMPRESSED_BUFFER_SIZE);
-		Assert(Compressed_service_buffer != NULL);
+	core::Assert(Compressed_service_buffer != NULL);
 	}
 
 	for ( i = 0; i < MAX_AUDIO_STREAMS; i++ ) {
@@ -937,7 +937,7 @@ void audiostream_close_file(int i, bool fade)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_USED ) {
 		if ( fade )
@@ -968,17 +968,17 @@ void audiostream_play(int i, float volume, int looping)
 	if ( i == -1 )
 		return;
 
-	Assert(looping >= 0);
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert(looping >= 0);
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if (volume == -1.0f) {
 		volume = Audio_streams[i].Get_Default_Volume();
 	}
 
-	Assert(volume >= 0.0f && volume <= 1.0f );
+core::Assert(volume >= 0.0f && volume <= 1.0f );
 	CAP(volume, 0.0f, 1.0f);
 
-	Assert( Audio_streams[i].status == ASF_USED );
+core::Assert( Audio_streams[i].status == ASF_USED );
 	Audio_streams[i].Set_Default_Volume(volume);
 	Audio_streams[i].Play(volume, looping);
 }
@@ -989,7 +989,7 @@ int audiostream_is_playing(int i)
 	if ( i == -1 )
 		return 0;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status != ASF_USED )
 		return 0;
@@ -1005,8 +1005,8 @@ void audiostream_stop(int i, int rewind, int paused)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
-	Assert( Audio_streams[i].status == ASF_USED );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( Audio_streams[i].status == ASF_USED );
 
 	if ( rewind )
 		Audio_streams[i].Stop_and_Rewind();
@@ -1033,8 +1033,8 @@ void audiostream_set_volume(int i, float volume)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
-	Assert( volume >= 0.0f && volume <= 1.0f);
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( volume >= 0.0f && volume <= 1.0f);
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return;
@@ -1047,7 +1047,7 @@ int audiostream_is_paused(int i)
 	if ( i == -1 )
 		return 0;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return -1;
@@ -1060,8 +1060,8 @@ void audiostream_set_sample_cutoff(int i, uint cutoff)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
-	Assert( cutoff > 0 );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( cutoff > 0 );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return;
@@ -1074,7 +1074,7 @@ uint audiostream_get_samples_committed(int i)
 	if ( i == -1 )
 		return 0;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return 0;
@@ -1087,7 +1087,7 @@ int audiostream_done_reading(int i)
 	if ( i == -1 )
 		return 0;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return 0;
@@ -1105,7 +1105,7 @@ void audiostream_pause(int i, bool via_sexp_or_script)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return;
@@ -1122,7 +1122,7 @@ void audiostream_unpause(int i, bool via_sexp_or_script)
 	if ( i == -1 )
 		return;
 
-	Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
+core::Assert( i >= 0 && i < MAX_AUDIO_STREAMS );
 
 	if ( Audio_streams[i].status == ASF_FREE )
 		return;

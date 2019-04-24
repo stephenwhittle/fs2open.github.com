@@ -41,7 +41,7 @@ orient_editor::orient_editor(CWnd* pParent /*=NULL*/)
 	m_location_y = _T("0.0");
 	m_location_z = _T("0.0");
 	//}}AFX_DATA_INIT
-	Assert(query_valid_object());
+core::Assert(query_valid_object());
 	pos = Objects[cur_object_index].pos;
 	m_position_x.Format("%.1f", pos.xyz.x);
 	m_position_y.Format("%.1f", pos.xyz.y);
@@ -102,7 +102,7 @@ BOOL orient_editor::OnInitDialog()
 			} else if (ptr->type == OBJ_WAYPOINT) {
 				int waypoint_num;
 				waypoint_list *wp_list = find_waypoint_list_with_instance(ptr->instance, &waypoint_num);
-				Assert(wp_list != NULL);
+			core::Assert(wp_list != NULL);
 				sprintf(text, "%s:%d", wp_list->get_name(), waypoint_num + 1);
 
 				box->AddString(text);
@@ -110,7 +110,7 @@ BOOL orient_editor::OnInitDialog()
 
 			} else if ((ptr->type == OBJ_POINT) || (ptr->type == OBJ_JUMP_NODE)) {
 			} else
-				Assert(0);  // unknown object type.
+			core::Assert(0);  // unknown object type.
 		}
 
 		ptr = GET_NEXT(ptr);
@@ -223,7 +223,7 @@ void orient_editor::update_object(object *ptr)
 			vm_vec_sub(&v, &loc, &ptr->pos);
 
 		} else {
-			Assertion(0, "neither radio button is checked!");
+		core::Assertion(0, "neither radio button is checked!");
 			return;
 		}
 

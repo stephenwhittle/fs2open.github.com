@@ -102,7 +102,7 @@ void pause_init()
 		return;
 	}
 
-	Assert( !(Game_mode & GM_MULTIPLAYER) );
+core::Assert( !(Game_mode & GM_MULTIPLAYER) );
 
 	// pause all weapon sounds
 	weapon_pause_sounds();
@@ -137,7 +137,7 @@ void pause_do()
 	static int previous_Viewer_mode = -1;
 	static int previous_hud_state = -1;
 
-	Assert( !(Game_mode & GM_MULTIPLAYER) );
+core::Assert( !(Game_mode & GM_MULTIPLAYER) );
 	
 	//	RENDER A GAME FRAME HERE AS THE BACKGROUND (if normal pause)
 
@@ -245,7 +245,7 @@ void pause_close()
 		return;
 	}
 
-	Assert( !(Game_mode & GM_MULTIPLAYER) );
+core::Assert( !(Game_mode & GM_MULTIPLAYER) );
 
 	// unpause all weapon sounds
 	weapon_unpause_sounds();

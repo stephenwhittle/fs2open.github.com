@@ -70,32 +70,32 @@ const char* text_iterator::pos() const {
 	return current_byte;
 }
 bool text_iterator::operator==(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return current_byte == rhs.current_byte;
 }
 bool text_iterator::operator!=(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return !(rhs == *this);
 }
 bool text_iterator::operator<(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return current_byte < rhs.current_byte;
 }
 bool text_iterator::operator>(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return rhs < *this;
 }
 bool text_iterator::operator<=(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return !(rhs < *this);
 }
 bool text_iterator::operator>=(const text_iterator& rhs) const {
-	Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
+core::Assertion(is_from_same_range(rhs), "Iterators must be from the same byte range!");
 
 	return !(*this < rhs);
 }
@@ -128,7 +128,7 @@ bool text_iterator::is_from_same_range(const text_iterator& other) const {
 }
 
 codepoint_range::codepoint_range(const char* in_start, const char* in_end) : start(in_start), end_ptr(in_end) {
-	Assertion(start != nullptr, "Start of the string must be a valid pointer!");
+core::Assertion(start != nullptr, "Start of the string must be a valid pointer!");
 
 	if (end_ptr == nullptr) {
 		// Automatically determine the end of the string

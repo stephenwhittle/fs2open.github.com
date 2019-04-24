@@ -29,7 +29,7 @@ opengl_texture_state::~opengl_texture_state()
 
 void opengl_texture_state::init(GLuint n_units)
 {
-	Assert( n_units > 0 );
+core::Assert( n_units > 0 );
 	units = (opengl_texture_unit*) vm_malloc(n_units * sizeof(opengl_texture_unit));
 	num_texture_units = n_units;
 
@@ -98,7 +98,7 @@ void opengl_texture_state::Enable(GLuint tex_id)
 }
 
 void opengl_texture_state::Enable(GLuint unit, GLenum tex_target, GLuint tex_id) {
-	Assertion(unit < num_texture_units, "Invalid texture unit value!");
+core::Assertion(unit < num_texture_units, "Invalid texture unit value!");
 
 	if (units[unit].texture_target == tex_target && units[unit].texture_id == tex_id) {
 		// The texture unit already uses this texture. There is no need to change it
@@ -230,7 +230,7 @@ GLboolean opengl_state::Blend(GLint state)
 
 	if ( !((state == -1) || (state == blend_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glEnable(GL_BLEND);
 			blend_Status = GL_TRUE;
 		} else {
@@ -248,7 +248,7 @@ GLboolean opengl_state::DepthTest(GLint state)
 
 	if ( !((state == -1) || (state == depthtest_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glEnable(GL_DEPTH_TEST);
 			depthtest_Status = GL_TRUE;
 		} else {
@@ -266,7 +266,7 @@ GLboolean opengl_state::ScissorTest(GLint state)
 
 	if ( !((state == -1) || (state == scissortest_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glEnable(GL_SCISSOR_TEST);
 			scissortest_Status = GL_TRUE;
 		} else {
@@ -284,7 +284,7 @@ GLboolean opengl_state::StencilTest(GLint state)
 
     if ( !((state == -1) || (state == stenciltest_Status)) ) {
         if (state) {
-            Assert( state == GL_TRUE );
+           core::Assert( state == GL_TRUE );
             glEnable(GL_STENCIL_TEST);
             stenciltest_Status = GL_TRUE;
         } else {
@@ -302,7 +302,7 @@ GLboolean opengl_state::CullFace(GLint state)
 
 	if ( !((state == -1) || (state == cullface_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glEnable(GL_CULL_FACE);
 			cullface_Status = GL_TRUE;
 		} else {
@@ -340,7 +340,7 @@ GLboolean opengl_state::PolygonOffsetFill(GLint state)
 
 	if ( !((state == -1) || (state == polygonoffsetfill_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glEnable(GL_POLYGON_OFFSET_FILL);
 			polygonoffsetfill_Status = GL_TRUE;
 		} else {
@@ -354,7 +354,7 @@ GLboolean opengl_state::PolygonOffsetFill(GLint state)
 
 GLboolean opengl_state::ClipDistance(GLint num, bool state)
 {
-	Assert( (num >= 0) && (num < (int)(sizeof(clipdistance_Status) / sizeof(GLboolean))) );
+core::Assert( (num >= 0) && (num < (int)(sizeof(clipdistance_Status) / sizeof(GLboolean))) );
 
 	GLboolean save_state = clipdistance_Status[num];
 
@@ -376,7 +376,7 @@ GLboolean opengl_state::DepthMask(GLint state)
 
 	if ( !((state == -1) || (state == depthmask_Status)) ) {
 		if (state) {
-			Assert( state == GL_TRUE );
+		core::Assert( state == GL_TRUE );
 			glDepthMask(GL_TRUE);
 			depthmask_Status = GL_TRUE;
 		} else {
@@ -416,8 +416,8 @@ void opengl_state::BlendFunc(GLenum s_val, GLenum d_val)
 	}
 }
 void opengl_state::BlendFunci(int buffer, GLenum s_val, GLenum d_val) {
-	Assertion(GLAD_GL_ARB_draw_buffers_blend != 0, "Buffer blend modes are not supported by this OpenGL implementation!");
-	Assertion(buffer >= 0 && buffer < (int) buffer_blendfunc_Value.size(), "Unsupported index %d specified for buffer blend mode!", buffer);
+core::Assertion(GLAD_GL_ARB_draw_buffers_blend != 0, "Buffer blend modes are not supported by this OpenGL implementation!");
+core::Assertion(buffer >= 0 && buffer < (int) buffer_blendfunc_Value.size(), "Unsupported index %d specified for buffer blend mode!", buffer);
 
 	auto& state = buffer_blendfunc_Value[buffer];
 	if (state.first == s_val && state.second == d_val) {
@@ -562,7 +562,7 @@ void opengl_state::PushFramebufferState() {
 	framebuffer_stack.push_back(current_framebuffer);
 }
 void opengl_state::PopFramebufferState() {
-	Assertion(framebuffer_stack.size() > 0, "Tried to pop the framebuffer state stack while it was empty!");
+core::Assertion(framebuffer_stack.size() > 0, "Tried to pop the framebuffer state stack while it was empty!");
 
 	auto restoreBuffer = framebuffer_stack.back();
 	framebuffer_stack.pop_back();
@@ -637,7 +637,7 @@ opengl_array_state::~opengl_array_state()
 
 void opengl_array_state::init(GLuint n_units)
 {
-	Assert( n_units > 0 );
+core::Assert( n_units > 0 );
 	client_texture_units = (opengl_client_texture_unit*) vm_malloc(n_units * sizeof(opengl_client_texture_unit));
 	num_client_texture_units = n_units;
 	active_client_texture_unit = 0;

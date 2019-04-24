@@ -322,7 +322,7 @@ int beam_fire(beam_fire_info *fire_info)
 
 	// get a free beam
 	new_item = GET_FIRST(&Beam_free_list);
-	Assert( new_item != &Beam_free_list );		// shouldn't have the dummy element
+core::Assert( new_item != &Beam_free_list );		// shouldn't have the dummy element
 	if(new_item == &Beam_free_list){
 		return -1;
 	}
@@ -457,8 +457,8 @@ int beam_fire(beam_fire_info *fire_info)
 
 		if (fire_info->bfi_flags & BFIF_IS_FIGHTER_BEAM) {
 			// magic numbers suck, be we need to make sure that we are always below UCHAR_MAX (255)
-			Assert( fire_info->point <= 25 );
-			Assert( fire_info->bank <= 5 );
+		core::Assert( fire_info->point <= 25 );
+		core::Assert( fire_info->bank <= 5 );
 
 			bank_point = (fire_info->point * 10) + fire_info->bank;
 		}
@@ -496,14 +496,14 @@ int beam_fire_targeting(fighter_beam_fire_info *fire_info)
 	}
 	
 	// make sure the beam_info_index is valid
-	Assert((fire_info->beam_info_index >= 0) && (fire_info->beam_info_index < MAX_WEAPON_TYPES) && (Weapon_info[fire_info->beam_info_index].wi_flags[Weapon::Info_Flags::Beam]));
+core::Assert((fire_info->beam_info_index >= 0) && (fire_info->beam_info_index < MAX_WEAPON_TYPES) && (Weapon_info[fire_info->beam_info_index].wi_flags[Weapon::Info_Flags::Beam]));
 	if((fire_info->beam_info_index < 0) || (fire_info->beam_info_index >= MAX_WEAPON_TYPES) || !(Weapon_info[fire_info->beam_info_index].wi_flags[Weapon::Info_Flags::Beam])){
 		return -1;
 	}
 	wip = &Weapon_info[fire_info->beam_info_index];	
 
 	// make sure a ship is firing this
-	Assert((fire_info->shooter->type == OBJ_SHIP) && (fire_info->shooter->instance >= 0) && (fire_info->shooter->instance < MAX_SHIPS));
+core::Assert((fire_info->shooter->type == OBJ_SHIP) && (fire_info->shooter->instance >= 0) && (fire_info->shooter->instance < MAX_SHIPS));
 	if ( (fire_info->shooter->type != OBJ_SHIP) || (fire_info->shooter->instance < 0) || (fire_info->shooter->instance >= MAX_SHIPS) ) {
 		return -1;
 	}
@@ -512,7 +512,7 @@ int beam_fire_targeting(fighter_beam_fire_info *fire_info)
 
 	// get a free beam
 	new_item = GET_FIRST(&Beam_free_list);
-	Assert( new_item != &Beam_free_list );		// shouldn't have the dummy element
+core::Assert( new_item != &Beam_free_list );		// shouldn't have the dummy element
 
 	// remove from the free list
 	list_remove( &Beam_free_list, new_item );
@@ -524,7 +524,7 @@ int beam_fire_targeting(fighter_beam_fire_info *fire_info)
 	Beam_count++;
 
 	// maybe allocate some extra data based on the beam type
-	Assert(wip->b_info.beam_type == BEAM_TYPE_C);
+core::Assert(wip->b_info.beam_type == BEAM_TYPE_C);
 	if(wip->b_info.beam_type != BEAM_TYPE_C){
 		return -1;
 	}
@@ -585,8 +585,8 @@ int beam_get_parent(object *bm)
 	beam *b;
 
 	// get a handle to the beam
-	Assert(bm->type == OBJ_BEAM);
-	Assert(bm->instance >= 0);	
+core::Assert(bm->type == OBJ_BEAM);
+core::Assert(bm->instance >= 0);	
 	if(bm->type != OBJ_BEAM){
 		return -1;
 	}
@@ -611,17 +611,17 @@ int beam_get_parent(object *bm)
 // return weapon_info_index of beam
 int beam_get_weapon_info_index(object *bm)
 {
-	Assert(bm->type == OBJ_BEAM);
+core::Assert(bm->type == OBJ_BEAM);
 	if (bm->type != OBJ_BEAM) {
 		return -1;
 	}
 
-	Assert(bm->instance >= 0 && bm->instance < MAX_BEAMS);
+core::Assert(bm->instance >= 0 && bm->instance < MAX_BEAMS);
 	if (bm->instance < 0) {
 		return -1;
 	}
     //make sure it's returning a valid info index
-	Assert((Beams[bm->instance].weapon_info_index > -1) && (Beams[bm->instance].weapon_info_index < Num_weapon_types));
+core::Assert((Beams[bm->instance].weapon_info_index > -1) && (Beams[bm->instance].weapon_info_index < Num_weapon_types));
 
 	// return weapon_info_index
 	return Beams[bm->instance].weapon_info_index;
@@ -756,7 +756,7 @@ void beam_type_a_move(beam *b)
 	vm_vec_sub(&dir, &b->last_shot, &b->last_start);
 	vm_vec_normalize_quick(&dir);
 	vm_vec_scale_add(&b->last_shot, &b->last_start, &dir, b->range);
-	Assert(is_valid_vec(&b->last_shot));
+core::Assert(is_valid_vec(&b->last_shot));
 }
 
 // move a type B beam weapon
@@ -790,7 +790,7 @@ void beam_type_b_move(beam *b)
 	// now recalculate shot_point to be shooting through our new point
 	vm_vec_scale_add(&b->last_shot, &b->last_start, &actual_dir, b->range);
 	int is_valid = is_valid_vec(&b->last_shot);
-	Assert(is_valid);
+core::Assert(is_valid);
 	if(!is_valid){
 		actual_dir = b->binfo.dir_a;
 		vm_vec_scale_add(&b->last_shot, &b->last_start, &actual_dir, b->range);
@@ -867,7 +867,7 @@ void beam_type_d_move(beam *b)
 	vm_vec_sub(&dir, &b->last_shot, &b->last_start);
 	vm_vec_normalize_quick(&dir);
 	vm_vec_scale_add(&b->last_shot, &b->last_start, &dir, b->range);
-	Assert(is_valid_vec(&b->last_shot));
+core::Assert(is_valid_vec(&b->last_shot));
 }
 void beam_type_d_get_status(beam *b, int *shot_index, int *fire_wait)
 {	
@@ -909,7 +909,7 @@ void beam_type_e_move(beam *b)
 
 	// put the "last_shot" point arbitrarily far away
 	vm_vec_scale_add(&b->last_shot, &b->last_start, &turret_norm, b->range);	
-	Assert(is_valid_vec(&b->last_shot));
+core::Assert(is_valid_vec(&b->last_shot));
 }
 
 // pre-move (before collision checking - but AFTER ALL OTHER OBJECTS HAVE BEEN MOVED)
@@ -1545,7 +1545,7 @@ void beam_render_all()
 			}			
 
 			// render the beam itself
-			Assert(moveup->weapon_info_index >= 0);
+		core::Assert(moveup->weapon_info_index >= 0);
 
 			if (moveup->weapon_info_index < 0) {
 				moveup = GET_NEXT(moveup);
@@ -1608,15 +1608,15 @@ void beam_add_light_small(beam *bm, object *objp, vec3d *pt_override = NULL)
 	}
 
 	// sanity
-	Assert(bm != NULL);
+core::Assert(bm != NULL);
 	if(bm == NULL){
 		return;
 	}
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 	if(objp == NULL){
 		return;
 	}
-	Assert(bm->weapon_info_index >= 0);
+core::Assert(bm->weapon_info_index >= 0);
 	wip = &Weapon_info[bm->weapon_info_index];
 	bwi = &wip->b_info;
 
@@ -1678,15 +1678,15 @@ void beam_add_light_large(beam *bm, object *objp, vec3d *pt0, vec3d *pt1)
 	}
 
 	// sanity
-	Assert(bm != NULL);
+core::Assert(bm != NULL);
 	if(bm == NULL){
 		return;
 	}
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 	if(objp == NULL){
 		return;
 	}
-	Assert(bm->weapon_info_index >= 0);
+core::Assert(bm->weapon_info_index >= 0);
 	wip = &Weapon_info[bm->weapon_info_index];
 	bwi = &wip->b_info;
 
@@ -1724,7 +1724,7 @@ void beam_add_light(beam *b, int objnum, int source, vec3d *c_point)
 	if(c_point != NULL){
 		l->c_point = *c_point;
 	} else {
-		Assert(source != 2);
+	core::Assert(source != 2);
 		if(source == 2){
 			Beam_light_count--;
 		}
@@ -1766,7 +1766,7 @@ void beam_apply_lighting()
 
 		// from the beam passing by
 		case 1:
-			Assert( Objects[l->objnum].instance >= 0 );
+		core::Assert( Objects[l->objnum].instance >= 0 );
 			// Valathil: Everyone gets tube lights now
 			beam_add_light_large(l->bm, &Objects[l->objnum], &l->bm->last_start, &l->bm->last_shot);
 			break;
@@ -1812,7 +1812,7 @@ void beam_delete(beam *b)
 
 	// subtract one
 	Beam_count--;
-	Assert(Beam_count >= 0);
+core::Assert(Beam_count >= 0);
 	nprintf(("Beam", "Recycled beam (%d beams remaining)\n", Beam_count));
 }
 
@@ -1825,7 +1825,7 @@ int beam_get_model(object *objp)
 		return -1;
 	}
 
-	Assert(objp->instance >= 0);
+core::Assert(objp->instance >= 0);
 	if(objp->instance < 0){
 		return -1;
 	}
@@ -1835,14 +1835,14 @@ int beam_get_model(object *objp)
 		return Ship_info[Ships[objp->instance].ship_info_index].model_num;
 
 	case OBJ_WEAPON:
-		Assert(Weapons[objp->instance].weapon_info_index >= 0);
+	core::Assert(Weapons[objp->instance].weapon_info_index >= 0);
 		if(Weapons[objp->instance].weapon_info_index < 0){
 			return -1;
 		}
 		return Weapon_info[Weapons[objp->instance].weapon_info_index].model_num;
 
 	case OBJ_DEBRIS:
-		Assert(Debris[objp->instance].is_hull);
+	core::Assert(Debris[objp->instance].is_hull);
 		if(!Debris[objp->instance].is_hull){
 			return -1;
 		}
@@ -1850,7 +1850,7 @@ int beam_get_model(object *objp)
 
 	case OBJ_ASTEROID:
 		pof = Asteroids[objp->instance].asteroid_subtype;
-		Assert(Asteroids[objp->instance].asteroid_type >= 0);
+	core::Assert(Asteroids[objp->instance].asteroid_type >= 0);
 		if(Asteroids[objp->instance].asteroid_type < 0){
 			return -1;
 		}
@@ -1954,7 +1954,7 @@ void beam_recalc_sounds(beam *b)
 	beam_weapon_info *bwi;
 	vec3d pos;	
 
-	Assert(b->weapon_info_index >= 0);
+core::Assert(b->weapon_info_index >= 0);
 	if(b->weapon_info_index < 0){
 		return;
 	}
@@ -2026,7 +2026,7 @@ void beam_get_binfo(beam *b, float accuracy, int num_shots)
 	}
 
 	// get beam weapon info
-	Assert(b->weapon_info_index >= 0);
+core::Assert(b->weapon_info_index >= 0);
 	if(b->weapon_info_index < 0){
 		return;
 	}
@@ -2043,8 +2043,8 @@ void beam_get_binfo(beam *b, float accuracy, int num_shots)
 	// pick an accuracy. beam will be properly aimed at actual fire time
 	case BEAM_TYPE_A:
 		// determine the miss factor
-		Assert(Game_skill_level >= 0 && Game_skill_level < NUM_SKILL_LEVELS);
-		Assert(b->team >= 0 && b->team < Num_iffs);
+	core::Assert(Game_skill_level >= 0 && Game_skill_level < NUM_SKILL_LEVELS);
+	core::Assert(b->team >= 0 && b->team < Num_iffs);
 		miss_factor = bwi->beam_iff_miss_factor[b->team][Game_skill_level];
 
 		// all we will do is decide whether or not we will hit - type A beam weapons are re-aimed immediately before firing
@@ -2090,8 +2090,8 @@ void beam_get_binfo(beam *b, float accuracy, int num_shots)
 	// type D beams fire at small ship multiple times
 	case BEAM_TYPE_D:
 		// determine the miss factor
-		Assert(Game_skill_level >= 0 && Game_skill_level < NUM_SKILL_LEVELS);
-		Assert(b->team >= 0 && b->team < Num_iffs);
+	core::Assert(Game_skill_level >= 0 && Game_skill_level < NUM_SKILL_LEVELS);
+	core::Assert(b->team >= 0 && b->team < Num_iffs);
 		miss_factor = bwi->beam_iff_miss_factor[b->team][Game_skill_level];
 
 		// get a bunch of shot aims
@@ -2123,7 +2123,7 @@ void beam_aim(beam *b)
 	if (!(b->flags & BF_TARGETING_COORDS)) {
 		// type C beam weapons have no target
 		if (b->target == NULL) {
-			Assert(b->type == BEAM_TYPE_C);
+		core::Assert(b->type == BEAM_TYPE_C);
 			if(b->type != BEAM_TYPE_C){
 				return;
 			}
@@ -2225,7 +2225,7 @@ void beam_aim(beam *b)
 			// set the shot point
 			vm_vec_scale_add(&b->last_shot, &b->last_start, &b->binfo.dir_a, b->range);
 		}
-		Assert(is_valid_vec(&b->last_shot));
+	core::Assert(is_valid_vec(&b->last_shot));
 		break;
 
 	case BEAM_TYPE_C:
@@ -2285,12 +2285,12 @@ void beam_get_octant_points(int modelnum, object *objp, int oct_index, int oct_a
 		return;
 	}
 
-	Assert((oct_index >= 0) && (oct_index < BEAM_NUM_GOOD_OCTANTS));
+core::Assert((oct_index >= 0) && (oct_index < BEAM_NUM_GOOD_OCTANTS));
 
 	// randomly pick octants	
 	t1 = oct_array[oct_index][2] ? m->octants[oct_array[oct_index][0]].max : m->octants[oct_array[oct_index][0]].min;
 	t2 = oct_array[oct_index][3] ? m->octants[oct_array[oct_index][1]].max : m->octants[oct_array[oct_index][1]].min;
-	Assert(!vm_vec_same(&t1, &t2));
+core::Assert(!vm_vec_same(&t1, &t2));
 
 	// get them in world coords
 	vm_vec_unrotate(&temp, &t1, &objp->orient);
@@ -2302,7 +2302,7 @@ void beam_get_octant_points(int modelnum, object *objp, int oct_index, int oct_a
 // throw some jitter into the aim - based upon shot_aim
 void beam_jitter_aim(beam *b, float aim)
 {
-	Assert(b->target != NULL);
+core::Assert(b->target != NULL);
 	vec3d forward, circle;
 	matrix m;
 	float subsys_strength;
@@ -2356,9 +2356,9 @@ int beam_collide_ship(obj_pair *pair)
 	}
 
 	// get the beam
-	Assert(pair->a->instance >= 0);
-	Assert(pair->a->type == OBJ_BEAM);
-	Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
+core::Assert(pair->a->instance >= 0);
+core::Assert(pair->a->type == OBJ_BEAM);
+core::Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
 	weapon_objp = pair->a;
 	b = &Beams[pair->a->instance];
 
@@ -2395,9 +2395,9 @@ int beam_collide_ship(obj_pair *pair)
 #endif
 
 	// get the ship
-	Assert(pair->b->instance >= 0);
-	Assert(pair->b->type == OBJ_SHIP);
-	Assert(Ships[pair->b->instance].objnum == OBJ_INDEX(pair->b));
+core::Assert(pair->b->instance >= 0);
+core::Assert(pair->b->type == OBJ_SHIP);
+core::Assert(Ships[pair->b->instance].objnum == OBJ_INDEX(pair->b));
 	if ((pair->b->type != OBJ_SHIP) || (pair->b->instance < 0))
 		return 1;
 	ship_objp = pair->b;
@@ -2520,7 +2520,7 @@ int beam_collide_ship(obj_pair *pair)
 	if (shield_collision && valid_hit_occurred)
 	{
 		memcpy(&mc, &mc_shield, sizeof(mc_info));
-		Assert(quadrant_num >= 0);
+	core::Assert(quadrant_num >= 0);
 	}
 	else if (hull_enter_collision)
 	{
@@ -2579,9 +2579,9 @@ int beam_collide_asteroid(obj_pair *pair)
 	}
 
 	// get the beam
-	Assert(pair->a->instance >= 0);
-	Assert(pair->a->type == OBJ_BEAM);
-	Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
+core::Assert(pair->a->instance >= 0);
+core::Assert(pair->a->type == OBJ_BEAM);
+core::Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
 	b = &Beams[pair->a->instance];
 
 	// if the "warming up" timestamp has not expired
@@ -2672,9 +2672,9 @@ int beam_collide_missile(obj_pair *pair)
 	}
 
 	// get the beam
-	Assert(pair->a->instance >= 0);
-	Assert(pair->a->type == OBJ_BEAM);
-	Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
+core::Assert(pair->a->instance >= 0);
+core::Assert(pair->a->type == OBJ_BEAM);
+core::Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
 	b = &Beams[pair->a->instance];
 
 	// if the "warming up" timestamp has not expired
@@ -2765,9 +2765,9 @@ int beam_collide_debris(obj_pair *pair)
 	}
 
 	// get the beam
-	Assert(pair->a->instance >= 0);
-	Assert(pair->a->type == OBJ_BEAM);
-	Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
+core::Assert(pair->a->instance >= 0);
+core::Assert(pair->a->type == OBJ_BEAM);
+core::Assert(Beams[pair->a->instance].objnum == OBJ_INDEX(pair->a));
 	b = &Beams[pair->a->instance];
 
 	// if the "warming up" timestamp has not expired
@@ -2850,20 +2850,20 @@ int beam_collide_early_out(object *a, object *b)
 	vec3d dot_test, dot_test2, dist_test;	
 		
 	// get the beam
-	Assert(a->instance >= 0);
+core::Assert(a->instance >= 0);
 	if(a->instance < 0){
 		return 1;
 	}
-	Assert(a->type == OBJ_BEAM);
+core::Assert(a->type == OBJ_BEAM);
 	if(a->type != OBJ_BEAM){
 		return 1;
 	}
-	Assert(Beams[a->instance].objnum == OBJ_INDEX(a));
+core::Assert(Beams[a->instance].objnum == OBJ_INDEX(a));
 	if(Beams[a->instance].objnum != OBJ_INDEX(a)){
 		return 1;
 	}	
 	bm = &Beams[a->instance];
-	Assert(bm->weapon_info_index >= 0);
+core::Assert(bm->weapon_info_index >= 0);
 	if(bm->weapon_info_index < 0){
 		return 1;
 	}
@@ -3274,7 +3274,7 @@ void beam_handle_collisions(beam *b)
 					}
 				} else {
 					// detonate the missile
-					Assert(Weapon_info[Weapons[Objects[target].instance].weapon_info_index].subtype == WP_MISSILE);
+				core::Assert(Weapon_info[Weapons[Objects[target].instance].weapon_info_index].subtype == WP_MISSILE);
 
 					if (!(Game_mode & GM_MULTIPLAYER) || MULTIPLAYER_MASTER) {
 						Weapons[Objects[target].instance].weapon_flags.set(Weapon::Weapon_Flags::Destroyed_by_weapon);
@@ -3313,7 +3313,7 @@ void beam_handle_collisions(beam *b)
 		if(widest <= (Objects[target].radius * BEAM_AREA_PERCENT) && !beam_will_tool_target(b, &Objects[target])){	
 			// set last_shot so we know where to properly draw the beam		
 			b->last_shot = b->f_collisions[idx].cinfo.hit_point_world;
-			Assert(is_valid_vec(&b->last_shot));		
+		core::Assert(is_valid_vec(&b->last_shot));		
 
 			// done wif the beam
 			break;
@@ -3481,7 +3481,7 @@ float beam_get_widest(beam *b)
 	float widest = -1.0f;
 
 	// sanity
-	Assert(b->weapon_info_index >= 0);
+core::Assert(b->weapon_info_index >= 0);
 	if(b->weapon_info_index < 0){
 		return -1.0f;
 	}
@@ -3508,13 +3508,13 @@ void beam_apply_whack(beam *b, object *objp, vec3d *hit_point)
 	ship *shipp;
 
 	// sanity
-	Assert((b != NULL) && (objp != NULL) && (hit_point != NULL));
+core::Assert((b != NULL) && (objp != NULL) && (hit_point != NULL));
 	if((b == NULL) || (objp == NULL) || (hit_point == NULL)){
 		return;
 	}	
-	Assert(b->weapon_info_index >= 0);
+core::Assert(b->weapon_info_index >= 0);
 	wip = &Weapon_info[b->weapon_info_index];	
-	Assert((objp != NULL) && (objp->type == OBJ_SHIP) && (objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+core::Assert((objp != NULL) && (objp->type == OBJ_SHIP) && (objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 	if((objp == NULL) || (objp->type != OBJ_SHIP) || (objp->instance < 0) || (objp->instance >= MAX_SHIPS)){
 		return;
 	}

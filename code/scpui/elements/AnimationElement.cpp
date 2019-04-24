@@ -3,9 +3,9 @@
 
 #include "AnimationElement.h"
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core.h>
 #include <Rocket/Core/ElementDocument.h>
@@ -13,7 +13,7 @@
 #include <Rocket/Core/String.h>
 #include <scpui/RocketRenderingInterface.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 namespace scpui {
 namespace elements {
@@ -74,7 +74,7 @@ void AnimationElement::OnRender()
 	}
 
 	// Use dynamic cast for debug assertions but use a static cast everywhere else for improved efficiency
-	Assertion(dynamic_cast<RocketRenderingInterface*>(GetRenderInterface()) != nullptr,
+core::Assertion(dynamic_cast<RocketRenderingInterface*>(GetRenderInterface()) != nullptr,
 	          "AnimationElement can only be used with the FSO rendering interface.");
 
 	auto render = static_cast<RocketRenderingInterface*>(GetRenderInterface());
@@ -261,7 +261,7 @@ void AnimationElement::OnUpdate()
 	}
 
 	// Use dynamic cast for debug assertions but use a static cast everywhere else for improved efficiency
-	Assertion(dynamic_cast<RocketRenderingInterface*>(GetRenderInterface()) != nullptr,
+core::Assertion(dynamic_cast<RocketRenderingInterface*>(GetRenderInterface()) != nullptr,
 	          "AnimationElement can only be used with the FSO rendering interface.");
 
 	auto render = static_cast<RocketRenderingInterface*>(GetRenderInterface());

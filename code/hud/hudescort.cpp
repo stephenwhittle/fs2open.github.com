@@ -496,12 +496,12 @@ void hud_create_complete_escort_list(escort_info *escorts, int *num_escorts)
 	// all others 
 	else {
 		for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
-			Assert( so->objnum >= 0 && so->objnum < MAX_OBJECTS);
+		core::Assert( so->objnum >= 0 && so->objnum < MAX_OBJECTS);
 			if((so->objnum < 0) || (so->objnum >= MAX_OBJECTS)){
 				continue;
 			}
 			objp = &Objects[so->objnum];
-			Assert( objp->type == OBJ_SHIP );
+		core::Assert( objp->type == OBJ_SHIP );
 			if(objp->type != OBJ_SHIP){
 				continue;
 			}
@@ -647,7 +647,7 @@ void merge_escort_lists(escort_info *complete_escorts, int num_complete_escorts)
 			Escort_ships[i] = complete_escorts[i];
 			// check all ships are valid
 			int objnum = Escort_ships[i].objnum;
-			Assert( objnum >=0 && objnum < MAX_OBJECTS );
+		core::Assert( objnum >=0 && objnum < MAX_OBJECTS );
 			if((objnum < 0) || (objnum >= MAX_OBJECTS)){
 				continue;
 			}
@@ -690,7 +690,7 @@ void hud_remove_ship_from_escort_index(int dead_index, int objnum)
 	}
 
 	Num_escort_ships--;
-	Assert(Num_escort_ships >= 0);	
+core::Assert(Num_escort_ships >= 0);	
 
 	// get complete escort list
 	hud_create_complete_escort_list(complete_escorts, &num_complete_escorts);
@@ -728,14 +728,14 @@ void hud_escort_cull_list()
 	else {
 		for ( i = 0; i < Num_escort_ships; i++ ) {
 			int objnum = Escort_ships[i].objnum;
-			Assert( objnum >=0 && objnum < MAX_OBJECTS );
+		core::Assert( objnum >=0 && objnum < MAX_OBJECTS );
 
 			if ( Objects[objnum].flags[Object::Object_Flags::Should_be_dead] ) {
 				hud_setup_escort_list(0);
 				break;
 			} else if ( Objects[objnum].type == OBJ_SHIP ) {
 				int shipnum = Objects[objnum].instance;
-				Assert( shipnum >= 0 && shipnum < MAX_SHIPS );
+			core::Assert( shipnum >= 0 && shipnum < MAX_SHIPS );
 
 				if ( (Ships[shipnum].flags[Ship::Ship_Flags::Hidden_from_sensors])
 					|| ((Ships[shipnum].flags[Ship::Ship_Flags::Stealth]) && ((Ships[shipnum].team != Player_ship->team) || (Ships[shipnum].flags[Ship::Ship_Flags::Friendly_stealth_invis])))
@@ -969,7 +969,7 @@ int hud_escort_return_objnum(int index)
 
 void hud_escort_add_player(short id)
 {
-	Assert(Game_mode & GM_MULTIPLAYER);
+core::Assert(Game_mode & GM_MULTIPLAYER);
 	if(!(Game_mode & GM_MULTIPLAYER)){
 		return;
 	}	
@@ -989,7 +989,7 @@ void hud_escort_add_player(short id)
 
 void hud_escort_remove_player(short id)
 {	
-	Assert(Game_mode & GM_MULTIPLAYER);
+core::Assert(Game_mode & GM_MULTIPLAYER);
 	if(!(Game_mode & GM_MULTIPLAYER)){
 		return;
 	}

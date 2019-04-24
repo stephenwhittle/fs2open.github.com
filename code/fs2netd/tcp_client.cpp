@@ -81,7 +81,7 @@ int FS2NetD_CheckSingleMission(const char *m_name, uint crc32, bool do_send)
 
 		ubyte status = 0;
 		PXO_GET_DATA( status );
-		Assert( (status == 0) || (status == 1) );
+	core::Assert( (status == 0) || (status == 1) );
 
 		// anything beyond 'true' is considered a failure of some kind
 		if (status > 1) {
@@ -128,12 +128,12 @@ int FS2NetD_SendPlayerData(const char *player_name, player *pl, bool do_send)
 
 		for (i = 0; i < MAX_SHIP_CLASSES; i++) {
 			if (pl->stats.kills[i] > 0) {
-				Assert( (pl->stats.kills[i] >= 0) && (pl->stats.kills[i] < USHRT_MAX) );
+			core::Assert( (pl->stats.kills[i] >= 0) && (pl->stats.kills[i] < USHRT_MAX) );
 				num_type_kills++;
 			}
 		}
 
-		Assert( (num_type_kills >= 0) && (num_type_kills < USHRT_MAX) );
+	core::Assert( (num_type_kills >= 0) && (num_type_kills < USHRT_MAX) );
 		PXO_ADD_USHORT( (ushort)num_type_kills );
 
 		for (i = 0; i < MAX_SHIP_CLASSES; i++) {
@@ -143,7 +143,7 @@ int FS2NetD_SendPlayerData(const char *player_name, player *pl, bool do_send)
 			}
 		}
 
-		Assert( (Num_medals >= 0) && (Num_medals < USHRT_MAX) );
+	core::Assert( (Num_medals >= 0) && (Num_medals < USHRT_MAX) );
 		PXO_ADD_USHORT( (ushort)Num_medals );
 
 		for (i = 0; i < Num_medals; i++) {
@@ -183,7 +183,7 @@ int FS2NetD_SendPlayerData(const char *player_name, player *pl, bool do_send)
 
 		ubyte status;
 		PXO_GET_DATA( status );
-		Assert( (status == 0) || (status == 1) || (status == 2) );
+	core::Assert( (status == 0) || (status == 1) || (status == 2) );
 
 		if (status > 2) {
 			status = 2;
@@ -774,7 +774,7 @@ int FS2NetD_ValidateTableList(bool do_send)
 
 		for (std::vector<crc_valid_status>::iterator tvs = Table_valid_status.begin(); tvs != Table_valid_status.end(); ++tvs) {
 			PXO_GET_DATA( tbl_valid_status );
-			Assert( (tbl_valid_status == 0) || (tbl_valid_status == 1) );
+		core::Assert( (tbl_valid_status == 0) || (tbl_valid_status == 1) );
 
 			tvs->valid = tbl_valid_status;
 		}
@@ -829,7 +829,7 @@ void FS2NetD_CheckDuplicateLogin()
 
 	PXO_ADD_INT( Multi_tracker_id );
 
-	Assert( MAX_PLAYERS <= 255 );
+core::Assert( MAX_PLAYERS <= 255 );
 
 	ubyte tvar = (ubyte)ids_count;
 	PXO_ADD_DATA( tvar );

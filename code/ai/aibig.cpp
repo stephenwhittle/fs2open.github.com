@@ -386,7 +386,10 @@ int ai_big_maybe_follow_subsys_path(int do_dot_check)
 		polymodel *pm_t = model_get( Ship_info[Ships[target_objp->instance].ship_info_index].model_num );
 
 		// Necessary sanity check
-		Assertion(aip->targeted_subsys->system_info->path_num < pm_t->n_paths, "Invalid Path number %d for subsystem %s on ship %s (Model: %s)\n", aip->targeted_subsys->system_info->path_num, aip->targeted_subsys->system_info->name, Ship_info[Ships[target_objp->instance].ship_info_index].name, pm_t->filename );
+		core::Assertion(aip->targeted_subsys->system_info->path_num < pm_t->n_paths,
+		                "Invalid Path number %d for subsystem %s on ship %s (Model: %s)\n",
+		                aip->targeted_subsys->system_info->path_num, aip->targeted_subsys->system_info->name,
+		                Ship_info[Ships[target_objp->instance].ship_info_index].name, pm_t->filename);
 		if (aip->targeted_subsys->system_info->path_num >= pm_t->n_paths)
 			return 0;
 
@@ -736,7 +739,9 @@ static void ai_big_maybe_fire_weapons(float dist_to_enemy, float dot_to_enemy)
 			ship_weapon *tswp = &temp_shipp->weapons;
 
 			if ( tswp->num_primary_banks > 0 ) {
-				Assertion(tswp->current_primary_bank < tswp->num_primary_banks, "AI tried to select primary bank %d. Might be a model error\n", tswp->current_primary_bank);
+				core::Assertion(tswp->current_primary_bank < tswp->num_primary_banks,
+				                "AI tried to select primary bank %d. Might be a model error\n",
+				                tswp->current_primary_bank);
 				weapon_info	*wip = &Weapon_info[tswp->primary_bank_weapons[tswp->current_primary_bank]];
 
 				if (dist_to_enemy < MIN((wip->max_speed * wip->lifetime), wip->weapon_range)){

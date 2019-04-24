@@ -311,7 +311,7 @@ void player_select_init()
 
 	// attempt to load in the background bitmap
 	Player_select_background_bitmap = bm_load(Player_select_background_bitmap_name[gr_screen.res]);
-	Assert(Player_select_background_bitmap >= 0);
+core::Assert(Player_select_background_bitmap >= 0);
 
 	// load in the palette for the screen
 	// Player_select_palette = bm_load(PLAYER_SELECT_PALETTE);
@@ -1224,7 +1224,7 @@ void player_select_eval_very_first_pilot()
 void player_select_commit()
 {
 	// if we've gotten to this point, we should have ensured this was the case
-	Assert(Player_select_num_pilots > 0);
+core::Assert(Player_select_num_pilots > 0);
 
 	gameseq_post_event(GS_EVENT_MAIN_MENU);
 	gamesnd_play_iface(InterfaceSounds::COMMIT_PRESSED);
@@ -1286,7 +1286,7 @@ DCF(bastion,"Sets the player to be on the bastion (or any other main hall)")
 	}
 
 	if (dc_maybe_stuff_int(&idx)) {
-		Assert(Main_hall_defines.size() < INT_MAX);
+	core::Assert(Main_hall_defines.size() < INT_MAX);
 		if ((idx < 0) || (idx >= (int) Main_hall_defines.size())) {
 			dc_printf("Main hall index out of range\n");
 

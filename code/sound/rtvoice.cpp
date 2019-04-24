@@ -242,7 +242,7 @@ int rtvoice_start_recording( void (*user_callback)(), int callback_time )
 		return -1;
 	}
 
-	Assert(Rtv_recording_inited);
+core::Assert(Rtv_recording_inited);
 
 	if ( Rtv_recording ) {
 		return -1;
@@ -353,7 +353,7 @@ int rtvoice_init_playback()
 
 		Rtv_playback_uncompressed_buffer_size = rtvf->frequency * (RTV_BUFFER_TIME) * fl2i(rtvf->bits_per_sample/8.0f);
 		Rtv_playback_uncompressed_buffer = (unsigned char*)vm_malloc(Rtv_playback_uncompressed_buffer_size);
-		Assert(Rtv_playback_uncompressed_buffer);
+	core::Assert(Rtv_playback_uncompressed_buffer);
 
 		Rtv_playback_inited=1;
 	}
@@ -404,7 +404,7 @@ int rtvoice_create_playback_buffer()
 
 void rtvoice_stop_playback(int index)
 {
-	Assert(index >=0 && index < MAX_RTV_OUT_BUFFERS);
+core::Assert(index >=0 && index < MAX_RTV_OUT_BUFFERS);
 
 	if ( Rtv_output_buffers[index].flags & RTV_OUT_FLAG_USED ) {
 		if ( Rtv_output_buffers[index].ds_handle != -1 ) {
@@ -425,7 +425,7 @@ void rtvoice_stop_playback_all()
 // Close a stream that was opened for real-time voice output
 void rtvoice_free_playback_buffer(int index)
 {
-	Assert(index >=0 && index < MAX_RTV_OUT_BUFFERS);
+core::Assert(index >=0 && index < MAX_RTV_OUT_BUFFERS);
 
 	if ( Rtv_output_buffers[index].flags & RTV_OUT_FLAG_USED ) {
 		Rtv_output_buffers[index].flags=0;

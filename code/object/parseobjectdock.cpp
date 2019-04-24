@@ -57,7 +57,7 @@ bool dock_check_docked_one_on_one(p_object *objp)
 		return false;
 
 	// debug check to make sure that we're docked to each other
-	Assert(objp == dock_get_first_docked_object(objp)->dock_list->docked_objp);
+core::Assert(objp == dock_get_first_docked_object(objp)->dock_list->docked_objp);
 	
 	// success
 	return true;
@@ -97,7 +97,7 @@ char *dock_find_dockpoint_used_by_object(p_object *objp, p_object *other_objp)
 // evaluate a certain function for all docked objects
 void dock_evaluate_all_docked_objects(p_object *objp, p_dock_function_info *infop, void (*function)(p_object *, p_dock_function_info *))
 {
-	Assert((objp != NULL) && (infop != NULL) && (function != NULL));
+core::Assert((objp != NULL) && (infop != NULL) && (function != NULL));
 
 	// not docked?
 	if (!object_is_docked(objp))
@@ -174,7 +174,7 @@ void dock_dock_docked_objects(p_object *objp)
 	if (objp->flags[Mission::Parse_Object_Flags::Already_handled])
 		return;
 
-	Assert(objp->flags[Mission::Parse_Object_Flags::SF_Dock_leader]);
+core::Assert(objp->flags[Mission::Parse_Object_Flags::SF_Dock_leader]);
 
 	p_dock_function_info dfi;
 	

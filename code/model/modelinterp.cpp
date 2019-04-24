@@ -244,8 +244,8 @@ void model_allocate_interp_data(int n_verts, int n_norms)
 		dealloc = 1;
 	}
 
-	Assert( (n_verts >= 0) && (n_norms >= 0) );
-	Assert( (n_verts || Num_interp_verts_allocated) && (n_norms || Num_interp_norms_allocated) );
+core::Assert( (n_verts >= 0) && (n_norms >= 0) );
+core::Assert( (n_verts || Num_interp_verts_allocated) && (n_norms || Num_interp_norms_allocated) );
 
 	if (n_verts > Num_interp_verts_allocated) {
 		if (Interp_verts != NULL) {
@@ -466,7 +466,7 @@ void model_interp_defpoints(ubyte * p, polymodel *pm, bsp_info *sm)
 
 	dest = Interp_points;
 
-	Assert( dest != NULL );
+core::Assert( dest != NULL );
 
 	#ifndef NDEBUG
 	modelstats_num_verts += nverts;
@@ -785,7 +785,7 @@ void interp_render_arc_segment( vec3d *v1, vec3d *v2, int depth )
 
 	if ( (d < scaler) || (depth > 4) ) {
 		// the real limit appears to be 33, so we should never hit this unless the code changes
-		Assert( Num_arc_segment_points < MAX_ARC_SEGMENT_POINTS );
+	core::Assert( Num_arc_segment_points < MAX_ARC_SEGMENT_POINTS );
 
 		memcpy( &Arc_segment_points[Num_arc_segment_points++], v2, sizeof(vec3d) );
 	} else {
@@ -913,7 +913,7 @@ int model_get_rotated_bitmap_points(vertex *pnt,float angle, float rad, vertex *
 	float sa, ca;
 	int i;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 		
 	sa = sinf(angle);
 	ca = cosf(angle);
@@ -1789,7 +1789,7 @@ void find_sortnorm(int offset, ubyte *bsp_data)
 
 void model_interp_submit_buffers(indexed_vertex_source *vert_src, size_t vertex_stride)
 {
-	Assert(vert_src != NULL);
+core::Assert(vert_src != NULL);
 
 	if ( !(vert_src->Vertex_list_size > 0 && vert_src->Index_list_size > 0 ) ) {
 		return;
@@ -1801,7 +1801,7 @@ void model_interp_submit_buffers(indexed_vertex_source *vert_src, size_t vertex_
 
 		// If this happens then someone must have allocated something from the heap with a different stride than what we
 		// are using.
-		Assertion(offset % vertex_stride == 0, "Offset returned by GPU heap allocation does not match stride value!");
+	core::Assertion(offset % vertex_stride == 0, "Offset returned by GPU heap allocation does not match stride value!");
 		vert_src->Base_vertex_offset = offset / vertex_stride;
 		vert_src->Vertex_offset = offset;
 
@@ -1823,7 +1823,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 		return false;
 	}
 
-	Assertion(vb != nullptr, "Invalid vertex buffer specified!");
+core::Assertion(vb != nullptr, "Invalid vertex buffer specified!");
 
 	int i, n_verts = 0;
 	size_t j;
@@ -1859,7 +1859,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 		auto outVert = &array[i];
 
 		// don't try to generate more data than what's available
-		Assert(((i * sizeof(interp_vertex)) + sizeof(interp_vertex)) <= (vert_src->Vertex_list_size - vb->vertex_offset));
+	core::Assert(((i * sizeof(interp_vertex)) + sizeof(interp_vertex)) <= (vert_src->Vertex_list_size - vb->vertex_offset));
 
 		// NOTE: UV->NORM->TSB->MODEL_ID->VERT, This array order *must* be preserved!!
 
@@ -1873,7 +1873,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 
 		// normals
 		if ( vb->flags & VB_FLAG_NORMAL ) {
-			Assert(vb->model_list->norm != NULL);
+		core::Assert(vb->model_list->norm != NULL);
 			outVert->normal = vb->model_list->norm[i];
 		} else {
 			outVert->normal.xyz.x = 0.0f;
@@ -1883,7 +1883,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 
 		// tangent space data
 		if ( vb->flags & VB_FLAG_TANGENT ) {
-			Assert(vb->model_list->tsb != NULL);
+		core::Assert(vb->model_list->tsb != NULL);
 			tsb_t *tsb = &vb->model_list->tsb[i];
 
 			outVert->tangent.xyzw.x = tsb->tangent.xyz.x;
@@ -1898,7 +1898,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 		}
 
 		if ( vb->flags & VB_FLAG_MODEL_ID ) {
-			Assert(vb->model_list->submodels != NULL);
+		core::Assert(vb->model_list->submodels != NULL);
 			outVert->modelId = (float)vb->model_list->submodels[i];
 		} else {
 			outVert->modelId = 0.0f;
@@ -1934,7 +1934,7 @@ bool model_interp_pack_buffer(indexed_vertex_source *vert_src, vertex_buffer *vb
 
 void interp_pack_vertex_buffers(polymodel *pm, int mn)
 {
-	Assert( (mn >= 0) && (mn < pm->n_models) );
+core::Assert( (mn >= 0) && (mn < pm->n_models) );
 
 	bsp_info *model = &pm->submodel[mn];
 
@@ -1955,7 +1955,7 @@ void interp_pack_vertex_buffers(polymodel *pm, int mn)
 
 void model_interp_set_buffer_layout(vertex_layout *layout)
 {
-	Assert(layout != NULL);
+core::Assert(layout != NULL);
 
 	// Similarly to model_interp_config_buffer, we add all vectex components even if they aren't used
 	// This reduces the amount of vertex format respecification and since the data contains valid data there is no risk
@@ -2017,7 +2017,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 	uint total_verts = 0;
 	std::vector<int> vertex_list;
 
-	Assert( (mn >= 0) && (mn < pm->n_models) );
+core::Assert( (mn >= 0) && (mn < pm->n_models) );
 
 	bsp_info *model = &pm->submodel[mn];
 
@@ -2112,7 +2112,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 	int vertex_flags = (VB_FLAG_POSITION | VB_FLAG_NORMAL | VB_FLAG_UV1);
 
 	if (model_list->tsb != NULL) {
-		Assert( Cmdline_normal );
+	core::Assert( Cmdline_normal );
 		vertex_flags |= VB_FLAG_TANGENT;
 	}
 
@@ -2132,7 +2132,7 @@ void interp_configure_vertex_buffers(polymodel *pm, int mn)
 
 		for (j = 0; j < polygon_list[i].n_verts; j++) {
 			first_index = model_list->find_index_fast(&polygon_list[i], j);
-			Assert(first_index != -1);
+		core::Assert(first_index != -1);
 
 			new_buffer.assign(j, first_index);
 		}
@@ -2179,7 +2179,7 @@ void interp_copy_index_buffer(vertex_buffer *src, vertex_buffer *dest, size_t *i
 				dest_buffer->assign(dest_buffer->n_verts, (uint32_t)(src_buffer->get_index()[k] + vert_offset)); // take into account the vertex offset.
 				dest_buffer->n_verts++;
 
-				Assert(dest_buffer->n_verts <= index_counts[dest_buffer->texture]);
+			core::Assert(dest_buffer->n_verts <= index_counts[dest_buffer->texture]);
 			}
 		}
 	}
@@ -2456,7 +2456,7 @@ int model_should_render_engine_glow(int objnum, int bank_obj)
 		ship *shipp = &Ships[obj->instance];
 		ship_info *sip = &Ship_info[shipp->ship_info_index];
 
-		Assert( bank_obj < sip->n_subsystems );
+	core::Assert( bank_obj < sip->n_subsystems );
 
 		char subname[MAX_NAME_LEN];
 		// shipp->subsystems isn't always valid here so don't use it
@@ -2502,7 +2502,7 @@ int model_interp_get_texture(texture_info *tinfo, fix base_frametime)
 	if (texture >= 0 && num_frames > 1)
 	{
 		// sanity check total_time first thing
-		Assert(total_time > 0.0f);
+	core::Assert(total_time > 0.0f);
 
 		cur_time = f2fl((game_get_overall_frametime() - base_frametime) % fl2f(total_time));
 
@@ -2531,7 +2531,7 @@ void model_mix_two_team_colors(team_color* dest, team_color* a, team_color* b, f
 
 bool model_get_team_color( team_color *clr, const std::string &team, const std::string &secondaryteam, fix timestamp, int fadetime )
 {
-	Assert(clr != NULL);
+core::Assert(clr != NULL);
 
 	if ( !stricmp(secondaryteam.c_str(), "none") ) {
 		if (Team_Colors.find(team) != Team_Colors.end()) {

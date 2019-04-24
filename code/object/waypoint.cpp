@@ -28,7 +28,7 @@ waypoint::waypoint()
 
 waypoint::waypoint(vec3d *position, waypoint_list *parent_list)
 {
-	Assert(position != NULL);
+core::Assert(position != NULL);
 
 	this->m_position.xyz.x = position->xyz.x;
 	this->m_position.xyz.y = position->xyz.y;
@@ -60,7 +60,7 @@ waypoint_list *waypoint::get_parent_list()
 
 void waypoint::set_pos(vec3d *pos)
 {
-	Assert(pos != NULL);
+core::Assert(pos != NULL);
 	this->m_position = *pos;
 }
 
@@ -71,8 +71,8 @@ waypoint_list::waypoint_list()
 
 waypoint_list::waypoint_list(const char *name)
 {
-	Assert(name != NULL);
-	Assert(find_matching_waypoint_list(name) == NULL);
+core::Assert(name != NULL);
+core::Assert(find_matching_waypoint_list(name) == NULL);
 	strcpy_s(this->m_name, name);
 }
 
@@ -93,7 +93,7 @@ std::vector<waypoint> &waypoint_list::get_waypoints()
 
 void waypoint_list::set_name(const char *name)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 	strcpy_s(this->m_name, name);
 }
 
@@ -110,35 +110,35 @@ void waypoint_level_close()
 
 int calc_waypoint_instance(int waypoint_list_index, int waypoint_index)
 {
-	Assert(waypoint_list_index >= 0);
-	Assert(waypoint_index >= 0);
+core::Assert(waypoint_list_index >= 0);
+core::Assert(waypoint_index >= 0);
 	return waypoint_list_index * 0x10000 + waypoint_index;
 }
 
 void calc_waypoint_indexes(int waypoint_instance, int &waypoint_list_index, int &waypoint_index)
 {
-	Assert(waypoint_instance >= 0);
+core::Assert(waypoint_instance >= 0);
 	waypoint_list_index = calc_waypoint_list_index(waypoint_instance);
 	waypoint_index = calc_waypoint_index(waypoint_instance);
 }
 
 int calc_waypoint_list_index(int waypoint_instance)
 {
-	Assert(waypoint_instance >= 0);
+core::Assert(waypoint_instance >= 0);
 	return waypoint_instance / 0x10000;
 }
 
 int calc_waypoint_index(int waypoint_instance)
 {
-	Assert(waypoint_instance >= 0);
+core::Assert(waypoint_instance >= 0);
 	return waypoint_instance & 0xffff;
 }
 
 void waypoint_create_game_object(waypoint *wpt, int list_index, int wpt_index)
 {
-	Assert(wpt != NULL);
-	Assert(list_index >= 0);
-	Assert(wpt_index >= 0);
+core::Assert(wpt != NULL);
+core::Assert(list_index >= 0);
+core::Assert(wpt_index >= 0);
     flagset<Object::Object_Flags> default_flags;
     default_flags.set(Object::Object_Flags::Renders);
 	wpt->objnum = obj_create(OBJ_WAYPOINT, -1, calc_waypoint_instance(list_index, wpt_index), NULL, wpt->get_pos(), 0.0f, default_flags);
@@ -165,7 +165,7 @@ void waypoint_create_game_objects()
 
 waypoint_list *find_matching_waypoint_list(const char *name)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 	std::list<waypoint_list>::iterator ii;
 
 	for (ii = Waypoint_lists.begin(); ii != Waypoint_lists.end(); ++ii)
@@ -180,7 +180,7 @@ waypoint_list *find_matching_waypoint_list(const char *name)
 // NOTE: waypoint names are always in the format Name:index
 waypoint *find_matching_waypoint(const char *name)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 	std::list<waypoint_list>::iterator ii;
 
 	for (ii = Waypoint_lists.begin(); ii != Waypoint_lists.end(); ++ii)
@@ -273,7 +273,7 @@ waypoint_list *find_waypoint_list_with_instance(int waypoint_instance, int *wayp
 	if (waypoint_index != NULL)
 	{
 		*waypoint_index = calc_waypoint_index(waypoint_instance);
-		Assert(*waypoint_index >= 0 && (uint) *waypoint_index < wp_list->get_waypoints().size());
+	core::Assert(*waypoint_index >= 0 && (uint) *waypoint_index < wp_list->get_waypoints().size());
 	}
 	return wp_list;
 }
@@ -292,7 +292,7 @@ waypoint *find_waypoint_with_instance(int waypoint_instance)
 
 waypoint_list *find_waypoint_list_at_index(int index)
 {
-	Assert(index >= 0);
+core::Assert(index >= 0);
 
 	int i = 0;
 	std::list<waypoint_list>::iterator ii;
@@ -308,8 +308,8 @@ waypoint_list *find_waypoint_list_at_index(int index)
 
 waypoint *find_waypoint_at_index(waypoint_list *list, int index)
 {
-	Assert(list != NULL);
-	Assert(index >= 0);
+core::Assert(list != NULL);
+core::Assert(index >= 0);
 
 	int i = 0;
 	std::vector<waypoint>::iterator ii;
@@ -325,7 +325,7 @@ waypoint *find_waypoint_at_index(waypoint_list *list, int index)
 
 int find_index_of_waypoint_list(waypoint_list *wp_list)
 {
-	Assert(wp_list != NULL);
+core::Assert(wp_list != NULL);
 	std::list<waypoint_list>::iterator ii;
 
 	int index = 0;
@@ -341,8 +341,8 @@ int find_index_of_waypoint_list(waypoint_list *wp_list)
 
 int find_index_of_waypoint(waypoint_list *wp_list, waypoint *wpt)
 {
-	Assert(wp_list != NULL);
-	Assert(wpt != NULL);
+core::Assert(wp_list != NULL);
+core::Assert(wpt != NULL);
 	std::vector<waypoint>::iterator ii;
 
 	int index = 0;
@@ -358,8 +358,8 @@ int find_index_of_waypoint(waypoint_list *wp_list, waypoint *wpt)
 
 void waypoint_find_unique_name(char *dest_name, int start_index)
 {
-	Assert(dest_name != NULL);
-	Assert(start_index >= 0);
+core::Assert(dest_name != NULL);
+core::Assert(start_index >= 0);
 
 	int index = start_index;
 	waypoint_list *collision;
@@ -375,7 +375,7 @@ void waypoint_find_unique_name(char *dest_name, int start_index)
 
 void waypoint_add_list(const char *name, std::vector<vec3d> &vec_list)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 
 	if (find_matching_waypoint_list(name) != NULL)
 	{
@@ -396,13 +396,13 @@ void waypoint_add_list(const char *name, std::vector<vec3d> &vec_list)
 	}
 
 	// so that masking in the other function works
-	// though if you actually hit this Assert, you have other problems
-	Assert(wp_list->get_waypoints().size() <= 0xffff);
+	// though if you actually hit thiscore::Assert, you have other problems
+core::Assert(wp_list->get_waypoints().size() <= 0xffff);
 }
 
 int waypoint_add(vec3d *pos, int waypoint_instance)
 {
-	Assert(pos != NULL);
+core::Assert(pos != NULL);
 	waypoint_list *wp_list;
 	waypoint *wpt;
 	int i, wp_list_index, wp_index;
@@ -433,8 +433,8 @@ int waypoint_add(vec3d *pos, int waypoint_instance)
 		wp_index++;
 
 		// it has to be on, or at the end of, an existing list
-		Assert(wp_list != NULL);
-		Assert((uint) wp_index <= wp_list->get_waypoints().size());
+	core::Assert(wp_list != NULL);
+	core::Assert((uint) wp_index <= wp_list->get_waypoints().size());
 
 		// iterate through all waypoints that are at this index or later,
 		// and edit their instances so that they point to a waypoint one place higher
@@ -446,8 +446,8 @@ int waypoint_add(vec3d *pos, int waypoint_instance)
 	}
 
 	// so that masking in the other function works
-	// (though if you actually hit this Assert, you have other problems)
-	Assert(wp_index < 0x10000);
+	// (though if you actually hit thiscore::Assert, you have other problems)
+core::Assert(wp_index < 0x10000);
 
 	// create the waypoint object
 	waypoint new_waypoint(pos, wp_list);
@@ -497,7 +497,7 @@ void waypoint_remove(waypoint *wpt)
 					break;
 				}
 			}
-			Assert(ii != Waypoint_lists.end());
+		core::Assert(ii != Waypoint_lists.end());
 
 			// iterate through all waypoints that are in lists later than this one,
 			// and edit their instances so that they point to a list one place lower
@@ -522,7 +522,7 @@ void waypoint_remove(waypoint *wpt)
 				break;
 			}
 		}
-		Assert(ii != wp_list->get_waypoints().end());
+	core::Assert(ii != wp_list->get_waypoints().end());
 
 		// iterate through all waypoints that are later than this one,
 		// and edit their instances so that they point to a waypoint one place lower

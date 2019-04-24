@@ -73,7 +73,7 @@ extern const char	*Object_type_names[MAX_OBJECT_TYPES];
 //    {Put a call to this in OBJECT.C, function obj_delete_all_that_should_be_dead }
 //    WARNING: To kill an object, set it's OF_SHOULD_BE_DEAD flag.  Then,
 //    this function will get called when it's time to clean up the data.
-//    Assert( obj->flags[Object::Object_Flags::Should_be_dead] );
+//   core::Assert( obj->flags[Object::Object_Flags::Should_be_dead] );
 //    ...
 //    ... Free up all weapon-specfic data
 //    obj_delete(objnum);

@@ -529,12 +529,12 @@ void fiction_viewer_reset()
 
 void fiction_viewer_load(int stage)
 {
-	Assertion(stage >= 0 && static_cast<size_t>(stage) < Fiction_viewer_stages.size(), "stage parameter must be in range of Fiction_viewer_stages!");
+core::Assertion(stage >= 0 && static_cast<size_t>(stage) < Fiction_viewer_stages.size(), "stage parameter must be in range of Fiction_viewer_stages!");
 
 	// just to be sure
 	if (Fiction_viewer_text != nullptr)
 	{
-		Assertion(Fiction_viewer_text == nullptr, "Fiction viewer text should be a null pointer, but instead is '%s'. Trace out and fix!\n", Fiction_viewer_text);
+	core::Assertion(Fiction_viewer_text == nullptr, "Fiction viewer text should be a null pointer, but instead is '%s'. Trace out and fix!\n", Fiction_viewer_text);
 		return;
 	}
 

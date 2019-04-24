@@ -50,14 +50,14 @@ void* UniformAligner::addElement() {
 void* UniformAligner::getElement(size_t index) {
 	size_t offset = alignSize(_headerSize, _requiredAlignment) + alignSize(_dataSize, _requiredAlignment) * index;
 
-	Assertion(offset < _buffer.size(), "Invalid index specified!");
+core::Assertion(offset < _buffer.size(), "Invalid index specified!");
 
 	return reinterpret_cast<void*>(_buffer.data() + offset);
 }
 size_t UniformAligner::getOffset(size_t index) {
 	size_t offset = alignSize(_headerSize, _requiredAlignment) + alignSize(_dataSize, _requiredAlignment) * index;
 
-	Assertion(offset < _buffer.size(), "Invalid index specified!");
+core::Assertion(offset < _buffer.size(), "Invalid index specified!");
 
 	return offset;
 }

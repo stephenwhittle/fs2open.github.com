@@ -196,7 +196,7 @@ void HudGaugeLock::render(float frametime)
 	}
 
 	target_objnum = Player_ai->target_objnum;
-	Assert(target_objnum != -1);
+core::Assert(target_objnum != -1);
 	targetp = &Objects[target_objnum];
 
 	// check to see if there are any missile to fire.. we don't want to show the 
@@ -276,8 +276,8 @@ void hud_lock_reset(float lock_time_scale)
 	swp = &Player_ship->weapons;
     
 	if ((swp->current_secondary_bank >= 0) && (swp->secondary_bank_weapons[swp->current_secondary_bank] >= 0)) {
-		Assert(swp->current_secondary_bank < MAX_SHIP_SECONDARY_BANKS);
-		Assert(swp->secondary_bank_weapons[swp->current_secondary_bank] < MAX_WEAPON_TYPES);
+	core::Assert(swp->current_secondary_bank < MAX_SHIP_SECONDARY_BANKS);
+	core::Assert(swp->secondary_bank_weapons[swp->current_secondary_bank] < MAX_WEAPON_TYPES);
 		wip = &Weapon_info[swp->secondary_bank_weapons[swp->current_secondary_bank]];
 		Player->lock_time_to_target = i2fl(wip->min_lock_time*lock_time_scale);
 	} else {
@@ -363,7 +363,7 @@ int hud_lock_target_in_range()
 			vm_vec_unrotate(&target_world_pos, &Player->locking_subsys->system_info->pnt, &targetp->orient);
 			vm_vec_add2(&target_world_pos, &targetp->pos);
 		} else {
-			Assert(Player->locking_on_center);
+		core::Assert(Player->locking_on_center);
 			target_world_pos = targetp->pos;
 		}
 	}
@@ -415,7 +415,7 @@ int hud_lock_on_subsys_ok()
 	object			*target_objp;
 	int				in_sight=0;
 	
-	Assert(Player_ai->target_objnum >= 0);
+core::Assert(Player_ai->target_objnum >= 0);
 	target_objp	= &Objects[Player_ai->target_objnum];
 
 	subsys = Player_ai->targeted_subsys;
@@ -499,7 +499,7 @@ void hud_do_lock_indicator(float frametime)
 		return;
 	}
 
-	Assert(Player_ai->target_objnum >= 0);
+core::Assert(Player_ai->target_objnum >= 0);
 
 	// be sure to unset this flag, then possibly set later in this function so that
 	// threat indicators work properly.
@@ -997,7 +997,7 @@ void hud_lock_update_lock_pos(object *target_objp)
 	if ( Player->locking_on_center) {
 		lock_world_pos = target_objp->pos;
 	} else {
-		Assert(Player->locking_subsys);
+	core::Assert(Player->locking_subsys);
 		get_subsystem_world_pos(target_objp, Player->locking_subsys, &lock_world_pos);
 	}
 }
@@ -1089,7 +1089,7 @@ void hud_lock_determine_lock_point(vec3d *lock_world_pos_out)
 	vec3d vec_to_lock_pos;
 	vec3d lock_local_pos;
 
-	Assert(Player_ai->target_objnum >= 0);
+core::Assert(Player_ai->target_objnum >= 0);
 	target_objp = &Objects[Player_ai->target_objnum];
 
 	Player->current_target_sx = -1;

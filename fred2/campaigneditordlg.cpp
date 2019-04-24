@@ -454,7 +454,7 @@ void campaign_editor::OnSelchangedSexpTree(NMHDR* pNMHDR, LRESULT* pResult)
 	// get handle of selected item
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 	h = pNMTreeView->itemNew.hItem;
-	Assert(h);
+core::Assert(h);
 
 	// update help on sexp
 	m_tree.update_help(h);
@@ -565,14 +565,14 @@ void campaign_editor::swap_handler(int node1, int node2)
 		}
 	}
 
-	Assert(index1 < Total_links);
+core::Assert(index1 < Total_links);
 	for (index2=0; index2<Total_links; index2++){
 		if ((Links[index2].from == Cur_campaign_mission) && (Links[index2].node == node2)){
 			break;
 		}
 	}
 
-	Assert(index2 < Total_links);
+core::Assert(index2 < Total_links);
 	temp = Links[index1];
 //	Links[index1] = Links[index2];
 	while (index1 < index2) {
@@ -601,7 +601,7 @@ void campaign_editor::insert_handler(int old, int node)
 		}
 	}
 
-	Assert(i < Total_links);
+core::Assert(i < Total_links);
 	Links[i].node = node;
 	return;
 }

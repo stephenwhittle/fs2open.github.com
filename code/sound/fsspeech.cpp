@@ -144,7 +144,7 @@ void fsspeech_play_buffer(int type)
 // Goober5000
 bool fsspeech_play_from(int type)
 {
-	Assert(type >= 0 && type < FSSPEECH_FROM_MAX);
+core::Assert(type >= 0 && type < FSSPEECH_FROM_MAX);
 
 	return (speech_inited && FSSpeech_play_from[type]);
 }

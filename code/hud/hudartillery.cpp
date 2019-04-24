@@ -130,7 +130,7 @@ void parse_ssm(const char *filename)
 				if ( (s.warp_time) < 4.0f) {
 					// So let's warn them before they try to use it, shall we?
 					core::Warning(LOCATION, "Expected a '+WarpTime:' value equal or greater than 4.0, found '%f' in weapon '%s'.\n Setting to 4.0, please check and set to a number 4.0 or greater!\n", s.warp_time, weapon_name);
-					// And then make the Assert obsolete -- Zacam
+					// And then make thecore::Assert obsolete -- Zacam
 					s.warp_time = 4.0f;
 				}
 			} else {
@@ -282,11 +282,11 @@ void ssm_create(object *target, vec3d *start, size_t ssm_index, ssm_firing_info 
 	int idx, count;
 
 	// sanity
-	Assert(target != NULL);
+core::Assert(target != NULL);
 	if(target == NULL){
 		return;
 	}
-	Assert(start != NULL);
+core::Assert(start != NULL);
 	if(start == NULL){
 		return;
 	}
@@ -383,7 +383,7 @@ void ssm_process()
 	moveup = Ssm_strikes.begin();
 	while ( moveup != Ssm_strikes.end() ) {
 		// get the type
-		Assertion(moveup->sinfo.ssm_index < Ssm_info.size(), "Invalid SSM index detected!");
+	core::Assertion(moveup->sinfo.ssm_index < Ssm_info.size(), "Invalid SSM index detected!");
 		si = &Ssm_info[moveup->sinfo.ssm_index];
 
 		// check all the individual missiles

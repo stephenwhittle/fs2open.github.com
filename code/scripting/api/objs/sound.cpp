@@ -61,7 +61,7 @@ ADE_FUNC(getFilename, l_SoundEntry, NULL, "Returns the filename of this sound. I
 	if (seh == NULL || !seh->IsValid())
 		return ade_set_error(L, "s", "");
 
-	Assertion(!seh->Get()->sound_entries.empty(),
+core::Assertion(!seh->Get()->sound_entries.empty(),
 			  "Sound entry vector of sound %s is empty! This should not happen. Get a coder!",
 			  seh->Get()->name.c_str());
 

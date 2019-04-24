@@ -353,7 +353,7 @@ void mission_hotkey_set_defaults()
 			continue;
 		}
 
-		Assert(A->instance >= 0 && A->instance < MAX_SHIPS);
+	core::Assert(A->instance >= 0 && A->instance < MAX_SHIPS);
 		sp = &Ships[A->instance];		
 
 		if ( sp->hotkey == -1 )
@@ -365,7 +365,7 @@ void mission_hotkey_set_defaults()
 		if ( sp->hotkey == MAX_KEYED_TARGETS )
 			continue;
 
-		Assert(sp->objnum >= 0);
+	core::Assert(sp->objnum >= 0);
 		hud_target_hotkey_add_remove( sp->hotkey, &Objects[sp->objnum], HOTKEY_MISSION_FILE_ADDED );
 	}
 
@@ -427,7 +427,7 @@ void mission_hotkey_maybe_save_sets()
 			continue;
 
 		for ( hitem = GET_FIRST(plist); hitem != END_OF_LIST(plist); hitem = GET_NEXT(hitem) ) {
-			Assert( Num_hotkeys_saved < MAX_HOTKEY_TARGET_ITEMS );
+		core::Assert( Num_hotkeys_saved < MAX_HOTKEY_TARGET_ITEMS );
 			hkp->setnum = i;
 			strcpy_s( hkp->name, Ships[hitem->objp->instance].ship_name );
 			hkp++;
@@ -494,7 +494,7 @@ int get_wing_hotkeys(int n)
 {
 	int i, total = 0xffffffff;
 
-	Assert((n >= 0) && (n < Num_wings));
+core::Assert((n >= 0) && (n < Num_wings));
 	for (i=0; i<Wings[n].current_count; i++) {
 		int ship_index;
 
@@ -701,7 +701,7 @@ void hotkey_scroll_screen_up()
 {
 	if (Scroll_offset) {
 		Scroll_offset--;
-		Assert(Selected_line > Scroll_offset);
+	core::Assert(Selected_line > Scroll_offset);
 		while (!hotkey_line_query_visible(Selected_line) || (Hotkey_lines[Selected_line].type == HOTKEY_LINE_HEADING))
 			Selected_line--;
 
@@ -733,7 +733,7 @@ void hotkey_scroll_screen_down()
 		Scroll_offset++;
 		while (!hotkey_line_query_visible(Selected_line) || (Hotkey_lines[Selected_line].type == HOTKEY_LINE_HEADING)) {
 			Selected_line++;
-			Assert(Selected_line < Num_lines);
+		core::Assert(Selected_line < Num_lines);
 		}
 
 		gamesnd_play_iface(InterfaceSounds::SCROLL);
@@ -749,7 +749,7 @@ void hotkey_scroll_line_down()
 		while (Hotkey_lines[Selected_line].type == HOTKEY_LINE_HEADING)
 			Selected_line++;
 
-		Assert(Selected_line > Scroll_offset);
+	core::Assert(Selected_line > Scroll_offset);
 		while (!hotkey_line_query_visible(Selected_line))
 			Scroll_offset++;
 
@@ -789,7 +789,7 @@ void reset_hotkeys()
 			continue;
 
 		for ( hitem = GET_FIRST(plist); hitem != END_OF_LIST(plist); hitem = GET_NEXT(hitem) ) {
-			Assert(hitem->objp->type == OBJ_SHIP);
+		core::Assert(hitem->objp->type == OBJ_SHIP);
 			Hotkey_bits[hitem->objp->instance] |= (1 << i);
 		}
 	}
@@ -1207,7 +1207,7 @@ void mission_hotkey_do_frame(float  /*frametime*/)
 		}
 
 		if (Hotkey_lines[line].type != HOTKEY_LINE_HEADING) {
-			Assert( (line - Scroll_offset) < LIST_BUTTONS_MAX );
+		core::Assert( (line - Scroll_offset) < LIST_BUTTONS_MAX );
 			List_buttons[line - Scroll_offset].update_dimensions(Hotkey_list_coords[gr_screen.res][0], y, Hotkey_list_coords[gr_screen.res][0] + Hotkey_list_coords[gr_screen.res][2] - Hotkey_list_coords[gr_screen.res][0], font_height);
 			List_buttons[line - Scroll_offset].enable();
 			if (hotkeys & (1 << Cur_hotkey)) {
@@ -1223,7 +1223,7 @@ void mission_hotkey_do_frame(float  /*frametime*/)
 			}
 
 		} else {
-			Assert( (line - Scroll_offset) < LIST_BUTTONS_MAX );
+		core::Assert( (line - Scroll_offset) < LIST_BUTTONS_MAX );
 			List_buttons[line - Scroll_offset].disable();
 		}
 
@@ -1243,7 +1243,7 @@ void mission_hotkey_do_frame(float  /*frametime*/)
 				}
 			}
 
-			Assert(strlen(buf) > 1);
+		core::Assert(strlen(buf) > 1);
 			buf[strlen(buf) - 2] = 0;  // lose the ", " on the end
 
 			font::force_fit_string(buf, 255, GROUP_LIST_W);

@@ -92,7 +92,7 @@ namespace font
 
 	void FontManager::setCurrentFont(FSFont *font)
 	{
-		Assertion(font != NULL, "New font pointer may not be NULL!");
+	core::Assertion(font != NULL, "New font pointer may not be NULL!");
 		currentFont = font;
 	}
 
@@ -102,7 +102,7 @@ namespace font
 		{
 			font* data = vfntFontData[typeface].get();
 
-			Assert(data != NULL);
+		core::Assert(data != NULL);
 
 			return data;
 		}
@@ -148,7 +148,7 @@ namespace font
 
 		if (fnt->kern_data_size)	{
 			fnt->kern_data = (font_kernpair *)vm_malloc(fnt->kern_data_size);
-			Assert(fnt->kern_data != NULL);
+		core::Assert(fnt->kern_data != NULL);
 			cfread(fnt->kern_data, fnt->kern_data_size, 1, fp);
 		}
 		else {
@@ -156,7 +156,7 @@ namespace font
 		}
 		if (fnt->char_data_size)	{
 			fnt->char_data = (font_char *)vm_malloc(fnt->char_data_size);
-			Assert(fnt->char_data != NULL);
+		core::Assert(fnt->char_data != NULL);
 			cfread(fnt->char_data, fnt->char_data_size, 1, fp);
 
 			for (int i = 0; i<fnt->num_chars; i++) {
@@ -172,7 +172,7 @@ namespace font
 		}
 		if (fnt->pixel_data_size)	{
 			fnt->pixel_data = (ubyte *)vm_malloc(fnt->pixel_data_size);
-			Assert(fnt->pixel_data != NULL);
+		core::Assert(fnt->pixel_data != NULL);
 			cfread(fnt->pixel_data, fnt->pixel_data_size, 1, fp);
 		}
 		else {

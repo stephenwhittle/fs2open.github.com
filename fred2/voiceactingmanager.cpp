@@ -307,7 +307,7 @@ CString VoiceActingManager::generate_filename(CString section, int number, int d
 	// suffix
 	str = str + get_suffix();
 
-	Assert( str.GetLength() < NAME_LENGTH );
+core::Assert( str.GetLength() < NAME_LENGTH );
 
 	return str;
 }
@@ -541,8 +541,8 @@ void VoiceActingManager::export_one_message(MMessage *message)
 /** Passed sender string will have either have the senders name
 or '\<none\>'*/
 void VoiceActingManager::get_valid_sender(char *sender, size_t sender_size, MMessage *message) {
-	Assert( sender != NULL );
-	Assert( message != NULL );
+core::Assert( sender != NULL );
+core::Assert( message != NULL );
 
 	strncpy(sender, get_message_sender(message->name), sender_size);
 

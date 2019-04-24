@@ -1,4 +1,4 @@
-#include "pstypes.h"
+#include <core/pstypes.h>
 #include "core/error.h"
 #include <core/toolchain.h>
 #include "safe_strings.h"

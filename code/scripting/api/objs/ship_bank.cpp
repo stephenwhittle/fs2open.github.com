@@ -293,7 +293,7 @@ ADE_VIRTVAR(AmmoMax, l_WeaponBank, "number", "Maximum ammo for the current bank<
 
 			int weapon_class = bh->sw->primary_bank_weapons[bh->bank];
 
-			Assert(bh->objp->type == OBJ_SHIP);
+		core::Assert(bh->objp->type == OBJ_SHIP);
 
 			return ade_set_args(L, "i", get_max_ammo_count_for_primary_bank(Ships[bh->objp->instance].ship_info_index, bh->bank, weapon_class));
 		}
@@ -305,7 +305,7 @@ ADE_VIRTVAR(AmmoMax, l_WeaponBank, "number", "Maximum ammo for the current bank<
 
 			int weapon_class = bh->sw->secondary_bank_weapons[bh->bank];
 
-			Assert(bh->objp->type == OBJ_SHIP);
+		core::Assert(bh->objp->type == OBJ_SHIP);
 
 			return ade_set_args(L, "i", get_max_ammo_count_for_bank(Ships[bh->objp->instance].ship_info_index, bh->bank, weapon_class));
 		}

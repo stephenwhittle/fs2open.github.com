@@ -484,7 +484,7 @@ void HudGaugeRadar::drawRange()
  */
 RadarVisibility radar_is_visible( object *objp )
 {
-	Assert( objp != NULL );
+core::Assert( objp != NULL );
 
 	if (objp->flags[Object::Object_Flags::Should_be_dead])
 	{

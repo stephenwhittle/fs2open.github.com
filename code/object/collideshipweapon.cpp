@@ -38,7 +38,7 @@ static void update_danger_weapon(object *pship_obj, object *weapon_obj)
 {
 	ai_info	*aip;
 
-	Assert(pship_obj->type == OBJ_SHIP);
+core::Assert(pship_obj->type == OBJ_SHIP);
 
 	aip = &Ai_info[Ships[pship_obj->instance].ai_index];
 
@@ -137,22 +137,22 @@ static int ship_weapon_check_collision(object *ship_objp, object *weapon_objp, f
 	weapon	*wp;
 	weapon_info	*wip;
 
-	Assert( ship_objp != NULL );
-	Assert( ship_objp->type == OBJ_SHIP );
-	Assert( ship_objp->instance >= 0 );
+core::Assert( ship_objp != NULL );
+core::Assert( ship_objp->type == OBJ_SHIP );
+core::Assert( ship_objp->instance >= 0 );
 
 	shipp = &Ships[ship_objp->instance];
 	sip = &Ship_info[shipp->ship_info_index];
 
-	Assert( weapon_objp != NULL );
-	Assert( weapon_objp->type == OBJ_WEAPON );
-	Assert( weapon_objp->instance >= 0 );
+core::Assert( weapon_objp != NULL );
+core::Assert( weapon_objp->type == OBJ_WEAPON );
+core::Assert( weapon_objp->instance >= 0 );
 
 	wp = &Weapons[weapon_objp->instance];
 	wip = &Weapon_info[wp->weapon_info_index];
 
 
-	Assert( shipp->objnum == OBJ_INDEX(ship_objp));
+core::Assert( shipp->objnum == OBJ_INDEX(ship_objp));
 
 	// Make ships that are warping in not get collision detection done
 	if ( shipp->is_arriving() ) return 0;
@@ -381,7 +381,7 @@ static int ship_weapon_check_collision(object *ship_objp, object *weapon_objp, f
 	if (shield_collision && valid_hit_occurred)
 	{
 		memcpy(&mc, &mc_shield, sizeof(mc_info));
-		Assert(quadrant_num >= 0);
+	core::Assert(quadrant_num >= 0);
 	}
 	else if (hull_collision)
 	{
@@ -483,8 +483,8 @@ int collide_ship_weapon( obj_pair * pair )
 	object *ship = pair->a;
 	object *weapon_obj = pair->b;
 	
-	Assert( ship->type == OBJ_SHIP );
-	Assert( weapon_obj->type == OBJ_WEAPON );
+core::Assert( ship->type == OBJ_SHIP );
+core::Assert( weapon_obj->type == OBJ_WEAPON );
 
 	ship_info *sip = &Ship_info[Ships[ship->instance].ship_info_index];
 

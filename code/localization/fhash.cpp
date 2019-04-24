@@ -109,13 +109,13 @@ void fhash_add_str(const char *str, int id)
 	int hash_index;
 
 	// if the hash table isn't active, don't bother
-	Assert(Fhash_active);
+core::Assert(Fhash_active);
 	if(!Fhash_active){
 		return;
 	}
 
 	// determine where the string goes in the hash table
-	Assert(str != NULL);
+core::Assert(str != NULL);
 	if(str == NULL){
 		return;
 	}
@@ -132,7 +132,7 @@ int fhash_string_exists(const char *str)
 	int hash_index;
 	fhash_node *moveup;
 
-	Assert(str != NULL);
+core::Assert(str != NULL);
 	if(str == NULL){
 		return -2;
 	}
@@ -149,7 +149,7 @@ int fhash_string_exists(const char *str)
 	moveup = Hash_table_fred[hash_index];
 	while(moveup != NULL){
 		// do a string compare on this item
-		Assert(moveup->str != NULL);
+	core::Assert(moveup->str != NULL);
 		if(moveup->str != NULL){
 			if(!strcmp(moveup->str, str)){
 				return moveup->id;
@@ -194,7 +194,7 @@ void fhash_insert(const char *str, int id, int n)
 
 	// allocate the new node
 	new_node = (fhash_node*)vm_malloc(sizeof(fhash_node));
-	Assert(new_node);
+core::Assert(new_node);
 	if(new_node == NULL){
 		return;
 	}

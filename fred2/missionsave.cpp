@@ -637,7 +637,7 @@ void CFred_mission_save::save_ai_goals(ai_goal *goalp, int ship) {
 					break;
 
 				default:
-					Assert(0);
+				core::Assert(0);
 				}
 
 				if (valid)
@@ -912,7 +912,7 @@ int CFred_mission_save::save_briefing() {
 		save_custom_bitmap("$ship_select_background_640:", "$ship_select_background_1024:", Briefings[nb].ship_select_background[GR_640], Briefings[nb].ship_select_background[GR_1024]);
 		save_custom_bitmap("$weapon_select_background_640:", "$weapon_select_background_1024:", Briefings[nb].weapon_select_background[GR_640], Briefings[nb].weapon_select_background[GR_1024]);
 
-		Assert(Briefings[nb].num_stages <= MAX_BRIEF_STAGES);
+	core::Assert(Briefings[nb].num_stages <= MAX_BRIEF_STAGES);
 		required_string_fred("$num_stages:");
 		parse_comments();
 		fout(" %d", Briefings[nb].num_stages);
@@ -970,7 +970,7 @@ int CFred_mission_save::save_briefing() {
 
 			required_string_fred("$num_icons:");
 			parse_comments();
-			Assert(bs->num_icons <= MAX_STAGE_ICONS);
+		core::Assert(bs->num_icons <= MAX_STAGE_ICONS);
 			fout(" %d", bs->num_icons);
 
 			required_string_fred("$Flags:");
@@ -1089,7 +1089,7 @@ int CFred_mission_save::save_campaign_file(char *pathname) {
 	parse_comments(0);
 	fout(" %s", Campaign.name);
 
-	Assert((Campaign.type >= 0) && (Campaign.type < MAX_CAMPAIGN_TYPES));
+core::Assert((Campaign.type >= 0) && (Campaign.type < MAX_CAMPAIGN_TYPES));
 	required_string_fred("$Type:");
 	parse_comments();
 	fout(" %s", campaign_types[Campaign.type]);
@@ -1314,7 +1314,7 @@ int CFred_mission_save::save_campaign_file(char *pathname) {
 
 void CFred_mission_save::save_campaign_sexp(int node, int link_num) {
 	std::string sexp_out;
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// if the link num is -1, then this is a end-of-campaign location
 	if (link_num != -1) {
@@ -1544,7 +1544,7 @@ int CFred_mission_save::save_common_object_data(object *objp, ship *shipp) {
 	}
 
 	ptr = GET_FIRST(&shipp->subsys_list);
-	Assert(ptr);
+core::Assert(ptr);
 
 	while (ptr != END_OF_LIST(&shipp->subsys_list) && ptr) {
 		// Crashing here!
@@ -2208,7 +2208,7 @@ int CFred_mission_save::save_mission_info() {
 
 	// maybe write out Nebula intensity
 	if (The_mission.flags[Mission::Mission_Flags::Fullneb]) {
-		Assert(Neb2_awacs > 0.0f);
+	core::Assert(Neb2_awacs > 0.0f);
 		fout("\n+NebAwacs: %f\n", Neb2_awacs);
 
 		// storm name
@@ -2442,7 +2442,7 @@ int CFred_mission_save::save_mission_info() {
 
 	// Goober5000's AI profile stuff
 	int profile_index = AI_PROFILES_INDEX(The_mission.ai_profile);
-	Assert(profile_index >= 0 && profile_index < MAX_AI_PROFILES);
+core::Assert(profile_index >= 0 && profile_index < MAX_AI_PROFILES);
 
 	fso_comment_push(";;FSO 3.6.9;;");
 	if (optional_string_fred("$AI Profile:")) {
@@ -2834,7 +2834,7 @@ int CFred_mission_save::save_objects() {
 			fout(" %s", "IFF 1");
 		}
 
-		Assert(shipp->ai_index >= 0);
+	core::Assert(shipp->ai_index >= 0);
 		aip = &Ai_info[shipp->ai_index];
 
 		required_string_fred("$AI Behavior:");
@@ -2903,7 +2903,7 @@ int CFred_mission_save::save_objects() {
 				polymodel *pm;
 
 				anchor_shipnum = shipp->arrival_anchor;
-				Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
+			core::Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
 
 				fout("\n+Arrival Paths: ( ");
 
@@ -2953,7 +2953,7 @@ int CFred_mission_save::save_objects() {
 				polymodel *pm;
 
 				anchor_shipnum = shipp->departure_anchor;
-				Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
+			core::Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
 
 				fout("\n+Departure Paths: ( ");
 
@@ -3474,7 +3474,7 @@ int CFred_mission_save::save_players() {
 	for (i = 0; i < Num_teams; i++) {
 		required_string_fred("$Starting Shipname:");
 		parse_comments();
-		Assert(Player_start_shipnum >= 0);
+	core::Assert(Player_start_shipnum >= 0);
 		fout(" %s", Ships[Player_start_shipnum].ship_name);
 
 		required_string_fred("$Ship Choices:");
@@ -3485,7 +3485,7 @@ int CFred_mission_save::save_players() {
 			// Check to see if a variable name should be written for the class rather than a number
 			if (strlen(Team_data[i].ship_list_variables[j])) {
 				var_idx = get_index_sexp_variable_name(Team_data[i].ship_list_variables[j]);
-				Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
+			core::Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
 
 				fout("\t@%s\t", Sexp_variables[var_idx].variable_name);
 			} else {
@@ -3495,7 +3495,7 @@ int CFred_mission_save::save_players() {
 			// Now check if we should write a variable or a number for the amount of ships available
 			if (strlen(Team_data[i].ship_count_variables[j])) {
 				var_idx = get_index_sexp_variable_name(Team_data[i].ship_count_variables[j]);
-				Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
+			core::Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
 
 				fout("@%s\n", Sexp_variables[var_idx].variable_name);
 			} else {
@@ -3517,7 +3517,7 @@ int CFred_mission_save::save_players() {
 			// first output the weapon name or a variable that sets it 
 			if (strlen(Team_data[i].weaponry_pool_variable[j])) {
 				var_idx = get_index_sexp_variable_name(Team_data[i].weaponry_pool_variable[j]);
-				Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
+			core::Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
 
 				fout("\t@%s\t", Sexp_variables[var_idx].variable_name);
 			} else {
@@ -3529,7 +3529,7 @@ int CFred_mission_save::save_players() {
 			// that we have dealt with it
 			if (strlen(Team_data[i].weaponry_amount_variable[j])) {
 				var_idx = get_index_sexp_variable_name(Team_data[i].weaponry_amount_variable[j]);
-				Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
+			core::Assert(var_idx > -1 && var_idx < MAX_SEXP_VARIABLES);
 
 				fout("@%s\n", Sexp_variables[var_idx].variable_name);
 			} else {
@@ -3698,8 +3698,8 @@ int CFred_mission_save::save_reinforcements() {
 }
 
 void CFred_mission_save::save_single_dock_instance(ship *shipp, dock_instance *dock_ptr) {
-	Assert(shipp && dock_ptr);
-	Assert(dock_ptr->docked_objp->type == OBJ_SHIP || dock_ptr->docked_objp->type == OBJ_START);
+core::Assert(shipp && dock_ptr);
+core::Assert(dock_ptr->docked_objp->type == OBJ_SHIP || dock_ptr->docked_objp->type == OBJ_START);
 
 	// get ships and objects
 	object *objp = &Objects[shipp->objnum];
@@ -3973,7 +3973,7 @@ int CFred_mission_save::save_waypoints() {
 }
 
 int CFred_mission_save::save_waypoint_list(waypoint_list *wp_list) {
-	Assert(wp_list != NULL);
+core::Assert(wp_list != NULL);
 	std::vector<waypoint>::iterator ii;
 
 	for (ii = wp_list->get_waypoints().begin(); ii != wp_list->get_waypoints().end(); ++ii) {
@@ -4067,7 +4067,7 @@ int CFred_mission_save::save_wings() {
 				polymodel *pm;
 
 				anchor_shipnum = Wings[i].arrival_anchor;
-				Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
+			core::Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
 
 				fout("\n+Arrival Paths: ( ");
 
@@ -4117,7 +4117,7 @@ int CFred_mission_save::save_wings() {
 				polymodel *pm;
 
 				anchor_shipnum = Wings[i].departure_anchor;
-				Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
+			core::Assert(anchor_shipnum >= 0 && anchor_shipnum < MAX_SHIPS);
 
 				fout("\n+Departure Paths: ( ");
 
@@ -4217,6 +4217,6 @@ int CFred_mission_save::save_wings() {
 
 	fso_comment_pop(true);
 
-	Assert(count == Num_wings);
+core::Assert(count == Num_wings);
 	return err;
 }

@@ -174,9 +174,9 @@ int multi_lag_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *except
 	int ret_val;
 	lag_buf *moveup, *item;
 
-	Assert(readfds != NULL);
-	Assert(writefds == NULL);
-	Assert(except_fds == NULL);
+core::Assert(readfds != NULL);
+core::Assert(writefds == NULL);
+core::Assert(except_fds == NULL);
 
 	// clear out addresses
 	memset(&ip_addr, 0, sizeof(SOCKADDR_IN));
@@ -184,7 +184,7 @@ int multi_lag_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *except
 	// if there's data on the socket, read it
 	if(select(nfds, readfds, writefds, except_fds, timeout)){		
 		// read the data and stuff it
-		Assertion(Tcp_active, "multi_lag_select(): TCP/IP is not active!");
+	core::Assertion(Tcp_active, "multi_lag_select(): TCP/IP is not active!");
 		t_from_len = sizeof(SOCKADDR_IN);
 		ret_val = recvfrom(readfds->fd_array[0], t_buf, 1024, 0, (SOCKADDR*)&ip_addr, &t_from_len);
 			
@@ -198,7 +198,7 @@ int multi_lag_select(int nfds, fd_set *readfds, fd_set *writefds, fd_set *except
 			// get a free packet buf and stuff the data
 			item = multi_lag_get_free();
 			if(item){
-				Assert(ret_val < 700);
+			core::Assert(ret_val < 700);
 				memcpy(item->data, t_buf, ret_val);			
 				item->data_len = ret_val;
 				item->ip_addr = ip_addr;
@@ -248,11 +248,11 @@ int multi_lag_recvfrom(uint s, char *buf, int len, int /*flags*/, struct sockadd
 	}
 
 	// if this happens, it means that the multi_lag_select() returned an improper value
-	Assert(item);
+core::Assert(item);
 	// stuff the data
-	Assert(item->data_len <= len);
+core::Assert(item->data_len <= len);
 	memcpy(buf, item->data, item->data_len);
-	Assertion(Tcp_active, "multi_lag_recvfrom(): TCP/IP is not active!");
+core::Assertion(Tcp_active, "multi_lag_recvfrom(): TCP/IP is not active!");
 	memcpy(from, &item->ip_addr, sizeof(SOCKADDR_IN));
 
 	// stick the item back on the free list
@@ -358,7 +358,7 @@ lag_buf *multi_lag_get_free()
 
 	// get a free item
 	lagp = GET_FIRST(&Lag_free_list);
-	Assert( lagp != &Lag_free_list );		// shouldn't have the dummy element
+core::Assert( lagp != &Lag_free_list );		// shouldn't have the dummy element
 
 	// remove trailp from the free list
 	list_remove( &Lag_free_list, lagp );

@@ -315,7 +315,7 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
     status->videoCodecPars = getCodecParameters(status->videoStream);
 
 	if (properties.looping && status->videoCodecPars.codec_id == AV_CODEC_ID_INTERPLAY_VIDEO) {
-		mprintf(("FFmpeg: Looping is not supported for inteplay (MVE) movies!\n"));
+		core::mprintf(("FFmpeg: Looping is not supported for inteplay (MVE) movies!\n"));
 		return nullptr;
 	}
 
@@ -328,7 +328,7 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 	if (err < 0) {
 		char errorStr[512];
 		av_strerror(err, errorStr, sizeof(errorStr));
-		mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
+		core::mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
 		return nullptr;
 	}
 #else
@@ -339,11 +339,12 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 	if (err < 0) {
 		char errorStr[512];
 		av_strerror(err, errorStr, sizeof(errorStr));
-		mprintf(("FFMPEG: Failed to open video codec! Error: %s\n", errorStr));
+		core::mprintf(("FFMPEG: Failed to open video codec! Error: %s\n", errorStr));
 		return nullptr;
 	}
 
-	mprintf(("FFmpeg: Using video codec %s (%s).\n", status->videoCodec->long_name ? status->videoCodec->long_name : "<Unknown>",
+	core::mprintf(("FFmpeg: Using video codec %s (%s).\n",
+			       status->videoCodec->long_name ? status->videoCodec->long_name : "<Unknown>",
 		status->videoCodec->name ? status->videoCodec->name : "<Unknown>"));
 
 	// Now initialize audio, if this fails it's not a fatal error
@@ -357,7 +358,7 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		if (err < 0) {
 			char errorStr[512];
 			av_strerror(err, errorStr, sizeof(errorStr));
-			mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
+			core::mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
 			return nullptr;
 		}
 #else
@@ -368,10 +369,11 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		if (err < 0) {
 			char errorStr[512];
 			av_strerror(err, errorStr, sizeof(errorStr));
-			mprintf(("FFMPEG: Failed to open audio codec! Error: %s\n", errorStr));
+			core::mprintf(("FFMPEG: Failed to open audio codec! Error: %s\n", errorStr));
 		}
 
-		mprintf(("FFmpeg: Using audio codec %s (%s).\n", status->audioCodec->long_name ? status->audioCodec->long_name : "<Unknown>",
+		core::mprintf(("FFmpeg: Using audio codec %s (%s).\n",
+				       status->audioCodec->long_name ? status->audioCodec->long_name : "<Unknown>",
 			status->audioCodec->name ? status->audioCodec->name : "<Unknown>"));
 	}
 
@@ -388,7 +390,7 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		if (err < 0) {
 			char errorStr[512];
 			av_strerror(err, errorStr, sizeof(errorStr));
-			mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
+			core::mprintf(("FFMPEG: Failed to copy context parameters! Error: %s\n", errorStr));
 			return nullptr;
 		}
 #else
@@ -399,10 +401,10 @@ std::unique_ptr<DecoderStatus> initializeStatus(std::unique_ptr<InputStream>& st
 		if (err < 0) {
 			char errorStr[512];
 			av_strerror(err, errorStr, sizeof(errorStr));
-			mprintf(("FFMPEG: Failed to open subtitle codec! Error: %s\n", errorStr));
+			core::mprintf(("FFMPEG: Failed to open subtitle codec! Error: %s\n", errorStr));
 		}
 
-		mprintf(("FFmpeg: Using subtitle codec %s (%s).\n",
+		core::mprintf(("FFmpeg: Using subtitle codec %s (%s).\n",
 		         status->subtitleCodec->long_name ? status->subtitleCodec->long_name : "<Unknown>",
 		         status->subtitleCodec->name ? status->subtitleCodec->name : "<Unknown>"));
 	}
@@ -530,7 +532,7 @@ void FFMPEGDecoder::startDecoding() {
 			if (seek_err < 0) {
 				char errorStr[512];
 				av_strerror(seek_err, errorStr, sizeof(errorStr));
-				mprintf(("FFMPEG: Failed to seek to start of movie file! Error: %s\n", errorStr));
+				core::mprintf(("FFMPEG: Failed to seek to start of movie file! Error: %s\n", errorStr));
 				break;
 			}
 		}
@@ -558,7 +560,7 @@ void FFMPEGDecoder::startDecoding() {
 					// Some kind of other error, try to continue reading
 					char errorStr[512];
 					av_strerror(read_err, errorStr, sizeof(errorStr));
-					mprintf(("FFMPEG: Failed to read frame! Error: %s\n", errorStr));
+					core::mprintf(("FFMPEG: Failed to read frame! Error: %s\n", errorStr));
 
 					// Skip packet
 					continue;
@@ -656,7 +658,7 @@ void FFMPEGDecoder::runSubtitleDecoder(SubtitleDecoder* decoder)
 				// Some kind of other error, try to continue reading
 				char errorStr[512];
 				av_strerror(read_err, errorStr, sizeof(errorStr));
-				mprintf(("FFMPEG: Failed to read frame! Error: %s\n", errorStr));
+				core::mprintf(("FFMPEG: Failed to read frame! Error: %s\n", errorStr));
 
 				// Skip packet
 				continue;

@@ -300,8 +300,8 @@ void opengl_shader_set_current(opengl_shader_t *shader_obj)
 
 void opengl_shader_set_current(int handle)
 {
-	Assert(handle >= 0);
-	Assert(handle < (int)GL_shader.size());
+core::Assert(handle >= 0);
+core::Assert(handle < (int)GL_shader.size());
 
 	opengl_shader_set_current(&GL_shader[handle]);
 }
@@ -335,8 +335,8 @@ int gr_opengl_maybe_create_shader(shader_type shader_t, unsigned int flags)
 
 void opengl_delete_shader(int sdr_handle)
 {
-	Assert(sdr_handle >= 0);
-	Assert(sdr_handle < (int)GL_shader.size());
+core::Assert(sdr_handle >= 0);
+core::Assert(sdr_handle < (int)GL_shader.size());
 	opengl_shader_t &victim = GL_shader[sdr_handle];
 	GL_shader_map.erase(shader_descriptor_t(victim.shader, victim.flags));
 
@@ -712,7 +712,7 @@ void opengl_compile_shader_actual(shader_type sdr, const uint &flags, opengl_sha
 {
 	opengl_shader_type_t *sdr_info = &GL_shader_types[sdr];
 
-	Assert(sdr_info->type_id == sdr);
+core::Assert(sdr_info->type_id == sdr);
 	mprintf(("Compiling new shader:\n"));
 	mprintf(("	%s\n", sdr_info->description));
 
@@ -754,7 +754,7 @@ void opengl_compile_shader_actual(shader_type sdr, const uint &flags, opengl_sha
 
 			for (size_t i = 0; i < GL_vertex_attrib_info.size(); ++i) {
 				// Check that the enum values match the position in the vector to make accessing that information more efficient
-				Assertion(GL_vertex_attrib_info[i].attribute_id == (int)i, "Mistmatch between enum values and attribute vector detected!");
+			core::Assertion(GL_vertex_attrib_info[i].attribute_id == (int)i, "Mistmatch between enum values and attribute vector detected!");
 
 				// assign vert attribute binding locations before we link the shader
 				glBindAttribLocation(program->getShaderHandle(), (GLint)i, GL_vertex_attrib_info[i].name.c_str());
@@ -837,7 +837,7 @@ int opengl_compile_shader(shader_type sdr, uint flags)
 	int empty_idx;
 	opengl_shader_t new_shader;
 
-	Assert(sdr < NUM_SHADER_TYPES);
+core::Assert(sdr < NUM_SHADER_TYPES);
 
 	opengl_compile_shader_actual(sdr, flags, new_shader);
 
@@ -902,7 +902,7 @@ static void opengl_purge_shader_cache_type(const char* ext) {
 	cf_get_file_list(cache_files, CF_TYPE_CACHE, filter.c_str(), CF_SORT_NONE, &file_info,
 	                 CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 
-	Assertion(cache_files.size() == file_info.size(),
+core::Assertion(cache_files.size() == file_info.size(),
 			  "cf_get_file_list returned different sizes for file names and file informations!");
 
 	const auto TIMEOUT = 2.0 * 30.0 * 24.0 * 60.0 * 60.0; // purge timeout in seconds which is ~2 months
@@ -987,7 +987,7 @@ void opengl_shader_init()
  */
 GLint opengl_shader_get_attribute(opengl_vert_attrib::attrib_id attribute)
 {
-	Assertion(Current_shader != nullptr, "Current shader may not be null!");
+core::Assertion(Current_shader != nullptr, "Current shader may not be null!");
 
 	return Current_shader->program->getAttributeLocation(attribute);
 }

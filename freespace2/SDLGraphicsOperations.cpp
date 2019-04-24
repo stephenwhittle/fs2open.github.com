@@ -78,7 +78,7 @@ class SDLWindowViewPort: public os::Viewport {
 	os::ViewPortProperties _props;
  public:
 	SDLWindowViewPort(SDL_Window* window, const os::ViewPortProperties& props) : _window(window), _props(props) {
-		Assertion(window != nullptr, "Invalid window specified");
+	core::Assertion(window != nullptr, "Invalid window specified");
 	}
 	~SDLWindowViewPort() override {
 		SDL_DestroyWindow(_window);
@@ -202,8 +202,8 @@ void SDLGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::Ope
 		return;
 	}
 
-	Assertion(view != nullptr, "Both viewport of context must be valid at this point!");
-	Assertion(ctx != nullptr, "Both viewport of context must be valid at this point!");
+core::Assertion(view != nullptr, "Both viewport of context must be valid at this point!");
+core::Assertion(ctx != nullptr, "Both viewport of context must be valid at this point!");
 
 	auto sdlCtx = reinterpret_cast<SDLOpenGLContext*>(ctx);
 	sdlCtx->makeCurrent(view->toSDLWindow());

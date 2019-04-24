@@ -82,7 +82,7 @@ public:
 protected:
 	virtual ~campaign_editor();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
+	virtual voidcore::AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 

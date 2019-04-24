@@ -621,14 +621,14 @@ static int ship_obj_list_add(int objnum)
  */
 static void ship_obj_list_remove(int index)
 {
-	Assert(index >= 0 && index < MAX_SHIP_OBJS);
+core::Assert(index >= 0 && index < MAX_SHIP_OBJS);
 	list_remove(Ship_obj_list, &Ship_objs[index]);
 	ship_obj_list_reset_slot(index);
 }
 
 ship_obj* get_ship_obj_ptr_from_index(int index)
 {
-	Assert(index >= 0 && index < MAX_SHIP_OBJS);
+core::Assert(index >= 0 && index < MAX_SHIP_OBJS);
 	return &Ship_objs[index];
 }
 
@@ -864,7 +864,7 @@ void ship_info::clone(const ship_info& other)
 			subsystems = (model_subsystem*)vm_realloc(subsystems, sizeof(model_subsystem) * other.n_subsystems);
 		}
 
-		Assert(subsystems != NULL);
+	core::Assert(subsystems != NULL);
 		for (int i = n_subsystems; i < other.n_subsystems; i++) {
 			subsystems[i].triggers =
 			    (queued_animation*)vm_malloc(sizeof(queued_animation) * (other.subsystems[i].n_triggers));
@@ -1046,7 +1046,7 @@ void ship_info::clone(const ship_info& other)
 	// We can't copy the HUD gauge vector here since we can't construct a copy of every HUD gauge since the type
 	// information is not available anymore when we are at this point. Since this function is only needed before HUD
 	// gauge parsing it should be save to assume that the other HUD gauge vector is empty
-	Assertion(other.hud_gauges.empty(),
+core::Assertion(other.hud_gauges.empty(),
 	          "Ship_info cloning is only possible if there are no HUD gauges in the ship class.");
 	hud_gauges.clear();
 
@@ -1895,7 +1895,7 @@ static int parse_ship_template()
 
 static void parse_ship_sound(const char* name, GameSounds id, ship_info* sip)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 
 	gamesnd_id temp_index;
 
@@ -2126,9 +2126,9 @@ static void parse_allowed_weapons(ship_info* sip, const bool is_primary, const b
 static void parse_weapon_bank(ship_info* sip, bool is_primary, int* num_banks, int* bank_default_weapons,
                               int* bank_capacities)
 {
-	Assert(sip != NULL);
-	Assert(bank_default_weapons != NULL);
-	Assert(bank_capacities != NULL);
+core::Assert(sip != NULL);
+core::Assert(bank_default_weapons != NULL);
+core::Assert(bank_capacities != NULL);
 	const int max_banks             = is_primary ? MAX_SHIP_PRIMARY_BANKS : MAX_SHIP_SECONDARY_BANKS;
 	const char* default_banks_str   = is_primary ? "$Default PBanks:" : "$Default SBanks:";
 	const char* bank_capacities_str = is_primary ? "$PBank Capacity:" : "$SBank Capacity:";
@@ -2216,8 +2216,8 @@ static int parse_and_add_briefing_icon_info()
 int parse_warp_params(const WarpParams* inherit_from, WarpDirection direction, const char* info_type_name,
                       const char* info_name)
 {
-	Assert(info_type_name != nullptr);
-	Assert(info_name != nullptr);
+core::Assert(info_type_name != nullptr);
+core::Assert(info_name != nullptr);
 
 	// for parsing
 	const char* prefix = (direction == WarpDirection::WARP_IN) ? "$Warpin" : "$Warpout";
@@ -4647,7 +4647,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 			    (model_subsystem*)vm_realloc(sip->subsystems, sizeof(model_subsystem) * sip->n_subsystems);
 		}
 
-		Assert(sip->subsystems != NULL);
+	core::Assert(sip->subsystems != NULL);
 	}
 
 	for (int i = 0; i < n_subsystems; i++) {
@@ -5248,7 +5248,7 @@ void ship_init()
 		}
 
 		// We shouldn't already have any subsystem pointers at this point.
-		Assertion(Ship_subsystems.empty(),
+	core::Assertion(Ship_subsystems.empty(),
 		          "Some pre-allocated subsystems didn't get cleared out: " SIZE_T_ARG
 		          " batches present during ship_init(); get a coder!\n",
 		          Ship_subsystems.size());
@@ -5984,7 +5984,7 @@ static void ship_set(int ship_index, int objnum, int ship_type)
 	oo_arrive_time_count[shipp - Ships] = 0;
 	oo_interp_count[shipp - Ships]      = 0;
 
-	Assert(strlen(shipp->ship_name) <= NAME_LENGTH - 1);
+core::Assert(strlen(shipp->ship_name) <= NAME_LENGTH - 1);
 	shipp->ship_info_index = ship_type;
 	shipp->objnum          = objnum;
 	shipp->score           = sip->score;
@@ -6086,7 +6086,7 @@ static void ship_set(int ship_index, int objnum, int ship_type)
 
 	for (i = 0; i < sip->num_secondary_banks; i++) {
 		float weapon_size = Weapon_info[sip->secondary_bank_weapons[i]].cargo_size;
-		Assertion(weapon_size > 0.0f, "Cargo size for secondary weapon %s is invalid, must be greater than 0.\n",
+	core::Assertion(weapon_size > 0.0f, "Cargo size for secondary weapon %s is invalid, must be greater than 0.\n",
 		          Weapon_info[sip->secondary_bank_weapons[i]].name);
 
 		if (Fred_running)
@@ -6144,7 +6144,7 @@ void ship_recalc_subsys_strength(ship* shipp)
 
 		if (!(ship_system->flags[Ship::Subsystem_Flags::No_aggregate])) {
 			int type = ship_system->system_info->type;
-			Assert((type >= 0) && (type < SUBSYSTEM_MAX));
+		core::Assert((type >= 0) && (type < SUBSYSTEM_MAX));
 
 			shipp->subsys_info[type].type_count++;
 			shipp->subsys_info[type].aggregate_max_hits += ship_system->max_hits;
@@ -6246,7 +6246,7 @@ static void ship_copy_subsystem_fixup(ship_info* sip)
 
 		// see if this ship has subsystems and a model for the subsystems.  We only need check the first
 		// subsystem since previous error checking would have trapped its loading as an error.
-		Assert(it->n_subsystems == sip->n_subsystems);
+	core::Assert(it->n_subsystems == sip->n_subsystems);
 
 		source_msp = &(it->subsystems[0]);
 		dest_msp   = &(sip->subsystems[0]);
@@ -6383,7 +6383,7 @@ static int subsys_set(int objnum, int ignore_subsys_info)
 
 		// set up the linked list
 		ship_system = GET_FIRST(&ship_subsys_free_list); // get a new element from the ship_subsystem array
-		Assert(ship_system != &ship_subsys_free_list);   // shouldn't have the dummy element
+	core::Assert(ship_system != &ship_subsys_free_list);   // shouldn't have the dummy element
 		list_remove(ship_subsys_free_list, ship_system); // remove the element from the array
 		list_append(&shipp->subsys_list, ship_system);   // link the element into the ship
 		ship_system->clear();                            // initialize it to a known blank slate
@@ -6603,7 +6603,7 @@ static int subsys_set(int objnum, int ignore_subsys_info)
 
 		for (k = 0; k < ship_system->weapons.num_secondary_banks; k++) {
 			float weapon_size = Weapon_info[ship_system->weapons.secondary_bank_weapons[k]].cargo_size;
-			Assertion(weapon_size > 0.0f, "Cargo size for secondary weapon %s is invalid, must be greater than 0.\n",
+		core::Assertion(weapon_size > 0.0f, "Cargo size for secondary weapon %s is invalid, must be greater than 0.\n",
 			          Weapon_info[ship_system->weapons.secondary_bank_weapons[k]].name);
 			ship_system->weapons.secondary_bank_ammo[k] =
 			    (Fred_running ? 100 : (int)std::lround(ship_system->weapons.secondary_bank_capacity[k] / weapon_size));
@@ -6767,7 +6767,7 @@ void ship_render_cockpit(object* objp)
 		return;
 
 	polymodel* pm = model_get(sip->cockpit_model_num);
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	// Setup
 	gr_reset_clip();
@@ -7074,10 +7074,10 @@ void ship_delete(object* obj)
 	int num, objnum __UNUSED;
 
 	num = obj->instance;
-	Assert(num >= 0);
+core::Assert(num >= 0);
 
 	objnum = OBJ_INDEX(obj);
-	Assert(Ships[num].objnum == objnum);
+core::Assert(Ships[num].objnum == objnum);
 
 	shipp = &Ships[num];
 
@@ -7144,7 +7144,7 @@ void ship_wing_cleanup(int shipnum, wing* wingp)
 		wingp->ship_index[i] = wingp->ship_index[i + 1];
 
 	wingp->current_count--;
-	Assert(wingp->current_count >= 0);
+core::Assert(wingp->current_count >= 0);
 	wingp->ship_index[wingp->current_count] = -1;
 
 	// if the current count is 0, check to see if the wing departed or was destroyed.
@@ -7240,8 +7240,8 @@ void ship_actually_depart(int shipnum, int method)
 // no destruction effects, not for player destruction and multiplayer, only self-destruction
 void ship_destroy_instantly(object* ship_objp, int shipnum)
 {
-	Assert(ship_objp->type == OBJ_SHIP);
-	Assert(!(ship_objp == Player_obj));
+core::Assert(ship_objp->type == OBJ_SHIP);
+core::Assert(!(ship_objp == Player_obj));
 
 	// undocking and death preparation
 	ship_stop_fire_primary(ship_objp);
@@ -7291,11 +7291,11 @@ static const char* get_departure_name(int method)
  */
 void ship_cleanup(int shipnum, int cleanup_mode)
 {
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
-	Assert(cleanup_mode &
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+core::Assert(cleanup_mode &
 	       (SHIP_DESTROYED | SHIP_DEPARTED | SHIP_VANISHED | SHIP_DESTROYED_REDALERT | SHIP_DEPARTED_REDALERT));
-	Assert(Objects[Ships[shipnum].objnum].type == OBJ_SHIP);
-	Assert(Objects[Ships[shipnum].objnum].flags[Object::Object_Flags::Should_be_dead]);
+core::Assert(Objects[Ships[shipnum].objnum].type == OBJ_SHIP);
+core::Assert(Objects[Ships[shipnum].objnum].flags[Object::Object_Flags::Should_be_dead]);
 
 	ship* shipp  = &Ships[shipnum];
 	object* objp = &Objects[shipp->objnum];
@@ -7504,14 +7504,14 @@ static void ship_blow_up_area_apply_blast(object* exp_objp)
 		return;
 	}
 
-	Assert(exp_objp != NULL);
-	Assert(exp_objp->type == OBJ_SHIP);
-	Assert(exp_objp->instance >= 0);
+core::Assert(exp_objp != NULL);
+core::Assert(exp_objp->type == OBJ_SHIP);
+core::Assert(exp_objp->instance >= 0);
 
 	shipp = &Ships[exp_objp->instance];
 	sip   = &Ship_info[shipp->ship_info_index];
 
-	Assert((shipp != NULL) && (sip != NULL));
+core::Assert((shipp != NULL) && (sip != NULL));
 
 	if ((exp_objp->hull_strength <= KAMIKAZE_HULL_ON_DEATH) &&
 	    (Ai_info[Ships[exp_objp->instance].ai_index].ai_flags[AI::AI_Flags::Kamikaze]) &&
@@ -7611,7 +7611,7 @@ static void do_dying_undock_physics(object* dying_objp, ship* dying_shipp)
 {
 	// this function should only be called for an object that was docked...
 	// no harm in calling it if it wasn't, but we want to enforce this
-	Assert(object_is_dead_docked(dying_objp));
+core::Assert(object_is_dead_docked(dying_objp));
 
 	object* docked_objp;
 
@@ -8106,7 +8106,7 @@ static int thruster_glow_anim_load(generic_anim* ga)
 	}
 	ga->num_frames = NOISE_NUM_FRAMES;
 
-	Assert(fps != 0);
+core::Assert(fps != 0);
 	ga->total_time = i2fl(ga->num_frames) / fps;
 
 	return 0;
@@ -8190,7 +8190,7 @@ static void ship_do_thruster_frame(ship* shipp, object* objp, float frametime)
 		rate = 0.67f * (1.0f + objp->phys_info.forward_thrust);
 	}
 
-	Assert(frametime > 0.0f);
+core::Assert(frametime > 0.0f);
 
 	// add primary thruster effects ...
 
@@ -8264,7 +8264,7 @@ void ship_do_weapon_thruster_frame(weapon* weaponp, object* objp, float frametim
 	else
 		glow_anim = &species->thruster_info.glow.normal;
 
-	Assert(frametime > 0.0f);
+core::Assert(frametime > 0.0f);
 
 	if (flame_anim->first_frame >= 0) {
 		weaponp->thruster_frame += frametime * rate;
@@ -8315,7 +8315,7 @@ static void ship_auto_repair_frame(int shipnum, float frametime)
 		return;
 #endif
 
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
 	sp   = &Ships[shipnum];
 	sip  = &Ship_info[sp->ship_info_index];
 	objp = &Objects[sp->objnum];
@@ -8348,7 +8348,7 @@ static void ship_auto_repair_frame(int shipnum, float frametime)
 
 	// iterate through subsystems, repair as needed based on elapsed frametime
 	for (ssp = GET_FIRST(&sp->subsys_list); ssp != END_OF_LIST(&sp->subsys_list); ssp = GET_NEXT(ssp)) {
-		Assert(ssp->system_info->type >= 0 && ssp->system_info->type < SUBSYSTEM_MAX);
+	core::Assert(ssp->system_info->type >= 0 && ssp->system_info->type < SUBSYSTEM_MAX);
 		ssip = &sp->subsys_info[ssp->system_info->type];
 
 		if (ssp->current_hits < ssp->max_hits) {
@@ -8494,12 +8494,12 @@ static void ship_check_player_distance()
 
 void observer_process_post(object* objp)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 
 	if (objp == NULL)
 		return;
 
-	Assert(objp->type == OBJ_OBSERVER);
+core::Assert(objp->type == OBJ_OBSERVER);
 
 	if (Game_mode & GM_MULTIPLAYER) {
 		// if I'm just an observer
@@ -8521,7 +8521,7 @@ void observer_process_post(object* objp)
  */
 void ship_reset_disabled_physics(object* objp, int ship_class)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 
 	if (objp == NULL)
 		return;
@@ -8624,8 +8624,8 @@ void ship_subsys_set_disrupted(ship_subsys* ss, int time)
  */
 int ship_subsys_disrupted(ship* sp, int type)
 {
-	Assert(sp != NULL);
-	Assert(type >= 0 && type < SUBSYSTEM_MAX);
+core::Assert(sp != NULL);
+core::Assert(type >= 0 && type < SUBSYSTEM_MAX);
 
 	// Bogus pointer to ship to check for disrupted subsystem
 	if (sp == NULL)
@@ -8682,9 +8682,9 @@ MONITOR(NumShips)
 
 static void ship_radar_process(object* obj, ship* shipp, ship_info* sip)
 {
-	Assert(obj != NULL);
-	Assert(shipp != NULL);
-	Assert(sip != NULL);
+core::Assert(obj != NULL);
+core::Assert(shipp != NULL);
+core::Assert(sip != NULL);
 
 	shipp->radar_last_status = shipp->radar_current_status;
 
@@ -8730,9 +8730,9 @@ void ship_process_post(object* obj, float frametime)
 	MONITOR_INC(NumShips, 1);
 
 	num = obj->instance;
-	Assert(num >= 0 && num < MAX_SHIPS);
-	Assert(obj->type == OBJ_SHIP);
-	Assert(Ships[num].objnum == OBJ_INDEX(obj));
+core::Assert(num >= 0 && num < MAX_SHIPS);
+core::Assert(obj->type == OBJ_SHIP);
+core::Assert(Ships[num].objnum == OBJ_INDEX(obj));
 
 	shipp = &Ships[num];
 
@@ -8941,7 +8941,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 
 	// Primary banks
 	if (pm->n_guns > sip->num_primary_banks) {
-		Assert(pm->n_guns <= MAX_SHIP_PRIMARY_BANKS);
+	core::Assert(pm->n_guns <= MAX_SHIP_PRIMARY_BANKS);
 		core::Error(LOCATION,
 		      "There are %d primary banks in the model file,\nbut only %d primary banks specified for %s.\nThis must "
 		      "be fixed, as it will cause crashes.\n",
@@ -8949,7 +8949,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 		for (i = sip->num_primary_banks; i < pm->n_guns; i++) {
 			// Make unspecified weapon for bank be a laser
 			for (j = 0; j < Num_player_weapon_precedence; j++) {
-				Assertion((Player_weapon_precedence[j] > 0),
+			core::Assertion((Player_weapon_precedence[j] > 0),
 				          "Error reading player weapon precedence list. Check weapons.tbl for $Player Weapon "
 				          "Precedence entry, and correct as necessary.\n");
 				int weapon_id = Player_weapon_precedence[j];
@@ -8958,7 +8958,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 					break;
 				}
 			}
-			Assert(swp->primary_bank_weapons[i] >= 0);
+		core::Assert(swp->primary_bank_weapons[i] >= 0);
 		}
 		sip->num_primary_banks = pm->n_guns;
 	} else if (pm->n_guns < sip->num_primary_banks) {
@@ -8969,7 +8969,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 
 	// Secondary banks
 	if (pm->n_missiles > sip->num_secondary_banks) {
-		Assert(pm->n_missiles <= MAX_SHIP_SECONDARY_BANKS);
+	core::Assert(pm->n_missiles <= MAX_SHIP_SECONDARY_BANKS);
 		core::Error(LOCATION,
 		      "There are %d secondary banks in the model file,\nbut only %d secondary banks specified for %s.\nThis "
 		      "must be fixed, as it will cause crashes.\n",
@@ -8977,7 +8977,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 		for (i = sip->num_secondary_banks; i < pm->n_missiles; i++) {
 			// Make unspecified weapon for bank be a missile
 			for (j = 0; j < Num_player_weapon_precedence; j++) {
-				Assertion((Player_weapon_precedence[j] > 0),
+			core::Assertion((Player_weapon_precedence[j] > 0),
 				          "Error reading player weapon precedence list. Check weapons.tbl for $Player Weapon "
 				          "Precedence entry, and correct as necessary.\n");
 				int weapon_id = Player_weapon_precedence[j];
@@ -8986,7 +8986,7 @@ static void ship_set_default_weapons(ship* shipp, ship_info* sip)
 					break;
 				}
 			}
-			Assert(swp->secondary_bank_weapons[i] >= 0);
+		core::Assert(swp->secondary_bank_weapons[i] >= 0);
 		}
 		sip->num_secondary_banks = pm->n_missiles;
 	} else if (pm->n_missiles < sip->num_secondary_banks) {
@@ -9057,8 +9057,8 @@ int ship_check_collision_fast(object* obj, object* other_obj, vec3d* hitpos)
 	int num;
 	mc_info mc;
 
-	Assert(obj->type == OBJ_SHIP);
-	Assert(obj->instance >= 0);
+core::Assert(obj->type == OBJ_SHIP);
+core::Assert(obj->instance >= 0);
 
 	num = obj->instance;
 
@@ -9153,7 +9153,7 @@ static void show_ship_subsys_count()
 
 static void ship_init_afterburners(ship* shipp)
 {
-	Assert(shipp);
+core::Assert(shipp);
 
 	shipp->ab_count = 0;
 
@@ -9163,9 +9163,9 @@ static void ship_init_afterburners(ship* shipp)
 	}
 
 	ship_info* sip = &Ship_info[shipp->ship_info_index];
-	Assert(sip->model_num >= 0);
+core::Assert(sip->model_num >= 0);
 	polymodel* pm = model_get(sip->model_num);
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	if (!(sip->flags[Ship::Info_Flags::Afterburner])) {
 		return;
@@ -9257,7 +9257,7 @@ int ship_create(matrix* orient, vec3d* pos, int ship_type, const char* ship_name
 		return -1;
 	}
 
-	Assertion((ship_type >= 0) && (ship_type < static_cast<int>(Ship_info.size())),
+core::Assertion((ship_type >= 0) && (ship_type < static_cast<int>(Ship_info.size())),
 	          "Invalid ship_type %d passed to ship_create() (expected value in the range 0-%d)\n", ship_type,
 	          static_cast<int>(Ship_info.size()) - 1);
 	sip   = &(Ship_info[ship_type]);
@@ -9310,10 +9310,10 @@ int ship_create(matrix* orient, vec3d* pos, int ship_type, const char* ship_name
 	default_ship_object_flags.set(Object::Object_Flags::Collides, !sip->flags[Ship::Info_Flags::No_collide]);
 
 	objnum = obj_create(OBJ_SHIP, -1, n, orient, pos, model_get_radius(sip->model_num), default_ship_object_flags);
-	Assert(objnum >= 0);
+core::Assert(objnum >= 0);
 
 	shipp->ai_index = ai_get_slot(n);
-	Assert(shipp->ai_index >= 0);
+core::Assert(shipp->ai_index >= 0);
 
 	// Goober5000 - if no ship name specified, or if specified ship already exists,
 	// or if specified ship has exited, use a default name
@@ -9323,7 +9323,7 @@ int ship_create(matrix* orient, vec3d* pos, int ship_type, const char* ship_name
 
 		// ensure complete ship name doesn't overflow the buffer
 		auto name_len = std::min(NAME_LENGTH - strlen(suffix) - 1, strlen(Ship_info[ship_type].name));
-		Assert(name_len > 0);
+	core::Assert(name_len > 0);
 
 		strncpy(shipp->ship_name, Ship_info[ship_type].name, name_len);
 		strcpy(shipp->ship_name + name_len, suffix);
@@ -9437,7 +9437,7 @@ static void ship_model_change(int n, int ship_type)
 	polymodel* pm;
 	object* objp;
 
-	Assert(n >= 0 && n < MAX_SHIPS);
+core::Assert(n >= 0 && n < MAX_SHIPS);
 	sp   = &Ships[n];
 	sip  = &(Ship_info[ship_type]);
 	objp = &Objects[sp->objnum];
@@ -9535,7 +9535,7 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 	float hull_pct, shield_pct;
 	physics_info ph_inf;
 
-	Assert(n >= 0 && n < MAX_SHIPS);
+core::Assert(n >= 0 && n < MAX_SHIPS);
 	sp = &Ships[n];
 
 	// do a quick out if we're already using the new ship class
@@ -9639,7 +9639,7 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 		if (sp->special_hitpoints) {
 			hull_pct = objp->hull_strength / sp->ship_max_hull_strength;
 		} else {
-			Assert(Ship_info[sp->ship_info_index].max_hull_strength > 0.0f);
+		core::Assert(Ship_info[sp->ship_info_index].max_hull_strength > 0.0f);
 			hull_pct = objp->hull_strength / Ship_info[sp->ship_info_index].max_hull_strength;
 		}
 
@@ -9656,7 +9656,7 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 		}
 
 		// extra check
-		Assert(shield_pct >= 0.0f && shield_pct <= 1.0f);
+	core::Assert(shield_pct >= 0.0f && shield_pct <= 1.0f);
 		CLAMP(shield_pct, 0.0f, 1.0f);
 	} else {
 		shield_pct = hull_pct = 1.0f;
@@ -9756,25 +9756,25 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 			subsys_pcts[num_saved_subsystems] = ss->max_hits;
 
 		// extra check
-		Assert(subsys_pcts[num_saved_subsystems] >= 0.0f && subsys_pcts[num_saved_subsystems] <= 1.0f);
+	core::Assert(subsys_pcts[num_saved_subsystems] >= 0.0f && subsys_pcts[num_saved_subsystems] <= 1.0f);
 		CLAMP(subsys_pcts[num_saved_subsystems], 0.0f, 1.0f);
 
 		num_saved_subsystems++;
 		ss = GET_NEXT(ss);
 	}
-	Assertion(target_matches.empty(),
+core::Assertion(target_matches.empty(),
 	          "Failed to find matches for every currently-targeted subsystem on ship %s in change_ship_type(); get a "
 	          "coder!\n",
 	          sp->ship_name);
-	Assertion(
+core::Assertion(
 	    homing_matches.empty(),
 	    "Failed to find matches for every subsystem being homed in on ship %s in change_ship_type(); get a coder!\n",
 	    sp->ship_name);
-	Assertion(weapon_turret_matches.empty(),
+core::Assertion(weapon_turret_matches.empty(),
 	          "Failed to find matches for every turret a projectile was fired from on ship %s in change_ship_type(); "
 	          "get a coder!\n",
 	          sp->ship_name);
-	Assertion(last_targeted_matches.empty(),
+core::Assertion(last_targeted_matches.empty(),
 	          "Somehow failed to find every subsystem a player was previously targeting on ship %s in "
 	          "change_ship_type(); get a coder!\n",
 	          sp->ship_name);
@@ -9828,8 +9828,8 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 	}
 
 	// Goober5000: div-0 checks
-	Assert(sp->ship_max_hull_strength > 0.0f);
-	Assert(objp->hull_strength > 0.0f);
+core::Assert(sp->ship_max_hull_strength > 0.0f);
+core::Assert(objp->hull_strength > 0.0f);
 
 	// Mantis 2763: moved down to have access to the right ship_max_shield_strength value
 	// make sure that shields are disabled/enabled if they need to be - Chief1983
@@ -10038,7 +10038,7 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 		for (int h = 0; h < pm->n_thrusters; h++) {
 			for (int j = 0; j < pm->thrusters[h].num_points; j++) {
 				// this means you've reached the max # of AB trails for a ship
-				Assert(sip->ct_count <= MAX_SHIP_CONTRAILS);
+			core::Assert(sip->ct_count <= MAX_SHIP_CONTRAILS);
 
 				trail_info* ci = &sp->ab_info[sp->ab_count];
 
@@ -10067,7 +10067,7 @@ void change_ship_type(int n, int ship_type, int by_sexp)
 				    sip->afterburner_trail.bitmap_id; // table loaded bitmap used on this ships burner trails
 				nprintf(("AB TRAIL", "AB trail point #%d made for '%s'\n", sp->ab_count, sp->ship_name));
 				sp->ab_count++;
-				Assert(MAX_SHIP_CONTRAILS > sp->ab_count);
+			core::Assert(MAX_SHIP_CONTRAILS > sp->ab_count);
 			}
 		}
 	} // end AB trails -Bobboau
@@ -10274,7 +10274,7 @@ int ship_launch_countermeasure(object* objp, int rand_val)
 		nprintf(("Network", "Cmeasure created by %s\n", shipp->ship_name));
 
 		// Play sound effect for counter measure launch
-		Assert(shipp->current_cmeasure < Num_weapon_types);
+	core::Assert(shipp->current_cmeasure < Num_weapon_types);
 		if (Weapon_info[shipp->current_cmeasure].launch_snd.isValid()) {
 			snd_play_3d(gamesnd_get_game_sound(Weapon_info[shipp->current_cmeasure].launch_snd), &pos, &View_position);
 		}
@@ -10585,7 +10585,7 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 
 	gamesnd_id sound_played; // used to track what sound is played.  If the player is firing two banks
 	                         // of the same laser, we only want to play one sound
-	Assert(obj != NULL);
+core::Assert(obj != NULL);
 
 	if (obj == NULL) {
 		return 0;
@@ -10596,9 +10596,9 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 		return 0;
 	}
 
-	Assert(obj->type == OBJ_SHIP);
-	Assert(n >= 0);
-	Assert(Ships[n].objnum == OBJ_INDEX(obj));
+core::Assert(obj->type == OBJ_SHIP);
+core::Assert(n >= 0);
+core::Assert(Ships[n].objnum == OBJ_INDEX(obj));
 	if ((obj->type != OBJ_SHIP) || (n < 0) || (n >= MAX_SHIPS) || (Ships[n].objnum != OBJ_INDEX(obj))) {
 		return 0;
 	}
@@ -10641,7 +10641,7 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 		num_primary_banks = MIN(1, swp->num_primary_banks);
 	}
 
-	Assert(num_primary_banks > 0);
+core::Assert(num_primary_banks > 0);
 	if (num_primary_banks < 1) {
 		return 0;
 	}
@@ -10687,7 +10687,7 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 		bank_to_fire = (swp->current_primary_bank + i) % swp->num_primary_banks;
 
 		weapon_idx = swp->primary_bank_weapons[bank_to_fire];
-		Assert(weapon_idx >= 0 && weapon_idx < MAX_WEAPON_TYPES);
+	core::Assert(weapon_idx >= 0 && weapon_idx < MAX_WEAPON_TYPES);
 		if ((weapon_idx < 0) || (weapon_idx >= MAX_WEAPON_TYPES)) {
 			Int3(); // why would a ship try to fire a weapon that doesn't exist?
 			continue;
@@ -10787,7 +10787,7 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 				          .wi_flags[Weapon::Info_Flags::Nolink, Weapon::Info_Flags::No_linked_penalty]))
 					effective_primary_banks++;
 			}
-			Assert(effective_primary_banks >= 1);
+		core::Assert(effective_primary_banks >= 1);
 
 			next_fire_delay *= 1.0f + (effective_primary_banks - 1) * 0.5f; //	50% time penalty if banks linked
 		}
@@ -10827,13 +10827,13 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 		}
 
 		if (sip->flags[Ship::Info_Flags::Dyn_primary_linking]) {
-			Assert(pm->gun_banks[bank_to_fire].num_slots != 0);
+		core::Assert(pm->gun_banks[bank_to_fire].num_slots != 0);
 			swp->next_primary_fire_stamp[bank_to_fire] =
 			    timestamp((int)(next_fire_delay * (swp->primary_bank_slot_count[bank_to_fire]) /
 			                    pm->gun_banks[bank_to_fire].num_slots));
 			swp->last_primary_fire_stamp[bank_to_fire] = timestamp();
 		} else if (winfo_p->wi_flags[Weapon::Info_Flags::Cycle]) {
-			Assert(pm->gun_banks[bank_to_fire].num_slots != 0);
+		core::Assert(pm->gun_banks[bank_to_fire].num_slots != 0);
 			swp->next_primary_fire_stamp[bank_to_fire] =
 			    timestamp((int)(next_fire_delay / pm->gun_banks[bank_to_fire].num_slots));
 			swp->last_primary_fire_stamp[bank_to_fire] = timestamp();
@@ -11362,7 +11362,7 @@ int ship_fire_primary(object* obj, int stream_weapons, int force)
 				int player_num;
 
 				player_num = multi_find_player_by_object(obj);
-				Assert(player_num != -1);
+			core::Assert(player_num != -1);
 
 				Net_players[player_num].m_player->stats.mp_shots_fired += num_fired;
 			}
@@ -11532,7 +11532,7 @@ static int maybe_detonate_weapon(ship_weapon* swp, object* /*src*/)
 		return 0;
 	}
 
-	Assert(Weapons[objp->instance].weapon_info_index != -1);
+core::Assert(Weapons[objp->instance].weapon_info_index != -1);
 	wip = &Weapon_info[Weapons[objp->instance].weapon_info_index];
 
 	if (wip->wi_flags[Weapon::Info_Flags::Remote]) {
@@ -11568,7 +11568,7 @@ static int ship_fire_secondary_detonate(object* obj, ship_weapon* swp)
 				// check for currently locked missiles (highest precedence)
 				for (mo = GET_FIRST(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo)) {
 					object* mobjp;
-					Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+				core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 					mobjp = &Objects[mo->objnum];
 					if ((mobjp != first_objp) && (mobjp->parent_sig == obj->parent_sig)) {
 						if (Weapon_info[Weapons[mobjp->instance].weapon_info_index]
@@ -11608,7 +11608,7 @@ int ship_fire_secondary(object* obj, int allow_swarm)
 	vec3d missile_point, pnt, firing_pos;
 	bool has_fired = false; // Used to determine whether to fire the scripting hook
 
-	Assert(obj != NULL);
+core::Assert(obj != NULL);
 
 	// in the case where the server is an observer, he can fire (which would be bad) - unless we do this.
 	if (obj->type == OBJ_OBSERVER) {
@@ -11620,16 +11620,16 @@ int ship_fire_secondary(object* obj, int allow_swarm)
 		return 0;
 	}
 
-	Assert(obj->type == OBJ_SHIP);
+core::Assert(obj->type == OBJ_SHIP);
 	if (obj->type != OBJ_SHIP) {
 		return 0;
 	}
 	n = obj->instance;
-	Assert(n >= 0 && n < MAX_SHIPS);
+core::Assert(n >= 0 && n < MAX_SHIPS);
 	if ((n < 0) || (n >= MAX_SHIPS)) {
 		return 0;
 	}
-	Assert(Ships[n].objnum == OBJ_INDEX(obj));
+core::Assert(Ships[n].objnum == OBJ_INDEX(obj));
 	if (Ships[n].objnum != OBJ_INDEX(obj)) {
 		return 0;
 	}
@@ -11678,7 +11678,7 @@ int ship_fire_secondary(object* obj, int allow_swarm)
 	}
 
 	weapon_idx = swp->secondary_bank_weapons[bank];
-	Assert((swp->secondary_bank_weapons[bank] >= 0) && (swp->secondary_bank_weapons[bank] < MAX_WEAPON_TYPES));
+core::Assert((swp->secondary_bank_weapons[bank] >= 0) && (swp->secondary_bank_weapons[bank] < MAX_WEAPON_TYPES));
 	if ((swp->secondary_bank_weapons[bank] < 0) || (swp->secondary_bank_weapons[bank] >= MAX_WEAPON_TYPES)) {
 		return 0;
 	}
@@ -11775,7 +11775,7 @@ int ship_fire_secondary(object* obj, int allow_swarm)
 
 	// if trying to fire a swarm missile, make sure being called from right place
 	if ((wip->wi_flags[Weapon::Info_Flags::Swarm]) && !allow_swarm) {
-		Assert(wip->swarm_count > 0);
+	core::Assert(wip->swarm_count > 0);
 		if (wip->swarm_count <= 0) {
 			shipp->num_swarm_missiles_to_fire = SWARM_DEFAULT_NUM_MISSILES_FIRED;
 		} else {
@@ -11912,7 +11912,7 @@ int ship_fire_secondary(object* obj, int allow_swarm)
 			vm_vec_add(&firing_pos, &missile_point, &obj->pos);
 
 			if (Game_mode & GM_MULTIPLAYER) {
-				Assert(Weapon_info[weapon_idx].subtype == WP_MISSILE);
+			core::Assert(Weapon_info[weapon_idx].subtype == WP_MISSILE);
 			}
 
 			matrix firing_orient;
@@ -11996,7 +11996,7 @@ done_secondary:
 		// first network signatures for the newly created weapons.  if nothing got fired, send a failed
 		// packet if
 		if (MULTIPLAYER_MASTER) {
-			Assert(starting_sig != 0);
+		core::Assert(starting_sig != 0);
 			send_secondary_fired_packet(shipp, starting_sig, starting_bank_count, num_fired, allow_swarm);
 		}
 
@@ -12010,7 +12010,7 @@ done_secondary:
 					int player_num;
 
 					player_num = multi_find_player_by_object(obj);
-					Assert(player_num != -1);
+				core::Assert(player_num != -1);
 
 					Net_players[player_num].m_player->stats.ms_shots_fired += num_fired;
 				}
@@ -12141,15 +12141,15 @@ int ship_select_next_primary(object* objp, int direction)
 	int original_bank;
 	int i;
 
-	Assert(objp != NULL);
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
+core::Assert(objp != NULL);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
 
 	shipp = &Ships[objp->instance];
 	sip   = &Ship_info[shipp->ship_info_index];
 	swp   = &shipp->weapons;
 
-	Assert(direction == CYCLE_PRIMARY_NEXT || direction == CYCLE_PRIMARY_PREV);
+core::Assert(direction == CYCLE_PRIMARY_NEXT || direction == CYCLE_PRIMARY_PREV);
 
 	original_bank           = swp->current_primary_bank;
 	auto original_link_flag = shipp->flags[Ship_Flags::Primary_linked];
@@ -12173,7 +12173,7 @@ int ship_select_next_primary(object* objp, int direction)
 		Int3();
 		return 0;
 	} else {
-		Assert((swp->current_primary_bank >= 0) && (swp->current_primary_bank < swp->num_primary_banks));
+	core::Assert((swp->current_primary_bank >= 0) && (swp->current_primary_bank < swp->num_primary_banks));
 
 		// first check if linked
 		if (shipp->flags[Ship_Flags::Ship_selective_linking]) {
@@ -12234,7 +12234,7 @@ int ship_select_next_primary(object* objp, int direction)
 		if (primary_out_of_ammo(swp, swp->current_primary_bank)) {
 			// cycle around until we find ammunition...
 			// we land on the original bank if all banks fail
-			Assert(swp->current_primary_bank < swp->num_primary_banks);
+		core::Assert(swp->current_primary_bank < swp->num_primary_banks);
 			new_bank = swp->current_primary_bank;
 
 			for (i = 1; i < swp->num_primary_banks; i++) {
@@ -12255,7 +12255,7 @@ int ship_select_next_primary(object* objp, int direction)
 		}
 
 		// make sure we're okay
-		Assert((swp->current_primary_bank >= 0) && (swp->current_primary_bank < swp->num_primary_banks));
+	core::Assert((swp->current_primary_bank >= 0) && (swp->current_primary_bank < swp->num_primary_banks));
 	} // end of ballistics implementation
 
 	swp->previous_primary_bank = original_bank;
@@ -12303,9 +12303,9 @@ int ship_select_next_primary(object* objp, int direction)
 //			for the player ship.
 int ship_select_next_secondary(object* objp)
 {
-	Assert(objp != NULL);
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
+core::Assert(objp != NULL);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
 
 	int original_bank, new_bank, i;
 	ship* shipp;
@@ -12334,7 +12334,7 @@ int ship_select_next_secondary(object* objp)
 		Int3();
 		return 0;
 	} else {
-		Assert((swp->current_secondary_bank >= 0) && (swp->current_secondary_bank < swp->num_secondary_banks));
+	core::Assert((swp->current_secondary_bank >= 0) && (swp->current_secondary_bank < swp->num_secondary_banks));
 
 		original_bank = swp->current_secondary_bank;
 
@@ -12387,8 +12387,8 @@ int get_available_primary_weapons(object* objp, int* outlist, int* outbanklist)
 	int i;
 	ship* shipp;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 	shipp = &Ships[objp->instance];
 
 	for (i = 0; i < shipp->weapons.num_primary_banks; i++) {
@@ -12411,8 +12411,8 @@ int get_available_secondary_weapons(object* objp, int* outlist, int* outbanklist
 	int i;
 	ship* shipp;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 	shipp = &Ships[objp->instance];
 
 	for (i = 0; i < shipp->weapons.num_secondary_banks; i++)
@@ -12675,7 +12675,7 @@ int ship_query_state(char* name)
 	int i;
 
 	// bogus
-	Assert(name != NULL);
+core::Assert(name != NULL);
 	if (name == NULL) {
 		return -1;
 	}
@@ -12706,7 +12706,7 @@ int get_subsystem_pos(vec3d* pos, object* objp, ship_subsys* subsysp)
 		*pos = objp->pos;
 		return 0;
 	}
-	Assertion(objp->type == OBJ_SHIP, "Only ships can have subsystems!");
+core::Assertion(objp->type == OBJ_SHIP, "Only ships can have subsystems!");
 
 	model_subsystem* mss = subsysp->system_info;
 
@@ -12787,9 +12787,9 @@ void ship_model_start(object* objp)
  */
 void ship_model_stop(object* objp)
 {
-	Assert(objp != NULL);
-	Assert(objp->instance >= 0);
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp != NULL);
+core::Assert(objp->instance >= 0);
+core::Assert(objp->type == OBJ_SHIP);
 
 	// Then, clear all the angles in the model to zero
 	model_clear_instance(Ship_info[Ships[objp->instance].ship_info_index].model_num);
@@ -12805,9 +12805,9 @@ void ship_model_update_instance(object* objp)
 	ship_subsys* pss;
 	int model_instance_num;
 
-	Assert(objp != NULL);
-	Assert(objp->instance >= 0);
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp != NULL);
+core::Assert(objp->instance >= 0);
+core::Assert(objp->type == OBJ_SHIP);
 
 	shipp              = &Ships[objp->instance];
 	model_instance_num = shipp->model_instance_num;
@@ -12954,7 +12954,7 @@ static void ship_set_eye(object* obj, int eye_index)
 // eyes have no defined up vector)
 void ship_get_eye(vec3d* eye_pos, matrix* eye_orient, object* obj, bool do_slew, bool from_origin)
 {
-	Assertion(obj->type == OBJ_SHIP, "Only ships can have eye positions!");
+core::Assertion(obj->type == OBJ_SHIP, "Only ships can have eye positions!");
 
 	ship* shipp   = &Ships[obj->instance];
 	polymodel* pm = model_get(Ship_info[shipp->ship_info_index].model_num);
@@ -13129,8 +13129,8 @@ int ship_get_index_from_subsys(ship_subsys* ssp, int objnum)
 		ship* shipp;
 		ship_subsys* ss;
 
-		Assert(objnum >= 0);
-		Assert(Objects[objnum].instance >= 0);
+	core::Assert(objnum >= 0);
+	core::Assert(Objects[objnum].instance >= 0);
 
 		shipp = &Ships[Objects[objnum].instance];
 
@@ -13197,7 +13197,7 @@ float ship_get_subsystem_strength(ship* shipp, int type)
 	float strength;
 	ship_subsys* ssp;
 
-	Assert((type >= 0) && (type < SUBSYSTEM_MAX));
+core::Assert((type >= 0) && (type < SUBSYSTEM_MAX));
 
 	//	For a dying ship, all subsystem strengths are zero.
 	if (Objects[shipp->objnum].hull_strength <= 0.0f)
@@ -13212,7 +13212,7 @@ float ship_get_subsystem_strength(ship* shipp, int type)
 		return 0.0f;
 
 	strength = shipp->subsys_info[type].aggregate_current_hits / shipp->subsys_info[type].aggregate_max_hits;
-	Assert(strength != 0.0f);
+core::Assert(strength != 0.0f);
 
 	if ((type == SUBSYSTEM_ENGINE) && (strength < 1.0f)) {
 		float percent;
@@ -13251,7 +13251,7 @@ void ship_set_subsystem_strength(ship* shipp, int type, float strength)
 	float total_current_hits, diff;
 	ship_subsys* ssp;
 
-	Assert((type >= 0) && (type < SUBSYSTEM_MAX));
+core::Assert((type >= 0) && (type < SUBSYSTEM_MAX));
 	if (shipp->subsys_info[type].aggregate_max_hits <= 0.0f)
 		return;
 
@@ -13301,7 +13301,7 @@ float ship_calculate_rearm_duration(object* objp)
 
 	bool found_first_empty;
 
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 
 	sp  = &Ships[objp->instance];
 	swp = &sp->weapons;
@@ -13511,7 +13511,7 @@ int ship_do_rearm_frame(object* objp, float frametime)
 				repair_delta = repair_allocated;
 			}
 			repair_allocated -= repair_delta;
-			Assert(repair_allocated >= 0.0f);
+		core::Assert(repair_allocated >= 0.0f);
 
 			// add repair to current strength of single subsystem
 			ssp->current_hits += repair_delta;
@@ -13730,8 +13730,8 @@ int ship_find_repair_ship(object* requester_obj, object** ship_we_found)
 	float min_time_till_available          = -1.0f;
 	object* soonest_available_support_ship = NULL;
 
-	Assertion(requester_obj->type == OBJ_SHIP, "requester_obj not a ship. Has type of %08x", requester_obj->type);
-	Assertion((requester_obj->instance >= 0) && (requester_obj->instance < MAX_SHIPS),
+core::Assertion(requester_obj->type == OBJ_SHIP, "requester_obj not a ship. Has type of %08x", requester_obj->type);
+core::Assertion((requester_obj->instance >= 0) && (requester_obj->instance < MAX_SHIPS),
 	          "requester_obj does not have a valid pointer to a ship. Pointer is %d, which is smaller than 0 or bigger "
 	          "than %d",
 	          requester_obj->instance, MAX_SHIPS);
@@ -13743,7 +13743,7 @@ int ship_find_repair_ship(object* requester_obj, object** ship_we_found)
 			ship_info* sip;
 			float dist;
 
-			Assertion((objp->instance >= 0) && (objp->instance < MAX_SHIPS),
+		core::Assertion((objp->instance >= 0) && (objp->instance < MAX_SHIPS),
 			          "objp does not have a valid pointer to a ship. Pointer is %d, which is smaller than 0 or bigger "
 			          "than %d",
 			          objp->instance, MAX_SHIPS);
@@ -13754,7 +13754,7 @@ int ship_find_repair_ship(object* requester_obj, object** ship_we_found)
 				continue;
 			}
 
-			Assertion((shipp->ship_info_index >= 0) && (shipp->ship_info_index < static_cast<int>(Ship_info.size())),
+		core::Assertion((shipp->ship_info_index >= 0) && (shipp->ship_info_index < static_cast<int>(Ship_info.size())),
 			          "Ship '%s' does not have a valid pointer to a ship class. Pointer is %d, which is smaller than 0 "
 			          "or bigger than %d",
 			          shipp->ship_name, shipp->ship_info_index, static_cast<int>(Ship_info.size()));
@@ -13774,7 +13774,7 @@ int ship_find_repair_ship(object* requester_obj, object** ship_we_found)
 			}
 
 			// Ship has been ordered to warpout but has not had a chance to process the order.
-			Assertion(
+		core::Assertion(
 			    (shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO),
 			    "Ship '%s' doesn't have a valid ai pointer. Pointer is %d, which is smaller than 0 or larger than %d",
 			    shipp->ship_name, shipp->ai_index, MAX_AI_INFO);
@@ -13911,7 +13911,7 @@ void ship_assign_sound(ship* sp)
 	vec3d engine_pos;
 	ship_subsys* moveup;
 
-	Assert(sp->objnum >= 0);
+core::Assert(sp->objnum >= 0);
 	if (sp->objnum < 0) {
 		return;
 	}
@@ -14263,7 +14263,7 @@ int ship_get_random_player_wing_ship(int flags, float max_dist, int persona_inde
 				break;
 
 			ship_index = Wings[wingnum].ship_index[j];
-			Assert(ship_index != -1);
+		core::Assert(ship_index != -1);
 
 			if (Ships[ship_index].flags[Ship_Flags::Dying]) {
 				continue;
@@ -14319,7 +14319,7 @@ int ship_get_random_player_wing_ship(int flags, float max_dist, int persona_inde
 	which_one  = (rand() % count);
 	ship_index = slist[which_one];
 
-	Assert(Ships[ship_index].objnum != -1);
+core::Assert(Ships[ship_index].objnum != -1);
 
 	return ship_index;
 }
@@ -14333,7 +14333,7 @@ int ship_get_random_ship_in_wing(int wingnum, int flags, float max_dist, int get
 	count = 0;
 	for (i = 0; i < Wings[wingnum].current_count; i++) {
 		ship_index = Wings[wingnum].ship_index[i];
-		Assert(ship_index != -1);
+	core::Assert(ship_index != -1);
 
 		if (Ships[ship_index].flags[Ship_Flags::Dying]) {
 			continue;
@@ -14374,7 +14374,7 @@ int ship_get_random_ship_in_wing(int wingnum, int flags, float max_dist, int get
 	which_one  = (rand() % count);
 	ship_index = slist[which_one];
 
-	Assert(Ships[ship_index].objnum != -1);
+core::Assert(Ships[ship_index].objnum != -1);
 
 	return ship_index;
 }
@@ -14431,7 +14431,7 @@ int ship_get_random_team_ship(int team_mask, int flags, float max_dist)
 	which_one = (rand() % num);
 	objp      = obj_list[which_one];
 
-	Assert(objp->instance != -1);
+core::Assert(objp->instance != -1);
 
 	return objp->instance;
 }
@@ -14447,13 +14447,13 @@ int ship_secondary_bank_has_ammo(int shipnum)
 {
 	ship_weapon* swp;
 
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
 	swp = &Ships[shipnum].weapons;
 
 	if (swp->current_secondary_bank == -1)
 		return 0;
 
-	Assert(swp->current_secondary_bank >= 0 && swp->current_secondary_bank < MAX_SHIP_SECONDARY_BANKS);
+core::Assert(swp->current_secondary_bank >= 0 && swp->current_secondary_bank < MAX_SHIP_SECONDARY_BANKS);
 	if (swp->secondary_bank_ammo[swp->current_secondary_bank] <= 0)
 		return 0;
 
@@ -14524,10 +14524,10 @@ int ship_return_subsys_path_normal(ship* shipp, ship_subsys* ss, vec3d* gsubpos,
 		vec3d* path_point;
 		vec3d gpath_point;
 		pm = model_get(Ship_info[shipp->ship_info_index].model_num);
-		Assert(pm != NULL);
+	core::Assert(pm != NULL);
 
 		// possibly a bad model?
-		Assertion(ss->system_info->path_num <= pm->n_paths,
+	core::Assertion(ss->system_info->path_num <= pm->n_paths,
 		          "Too many paths in '%s'!  Max is %i and the requested path was %i for subsystem '%s'!\n",
 		          pm->filename, pm->n_paths, ss->system_info->path_num, ss->system_info->subobj_name);
 		if (ss->system_info->path_num > pm->n_paths)
@@ -14629,7 +14629,7 @@ ship_subsys* ship_return_next_subsys(ship* shipp, int type, vec3d* attacker_pos)
 {
 	ship_subsys* ssp;
 
-	Assert(type >= 0 && type < SUBSYSTEM_MAX);
+core::Assert(type >= 0 && type < SUBSYSTEM_MAX);
 
 	// If aggregate total is 0, that means no subsystem is alive of that type
 	if (shipp->subsys_info[type].aggregate_max_hits <= 0.0f)
@@ -14645,7 +14645,7 @@ ship_subsys* ship_return_next_subsys(ship* shipp, int type, vec3d* attacker_pos)
 // Returns null if all subsystems of that type are destroyed or none is in sight.
 ship_subsys* ship_get_closest_subsys_in_sight(ship* sp, int subsys_type, vec3d* attacker_pos)
 {
-	Assert(subsys_type >= 0 && subsys_type < SUBSYSTEM_MAX);
+core::Assert(subsys_type >= 0 && subsys_type < SUBSYSTEM_MAX);
 
 	// If aggregate total is 0, that means no subsystem is alive of that type
 	if (sp->subsys_info[subsys_type].aggregate_max_hits <= 0.0f)
@@ -14724,7 +14724,7 @@ float ship_quadrant_shield_strength(object* hit_objp, int quadrant_num)
 		return 0.0f;
 	}
 
-	Assertion(
+core::Assertion(
 	    quadrant_num < hit_objp->n_quadrants,
 	    "ship_quadrant_shield_strength() called with a quadrant of %d on a ship with %d quadrants; get a coder!\n",
 	    quadrant_num, hit_objp->n_quadrants);
@@ -14764,18 +14764,18 @@ static int ship_has_homing_missile_locked(ship* shipp)
 	weapon_info* wip;
 	missile_obj* mo;
 
-	Assert(shipp->objnum >= 0 && shipp->objnum < MAX_OBJECTS);
+core::Assert(shipp->objnum >= 0 && shipp->objnum < MAX_OBJECTS);
 	locked_objp = &Objects[shipp->objnum];
 
 	// check for currently locked missiles (highest precedence)
 	for (mo = GET_NEXT(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo)) {
-		Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+	core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 		A = &Objects[mo->objnum];
 
 		if (A->type != OBJ_WEAPON)
 			continue;
 
-		Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
+	core::Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
 		wp  = &Weapons[A->instance];
 		wip = &Weapon_info[wp->weapon_info_index];
 
@@ -14904,7 +14904,7 @@ std::string ship_return_orders(ship* sp)
 	ai_info* aip;
 	ai_goal* aigp;
 
-	Assert(sp->ai_index >= 0);
+core::Assert(sp->ai_index >= 0);
 	aip = &Ai_info[sp->ai_index];
 
 	// The active goal is always in the first element of aip->goals[]
@@ -15017,7 +15017,7 @@ char* ship_return_time_to_goal(char* outbuf, ship* sp)
 	if (aip->mode == AIM_WAYPOINTS) {
 		min_speed = 0.9f * max_speed;
 		if (aip->wp_list != NULL) {
-			Assert(aip->wp_index != INVALID_WAYPOINT_POSITION);
+		core::Assert(aip->wp_index != INVALID_WAYPOINT_POSITION);
 			dist += vm_vec_dist_quick(&objp->pos, aip->wp_list->get_waypoints()[aip->wp_index].get_pos());
 
 			std::vector<waypoint>::iterator ii;
@@ -15739,7 +15739,7 @@ void ship_primary_changed(ship* sp)
 	if ( !(Game_mode & GM_MULTIPLAYER) )
 		return;
 
-	Assert(sp);
+core::Assert(sp);
 
 	if ( MULTIPLAYER_MASTER )
 		send_ship_weapon_change( sp, MULTI_PRIMARY_CHANGED, swp->current_primary_bank, (sp->flags[Ship::Ship_Flags::Primary_linked])?1:0 );
@@ -15751,7 +15751,7 @@ void ship_primary_changed(ship* sp)
 // input:	sp					=>	pointer to ship that modified secondaries
 void ship_secondary_changed(ship* sp)
 {
-	Assert(sp != NULL);
+core::Assert(sp != NULL);
 
 	int i;
 	ship_weapon* swp = &sp->weapons;
@@ -15786,7 +15786,7 @@ void ship_secondary_changed(ship* sp)
 		return;
 	}
 
-	Assert(sp);
+core::Assert(sp);
 
 	if ( MULTIPLAYER_MASTER )
 		send_ship_weapon_change( sp, MULTI_SECONDARY_CHANGED, swp->current_secondary_bank, (sp->flags[Ship::Ship_Flags::Secondary_dual_fire])?1:0 );
@@ -15814,11 +15814,11 @@ int ship_get_by_signature(int signature)
 
 ship_type_info* ship_get_type_info(object* objp)
 {
-	Assert(objp != NULL);
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance > -1);
-	Assert(Ships[objp->instance].ship_info_index > -1);
-	Assert(Ship_info[Ships[objp->instance].ship_info_index].class_type > -1);
+core::Assert(objp != NULL);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance > -1);
+core::Assert(Ships[objp->instance].ship_info_index > -1);
+core::Assert(Ship_info[Ships[objp->instance].ship_info_index].class_type > -1);
 
 	return &Ship_types[Ship_info[Ships[objp->instance].ship_info_index].class_type];
 }
@@ -15960,7 +15960,7 @@ int get_max_ammo_count_for_primary_bank(int ship_class, int bank, int ammo_type)
 
 	capacity = (float)Ship_info[ship_class].primary_bank_ammo_capacity[bank];
 	size     = (float)Weapon_info[ammo_type].cargo_size;
-	Assertion(size > 0.0f, "Weapon cargo size for %s must be greater than 0!", Weapon_info[ammo_type].name);
+core::Assertion(size > 0.0f, "Weapon cargo size for %s must be greater than 0!", Weapon_info[ammo_type].name);
 	return (int)std::lround(capacity / size);
 }
 
@@ -15971,12 +15971,12 @@ int get_max_ammo_count_for_bank(int ship_class, int bank, int ammo_type)
 {
 	float capacity, size;
 
-	Assertion(ship_class < static_cast<int>(Ship_info.size()),
+core::Assertion(ship_class < static_cast<int>(Ship_info.size()),
 	          "Invalid ship_class of %d is >= Ship_info.size() (%d); get a coder!\n", ship_class,
 	          static_cast<int>(Ship_info.size()));
-	Assertion(bank < MAX_SHIP_SECONDARY_BANKS, "Invalid secondary bank of %d (max is %d); get a coder!\n", bank,
+core::Assertion(bank < MAX_SHIP_SECONDARY_BANKS, "Invalid secondary bank of %d (max is %d); get a coder!\n", bank,
 	          MAX_SHIP_SECONDARY_BANKS - 1);
-	Assertion(ammo_type < Num_weapon_types, "Invalid ammo_type of %d is >= Num_weapon_types (%d); get a coder!\n",
+core::Assertion(ammo_type < Num_weapon_types, "Invalid ammo_type of %d is >= Num_weapon_types (%d); get a coder!\n",
 	          ammo_type, Num_weapon_types);
 
 	if (ship_class < 0 || bank < 0 || ammo_type < 0) {
@@ -15984,7 +15984,7 @@ int get_max_ammo_count_for_bank(int ship_class, int bank, int ammo_type)
 	} else {
 		capacity = (float)Ship_info[ship_class].secondary_bank_ammo_capacity[bank];
 		size     = (float)Weapon_info[ammo_type].cargo_size;
-		Assertion(size > 0.0f, "Weapon cargo size for %s must be greater than 0!", Weapon_info[ammo_type].name);
+	core::Assertion(size > 0.0f, "Weapon cargo size for %s must be greater than 0!", Weapon_info[ammo_type].name);
 		return fl2ir(capacity / size);
 	}
 }
@@ -15996,9 +15996,9 @@ int get_max_ammo_count_for_turret_bank(ship_weapon* swp, int bank, int ammo_type
 {
 	float capacity, size;
 
-	Assertion(bank < MAX_SHIP_SECONDARY_BANKS, "Invalid secondary bank of %d (max is %d); get a coder!\n", bank,
+core::Assertion(bank < MAX_SHIP_SECONDARY_BANKS, "Invalid secondary bank of %d (max is %d); get a coder!\n", bank,
 	          MAX_SHIP_SECONDARY_BANKS - 1);
-	Assertion(ammo_type < Num_weapon_types, "Invalid ammo_type of %d is >= Num_weapon_types (%d); get a coder!\n",
+core::Assertion(ammo_type < Num_weapon_types, "Invalid ammo_type of %d is >= Num_weapon_types (%d); get a coder!\n",
 	          ammo_type, Num_weapon_types);
 
 	if (!swp || bank < 0 || ammo_type < 0) {
@@ -16179,7 +16179,7 @@ void ship_page_in()
 				// the model should already be loaded so this wouldn't take long, but
 				// we need to make sure that the load count for the model is correct
 				test_id = model_load(sip->pof_file, sip->n_subsystems, &sip->subsystems[0]);
-				Assert(test_id == model_previously_loaded);
+			core::Assert(test_id == model_previously_loaded);
 
 				break;
 			}
@@ -16214,8 +16214,8 @@ void ship_page_in()
 #endif
 			} else {
 				// Just to be safe (I mean to check that my code works...)
-				Assert(sip->model_num >= 0);
-				Assert(sip->model_num == model_previously_loaded);
+			core::Assert(sip->model_num >= 0);
+			core::Assert(sip->model_num == model_previously_loaded);
 
 #ifndef NDEBUG
 				for (j = 0; j < sip->n_subsystems; j++) {
@@ -16237,12 +16237,12 @@ void ship_page_in()
 			// Model not loaded, so load it
 			sip->model_num = model_load(sip->pof_file, sip->n_subsystems, &sip->subsystems[0]);
 
-			Assert(sip->model_num >= 0);
+		core::Assert(sip->model_num >= 0);
 
 #ifndef NDEBUG
 			// Verify that all the subsystem model numbers are updated
 			for (j = 0; j < sip->n_subsystems; j++)
-				Assertion(sip->subsystems[j].model_num == sip->model_num,
+			core::Assertion(sip->subsystems[j].model_num == sip->model_num,
 				          "Model reference for subsystem %s (model num: %d) on model %s (model num: %d) is invalid.\n",
 				          sip->subsystems[j].name, sip->subsystems[j].model_num, sip->pof_file, sip->model_num); // JAS
 #endif
@@ -16484,7 +16484,7 @@ int is_support_allowed(object* objp, bool do_simple_check)
 			// arriving
 			if ((The_mission.support_ships.tally >= The_mission.support_ships.max_support_ships)) {
 				// this shouldn't happen because we've reached one of the limits
-				Assert(result != 2);
+			core::Assert(result != 2);
 
 				// nothing arriving and no ships available in mission
 				if ((Arriving_support_ship == NULL) && (result == 0 || result == 3))
@@ -16499,7 +16499,7 @@ int is_support_allowed(object* objp, bool do_simple_check)
 	if (!do_simple_check) {
 		// make sure, if exiting from bay, that parent ship is in the mission!
 		if ((result == 0 || result == 2) && (The_mission.support_ships.arrival_location == ARRIVE_FROM_DOCK_BAY)) {
-			Assert(The_mission.support_ships.arrival_anchor != -1);
+		core::Assert(The_mission.support_ships.arrival_anchor != -1);
 
 			// ensure it's in-mission
 			int temp = ship_name_lookup(Parse_names[The_mission.support_ships.arrival_anchor]);
@@ -16604,8 +16604,8 @@ int ship_get_random_targetable_ship()
 void object_jettison_cargo(object* objp, object* cargo_objp, float jettison_speed, bool jettison_new)
 {
 	// make sure we are docked
-	Assert((objp != NULL) && (cargo_objp != NULL));
-	Assert(dock_check_find_direct_docked_object(objp, cargo_objp));
+core::Assert((objp != NULL) && (cargo_objp != NULL));
+core::Assert(dock_check_find_direct_docked_object(objp, cargo_objp));
 
 	vec3d impulse, pos;
 	ship* shipp       = &Ships[objp->instance];
@@ -16659,7 +16659,7 @@ void object_jettison_cargo(object* objp, object* cargo_objp, float jettison_spee
 
 float ship_get_exp_damage(object* objp)
 {
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	float damage;
 
 	ship* shipp = &Ships[objp->instance];
@@ -16678,7 +16678,7 @@ static int ship_get_exp_propagates(ship* sp) { return Ship_info[sp->ship_info_in
 float ship_get_exp_outer_rad(object* ship_objp)
 {
 	float outer_rad;
-	Assert(ship_objp->type == OBJ_SHIP);
+core::Assert(ship_objp->type == OBJ_SHIP);
 
 	if (Ships[ship_objp->instance].special_exp_outer == -1) {
 		outer_rad = Ship_info[Ships[ship_objp->instance].ship_info_index].shockwave.outer_rad;
@@ -16734,7 +16734,7 @@ ship_subsys* ship_get_subsys(ship* shipp, const char* subsys_name)
 
 int ship_get_num_subsys(ship* shipp)
 {
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 
 	return Ship_info[shipp->ship_info_index].n_subsystems;
 }
@@ -16745,20 +16745,20 @@ int wing_has_conflicting_teams(int wing_index)
 	int first_team, idx;
 
 	// sanity checks
-	Assert((wing_index >= 0) && (wing_index < Num_wings) && (Wings[wing_index].wave_count > 0));
+core::Assert((wing_index >= 0) && (wing_index < Num_wings) && (Wings[wing_index].wave_count > 0));
 	if ((wing_index < 0) || (wing_index >= Num_wings) || (Wings[wing_index].wave_count <= 0)) {
 		return -1;
 	}
 
 	// check teams
-	Assert(Wings[wing_index].ship_index[0] >= 0);
+core::Assert(Wings[wing_index].ship_index[0] >= 0);
 	if (Wings[wing_index].ship_index[0] < 0) {
 		return -1;
 	}
 	first_team = Ships[Wings[wing_index].ship_index[0]].team;
 	for (idx = 1; idx < Wings[wing_index].wave_count; idx++) {
 		// more sanity checks
-		Assert(Wings[wing_index].ship_index[idx] >= 0);
+	core::Assert(Wings[wing_index].ship_index[idx] >= 0);
 		if (Wings[wing_index].ship_index[idx] < 0) {
 			return -1;
 		}
@@ -16782,7 +16782,7 @@ int ship_get_reinforcement_team(int r_index)
 	p_object* p_objp;
 
 	// sanity checks
-	Assert((r_index >= 0) && (r_index < Num_reinforcements));
+core::Assert((r_index >= 0) && (r_index < Num_reinforcements));
 	if ((r_index < 0) || (r_index >= Num_reinforcements))
 		return -1;
 
@@ -16854,15 +16854,15 @@ void ship_update_artillery_lock()
 		}
 
 		// get weapon info for the targeting laser he's firing
-		Assert((shipp->weapons.current_primary_bank >= 0) && (shipp->weapons.current_primary_bank < 2));
+	core::Assert((shipp->weapons.current_primary_bank >= 0) && (shipp->weapons.current_primary_bank < 2));
 		if ((shipp->weapons.current_primary_bank < 0) || (shipp->weapons.current_primary_bank >= 2)) {
 			continue;
 		}
-		Assert(shipp->weapons.primary_bank_weapons[shipp->weapons.current_primary_bank] >= 0);
+	core::Assert(shipp->weapons.primary_bank_weapons[shipp->weapons.current_primary_bank] >= 0);
 		if (shipp->weapons.primary_bank_weapons[shipp->weapons.current_primary_bank] < 0) {
 			continue;
 		}
-		Assert(
+	core::Assert(
 		    (Weapon_info[shipp->weapons.primary_bank_weapons[shipp->weapons.current_primary_bank]]
 		         .wi_flags[Weapon::Info_Flags::Beam]) &&
 		    (Weapon_info[shipp->weapons.primary_bank_weapons[shipp->weapons.current_primary_bank]].b_info.beam_type ==
@@ -16924,7 +16924,7 @@ void ship_update_artillery_lock()
  */
 int check_world_pt_in_expanded_ship_bbox(vec3d* world_pt, object* objp, float delta_box)
 {
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 
 	vec3d temp, ship_pt;
 	polymodel* pm;
@@ -16986,7 +16986,7 @@ float ship_get_max_speed(ship* shipp)
  */
 float ship_get_warpout_speed(object* objp, ship_info* sip, float half_length, float warping_dist)
 {
-	Assert(objp != nullptr && objp->type == OBJ_SHIP);
+core::Assert(objp != nullptr && objp->type == OBJ_SHIP);
 
 	// certain places in the code don't precalculate these variables
 	if (sip == nullptr) {
@@ -17026,7 +17026,7 @@ float ship_get_warpout_speed(object* objp, ship_info* sip, float half_length, fl
  */
 int ship_is_beginning_warpout_speedup(object* objp)
 {
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 
 	ai_info* aip;
 
@@ -17046,14 +17046,14 @@ int ship_is_beginning_warpout_speedup(object* objp)
  */
 float ship_class_get_length(const ship_info* sip)
 {
-	Assert(sip != nullptr);
-	Assert(sip->model_num >= 0);
+core::Assert(sip != nullptr);
+core::Assert(sip->model_num >= 0);
 
 	polymodel* pm = model_get(sip->model_num);
-	Assert(pm != nullptr);
+core::Assert(pm != nullptr);
 
 	float length = pm->maxs.xyz.z - pm->mins.xyz.z;
-	Assert(length > 0.0f);
+core::Assert(length > 0.0f);
 
 	return length;
 }
@@ -17064,8 +17064,8 @@ float ship_class_get_length(const ship_info* sip)
  */
 void ship_class_get_actual_center(const ship_info* sip, vec3d* center_pos)
 {
-	Assert(sip != nullptr && center_pos != nullptr);
-	Assert(sip->model_num >= 0);
+core::Assert(sip != nullptr && center_pos != nullptr);
+core::Assert(sip->model_num >= 0);
 
 	polymodel* pm     = model_get(sip->model_num);
 	center_pos->xyz.x = (pm->maxs.xyz.x + pm->mins.xyz.x) * 0.5f;
@@ -17076,8 +17076,8 @@ void ship_class_get_actual_center(const ship_info* sip, vec3d* center_pos)
 // Goober5000
 void ship_set_new_ai_class(int ship_num, int new_ai_class)
 {
-	Assert(ship_num >= 0 && ship_num < MAX_SHIPS);
-	Assert(new_ai_class >= 0);
+core::Assert(ship_num >= 0 && ship_num < MAX_SHIPS);
+core::Assert(new_ai_class >= 0);
 
 	ai_info* aip = &Ai_info[Ships[ship_num].ai_index];
 
@@ -17094,9 +17094,9 @@ void ship_set_new_ai_class(int ship_num, int new_ai_class)
 // Goober5000
 void ship_subsystem_set_new_ai_class(int ship_num, char* subsystem, int new_ai_class)
 {
-	Assert(ship_num >= 0 && ship_num < MAX_SHIPS);
-	Assert(subsystem);
-	Assert(new_ai_class >= 0);
+core::Assert(ship_num >= 0 && ship_num < MAX_SHIPS);
+core::Assert(subsystem);
+core::Assert(new_ai_class >= 0);
 
 	ship_subsys* ss;
 
@@ -17124,7 +17124,7 @@ void wing_load_squad_bitmap(wing* w)
 	}
 
 	// make sure one is not already set?!?
-	Assert(w->wing_insignia_texture == -1);
+core::Assert(w->wing_insignia_texture == -1);
 
 	// try and set the new one
 	if (w->wing_squad_filename[0] != '\0') {
@@ -17144,12 +17144,12 @@ void wing_load_squad_bitmap(wing* w)
 // check whether this ship has a docking bay
 bool ship_has_dock_bay(int shipnum)
 {
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
 
 	polymodel* pm;
 
 	pm = model_get(Ship_info[Ships[shipnum].ship_info_index].model_num);
-	Assert(pm);
+core::Assert(pm);
 
 	return (pm->ship_bay && (pm->ship_bay->num_paths > 0));
 }
@@ -17157,7 +17157,7 @@ bool ship_has_dock_bay(int shipnum)
 // Goober5000
 bool ship_useful_for_departure(int shipnum, int /*path_mask*/)
 {
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
 
 	// not valid if dying or departing
 	if (Ships[shipnum].is_dying_or_departing())
@@ -17187,9 +17187,9 @@ bool ship_useful_for_departure(int shipnum, int /*path_mask*/)
 int ship_get_ship_for_departure(int team)
 {
 	for (ship_obj* so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so)) {
-		Assert(so->objnum >= 0);
+	core::Assert(so->objnum >= 0);
 		int shipnum = Objects[so->objnum].instance;
-		Assert(shipnum >= 0);
+	core::Assert(shipnum >= 0);
 
 		if ((Ships[shipnum].team == team) && ship_useful_for_departure(shipnum))
 			return shipnum;
@@ -17202,7 +17202,7 @@ int ship_get_ship_for_departure(int team)
 // Goober5000 - check if all fighterbays on a ship have been destroyed
 bool ship_fighterbays_all_destroyed(ship* shipp)
 {
-	Assert(shipp);
+core::Assert(shipp);
 	ship_subsys* subsys;
 	int num_fighterbay_subsystems = 0;
 
@@ -17239,7 +17239,7 @@ bool ship_fighterbays_all_destroyed(ship* shipp)
 // moved here by Goober5000
 static bool ship_subsys_is_fighterbay(ship_subsys* ss)
 {
-	Assert(ss);
+core::Assert(ss);
 
 	if (!strnicmp(NOX("fighter"), ss->system_info->name, 7)) {
 		return true;
@@ -17251,7 +17251,7 @@ static bool ship_subsys_is_fighterbay(ship_subsys* ss)
 // Goober5000
 bool ship_subsys_takes_damage(ship_subsys* ss)
 {
-	Assert(ss);
+core::Assert(ss);
 
 	return (ss->max_hits > SUBSYS_MAX_HITS_THRESHOLD);
 }
@@ -17259,9 +17259,9 @@ bool ship_subsys_takes_damage(ship_subsys* ss)
 // Goober5000
 void ship_do_submodel_rotation(ship* shipp, model_subsystem* psub, ship_subsys* pss)
 {
-	Assert(shipp);
-	Assert(psub);
-	Assert(pss);
+core::Assert(shipp);
+core::Assert(psub);
+core::Assert(pss);
 
 	// check if we actually can rotate
 	if (!(pss->flags[Ship::Subsystem_Flags::Rotates])) {
@@ -18280,14 +18280,14 @@ void init_path_metadata(path_metadata& metadata)
 
 gamesnd_id ship_get_sound(object* objp, GameSounds id)
 {
-	Assert(objp != NULL);
-	Assert(gamesnd_game_sound_valid(gamesnd_id(id)));
+core::Assert(objp != NULL);
+core::Assert(gamesnd_game_sound_valid(gamesnd_id(id)));
 
 	// It's possible that this gets called when an object (in most cases the player) is dead or an observer
 	if (objp->type == OBJ_OBSERVER || objp->type == OBJ_GHOST)
 		return gamesnd_id(id);
 
-	Assertion(objp->type == OBJ_SHIP, "Expected a ship, got '%s'.", Object_type_names[objp->type]);
+core::Assertion(objp->type == OBJ_SHIP, "Expected a ship, got '%s'.", Object_type_names[objp->type]);
 
 	ship* shipp    = &Ships[objp->instance];
 	ship_info* sip = &Ship_info[shipp->ship_info_index];
@@ -18302,14 +18302,14 @@ gamesnd_id ship_get_sound(object* objp, GameSounds id)
 
 bool ship_has_sound(object* objp, GameSounds id)
 {
-	Assert(objp != NULL);
-	Assert(gamesnd_game_sound_valid(id));
+core::Assert(objp != NULL);
+core::Assert(gamesnd_game_sound_valid(id));
 
 	// It's possible that this gets called when an object (in most cases the player) is dead or an observer
 	if (objp->type == OBJ_OBSERVER || objp->type == OBJ_GHOST)
 		return false;
 
-	Assertion(objp->type == OBJ_SHIP, "Expected a ship, got '%s'.", Object_type_names[objp->type]);
+core::Assertion(objp->type == OBJ_SHIP, "Expected a ship, got '%s'.", Object_type_names[objp->type]);
 
 	ship* shipp    = &Ships[objp->instance];
 	ship_info* sip = &Ship_info[shipp->ship_info_index];
@@ -18952,6 +18952,6 @@ bool ship::is_arriving(ship::warpstage stage, bool dock_leader_or_single)
 	}
 
 	// should never reach here
-	Assertion(false, "ship::is_arriving didn't handle all possible states; get a coder!");
+core::Assertion(false, "ship::is_arriving didn't handle all possible states; get a coder!");
 	return false;
 }

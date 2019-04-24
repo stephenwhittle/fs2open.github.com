@@ -1001,7 +1001,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 			}
 		}
 	} else {
-		Assert(ptr != NULL);
+	core::Assert(ptr != NULL);
 
 		// NOTE: The "ptr+5" is to skip over the initial "????-" in the video string.
 		//       If the format of that string changes you'll have to change this too!!!
@@ -1262,9 +1262,9 @@ void gr_init_alphacolor( color *clr, int r, int g, int b, int alpha, int type )
 
 void gr_set_color( int r, int g, int b )
 {
-	Assert((r >= 0) && (r < 256));
-	Assert((g >= 0) && (g < 256));
-	Assert((b >= 0) && (b < 256));
+core::Assert((r >= 0) && (r < 256));
+core::Assert((g >= 0) && (g < 256));
+core::Assert((b >= 0) && (b < 256));
 
 	gr_init_color( &gr_screen.current_color, r, g, b );	
 }
@@ -1888,7 +1888,7 @@ void poly_list::calculate_tangent()
 		return;
 	}
 
-	Assert( !(n_verts % 3) );
+core::Assert( !(n_verts % 3) );
 
 	for (int i = 0; i < n_verts; i += 3) {
 		// vertex (reading)
@@ -1975,7 +1975,7 @@ void poly_list::make_index_buffer(std::vector<int> &vertex_list)
 	// using vm_malloc() here rather than 'new' so we get the extra out-of-memory check
 	nverts_good = (ubyte *) vm_malloc(n_verts);
 
-    Assert( nverts_good != NULL );
+   core::Assert( nverts_good != NULL );
 	if ( nverts_good == NULL )
 		return;
     
@@ -2023,7 +2023,7 @@ void poly_list::make_index_buffer(std::vector<int> &vertex_list)
 		z++;
 	}
 
-	Assert(nverts == buffer_list_internal.n_verts);
+core::Assert(nverts == buffer_list_internal.n_verts);
 
 	if (nverts_good != NULL) {
 		vm_free(nverts_good);
@@ -2070,12 +2070,12 @@ bool poly_list::finder::operator()(const uint a, const uint b)
 	vec3d *norm_a;
 	vec3d *norm_b;
 
-	Assert(search_list != NULL);
+core::Assert(search_list != NULL);
 
 	if ( a == (uint)search_list->n_verts ) {
-		Assert(vert_to_find != NULL);
-		Assert(norm_to_find != NULL);
-		Assert(a != b);
+	core::Assert(vert_to_find != NULL);
+	core::Assert(norm_to_find != NULL);
+	core::Assert(a != b);
 
 		vert_a = vert_to_find;
 		norm_a = norm_to_find;
@@ -2085,9 +2085,9 @@ bool poly_list::finder::operator()(const uint a, const uint b)
 	}
 	
 	if ( b == (uint)search_list->n_verts ) {
-		Assert(vert_to_find != NULL);
-		Assert(norm_to_find != NULL);
-		Assert(a != b);
+	core::Assert(vert_to_find != NULL);
+	core::Assert(norm_to_find != NULL);
+	core::Assert(a != b);
 
 		vert_b = vert_to_find;
 		norm_b = norm_to_find;
@@ -2294,7 +2294,7 @@ bool vertex_layout::resident_vertex_format(vertex_format_data::vertex_format for
 }
 void vertex_layout::add_vertex_component(vertex_format_data::vertex_format format_type, size_t stride, size_t offset) {
 	// A stride value of 0 is not handled consistently by the graphics API so we must enforce that that does not happen
-	Assertion(stride != 0, "The stride of a vertex component may not be zero!");
+core::Assertion(stride != 0, "The stride of a vertex component may not be zero!");
 
 	if ( resident_vertex_format(format_type) ) {
 		// we already have a vertex component of this format type
@@ -2306,7 +2306,7 @@ void vertex_layout::add_vertex_component(vertex_format_data::vertex_format forma
 		Vertex_stride = stride;
 	}
 
-	Assertion(Vertex_stride == stride, "The strides of all elements must be the same in a vertex layout!");
+core::Assertion(Vertex_stride == stride, "The strides of all elements must be the same in a vertex layout!");
 
 	Vertex_mask |= (1 << format_type);
 	Vertex_components.push_back(vertex_format_data(format_type, stride, offset));
@@ -2352,7 +2352,7 @@ static void gpu_heap_deinit() {
 }
 
 static graphics::util::GPUMemoryHeap* get_gpu_heap(GpuHeap heap_type) {
-	Assertion(heap_type != GpuHeap::NUM_VALUES, "Invalid heap type value detected.");
+core::Assertion(heap_type != GpuHeap::NUM_VALUES, "Invalid heap type value detected.");
 
 	return gpu_heaps[static_cast<size_t>(heap_type)].get();
 }

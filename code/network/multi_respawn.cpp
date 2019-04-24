@@ -153,7 +153,7 @@ void multi_respawn_check(object *objp)
 						break;
 					}
 				}
-				Assert( i < MAX_AI_RESPAWNS );
+			core::Assert( i < MAX_AI_RESPAWNS );
 			}
 		}
 
@@ -164,8 +164,8 @@ void multi_respawn_check(object *objp)
 		pl->s_info.rate_stamp = timestamp( (int)(1000.0f / (float)OO_gran) );
 	}
 
-	Assert( pl != NULL );
-	Assert( pobjp );				// we have a player, and we should have a record of it.
+core::Assert( pl != NULL );
+core::Assert( pobjp );				// we have a player, and we should have a record of it.
 	
 	// mark the player as in the state of respawning
 	if( (pobjp->respawn_count < Netgame.respawn) || (Netgame.type_flags & NG_TYPE_DOGFIGHT) ){
@@ -218,8 +218,8 @@ void multi_respawn_player_leave(net_player *pl)
 void multi_respawn_normal()
 {
 	// make sure we should be respawning and _not_ as an observer
-	Assert((Net_player->flags & NETINFO_FLAG_RESPAWNING));
-	Assert(!(Net_player->flags & NETINFO_FLAG_LIMBO));
+core::Assert((Net_player->flags & NETINFO_FLAG_RESPAWNING));
+core::Assert(!(Net_player->flags & NETINFO_FLAG_LIMBO));
 	
 	// server respawns immediately
 	if(Net_player->flags & NETINFO_FLAG_AM_MASTER){
@@ -234,7 +234,7 @@ void multi_respawn_normal()
 void multi_respawn_observer()
 {
 	// make sure we should be respawning as an observer 
-	Assert(!(Net_player->flags & NETINFO_FLAG_RESPAWNING) && (Net_player->flags & NETINFO_FLAG_LIMBO));
+core::Assert(!(Net_player->flags & NETINFO_FLAG_RESPAWNING) && (Net_player->flags & NETINFO_FLAG_LIMBO));
 
 	// respawn as an observer
 	multi_respawn_as_observer();
@@ -313,7 +313,7 @@ void multi_respawn_wing_stuff(ship *shipp)
 	wing *wingp;
 
 	// deal with re-adding this ship to it's wing
-	Assert( shipp->wingnum != -1 );
+core::Assert( shipp->wingnum != -1 );
 	wingp = &Wings[shipp->wingnum];
 	wingp->ship_index[wingp->current_count] = SHIP_INDEX(shipp);
 	wingp->current_count++;
@@ -330,14 +330,14 @@ int multi_respawn_common_stuff(p_object *pobjp)
 
 	// create the object
 	objnum = parse_create_object(pobjp);
-	Assert(objnum != -1);
+core::Assert(objnum != -1);
 	objp = &Objects[objnum];
 
 	// get the team and slot
 	shipp = &Ships[objp->instance];
 	multi_ts_get_team_and_slot(shipp->ship_name, &team, &slot_index);
-	Assert( team != -1 );
-	Assert( slot_index != -1 );
+core::Assert( team != -1 );
+core::Assert( slot_index != -1 );
 
 	// reset object update stuff
 	for(idx=0; idx<MAX_PLAYERS; idx++){
@@ -375,13 +375,13 @@ void multi_respawn_player(net_player *pl, char cur_primary_bank, char cur_second
 
 	// try and find the parse object
 	pobjp = mission_parse_get_arrival_ship(parse_name);		
-	Assert(pobjp != NULL);
+core::Assert(pobjp != NULL);
 	if(pobjp == NULL){
 		return;
 	}
 	objnum = multi_respawn_common_stuff(pobjp);
 
-	Assert( objnum != -1 );
+core::Assert( objnum != -1 );
 	objp = &Objects[objnum];
 	shipp = &Ships[objp->instance];	
 
@@ -437,7 +437,7 @@ void multi_respawn_player(net_player *pl, char cur_primary_bank, char cur_second
         shipp->flags.remove(Ship::Ship_Flags::Secondary_dual_fire);
     }
 
-	Assert( ship_ets != 0 );		// find dave or allender
+core::Assert( ship_ets != 0 );		// find dave or allender
 
 	// restore the correct ets settings
 	shipp->shield_recharge_index = ((ship_ets & 0x0f00) >> 8);
@@ -562,7 +562,7 @@ void multi_respawn_send_ai_respawn( ushort net_signature )
 	ADD_USHORT( net_signature );
 
 	// broadcast the packet to all players
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 	multi_io_send_to_all_reliable(data, packet_size);	
 }
 
@@ -594,7 +594,7 @@ void multi_respawn_broadcast(net_player *np)
 	vec3d pos;
 
 	// broadcast the packet to all players
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 	signature = Objects[np->m_player->objnum].net_signature;
 	pos = Objects[np->m_player->objnum].pos;
@@ -614,7 +614,7 @@ void multi_respawn_broadcast(net_player *np)
 	ADD_USHORT(np->s_info.ship_ets);
 	ADD_STRING(np->p_info.p_objp->name);
 
-	Assert( np->s_info.ship_ets != 0 );		// find dave or allender
+core::Assert( np->s_info.ship_ets != 0 );		// find dave or allender
 
 	multi_io_send_to_all_reliable(data, packet_size);
 }
@@ -648,7 +648,7 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 
 		GET_USHORT( net_sig );
 		pobjp = mission_parse_get_arrival_ship( net_sig );
-		Assert( pobjp != NULL );
+	core::Assert( pobjp != NULL );
 		multi_respawn_ai( pobjp );
 		break;		
 
@@ -707,7 +707,7 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 		// respawn him as normal
 		else {						
 			// create his new ship, and change him from respawning to respawned
-			Assert(Net_players[player_index].p_info.p_objp != NULL);
+		core::Assert(Net_players[player_index].p_info.p_objp != NULL);
 			if(Net_players[player_index].p_info.p_objp != NULL){
 				multi_respawn_player(&Net_players[player_index], Net_players[player_index].s_info.cur_primary_bank, Net_players[player_index].s_info.cur_secondary_bank,Net_players[player_index].s_info.cur_link_status, Net_players[player_index].s_info.ship_ets, 0, Net_players[player_index].p_info.p_objp->name);
 			}			
@@ -721,7 +721,7 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 // respawn the server immediately
 void multi_respawn_server()
 {	
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 	// respawn me
 	multi_respawn_player(Net_player, Net_player->s_info.cur_primary_bank, Net_player->s_info.cur_secondary_bank, Net_player->s_info.cur_link_status, Net_player->s_info.ship_ets, 0, Net_player->p_info.p_objp->name);
@@ -838,7 +838,7 @@ void multi_respawn_place(object *new_obj, int team)
 	}
 	// otherwise, resort to plain respawn points
 	else {
-		Assert(Multi_respawn_point_count > 0);
+	core::Assert(Multi_respawn_point_count > 0);
 		
 		// get the next appropriate respawn point by team
 		lookup = 0;		
@@ -933,8 +933,8 @@ void prevent_spawning_collision(object *new_obj)
 
 			hit_check = &Objects[moveup->objnum];
 
-			Assert(hit_check->type == OBJ_SHIP);
-			Assert(hit_check->instance >= 0);
+		core::Assert(hit_check->type == OBJ_SHIP);
+		core::Assert(hit_check->instance >= 0);
 			if ((hit_check->type != OBJ_SHIP) || (hit_check->instance < 0))
 				continue;
 

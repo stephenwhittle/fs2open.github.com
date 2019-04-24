@@ -138,7 +138,7 @@ luacpp::LuaValue LuaSEXP::sexpToLua(int node, int argnum) const {
 		auto sexp_variable_index = atoi(Sexp_nodes[node].text);
 
 		// verify variable set
-		Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+	core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 		// Add the variable to the parameter list as a SEXPVariable object handle
 		return LuaValue::createValue(_action.getLuaState(), l_SEXPVariable.Set(sexpvar_h(sexp_variable_index)));
@@ -165,7 +165,7 @@ luacpp::LuaValue LuaSEXP::sexpToLua(int node, int argnum) const {
 		auto objp = &Objects[Ships[ship_id].objnum];
 
 		// The other SEXP code does not validate the object type so this should be safe
-		Assertion(objp->type == OBJ_SHIP,
+	core::Assertion(objp->type == OBJ_SHIP,
 				  "Ship '%s' was found in the Ships array but has a different object type in the Objects array. Get a coder!",
 				  CTEXT(node));
 
@@ -454,7 +454,7 @@ void LuaSEXP::parseTable() {
 	_help_text = help_text.str();
 }
 void LuaSEXP::setAction(const luacpp::LuaFunction& action) {
-	Assertion(action.isValid(), "Invalid function handle supplied!");
+core::Assertion(action.isValid(), "Invalid function handle supplied!");
 	_action = action;
 }
 

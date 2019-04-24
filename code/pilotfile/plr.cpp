@@ -748,7 +748,7 @@ bool pilotfile::load_player(const char* callsign, player* _p, bool force_binary)
 	p = _p;
 
 	if ( !p ) {
-		Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
+	core::Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
 		p = &Players[Player_num];
 	}
 
@@ -899,7 +899,7 @@ bool pilotfile::save_player(player *_p)
 	p = _p;
 
 	if ( !p ) {
-		Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
+	core::Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
 		p = &Players[Player_num];
 	}
 

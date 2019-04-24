@@ -130,7 +130,7 @@ void fs2netd_options_config_init()
 			ml_printf("NOTICE: User override for game/user tracker port not specified, using game_settings.tbl override (%i).", FS2NetD_port);
 			int result;
 			result = sprintf(Multi_options_g.tracker_port, "%i", FS2NetD_port);
-			Assertion( result > 0, "Copying port %i to tracker_port failed\n", FS2NetD_port );
+		core::Assertion( result > 0, "Copying port %i to tracker_port failed\n", FS2NetD_port );
 		}
 		else {
 			if ( FS2NetD_port != 0 ) {
@@ -258,8 +258,8 @@ void fs2netd_connect()
 		return;
 	}
 
-	Assert( strlen(Multi_options_g.game_tracker_ip) );
-	Assert( strlen(Multi_options_g.tracker_port) );
+core::Assert( strlen(Multi_options_g.game_tracker_ip) );
+core::Assert( strlen(Multi_options_g.tracker_port) );
 
 	In_process = true;
 

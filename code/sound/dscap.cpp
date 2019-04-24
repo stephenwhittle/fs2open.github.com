@@ -81,8 +81,8 @@ int dscap_create_buffer(int freq, int bits_per_sample, int nchannels, int nsecon
 		return -1;
 	}
 
-	Assert( (nchannels == 1) || (nchannels == 2) );
-	Assert( (bits_per_sample == 8) || (bits_per_sample == 16) );
+core::Assert( (nchannels == 1) || (nchannels == 2) );
+core::Assert( (bits_per_sample == 8) || (bits_per_sample == 16) );
 
 	if (nchannels == 1) {
 		if (bits_per_sample == 8)  {

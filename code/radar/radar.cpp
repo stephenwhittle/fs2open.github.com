@@ -106,7 +106,7 @@ void HudGaugeRadarStd::drawBlips(int blip_type, int bright, int distort)
 	blip *blip_head = NULL;
 	int x, y;
 
-	Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
+core::Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
 
 
 	// Need to set font.
@@ -221,7 +221,7 @@ void HudGaugeRadarStd::drawContactImage( int x, int y, int rad, int idx, int clr
 	else
 		scalef = ((float) size) / wf;
 
-	Assert(scalef != 0);
+core::Assert(scalef != 0);
 
 	// animate the targeted icon - option 1 of highlighting the targets
 	if ( rad == Radar_blip_radius_target ) {

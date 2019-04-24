@@ -97,25 +97,25 @@ void campaign_tree_view::OnDraw(CDC* pDC)
 
 	// figure out text box sizes
 	r = pDC->GetTextMetrics(&tm);
-	Assert(r);
+core::Assert(r);
 	Bx = CELL_TEXT_WIDTH + 4;
 	By = tm.tmHeight + 4;
 
 	r = gray_brush.CreateSolidBrush(RGB(192, 192, 192));
-	Assert(r);
+core::Assert(r);
 	pDC->FillRect(CRect(0, 0, total_width * CELL_WIDTH, total_levels * LEVEL_HEIGHT), &gray_brush);
 
 	// create pens
 	r = black_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-	Assert(r);
+core::Assert(r);
 	r = white_pen.CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
-	Assert(r);
+core::Assert(r);
 	r = red_pen.CreatePen(PS_SOLID, 1, RGB(192, 0, 0));
-	Assert(r);
+core::Assert(r);
 	r = blue_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 192));
-	Assert(r);
+core::Assert(r);
 	r = green_pen.CreatePen(PS_SOLID, 1, RGB(0, 192, 0));
-	Assert(r);
+core::Assert(r);
 
 	pDC->SelectObject(&black_pen);
 	// draw level seperators
@@ -374,7 +374,7 @@ void campaign_tree_view::realign_tree()
 		z = Sorted[i];
 		for (j=0; j<Total_links; j++)
 			if (Links[j].to == z) {
-				Assert(Campaign.missions[Links[j].from].level <= Campaign.missions[z].level);  // links can't go up the tree, only down
+			core::Assert(Campaign.missions[Links[j].from].level <= Campaign.missions[z].level);  // links can't go up the tree, only down
 				if (Campaign.missions[Links[j].from].level == level) {
 					level++;  // force to next level in tree
 					pos = 0;
@@ -777,7 +777,7 @@ int campaign_tree_view::query_level(const CPoint& p)
 		return -1;
 
 	level = p.y / LEVEL_HEIGHT;
-	Assert((level >= 0) && (level < total_levels));
+core::Assert((level >= 0) && (level < total_levels));
 	return level;
 }
 
@@ -789,7 +789,7 @@ int campaign_tree_view::query_pos(const CPoint& p)
 		return -1;
 
 	pos = ((p.x * 4 / CELL_WIDTH) + 1) / 2;
-	Assert((pos >= 0) && (pos <= total_width * 2));
+core::Assert((pos >= 0) && (pos <= total_width * 2));
 	return pos;
 }
 
@@ -807,7 +807,7 @@ int campaign_tree_view::query_alternate_pos(const CPoint& p)
 	else  // even number
 		pos++;
 
-	Assert((pos >= 0) && (pos <= total_width * 2));
+core::Assert((pos >= 0) && (pos <= total_width * 2));
 	return pos;
 }
 /*
@@ -925,7 +925,7 @@ BOOL campaign_tree_view::OnDrop(COleDataObject* pDataObject, DROPEFFECT dropEffe
 
 	level = query_level(point);
 	pos = query_pos(point);
-	Assert((level >= 0) && (pos >= 0));  // this should be impossible
+core::Assert((level >= 0) && (pos >= 0));  // this should be impossible
 	if (!level && (get_root_mission() >= 0)) {
 		GlobalUnlock(hGlobal);
 		MessageBox("Only 1 mission may be in the top level");
@@ -1000,7 +1000,7 @@ void campaign_tree_view::drop_mission(int m, CPoint point)
 
 	level = query_level(point);
 	pos = query_pos(point);
-	Assert((level >= 0) && (pos >= 0));  // this should be impossible
+core::Assert((level >= 0) && (pos >= 0));  // this should be impossible
 
 	listbox = (CListBox *) &Campaign_tree_formp->m_filelist;
 	item = listbox->GetCurSel();
@@ -1167,7 +1167,7 @@ void campaign_tree_view::horizontally_align_mission(int num, int dir)
 
 void campaign_tree_view::delete_link(int num)
 {
-	Assert((num >= 0) && (num < Total_links));
+core::Assert((num >= 0) && (num < Total_links));
 	if (Links[num].from != Links[num].to) {
 		Elements[Links[num].from].from_links--;
 		Elements[Links[num].to].to_links--;
@@ -1251,7 +1251,7 @@ void campaign_tree_view::remove_mission(int m)
 	int i, z;
 	CEdit *box;
 
-	Assert(m >= 0);
+core::Assert(m >= 0);
 	Campaign_tree_formp->m_filelist.AddString(Campaign.missions[m].name);
 
 	z = --Campaign.num_missions;

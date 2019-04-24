@@ -5,13 +5,13 @@
 #include <core/pstypes.h>
 #include "graphics/2d.h"
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core/RenderInterface.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 #include <memory>
 

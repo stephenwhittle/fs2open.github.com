@@ -36,7 +36,7 @@ const char* lookupSectionName(Section s) {
 }
 
 Section lookupSectionValue(const char* name) {
-	Assertion(name != nullptr, "Key name must be a valid pointer!");
+core::Assertion(name != nullptr, "Key name must be a valid pointer!");
 
 	for (auto& pair : SectionMapping) {
 		if (pair.second == nullptr) {
@@ -52,7 +52,7 @@ Section lookupSectionValue(const char* name) {
 }
 
 pilot::JSONFileHandler::JSONFileHandler(CFILE* cfp, bool reading) : _cfp(cfp) {
-	Assertion(cfp != nullptr, "File pointer must be valid!");
+core::Assertion(cfp != nullptr, "File pointer must be valid!");
 
 	if (reading) {
 		json_error_t error;
@@ -77,13 +77,13 @@ pilot::JSONFileHandler::~JSONFileHandler() {
 	_cfp = nullptr;
 }
 void pilot::JSONFileHandler::pushElement(json_t* t) {
-	Assertion(t != nullptr, "Invalid JSON element pointer passed!");
+core::Assertion(t != nullptr, "Invalid JSON element pointer passed!");
 
 	_currentEl = t;
 	_elementStack.push_back(_currentEl);
 }
 void pilot::JSONFileHandler::popElement() {
-	Assertion(_elementStack.size() > 1, "Element stack may not get smaller than one element!");
+core::Assertion(_elementStack.size() > 1, "Element stack may not get smaller than one element!");
 
 	_elementStack.pop_back();
 	_currentEl = _elementStack.back();
@@ -113,7 +113,7 @@ void pilot::JSONFileHandler::beginWritingSections() {
 
 	json_t* obj = json_object();
 
-	Assertion(json_typeof(_currentEl) == JSON_OBJECT, "Sections can only be written into a JSON object!");
+core::Assertion(json_typeof(_currentEl) == JSON_OBJECT, "Sections can only be written into a JSON object!");
 
 	json_object_set_new(_currentEl, "sections", obj);
 
@@ -126,21 +126,21 @@ void pilot::JSONFileHandler::startSectionWrite(Section id) {
 
 	if (json_is_array(_currentEl)) {
 		// We are in an array, section must be unnamed
-		Assertion(key_name == nullptr, "Inside an array there can be no named section!");
+	core::Assertion(key_name == nullptr, "Inside an array there can be no named section!");
 		json_array_append_new(_currentEl, obj);
 	} else {
-		Assertion(key_name != nullptr, "Section outside of arrays must be named!");
+	core::Assertion(key_name != nullptr, "Section outside of arrays must be named!");
 		json_object_set_new(_currentEl, key_name, obj);
 	}
 	pushElement(obj);
 }
 void pilot::JSONFileHandler::endSectionWrite() {
-	Assertion(json_is_object(_currentEl), "Section ended while not in a section!");
+core::Assertion(json_is_object(_currentEl), "Section ended while not in a section!");
 
 	popElement();
 }
 void pilot::JSONFileHandler::endWritingSections() {
-	Assertion(json_is_object(_currentEl), "Section writing ended while not in object!");
+core::Assertion(json_is_object(_currentEl), "Section writing ended while not in object!");
 
 	popElement();
 }
@@ -149,21 +149,21 @@ void pilot::JSONFileHandler::startArrayWrite(const char* name, size_t, bool) {
 
 	if (json_is_array(_currentEl)) {
 		// We are in an array, section must be unnamed
-		Assertion(name == nullptr, "Inside an array there can be no named section!");
+	core::Assertion(name == nullptr, "Inside an array there can be no named section!");
 		json_array_append_new(_currentEl, array);
 	} else {
-		Assertion(name != nullptr, "Section outside of arrays must be named!");
+	core::Assertion(name != nullptr, "Section outside of arrays must be named!");
 		json_object_set_new(_currentEl, name, array);
 	}
 	pushElement(array);
 }
 void pilot::JSONFileHandler::endArrayWrite() {
-	Assertion(json_is_array(_currentEl), "Array ended while not in an array!");
+core::Assertion(json_is_array(_currentEl), "Array ended while not in an array!");
 
 	popElement();
 }
 void pilot::JSONFileHandler::flush() {
-	Assertion(_elementStack.size() == 1, "Not all sections or arrays have been ended!");
+core::Assertion(_elementStack.size() == 1, "Not all sections or arrays have been ended!");
 
 	json_dump_cfile(_rootObj, _cfp, JSON_INDENT(4));
 }
@@ -173,9 +173,9 @@ void pilot::JSONFileHandler::writeInteger(const char* name, json_int_t val) {
 	json_object_set_new(_currentEl, name, json_integer(val));
 }
 void pilot::JSONFileHandler::ensureNotExists(const char* name) {
-	Assertion(json_is_object(_currentEl), "Currently not in an element that supports keys!");
+core::Assertion(json_is_object(_currentEl), "Currently not in an element that supports keys!");
 	// Make sure we don't overwrite previous values
-	Assertion(json_object_get(_currentEl, name) == nullptr, "Entry with name %s already exists!", name);
+core::Assertion(json_object_get(_currentEl, name) == nullptr, "Entry with name %s already exists!", name);
 }
 
 json_int_t pilot::JSONFileHandler::readInteger(const char* name) {
@@ -241,7 +241,7 @@ void pilot::JSONFileHandler::beginSectionRead() {
 
 	pushElement(sections);
 
-	Assertion(_sectionIterator == nullptr, "Section nesting is not yet supported!");
+core::Assertion(_sectionIterator == nullptr, "Section nesting is not yet supported!");
 	_sectionIterator = json_object_iter(_currentEl);
 	// Signals to nextSection that we just started iterating though the sections since it needs to do something special in that case
 	_startingSectionIteration = true;
@@ -250,14 +250,14 @@ bool pilot::JSONFileHandler::hasMoreSections() {
 	return _sectionIterator != nullptr;
 }
 Section pilot::JSONFileHandler::nextSection() {
-	Assertion(_sectionIterator != nullptr, "Section iterator must be valid for this function!");
+core::Assertion(_sectionIterator != nullptr, "Section iterator must be valid for this function!");
 
 	// If we just started our iteration then there is no previous element we need to pop from the stack
 	if (!_startingSectionIteration) {
 		// We have to pop the previous section first
 		popElement();
 
-		Assertion(json_typeof(_currentEl) == JSON_OBJECT, "The previous element should have been an object!");
+	core::Assertion(json_typeof(_currentEl) == JSON_OBJECT, "The previous element should have been an object!");
 	} else {
 		// We are now in normal operations so we can reset this flag
 		_startingSectionIteration = false;
@@ -286,13 +286,13 @@ void pilot::JSONFileHandler::endSectionRead() {
 		popElement();
 	}
 
-	Assertion(json_typeof(_currentEl) == JSON_OBJECT, "Current element for section reading is not an object!");
+core::Assertion(json_typeof(_currentEl) == JSON_OBJECT, "Current element for section reading is not an object!");
 
 	popElement();
 	_sectionIterator = nullptr;
 }
 size_t pilot::JSONFileHandler::startArrayRead(const char* name, bool /*short_index*/) {
-	Assertion(_arrayIndex == INVALID_SIZE, "Array nesting is not supported yet!");
+core::Assertion(_arrayIndex == INVALID_SIZE, "Array nesting is not supported yet!");
 
 	ensureExists(name);
 
@@ -315,17 +315,17 @@ size_t pilot::JSONFileHandler::startArrayRead(const char* name, bool /*short_ind
 	return size;
 }
 void pilot::JSONFileHandler::nextArraySection(bool in_section) {
-	Assertion(_arrayIndex != INVALID_SIZE, "Array index must be valid for this function!");
+core::Assertion(_arrayIndex != INVALID_SIZE, "Array index must be valid for this function!");
 
 	if (in_section) {
 		// We have to pop the previous section first
 		popElement();
 
-		Assertion(json_typeof(_currentEl) == JSON_ARRAY, "The previous element should have been an array!");
+	core::Assertion(json_typeof(_currentEl) == JSON_ARRAY, "The previous element should have been an array!");
 	}
 
 	auto max = json_array_size(_currentEl);
-	Assertion(_arrayIndex <= max, "Invalid array index detected!");
+core::Assertion(_arrayIndex <= max, "Invalid array index detected!");
 
 	// Silently ignore if we are one past the last element since this function is used in a for loop where this function
 	// is executed one time after the index is incremented past the last element
@@ -350,7 +350,7 @@ void pilot::JSONFileHandler::endArrayRead() {
 		popElement();
 	}
 
-	Assertion(json_typeof(_currentEl) == JSON_ARRAY, "Current element must be an array!");
+core::Assertion(json_typeof(_currentEl) == JSON_ARRAY, "Current element must be an array!");
 
 	popElement();
 	_arrayIndex = INVALID_SIZE;

@@ -13,13 +13,13 @@ extern int Cmdline_extra_warn;
 namespace core {
 Simple::Signal<void(const char*)> error_handler;
 Simple::Signal<void(const char*, int line, const char* msg)> warning_handler;
-Simple::Signal<void(const char* msg, const char*, int line)> assert_handler;
+Simple::Signal<void(const char* msg, const char*, int line, const char* additional_msg)> assert_handler;
 Simple::Signal<void(const char* id, const char* msg)> console_output_handler;
 void RegisterErrorHandler(std::function<void(const char*)> cb) { error_handler.connect(cb); }
 
 void RegisterWarningHandler(std::function<void(const char*, int, const char*)> cb) { warning_handler.connect(cb); }
 
-void RegisterAssertHandler(std::function<void(const char*, const char*, int)> cb) { assert_handler.connect(cb); }
+void RegisterAssertHandler(std::function<void(const char*, const char*, int, const char*)> cb) { assert_handler.connect(cb); }
 
 void RegisterConsoleOutputHandler(std::function<void(const char*, const char*)> cb)
 {
@@ -92,7 +92,17 @@ void Error(const char* filename, int line, const char* format, ...)
 // todo: return formatted callstack with the error
 void Error(const char* msg) { error_handler.emit(msg); }
 
-void AssertImpl(const char* expr, const char* file, int line) { assert_handler.emit(expr, file, line); }
+void AssertImpl(bool expr, const char* expression, const char* file, int line, const char* msg = nullptr) { if (!(expr)) assert_handler.emit(expression, file, line, msg); }
+
+void AssertImplWithMessage(bool expr, const char* expression, const char* file, int line, const char* format, ...) 
+{
+	std::string formatString;
+	va_list args;
+	va_start(args, format);
+	core::vsprintf(formatString, format, args);
+	va_end(args);
+	core::AssertImpl(expr, expression, file, line, formatString.c_str());
+}
 
 void mprintf(const char* format, ...)
 {

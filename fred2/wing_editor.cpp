@@ -691,7 +691,7 @@ int wing_editor::update_data(int redraw)
 			update_texture_replacements(old_name, str);
 			for (i=0; i<Num_reinforcements; i++)
 				if (!strcmp(old_name, Reinforcements[i].name)) {
-					Assert(strlen(str) < NAME_LENGTH);
+				core::Assert(strlen(str) < NAME_LENGTH);
 					strcpy_s(Reinforcements[i].name, str);
 				}
 
@@ -1025,7 +1025,7 @@ void wing_editor::OnGoals2()
 {
 	ShipGoalsDlg dlg_goals;
 
-	Assert(cur_wing != -1);
+core::Assert(cur_wing != -1);
 	dlg_goals.self_wing = cur_wing;
 	dlg_goals.DoModal();
 	if (query_initial_orders_conflict(cur_wing))

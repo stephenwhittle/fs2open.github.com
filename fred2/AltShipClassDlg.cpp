@@ -62,8 +62,8 @@ void AltShipClassDlg::alt_class_list_rebuild() {
 		}
 
 		if (alt_class_pool[i].variable_index != -1) {
-			Assert(alt_class_pool[i].variable_index > -1 && alt_class_pool[i].variable_index < MAX_SEXP_VARIABLES);
-			Assert(Sexp_variables[alt_class_pool[i].variable_index].type & SEXP_VARIABLE_STRING);
+		core::Assert(alt_class_pool[i].variable_index > -1 && alt_class_pool[i].variable_index < MAX_SEXP_VARIABLES);
+		core::Assert(Sexp_variables[alt_class_pool[i].variable_index].type & SEXP_VARIABLE_STRING);
 
 			sprintf(buff, "%s[%s]", Sexp_variables[alt_class_pool[i].variable_index].variable_name, Sexp_variables[alt_class_pool[i].variable_index].text);
 
@@ -87,7 +87,7 @@ void AltShipClassDlg::alt_class_update_entry(alt_class &list_item) {
 	if (num_string_variables && m_set_from_variables.GetCurSel() > 0) {
 		index = string_variable_indices[m_set_from_variables.GetCurSel() - 1];
 
-		Assert(index >= 0);
+	core::Assert(index >= 0);
 		list_item.variable_index = index;
 		list_item.ship_class = ship_info_lookup(Sexp_variables[index].text);
 	}
@@ -97,7 +97,7 @@ void AltShipClassDlg::alt_class_update_entry(alt_class &list_item) {
 
 		// Correct the index if the first entry isn't actually a ship class
 		if (num_string_variables) {
-			Assert(index > 0);
+		core::Assert(index > 0);
 			index--;
 		}
 
@@ -126,7 +126,7 @@ void AltShipClassDlg::OnAltClassDelete() {
 		return;
 	}
 
-	Assert(index < (int) alt_class_pool.size());
+core::Assert(index < (int) alt_class_pool.size());
 	alt_class_pool.erase(alt_class_pool.begin() + index);
 	alt_class_list_rebuild();
 }
@@ -206,8 +206,8 @@ BOOL AltShipClassDlg::OnInitDialog()
 		objp = GET_NEXT(objp);
 	}
 
-	Assert (num_selected_ships > 0);
-	Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
+core::Assert (num_selected_ships > 0);
+core::Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
 
 	if (num_selected_ships > 1) 
 	{

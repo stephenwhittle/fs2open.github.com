@@ -23,7 +23,7 @@ namespace particle
 		// Prevent empty wrapper from causing issues
 		if (!m_sources.empty())
 		{
-			Assertion(m_finished, "Source wrapper wasn't finished! Get a coder!\n"
+		core::Assertion(m_finished, "Source wrapper wasn't finished! Get a coder!\n"
 					"(If you hit this then a coder hasn't properly finished creating a particle source)");
 		}
 	}
@@ -40,7 +40,7 @@ namespace particle
 #ifndef NDEBUG
 		for (auto& source : m_sources)
 		{
-			Assertion(source->isValid(), "Source is not valid after initializing! Get a coder!\n"
+		core::Assertion(source->isValid(), "Source is not valid after initializing! Get a coder!\n"
 					"(If you hit this it means that a coder hasn't properly initialized a particle source)");
 		}
 #endif

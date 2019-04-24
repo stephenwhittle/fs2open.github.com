@@ -199,12 +199,12 @@ void multi_common_split_text()
 	const char	*p_str[MAX_BRIEF_LINES];
 
 	n_lines = split_str(Multi_common_all_text, Multi_common_text_coords[gr_screen.res][2], n_chars, p_str, MULTI_COMMON_TEXT_MAX_LINES, MULTI_COMMON_TEXT_META_CHAR);
-	Assert(n_lines != -1);
+core::Assert(n_lines != -1);
 
 	for ( i = 0; i < n_lines; i++ ) {
 		//The E -- This check is unnecessary, and will break when fonts that aren't bank gothic are used
 		//split_str already ensured that everything will fit in the text window for us already.
-		//Assert(n_chars[i] < MULTI_COMMON_TEXT_MAX_LINE_LENGTH); 
+		/core::Assert(n_chars[i] < MULTI_COMMON_TEXT_MAX_LINE_LENGTH); 
 		strncpy(Multi_common_text[i], p_str[i], n_chars[i]);
 		Multi_common_text[i][n_chars[i]] = 0;
 		drop_leading_white_space(Multi_common_text[i]);		
@@ -818,8 +818,8 @@ void multi_join_game_init()
 
 	// do the multiplayer init stuff - multi_level_init() now does all net_player zeroing.
 	// setup various multiplayer things
-	Assert( Game_mode & GM_MULTIPLAYER );
-	Assert( Net_player != NULL );
+core::Assert( Game_mode & GM_MULTIPLAYER );
+core::Assert( Net_player != NULL );
 
 	switch (Multi_options_g.protocol) {	
 	case NET_TCP:
@@ -1203,7 +1203,7 @@ void multi_join_button_pressed(int n)
 			
 
 			// send the join request here
-			Assert(Multi_join_selected_item != NULL);
+		core::Assert(Multi_join_selected_item != NULL);
 
 			// send a join request packet
 			Multi_join_should_send = 0;			
@@ -1272,7 +1272,7 @@ void multi_join_button_pressed(int n)
 			gamesnd_play_iface(InterfaceSounds::GENERAL_FAIL);
 		} else {			
 			// send the join request here
-			Assert(Multi_join_selected_item != NULL);
+		core::Assert(Multi_join_selected_item != NULL);
 
 			Multi_join_should_send = 1;		
 
@@ -1613,7 +1613,7 @@ void multi_join_process_select()
 		multi_common_set_text("");
 
 		// I sure hope this doesn't happen
-		Assert(Multi_join_selected_item != NULL);		
+	core::Assert(Multi_join_selected_item != NULL);		
 		return;
 	} 
 	// otherwise see if he's clicked on an item
@@ -1628,7 +1628,7 @@ void multi_join_process_select()
 			Multi_join_selected_item = multi_join_get_game(Multi_join_list_selected);
 			
 			// I sure hope this doesn't happen
-			Assert(Multi_join_selected_item != NULL);
+		core::Assert(Multi_join_selected_item != NULL);
 
 			// send a mission description request to this guy
 			send_netgame_descript_packet(&Multi_join_selected_item->server_addr,0);
@@ -4775,7 +4775,7 @@ void multi_create_list_select_item(int n)
 				ship_level_init();		// mwa -- 10/15/97.  Call this function to reset number of ships in mission
 				ng->max_players = mission_parse_get_multi_mission_info( ng->mission_name );				
 				
-				Assert(ng->max_players > 0);
+			core::Assert(ng->max_players > 0);
 				strcpy_s(ng->title,The_mission.name);								
 
 				// set the information area text
@@ -6062,7 +6062,7 @@ void multi_ho_button_pressed(int n)
 			break;
 		}
 	}
-	Assert(radio_index != -1);
+core::Assert(radio_index != -1);
 
 	// check to see if a radio button was pressed
 	if(radio_index < MULTI_HO_NUM_RADIO_BUTTONS){
@@ -6292,15 +6292,15 @@ void multi_ho_get_options()
 	}	
 
 	// get the voice qos options
-	Assert((Netgame.options.voice_qos >= 1) && (Netgame.options.voice_qos <= 10));
+core::Assert((Netgame.options.voice_qos >= 1) && (Netgame.options.voice_qos <= 10));
 	Multi_ho_sliders[gr_screen.res][MULTI_HO_SLIDER_VOICE_QOS].slider.pos = (Netgame.options.voice_qos - 1);
 
 	// get the voice duration options
-	Assert((Netgame.options.voice_record_time > 0) && (Netgame.options.voice_record_time <= MULTI_VOICE_MAX_TIME));
+core::Assert((Netgame.options.voice_record_time > 0) && (Netgame.options.voice_record_time <= MULTI_VOICE_MAX_TIME));
 	Multi_ho_sliders[gr_screen.res][MULTI_HO_SLIDER_VOICE_DUR].slider.pos = ((int)((float)Netgame.options.voice_record_time / 500.0f)) - 1;	
 
 	// get the current skill level
-	Assert((Game_skill_level >= 0) && (Game_skill_level < NUM_SKILL_LEVELS));
+core::Assert((Game_skill_level >= 0) && (Game_skill_level < NUM_SKILL_LEVELS));
 	Multi_ho_sliders[gr_screen.res][MULTI_HO_SLIDER_SKILL].slider.pos = Game_skill_level;	
 
 	// get the # of observers
@@ -6489,7 +6489,7 @@ void multi_ho_display_skill_level()
 	int skill_level = Multi_ho_sliders[gr_screen.res][MULTI_HO_SLIDER_SKILL].slider.pos;
 
 	// sanity
-	Assert((skill_level >= 0) && (skill_level < NUM_SKILL_LEVELS));
+core::Assert((skill_level >= 0) && (skill_level < NUM_SKILL_LEVELS));
 	if((skill_level < 0) || (skill_level >= NUM_SKILL_LEVELS)){
 		skill_level = 0;
 	}
@@ -7934,7 +7934,7 @@ void multi_sync_pre_init()
 	}
 
 	// we aren't necessarily xferring the mission file yet	
-	Assert(Net_player->s_info.xfer_handle == -1);
+core::Assert(Net_player->s_info.xfer_handle == -1);
 
 	// always call this for good measure
 	multi_campaign_flush_data();
@@ -8475,7 +8475,7 @@ void multi_sync_start_countdown()
 	}
 	// otherwise send the "start countdown" packet to the standalone
 	else {
-		Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
+	core::Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
 		send_countdown_packet(-1);
 	}
 }
@@ -8684,7 +8684,7 @@ void multi_maybe_set_mission_loop()
 {
 	int cur = Campaign.current_mission;
 	if (Campaign.missions[cur].flags & CMISSION_FLAG_HAS_LOOP) {
-		Assert(Campaign.loop_mission != CAMPAIGN_LOOP_MISSION_UNINITIALIZED);
+	core::Assert(Campaign.loop_mission != CAMPAIGN_LOOP_MISSION_UNINITIALIZED);
 	}
 	bool require_repeat_mission = (Campaign.current_mission == Campaign.next_mission);
 
@@ -8864,7 +8864,7 @@ void multi_debrief_esc_hit()
 void multi_debrief_replay_hit()
 {
 	// only the host should ever get here
-	Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
+core::Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
 
 	// if the button was already pressed, do nothing
 	if(Multi_debrief_accept_hit){

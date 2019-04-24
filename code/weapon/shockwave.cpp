@@ -159,8 +159,8 @@ int shockwave_create(int parent_objnum, vec3d *pos, shockwave_create_info *sci, 
  */
 void shockwave_delete(object *objp)
 {
-	Assertion(objp->type == OBJ_SHOCKWAVE, "shockwave_delete() called on an object with a type of %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", objp->type, OBJ_SHOCKWAVE);
-	Assertion(objp->instance >= 0 && objp->instance < MAX_SHOCKWAVES, "shockwave_delete() called on an object with an invalid instance of %d (should be 0-%d); get a coder!\n", objp->instance, MAX_SHOCKWAVES - 1);
+core::Assertion(objp->type == OBJ_SHOCKWAVE, "shockwave_delete() called on an object with a type of %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", objp->type, OBJ_SHOCKWAVE);
+core::Assertion(objp->instance >= 0 && objp->instance < MAX_SHOCKWAVES, "shockwave_delete() called on an object with an invalid instance of %d (should be 0-%d); get a coder!\n", objp->instance, MAX_SHOCKWAVES - 1);
 
 	Shockwaves[objp->instance].flags = 0;
 	Shockwaves[objp->instance].objnum = -1;	
@@ -177,7 +177,7 @@ void shockwave_delete_all()
 	sw = GET_FIRST(&Shockwave_list);
 	while ( sw != &Shockwave_list ) {
 		next = sw->next;
-		Assert(sw->objnum != -1);
+	core::Assert(sw->objnum != -1);
         Objects[sw->objnum].flags.set(Object::Object_Flags::Should_be_dead);
 		sw = next;
 	}
@@ -191,7 +191,7 @@ void shockwave_set_framenum(int index)
 	shockwave		*sw;
 	shockwave_info	*si;
 
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_set_framenum called with an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_set_framenum called with an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 
 	sw = &Shockwaves[index];
 	si = &Shockwave_info[sw->shockwave_info_index];
@@ -237,8 +237,8 @@ void shockwave_move(object *shockwave_objp, float frametime)
 	float			blast,damage;
 	int			i;
 
-	Assertion(shockwave_objp->type == OBJ_SHOCKWAVE, "shockwave_move() called on an object of type %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", shockwave_objp->type, OBJ_SHOCKWAVE);
-	Assertion(shockwave_objp->instance  >= 0 && shockwave_objp->instance < MAX_SHOCKWAVES, "shockwave_move() called on an object with an instance of %d (should be 0-%d); get a coder!\n", shockwave_objp->instance, MAX_SHOCKWAVES - 1);
+core::Assertion(shockwave_objp->type == OBJ_SHOCKWAVE, "shockwave_move() called on an object of type %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", shockwave_objp->type, OBJ_SHOCKWAVE);
+core::Assertion(shockwave_objp->instance  >= 0 && shockwave_objp->instance < MAX_SHOCKWAVES, "shockwave_move() called on an object with an instance of %d (should be 0-%d); get a coder!\n", shockwave_objp->instance, MAX_SHOCKWAVES - 1);
 	sw = &Shockwaves[shockwave_objp->instance];
 
 	// if the shockwave has a delay on it
@@ -302,7 +302,7 @@ void shockwave_move(object *shockwave_objp, float frametime)
 		}
 
 		// okay, we have damage applied, record the object signature so we don't repeatedly apply damage
-		Assert(sw->num_objs_hit < SW_MAX_OBJS_HIT);
+	core::Assert(sw->num_objs_hit < SW_MAX_OBJS_HIT);
 		if ( sw->num_objs_hit >= SW_MAX_OBJS_HIT) {
 			sw->num_objs_hit--;
 		}
@@ -368,8 +368,8 @@ void shockwave_render(object *objp, model_draw_list *scene)
 	shockwave		*sw;
 	vertex			p;
 
-	Assertion(objp->type == OBJ_SHOCKWAVE, "shockwave_render() called on an object of type %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", objp->type, OBJ_SHOCKWAVE);
-	Assertion(objp->instance >= 0 && objp->instance < MAX_SHOCKWAVES, "shockwave_render() called on an object with an instance of %d (should be 0-%d); get a coder!\n", objp->instance, MAX_SHOCKWAVES - 1);
+core::Assertion(objp->type == OBJ_SHOCKWAVE, "shockwave_render() called on an object of type %d instead of OBJ_SHOCKWAVE (%d); get a coder!\n", objp->type, OBJ_SHOCKWAVE);
+core::Assertion(objp->instance >= 0 && objp->instance < MAX_SHOCKWAVES, "shockwave_render() called on an object with an instance of %d (should be 0-%d); get a coder!\n", objp->instance, MAX_SHOCKWAVES - 1);
 
 	sw = &Shockwaves[objp->instance];
 
@@ -422,7 +422,7 @@ int shockwave_load(const char *s_name, bool shock_3D)
 	int s_index = -1;
 	shockwave_info *si = NULL;
 
-	Assert( s_name );
+core::Assert( s_name );
 
 	// make sure that this is, or should be, valid
 	if ( !VALID_FNAME(s_name) )
@@ -444,7 +444,7 @@ int shockwave_load(const char *s_name, bool shock_3D)
 		s_index = (int)(Shockwave_info.size() - 1);
 	}
 
-	Assert( s_index >= 0 );
+core::Assert( s_index >= 0 );
 	si = &Shockwave_info[s_index];
 
 	// make sure to only try loading the shockwave once
@@ -494,7 +494,7 @@ void shockwave_level_init()
 				mprintf(("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n"));
 			else
 				mprintf(("SHOCKWAVE =>  Default model load: FAILED!!  Falling back to 2D effect...\n"));
-			Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
+		core::Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 		}
 
 		// next, try the 2d shockwave effect, unless the 3d effect was loaded
@@ -508,7 +508,7 @@ void shockwave_level_init()
 				mprintf(("SHOCKWAVE =>  Default animation load: SUCCEEDED!!\n"));
 			else
 				mprintf(("SHOCKWAVE =>  Default animation load: FAILED!!  Checking if 3d effect was already tried...\n"));
-			Assertion(i <= 1, "Default 2D shockwave should be either the first or second shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
+		core::Assertion(i <= 1, "Default 2D shockwave should be either the first or second shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 			Default_2D_shockwave_index = i;
 		}
 			
@@ -524,7 +524,7 @@ void shockwave_level_init()
 				mprintf(("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n"));
 			else
 				mprintf(("SHOCKWAVE =>  Default model load: FAILED!!  No effect loaded...\n"));
-			Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
+		core::Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 		}
 
 		if (i < 0)
@@ -535,13 +535,13 @@ void shockwave_level_init()
 		// have to make sure that the default 3D model is still valid and usable
 		// the 2D shockwave shouldn't need anything like this
 		if (Shockwave_info[0].model_id >= 0) {
-			Assertion(!strcmp(Shockwave_info[0].filename, Default_shockwave_3D_filename), "Shockwave_info[0] should be the default shockwave, but somehow isn't.\nShockwave_info[0].filename = \"%s\"\nDefault_shockwave_3D_filename = \"%s\"\nGet a coder!\n", Shockwave_info[0].filename, Default_shockwave_3D_filename);
+		core::Assertion(!strcmp(Shockwave_info[0].filename, Default_shockwave_3D_filename), "Shockwave_info[0] should be the default shockwave, but somehow isn't.\nShockwave_info[0].filename = \"%s\"\nDefault_shockwave_3D_filename = \"%s\"\nGet a coder!\n", Shockwave_info[0].filename, Default_shockwave_3D_filename);
 			Shockwave_info[0].model_id = model_load( Default_shockwave_3D_filename, 0, NULL );
 		}
 	}
 
-	Assertion( !Shockwave_info.empty(), "Default shockwave claims to be loaded, but Shockwave_info vector is empty!");
-	Assertion( ((Shockwave_info[0].bitmap_id >= 0) || (Shockwave_info[0].model_id >= 0)), "Default shockwave claims to be loaded, but has no bitmap or model; get a coder!\n" );
+core::Assertion( !Shockwave_info.empty(), "Default shockwave claims to be loaded, but Shockwave_info vector is empty!");
+core::Assertion( ((Shockwave_info[0].bitmap_id >= 0) || (Shockwave_info[0].model_id >= 0)), "Default shockwave claims to be loaded, but has no bitmap or model; get a coder!\n" );
 
 	list_init(&Shockwave_list);
 
@@ -564,7 +564,7 @@ void shockwave_level_close()
 
 	shockwave_delete_all();
 	
-	Assertion( !Shockwave_info.empty(), "Shockwave_info is empty in shockwave_level_close() despite theoretically having been initialized correctly; get a coder!\n");
+core::Assertion( !Shockwave_info.empty(), "Shockwave_info is empty in shockwave_level_close() despite theoretically having been initialized correctly; get a coder!\n");
 
 	// unload default shockwave, and erase all others
 	auto it = Shockwave_info.begin();
@@ -575,7 +575,7 @@ void shockwave_level_close()
 	if (Default_2D_shockwave_index == 1) {
 		// 3D shockwaves and framebuffer shockwaves are both enabled and the default 2D shockwave is in the next slot of the vector
 		++it;
-		Assertion(it->bitmap_id >= 0, "Default 2D shockwave was loaded but is somehow missing its bitmap; get a coder!\n");
+	core::Assertion(it->bitmap_id >= 0, "Default 2D shockwave was loaded but is somehow missing its bitmap; get a coder!\n");
 		bm_unload(it->bitmap_id);
 	}
 
@@ -605,7 +605,7 @@ void shockwave_move_all(float frametime)
 	sw = GET_FIRST(&Shockwave_list);
 	while ( sw != &Shockwave_list ) {
 		next = sw->next;
-		Assert(sw->objnum != -1);
+	core::Assert(sw->objnum != -1);
 		shockwave_move(&Objects[sw->objnum], frametime);
 		sw = next;
 	}
@@ -616,7 +616,7 @@ void shockwave_move_all(float frametime)
  */
 int shockwave_get_weapon_index(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_weapon_index() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_weapon_index() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].weapon_info_index;
 }
 
@@ -625,7 +625,7 @@ int shockwave_get_weapon_index(int index)
  */
 float shockwave_get_max_radius(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_max_radius() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_max_radius() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].outer_radius;
 }
 
@@ -634,7 +634,7 @@ float shockwave_get_max_radius(int index)
  */
 float shockwave_get_min_radius(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_min_radius() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_min_radius() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].inner_radius;
 }
 
@@ -643,7 +643,7 @@ float shockwave_get_min_radius(int index)
  */
 float shockwave_get_damage(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_damage() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_damage() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].damage;
 }
 
@@ -652,7 +652,7 @@ float shockwave_get_damage(int index)
  */
 int shockwave_get_damage_type_idx(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_damage_type_idx() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_damage_type_idx() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].damage_type_idx;
 }
 
@@ -661,7 +661,7 @@ int shockwave_get_damage_type_idx(int index)
  */
 int shockwave_get_flags(int index)
 {
-	Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_flags() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
+core::Assertion( (index >= 0) && (index < MAX_SHOCKWAVES), "shockwave_get_flags() called on an index of %d (should be 0-%d); get a coder!\n", index, MAX_SHOCKWAVES - 1 );
 	return Shockwaves[index].flags;
 }
 
@@ -675,7 +675,7 @@ void shockwave_page_in()
 			// for a model we have to run model_load() on it again to make sure
 			// that it's ref_count is sane for this mission
 			int idx __UNUSED = model_load( it->filename, 0, NULL );
-			Assertion( idx == it->model_id , "Shockwave_info[" SIZE_T_ARG "] got two different model_ids: %d and %d. Filename is \"%s\". Get a coder!\n", std::distance(Shockwave_info.begin(), it), idx, it->model_id, it->filename);
+		core::Assertion( idx == it->model_id , "Shockwave_info[" SIZE_T_ARG "] got two different model_ids: %d and %d. Filename is \"%s\". Get a coder!\n", std::distance(Shockwave_info.begin(), it), idx, it->model_id, it->filename);
 
 			model_page_in_textures( it->model_id );
 		}

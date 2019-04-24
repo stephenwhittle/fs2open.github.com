@@ -315,7 +315,7 @@ void HudGaugeReticle::getFirepointStatus() {
 	ship* shipp;
 	polymodel* pm;
 
-	Assert(Objects[Player->objnum].type == OBJ_SHIP);
+core::Assert(Objects[Player->objnum].type == OBJ_SHIP);
 
 	if (Objects[Player->objnum].type == OBJ_SHIP) {
 		shipp = &Ships[Objects[Player->objnum].instance];
@@ -797,7 +797,7 @@ void HudGaugeThreatIndicator::renderLaserThreat()
 	//Check how many frames the ani actually has
 	num_frames = laser_warn.num_frames;
 	//We need at least two frames here
-	Assert( num_frames >= 2 );
+core::Assert( num_frames >= 2 );
 
 	if ( Player->threat_flags & THREAT_DUMBFIRE ) {
 		if ( timestamp_elapsed(laser_warn_timer) ) {
@@ -822,7 +822,7 @@ void HudGaugeThreatIndicator::renderLockThreat()
 	//Let's find out how many frames our ani has, and adjust accordingly
 	num_frames = lock_warn.num_frames;
 	//We need at least two frames here
-	Assert( num_frames >= 2 );
+core::Assert( num_frames >= 2 );
 
 	if ( Player->threat_flags & (THREAT_LOCK | THREAT_ATTEMPT_LOCK) ) {
 		if ( timestamp_elapsed(lock_warn_timer) ) {

@@ -269,7 +269,7 @@ bool play(const char* name) {
 		player->stopPlayback();
 	} else {
 		// uh-oh, movie is invalid... Abory, Retry, Fail?
-		mprintf(("MOVIE ERROR: Found invalid movie! (%s)\n", name));
+		core::mprintf("MOVIE ERROR: Found invalid movie! (%s)\n", name);
 	}
 
 	// show the mouse cursor again

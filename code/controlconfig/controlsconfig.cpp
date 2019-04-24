@@ -388,7 +388,7 @@ int joy_get_scaled_reading(int raw)
 	if (d > rng)
 		d = rng;
 
-	Assert(Joy_sensitivity >= 0 && Joy_sensitivity <= 9);
+	core::Assert(Joy_sensitivity >= 0 && Joy_sensitivity <= 9);
 
 	// compute percentages as a range between 0 and 1
 	sensitivity_percent = (float) Joy_sensitivity / 9.0f;
@@ -564,16 +564,16 @@ config_item_undo *get_undo_block(int size)
 	config_item_undo *ptr;
 
 	ptr = (config_item_undo *) vm_malloc( sizeof(config_item_undo) );
-	Assert(ptr);
+	core::Assert(ptr);
 	ptr->next = Config_item_undo;
 	Config_item_undo = ptr;
 
 	ptr->size = size;
 	if (size) {
 		ptr->index = (int *) vm_malloc( sizeof(int) * size );
-		Assert(ptr->index);
+		core::Assert(ptr->index);
 		ptr->list = (config_item *) vm_malloc( sizeof(config_item) * size );
-		Assert(ptr->list);
+		core::Assert(ptr->list);
 
 	} else {
 		ptr->index = NULL;
@@ -876,7 +876,7 @@ int control_config_clear_all()
 		}
 	}
 
-	Assert(j == total);
+	core::Assert(j == total);
 	for (i=0; i<CCFG_MAX; i++) {
 		Control_config[i].key_id = Control_config[i].joy_id = -1;
 	}
@@ -889,7 +889,7 @@ int control_config_clear_all()
 
 int control_config_axis_default(int axis)
 {
-	Assert(axis >= 0);
+	core::Assert(axis >= 0);
 
 	if ( axis > 1 ) {
 		if (Axis_map_to_defaults[axis] < 0) {
@@ -967,7 +967,7 @@ int control_config_do_reset()
 		}
 	}
 
-	Assert(j == total);
+	core::Assert(j == total);
 
 	if (cycling_presets)
 		control_config_reset_defaults(Defaults_cycle_pos);
@@ -1015,7 +1015,7 @@ void control_config_scroll_screen_up()
 {
 	if (Scroll_offset) {
 		Scroll_offset--;
-		Assert(Selected_line > Scroll_offset);
+		core::Assert(Selected_line > Scroll_offset);
 		while (!cc_line_query_visible(Selected_line)) {
 			Selected_line--;
 		}
@@ -1050,7 +1050,7 @@ void control_config_scroll_screen_down()
 		Scroll_offset++;
 		while (!cc_line_query_visible(Selected_line)) {
 			Selected_line++;
-			Assert(Selected_line < Num_cc_lines);
+			core::Assert(Selected_line < Num_cc_lines);
 		}
 
 		Selected_item = -1;
@@ -1065,7 +1065,7 @@ void control_config_scroll_line_down()
 {
 	if (Selected_line < Num_cc_lines - 1) {
 		Selected_line++;
-		Assert(Selected_line > Scroll_offset);
+		core::Assert(Selected_line > Scroll_offset);
 		while (!cc_line_query_visible(Selected_line)) {
 			Scroll_offset++;
 		}
@@ -1083,7 +1083,7 @@ void control_config_toggle_modifier(int bit)
 	int k, z;
 
 	z = Cc_lines[Selected_line].cc_index;
-	Assert(!(z & JOY_AXIS));
+	core::Assert(!(z & JOY_AXIS));
 	k = Control_config[z].key_id;
 	if (k < 0) {
 		gamesnd_play_iface(InterfaceSounds::GENERAL_FAIL);
@@ -1100,7 +1100,7 @@ void control_config_toggle_invert()
 	int z;
 
 	z = Cc_lines[Selected_line].cc_index;
-	Assert(z & JOY_AXIS);
+	core::Assert(z & JOY_AXIS);
 	z &= ~JOY_AXIS;
 	control_config_save_axis_undo(z);
 	Invert_axis[z] = !Invert_axis[z];
@@ -1587,7 +1587,7 @@ void control_config_do_frame(float frametime)
 				k &= (KEY_MASK | KEY_SHIFTED | KEY_ALTED);
 				if (k > 0) {
 					z = Cc_lines[Selected_line].cc_index;
-					Assert(!(z & JOY_AXIS));
+					core::Assert(!(z & JOY_AXIS));
 					control_config_bind_key(z, k);
 
 					strcpy_s(bound_string, textify_scancode(k));
@@ -1601,7 +1601,7 @@ void control_config_do_frame(float frametime)
 				for (i=0; i<JOY_TOTAL_BUTTONS; i++) {
 					if (joy_down_count(i, 1)) {
 						z = Cc_lines[Selected_line].cc_index;
-						Assert(!(z & JOY_AXIS));
+						core::Assert(!(z & JOY_AXIS));
 						control_config_bind_joy(z, i);
 
 						strcpy_s(bound_string, Joy_button_text[i]);
@@ -1625,7 +1625,7 @@ void control_config_do_frame(float frametime)
 						for (i=0; i<MOUSE_NUM_BUTTONS; i++) {
 							if (mouse_down(1 << i)) {
 								z = Cc_lines[Selected_line].cc_index;
-								Assert(!(z & JOY_AXIS));
+								core::Assert(!(z & JOY_AXIS));
 								control_config_bind_joy(z, i);
 
 								strcpy_s(bound_string, Joy_button_text[i]);
@@ -1736,7 +1736,7 @@ void control_config_do_frame(float frametime)
 				}
 				while (!cc_line_query_visible(Selected_line)) {
 					Scroll_offset++;
-					Assert(Scroll_offset < Num_cc_lines);
+					core::Assert(Scroll_offset < Num_cc_lines);
 				}
 			}
 		}
@@ -2193,7 +2193,7 @@ float check_control_timef(int id)
 	float t1, t2;
 
 	// if type isn't continuous, we shouldn't be using this function, cause it won't work.
-	Assert(Control_config[id].type == CC_TYPE_CONTINUOUS);
+	core::Assert(Control_config[id].type == CC_TYPE_CONTINUOUS);
 
 	// first, see if control actually used (makes sure modifiers match as well)
 	if (!check_control(id)) {

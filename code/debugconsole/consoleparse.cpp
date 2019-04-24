@@ -215,7 +215,7 @@ void dc_get_token(std::string &out_str) {
 	size_t count = 0;
 	char *c_ptr;
 
-	Assert(Cp);
+	core::Assert(Cp);
 
 	dc_ignore_gray_space();
 
@@ -243,7 +243,7 @@ void dc_get_token_no_advance(std::string &out_str) {
 	size_t count = 0;
 	char *c_ptr;
 
-	Assert(Cp);
+	core::Assert(Cp);
 
 	dc_ignore_gray_space();
 
@@ -360,8 +360,8 @@ bool dc_maybe_stuff_string(char *out_str, size_t maxlen)
 	size_t count = 0;
 	char *c_ptr = Cp;
 
-	Assert(Cp);
-	Assert(out_str);
+	core::Assert(Cp);
+	core::Assert(out_str);
 
 	// Advance past grayspace, stopping at null terminator
 	while (is_gray_space(*c_ptr) && (*c_ptr != '\0')) {
@@ -398,7 +398,7 @@ bool dc_maybe_stuff_string(std::string &out_str)
 	size_t count = 0;
 	char *c_ptr = Cp;
 
-	Assert(Cp);
+	core::Assert(Cp);
 
 	// Advance past grayspace, stopping at null terminator
 	while (is_gray_space(*c_ptr) && (*c_ptr != '\0')) {
@@ -1175,8 +1175,8 @@ void dc_stuff_string(char *out_str, size_t maxlen = MAX_TOKEN_LENGTH)
 	char *c_ptr = Cp;
 	std::string token;
 
-	Assert(Cp);
-	Assert(out_str);
+	core::Assert(Cp);
+	core::Assert(out_str);
 
 	dc_ignore_gray_space();
 
@@ -1210,7 +1210,7 @@ void dc_stuff_string(std::string &out_str)
 	size_t count = 0;
 	char *c_ptr = Cp;
 
-	Assert(Cp);
+	core::Assert(Cp);
 
 	dc_ignore_gray_space();
 
@@ -1243,8 +1243,8 @@ void dc_stuff_string_white(char *out_str, size_t maxlen)
 	size_t count = 0;
 	char *c_ptr = Cp;
 
-	Assert(Cp);
-	Assert(out_str);
+	core::Assert(Cp);
+	core::Assert(out_str);
 
 	dc_ignore_gray_space();
 
@@ -1277,7 +1277,7 @@ void dc_stuff_string_white(std::string &out_str)
 	size_t count = 0;
 	char *c_ptr;
 
-	Assert(Cp);
+	core::Assert(Cp);
 
 	dc_ignore_gray_space();
 

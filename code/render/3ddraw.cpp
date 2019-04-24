@@ -76,7 +76,7 @@ int g3_draw_line(vertex *p0, vertex *p1)
 
 	ubyte codes_or;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if (p0->codes & p1->codes)
 		return 0;
@@ -111,7 +111,7 @@ int g3_check_normal_facing(const vec3d *v, const vec3d *norm)
 {
 	vec3d tempv;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	vm_vec_sub(&tempv,&View_position,v);
 
@@ -122,7 +122,7 @@ int g3_check_normal_facing(const vec3d *v, const vec3d *norm)
 //radius, but not to the distance from the eye
 int g3_draw_sphere(vertex *pnt, float rad)
 {
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if (! (pnt->codes & CC_BEHIND)) {
 
@@ -148,7 +148,7 @@ int g3_draw_sphere_ez(const vec3d *pnt, float rad)
 	vertex pt;
 	ubyte flags;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	flags = g3_rotate_vertex(&pt, pnt);
 
@@ -185,7 +185,7 @@ int g3_get_bitmap_dims(int bitmap, vertex *pnt, float rad, int *x, int *y, int *
 		width = height = rad*2.0f;
 	}			
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if ( pnt->codes & (CC_BEHIND|CC_OFF_USER) ) {
 		return 1;
@@ -224,7 +224,7 @@ void g3_draw_horizon_line()
 	vec3d horizon_vec;
 	float up_right, down_right,down_left,up_left;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	//compute horizon_vector	
 	horizon_vec.xyz.x = Unscaled_matrix.vec.rvec.xyz.y*Matrix_scale.xyz.y*Matrix_scale.xyz.z;
@@ -434,8 +434,8 @@ void g3_render_rect_oriented_internal(material* material_params, vec3d *pos, mat
 	if ( width == 0 || height == 0 )
 		return;
 
-	Assert(pos != NULL);
-	Assert(ori != NULL);
+core::Assert(pos != NULL);
+core::Assert(ori != NULL);
 
 	//Let's begin.
 
@@ -681,7 +681,7 @@ void g3_render_rect_screen_aligned_2d(material *mat_params, vertex *pnt, int ori
 		width = height = rad*2.0f;
 	}
 
-	Assert(G3_count == 1);
+core::Assert(G3_count == 1);
 
 	if ( pnt->codes & (CC_BEHIND | CC_OFF_USER) )
 		return;
@@ -805,7 +805,7 @@ void g3_render_laser_2d(material *mat_params, vec3d *headp, float head_width, ve
 	vertex pt1, pt2;
 	float depth;
 
-	Assert(G3_count == 1);
+core::Assert(G3_count == 1);
 
 	g3_rotate_vertex(&pt1, headp);
 
@@ -945,8 +945,8 @@ void g3_render_rod(color *clr, int num_points, vec3d *pvecs, float width)
 	vertex pts[MAX_ROD_VERTS];
 	int i, nv = 0;
 
-	Assert(num_points >= 2);
-	Assert((num_points * 2) <= MAX_ROD_VERTS);
+core::Assert(num_points >= 2);
+core::Assert((num_points * 2) <= MAX_ROD_VERTS);
 
 	for ( i = 0; i < num_points; i++ ) {
 		vm_vec_sub(&fvec, &View_position, &pvecs[i]);
@@ -996,7 +996,7 @@ void g3_render_rod(color *clr, int num_points, vec3d *pvecs, float width)
 	}
 
 	// we should always have at least 4 verts, and there should always be an even number
-	Assert((nv >= 4) && !(nv % 2));
+core::Assert((nv >= 4) && !(nv % 2));
 
 	material material_params;
 

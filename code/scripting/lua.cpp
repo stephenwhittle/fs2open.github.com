@@ -79,8 +79,8 @@ char debug_stack[4][32];
 
 void ade_debug_ret(lua_State *L, lua_Debug *ar)
 {
-	Assert(L != NULL);
-	Assert(ar != NULL);
+core::Assert(L != NULL);
+core::Assert(ar != NULL);
 	lua_getstack(L, 1, ar);
 	lua_getinfo(L, "nSlu", ar);
 	memcpy(&Ade_debug_info, ar, sizeof(lua_Debug));
@@ -213,8 +213,8 @@ void script_state::EndLuaFrame()
 
 void ade_output_toc(FILE *fp, ade_table_entry *ate)
 {
-	Assert(fp != NULL);
-	Assert(ate != NULL);
+core::Assert(fp != NULL);
+core::Assert(ate != NULL);
 
 	//WMC - sanity checking
 	if(ate->Name == NULL && ate->ShortName == NULL) {

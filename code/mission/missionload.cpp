@@ -62,7 +62,7 @@ void ml_update_recent_missions(const char* filename)
 		p++;
 	}
 
-	Assert(strlen(p) < MAX_FILENAME_LEN);
+core::Assert(strlen(p) < MAX_FILENAME_LEN);
 	strcpy_s( Recent_missions[0], p );
 
 	j = 1;
@@ -76,7 +76,7 @@ void ml_update_recent_missions(const char* filename)
 	}
 
 	Num_recent_missions = j;
-	Assert(Num_recent_missions <= MAX_RECENT_MISSIONS);
+core::Assert(Num_recent_missions <= MAX_RECENT_MISSIONS);
 }
 
 bool mission_is_ignored(const char *filename)
@@ -137,7 +137,7 @@ bool mission_load(const char* filename_ext)
 	if (Select_default_ship) {
 		int ret;
 		ret = create_default_player_ship();
-		Assert(!ret);
+	core::Assert(!ret);
 	}
 
 	ml_update_recent_missions(filename_ext);  // update recently played missions list (save the csg later)
@@ -203,7 +203,7 @@ void mission_load_menu_init()
 {
 	int i;
 	char wild_card[256];
-	Assert( mlm_active == 0 );
+core::Assert( mlm_active == 0 );
 	mlm_active = 1;
 
 	memset(wild_card, 0, 256);
@@ -212,7 +212,7 @@ void mission_load_menu_init()
 	mlm_nfiles = cf_get_file_list( MLM_MAX_MISSIONS, mlm_missions, CF_TYPE_MISSIONS, wild_card, CF_SORT_NAME );
 	jtmp_nfiles = 0;	
 		
-	Assert(mlm_nfiles <= MLM_MAX_MISSIONS);
+core::Assert(mlm_nfiles <= MLM_MAX_MISSIONS);
 
 	mlm_window.create( 100,100,500,300, 0 );	//WIN_DIALOG
 
@@ -252,7 +252,7 @@ void mission_load_menu_do()
 	int	selected, key_in, recent_current, mlm_current, use_recent_flag, i;
 	
 
-	Assert( mlm_active == 1 );
+core::Assert( mlm_active == 1 );
 
 	key_in = mlm_window.process();
 
@@ -382,7 +382,7 @@ void mission_load_menu_close()
 {
 	int i;
 
-	Assert( mlm_active == 1 );
+core::Assert( mlm_active == 1 );
 	mlm_active = 0;
 
 	for (i=0; i<mlm_nfiles; i++ )	{

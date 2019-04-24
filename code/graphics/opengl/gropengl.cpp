@@ -316,7 +316,7 @@ void gr_opengl_print_screen(const char *filename)
 
 	// now for the data
 	if (Use_PBOs) {
-		Assert( !pbo );
+	core::Assert( !pbo );
 		glGenBuffers(1, &pbo);
 
 		if ( !pbo ) {
@@ -544,7 +544,7 @@ static void opengl_make_gamma_ramp(float gamma, ushort *ramp)
 	ushort x, y;
 	ushort base_ramp[256];
 
-	Assert( ramp != NULL );
+core::Assert( ramp != NULL );
 
 	// generate the base ramp values first off
 
@@ -574,7 +574,7 @@ static void opengl_make_gamma_ramp(float gamma, ushort *ramp)
 		double g = 1.0 / (double)gamma;
 		double val;
 
-		Assert( GL_original_gamma_ramp != NULL );
+	core::Assert( GL_original_gamma_ramp != NULL );
 
 		for (x = 0; x < 256; x++) {
 			val = (pow(x/255.0, g) * 65535.0 + 0.5);
@@ -751,7 +751,7 @@ void gr_opengl_restore_screen(int bmp_id)
 		return;
 	}
 
-	Assert( (bmp_id < 0) || (bmp_id == GL_saved_screen_id) );
+core::Assert( (bmp_id < 0) || (bmp_id == GL_saved_screen_id) );
 
 	if (GL_saved_screen_id < 0)
 		return;
@@ -768,7 +768,7 @@ void gr_opengl_free_screen(int bmp_id)
 	vm_free(GL_saved_screen);
 	GL_saved_screen = NULL;
 
-	Assert( (bmp_id < 0) || (bmp_id == GL_saved_screen_id) );
+core::Assert( (bmp_id < 0) || (bmp_id == GL_saved_screen_id) );
 
 	if (GL_saved_screen_id < 0)
 		return;
@@ -895,7 +895,7 @@ int opengl_init_display_device()
 {
 	int bpp = gr_screen.bits_per_pixel;
 
-	Assertion((bpp == 16) || (bpp == 32), "Invalid bits-per-pixel value %d!", bpp);
+core::Assertion((bpp == 16) || (bpp == 32), "Invalid bits-per-pixel value %d!", bpp);
 
 	// screen format
 	switch (bpp) {

@@ -60,7 +60,7 @@ namespace
 	bool fAppActive = false;
 	bool window_event_handler(const SDL_Event& e)
 	{
-		Assertion(mainSDLWindow != nullptr, "This function may only be called with a valid SDL Window.");
+	core::Assertion(mainSDLWindow != nullptr, "This function may only be called with a valid SDL Window.");
 		if (os::events::isWindowEvent(e, mainSDLWindow)) {
 			switch (e.window.event) {
 			case SDL_WINDOWEVENT_MINIMIZED:
@@ -293,7 +293,7 @@ void os_init(const char * wclass, const char * title, const char * app_name)
 // set the main window title
 void os_set_title( const char * title )
 {
-	Assertion(mainSDLWindow != nullptr, "This function may only be called with a valid SDL Window.");
+core::Assertion(mainSDLWindow != nullptr, "This function may only be called with a valid SDL Window.");
 	strcpy_s( szWinTitle, title );
 
 	SDL_SetWindowTitle(mainSDLWindow, szWinTitle);
@@ -549,7 +549,7 @@ namespace os
 
 		ListenerIdentifier addEventListener(SDL_EventType type, int weight, const Listener& listener)
 		{
-			Assertion(listener, "Invalid event handler passed!");
+		core::Assertion(listener, "Invalid event handler passed!");
 
 			EventListenerData data;
 			data.identifier = ++nextListenerIdentifier;

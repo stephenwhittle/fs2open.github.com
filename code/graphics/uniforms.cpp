@@ -33,7 +33,7 @@ void convert_model_material(model_uniform_data* data_out,
 							size_t transform_buffer_offset) {
 	auto shader_flags = material.get_shader_flags();
 
-	Assertion(gr_model_matrix_stack.depth() == 1, "Uniform conversion does not respect previous transforms! "
+core::Assertion(gr_model_matrix_stack.depth() == 1, "Uniform conversion does not respect previous transforms! "
 		"Model matrix stack must be empty!");
 
 	matrix4 scaled_matrix = model_transform;

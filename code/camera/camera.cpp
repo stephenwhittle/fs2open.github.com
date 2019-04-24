@@ -318,7 +318,7 @@ void camera::get_info(vec3d *position, matrix *orientation)
 				eyep = get_submodel_eye(pm, object_host_submodel);
 				if(eyep)
 				{
-					Assertion(objp->type == OBJ_SHIP, "This part of the code expects the object to be a ship");
+				core::Assertion(objp->type == OBJ_SHIP, "This part of the code expects the object to be a ship");
 
 					vec3d c_pos_in;
 					find_submodel_instance_point_normal(&c_pos_in, &host_normal, Ships[objp->instance].model_instance_num, eyep->parent, &eyep->pnt, &eyep->norm);

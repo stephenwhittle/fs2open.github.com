@@ -167,8 +167,8 @@ void awacs_update_all_levels()
 // >= 1.0f			: fully targetable as normal
 float awacs_get_level(object *target, ship *viewer, int use_awacs)
 {
-	Assert(target);	// Goober5000
-	Assert(viewer);	// Goober5000
+core::Assert(target);	// Goober5000
+core::Assert(viewer);	// Goober5000
 
 	vec3d dist_vec, subsys_pos;
 	float closest = 0.0f;
@@ -226,7 +226,7 @@ float awacs_get_level(object *target, ship *viewer, int use_awacs)
 	// check for a tagged ship. TAG'd ships are _always_ visible
 	if (target->type == OBJ_SHIP)
 	{
-		Assert( shipp != NULL );
+	core::Assert( shipp != NULL );
 		if (shipp->tag_left > 0.0f || shipp->level2_tag_left > 0.0f)
 			return FULLY_TARGETABLE;
 	}
@@ -441,9 +441,9 @@ void team_visibility_update()
 // Goober5000 - now accounts for primitive sensors
 int ship_is_visible_by_team(object *target, ship *viewer)
 {
-	Assert(target);
-	Assert(viewer);
-	Assert(target->type == OBJ_SHIP);
+core::Assert(target);
+core::Assert(viewer);
+core::Assert(target->type == OBJ_SHIP);
 
 	// not visible if viewer has primitive sensors
 	if (viewer->flags[Ship::Ship_Flags::Primitive_sensors])

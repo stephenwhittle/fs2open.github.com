@@ -3,7 +3,7 @@
 
 #include <bitset>
 #include <cstdint>
-
+#include <core/error.h>
 #include "osapi/dialogs.h"
 
 template<typename TEnum, size_t SIZE>
@@ -79,7 +79,8 @@ class flagset {
 	void reset() { values.reset(); }
 
 	flagset<T>& set(T idx, bool value = true) {
-		Assertion(static_cast<size_t>(idx) < values.size(),
+		core::Assertion(
+		    static_cast<size_t>(idx) < values.size(),
 				  "Invalid value passed to flagset::set(), get a stacktrace, a coder, an old priest and a young priest.");
 
 		values.set(static_cast < size_t >(idx), value);

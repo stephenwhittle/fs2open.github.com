@@ -91,7 +91,7 @@ void UI_WINDOW::set_mask_bmap(int bmap, const char * /*name*/)
 	// int i;
 
 	// init_tooltips();
-	Assert(bmap >= 0);	
+core::Assert(bmap >= 0);	
 
 	if (bmap != mask_bmap_id) {
 		if (mask_bmap_id >= 0){
@@ -358,7 +358,7 @@ void UI_WINDOW::draw_tooltip()
 
 			if (ttx < 0 || tty < 0) {
 				gr_get_string_size(&w, &h, str);
-				Assert(w < 320 && h < 100);
+			core::Assert(w < 320 && h < 100);
 				ttx = ui_mouse.x - w / 2;
 				tty = ui_mouse.y - h;
 			}
@@ -374,7 +374,7 @@ void UI_WINDOW::render_tooltip(char *str)
 	int str_w, str_h;
 
 	gr_get_string_size(&str_w, &str_h, str);
-	Assert(str_w < gr_screen.max_w_unscaled - 4 && str_h < gr_screen.max_h_unscaled - 4);
+core::Assert(str_w < gr_screen.max_w_unscaled - 4 && str_h < gr_screen.max_h_unscaled - 4);
 
 	if (ttx < 2)
 		ttx = 2;
@@ -511,7 +511,7 @@ void UI_WINDOW::add_XSTR(const char *string, int _xstr_id, int _x, int _y, UI_GA
 	ui_x->assoc = _assoc;
 	ui_x->font_id = _font_id;	
 	ui_x->clr = _color_type;
-	Assert((ui_x->clr >= 0) && (ui_x->clr < UI_NUM_XSTR_COLORS));
+core::Assert((ui_x->clr >= 0) && (ui_x->clr < UI_NUM_XSTR_COLORS));
 	if((ui_x->clr < 0) || (ui_x->clr >= UI_NUM_XSTR_COLORS)){
 		ui_x->clr = 0;
 	}	
@@ -557,7 +557,7 @@ void UI_WINDOW::add_XSTR(UI_XSTR *xstr)
 	ui_x->assoc = xstr->assoc;
 	ui_x->font_id = xstr->font_id;	
 	ui_x->clr = xstr->clr;
-	Assert((ui_x->clr >= 0) && (ui_x->clr < UI_NUM_XSTR_COLORS));
+core::Assert((ui_x->clr >= 0) && (ui_x->clr < UI_NUM_XSTR_COLORS));
 	if((ui_x->clr < 0) || (ui_x->clr >= UI_NUM_XSTR_COLORS)){
 		ui_x->clr = 0;
 	}	
@@ -581,7 +581,7 @@ void UI_WINDOW::draw_one_xstr(UI_XSTR *xs, int frame)
 	// maybe set the font
 	if(xs->font_id >= 0){
 		// backup the current font
-		Assert(font::get_current_font() != NULL);
+	core::Assert(font::get_current_font() != NULL);
 		f_backup = font::get_current_font();
 
 		// set the new font
@@ -734,7 +734,7 @@ int parse_tooltips_group(int group, int n)
 {
 	char buf[NAME_LENGTH];
 
-	Assert(group < MAX_TOOLTIP_GROUPS);
+core::Assert(group < MAX_TOOLTIP_GROUPS);
 	required_string("$Mask Filename:");
 	stuff_string(buf, F_NAME, NULL);
 	Tooltip_groups[group].mask = vm_strdup(buf);
@@ -746,7 +746,7 @@ int parse_tooltips_group(int group, int n)
 			return n;
 		}
 
-		Assert(n < MAX_TOOLTIPS);
+	core::Assert(n < MAX_TOOLTIPS);
 		parse_tooltip(n++);
 	}
 }

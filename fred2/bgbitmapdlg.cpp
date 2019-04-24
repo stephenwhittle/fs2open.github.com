@@ -615,7 +615,7 @@ void bg_bitmap_dlg::build_nebfile_list()
 	CComboBox *box = (CComboBox *) GetDlgItem(IDC_NEBPATTERN);
 
 	// wacky
-	Assert(box != NULL);
+core::Assert(box != NULL);
 	if(box == NULL){
 		return;
 	}
@@ -783,7 +783,7 @@ void bg_bitmap_dlg::OnSunDropdownChange()
 		return;
 
 	int new_index = ((CComboBox*) GetDlgItem(IDC_SUN1))->GetCurSel();
-	Assert(new_index != CB_ERR);
+core::Assert(new_index != CB_ERR);
 
 	// get the new string
 	if(new_index != CB_ERR)
@@ -950,7 +950,7 @@ void bg_bitmap_dlg::OnBitmapDropdownChange()
 		return;
 
 	int new_index = ((CComboBox*) GetDlgItem(IDC_SBITMAP))->GetCurSel();
-	Assert(new_index != CB_ERR);
+core::Assert(new_index != CB_ERR);
 
 	// get the new string
 	if(new_index != CB_ERR)

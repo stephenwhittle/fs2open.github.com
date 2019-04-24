@@ -183,7 +183,7 @@ void hud_ship_icon_page_in(ship_info *sip)
 	}
 
 	// load in shield frames if not already loaded
-	Assert(sip->shield_icon_index < (ubyte)Hud_shield_filenames.size());
+core::Assert(sip->shield_icon_index < (ubyte)Hud_shield_filenames.size());
 	sgp = &Shield_gauges.at(sip->shield_icon_index);
 
 	if ( sgp->first_frame == -1 ) {
@@ -210,15 +210,15 @@ void hud_shield_equalize(object *objp, player *pl)
 {
 	float penalty;
 
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 	if (objp == NULL)
 		return;
 
-	Assert(pl != NULL);
+core::Assert(pl != NULL);
 	if (pl == NULL)
 		return;
 
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	if (objp->type != OBJ_SHIP)
 		return;
 
@@ -262,7 +262,7 @@ void hud_shield_equalize(object *objp, player *pl)
 //
 void hud_augment_shield_quadrant(object *objp, int direction)
 {
-	Assertion((direction >= 0) && (direction < 4), "Invalid quadrant index %i!", direction);
+core::Assertion((direction >= 0) && (direction < 4), "Invalid quadrant index %i!", direction);
 
 	ship *shipp = &Ships[objp->instance];
 	ship_info *sip = &Ship_info[shipp->ship_info_index];
@@ -312,7 +312,7 @@ void hud_show_mini_ship_integrity(object *objp, int x_force, int y_force)
 	if(numeric_integrity > 100){
 		numeric_integrity = 100;
 	}
-	// Assert(numeric_integrity <= 100);
+	//core::Assert(numeric_integrity <= 100);
 
 	// 3 digit hull strength
 	if ( numeric_integrity == 100 ) {
@@ -390,7 +390,7 @@ void hud_shield_show_mini(object *objp, int x_force, int y_force, int x_hull_off
 				
 		range = HUD_color_alpha;
 		hud_color_index = (int)std::lround((objp->shield_quadrant[Quadrant_xlate[i]] / max_shield) * range);
-		Assert(hud_color_index >= 0 && hud_color_index <= range);
+	core::Assert(hud_color_index >= 0 && hud_color_index <= range);
 	
 		if ( hud_color_index < 0 ) {
 			hud_color_index = 0;
@@ -493,7 +493,7 @@ void hud_shield_quadrant_hit(object *objp, int quadrant)
 	if (Game_mode & GM_STANDALONE_SERVER)
 		return;
 
-	Assertion(objp != NULL, "hud_shield_quadrant_hit() called with a NULL objp; get a coder!\n");
+core::Assertion(objp != NULL, "hud_shield_quadrant_hit() called with a NULL objp; get a coder!\n");
 
 	if ( objp->type != OBJ_SHIP )
 		return;
@@ -509,8 +509,8 @@ void hud_shield_quadrant_hit(object *objp, int quadrant)
 		return;
 	}
 
-	Assertion(!shi->shield_hit_timers.empty(), "Shield hit info object for object '%s' has a size " SIZE_T_ARG " shield_hit_timers; get a coder!\n", Ships[objp->instance].ship_name, shi->shield_hit_timers.size());
-	Assertion(shi->hull_hit_index < (int) shi->shield_hit_timers.size(), "Shield hit info object for object '%s' has a hull_hit_index of %d (should be between 0 and " SIZE_T_ARG "); get a coder!\n", Ships[objp->instance].ship_name, shi->hull_hit_index, shi->shield_hit_timers.size() - 1);
+core::Assertion(!shi->shield_hit_timers.empty(), "Shield hit info object for object '%s' has a size " SIZE_T_ARG " shield_hit_timers; get a coder!\n", Ships[objp->instance].ship_name, shi->shield_hit_timers.size());
+core::Assertion(shi->hull_hit_index < (int) shi->shield_hit_timers.size(), "Shield hit info object for object '%s' has a hull_hit_index of %d (should be between 0 and " SIZE_T_ARG "); get a coder!\n", Ships[objp->instance].ship_name, shi->hull_hit_index, shi->shield_hit_timers.size() - 1);
 
 	if ( quadrant >= 0 ) {
 		if ( !(Ship_info[Ships[objp->instance].ship_info_index].flags[Ship::Info_Flags::Model_point_shields]) )
@@ -518,7 +518,7 @@ void hud_shield_quadrant_hit(object *objp, int quadrant)
 		else
 			num = quadrant;
 
-		Assertion(num < shi->hull_hit_index, "Shield hit info object for object '%s' hit on quadrant #%d, despite having a hull_hit_index of %d; get a coder!\n", Ships[objp->instance].ship_name, num, shi->hull_hit_index);
+	core::Assertion(num < shi->hull_hit_index, "Shield hit info object for object '%s' hit on quadrant #%d, despite having a hull_hit_index of %d; get a coder!\n", Ships[objp->instance].ship_name, num, shi->hull_hit_index);
 		shi->shield_hit_timers[num] = timestamp(SHIELD_HIT_DURATION_SHORT);
 	} else {
 		shi->shield_hit_timers[shi->hull_hit_index] = timestamp(SHIELD_HIT_DURATION_SHORT);
@@ -696,7 +696,7 @@ void HudGaugeShield::showShields(object *objp, int mode)
 		else
 			hud_color_index = fl2i( (objp->shield_quadrant[i] / max_shield) * range);
 
-		Assert(hud_color_index >= 0 && hud_color_index <= range);
+	core::Assert(hud_color_index >= 0 && hud_color_index <= range);
 
 		if ( hud_color_index < 0 ) {
 			hud_color_index = 0;
@@ -987,7 +987,7 @@ void HudGaugeShieldMini::showMiniShields(object *objp)
 				
 		range = HUD_color_alpha;
 		hud_color_index = (int)std::lround((objp->shield_quadrant[Quadrant_xlate[i]] / max_shield) * range);
-		Assert(hud_color_index >= 0 && hud_color_index <= range);
+	core::Assert(hud_color_index >= 0 && hud_color_index <= range);
 	
 		if ( hud_color_index < 0 ) {
 			hud_color_index = 0;
@@ -1021,7 +1021,7 @@ void HudGaugeShieldMini::showIntegrity(float p_target_integrity)
 	if(numeric_integrity > 100){
 		numeric_integrity = 100;
 	}
-	// Assert(numeric_integrity <= 100);
+	//core::Assert(numeric_integrity <= 100);
 
 	// 3 digit hull strength
 	if ( numeric_integrity == 100 ) {

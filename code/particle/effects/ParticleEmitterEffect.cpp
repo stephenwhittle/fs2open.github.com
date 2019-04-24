@@ -29,7 +29,7 @@ void ParticleEmitterEffect::pageIn() {
 }
 
 void ParticleEmitterEffect::setValues(const particle_emitter& emitter, int bitmap, float range) {
-	Assert(bm_is_valid(bitmap));
+core::Assert(bm_is_valid(bitmap));
 
 	m_emitter = emitter;
 	m_particleBitmap = bitmap;

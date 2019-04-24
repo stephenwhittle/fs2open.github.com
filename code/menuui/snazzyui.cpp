@@ -64,9 +64,9 @@ int snazzy_menu_do(ubyte *data, int mask_w, int mask_h, int num_regions, MENU_RE
 	int choice = -1, mouse_on_choice = -1;
 	ubyte pixel_value = 0;
 
-	Assert(data != NULL);
-	Assert(num_regions > 0);
-	Assert(regions != NULL);
+core::Assert(data != NULL);
+core::Assert(num_regions > 0);
+core::Assert(regions != NULL);
 	
 	gr_reset_clip();  // don't remove
 	mouse_get_pos_unscaled( &x, &y ); 

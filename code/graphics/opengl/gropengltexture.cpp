@@ -86,7 +86,7 @@ GLfloat opengl_get_max_anisotropy()
 	}
 
 	// the spec says that it should be a minimum of 2.0
-	Assert( GL_max_anisotropy >= 2.0f );
+core::Assert( GL_max_anisotropy >= 2.0f );
 
 	return GL_max_anisotropy;
 }
@@ -143,7 +143,7 @@ void opengl_tcache_init()
 		CLAMP(GL_anisotropy, 1.0f, GL_max_anisotropy);
 	}
 
-	Assert( GL_supported_texture_units >= 2 );
+core::Assert( GL_supported_texture_units >= 2 );
 
 	GL_last_detail = Detail.hardware_textures;
 
@@ -225,7 +225,7 @@ int opengl_free_texture(tcache_slot_opengl *t)
 		// No texture here anymore
 		return 1;
 	}
-	Assertion(t->used, "Tried to free unused texture slot. This shouldn't happen!");
+core::Assertion(t->used, "Tried to free unused texture slot. This shouldn't happen!");
 
 	// First mark this as unused and then check if all frames are unused. If that's the case we can free the texture array
 	t->used = false;
@@ -267,7 +267,7 @@ int opengl_free_texture(tcache_slot_opengl *t)
 		// No frame is used anymore so now we can free the texture
 	} else {
 		// If we are here then the texture slot must contain an FBO texture
-		Assertion(t->fbo_id >= 0, "Found texture slot with invalid bitmap number which wasn't an FBO!");
+	core::Assertion(t->fbo_id >= 0, "Found texture slot with invalid bitmap number which wasn't an FBO!");
 	}
 
 	GR_DEBUG_SCOPE("Delete texture");
@@ -331,7 +331,7 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 		intFormat = GL_RGB5_A1;
 		glFormat  = GL_BGRA;
 	} else if (byte_mult == 1) {
-		Assertion(bitmap_type == TCACHE_TYPE_AABITMAP,
+	core::Assertion(bitmap_type == TCACHE_TYPE_AABITMAP,
 		          "Invalid type for bitmap: %s BMPMAN handle: %d. Type expected was 0, we got %d instead.\nThis can be "
 		          "caused by using texture compression on a non-power-of-2 texture.\n",
 		          bm_get_filename(bitmap_handle), bitmap_handle, bitmap_type);
@@ -417,7 +417,7 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 		texmem  = (ubyte*)vm_malloc(tex_w * tex_h * byte_mult);
 		texmemp = texmem;
 
-		Assert(texmem != nullptr);
+	core::Assert(texmem != nullptr);
 
 		int luminance = 0;
 		for (auto i = 0; i < tex_h; i++) {
@@ -467,7 +467,7 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 			texmem  = (ubyte*)vm_malloc(tex_w * tex_h * byte_mult);
 			texmemp = texmem;
 
-			Assert(texmem != nullptr);
+		core::Assert(texmem != nullptr);
 
 			for (auto i = 0; i < tex_h; i++) {
 				for (auto j = 0; j < tex_w; j++) {
@@ -495,8 +495,8 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 	}
 
 	case TCACHE_TYPE_CUBEMAP: {
-		Assert(!resize);
-		Assert(texmem == nullptr);
+	core::Assert(!resize);
+	core::Assert(texmem == nullptr);
 
 		// we have to load in all 6 faces...
 		doffset = 0;
@@ -568,7 +568,7 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 			texmem  = (ubyte*)vm_malloc(tex_w * tex_h * byte_mult);
 			texmemp = texmem;
 
-			Assert(texmem != nullptr);
+		core::Assert(texmem != nullptr);
 
 			fix u, utmp, v, du, dv;
 
@@ -594,7 +594,7 @@ static int opengl_texture_set_level(int bitmap_handle, int bitmap_type, int bmap
 
 		// should never have mipmap levels if we also have to manually resize
 		if ((mipmap_levels > 1) && resize) {
-			Assert(texmem == nullptr);
+		core::Assert(texmem == nullptr);
 
 			// If we have mipmaps then tex_w/h are already adjusted for the base level but that will cause problems with
 			// the code below. Instead we set the values to the actual size of the bitmap here to make sure we can
@@ -679,7 +679,7 @@ static GLenum opengl_get_internal_format(int handle, int bitmap_type, int bpp) {
 	} else if (byte_mult == 2) {
 		return GL_RGB5_A1;
 	} else if (byte_mult == 1) {
-		Assertion( bitmap_type == TCACHE_TYPE_AABITMAP, "Invalid type for bitmap: %s BMPMAN handle: %d. Type expected was 0, we got %d instead.\nThis can be caused by using texture compression on a non-power-of-2 texture.\n", bm_get_filename(handle), handle, bitmap_type );
+	core::Assertion( bitmap_type == TCACHE_TYPE_AABITMAP, "Invalid type for bitmap: %s BMPMAN handle: %d. Type expected was 0, we got %d instead.\nThis can be caused by using texture compression on a non-power-of-2 texture.\n", bm_get_filename(handle), handle, bitmap_type );
 		return GL_R8;
 	} else {
 		return GL_RGBA8;
@@ -750,7 +750,7 @@ void opengl_determine_bpp_and_flags(int bitmap_handle, int bitmap_type, ubyte& f
 					break;
 
 				default:
-					Assert( 0 );
+				core::Assert( 0 );
 					break;
 			}
 
@@ -760,7 +760,7 @@ void opengl_determine_bpp_and_flags(int bitmap_handle, int bitmap_type, ubyte& f
 
 void opengl_tex_array_storage(GLenum target, GLint levels, GLenum format, GLint width, GLint height, GLint frames) {
 	if (target == GL_TEXTURE_CUBE_MAP) {
-		Assertion(frames == 1, "Cube map texture arrays aren't supported yet!");
+	core::Assertion(frames == 1, "Cube map texture arrays aren't supported yet!");
 
 		if (GLAD_GL_ARB_texture_storage) {
 			// This version has a better way of specifying the texture storage
@@ -824,7 +824,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 
 	auto start_slot = bm_get_gr_info<tcache_slot_opengl>(animation_begin, true);
 	if (start_slot->bitmap_handle != -1) {
-		Assertion(start_slot->bitmap_handle != animation_begin, "opengl_create_texture was called for the same bitmap again!");
+	core::Assertion(start_slot->bitmap_handle != animation_begin, "opengl_create_texture was called for the same bitmap again!");
 
 		if (start_slot->texture_id != 0) {
 			// Delete the previous texture that was stored in this slot
@@ -856,13 +856,13 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 		} else {
 			// we have mipmap levels so use those as a resize point (image should already be power-of-2)
 			base_level = -(Detail.hardware_textures - 4);
-			Assert(base_level >= 0);
+		core::Assert(base_level >= 0);
 
 			if (base_level >= max_levels) {
 				base_level = max_levels - 1;
 			}
 
-			Assert( (max_levels - base_level) >= 1 );
+		core::Assert( (max_levels - base_level) >= 1 );
 
 			// Adjust the size to match the size of the used base-mipmap
 			width >>= base_level;
@@ -918,7 +918,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 			glTexParameterf(tslot->texture_target, GL_TEXTURE_MAX_ANISOTROPY_EXT, GL_anisotropy);
 		}
 	} else if (mipmap_levels == 1 && bitmap_type == TCACHE_TYPE_CUBEMAP) {
-		Assertion(num_frames == 1, "Cube map arrays are not supported yet!");
+	core::Assertion(num_frames == 1, "Cube map arrays are not supported yet!");
 		// For cubemaps without mipmaps, we will generate them later so we need to make sure that enough space is
 		// allocated for the generated mipmaps
 		allocated_mipmap_levels = get_num_mipmap_levels(width, height);
@@ -950,8 +950,8 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 		int debug_bpp;
 		opengl_determine_bpp_and_flags(frame, bitmap_type, debug_flags, debug_bpp);
 
-		Assertion(debug_flags == bitmap_flags, "Bitmap flags mismatch detected! Get a coder to take a look at this bitmap: %s.", bm_get_filename(frame));
-		Assertion(debug_bpp == bits_per_pixel, "Bits per pixel mismatch detected! Get a coder to take a look at this bitmap: %s.", bm_get_filename(frame));
+	core::Assertion(debug_flags == bitmap_flags, "Bitmap flags mismatch detected! Get a coder to take a look at this bitmap: %s.", bm_get_filename(frame));
+	core::Assertion(debug_bpp == bits_per_pixel, "Bits per pixel mismatch detected! Get a coder to take a look at this bitmap: %s.", bm_get_filename(frame));
 #endif
 
 		// lock the bitmap into the proper format
@@ -986,7 +986,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 	}
 
 	if ( tslot->mipmap_levels == 1 && bitmap_type == TCACHE_TYPE_CUBEMAP ) {
-		Assertion(num_frames == 1, "Cube map arrays are not supported yet!");
+	core::Assertion(num_frames == 1, "Cube map arrays are not supported yet!");
 		// generate mip maps for cube maps so we can get glossy reflections; necessary for gloss maps and
 		// physically-based lighting OGL_EXT_FRAMEBUFFER_OBJECT required to use glGenerateMipmap()
 
@@ -1059,9 +1059,9 @@ int gr_opengl_tcache_set_internal(int bitmap_handle, int bitmap_type, float *u_s
 
 int gr_opengl_tcache_set(int bitmap_handle, int bitmap_type, float *u_scale, float *v_scale, uint32_t *array_index, int stage)
 {
-	Assertion(u_scale != nullptr, "U scale must be a valid pointer!");
-	Assertion(v_scale != nullptr, "V scale must be a valid pointer!");
-	Assertion(array_index != nullptr, "Array index must be a valid pointer!");
+core::Assertion(u_scale != nullptr, "U scale must be a valid pointer!");
+core::Assertion(v_scale != nullptr, "V scale must be a valid pointer!");
+core::Assertion(array_index != nullptr, "Array index must be a valid pointer!");
 
 	int rc = 0;
 
@@ -1100,7 +1100,7 @@ int gr_opengl_preload(int bitmap_num, int is_aabitmap)
 	float u_scale, v_scale;
 	int retval;
 
-	Assert( gr_screen.mode == GR_OPENGL );
+core::Assert( gr_screen.mode == GR_OPENGL );
 
 	if ( !GL_should_preload ) {
 		return 0;
@@ -1144,7 +1144,7 @@ void gr_opengl_set_texture_addressing(int mode)
 
 int opengl_compress_image( ubyte **compressed_data, ubyte *in_data, int width, int height, int alpha, int num_mipmaps )
 {
-	Assert( in_data != NULL );
+core::Assert( in_data != NULL );
 
 	if ( !Texture_compression_available ) {
 		return 0;
@@ -1198,10 +1198,10 @@ int opengl_compress_image( ubyte **compressed_data, ubyte *in_data, int width, i
 
 	// if we got this far then it should have worked, but check anyway
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_COMPRESSED, &compressed);
-	Assert( compressed != GL_FALSE );
+core::Assert( compressed != GL_FALSE );
 
 	glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_INTERNAL_FORMAT, &compressed);
-	Assert( compressed == intFormat );
+core::Assert( compressed == intFormat );
 
 	// for each mipmap level we generate go ahead and figure up the total memory required
 	for (i = 0; i < num_mipmaps; i++) {
@@ -1211,7 +1211,7 @@ int opengl_compress_image( ubyte **compressed_data, ubyte *in_data, int width, i
 
 	out_data = (ubyte*)vm_malloc(compressed_size * sizeof(ubyte));
 
-	Assert( out_data != NULL );
+core::Assert( out_data != NULL );
 
 	memset(out_data, 0, compressed_size * sizeof(ubyte));
 
@@ -1239,7 +1239,7 @@ int opengl_compress_image( ubyte **compressed_data, ubyte *in_data, int width, i
 
 int opengl_get_texture( GLenum target, GLenum pixel_format, GLenum data_format, int num_mipmaps, int width, int height, int bytes_per_pixel, void* image_data, int offset )
 {
-	Assertion(target != GL_TEXTURE_2D_ARRAY, "This code does not support texture arrays bitmaps!");
+core::Assertion(target != GL_TEXTURE_2D_ARRAY, "This code does not support texture arrays bitmaps!");
 
 	int m_offset = offset;
 	int m_width = width;
@@ -1293,7 +1293,7 @@ void gr_opengl_get_bitmap_from_texture(void* data_out, int bitmap_num)
 	auto slice_size = ts->w * ts->h * bytes_per_pixel;
 	std::unique_ptr<std::uint8_t[]> buffer(new std::uint8_t[num_frames * slice_size]);
 
-	Assertion(ts->texture_target == GL_TEXTURE_2D_ARRAY, "Unexpected texture target encountered!");
+core::Assertion(ts->texture_target == GL_TEXTURE_2D_ARRAY, "Unexpected texture target encountered!");
 
 	// Copy the entire texture level into the bitmap
 	glGetTexImage(ts->texture_target, 0, pixel_format, data_format, buffer.get());
@@ -1409,7 +1409,7 @@ void gr_opengl_update_texture(int bitmap_handle, int bpp, const ubyte* data, int
 		texmem = (ubyte *) vm_malloc (width*height*byte_mult);
 		ubyte* texmemp = texmem;
 
-		Assert( texmem != NULL );
+	core::Assert( texmem != NULL );
 
 		int luminance = 0;
 		for (int i = 0; i < height; i++) {
@@ -1505,7 +1505,7 @@ static fbo_t* opengl_get_free_fbo() {
 static void opengl_free_fbo_slot(int id) {
 	auto fbo = opengl_get_fbo(id);
 
-	Assertion(fbo != nullptr, "Invalid id passed to opengl_free_fbo_slot!");
+core::Assertion(fbo != nullptr, "Invalid id passed to opengl_free_fbo_slot!");
 
 	// Reset this slot using the default constructor
 	*fbo = fbo_t();
@@ -1635,7 +1635,7 @@ int opengl_set_render_target( int slot, int face, int is_static )
 	}
 
 	ts = bm_get_gr_info<tcache_slot_opengl>(slot);
-	Assert( ts != NULL );
+core::Assert( ts != NULL );
 
 	if (!ts->texture_id) {
 		Int3();
@@ -1659,11 +1659,11 @@ int opengl_set_render_target( int slot, int face, int is_static )
 
 	if (ts->texture_target == GL_TEXTURE_CUBE_MAP) {
 		// For cubemaps we can enable one of the six faces for rendering
-		Assert( (face >= 0) && (face < 6) );
+	core::Assert( (face >= 0) && (face < 6) );
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, ts->texture_id, 0);
 	} else {
 		// Check if the face is valid for this case
-		Assert( face <= 0 );
+	core::Assert( face <= 0 );
 	}
 
 //	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, fbo->renderbuffer_id);
@@ -1685,7 +1685,7 @@ int opengl_make_render_target( int handle, int *w, int *h, int *bpp, int *mm_lvl
 {
 	GR_DEBUG_SCOPE("Make OpenGL render target");
 
-	Assert( !GL_rendering_to_texture );
+core::Assert( !GL_rendering_to_texture );
 
 	// got to have at least width and height!
 	if (!w || !h) {

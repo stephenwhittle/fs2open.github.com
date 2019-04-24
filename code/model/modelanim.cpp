@@ -273,7 +273,7 @@ void triggered_rotation::add_queue(queued_animation *the_queue, int dir)
 		}
 	}
 
-	Assert( new_queue.start >= 0 );
+core::Assert( new_queue.start >= 0 );
 
 	// starts that many milliseconds from now
 	new_queue.start_time = timestamp( new_queue.start );
@@ -403,9 +403,9 @@ be locked at the angle it's suposed to end at
 
 void model_anim_submodel_trigger_rotate(model_subsystem *psub, ship_subsys *ss)
 {
-	Assert( psub != NULL );
-	Assert( ss != NULL );
-	Assert( psub->flags[Model::Subsystem_Flags::Triggered] );
+core::Assert( psub != NULL );
+core::Assert( ss != NULL );
+core::Assert( psub->flags[Model::Subsystem_Flags::Triggered] );
 	
 	if (ss->triggered_rotation_index < 0) {
 		mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[ss->parent_objnum].instance].ship_info_index].model_num)->filename));
@@ -540,8 +540,8 @@ void model_anim_submodel_trigger_rotate(model_subsystem *psub, ship_subsys *ss)
 // Checks if the given subtype matches a particular animation
 bool subtype_check(model_subsystem *psub, queued_animation *anim_q, int subtype)
 {
-	Assert( psub != NULL );
-	Assert( anim_q != NULL );
+core::Assert( psub != NULL );
+core::Assert( anim_q != NULL );
 
 	if ( (subtype == ANIMATION_SUBTYPE_ALL) || (anim_q->subtype == ANIMATION_SUBTYPE_ALL) )
 		return true;
@@ -570,7 +570,7 @@ bool subtype_check(model_subsystem *psub, queued_animation *anim_q, int subtype)
 
 bool model_anim_start_type(ship_subsys *pss, int animation_type, int subtype, int direction, bool instant)
 {
-	Assert( pss != NULL );
+core::Assert( pss != NULL );
 
 	if (pss->max_hits > 0 && pss->current_hits <= 0.0f) //allow subobjects with hitpoints disabled -nuke
 		return false;
@@ -747,7 +747,7 @@ void model_anim_fix_reverse_times(ship_info *sip)
  */
 int model_anim_get_time_type(ship_subsys *pss, int animation_type, int subtype)
 {
-	Assert( pss != NULL );
+core::Assert( pss != NULL );
 
 	if (pss->max_hits > 0 && pss->current_hits <= 0.0f) //allow subobjects with hitpoints disabled -nuke
 		return timestamp();
@@ -876,7 +876,7 @@ void model_anim_set_initial_states(ship *shipp)
  */
 void model_anim_handle_multiplayer(ship *shipp)
 {
-	Assert( shipp != NULL );
+core::Assert( shipp != NULL );
 
 	ship_subsys *pss;
 	model_subsystem *psub;

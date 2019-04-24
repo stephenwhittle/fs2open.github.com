@@ -18,7 +18,7 @@ namespace font
 {
 	size_t NVGFont::getTokenLength(const char *string, size_t maxLength)
 	{
-		Assert(string != NULL);
+	core::Assert(string != NULL);
 
 		size_t length = 0;
 
@@ -88,31 +88,31 @@ namespace font
 	
 	void NVGFont::setHandle(int handle)
 	{
-		Assertion(handle >= 0, "Invalid font handle passed!");
+	core::Assertion(handle >= 0, "Invalid font handle passed!");
 		m_handle = handle;
 	}
 
 	void NVGFont::setSize(float size)
 	{
-		Assertion(size > 0.f, "Invalid size %f passed!", size);
+	core::Assertion(size > 0.f, "Invalid size %f passed!", size);
 		m_size = size;
 	}
 
 	void NVGFont::setLetterSpacing(float spacing)
 	{
-		Assertion(spacing >= 0.0f, "Invalid letter spacing passed!");
+	core::Assertion(spacing >= 0.0f, "Invalid letter spacing passed!");
 		m_letterSpacing = spacing;
 	}
 
 	void NVGFont::setTabWidth(float tabWidth)
 	{
-		Assertion(tabWidth >= 0.0f, "Invalid tab width passed!");
+	core::Assertion(tabWidth >= 0.0f, "Invalid tab width passed!");
 		m_tabWidth = tabWidth;
 	}
 
 	void NVGFont::setSpecialCharacterFont(font* fontData)
 	{
-		Assertion(fontData != nullptr, "Invalid font data pointer passed!");
+	core::Assertion(fontData != nullptr, "Invalid font data pointer passed!");
 		m_specialCharacters = fontData;
 	}
 	

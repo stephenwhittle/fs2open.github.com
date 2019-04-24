@@ -36,7 +36,7 @@ class UniformAligner {
 
 	template<typename T>
 	T* addTypedElement() {
-		Assertion(sizeof(T) == _dataSize,
+	core::Assertion(sizeof(T) == _dataSize,
 				  "Sizes of template parameter and runtime size do not match! This probably uses the wrong type.");
 
 		return reinterpret_cast<T*>(addElement());
@@ -44,7 +44,7 @@ class UniformAligner {
 
 	template<typename THeader>
 	THeader* getHeader() {
-		Assertion(sizeof(THeader) == _headerSize, "Header size does not match requested header type!");
+	core::Assertion(sizeof(THeader) == _headerSize, "Header size does not match requested header type!");
 
 		return reinterpret_cast<THeader*>(_buffer.data());
 	}
@@ -53,7 +53,7 @@ class UniformAligner {
 
 	template<typename T>
 	T* getTypedElement(size_t index) {
-		Assertion(sizeof(T) == _dataSize,
+	core::Assertion(sizeof(T) == _dataSize,
 				  "Sizes of template parameter and runtime size do not match! This probably uses the wrong type.");
 
 		return reinterpret_cast<T*>(getElement(index));
@@ -69,7 +69,7 @@ class UniformAligner {
 
 	template<typename T>
 	T* nextTypedElement(T* currentEl) {
-		Assertion(sizeof(T) == _dataSize,
+	core::Assertion(sizeof(T) == _dataSize,
 				  "Sizes of template parameter and runtime size do not match! This probably uses the wrong type.");
 
 		return reinterpret_cast<T*>(nextElement(reinterpret_cast<void*>(currentEl)));

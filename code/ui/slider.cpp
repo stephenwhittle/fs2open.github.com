@@ -30,7 +30,7 @@ void UI_DOT_SLIDER_NEW::create(UI_WINDOW *wnd, int _x, int _y, int _num_pos, con
 
 	// if any of the left/right arrow information is specified, make sure its _all_ specified
 	if((bm_left != NULL) || (left_mask != -1) || (bm_right != NULL) || (right_mask != -1)){
-		Assert((bm_left != NULL) && (left_mask >= 0) && (bm_right != NULL) && (right_mask >= 0));
+	core::Assert((bm_left != NULL) && (left_mask >= 0) && (bm_right != NULL) && (right_mask >= 0));
 		if((bm_left == NULL) || (left_mask < 0) || (bm_right == NULL) || (right_mask < 0)){
 			return;
 		}
@@ -79,7 +79,7 @@ void UI_DOT_SLIDER_NEW::draw()
 	}
 	
 	// draw the proper dot
-	Assert((pos >= 0) && (pos <= num_pos));	
+core::Assert((pos >= 0) && (pos <= num_pos));	
 	
 	// for position -1, we don't draw (no dots)	
 	if(pos >= 0){
@@ -234,7 +234,7 @@ void UI_DOT_SLIDER::draw()
 		up_button.draw();
 		down_button.draw();
 	}
-	Assert((pos >= 0) && (pos <= num_pos));
+core::Assert((pos >= 0) && (pos <= num_pos));
 	gr_set_bitmap(first_frame + pos);  // draw the dot level
 	gr_bitmap(x, y, GR_RESIZE_MENU);
 }

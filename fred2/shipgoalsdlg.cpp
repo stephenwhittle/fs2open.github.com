@@ -165,7 +165,7 @@ BOOL ShipGoalsDlg::OnInitDialog()
 {
 	int i, j, z, valid[99];
 	object *ptr;
-	Assert(Ai_goal_list_size <= _countof(valid));
+core::Assert(Ai_goal_list_size <= _countof(valid));
 
 	// set up pointers to all the combo boxes to simplify things a lot
 	m_behavior_box[0] = (CComboBox *) GetDlgItem(IDC_BEHAVIOR1);
@@ -484,7 +484,7 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 				m_subsys[item] = -1;
 				num = get_docking_list(Ship_info[Ships[ship].ship_info_index].model_num);
 				for (i=0; i<num; i++) {
-					Assert(Docking_bay_list[i]);
+				core::Assert(Docking_bay_list[i]);
 					if (!stricmp(goalp[item].docker.name, Docking_bay_list[i])) {
 						m_subsys[item] = i;
 						break;
@@ -508,14 +508,14 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 				if ((ptr->type == OBJ_SHIP) || (ptr->type == OBJ_START)) {
 					inst = ptr->instance;
 					if (ptr->type == OBJ_SHIP) {
-						Assert(inst >= 0 && inst < MAX_SHIPS);
+					core::Assert(inst >= 0 && inst < MAX_SHIPS);
 						if (!stricmp(goalp[item].target_name, Ships[inst].ship_name)) {
 							m_data[item] = inst | TYPE_SHIP;
 							break;
 						}
 
 					} else {
-						Assert(inst >= 0 && inst < MAX_SHIPS);
+					core::Assert(inst >= 0 && inst < MAX_SHIPS);
 						if (!stricmp(goalp[item].target_name, Ships[inst].ship_name)) {
 							m_data[item] = inst | TYPE_PLAYER;
 							break;
@@ -568,9 +568,9 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 				if (m_data[item]) {
 					num = get_docking_list(Ship_info[Ships[m_data[item] & DATA_MASK].ship_info_index].model_num);
 					for (i=0; i<num; i++) {
-						Assert(Docking_bay_list[i]);
-						Assert(goalp[item].dockee.name);
-						Assert(goalp[item].dockee.index != -1);
+					core::Assert(Docking_bay_list[i]);
+					core::Assert(goalp[item].dockee.name);
+					core::Assert(goalp[item].dockee.index != -1);
 						if (!stricmp(goalp[item].dockee.name, Docking_bay_list[i])) {
 							m_dock2[item] = i;
 							break;
@@ -581,7 +581,7 @@ void ShipGoalsDlg::initialize(ai_goal *goals, int ship)
 				break;
 		}
 
-//		Assert(m_data[item]);
+//	core::Assert(m_data[item]);
 	}
 }
 
@@ -597,7 +597,7 @@ void ShipGoalsDlg::set_item(int item, int init)
 	if (item >= MAX_AI_GOALS)
 		m_behavior_box[item] -> EnableWindow(FALSE);
 	
-	Assert(item >= 0 && item < ED_MAX_GOALS);
+core::Assert(item >= 0 && item < ED_MAX_GOALS);
 	m_object_box[item] -> ResetContent();
 	if (m_behavior[item] < 1) {
 		m_object_box[item] -> EnableWindow(FALSE);
@@ -684,7 +684,7 @@ void ShipGoalsDlg::set_item(int item, int init)
 					else
 						t = TYPE_PLAYER;
 
-					Assert(inst >= 0 && inst < MAX_SHIPS);
+				core::Assert(inst >= 0 && inst < MAX_SHIPS);
 					// remove all marked ships from list
 					if (!goalp && (ptr->flags[Object::Object_Flags::Marked]))
 						inst = -1;
@@ -738,7 +738,7 @@ void ShipGoalsDlg::set_item(int item, int init)
 		m_subsys_box[item] -> EnableWindow(TRUE);
 		m_subsys_box[item] -> ResetContent();
 		for (i=0; i<num; i++) {
-			Assert(Docking_bay_list[i]);
+		core::Assert(Docking_bay_list[i]);
 			z = m_subsys_box[item] -> AddString(Docking_bay_list[i]);
 			m_subsys_box[item] -> SetItemDataPtr(z, Docking_bay_list[i]);
 		}
@@ -1062,7 +1062,7 @@ void ShipGoalsDlg::update_item(int item, int multi)
 
 		case TYPE_PATH:
 			wp_list = find_waypoint_list_at_index(m_data[item] & DATA_MASK);
-			Assert(wp_list != NULL);
+		core::Assert(wp_list != NULL);
 			goalp[item].target_name = ai_get_goal_target_name(wp_list->get_name(), &not_used);
 			break;
 
@@ -1211,7 +1211,7 @@ void ShipGoalsDlg::set_object(int item)
 			m_dock2_box[item] -> EnableWindow(TRUE);
 			m_dock2_box[item] -> ResetContent();
 			for (i=0; i<num; i++) {
-				Assert(Docking_bay_list[i]);
+			core::Assert(Docking_bay_list[i]);
 				z = m_dock2_box[item] -> AddString(Docking_bay_list[i]);
 				str = ai_get_goal_target_name(Docking_bay_list[i], &not_used);
 				m_dock2_box[item] -> SetItemDataPtr(z, str);

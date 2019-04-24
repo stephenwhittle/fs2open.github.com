@@ -90,7 +90,7 @@ void HeapAllocator::addFreeRange(const HeapAllocator::MemoryRange& range) {
 		return;
 	}
 
-	Assertion(std::is_sorted(_freeRanges.begin(), _freeRanges.end()),
+core::Assertion(std::is_sorted(_freeRanges.begin(), _freeRanges.end()),
 			  "Free ranges were not sorted before adding a free range.");
 
 	auto left = get_element_before(_freeRanges.begin(), _freeRanges.end(), range);
@@ -139,8 +139,8 @@ void HeapAllocator::addFreeRange(const HeapAllocator::MemoryRange& range) {
 	checkRangesMerged();
 }
 void HeapAllocator::addAllocatedRange(const HeapAllocator::MemoryRange& range) {
-	Assertion(std::is_sorted(_allocatedRanges.begin(), _allocatedRanges.end()), "Allocated ranges are not sorted!");
-	Assertion(!std::binary_search(_allocatedRanges.begin(), _allocatedRanges.end(), range),
+core::Assertion(std::is_sorted(_allocatedRanges.begin(), _allocatedRanges.end()), "Allocated ranges are not sorted!");
+core::Assertion(!std::binary_search(_allocatedRanges.begin(), _allocatedRanges.end(), range),
 			  "Allocated ranges already contain the specified range!");
 
 	// We need to keep the vector sorted for better search performance so we insert this new range at the sorted position
@@ -150,7 +150,7 @@ void HeapAllocator::addAllocatedRange(const HeapAllocator::MemoryRange& range) {
 	// This works even if it is .end() since .insert will just add it to the vector in that case
 	_allocatedRanges.insert(it, range);
 
-	Assertion(std::is_sorted(_allocatedRanges.begin(), _allocatedRanges.end()), "Allocated ranges are not sorted!");
+core::Assertion(std::is_sorted(_allocatedRanges.begin(), _allocatedRanges.end()), "Allocated ranges are not sorted!");
 }
 void HeapAllocator::free(size_t offset) {
 	// We use a dummy range for finding the entry in our allocated ranges
@@ -160,8 +160,8 @@ void HeapAllocator::free(size_t offset) {
 	auto it = std::lower_bound(_allocatedRanges.begin(), _allocatedRanges.end(), range);
 
 	// Make sure that the range is valid
-	Assertion(it != _allocatedRanges.end(), "Specified offset was not found in the allocated ranges!");
-	Assertion(it->offset == offset, "Specified offset does not point to the start of an allocated range!");
+core::Assertion(it != _allocatedRanges.end(), "Specified offset was not found in the allocated ranges!");
+core::Assertion(it->offset == offset, "Specified offset does not point to the start of an allocated range!");
 
 	// Copy the range out of the vector before erasing it so we can add it to the free ranges
 	auto freedRange = *it;
@@ -181,7 +181,7 @@ void HeapAllocator::checkRangesMerged() {
 	size_t lastEnd = 0;
 	for (auto& range : _freeRanges) {
 		if (!first) {
-			Assertion(lastEnd != range.offset, "Found unmerged ranges at offset " SIZE_T_ARG "!", lastEnd);
+		core::Assertion(lastEnd != range.offset, "Found unmerged ranges at offset " SIZE_T_ARG "!", lastEnd);
 		}
 
 		lastEnd = range.offset + range.size;

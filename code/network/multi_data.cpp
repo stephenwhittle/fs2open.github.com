@@ -339,7 +339,7 @@ int multi_data_is_data(char *filename)
 {		
 	size_t len,idx;
 
-	Assert(filename != NULL);
+core::Assert(filename != NULL);
 
 	// some kind of error
 	if(filename == NULL){

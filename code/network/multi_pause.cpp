@@ -156,7 +156,7 @@ void multi_pause_pause()
 	}
 
 	// sanity check
-	Assert(!Multi_pause_status);
+core::Assert(!Multi_pause_status);
 
 	// mark the game as being paused
 	Multi_pause_status = 1;
@@ -191,7 +191,7 @@ void multi_pause_unpause()
 	}
 
 	// sanity check
-	Assert(Multi_pause_status);
+core::Assert(Multi_pause_status);
 
 	// mark the game as being unpaused
 	Multi_pause_status = 0;
@@ -318,7 +318,7 @@ void multi_pause_init()
 		return;
 	}
 
-	Assert( Game_mode & GM_MULTIPLAYER );
+core::Assert( Game_mode & GM_MULTIPLAYER );
 
 	if ( !(Game_mode & GM_MULTIPLAYER) )
 		return;

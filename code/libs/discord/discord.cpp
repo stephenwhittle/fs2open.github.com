@@ -221,7 +221,7 @@ namespace discord {
 
 void init()
 {
-	Assertion(!initialized, "Discord integration can only be initialized once!");
+core::Assertion(!initialized, "Discord integration can only be initialized once!");
 
 	DiscordEventHandlers handlers;
 	memset(&handlers, 0, sizeof(handlers));

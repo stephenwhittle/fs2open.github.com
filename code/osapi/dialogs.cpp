@@ -8,6 +8,7 @@
 #include "graphics/2d.h"
 #include "scripting/ade.h"
 #include <core/pstypes.h>
+#include <SDL.h>
 #include <SDL_messagebox.h>
 #include <SDL_clipboard.h>
 
@@ -108,12 +109,12 @@ namespace os
 				va_end(args);
 
 				msgStream << buffer << "\n";
-				mprintf(("ASSERTION: \"%s\" at %s:%d\n %s\n", text, filename, linenum, buffer.c_str()));
+				core::mprintf("ASSERTION: \"%s\" at %s:%d\n %s\n", text, filename, linenum, buffer.c_str());
 			}
 			else
 			{
 				// No additional message
-				mprintf(("ASSERTION: \"%s\" at %s:%d\n", text, filename, linenum));
+				core::mprintf("ASSERTION: \"%s\" at %s:%d\n", text, filename, linenum);
 			}
 
 			if (running_unittests) {
@@ -130,7 +131,7 @@ namespace os
 			messageText += "\n[ This info is in the clipboard so you can paste it somewhere now ]\n";
 			messageText += "\n\nUse Debug to break into Debugger, Exit will close the application.\n";
 
-			Error(messageText.c_str());
+			core::Error(messageText.c_str());
 		}
 
 		void LuaError(lua_State * L, const char * format, ...)
@@ -199,7 +200,7 @@ namespace os
 			msgStream << "\n";
 			msgStream << Separator;
 
-			mprintf(("Lua Error: %s\n", msgStream.str().c_str()));
+			core::mprintf("Lua Error: %s\n", msgStream.str().c_str());
 
 			if (Cmdline_noninteractive) {
 				abort();
@@ -283,7 +284,7 @@ namespace os
 
 		void Error(const char* text)
 		{
-			mprintf(("\n%s\n", text));
+			core::mprintf("\n%s\n", text);
 
 			if (Cmdline_noninteractive) {
 				abort();
@@ -349,7 +350,7 @@ namespace os
 			filename = core::path::clean_filename(filename);
 
 			// output to the debug log before anything else (so that we have a complete record)
-			mprintf(("WARNING: \"%s\" at %s:%d\n", text.c_str(), filename, line));
+			core::mprintf("WARNING: \"%s\" at %s:%d\n", text.c_str(), filename, line);
 
 			// now go for the additional popup window, if we want it ...
 			if (Cmdline_noninteractive) {
@@ -498,9 +499,9 @@ namespace os
         {
 	        core::RegisterErrorHandler(static_cast<void (*)(const char*)>(os::dialogs::Error));
 	        core::RegisterWarningHandler(os::dialogs::WarningImpl);
-		    core::RegisterAssertHandler([](const char* msg, const char* file, int line)
+		    core::RegisterAssertHandler([](const char* msg, const char* file, int line, const char* additional_msg)
 				{
-					os::dialogs::AssertMessage(msg, file, line);
+					os::dialogs::AssertMessage(msg, file, line, additional_msg);
 				});
         }
 	} // namespace dialogs

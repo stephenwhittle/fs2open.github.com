@@ -160,7 +160,7 @@ void lcl_init(int lang_init)
 			lang = 0;
 		}	
 	} else {
-		Assert((lang_init >= 0) && (lang_init < (int)Lcl_languages.size()));
+	core::Assert((lang_init >= 0) && (lang_init < (int)Lcl_languages.size()));
 		lang = lang_init;
 	}
 
@@ -292,7 +292,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 				}
 
 				// trim unnecessary end of string
-				// Assert(buf[i] == '"');
+				//core::Assert(buf[i] == '"');
 				if (buf[i] != '"') {
 					// probably an offset on this entry
 
@@ -427,7 +427,7 @@ void lcl_xstr_init()
 	for (i = 0; i < XSTR_SIZE; i++)
 		Xstr_table[i].str = NULL;
 
-	Assertion(Lcl_ext_str.size() == 0, "Localize system was not shut down properly!");
+core::Assertion(Lcl_ext_str.size() == 0, "Localize system was not shut down properly!");
 	Lcl_ext_str.clear();
 
 	try
@@ -486,7 +486,7 @@ void lcl_set_language(int lang)
 
 	nprintf(("General", "Setting language to %s\n", Lcl_languages[lang].lang_name));
 
-	Assertion((Lcl_current_lang >= 0) && (Lcl_current_lang < (int)Lcl_languages.size()), "Attempt to set language to an invalid language");
+core::Assertion((Lcl_current_lang >= 0) && (Lcl_current_lang < (int)Lcl_languages.size()), "Attempt to set language to an invalid language");
 
 	// flag the proper language as being active
 	Lcl_special_chars = Lcl_languages[Lcl_current_lang].special_char_indexes[0];
@@ -512,8 +512,8 @@ ubyte lcl_get_font_index(int font_num)
 		// we just return 0 to signify that there are no special characters in this font
 		return 0;
 	} else {
-		Assertion((font_num >= 0) && (font_num < LCL_MAX_FONTS), "Passed an invalid font index");
-		Assertion((Lcl_current_lang >= 0) && (Lcl_current_lang < (int)Lcl_languages.size()), "Current language is not valid, can't get font indexes");
+	core::Assertion((font_num >= 0) && (font_num < LCL_MAX_FONTS), "Passed an invalid font index");
+	core::Assertion((Lcl_current_lang >= 0) && (Lcl_current_lang < (int)Lcl_languages.size()), "Current language is not valid, can't get font indexes");
 
 		return Lcl_languages[Lcl_current_lang].special_char_indexes[font_num];
 	}
@@ -562,7 +562,7 @@ void lcl_replace_stuff(char *text, size_t max_len)
 	if (Fred_running)
 		return;
 
-	Assert(text);	// Goober5000
+core::Assert(text);	// Goober5000
 
 	// delegate to std::string for the replacements
 	std::string temp_text = text;
@@ -599,7 +599,7 @@ void lcl_fred_replace_stuff(char *text, size_t max_len)
 	if (!Fred_running)
 		return;
 
-	Assert(text);	// Goober5000
+core::Assert(text);	// Goober5000
 
 	// delegate to std::string for the replacements
 	std::string temp_text = text;
@@ -634,8 +634,8 @@ void lcl_ext_localize_sub(const char *in, char *out, size_t max_len, int *id)
 	int str_id;
 	size_t str_len;
 
-	Assert(in);
-	Assert(out);
+core::Assert(in);
+core::Assert(out);
 
 	// default (non-external string) value
 	if (id != NULL) {
@@ -871,8 +871,8 @@ int lcl_ext_get_text(const char *xstr, char *out)
 	size_t str_len;
 	const char *p, *p2;
 
-	Assert(xstr != NULL);
-	Assert(out != NULL);
+core::Assert(xstr != NULL);
+core::Assert(out != NULL);
 	str_len = strlen(xstr);
 	
 	// this is some crazy wack-ass code.
@@ -946,8 +946,8 @@ int lcl_ext_get_id(const char *xstr, int *out)
 	const char *p, *pnext;
 	size_t str_len;
 
-	Assert(xstr != NULL);
-	Assert(out != NULL);
+core::Assert(xstr != NULL);
+core::Assert(out != NULL);
 	
 	str_len = strlen(xstr);
 
@@ -1094,7 +1094,7 @@ int lcl_ext_get_id(const std::string &xstr, int *out)
 
 void lcl_get_language_name(char *lang_name)
 {
-	Assert(Lcl_current_lang < (int)Lcl_languages.size());
+core::Assert(Lcl_current_lang < (int)Lcl_languages.size());
 
 	strcpy(lang_name, Lcl_languages[Lcl_current_lang].lang_name);
 }

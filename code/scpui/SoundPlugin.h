@@ -2,14 +2,14 @@
 
 #include <core/pstypes.h>
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core.h>
 #include <Rocket/Core/Plugin.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 namespace scpui {
 

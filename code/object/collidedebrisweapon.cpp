@@ -31,8 +31,8 @@ int collide_debris_weapon( obj_pair * pair )
 	object *pdebris = pair->a;
 	object *weapon_obj = pair->b;
 
-	Assert( pdebris->type == OBJ_DEBRIS );
-	Assert( weapon_obj->type == OBJ_WEAPON );
+core::Assert( pdebris->type == OBJ_DEBRIS );
+core::Assert( weapon_obj->type == OBJ_WEAPON );
 
 	// first check the bounding spheres of the two objects.
 	hit = fvi_segment_sphere(&hitpos, &weapon_obj->last_pos, &weapon_obj->pos, &pdebris->pos, pdebris->radius);
@@ -90,8 +90,8 @@ int collide_asteroid_weapon( obj_pair * pair )
 	object	*pasteroid = pair->a;
 	object	*weapon_obj = pair->b;
 
-	Assert( pasteroid->type == OBJ_ASTEROID);
-	Assert( weapon_obj->type == OBJ_WEAPON );
+core::Assert( pasteroid->type == OBJ_ASTEROID);
+core::Assert( weapon_obj->type == OBJ_WEAPON );
 
 	// first check the bounding spheres of the two objects.
 	hit = fvi_segment_sphere(&hitpos, &weapon_obj->last_pos, &weapon_obj->pos, &pasteroid->pos, pasteroid->radius);

@@ -182,7 +182,7 @@ void model_unload(int modelnum, int force)
 		return;
 	}
 
-	Assert( pm->used_this_mission >= 0 );
+core::Assert( pm->used_this_mission >= 0 );
 
 	if (!force && (--pm->used_this_mission > 0))
 		return;
@@ -423,7 +423,7 @@ void model_page_in_stop()
 {
 	int i;
 
-	Assert( model_initted );
+core::Assert( model_initted );
 
 	mprintf(( "Stopping model page in...\n" ));
 
@@ -714,7 +714,7 @@ static void set_subsystem_info(int model_num, model_subsystem *subsystemp, char 
 			if ( (p = strstr(props, "$fraction_accel")) != NULL) {
 				get_user_prop_value(p+15, buf);
 			    subsystemp->stepped_rotation->fraction = (float)atof(buf);
-			   Assert(subsystemp->stepped_rotation->fraction > 0 && subsystemp->stepped_rotation->fraction < 0.5);
+			  core::Assert(subsystemp->stepped_rotation->fraction > 0 && subsystemp->stepped_rotation->fraction < 0.5);
 			} else {
 			    subsystemp->stepped_rotation->fraction = 0.3f;
 			}
@@ -905,7 +905,7 @@ void create_vertex_buffer(polymodel *pm)
 	// Determine the global stride of this model (should be the same for every submodel)
 	for ( i = 0; i < pm->n_models; ++i ) {
 		if (pm->submodel[i].buffer.model_list != nullptr && pm->submodel[i].buffer.stride != stride) {
-			Assertion(stride == 0, "Submodel %d of model %s has a stride of "
+		core::Assertion(stride == 0, "Submodel %d of model %s has a stride of "
 				SIZE_T_ARG
 				" while the rest of the model has a vertex stride of "
 				SIZE_T_ARG
@@ -1108,7 +1108,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 	}
 
 	pm->version = version;
-	Assert( strlen(filename) < FILESPEC_LENGTH );
+core::Assert( strlen(filename) < FILESPEC_LENGTH );
 	strcpy_s(pm->filename, filename);
 
 	memset( &pm->view_positions, 0, sizeof(pm->view_positions) );
@@ -1150,7 +1150,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				pm->n_models = cfread_int(fp);
 //				mprintf(( "Num models = %d\n", pm->n_models ));
 #endif
-                Assertion(pm->n_models >= 1, "Models without any submodels are not supported!");
+               core::Assertion(pm->n_models >= 1, "Models without any submodels are not supported!");
 
 				// Check for unrealistic radii
 				if ( pm->rad <= 0.1f )
@@ -1160,7 +1160,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				pm->submodel = new bsp_info[pm->n_models];
 
-				//Assert(pm->n_models <= MAX_SUBMODELS);
+				/core::Assert(pm->n_models <= MAX_SUBMODELS);
 
 				cfread_vector(&pm->mins,fp);
 				cfread_vector(&pm->maxs,fp);
@@ -1295,7 +1295,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				n = cfread_int(fp);
 				//mprintf(("SOBJ IDed itself as %d", n));
 
-				Assert(n < pm->n_models );
+			core::Assert(n < pm->n_models );
 
 #if defined( FREESPACE2_FORMAT )	
 				pm->submodel[n].rad = cfread_float(fp);		//radius
@@ -1421,7 +1421,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 						pm->submodel[n].movement_axis = MOVEMENT_AXIS_NONE;
 					} else {
 						// if submodel rotates (via bspgen), then there is either a subsys or special=no_rotate
-						Assert( pm->submodel[n].movement_type != MOVEMENT_TYPE_ROT );
+					core::Assert( pm->submodel[n].movement_type != MOVEMENT_TYPE_ROT );
 					}
 				}
 
@@ -1754,7 +1754,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 					if (pm->shield.nverts > 0) {
 						pm->shield.verts = (shield_vertex *)vm_malloc(pm->shield.nverts * sizeof(shield_vertex) );
-						Assert( pm->shield.verts );
+					core::Assert( pm->shield.verts );
 						for ( i = 0; i < pm->shield.nverts; i++ ) {						// read in the vertex list
 							cfread_vector( &(pm->shield.verts[i].pos), fp );
 						}
@@ -1764,7 +1764,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 					if (pm->shield.ntris > 0) {
 						pm->shield.tris = (shield_tri *)vm_malloc(pm->shield.ntris * sizeof(shield_tri) );
-						Assert( pm->shield.tris );
+					core::Assert( pm->shield.tris );
 						for ( i = 0; i < pm->shield.ntris; i++ ) {
 							cfread_vector( &temp_vec, fp );
 							vm_vec_normalize_safe(&temp_vec);
@@ -1796,13 +1796,13 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				if (pm->n_guns > 0) {
 					pm->gun_banks = (w_bank *)vm_malloc(sizeof(w_bank) * pm->n_guns);
-					Assert( pm->gun_banks != NULL );
+				core::Assert( pm->gun_banks != NULL );
 
 					for (i = 0; i < pm->n_guns; i++ ) {
 						w_bank *bank = &pm->gun_banks[i];
 
 						bank->num_slots = cfread_int(fp);
-						Assert ( bank->num_slots < MAX_SLOTS );
+					core::Assert ( bank->num_slots < MAX_SLOTS );
 						for (j = 0; j < bank->num_slots; j++) {
 							cfread_vector( &(bank->pnt[j]), fp );
 							cfread_vector( &temp_vec, fp );
@@ -1818,13 +1818,13 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				if (pm->n_missiles > 0) {
 					pm->missile_banks = (w_bank *)vm_malloc(sizeof(w_bank) * pm->n_missiles);
-					Assert( pm->missile_banks != NULL );
+				core::Assert( pm->missile_banks != NULL );
 
 					for (i = 0; i < pm->n_missiles; i++ ) {
 						w_bank *bank = &pm->missile_banks[i];
 
 						bank->num_slots = cfread_int(fp);
-						Assert ( bank->num_slots < MAX_SLOTS );
+					core::Assert ( bank->num_slots < MAX_SLOTS );
 						for (j = 0; j < bank->num_slots; j++) {
 							cfread_vector( &(bank->pnt[j]), fp );
 							cfread_vector( &temp_vec, fp );
@@ -1842,7 +1842,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				if (pm->n_docks > 0) {
 					pm->docking_bays = (dock_bay *)vm_malloc(sizeof(dock_bay) * pm->n_docks);
-					Assert( pm->docking_bays != NULL );
+				core::Assert( pm->docking_bays != NULL );
 
 					for (i = 0; i < pm->n_docks; i++ ) {
 						char *p;
@@ -1933,7 +1933,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				if (gpb_num > 0)
 				{
 					pm->glow_point_banks = (glow_point_bank *) vm_malloc(sizeof(glow_point_bank) * gpb_num);
-					Assert(pm->glow_point_banks != NULL);
+				core::Assert(pm->glow_point_banks != NULL);
 				}
 
 				for (int gpb = 0; gpb < gpb_num; gpb++)
@@ -2029,7 +2029,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				if (pm->n_thrusters > 0) {
 					pm->thrusters = (thruster_bank *)vm_malloc(sizeof(thruster_bank) * pm->n_thrusters);
-					Assert( pm->thrusters != NULL );
+				core::Assert( pm->thrusters != NULL );
 
 					for (i = 0; i < pm->n_thrusters; i++ ) {
 						thruster_bank *bank = &pm->thrusters[i];
@@ -2148,7 +2148,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 										cfread_vector(&bogus, fp);
 									}
 								}
-								Assertion( n_slots > 0, "Turret %s in model %s has no firing points.\n", subsystemp->name, pm->filename);
+							core::Assertion( n_slots > 0, "Turret %s in model %s has no firing points.\n", subsystemp->name, pm->filename);
 
 								subsystemp->turret_num_firing_points = n_slots;
 
@@ -2192,7 +2192,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					if (p != NULL) {
 						pm->split_plane[pm->num_split_plane] = pnt.xyz.z;
 						pm->num_split_plane++;
-						Assert(pm->num_split_plane <= MAX_SPLIT_PLANE);
+					core::Assert(pm->num_split_plane <= MAX_SPLIT_PLANE);
 					} else if ( ( p = strstr(props_spcl, "$special"))!= NULL ) {
 						char type[64];
 
@@ -2240,7 +2240,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 				pm->model_data = (ubyte *)vm_malloc(len);
 				pm->model_data_size = len;
-				Assert(pm->model_data != NULL );
+			core::Assert(pm->model_data != NULL );
 			
 				cfread(pm->model_data,1,len,fp);
 			
@@ -2252,7 +2252,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				#ifndef NDEBUG
 					pm->debug_info_size = len;
 					pm->debug_info = (char *)vm_malloc(pm->debug_info_size+1);
-					Assert(pm->debug_info!=NULL);
+				core::Assert(pm->debug_info!=NULL);
 					memset(pm->debug_info,0,len+1);
 					cfread( pm->debug_info, 1, len, fp );
 				#endif
@@ -2269,7 +2269,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 				}
 
 				pm->paths = (model_path *)vm_malloc(sizeof(model_path)*pm->n_paths);
-				Assert( pm->paths != NULL );
+			core::Assert( pm->paths != NULL );
 
 				memset( pm->paths, 0, sizeof(model_path) * pm->n_paths );
 					
@@ -2301,7 +2301,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					pm->paths[i].goal = pm->paths[i].nverts - 1;
 					pm->paths[i].type = MP_TYPE_UNUSED;
 					pm->paths[i].value = 0;
-					Assert(pm->paths[i].verts!=NULL);
+				core::Assert(pm->paths[i].verts!=NULL);
 					memset( pm->paths[i].verts, 0, sizeof(mp_vert) * pm->paths[i].nverts );
 
 					for (j=0; j<pm->paths[i].nverts; j++ )	{
@@ -2334,7 +2334,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 
 					num_eyes = cfread_int( fp );
 					pm->n_view_positions = num_eyes;
-					Assert ( num_eyes < MAX_EYES );
+				core::Assert ( num_eyes < MAX_EYES );
 					for (i = 0; i < num_eyes; i++ ) {
 						pm->view_positions[i].parent = cfread_int( fp );
 						cfread_vector( &pm->view_positions[i].pnt, fp );
@@ -2361,11 +2361,11 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 					// # of faces
 					num_faces = cfread_int(fp);
 					pm->ins[idx].num_faces = num_faces;
-					Assert(num_faces <= MAX_INS_FACES);
+				core::Assert(num_faces <= MAX_INS_FACES);
 
 					// # of vertices
 					num_verts = cfread_int(fp);
-					Assert(num_verts <= MAX_INS_VECS);
+				core::Assert(num_verts <= MAX_INS_VECS);
 
 					// read in all the vertices
 					for(idx2=0; idx2<num_verts; idx2++){
@@ -2670,9 +2670,9 @@ int model_load(const  char *filename, int n_subsystems, model_subsystem *subsyst
 	} else {
 		Model_signature+=MAX_POLYGON_MODELS; // No overflow
 	}
-	Assert( (Model_signature % MAX_POLYGON_MODELS) == 0 );
+core::Assert( (Model_signature % MAX_POLYGON_MODELS) == 0 );
 	pm->id = Model_signature + num;
-	Assert( (pm->id % MAX_POLYGON_MODELS) == num );
+core::Assert( (pm->id % MAX_POLYGON_MODELS) == num );
 
 	extern int Parse_normal_problem_count;
 	Parse_normal_problem_count = 0;
@@ -2745,7 +2745,7 @@ int model_load(const  char *filename, int n_subsystems, model_subsystem *subsyst
 			// check if current model name is substring of destroyed
 			if ( strstr( pm->submodel[j].name, live_debris_name ))	{
 				mprintf(( "Found live debris model for '%s'\n", pm->submodel[i].name ));
-				Assert(pm->submodel[i].num_live_debris < MAX_LIVE_DEBRIS);
+			core::Assert(pm->submodel[i].num_live_debris < MAX_LIVE_DEBRIS);
 				pm->submodel[i].live_debris[pm->submodel[i].num_live_debris++] = j;
 				pm->submodel[j].is_live_debris = 1;
 			}
@@ -2942,7 +2942,7 @@ int model_create_instance(bool is_ship, int model_num)
 		}
 
 		if (intrinsic_rotate.list.empty()) {
-			Assertion(!intrinsic_rotate.list.empty(), "This model has the PM_FLAG_HAS_INTRINSIC_ROTATE flag; why doesn't it have an intrinsic-rotating submodel?");
+		core::Assertion(!intrinsic_rotate.list.empty(), "This model has the PM_FLAG_HAS_INTRINSIC_ROTATE flag; why doesn't it have an intrinsic-rotating submodel?");
 		} else {
 			Intrinsic_rotations.push_back(intrinsic_rotate);
 		}
@@ -2953,9 +2953,9 @@ int model_create_instance(bool is_ship, int model_num)
 
 void model_delete_instance(int model_instance_num)
 {
-	Assert(model_instance_num >= 0);
-	Assert(model_instance_num < (int)Polygon_model_instances.size());
-	Assert(Polygon_model_instances[model_instance_num] != NULL);
+core::Assert(model_instance_num >= 0);
+core::Assert(model_instance_num < (int)Polygon_model_instances.size());
+core::Assert(Polygon_model_instances[model_instance_num] != NULL);
 
 	polymodel_instance *pmi = Polygon_model_instances[model_instance_num];
 
@@ -2984,12 +2984,12 @@ void model_maybe_fixup_subsys_path(polymodel *pm, int path_num)
 	float	dist;
 	int		index_1, index_2;
 
-	Assert( (path_num >= 0) && (path_num < pm->n_paths) );
+core::Assert( (path_num >= 0) && (path_num < pm->n_paths) );
 
 	model_path *mp;
 	mp = &pm->paths[path_num];
 
-	Assert(mp != NULL);
+core::Assert(mp != NULL);
 	if (mp->nverts <= 1 ) {
 		core::Error(LOCATION, "Subsystem Path (%s) Parent (%s) in model (%s) has less than 2 vertices/points!", mp->name, mp->parent_name, pm->filename);
 	}
@@ -3067,7 +3067,7 @@ void model_set_bay_path_nums(polymodel *pm)
 
 	// malloc out storage for the path information
 	pm->ship_bay = (ship_bay *) vm_malloc(sizeof(ship_bay));
-	Assert(pm->ship_bay != NULL);
+core::Assert(pm->ship_bay != NULL);
 
 	pm->ship_bay->num_paths = 0;
 	// TODO: determine if zeroing out here is affecting any earlier initializations
@@ -3116,7 +3116,7 @@ int model_get_parent_submodel_for_live_debris( int model_num, int live_debris_mo
 {
 	polymodel *pm = model_get(model_num);
 
-	Assert(pm->submodel[live_debris_model_num].is_live_debris == 1);
+core::Assert(pm->submodel[live_debris_model_num].is_live_debris == 1);
 
 	int mn;
 	bsp_info *child;
@@ -3187,10 +3187,10 @@ polymodel * model_get(int model_num)
 
 	int num = model_num % MAX_POLYGON_MODELS;
 	
-	Assertion( num >= 0, "Model id %d is invalid. Please backtrace and investigate.\n", num);
-	Assertion( num < MAX_POLYGON_MODELS, "Model id %d is larger than MAX_POLYGON_MODELS (%d). This is impossible, thus we have to conclude that math as we know it has ceased to work.\n", num, MAX_POLYGON_MODELS );
-	Assertion( Polygon_models[num], "No model with id %d found. Please backtrace and investigate.\n", num );
-	Assertion( Polygon_models[num]->id == model_num, "Index collision between model %s and requested model %d. Please backtrace and investigate.\n", Polygon_models[num]->filename, model_num );
+core::Assertion( num >= 0, "Model id %d is invalid. Please backtrace and investigate.\n", num);
+core::Assertion( num < MAX_POLYGON_MODELS, "Model id %d is larger than MAX_POLYGON_MODELS (%d). This is impossible, thus we have to conclude that math as we know it has ceased to work.\n", num, MAX_POLYGON_MODELS );
+core::Assertion( Polygon_models[num], "No model with id %d found. Please backtrace and investigate.\n", num );
+core::Assertion( Polygon_models[num]->id == model_num, "Index collision between model %s and requested model %d. Please backtrace and investigate.\n", Polygon_models[num]->filename, model_num );
 
 	if (num < 0 || num > MAX_POLYGON_MODELS || !Polygon_models[num] || Polygon_models[num]->id != model_num)
 		return NULL;
@@ -3200,8 +3200,8 @@ polymodel * model_get(int model_num)
 
 polymodel_instance* model_get_instance(int model_instance_num)
 {
-	Assert( model_instance_num >= 0 );
-	Assert( model_instance_num < (int)Polygon_model_instances.size() );
+core::Assert( model_instance_num >= 0 );
+core::Assert( model_instance_num < (int)Polygon_model_instances.size() );
 	if ( model_instance_num < 0 || model_instance_num >= (int)Polygon_model_instances.size() ) {
 		return NULL;
 	} 
@@ -3420,14 +3420,14 @@ void model_get_rotating_submodel_axis(vec3d *model_axis, vec3d *world_axis, int 
 	polymodel *pm = model_get(pmi->model_num);
 
 	bsp_info *sm = &pm->submodel[submodel_num];
-	Assert(sm->movement_type == MOVEMENT_TYPE_ROT || sm->movement_type == MOVEMENT_TYPE_INTRINSIC_ROTATE);
+core::Assert(sm->movement_type == MOVEMENT_TYPE_ROT || sm->movement_type == MOVEMENT_TYPE_INTRINSIC_ROTATE);
 
 	if (sm->movement_axis == MOVEMENT_AXIS_X) {
 		vm_vec_make(model_axis, 1.0f, 0.0f, 0.0f);
 	} else if (sm->movement_axis == MOVEMENT_AXIS_Y) {
 		vm_vec_make(model_axis, 0.0f, 1.0f, 0.0f);
 	} else {
-		Assert(sm->movement_axis == MOVEMENT_AXIS_Z);
+	core::Assert(sm->movement_axis == MOVEMENT_AXIS_Z);
 		vm_vec_make(model_axis, 0.0f, 0.0f, 1.0f);
 	}
 
@@ -3438,7 +3438,7 @@ void model_get_rotating_submodel_axis(vec3d *model_axis, vec3d *world_axis, int 
 // Does stepped rotation of a submodel
 void submodel_stepped_rotate(model_subsystem *psub, submodel_instance_info *sii)
 {
-	Assert(psub->flags[Model::Subsystem_Flags::Stepped_rotate]);
+core::Assert(psub->flags[Model::Subsystem_Flags::Stepped_rotate]);
 
 	if ( psub->subobj_num < 0 ) return;
 
@@ -3458,7 +3458,7 @@ void submodel_stepped_rotate(model_subsystem *psub, submodel_instance_info *sii)
 	} else {
 		rotation_time = 0.001f * (end_stamp - sii->step_zero_timestamp);
 	}
-	//Assert(rotation_time >= 0);
+	/core::Assert(rotation_time >= 0);
 
 	// save last angles
 	sii->prev_angs = sii->angs;
@@ -3498,7 +3498,7 @@ void submodel_stepped_rotate(model_subsystem *psub, submodel_instance_info *sii)
 	// subtract off fractional step part, round up  (ie, 1.999999 -> 2)
 	int cur_step = (int)std::lround((rotation_time - step_offset_time) / step_time);
 	// mprintf(("cur step %d\n", cur_step));
-	// Assert(step_offset_time >= 0);
+	//core::Assert(step_offset_time >= 0);
 
 	if (cur_step >= psub->stepped_rotation->num_steps) {
 		// I don;t know why, but removing this line makes it all good.
@@ -3879,9 +3879,9 @@ int model_rotate_gun(int model_num, model_subsystem *turret, matrix *orient, ang
 	bool limited_base_rotation = false;
 
 	// Check for a valid turret
-	Assert( turret->turret_num_firing_points > 0 );
+core::Assert( turret->turret_num_firing_points > 0 );
 	// Check for a valid subsystem
-	Assert( ss != NULL );
+core::Assert( ss != NULL );
 
 	//This should not happen
 	if ( base == gun ) {
@@ -3892,9 +3892,9 @@ int model_rotate_gun(int model_num, model_subsystem *turret, matrix *orient, ang
 	if ( !(turret->flags[Model::Subsystem_Flags::Turret_matrix]) )
 		model_make_turret_matrix(model_num, turret );
 
-	Assert( turret->flags[Model::Subsystem_Flags::Turret_matrix]);
-//	Assert( gun->movement_axis == MOVEMENT_AXIS_X );				// Gun must be able to change pitch
-//	Assert( base->movement_axis == MOVEMENT_AXIS_Z );	// Parent must be able to change heading
+core::Assert( turret->flags[Model::Subsystem_Flags::Turret_matrix]);
+//core::Assert( gun->movement_axis == MOVEMENT_AXIS_X );				// Gun must be able to change pitch
+//core::Assert( base->movement_axis == MOVEMENT_AXIS_Z );	// Parent must be able to change heading
 
 	//------------	
 	// rotate the dest point into the turret gun normal's frame of
@@ -4138,7 +4138,7 @@ void world_find_model_instance_point(vec3d *out, vec3d *world_pt, const polymode
 {
 	polymodel *pm = model_get(pmi->model_num);
 
-	Assert( (pm->submodel[submodel_num].parent == pm->detail[0]) || (pm->submodel[submodel_num].parent == -1) );
+core::Assert( (pm->submodel[submodel_num].parent == pm->detail[0]) || (pm->submodel[submodel_num].parent == -1) );
 
 	vec3d tempv1, tempv2;
 	matrix m;
@@ -4389,7 +4389,7 @@ int rotating_submodel_has_ship_subsys(int submodel, ship *shipp)
  */
 void model_get_rotating_submodel_list(std::vector<int> *submodel_vector, object *objp)
 {
-	Assert(objp->type == OBJ_SHIP || objp->type == OBJ_WEAPON || objp->type == OBJ_ASTEROID);
+core::Assert(objp->type == OBJ_SHIP || objp->type == OBJ_WEAPON || objp->type == OBJ_ASTEROID);
 	
 	int model_instance_num;
 	int model_num;
@@ -4658,8 +4658,8 @@ void model_set_instance(int model_num, int sub_model_num, submodel_instance_info
 
 	pm = model_get(model_num);
 
-	Assert( sub_model_num >= 0 );
-	Assert( sub_model_num < pm->n_models );
+core::Assert( sub_model_num >= 0 );
+core::Assert( sub_model_num < pm->n_models );
 
 	if ( sub_model_num < 0 ) return;
 	if ( sub_model_num >= pm->n_models ) return;
@@ -4703,8 +4703,8 @@ void model_set_instance_techroom(int model_num, int sub_model_num, float angle_1
 
 	pm = model_get(model_num);
 
-	Assert( sub_model_num >= 0 );
-	Assert( sub_model_num < pm->n_models );
+core::Assert( sub_model_num >= 0 );
+core::Assert( sub_model_num < pm->n_models );
 
 	if ( sub_model_num < 0 ) return;
 	if ( sub_model_num >= pm->n_models ) return;
@@ -4730,7 +4730,7 @@ void model_update_instance(int model_instance_num, int sub_model_num, submodel_i
 	pmi = model_get_instance(model_instance_num);
 	pm = model_get(pmi->model_num);
 	
-	Assertion(sub_model_num >= 0 && sub_model_num < pm->n_models,
+core::Assertion(sub_model_num >= 0 && sub_model_num < pm->n_models,
 		"Sub model number (%d) which should be updated is out of range! Must be between 0 and %d. This happend on model %s.",
 		sub_model_num, pm->n_models - 1, pm->filename);
 
@@ -4775,13 +4775,13 @@ void model_update_instance(int model_instance_num, int sub_model_num, submodel_i
 void model_do_intrinsic_rotations_sub(intrinsic_rotation *ir)
 {
 	polymodel_instance *pmi = model_get_instance(ir->model_instance_num);
-	Assert(pmi != nullptr);
+core::Assert(pmi != nullptr);
 
 	// Handle all submodels which have $dumb_rotate
 	for (auto submodel_it = ir->list.begin(); submodel_it != ir->list.end(); ++submodel_it)
 	{
 		polymodel *pm = model_get(pmi->model_num);
-		Assert(pm != nullptr);
+	core::Assert(pm != nullptr);
 		bsp_info *sm = &pm->submodel[submodel_it->submodel_num];
 
 		// First, calculate the angles for the rotation
@@ -4813,7 +4813,7 @@ void model_do_intrinsic_rotations(int model_instance_num)
 		{
 			if (intrinsic_it->model_instance_num == model_instance_num)
 			{
-				Assertion(intrinsic_it->is_ship, "This code path is only for ship rotations!  See the comments associated with the model_do_intrinsic_rotations function!");
+			core::Assertion(intrinsic_it->is_ship, "This code path is only for ship rotations!  See the comments associated with the model_do_intrinsic_rotations function!");
 
 				// we're just doing one ship, and in ship_model_update_instance, that ship's angles were already set to zero
 
@@ -4869,8 +4869,8 @@ void model_init_submodel_axis_pt(submodel_instance_info *sii, int model_num, int
 	vec3d p1, v1, p2, v2, int1;
 
 	polymodel *pm = model_get(model_num);
-	Assert(pm->submodel[submodel_num].movement_type == MOVEMENT_TYPE_ROT || pm->submodel[submodel_num].movement_type == MOVEMENT_TYPE_INTRINSIC_ROTATE);
-	Assert(sii);
+core::Assert(pm->submodel[submodel_num].movement_type == MOVEMENT_TYPE_ROT || pm->submodel[submodel_num].movement_type == MOVEMENT_TYPE_INTRINSIC_ROTATE);
+core::Assert(sii);
 
 	mpoint1 = NULL;
 	mpoint2 = NULL;
@@ -4939,8 +4939,8 @@ void model_add_arc(int model_num, int sub_model_num, vec3d *v1, vec3d *v2, int a
 		sub_model_num = pm->detail[0];
 	}
 
-	Assert( sub_model_num >= 0 );
-	Assert( sub_model_num < pm->n_models );
+core::Assert( sub_model_num >= 0 );
+core::Assert( sub_model_num < pm->n_models );
 
 	if ( sub_model_num < 0 ) return;
 	if ( sub_model_num >= pm->n_models ) return;
@@ -5034,7 +5034,7 @@ char *model_get_dock_name(int modelnum, int index)
 	polymodel *pm;
 
 	pm = model_get(modelnum);
-	Assert((index >= 0) && (index < pm->n_docks));
+core::Assert((index >= 0) && (index < pm->n_docks));
 	return pm->docking_bays[index].name;
 }
 
@@ -5117,8 +5117,8 @@ int model_create_bsp_collision_tree()
 
 bsp_collision_tree *model_get_bsp_collision_tree(int tree_index)
 {
-	Assert(tree_index >= 0);
-	Assert((uint) tree_index < Bsp_collision_tree_list.size());
+core::Assert(tree_index >= 0);
+core::Assert((uint) tree_index < Bsp_collision_tree_list.size());
 
 	return &Bsp_collision_tree_list[tree_index];
 }

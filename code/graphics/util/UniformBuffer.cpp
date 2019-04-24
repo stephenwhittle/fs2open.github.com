@@ -7,13 +7,13 @@ UniformBuffer::UniformBuffer(size_t element_size, size_t header_size) : _aligner
 	int offsetAlignment;
 	bool success = gr_get_property(gr_property::UNIFORM_BUFFER_OFFSET_ALIGNMENT, &offsetAlignment);
 
-	Assertion(success, "Uniform buffer usage requires a backend which allows to query the offset alignment!");
+core::Assertion(success, "Uniform buffer usage requires a backend which allows to query the offset alignment!");
 	_aligner.setAlignment(static_cast<size_t>(offsetAlignment));
 
 	// This uses Dynamic since that matches our usage pattern the closest (update once and then use multiple times)
 	_buffer_obj = gr_create_buffer(BufferType::Uniform, BufferUsageHint::Dynamic);
 
-	Assertion(_buffer_obj >= 0, "Creation of buffer object failed!");
+core::Assertion(_buffer_obj >= 0, "Creation of buffer object failed!");
 }
 UniformBuffer::~UniformBuffer() {
 	gr_delete_buffer(_buffer_obj);
@@ -31,7 +31,7 @@ void UniformBuffer::submitData() {
 	gr_update_buffer_data(_buffer_obj, _aligner.getSize(), _aligner.getData());
 }
 void UniformBuffer::finished() {
-	Assertion(_sync_obj == nullptr, "Can't finish using uniform buffer while it's still in use!");
+core::Assertion(_sync_obj == nullptr, "Can't finish using uniform buffer while it's still in use!");
 
 	// We use fences to determine if the GPU is still using this buffer. That allows us to use multiple buffers and
 	// avoid implicit synchronization which might be performed by the driver otherwise.

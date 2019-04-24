@@ -501,7 +501,7 @@ void key_mark( uint code, int state, uint latency )
 		code = KEY_SLASH;
 	}
 
-	Assert( code < NUM_KEYS );
+core::Assert( code < NUM_KEYS );
 
 	event_time = timer_get_milliseconds() - latency;
 	// event_time = timeGetTime() - latency;

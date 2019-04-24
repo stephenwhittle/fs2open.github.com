@@ -217,14 +217,14 @@ extern int Global_error_count;
 // or,
 // Error( LOCATION, "Error opening %s", filename );
 
-/*******************NEVER UNCOMMENT Assert ************************************************/
-// Please never uncomment the functionality of Assert in debug
-// The code, as with all development like this is littered with Asserts which are designed to throw
+/*******************NEVER UNCOMMENTcore::Assert ************************************************/
+// Please never uncomment the functionality ofcore::Assert in debug
+// The code, as with all development like this is littered withcore::Asserts which are designed to throw
 // up an error message if variables are out of range.
 // Disabling this functionality is dangerous, crazy values can run rampent unchecked and the longer its disabled
 // the more likely you are to have problems getting it working again.
 
-/*******************NEVER COMMENT Assert ************************************************/
+/*******************NEVER COMMENTcore::Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode
 

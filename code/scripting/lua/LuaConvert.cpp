@@ -17,7 +17,7 @@ bool ade_odata_helper(lua_State* L, int stackposition, size_t idx) {
 	// WMC - Get metatable
 	lua_getmetatable(L, stackposition);
 	int mtb_ldx = lua_gettop(L);
-	Assert(!lua_isnil(L, -1));
+core::Assert(!lua_isnil(L, -1));
 
 	// Get ID
 	lua_pushstring(L, "__adeid");

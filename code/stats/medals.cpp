@@ -493,7 +493,7 @@ void medal_main_init(player *pl, int mode)
 	int idx;
 	char bitmap_buf[NAME_LENGTH];
 
-	Assert(pl != NULL);
+core::Assert(pl != NULL);
 	Medals_player = pl;
 	Player_score = &Medals_player->stats;
 
@@ -764,7 +764,7 @@ void medal_main_close()
 void init_medal_bitmaps()
 {
 	int idx;
-	Assert(Player_score);
+core::Assert(Player_score);
 
 	for (idx=0; idx<Num_medals; idx++) {
 		Medal_display_info[idx].bitmap = -1;
@@ -803,7 +803,7 @@ void init_medal_bitmaps()
 			// we don't need to pass extension to bm_load anymore, so just use the basename
 			// as is.
 			Medal_display_info[idx].bitmap = bm_load((gr_screen.res == GR_1024) ? filename : base);
-			Assert( Medal_display_info[idx].bitmap != -1 );
+		core::Assert( Medal_display_info[idx].bitmap != -1 );
 		}
 	}
 
@@ -825,7 +825,7 @@ void init_snazzy_regions()
 	int idx;
 
 	// well, we need regions in an array (versus a vector), so...
-	Assert(Medal_regions == NULL);
+core::Assert(Medal_regions == NULL);
 	Medal_regions = new MENU_REGION[Num_medals];
 
 	// snazzy regions for the medals/ranks, etc.

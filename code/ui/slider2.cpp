@@ -25,15 +25,15 @@ void UI_SLIDER2::create(UI_WINDOW *wnd, int _x, int _y, int _w, int _h, int _num
 
 	base_create( wnd, UI_KIND_SLIDER2, _x, _y, _w, _h );
 
-	Assert(_upCallback != NULL);
-	Assert(_downCallback != NULL);
+core::Assert(_upCallback != NULL);
+core::Assert(_downCallback != NULL);
 
 	upCallback = _upCallback;
 	downCallback = _downCallback;
 
 	captureCallback = _captureCallback;	
 
-	Assert(_bitmapSliderControl != NULL);
+core::Assert(_bitmapSliderControl != NULL);
 
 	last_scrolled = 0;
 
@@ -44,11 +44,11 @@ void UI_SLIDER2::create(UI_WINDOW *wnd, int _x, int _y, int _w, int _h, int _num
 	bm_get_info(bmap_ids[S2_NORMAL],&buttonWidth, &buttonHeight, NULL, NULL, NULL);
 	slider_w = buttonWidth;
 	slider_h = buttonHeight;
-	Assert(buttonHeight > 5);
+core::Assert(buttonHeight > 5);
 	slider_half_h = (int)(buttonHeight / 2);
 	numberPositions = _h - buttonHeight;
 	
-	Assert(numberPositions >= 0);
+core::Assert(numberPositions >= 0);
 	currentItem = 0;
 	currentPosition = 0;
 
@@ -61,7 +61,7 @@ void UI_SLIDER2::create(UI_WINDOW *wnd, int _x, int _y, int _w, int _h, int _num
 }
 
 void UI_SLIDER2::draw() {
-	Assert((currentPosition >= 0) && (currentPosition <= numberPositions));
+core::Assert((currentPosition >= 0) && (currentPosition <= numberPositions));
 	if (uses_bmaps && !disabled_flag) {
 		gr_reset_clip();
 		switch (slider_mode) {

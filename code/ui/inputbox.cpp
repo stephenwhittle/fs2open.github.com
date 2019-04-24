@@ -83,8 +83,8 @@ void UI_INPUTBOX::create(UI_WINDOW *wnd, int _x, int _y, int _w, int _text_len, 
 {
 	int tw, th;
 
-	Assert(_text_len >= 0);
-	Assert((int) strlen(_text) <= _text_len);
+core::Assert(_text_len >= 0);
+core::Assert((int) strlen(_text) <= _text_len);
 	font::set_font(wnd->f_id);
 	gr_get_string_size( &tw, &th, "*" );
 
@@ -467,7 +467,7 @@ void UI_INPUTBOX::set_text(const char *in)
 	
 	in_length = (int)strlen(in);
 	if (in_length > length)
-		Assert(0);	// tried to force text into an input box that won't fit into allocated memory
+	core::Assert(0);	// tried to force text into an input box that won't fit into allocated memory
 
 	strcpy(text, in);
 	

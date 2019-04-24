@@ -746,7 +746,7 @@ void read_keyboard_controls( control_info * ci, float frame_time, physics_info *
 
 				// maybe need to get speed from docked partner
 				if ( tspeed < MATCH_SPEED_THRESHOLD ) {
-					Assert(targeted_objp->type == OBJ_SHIP);
+				core::Assert(targeted_objp->type == OBJ_SHIP);
 
 					// Goober5000
 					if (object_is_docked(targeted_objp))
@@ -868,7 +868,7 @@ void read_keyboard_controls( control_info * ci, float frame_time, physics_info *
 		// see if the afterburner has been started (keyboard + joystick)
 		if (check_control(AFTERBURNER) && !Player_use_ai) {
 			if (!afterburner_last) {
-				Assert(Player_ship);
+			core::Assert(Player_ship);
 				if ( !(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Afterburner]) ) {
 					gamesnd_play_error_beep();
 				} else {
@@ -1428,7 +1428,7 @@ void player_init()
  */
 void player_stop_looped_sounds()
 {
-	Assert(Player);
+core::Assert(Player);
 	if (Player->repair_sound_loop.isValid()) {
 		snd_stop(Player->repair_sound_loop);
 		Player->repair_sound_loop = sound_handle::invalid();
@@ -1445,7 +1445,7 @@ void player_stop_looped_sounds()
  */
 void player_maybe_start_repair_sound()
 {
-	Assert(Player);
+core::Assert(Player);
 	if (!Player->repair_sound_loop.isValid()) {
 		Player->repair_sound_loop = snd_play_looping( gamesnd_get_game_sound(GameSounds::SHIP_REPAIR) );
 	}
@@ -1456,7 +1456,7 @@ void player_maybe_start_repair_sound()
  */
 void player_stop_repair_sound()
 {
-	Assert(Player);
+core::Assert(Player);
 	if (Player->repair_sound_loop.isValid()) {
 		snd_stop(Player->repair_sound_loop);
 		Player->repair_sound_loop = sound_handle::invalid();
@@ -1468,7 +1468,7 @@ void player_stop_repair_sound()
  */
 void player_maybe_start_cargo_scan_sound()
 {
-	Assert(Player);
+core::Assert(Player);
 	if (!Player->cargo_scan_loop.isValid()) {
 		Player->cargo_scan_loop = snd_play_looping( gamesnd_get_game_sound(ship_get_sound(Player_obj, GameSounds::CARGO_SCAN)) );
 	}
@@ -1479,7 +1479,7 @@ void player_maybe_start_cargo_scan_sound()
  */
 void player_stop_cargo_scan_sound()
 {
-	Assert(Player);
+core::Assert(Player);
 	if (Player->cargo_scan_loop.isValid()) {
 		snd_stop(Player->cargo_scan_loop);
 		Player->cargo_scan_loop = sound_handle::invalid();
@@ -1554,7 +1554,7 @@ int player_inspect_cargo(float frametime, char *outstr)
 	}
 
 	cargo_objp = &Objects[Player_ai->target_objnum];
-	Assert(cargo_objp->type == OBJ_SHIP);
+core::Assert(cargo_objp->type == OBJ_SHIP);
 	cargo_sp = &Ships[cargo_objp->instance];
 	cargo_sip = &Ship_info[cargo_sp->ship_info_index];
 
@@ -1583,7 +1583,7 @@ int player_inspect_cargo(float frametime, char *outstr)
 	if ( cargo_sp->flags[Ship::Ship_Flags::Cargo_revealed] ) {
 		if ( !(cargo_sp->flags[Ship::Ship_Flags::Scannable]) ) {
 			char *cargo_name = Cargo_names[cargo_sp->cargo1 & CARGO_INDEX_MASK];
-            Assert(cargo_sip->flags[Ship::Info_Flags::Cargo] || cargo_sip->flags[Ship::Info_Flags::Transport]);
+           core::Assert(cargo_sip->flags[Ship::Info_Flags::Cargo] || cargo_sip->flags[Ship::Info_Flags::Transport]);
 
 			if ( cargo_name[0] == '#' ) {
 				sprintf(outstr, XSTR("passengers: %s", 83), cargo_name+1 );
@@ -1663,7 +1663,7 @@ int player_inspect_cap_subsys_cargo(float frametime, char *outstr)
 	} 
 
 	cargo_objp = &Objects[Player_ai->target_objnum];
-	Assert(cargo_objp->type == OBJ_SHIP);
+core::Assert(cargo_objp->type == OBJ_SHIP);
 	cargo_sp = &Ships[cargo_objp->instance];
 	cargo_sip = &Ship_info[cargo_sp->ship_info_index];
 
@@ -1823,7 +1823,7 @@ void player_generate_death_message(player *player_p)
 			break;
 
 		case OBJ_WEAPON:
-			Assert(weapon_name[0]);
+		core::Assert(weapon_name[0]);
 
 			// is this from a friendly ship?
 			ship_index = ship_name_lookup(player_p->killer_parent_name, 1);
@@ -2133,7 +2133,7 @@ camid player_get_cam()
 				Viewer_obj = NULL;
 				return cam_get_current();
 		} else if (Viewer_mode & VM_EXTERNAL) {
-			Assert(viewer_obj != NULL);
+		core::Assert(viewer_obj != NULL);
 			matrix	tm, tm2;
 
 			vm_angles_2_matrix(&tm2, &Viewer_external_info.angles);

@@ -319,20 +319,20 @@ void gr_aabitmap_ex(int x, int y, int w, int h, int sx, int sy, int resize_mode,
 
 	// Make sure clipping algorithm works
 #ifndef NDEBUG
-	Assert(w > 0);
-	Assert(h > 0);
-	Assert(w == (dx2 - dx1 + 1));
-	Assert(h == (dy2 - dy1 + 1));
-	Assert(sx >= 0);
-	Assert(sy >= 0);
-	Assert(sx + w <= bw);
-	Assert(sy + h <= bh);
-	Assert(dx2 >= dx1);
-	Assert(dy2 >= dy1);
-	Assert((dx1 >= clip_left) && (dx1 <= clip_right));
-	Assert((dx2 >= clip_left) && (dx2 <= clip_right));
-	Assert((dy1 >= clip_top) && (dy1 <= clip_bottom));
-	Assert((dy2 >= clip_top) && (dy2 <= clip_bottom));
+core::Assert(w > 0);
+core::Assert(h > 0);
+core::Assert(w == (dx2 - dx1 + 1));
+core::Assert(h == (dy2 - dy1 + 1));
+core::Assert(sx >= 0);
+core::Assert(sy >= 0);
+core::Assert(sx + w <= bw);
+core::Assert(sy + h <= bh);
+core::Assert(dx2 >= dx1);
+core::Assert(dy2 >= dy1);
+core::Assert((dx1 >= clip_left) && (dx1 <= clip_right));
+core::Assert((dx2 >= clip_left) && (dx2 <= clip_right));
+core::Assert((dy1 >= clip_top) && (dy1 <= clip_bottom));
+core::Assert((dy2 >= clip_top) && (dy2 <= clip_bottom));
 #endif
 
 	// We now have dx1,dy1 and dx2,dy2 and sx, sy all set validly within clip regions.
@@ -444,20 +444,20 @@ void gr_bitmap_ex(int x, int y, int w, int h, int sx, int sy, int resize_mode) {
 
 	// Make sure clipping algorithm works
 #ifndef NDEBUG
-	Assert(w > 0);
-	Assert(h > 0);
-	Assert(w == (dx2 - dx1 + 1));
-	Assert(h == (dy2 - dy1 + 1));
-	Assert(sx >= 0);
-	Assert(sy >= 0);
-	Assert((sx + w) <= bw);
-	Assert((sy + h) <= bh);
-	Assert(dx2 >= dx1);
-	Assert(dy2 >= dy1);
-	Assert((dx1 >= clip_left) && (dx1 <= clip_right));
-	Assert((dx2 >= clip_left) && (dx2 <= clip_right));
-	Assert((dy1 >= clip_top) && (dy1 <= clip_bottom));
-	Assert((dy2 >= clip_top) && (dy2 <= clip_bottom));
+core::Assert(w > 0);
+core::Assert(h > 0);
+core::Assert(w == (dx2 - dx1 + 1));
+core::Assert(h == (dy2 - dy1 + 1));
+core::Assert(sx >= 0);
+core::Assert(sy >= 0);
+core::Assert((sx + w) <= bw);
+core::Assert((sy + h) <= bh);
+core::Assert(dx2 >= dx1);
+core::Assert(dy2 >= dy1);
+core::Assert((dx1 >= clip_left) && (dx1 <= clip_right));
+core::Assert((dx2 >= clip_left) && (dx2 <= clip_right));
+core::Assert((dy1 >= clip_top) && (dy1 <= clip_bottom));
+core::Assert((dy2 >= clip_top) && (dy2 <= clip_bottom));
 #endif
 
 	color clr;
@@ -754,7 +754,7 @@ void gr_string(float sx, float sy, const char* s, int resize_mode, int in_length
 	using namespace graphics::paths;
 	namespace fo = font;
 
-	Assertion(s != NULL, "NULL pointer passed to gr_string!");
+core::Assertion(s != NULL, "NULL pointer passed to gr_string!");
 
 	if (!FontManager::isReady() || (*s == '\0')) {
 		return;
@@ -1076,7 +1076,7 @@ void gr_shade(int x, int y, int w, int h, int resize_mode) {
 }
 
 void gr_2d_start_buffer() {
-	Assertion(!buffering_nanovg, "Tried to enable 2D buffering but it was already enabled!");
+core::Assertion(!buffering_nanovg, "Tried to enable 2D buffering but it was already enabled!");
 
 	buffering_nanovg = true;
 	auto path = graphics::paths::PathRenderer::instance();
@@ -1085,7 +1085,7 @@ void gr_2d_start_buffer() {
 }
 
 void gr_2d_stop_buffer() {
-	Assertion(buffering_nanovg, "Tried to stop 2D buffering but it was not enabled!");
+core::Assertion(buffering_nanovg, "Tried to stop 2D buffering but it was not enabled!");
 
 	buffering_nanovg = false;
 	auto path = graphics::paths::PathRenderer::instance();
@@ -1105,7 +1105,7 @@ size_t gr_add_to_immediate_buffer(size_t size, void* data) {
 		gr_immediate_buffer_handle = gr_create_buffer(BufferType::Vertex, BufferUsageHint::Dynamic);
 	}
 
-	Assert(size > 0 && data != NULL);
+core::Assert(size > 0 && data != NULL);
 
 	if ( immediate_buffer_offset + size > immediate_buffer_size ) {
 		// incoming data won't fit the immediate buffer. time to reallocate.

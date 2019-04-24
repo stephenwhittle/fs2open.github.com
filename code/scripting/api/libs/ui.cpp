@@ -11,13 +11,13 @@
 #include "scripting/api/objs/player.h"
 #include "scripting/lua/LuaTable.h"
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core/Lua/LuaType.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 namespace scripting {
 namespace api {

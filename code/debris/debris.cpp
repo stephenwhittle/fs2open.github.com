@@ -151,7 +151,7 @@ void debris_clear_expired_flag(debris *db)
 		if ( db->is_hull ) {
 			Num_hull_pieces--;
 			list_remove(Hull_debris_list, db);
-			Assert( Num_hull_pieces >= 0 );
+		core::Assert( Num_hull_pieces >= 0 );
 		}
 	}
 }
@@ -167,11 +167,11 @@ void debris_delete( object * obj )
 	debris	*db;
 
 	num = obj->instance;
-	Assert( Debris[num].objnum == OBJ_INDEX(obj));
+core::Assert( Debris[num].objnum == OBJ_INDEX(obj));
 
 	db = &Debris[num];
 
-	Assert( Num_debris_pieces >= 0 );
+core::Assert( Num_debris_pieces >= 0 );
 	if ( db->is_hull && (db->flags & DEBRIS_EXPIRE) ) {
 		debris_clear_expired_flag(db);
 	}
@@ -226,7 +226,7 @@ void debris_process_post(object * obj, float frame_time)
 	num = obj->instance;
 
 	int objnum = OBJ_INDEX(obj);
-	Assert( Debris[num].objnum == objnum );
+core::Assert( Debris[num].objnum == objnum );
 	debris *db = &Debris[num];
 
 	if ( db->is_hull ) {
@@ -402,8 +402,8 @@ object *debris_create(object *source_obj, int model_num, int submodel_num, vec3d
 
 	parent_objnum = OBJ_INDEX(source_obj);
 
-	Assert( (source_obj->type == OBJ_SHIP ) || (source_obj->type == OBJ_GHOST));
-	Assert( source_obj->instance >= 0 && source_obj->instance < MAX_SHIPS );	
+core::Assert( (source_obj->type == OBJ_SHIP ) || (source_obj->type == OBJ_GHOST));
+core::Assert( source_obj->instance >= 0 && source_obj->instance < MAX_SHIPS );	
 	shipp = &Ships[source_obj->instance];
 	sip = &Ship_info[shipp->ship_info_index];
 	vaporize = (shipp->flags[Ship::Ship_Flags::Vaporize]);
@@ -670,7 +670,7 @@ object *debris_create(object *source_obj, int model_num, int submodel_num, vec3d
 	vm_vec_zero(&pi->max_rotvel);	// make so he can't change speed on his own VOLITION anymore.
 
 	// ensure vel is valid
-	Assert( !vm_is_vec_nan(&obj->phys_info.vel) );
+core::Assert( !vm_is_vec_nan(&obj->phys_info.vel) );
 
 	return obj;
 }
@@ -742,17 +742,17 @@ int debris_check_collision(object *pdebris, object *other_obj, vec3d *hitpos, co
 	mc_info_init(&mc);
 	int		num;
 
-	Assert( pdebris->type == OBJ_DEBRIS );
+core::Assert( pdebris->type == OBJ_DEBRIS );
 
 	num = pdebris->instance;
-	Assert( num >= 0 );
+core::Assert( num >= 0 );
 
-	Assert( Debris[num].objnum == OBJ_INDEX(pdebris));	
+core::Assert( Debris[num].objnum == OBJ_INDEX(pdebris));	
 
 	// debris_hit_info NULL - so debris-weapon collision
 	if ( debris_hit_info == NULL ) {
 		// debris weapon collision
-		Assert( other_obj->type == OBJ_WEAPON );
+	core::Assert( other_obj->type == OBJ_WEAPON );
 		mc.model_instance_num = -1;
 		mc.model_num = Debris[num].model_num;	// Fill in the model to check
 		mc.submodel_num = Debris[num].submodel_num;
@@ -784,7 +784,7 @@ int debris_check_collision(object *pdebris, object *other_obj, vec3d *hitpos, co
 	
 	// debris ship collision -- use debris_hit_info to calculate physics
 	object *pship_obj = other_obj;
-	Assert( pship_obj->type == OBJ_SHIP );
+core::Assert( pship_obj->type == OBJ_SHIP );
 
 	object *heavy = debris_hit_info->heavy;
 	object *lighter = debris_hit_info->light;
@@ -1003,8 +1003,8 @@ int debris_check_collision(object *pdebris, object *other_obj, vec3d *hitpos, co
  */
 int debris_get_team(object *objp)
 {
-	Assert( objp->type == OBJ_DEBRIS );
-	Assert( objp->instance >= 0 && objp->instance < MAX_DEBRIS_PIECES );
+core::Assert( objp->type == OBJ_DEBRIS );
+core::Assert( objp->instance >= 0 && objp->instance < MAX_DEBRIS_PIECES );
 	return Debris[objp->instance].team;
 }
 
@@ -1049,10 +1049,10 @@ void debris_render(object * obj, model_draw_list *scene)
 	pm = NULL;	
 	num = obj->instance;
 
-	Assert(num >= 0 && num < MAX_DEBRIS_PIECES);
+core::Assert(num >= 0 && num < MAX_DEBRIS_PIECES);
 	db = &Debris[num];
 
-	Assert(db->flags & DEBRIS_USED);
+core::Assert(db->flags & DEBRIS_USED);
 
 	texture_info *tbase = NULL;
 

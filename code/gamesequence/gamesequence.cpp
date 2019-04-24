@@ -203,10 +203,13 @@ void gameseq_init()
 void gameseq_post_event( int event )
 {
 	if (state_processing_event_post) {
-		nprintf(("Warning", "Received post for event %s during state transtition. Find Allender if you are unsure if this is bad.\n", GS_event_text[event] ));
+		core::nprintf(
+		    "Warning",
+		     "Received post for event %s during state transtition. Find Allender if you are unsure if this is bad.\n",
+		     GS_event_text[event]);
 	}
 
-	Assert(gs[gs_current_stack].queue_tail < MAX_GAMESEQ_EVENTS);
+	core::Assert(gs[gs_current_stack].queue_tail < MAX_GAMESEQ_EVENTS);
 	gs[gs_current_stack].event_queue[gs[gs_current_stack].queue_tail++] = event;
 	if ( gs[gs_current_stack].queue_tail == MAX_GAMESEQ_EVENTS )
 		gs[gs_current_stack].queue_tail = 0;
@@ -236,7 +239,7 @@ bool GameState_Stack_Valid()
 // returns one of the GS_STATE_ macros
 int gameseq_get_state(int depth)
 {	
-	Assert(depth <= gs_current_stack);
+	core::Assert(depth <= gs_current_stack);
 			
 	return gs[gs_current_stack - depth].current_state;
 }
@@ -262,11 +265,11 @@ void gameseq_set_state(int new_state, int override)
 
 	// Flush all events!!
 	while ( (event = gameseq_get_event()) != -1 ) {
-		mprintf(( "Throwing out event %d because of state set from %d to %d\n", event, old_state, new_state ));
+		core::mprintf("Throwing out event %d because of state set from %d to %d\n", event, old_state, new_state);
 	}
 
-	Assert( state_reentry == 1 );		// Get John! (Invalid state sequencing!)
-	Assert( state_in_event_processer == 1 );		// can only call from game_process_event
+	core::Assert(state_reentry == 1);      // Get John! (Invalid state sequencing!)
+	core::Assert(state_in_event_processer == 1); // can only call from game_process_event
 
 	state_processing_event_post++;
 	state_reentry++;
@@ -294,11 +297,11 @@ void gameseq_push_state( int new_state )
 //		mprintf(( "Throwing out event %d because of state push from %d to %d\n", event, old_state, new_state ));
 //	}
 
-	Assert( state_reentry == 1 );		// Get John! (Invalid state sequencing!)
-	Assert( state_in_event_processer == 1 );		// can only call from game_process_event
+	core::Assert(state_reentry == 1);      // Get John! (Invalid state sequencing!)
+	core::Assert(state_in_event_processer == 1); // can only call from game_process_event
 
 	gs_current_stack++;
-	Assert(gs_current_stack < GS_STACK_SIZE);
+	core::Assert(gs_current_stack < GS_STACK_SIZE);
 
 	state_processing_event_post++;
 	state_reentry++;
@@ -318,7 +321,7 @@ void gameseq_pop_state()
 {
 	int popped_state = 0;
 
-	Assert(state_reentry == 1);		// Get John! (Invalid state sequencing!)
+	core::Assert(state_reentry == 1); // Get John! (Invalid state sequencing!)
 
 	if (gs_current_stack >= 1) {
 		int old_state;
@@ -362,7 +365,7 @@ int gameseq_process_events()
 	int event, old_state;
 	old_state = gs[gs_current_stack].current_state;
 
-	Assert(state_reentry == 0);		// Get John! (Invalid state sequencing!)
+	core::Assert(state_reentry == 0); // Get John! (Invalid state sequencing!)
 
 	while ( (event = gameseq_get_event()) != -1 ) {
 		state_reentry++;

@@ -283,7 +283,7 @@ int gamesnd_lookup_name(const char* name, const std::vector<game_snd>& sounds)
 		return -1;
 	}
 
-	Assert( sounds.size() <= INT_MAX );
+core::Assert( sounds.size() <= INT_MAX );
 
 	int i = 0;
 
@@ -302,7 +302,7 @@ int gamesnd_lookup_name(const char* name, const std::vector<game_snd>& sounds)
 // WMC - now ignores file extension.
 gamesnd_id gamesnd_get_by_name(const char* name)
 {
-	Assert( Snds.size() <= INT_MAX );
+core::Assert( Snds.size() <= INT_MAX );
 
 	int index = gamesnd_lookup_name(name, Snds);
 
@@ -340,8 +340,8 @@ gamesnd_id gamesnd_get_by_name(const char* name)
 
 interface_snd_id gamesnd_get_by_iface_name(const char* name)
 {
-	Assert( Snds_iface.size() <= INT_MAX );
-	Assert( Snds_iface.size() == Snds_iface_handle.size() );
+core::Assert( Snds_iface.size() <= INT_MAX );
+core::Assert( Snds_iface.size() == Snds_iface_handle.size() );
 
 	auto index = gamesnd_lookup_name(name, Snds_iface);
 
@@ -393,7 +393,7 @@ gamesnd_id gamesnd_get_by_tbl_index(int index)
 
 interface_snd_id gamesnd_get_by_iface_tbl_index(int index)
 {
-	Assert( Snds_iface.size() == Snds_iface_handle.size() );
+core::Assert( Snds_iface.size() == Snds_iface_handle.size() );
 
 	char temp[11];
 	sprintf(temp, "%i", index);
@@ -445,7 +445,7 @@ void parse_game_sound(const char* tag, gamesnd_id* idx_dest) {
  *
  */
 void parse_iface_sound(const char* tag, interface_snd_id* idx_dest) {
-	Assert( Snds_iface.size() == Snds_iface_handle.size() );
+core::Assert( Snds_iface.size() == Snds_iface_handle.size() );
 
 	if(optional_string(tag))
 	{
@@ -525,7 +525,7 @@ void gamesnd_preload_common_sounds()
 	if ( !Sound_enabled )
 		return;
 
-	Assert( Snds.size() <= INT_MAX );
+core::Assert( Snds.size() <= INT_MAX );
 	for (std::vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs) {
 		if ( gs->preload ) {
 			for (auto& entry : gs->sound_entries) {
@@ -546,7 +546,7 @@ void gamesnd_load_gameplay_sounds()
 	if ( !Sound_enabled )
 		return;
 
-	Assert( Snds.size() <= INT_MAX );
+core::Assert( Snds.size() <= INT_MAX );
 	for (std::vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs) {
 		if ( !gs->preload ) { // don't try to load anything that's already preloaded
 			for (auto& entry : gs->sound_entries) {
@@ -564,7 +564,7 @@ void gamesnd_load_gameplay_sounds()
  */
 void gamesnd_unload_gameplay_sounds()
 {
-	Assert( Snds.size() <= INT_MAX );
+core::Assert( Snds.size() <= INT_MAX );
 	for (std::vector<game_snd>::iterator gs = Snds.begin(); gs != Snds.end(); ++gs) {
 		for (auto& entry : gs->sound_entries) {
 			if (entry.id.isValid()) {
@@ -583,7 +583,7 @@ void gamesnd_load_interface_sounds()
 	if ( !Sound_enabled )
 		return;
 
-	Assert( Snds_iface.size() < INT_MAX );
+core::Assert( Snds_iface.size() < INT_MAX );
 	for (std::vector<game_snd>::iterator si = Snds_iface.begin(); si != Snds_iface.end(); ++si) {
 		for (auto& entry : si->sound_entries) {
 			if ( entry.filename[0] != 0 && strnicmp(entry.filename, NOX("none.wav"), 4) != 0 ) {
@@ -598,7 +598,7 @@ void gamesnd_load_interface_sounds()
  */
 void gamesnd_unload_interface_sounds()
 {
-	Assert( Snds_iface.size() < INT_MAX );
+core::Assert( Snds_iface.size() < INT_MAX );
 	for (std::vector<game_snd>::iterator si = Snds_iface.begin(); si != Snds_iface.end(); ++si) {
 		for (auto& entry : si->sound_entries) {
 			if (entry.id.isValid()) {
@@ -690,7 +690,7 @@ void parse_gamesnd_old(game_snd* gs)
 
 EnhancedSoundPriority convert_to_enhanced_priority(const char * priority_str)
 {
-	Assertion(priority_str != NULL, "convert_to_enhanced_priority given null priority_str!");
+core::Assertion(priority_str != NULL, "convert_to_enhanced_priority given null priority_str!");
 
 	if (!stricmp(priority_str, "Must Play"))
 	{
@@ -979,7 +979,7 @@ void gamesnd_parse_entry(game_snd *gs, bool no_create, std::vector<game_snd> *lo
  */
 bool gamesnd_parse_line(game_snd *gs, const char *tag, std::vector<game_snd> *lookupVector = NULL)
 {
-	Assertion(gs != NULL, "Invalid game_snd pointer passed to gamesnd_parse_line!");
+core::Assertion(gs != NULL, "Invalid game_snd pointer passed to gamesnd_parse_line!");
 
 	required_string(tag);
 
@@ -1303,13 +1303,13 @@ void gamesnd_play_error_beep()
 }
 
 game_snd* gamesnd_get_game_sound(gamesnd_id handle) {
-	Assertion(handle.isValid(), "Invalid game sound handle detected!");
-	Assertion(handle.value() < (int) Snds.size(), "Invalid game sound handle %d detected!", handle.value());
+core::Assertion(handle.isValid(), "Invalid game sound handle detected!");
+core::Assertion(handle.value() < (int) Snds.size(), "Invalid game sound handle %d detected!", handle.value());
 	return &Snds[handle.value()];
 }
 game_snd* gamesnd_get_interface_sound(interface_snd_id handle) {
-	Assertion(handle.isValid(), "Invalid interface sound handle detected!");
-	Assertion(handle.value() < (int) Snds_iface.size(), "Invalid interface sound handle %d detected!", handle.value());
+core::Assertion(handle.isValid(), "Invalid interface sound handle detected!");
+core::Assertion(handle.value() < (int) Snds_iface.size(), "Invalid interface sound handle %d detected!", handle.value());
 	return &Snds_iface[handle.value()];
 }
 
@@ -1335,7 +1335,7 @@ float gamesnd_get_max_duration(game_snd* gs) {
 	return max_length / gs->pitch_range.max();
 }
 game_snd_entry* gamesnd_choose_entry(game_snd* gs) {
-	Assertion(!gs->sound_entries.empty(), "No sound entries found in game sound! This may not happen!");
+core::Assertion(!gs->sound_entries.empty(), "No sound entries found in game sound! This may not happen!");
 
 	size_t index = 0;
 	switch(gs->cycle_type) {

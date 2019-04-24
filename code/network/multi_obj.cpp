@@ -365,7 +365,7 @@ int multi_oo_pack_data(net_player *pl, object *objp, ubyte oo_flags, ubyte *data
 	int packet_size = 0;
 
 	// make sure we have a valid ship
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	if((objp->instance >= 0) && (Ships[objp->instance].ship_info_index >= 0)){
 		shipp = &Ships[objp->instance];
 		sip = &Ship_info[shipp->ship_info_index];
@@ -385,12 +385,12 @@ int multi_oo_pack_data(net_player *pl, object *objp, ubyte oo_flags, ubyte *data
 
 	// if i'm the client, make sure I only send certain things	
 	if(!MULTIPLAYER_MASTER){
-		Assert(oo_flags & (OO_POS_NEW | OO_ORIENT_NEW));
-		Assert(!(oo_flags & (OO_HULL_NEW | OO_SUBSYSTEMS_AND_AI_NEW)));
+	core::Assert(oo_flags & (OO_POS_NEW | OO_ORIENT_NEW));
+	core::Assert(!(oo_flags & (OO_HULL_NEW | OO_SUBSYSTEMS_AND_AI_NEW)));
 	} 
 	// server 
 	else {
-		// Assert(oo_flags & OO_POS_NEW);
+		//core::Assert(oo_flags & OO_POS_NEW);
 	}
 
 	// header sizes
@@ -423,7 +423,7 @@ int multi_oo_pack_data(net_player *pl, object *objp, ubyte oo_flags, ubyte *data
 	// orientation	
 	if(oo_flags & OO_ORIENT_NEW){
 		ret = (ubyte)multi_pack_unpack_orient( 1, data + packet_size + header_bytes, &objp->orient );
-		// Assert(ret == OO_ORIENT_RET_SIZE);
+		//core::Assert(ret == OO_ORIENT_RET_SIZE);
 		packet_size += ret;
 		multi_rate_add(NET_PLAYER_NUM(pl), "ori", ret);				
 
@@ -436,7 +436,7 @@ int multi_oo_pack_data(net_player *pl, object *objp, ubyte oo_flags, ubyte *data
 			
 	// forward thrust	
 	percent = (char)(objp->phys_info.forward_thrust * 100.0f);
-	Assert( percent <= 100 );
+core::Assert( percent <= 100 );
 
 	PACK_BYTE( percent );
 
@@ -545,7 +545,7 @@ int multi_oo_pack_data(net_player *pl, object *objp, ubyte oo_flags, ubyte *data
 	// make sure we have a valid chunk of data
 	// Clients: must be able to accomodate the data_size and shipp->np_updates[NET_PLAYER_NUM(pl)].seq before the data itself
 	// Server: TODO
-	Assert(packet_size < 255-1);
+core::Assert(packet_size < 255-1);
 	if(packet_size >= 255-1){
 		return 0;
 	}
@@ -815,7 +815,7 @@ int multi_oo_unpack_data(net_player *pl, ubyte *data)
 	
 	// forward thrust	
 	percent = (char)(pobjp->phys_info.forward_thrust * 100.0f);
-	Assert( percent <= 100 );
+core::Assert( percent <= 100 );
 	GET_DATA(percent);		
 
 	// now stuff all this new info
@@ -890,7 +890,7 @@ int multi_oo_unpack_data(net_player *pl, ubyte *data)
 
 			// add the value just generated (it was zero'ed above) into the array of generic system types
 			subsys_type = subsysp->system_info->type;					// this is the generic type of subsystem
-			Assert ( subsys_type < SUBSYSTEM_MAX );
+		core::Assert ( subsys_type < SUBSYSTEM_MAX );
 			if (!(subsysp->flags[Ship::Subsystem_Flags::No_aggregate])) {
 				shipp->subsys_info[subsys_type].aggregate_current_hits += val;
 			}
@@ -1865,7 +1865,7 @@ int multi_oo_is_interp_object(object *objp)
 void multi_oo_interp(object *objp)
 {		
 	// make sure its a valid ship
-	Assert(Game_mode & GM_MULTIPLAYER);
+core::Assert(Game_mode & GM_MULTIPLAYER);
 	if(objp->type != OBJ_SHIP){
 		return;
 	}
@@ -1877,7 +1877,7 @@ void multi_oo_interp(object *objp)
 	oo_arrive_time_next[objp->instance] += flFrametime;
 
 	// do stream weapon firing for this ship
-	Assert(objp != Player_obj);
+core::Assert(objp != Player_obj);
 	if(objp != Player_obj){
 		ship_fire_primary(objp, 1, 0);
 	}

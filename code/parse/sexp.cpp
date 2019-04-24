@@ -1116,12 +1116,12 @@ void init_sexp()
 	Locked_sexp_false = Locked_sexp_true = -1;
 
 	Locked_sexp_false = alloc_sexp("false", SEXP_LIST, SEXP_ATOM_OPERATOR, -1, -1);
-	Assert(Locked_sexp_false != -1);
+core::Assert(Locked_sexp_false != -1);
 	Sexp_nodes[Locked_sexp_false].type = SEXP_ATOM;  // fix bypassing value
 	Sexp_nodes[Locked_sexp_false].value = SEXP_KNOWN_FALSE;
 
 	Locked_sexp_true = alloc_sexp("true", SEXP_LIST, SEXP_ATOM_OPERATOR, -1, -1);
-	Assert(Locked_sexp_true != -1);
+core::Assert(Locked_sexp_true != -1);
 	Sexp_nodes[Locked_sexp_true].type = SEXP_ATOM;  // fix bypassing value
 	Sexp_nodes[Locked_sexp_true].value = SEXP_KNOWN_TRUE;
 }
@@ -1153,7 +1153,7 @@ int alloc_sexp(const char *text, int type, int subtype, int first, int rest)
 	{
 		int old_size = Num_sexp_nodes;
 
-		Assert(SEXP_NODE_INCREMENT > 0);
+	core::Assert(SEXP_NODE_INCREMENT > 0);
 
 		// allocate in blocks of SEXP_NODE_INCREMENT
 		Num_sexp_nodes += SEXP_NODE_INCREMENT;
@@ -1169,10 +1169,10 @@ int alloc_sexp(const char *text, int type, int subtype, int first, int rest)
 		node = old_size;
 	}
 
-	Assert(node != Locked_sexp_true);
-	Assert(node != Locked_sexp_false);
-	Assert(strlen(text) < TOKEN_LENGTH);
-	Assert(type >= 0);
+core::Assert(node != Locked_sexp_true);
+core::Assert(node != Locked_sexp_false);
+core::Assert(strlen(text) < TOKEN_LENGTH);
+core::Assert(type >= 0);
 
 	strcpy_s(Sexp_nodes[node].text, text);
 	Sexp_nodes[node].type = type;
@@ -1243,7 +1243,7 @@ void sexp_mark_persistent(int n)
 		return;
 	}
 
-	Assert( !(Sexp_nodes[n].type & SEXP_FLAG_PERSISTENT) );
+core::Assert( !(Sexp_nodes[n].type & SEXP_FLAG_PERSISTENT) );
 	Sexp_nodes[n].type |= SEXP_FLAG_PERSISTENT;
 
 	sexp_mark_persistent(Sexp_nodes[n].first);
@@ -1264,7 +1264,7 @@ void sexp_unmark_persistent(int n)
 		return;
 	}
 
-	Assert( Sexp_nodes[n].type & SEXP_FLAG_PERSISTENT );
+core::Assert( Sexp_nodes[n].type & SEXP_FLAG_PERSISTENT );
 	Sexp_nodes[n].type &= ~SEXP_FLAG_PERSISTENT;
 
 	sexp_unmark_persistent(Sexp_nodes[n].first);
@@ -1276,9 +1276,9 @@ void sexp_unmark_persistent(int n)
  */
 int free_one_sexp(int num)
 {
-	Assert((num >= 0) && (num < Num_sexp_nodes));
-	Assert(Sexp_nodes[num].type != SEXP_NOT_USED);  // make sure it is actually used
-	Assert(!(Sexp_nodes[num].type & SEXP_FLAG_PERSISTENT));
+core::Assert((num >= 0) && (num < Num_sexp_nodes));
+core::Assert(Sexp_nodes[num].type != SEXP_NOT_USED);  // make sure it is actually used
+core::Assert(!(Sexp_nodes[num].type & SEXP_FLAG_PERSISTENT));
 
 	if ((num == Locked_sexp_true) || (num == Locked_sexp_false))
 		return 0;
@@ -1297,9 +1297,9 @@ int free_sexp(int num)
 {
 	int i, rest, count = 0;
 
-	Assert((num >= 0) && (num < Num_sexp_nodes));
-	Assert(Sexp_nodes[num].type != SEXP_NOT_USED);  // make sure it is actually used
-	Assert(!(Sexp_nodes[num].type & SEXP_FLAG_PERSISTENT));
+core::Assert((num >= 0) && (num < Num_sexp_nodes));
+core::Assert(Sexp_nodes[num].type != SEXP_NOT_USED);  // make sure it is actually used
+core::Assert(!(Sexp_nodes[num].type & SEXP_FLAG_PERSISTENT));
 
 	if ((num == Locked_sexp_true) || (num == Locked_sexp_false))
 		return 0;
@@ -1491,7 +1491,7 @@ int find_sexp_list(int num)
 int find_parent_operator(int node)
 {
 	int i;
-	Assert((node >= 0) && (node < Num_sexp_nodes));
+core::Assert((node >= 0) && (node < Num_sexp_nodes));
 
 	if (Sexp_nodes[node].subtype == SEXP_ATOM_OPERATOR)
 	{
@@ -1531,7 +1531,7 @@ int is_sexp_top_level( int node )
 {
 	int i;
 
-	Assert((node >= 0) && (node < Num_sexp_nodes));
+core::Assert((node >= 0) && (node < Num_sexp_nodes));
 
 	if (Sexp_nodes[node].type == SEXP_NOT_USED)
 		return 0;
@@ -1554,8 +1554,8 @@ int is_sexp_top_level( int node )
 int find_argnum(int parent_node, int arg_node)
 {
 	int n, tally;
-	Assertion((parent_node >= 0) && (parent_node < Num_sexp_nodes), "find_argnum was passed an invalid parent!");
-	Assertion((arg_node >= 0) && (arg_node < Num_sexp_nodes), "find_argnum was passed an invalid child!");
+core::Assertion((parent_node >= 0) && (parent_node < Num_sexp_nodes), "find_argnum was passed an invalid parent!");
+core::Assertion((arg_node >= 0) && (arg_node < Num_sexp_nodes), "find_argnum was passed an invalid child!");
 
 	n = CDR(parent_node);
 	tally = 0;
@@ -1579,7 +1579,7 @@ int find_argnum(int parent_node, int arg_node)
  */
 int get_operator_index(const char *token)
 {
-	Assertion(token != NULL, "get_operator_index(char*) called with a null token; get a coder!\n");
+core::Assertion(token != NULL, "get_operator_index(char*) called with a null token; get a coder!\n");
 
 	for (size_t i=0; i < Operators.size(); i++){
 		if (Operators[i].text == token){
@@ -1595,7 +1595,7 @@ int get_operator_index(const char *token)
  */
 int get_operator_index(int node)
 {
-	Assertion(node >= 0 && node < Num_sexp_nodes, "Passed an out-of-range node index (%d) to get_operator_index(int)!", node);
+core::Assertion(node >= 0 && node < Num_sexp_nodes, "Passed an out-of-range node index (%d) to get_operator_index(int)!", node);
 
 	if (!Fred_running && (Sexp_nodes[node].op_index != NO_OPERATOR_INDEX_DEFINED) ) {
 		return Sexp_nodes[node].op_index;
@@ -1680,11 +1680,11 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 	int var_index = -1;
 	size_t st;
 
-	Assert(node >= 0 && node < Num_sexp_nodes);
-	Assert(Sexp_nodes[node].type != SEXP_NOT_USED);
+core::Assert(node >= 0 && node < Num_sexp_nodes);
+core::Assert(Sexp_nodes[node].type != SEXP_NOT_USED);
 	if (Sexp_nodes[node].subtype == SEXP_ATOM_NUMBER && return_type == OPR_BOOL) {
 		// special case Mark seems to want supported
-		Assert(Sexp_nodes[node].first == -1);  // only lists should have a first pointer
+	core::Assert(Sexp_nodes[node].first == -1);  // only lists should have a first pointer
 		if (Sexp_nodes[node].rest != -1)  // anything after the number?
 			return SEXP_CHECK_NONOP_ARGS; // if so, it's a syntax error
 
@@ -1736,7 +1736,7 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 	node = Sexp_nodes[op_node].rest;
 	while (node != -1) {
 		type = query_operator_argument_type(op, argnum);
-		Assert(Sexp_nodes[node].type != SEXP_NOT_USED);
+	core::Assert(Sexp_nodes[node].type != SEXP_NOT_USED);
 		if (bad_node)
 			*bad_node = node;
 
@@ -1848,13 +1848,13 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 			type2 = SEXP_ATOM_STRING;
 
 		} else {
-			Assert(0);
+		core::Assert(0);
 		}
 
 		// variables should only be typechecked. 
 		if ((Sexp_nodes[node].type & SEXP_FLAG_VARIABLE) && (type != OPF_VARIABLE_NAME)) {
 			var_index = get_index_sexp_variable_from_node(node);
-			Assert(var_index != -1);
+		core::Assert(var_index != -1);
 	
 			switch (type) {
 				case OPF_NUMBER:
@@ -2455,9 +2455,9 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 						}
 					}
 
-					Assert(Sexp_nodes[node].subtype == SEXP_ATOM_LIST);
+				core::Assert(Sexp_nodes[node].subtype == SEXP_ATOM_LIST);
 					z = Sexp_nodes[node].first;
-					Assert(Sexp_nodes[z].subtype != SEXP_ATOM_LIST);
+				core::Assert(Sexp_nodes[z].subtype != SEXP_ATOM_LIST);
 					z = get_operator_const(CTEXT(z));
 					if (ship_num >= 0) {
 						if (!query_sexp_ai_goal_valid(z, ship_num)){
@@ -2578,9 +2578,9 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 				// otherwise, check the set of current goals
 				if ( Fred_running && (mode == SEXP_MODE_CAMPAIGN) ) {
 					z = find_parent_operator(node);
-					Assert(z >= 0);
+				core::Assert(z >= 0);
 					z = Sexp_nodes[z].rest;  // first argument of operator should be mission name
-					Assert(z >= 0);
+				core::Assert(z >= 0);
 					for (i=0; i<Campaign.num_missions; i++)
 						if (!stricmp(CTEXT(z), Campaign.missions[i].name))
 							break;
@@ -2621,9 +2621,9 @@ int check_sexp_syntax(int node, int return_type, int recursive, int *bad_node, i
 				// and only if in campaign mode.  Otherwise, check the current set of events
 				if ( Fred_running && (mode == SEXP_MODE_CAMPAIGN) ) {
 					z = find_parent_operator(node);
-					Assert(z >= 0);
+				core::Assert(z >= 0);
 					z = Sexp_nodes[z].rest;  // first argument of operator should be mission name
-					Assert(z >= 0);
+				core::Assert(z >= 0);
 					for (i=0; i<Campaign.num_missions; i++)
 						if (!stricmp(CTEXT(z), Campaign.missions[i].name))
 							break;
@@ -3245,7 +3245,7 @@ void get_unformatted_sexp_variable_name(char *unformatted, char *formatted_pre)
 
 	// get variable name (up to '['
 	auto end_index = strcspn(formatted, "[");
-	Assert( (end_index != 0) && (end_index < TOKEN_LENGTH-1) );
+core::Assert( (end_index != 0) && (end_index < TOKEN_LENGTH-1) );
 	strncpy(unformatted, formatted, end_index);
 	unformatted[end_index] = '\0';
 }
@@ -3265,7 +3265,7 @@ void get_sexp_text_for_variable(char *text, char *token)
 	if ( !Fred_running ) {
 		// freespace - get index into Sexp_variables array
 		sexp_var_index = get_index_sexp_variable_name(text);
-		Assert(sexp_var_index != -1);
+	core::Assert(sexp_var_index != -1);
 		sprintf(text, "%d", sexp_var_index);
 	}
 }
@@ -3339,7 +3339,7 @@ int get_sexp()
 	char token[TOKEN_LENGTH];
 	char variable_text[TOKEN_LENGTH];
 
-	Assert(*(Mp-1) == '(');
+core::Assert(*(Mp-1) == '(');
 
 	// start - the node allocated in first instance of function
 	// node - the node allocated in current instance of function
@@ -3476,13 +3476,13 @@ int get_sexp()
 
 		// update links
 		if (count++) {
-			Assert(last != -1);
+		core::Assert(last != -1);
 			Sexp_nodes[last].rest = node;
 		} else {
 			start = node;
 		}
 
-		Assert(node != -1);  // ran out of nodes.  Time to raise the MAX!
+	core::Assert(node != -1);  // ran out of nodes.  Time to raise the MAX!
 		last = node;
 		ignore_white_space();
 	}
@@ -3600,7 +3600,7 @@ int get_sexp()
 						break;
 
 					int id = atoi(Sexp_nodes[CDR(n)].text);
-					Assert(id < 10000000);
+				core::Assert(id < 10000000);
 					char xstr[NAME_LENGTH + 20];
 					sprintf(xstr, "XSTR(\"%s\", %d)", Sexp_nodes[n].text, id);
 
@@ -3615,7 +3615,7 @@ int get_sexp()
 				n = CDDR(start); // First parameter is the variable name so we need to the second parameter
 
 				int id = atoi(Sexp_nodes[CDR(n)].text);
-				Assert(id < 10000000);
+			core::Assert(id < 10000000);
 				std::string xstr;
 				core::sprintf(xstr, "XSTR(\"%s\", %d)", Sexp_nodes[n].text, id);
 
@@ -3657,7 +3657,7 @@ int stuff_sexp_variable_list()
 	ignore_white_space();
 
 	while (*Mp != ')') {
-		Assert(count < MAX_SEXP_VARIABLES);
+	core::Assert(count < MAX_SEXP_VARIABLES);
 
 		// get index - for debug
 		stuff_int(&index);
@@ -3737,7 +3737,7 @@ int stuff_sexp_variable_list()
 
 		// check if variable name already exists
 		if ( (type & SEXP_VARIABLE_NUMBER) || (type & SEXP_VARIABLE_STRING) ) {
-			Assert(get_index_sexp_variable_name(var_name) == -1);
+		core::Assert(get_index_sexp_variable_name(var_name) == -1);
 		}
 
 		if ( type & SEXP_VARIABLE_BLOCK ) {
@@ -3838,7 +3838,7 @@ int num_block_variables()
  */
 void stuff_sexp_text_string(std::string &dest, int node, int mode)
 {
-	Assert( (node >= 0) && (node < Num_sexp_nodes) );
+core::Assert( (node >= 0) && (node < Num_sexp_nodes) );
 
 	if (Sexp_nodes[node].type & SEXP_FLAG_VARIABLE) {
 
@@ -3849,12 +3849,12 @@ void stuff_sexp_text_string(std::string &dest, int node, int mode)
 				sexp_variables_index = atoi(Sexp_nodes[node].text);
 			}
 		}
-		Assertion(sexp_variables_index != -1, "Couldn't find variable: %s\n", Sexp_nodes[node].text);
-		Assert( (Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_NUMBER) || (Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_STRING) );
+	core::Assertion(sexp_variables_index != -1, "Couldn't find variable: %s\n", Sexp_nodes[node].text);
+	core::Assert( (Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_NUMBER) || (Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_STRING) );
 
 		// number
 		if (Sexp_nodes[node].subtype == SEXP_ATOM_NUMBER) {
-			Assert(Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_NUMBER);
+		core::Assert(Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_NUMBER);
 		
 			// Error check - can be Fred or FreeSpace
 			if (mode == SEXP_ERROR_CHECK_MODE) {
@@ -3865,13 +3865,13 @@ void stuff_sexp_text_string(std::string &dest, int node, int mode)
 				}
 			} else {
 				// Save as string - only  Fred
-				Assert(mode == SEXP_SAVE_MODE);
+			core::Assert(mode == SEXP_SAVE_MODE);
 				core::sprintf(dest, "@%s[%s] ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 			}
 		} else {
 			// string
-			Assert(Sexp_nodes[node].subtype == SEXP_ATOM_STRING);
-			Assert(Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_STRING);
+		core::Assert(Sexp_nodes[node].subtype == SEXP_ATOM_STRING);
+		core::Assert(Sexp_variables[sexp_variables_index].type & SEXP_VARIABLE_STRING);
 
 			// Error check - can be Fred or FreeSpace
 			if (mode == SEXP_ERROR_CHECK_MODE) {
@@ -3882,7 +3882,7 @@ void stuff_sexp_text_string(std::string &dest, int node, int mode)
 				}
 			} else {
 				// Save as string - only Fred
-				Assert(mode == SEXP_SAVE_MODE);
+			core::Assert(mode == SEXP_SAVE_MODE);
 				core::sprintf(dest, "\"@%s[%s]\" ", Sexp_nodes[node].text, Sexp_variables[sexp_variables_index].text);
 			}
 		}
@@ -3905,7 +3905,7 @@ int build_sexp_string(std::string &accumulator, int cur_node, int level, int mod
 	accumulator += "( ";
 	node = cur_node;
 	while (node != -1) {
-		Assert(node >= 0 && node < Num_sexp_nodes);
+	core::Assert(node >= 0 && node < Num_sexp_nodes);
 		if (Sexp_nodes[node].first == -1) {
 			// build text to string
 			stuff_sexp_text_string(buf, node, mode);
@@ -3943,7 +3943,7 @@ void build_extended_sexp_string(std::string &accumulator, int cur_node, int leve
 		}
 
 		flag = 1;
-		Assert(node >= 0 && node < Num_sexp_nodes);
+	core::Assert(node >= 0 && node < Num_sexp_nodes);
 		if (Sexp_nodes[node].first == -1) {
 			stuff_sexp_text_string(buf, node, mode);
 			accumulator += buf;
@@ -3985,7 +3985,7 @@ player * get_player_from_ship_node(int node, bool test_respawns)
 	int sindex, np_index = -1;	
 	p_object *p_objp;
 	
-	Assert (node != -1);
+core::Assert (node != -1);
 
 	sindex = ship_name_lookup(CTEXT(node));
 
@@ -4294,7 +4294,7 @@ int signum_sexp(int node)
 		return -1;
 
 	// hurr durr math
-	Assert(num > 0);
+core::Assert(num > 0);
 	return 1;
 }
 
@@ -4378,7 +4378,7 @@ int rand_sexp(int n, bool multiple)
 {
 	int low, high, rand_num, seed;
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	// when getting a saved value
 	if (Sexp_nodes[n].value == SEXP_NUM_EVAL)
@@ -4775,8 +4775,8 @@ void sexp_get_object_ship_wing_point_team(object_ship_wing_point_team *oswpt, ch
 	waypoint *wpt;
 	p_object *p_objp;
 
-	Assert(oswpt != NULL);
-	Assert(object_name != NULL);
+core::Assert(oswpt != NULL);
+core::Assert(object_name != NULL);
 
 	oswpt->clear(); 
 	oswpt->object_name = object_name;
@@ -4957,8 +4957,8 @@ int sexp_num_ships_in_wing(int n)
 	char *name;
 	int num_ships = 0 ;
 
-	// A wing name must be provided, Assert that there is one.
-	Assert ( n != -1 );
+	// A wing name must be provided,core::Assert that there is one.
+core::Assert ( n != -1 );
 
 	//Cycle through the list of ships given
 	while (n != -1)
@@ -5023,7 +5023,7 @@ int sexp_is_destroyed(int n, fix *latest_time)
 	int	count, num_destroyed, wing_index;
 	fix	time;
 
-	Assert ( n != -1 );
+core::Assert ( n != -1 );
 
 	count = 0;
 	num_destroyed = 0;
@@ -5090,7 +5090,7 @@ int sexp_is_subsystem_destroyed(int n)
 {
 	char *ship_name, *subsys_name;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	
 	ship_name = CTEXT(n);
 	subsys_name = CTEXT(CDR(n));
@@ -5280,7 +5280,7 @@ int sexp_is_destroyed_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	time = 0;
 
@@ -5312,7 +5312,7 @@ int sexp_was_destroyed_by(int n, fix* latest_time)
 	int count = 0, num_destroyed;
 	fix time;
 
-	Assert(n != -1);
+core::Assert(n != -1);
 
 	destroyer_ship_name = CTEXT(n);
 
@@ -5350,7 +5350,7 @@ int sexp_was_destroyed_by_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	time = 0;
 
@@ -5379,7 +5379,7 @@ int sexp_is_subsystem_destroyed_delay(int n)
 	char *ship_name, *subsys_name;
 	fix delay, time;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	
 	ship_name = CTEXT(n);
 	subsys_name = CTEXT(CDR(n));
@@ -5405,7 +5405,7 @@ int sexp_is_disabled_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	time = 0;
 	delay = i2f(eval_num(n));
@@ -5431,7 +5431,7 @@ int sexp_is_disarmed_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	time = 0;
 	delay = i2f(eval_num(n));
@@ -5454,7 +5454,7 @@ int sexp_is_disarmed_delay(int n)
 
 int sexp_has_docked_or_undocked(int n, int op_num)
 {
-	Assert(op_num == OP_HAS_DOCKED || op_num == OP_HAS_UNDOCKED || op_num == OP_HAS_DOCKED_DELAY || op_num == OP_HAS_UNDOCKED_DELAY);
+core::Assert(op_num == OP_HAS_DOCKED || op_num == OP_HAS_UNDOCKED || op_num == OP_HAS_DOCKED_DELAY || op_num == OP_HAS_UNDOCKED_DELAY);
 
 	char *docker = CTEXT(n);
 	char *dockee = CTEXT(CDR(n));
@@ -5503,7 +5503,7 @@ int sexp_has_arrived_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	time = 0;
 	delay = i2f(eval_num(n));
@@ -5529,7 +5529,7 @@ int sexp_has_departed_delay(int n)
 	fix delay, time;
 	int val;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	time = 0;
 	delay = i2f(eval_num(n));
@@ -5780,7 +5780,7 @@ int sexp_time_ship_arrived(int n)
 {
 	fix time;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	if ( !mission_log_get_time( LOG_SHIP_ARRIVED, CTEXT(n), NULL, &time ) ){
 		return SEXP_NAN;
 	}
@@ -5792,7 +5792,7 @@ int sexp_time_wing_arrived(int n)
 {
 	fix time;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	if ( !mission_log_get_time( LOG_WING_ARRIVED, CTEXT(n), NULL, &time ) ){
 		return SEXP_NAN;
 	}
@@ -5804,7 +5804,7 @@ int sexp_time_ship_departed(int n)
 {
 	fix time;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	if ( !mission_log_get_time( LOG_SHIP_DEPARTED, CTEXT(n), NULL, &time ) ){
 		return SEXP_NAN;
 	}
@@ -5816,7 +5816,7 @@ int sexp_time_wing_departed(int n)
 {
 	fix time;
 
-	Assert( n != -1 );
+core::Assert( n != -1 );
 	if ( !mission_log_get_time(LOG_WING_DEPARTED, CTEXT(n), NULL, &time ) ){
 		return SEXP_NAN;
 	}
@@ -5832,7 +5832,7 @@ void sexp_set_energy_pct (int node, int op_num)
 	ship * shipp; 
 	ship_info * sip; 
 
-	Assert (node > -1);
+core::Assert (node > -1);
 	new_pct = eval_num(node) / 100.0f;
 
 	// deal with ridiculous percentages
@@ -6324,7 +6324,7 @@ int sexp_directive_value(int n)
 	int replace_current_value = SEXP_TRUE; 
 	int directive_value;
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	directive_value = eval_num(n);
 
@@ -6542,8 +6542,8 @@ int sexp_distance(int n)
  */
 bool sexp_get_subsystem_world_pos(vec3d *subsys_world_pos, int shipnum, char *subsys_name)
 {
-	Assert(subsys_name);
-	Assert(subsys_world_pos);
+core::Assert(subsys_name);
+core::Assert(subsys_world_pos);
 
 	if(shipnum < 0)
 	{
@@ -6725,7 +6725,7 @@ int sexp_num_within_box(int n)
 // Goober5000
 void sexp_set_object_speed(object *objp, int speed, int axis, bool subjective)
 {
-	Assert(axis >= 0 && axis <= 2);
+core::Assert(axis >= 0 && axis <= 2);
 
 	if (subjective)
 	{
@@ -6749,7 +6749,7 @@ void sexp_set_object_speed(object *objp, int speed, int axis, bool subjective)
 // Goober5000
 void sexp_set_object_speed(int n, int axis)
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	int speed;
 	bool subjective = false;
@@ -6803,7 +6803,7 @@ void multi_sexp_set_object_speed()
 
 int sexp_get_object_speed(object *objp, int axis, bool subjective)
 {
-	Assertion(((axis >= 0) && (axis <= 2)), "Axis is out of range (%d)", axis);
+core::Assertion(((axis >= 0) && (axis <= 2)), "Axis is out of range (%d)", axis);
 	int speed;
 
 	if (subjective)
@@ -6824,7 +6824,7 @@ int sexp_get_object_speed(object *objp, int axis, bool subjective)
 
 int sexp_get_object_speed(int n, int axis)
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	int speed;
 	bool subjective = false;
@@ -6858,9 +6858,9 @@ int sexp_get_object_speed(int n, int axis)
 // Goober5000
 int sexp_calculate_coordinate(vec3d *origin, matrix *orient, vec3d *relative_location, int axis)
 {
-	Assert(origin != NULL);
-	Assert(orient != NULL);
-	Assert(axis >= 0 && axis <= 2);
+core::Assert(origin != NULL);
+core::Assert(orient != NULL);
+core::Assert(axis >= 0 && axis <= 2);
 
 	if (relative_location == NULL)
 	{
@@ -6880,8 +6880,8 @@ int sexp_calculate_coordinate(vec3d *origin, matrix *orient, vec3d *relative_loc
 // Goober5000
 int sexp_calculate_angle(matrix *orient, int axis)
 {
-	Assert(orient != NULL);
-	Assert(axis >= 0 && axis <= 2);
+core::Assert(orient != NULL);
+core::Assert(axis >= 0 && axis <= 2);
 
 	angles a;
 	vm_extract_angles_matrix_alternate(&a, orient);
@@ -6908,7 +6908,7 @@ int sexp_calculate_angle(matrix *orient, int axis)
 // Goober5000
 int sexp_get_object_coordinate(int n, int axis) 
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	char *subsystem_name = NULL;
 	vec3d *pos = NULL, *relative_location = NULL, relative_location_buf, subsys_pos_buf;
@@ -6972,7 +6972,7 @@ int sexp_get_object_coordinate(int n, int axis)
 // Goober5000
 int sexp_get_object_angle(int n, int axis) 
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	object_ship_wing_point_team oswpt;
 	sexp_get_object_ship_wing_point_team(&oswpt, CTEXT(n));
@@ -7168,7 +7168,7 @@ void sexp_set_object_orientation(int n)
 // this is different from sexp_set_object_orientation
 void sexp_set_object_orient_sub(object *objp, vec3d *location, int turn_time, int bank)
 {
-	Assert(objp && location);
+core::Assert(objp && location);
 
 	vec3d v_orient;
 	matrix m_orient;
@@ -7214,7 +7214,7 @@ void sexp_set_object_orient_sub(object *objp, vec3d *location, int turn_time, in
 // Goober5000
 void sexp_set_oswpt_facing(object_ship_wing_point_team *oswpt, vec3d *location, int turn_time = 0, int bank = 0)
 {
-	Assert(oswpt && location);
+core::Assert(oswpt && location);
 
 	switch (oswpt->type)
 	{
@@ -7342,7 +7342,7 @@ void sexp_set_ship_man(object *objp, int duration, int heading, int pitch, int b
 
 void sexp_set_oswpt_maneuver(object_ship_wing_point_team *oswpt, int duration, int heading, int pitch, int bank, bool apply_all_rotate, int up, int sideways, int forward, bool apply_all_lat)
 {
-	Assert(oswpt);
+core::Assert(oswpt);
 
 	switch (oswpt->type)
 	{
@@ -7438,7 +7438,7 @@ int sexp_last_order_time(int n)
 	ai_goal *aigp;
 
 	time = i2f(eval_num(n));
-	Assert ( time >= 0 );
+core::Assert ( time >= 0 );
 
 	n = CDR(n);
 	while ( n != -1 ) {
@@ -7618,7 +7618,7 @@ int sexp_get_damage_caused(int node)
 
 
 	node = CDR(node);
-	Assert (node != -1);
+core::Assert (node != -1);
 
 	// go through the list of ships who we think may have attacked the ship
 	for ( ; node != -1; node = CDR(node) ) {
@@ -7643,7 +7643,7 @@ int sexp_get_damage_caused(int node)
 		damage_caused += get_damage_caused (damaged_sig, attacker_sig);
 	}
 	
-	Assertion((ship_class > -1) && (ship_class < static_cast<int>(Ship_info.size())), "Invalid ship class '%d' passed to sexp_get_damage_caused() (should be >= 0 and < %d); get a coder!\n", ship_class, static_cast<int>(Ship_info.size()));
+core::Assertion((ship_class > -1) && (ship_class < static_cast<int>(Ship_info.size())), "Invalid ship class '%d' passed to sexp_get_damage_caused() (should be >= 0 and < %d); get a coder!\n", ship_class, static_cast<int>(Ship_info.size()));
 	return (int) ((damage_caused/Ship_info[ship_class].max_hull_strength) * 100.0f);
 }
 
@@ -7724,7 +7724,7 @@ int sexp_depart_node_delay(int n)
 	char *jump_node_name, *name;
 	fix latest_time, this_time;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	delay = eval_num(n);
 	n = CDR(n);
@@ -7769,7 +7769,7 @@ int sexp_destroyed_departed_delay(int n)
 	fix delay, latest_time;
 	char *name;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// get the delay
 	delay = i2f(eval_num(n));
@@ -7860,7 +7860,7 @@ int sexp_is_cargo_known( int n, int check_delay )
 
 	char *name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	count = 0;
 	num_known = 0;
@@ -7974,7 +7974,7 @@ int sexp_cap_subsys_cargo_known_delay(int n)
 	num_known = 0;
 	count = 0;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// get delay
 	delay = eval_num(n);
@@ -8146,7 +8146,7 @@ int sexp_has_been_tagged_delay(int n)
 	int count, shipnum, num_known, delay;
 	char *name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	count = 0;
 	num_known = 0;
@@ -8446,7 +8446,7 @@ void eval_when_do_all_exp(int all_actions, int when_op_num)
 int eval_perform_actions(int n)
 {
 	int cond, val, actions;
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	cond = CAR(n);
 	actions = CDR(n);
@@ -8482,7 +8482,7 @@ int eval_perform_actions(int n)
 int eval_when(int n, int when_op_num)
 {
 	int arg_handler = -1, cond, val, actions;
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 	arg_item *ptr;
 
 	// get the parts of the sexp and evaluate the conditional
@@ -8596,7 +8596,7 @@ int eval_cond(int n)
 {
 	int cond = 0, node, val = SEXP_FALSE;
 
-	Assert (n >= 0);
+core::Assert (n >= 0);
 	while (n >= 0)
 	{
 		node = CAR(n);
@@ -8635,8 +8635,8 @@ int eval_cond(int n)
 int test_argument_nodes_for_condition(int n, int condition_node, int *num_true, int *num_false, int *num_known_true, int *num_known_false)
 {
 	int val, num_valid_arguments;
-	Assert(n != -1 && condition_node != -1);
-	Assert((num_true != NULL) && (num_false != NULL) && (num_known_true != NULL) && (num_known_false != NULL));
+core::Assert(n != -1 && condition_node != -1);
+core::Assert((num_true != NULL) && (num_false != NULL) && (num_known_true != NULL) && (num_known_false != NULL));
 
 	// ensure special argument list is empty
 	Sexp_applicable_argument_list.clear_nesting_level();
@@ -8717,8 +8717,8 @@ int test_argument_nodes_for_condition(int n, int condition_node, int *num_true, 
 int test_argument_vector_for_condition(std::vector<char*> argument_vector, bool already_dupped, int condition_node, int *num_true, int *num_false, int *num_known_true, int *num_known_false)
 {
 	int val, num_valid_arguments;
-	Assert(condition_node != -1);
-	Assert((num_true != NULL) && (num_false != NULL) && (num_known_true != NULL) && (num_known_false != NULL));
+core::Assert(condition_node != -1);
+core::Assert((num_true != NULL) && (num_false != NULL) && (num_known_true != NULL) && (num_known_false != NULL));
 
 	// ensure special argument list is empty
 	Sexp_applicable_argument_list.clear_nesting_level();
@@ -8805,7 +8805,7 @@ int test_argument_vector_for_condition(std::vector<char*> argument_vector, bool 
 int eval_any_of(int arg_handler_node, int condition_node)
 {
 	int n, num_valid_arguments, num_true, num_false, num_known_true, num_known_false;
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// the arguments should just be data, not operators, so we can skip the CAR
 	n = CDR(arg_handler_node);
@@ -8826,7 +8826,7 @@ int eval_any_of(int arg_handler_node, int condition_node)
 int eval_every_of(int arg_handler_node, int condition_node)
 {
 	int n, num_valid_arguments, num_true, num_false, num_known_true, num_known_false;
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// the arguments should just be data, not operators, so we can skip the CAR
 	n = CDR(arg_handler_node);
@@ -8847,7 +8847,7 @@ int eval_every_of(int arg_handler_node, int condition_node)
 int eval_number_of(int arg_handler_node, int condition_node)
 {
 	int n, num_valid_arguments, num_true, num_false, num_known_true, num_known_false, threshold;
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// the arguments should just be data, not operators, so we can skip the CAR
 	n = CDR(arg_handler_node);
@@ -8877,7 +8877,7 @@ int eval_number_of(int arg_handler_node, int condition_node)
 int eval_random_of(int arg_handler_node, int condition_node, bool multiple)
 {
 	int n = -1, i, val, num_valid_args, random_argument, num_known_false = 0;
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// get the number of valid arguments
 	num_valid_args = query_sexp_args_count(arg_handler_node, true);
@@ -8911,7 +8911,7 @@ int eval_random_of(int arg_handler_node, int condition_node, bool multiple)
 		i = 0;
 		for (int j = 0; j < num_valid_args; temp_node = CDR(temp_node))
 		{
-			Assert(n >= 0);
+		core::Assert(n >= 0);
 
 			// count only valid arguments
 			if (Sexp_nodes[temp_node].flags & SNF_ARGUMENT_VALID) {
@@ -8971,11 +8971,11 @@ int eval_in_sequence(int arg_handler_node, int condition_node)
 	int val = SEXP_FALSE;
 	int n = -1 ;
 	
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// get the first argument
 	n = CDR(arg_handler_node);
-	Assert (n != -1);
+core::Assert (n != -1);
 
 	// loop through the nodes until we find one that is holds a valid argument or run out of nodes
 	for (int i=1 ; i<query_sexp_args_count(arg_handler_node) ; i++)
@@ -9033,7 +9033,7 @@ int eval_for_counter(int arg_handler_node, int condition_node)
 	int n, num_valid_arguments, num_true, num_false, num_known_true, num_known_false;
 	int i, counter_start, counter_stop, counter_step;
 	char buf[NAME_LENGTH];
-	Assert(arg_handler_node != -1 && condition_node != -1);
+core::Assert(arg_handler_node != -1 && condition_node != -1);
 
 	// determine the counter parameters
 	n = CDR(arg_handler_node);
@@ -9357,7 +9357,7 @@ int sexp_is_iff(int n)
 // Goober5000
 void sexp_ingame_ship_change_iff(ship *shipp, int new_team)
 {
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 
 	shipp->team = new_team;
 }
@@ -9365,7 +9365,7 @@ void sexp_ingame_ship_change_iff(ship *shipp, int new_team)
 // Goober5000
 void sexp_parse_ship_change_iff(p_object *parse_obj, int new_team)
 {
-	Assert(parse_obj);
+core::Assert(parse_obj);
 
 	parse_obj->team = new_team;
 }
@@ -9453,14 +9453,14 @@ void multi_sexp_change_iff()
 
 void sexp_ingame_ship_change_iff_color(ship *shipp, int observer_team, int observed_team, int alternate_iff_color)
 {
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 
 	shipp->ship_iff_color[observer_team][observed_team] = alternate_iff_color;
 }
 
 void sexp_parse_ship_change_iff_color(p_object *parse_obj, int observer_team, int observed_team, int alternate_iff_color)
 {
-	Assert(parse_obj);
+core::Assert(parse_obj);
 
 	parse_obj->alt_iff_color[observer_team][observed_team] = alternate_iff_color;
 }
@@ -9589,7 +9589,7 @@ int sexp_is_ship_class(int n)
 {
 	int ship_num, ship_class_num;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// get class
 	ship_class_num = ship_info_lookup(CTEXT(n));
@@ -9622,7 +9622,7 @@ int sexp_is_ship_type(int n)
 {
 	int ship_num, ship_type_num;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// get type
 	ship_type_num = ship_type_name_lookup(CTEXT(n));
@@ -9657,7 +9657,7 @@ int sexp_is_ai_class(int n)
 	char *ship_name, *subsystem;
 	int i, ship_num, ai_class_to_check;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	// find ai class
 	ai_class_to_check = -1;
@@ -9724,7 +9724,7 @@ void sexp_change_ai_class(int n)
 	int i, ship_num, new_ai_class;
 	char *subsystem;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 
 	// find ai class
 	new_ai_class = -1;
@@ -9804,7 +9804,7 @@ void sexp_add_ship_goal(int n)
 	int num, sindex;
 	char *ship_name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	ship_name = CTEXT(n);
 	num = ship_name_lookup(ship_name, 1);	// Goober5000 - including player
 	if ( num < 0 )									// ship not around anymore???? then forget it!
@@ -9820,7 +9820,7 @@ void sexp_add_wing_goal(int n)
 	int num, sindex;
 	char *wing_name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	wing_name = CTEXT(n);
 	num = wing_name_lookup(wing_name);
 	if ( num < 0 )									// ship not around anymore???? then forget it!
@@ -9838,7 +9838,7 @@ void sexp_add_goal(int n)
 	int num, sindex;
 	char *name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	name = CTEXT(n);
 	sindex = CDR(n);
 
@@ -9853,7 +9853,7 @@ void sexp_add_goal(int n)
 // Goober5000
 void sexp_remove_goal(int n)
 {
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 	/* Grab the information that we need about this goal removal action */
 	int num, sindex;
 	int goalindex;
@@ -9888,7 +9888,7 @@ void sexp_clear_ship_goals(int n)
 	int num;
 	char *ship_name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	ship_name = CTEXT(n);
 	if ( (num = ship_name_lookup(ship_name, 1)) != -1) 	// Goober5000 - include players
 	{
@@ -9904,7 +9904,7 @@ void sexp_clear_wing_goals(int n)
 	int num;
 	char *wing_name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	wing_name = CTEXT(n);
 	num = wing_name_lookup(wing_name);
 	if ( num < 0 )
@@ -9920,7 +9920,7 @@ void sexp_clear_goals(int n)
 	int num;
 	char *name;
 
-	Assert ( n >= 0 );
+core::Assert ( n >= 0 );
 	while ( n != -1 ) {
 		name = CTEXT(n);
 		if ( (num = ship_name_lookup(name, 1)) != -1 )	// Goober5000 - include players
@@ -10385,7 +10385,7 @@ void sexp_start_music(int loop)
 
 gamesnd_id sexp_get_sound_index(int node)
 {
-	Assert(node >= 0);
+core::Assert(node >= 0);
 	gamesnd_id sound_index;
 
 	// this node is another SEXP operator or a plain number
@@ -10416,7 +10416,7 @@ void sexp_play_sound_from_table(int n)
 {
 	vec3d origin;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// read in data --------------------------------
 	origin.xyz.x = (float)eval_num(n);
@@ -10572,7 +10572,7 @@ int sexp_sound_environment_option_lookup(char *text)
 {
 	int i;
 
-	Assert(text != NULL);
+core::Assert(text != NULL);
 	if (text == NULL) {
 		return -1;
 	}
@@ -10674,7 +10674,7 @@ int audio_volume_option_lookup(char *text)
 {
 	int i;
 
-	Assert(text != NULL);
+core::Assert(text != NULL);
 	if (text == NULL) {
 		return -1;
 	}
@@ -10717,7 +10717,7 @@ int sexp_explosion_option_lookup(char *text)
 {
 	int i;
 
-	Assert(text != NULL);
+core::Assert(text != NULL);
 	if (text == NULL) {
 		return -1;
 	}
@@ -10775,7 +10775,7 @@ void sexp_set_explosion_option(int node)
 			break;
 
 		int val = eval_num(n);
-		Assert(val >= 0);	// should be true due to OPF_POSITIVE
+	core::Assert(val >= 0);	// should be true due to OPF_POSITIVE
 		n = CDR(n);
 
 		if (option == EO_DAMAGE) {
@@ -10826,7 +10826,7 @@ void sexp_explosion_effect(int n)
 	int emp_intensity, emp_duration;
 	bool use_emp_time_for_capship_turrets;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// read in data --------------------------------
 	origin.xyz.x = (float)eval_num(n);
@@ -11004,7 +11004,7 @@ void sexp_explosion_effect(int n)
 						break;
 	
 					default:
-						Assertion(false, "Object magically changed type after exploding!");
+					core::Assertion(false, "Object magically changed type after exploding!");
 						break;
 				}
 			}	// end for
@@ -11169,7 +11169,7 @@ void sexp_send_one_message( char *name, char *who_from, char *priority, int grou
 		return;
 	}
 
-	Assert( (name != NULL) && (who_from != NULL) && (priority != NULL) );
+core::Assert( (name != NULL) && (who_from != NULL) && (priority != NULL) );
 
 	// determine the priority of the message
 	if ( !stricmp(priority, "low") )
@@ -11245,7 +11245,7 @@ void sexp_send_message(int n)
 		return;
 	}
 
-	Assert ( n != -1 );
+core::Assert ( n != -1 );
 	who_from = CTEXT(n);
 	priority = CTEXT(CDR(n));
 	name = CTEXT(CDR(CDR(n)));
@@ -11312,7 +11312,7 @@ void sexp_send_random_message(int n)
 	char *name, *who_from, *priority;
 	int temp, num_messages, message_num;
 
-	Assert ( n != -1 );
+core::Assert ( n != -1 );
 	who_from = CTEXT(n);
 	priority = CTEXT(CDR(n));
 
@@ -11328,7 +11328,7 @@ void sexp_send_random_message(int n)
 		n = CDR(n);
 		num_messages++;
 	}
-	Assert ( num_messages >= 1 );
+core::Assert ( num_messages >= 1 );
 	
 	// get a random message, and pass the parameters to send_one_message
 	message_num = myrand() % num_messages;
@@ -11339,7 +11339,7 @@ void sexp_send_random_message(int n)
 		message_num--;
 		n = CDR(n);
 	}
-	Assert (n != -1);		// should have found the message!!!
+core::Assert (n != -1);		// should have found the message!!!
 	name = CTEXT(n);
 
 	sexp_send_one_message( name, who_from, priority, 0, 0 );
@@ -11819,7 +11819,7 @@ void sexp_destroy_subsys_instantly(int n)
 					if (MULTIPLAYER_MASTER)
 					{
 						subsys_index = ship_get_subsys_index(shipp, ss);
-						Assert(subsys_index >= 0);
+					core::Assert(subsys_index >= 0);
 						Current_sexp_network_packet.send_int(subsys_index);
 					}
 				}
@@ -11843,7 +11843,7 @@ void sexp_destroy_subsys_instantly(int n)
 			if (MULTIPLAYER_MASTER)
 			{
 				subsys_index = ship_get_subsys_index(shipp, ss);
-				Assert(subsys_index >= 0);
+			core::Assert(subsys_index >= 0);
 				Current_sexp_network_packet.send_int(subsys_index);
 			}
 		}
@@ -11865,7 +11865,7 @@ void multi_sexp_destroy_subsys_instantly()
 	while (Current_sexp_network_packet.get_int(subsys_index))
 	{
 		// find subsystem
-		Assert(subsys_index >= 0);
+	core::Assert(subsys_index >= 0);
 		ss = ship_get_indexed_subsys(shipp, subsys_index);
 
 		// do destruction stuff
@@ -11953,7 +11953,7 @@ int sexp_is_cargo(int n)
 
 			// find cargo for the parse object
 			p_objp = mission_parse_get_arrival_ship(ship_name);
-			Assert (p_objp);
+		core::Assert (p_objp);
 			cargo_index = (int) p_objp->cargo1;
 		}
 	}
@@ -12009,7 +12009,7 @@ void sexp_set_cargo(int n)
 			return;
 		}
 
-		Assert(strlen(cargo) <= NAME_LENGTH - 1);
+	core::Assert(strlen(cargo) <= NAME_LENGTH - 1);
 
 		cargo_index = Num_cargo;
 		Num_cargo++;
@@ -12027,7 +12027,7 @@ void sexp_set_cargo(int n)
 		{
 			ship_subsys *ss = ship_get_subsys(&Ships[ship_num], subsystem);
 			if (ss == NULL) {
-				Assert (!ship_class_unchanged(ship_num));
+			core::Assert (!ship_class_unchanged(ship_num));
 				return;
 			}
 
@@ -12048,7 +12048,7 @@ void sexp_set_cargo(int n)
 
 			// set cargo for the parse object
 			p_objp = mission_parse_get_arrival_ship(ship_name);
-			Assert (p_objp);
+		core::Assert (p_objp);
 			p_objp->cargo1 = char(cargo_index | (p_objp->cargo1 & CARGO_NO_DEPLETE));
 		}
 	}
@@ -12251,8 +12251,8 @@ void sexp_set_docked(int n)
 	int docker_point_index = model_find_dock_name_index(Ship_info[docker_ship->ship_info_index].model_num, docker_point_name);
 	int dockee_point_index = model_find_dock_name_index(Ship_info[dockee_ship->ship_info_index].model_num, dockee_point_name);
 
-	Assertion(docker_point_index >= 0, "Docker point '%s' not found on docker ship '%s'", docker_point_name, docker_ship_name);
-	Assertion(dockee_point_index >= 0, "Dockee point '%s' not found on dockee ship '%s'", dockee_point_name, dockee_ship_name);
+core::Assertion(docker_point_index >= 0, "Docker point '%s' not found on docker ship '%s'", docker_point_name, docker_ship_name);
+core::Assertion(dockee_point_index >= 0, "Dockee point '%s' not found on dockee ship '%s'", dockee_point_name, dockee_ship_name);
 
 	//Make sure that the specified dockpoints are all free (if not, do nothing)
 	if (dock_find_object_at_dockpoint(docker_objp, docker_point_index) != NULL || 
@@ -12287,7 +12287,7 @@ void sexp_cargo_no_deplete(int n)
 
 	if (CDR(n) != -1) {
 		no_deplete = eval_num(CDR(n));
-		Assert((no_deplete == 0) || (no_deplete == 1));
+	core::Assert((no_deplete == 0) || (no_deplete == 1));
 		if ( (no_deplete != 0) && (no_deplete != 1) ) {
 			no_deplete = 1;
 		}
@@ -12398,15 +12398,15 @@ void sexp_add_background_bitmap(int n)
 	if (n == -1) {
 		stars_add_bitmap_entry(&sle);
 	} else {
-		Assert((n >= 0) && (n < Num_sexp_nodes));
+	core::Assert((n >= 0) && (n < Num_sexp_nodes));
 
 		// ripped from sexp_modify_variable()
 		// get sexp_variable index
-		Assert(Sexp_nodes[n].first == -1);
+	core::Assert(Sexp_nodes[n].first == -1);
 		sexp_var = atoi(Sexp_nodes[n].text);
 		
 		// verify variable set
-		Assert(Sexp_variables[sexp_var].type & SEXP_VARIABLE_SET);
+	core::Assert(Sexp_variables[sexp_var].type & SEXP_VARIABLE_SET);
 
 		if (Sexp_variables[sexp_var].type & SEXP_VARIABLE_NUMBER)
 		{
@@ -12488,15 +12488,15 @@ void sexp_add_sun_bitmap(int n)
 	if (n == -1) {
 		stars_add_sun_entry(&sle);
 	} else {
-		Assert((n >= 0) && (n < Num_sexp_nodes));
+	core::Assert((n >= 0) && (n < Num_sexp_nodes));
 
 		// ripped from sexp_modify_variable()
 		// get sexp_variable index
-		Assert(Sexp_nodes[n].first == -1);
+	core::Assert(Sexp_nodes[n].first == -1);
 		sexp_var = atoi(Sexp_nodes[n].text);
 		
 		// verify variable set
-		Assert(Sexp_variables[sexp_var].type & SEXP_VARIABLE_SET);
+	core::Assert(Sexp_variables[sexp_var].type & SEXP_VARIABLE_SET);
 
 		if (Sexp_variables[sexp_var].type & SEXP_VARIABLE_NUMBER)
 		{
@@ -12770,7 +12770,7 @@ void sexp_tech_add_ship(int node)
 	int i;
 	char *name;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 	// this function doesn't mean anything when not in campaign mode
 	if ( !(Game_mode & GM_CAMPAIGN_MODE) )
 		return;
@@ -12792,7 +12792,7 @@ void sexp_tech_add_weapon(int node)
 	int i;
 	char *name;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 	// this function doesn't mean anything when not in campaign mode
 	if ( !(Game_mode & GM_CAMPAIGN_MODE) )
 		return;
@@ -12815,7 +12815,7 @@ void sexp_tech_add_intel(int node)
 	int i;
 	char *name;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 	// this function doesn't mean anything when not in campaign mode
 	if ( !(Game_mode & GM_CAMPAIGN_MODE) )
 		return;
@@ -12839,7 +12839,7 @@ void sexp_tech_add_intel_xstr(int node)
 	int i, id, n = node;
 	char *name;
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
 	// this function doesn't mean anything when not in campaign mode
 	if ( !(Game_mode & GM_CAMPAIGN_MODE) )
 		return;
@@ -13120,7 +13120,7 @@ void sexp_alter_ship_flag_helper(object_ship_wing_point_team &oswpt, bool future
 			return;
 
 		case OSWPT_TYPE_WHOLE_TEAM:
-			Assert (oswpt.team >= 0); 
+		core::Assert (oswpt.team >= 0); 
 			oswpt2.clear();
 			for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ){
 				if (Ships[Objects[so->objnum].instance].team == oswpt.team) {
@@ -13611,7 +13611,7 @@ void sexp_toggle_builtin_messages (int node, bool enable_messages)
 			for (wingnum = 0; wingnum < Num_wings; wingnum++ ) {
 				for ( shipnum = 0; shipnum < Wings[wingnum].current_count; shipnum++ ) {
 					ship_index = Wings[wingnum].ship_index[shipnum];
-					Assert( ship_index != -1 );
+				core::Assert( ship_index != -1 );
                     Ships[ship_index].flags.set(Ship::Ship_Flags::No_builtin_messages, enable_messages);
 				}
 			}
@@ -13646,7 +13646,7 @@ void sexp_set_persona (int node)
 	}
 
 	node = CDR(node); 
-	Assert (node >=0);
+core::Assert (node >=0);
 
 	if (MULTIPLAYER_MASTER) {
 		Current_sexp_network_packet.start_callback();
@@ -13687,7 +13687,7 @@ void multi_sexp_set_persona()
 	}
 
 	while (Current_sexp_network_packet.get_ship(shipp)) {
-		Assert(persona_index != -1);
+	core::Assert(persona_index != -1);
 		if (shipp != NULL) {
 			shipp->persona_index = persona_index;
 		}
@@ -13808,7 +13808,7 @@ int sexp_has_weapon(int node, int op_num)
 	//loop through the weapons and test them
 	while (node > -1) {
 		weapon_index = weapon_info_lookup(CTEXT(node));
-		Assertion (weapon_index >= 0, "Weapon name %s is unknown.", CTEXT(node));
+	core::Assertion (weapon_index >= 0, "Weapon name %s is unknown.", CTEXT(node));
 
 		// if we're checking every bank
 		if (requested_bank == -1) {
@@ -14006,7 +14006,7 @@ int sexp_event_status( int n, int want_true )
 	int i, result;
 
 	name = CTEXT(n);
-	Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
+core::Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
 
 	for (i = 0; i < Num_mission_events; i++ ) {
 		// look for the event name, check it's status.  If formula is gone, we know the state won't ever change.
@@ -14044,7 +14044,7 @@ int sexp_event_delay_status( int n, int want_true, bool use_msecs = false)
 	bool use_as_directive = false;
 
 	name = CTEXT(n);
-	Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
+core::Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
 
 	if (use_msecs) {
 		uint64_t tempDelay = eval_num(CDR(n));
@@ -14106,7 +14106,7 @@ int sexp_event_incomplete(int n)
 	int i;
 
 	name = CTEXT(n);
-	Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
+core::Assertion(name != nullptr, "CTEXT returned NULL for node %d!", n);
 	
 	for (i = 0; i < Num_mission_events; i++ ) {
 		if ( !stricmp(Mission_events[i].name, name ) ) {
@@ -14620,7 +14620,7 @@ void sexp_ship_create(int n)
 	matrix new_ship_ori = vmd_identity_matrix;
 	bool change_angles = false;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	// get ship name - none means don't specify it
 	// if ship with this name already exists, ship_create will respond appropriately
@@ -14673,7 +14673,7 @@ void sexp_ship_create(int n)
 	}
 
 	int objnum = ship_create(&new_ship_ori, &new_ship_pos, new_ship_class, new_ship_name);
-	Assert(objnum != -1);
+core::Assert(objnum != -1);
 
 	// do some initialization that is usually handled by parse_create_object_sub
 	int shipnum = Objects[objnum].instance;
@@ -14704,7 +14704,7 @@ void sexp_weapon_create(int n)
 	int is_locked;
 	bool change_angles = false;
 
-	Assert( n >= 0 );
+core::Assert( n >= 0 );
 
 	parent_objnum = -1;
 	if (stricmp(CTEXT(n), SEXP_NONE_STRING) != 0)
@@ -14878,8 +14878,8 @@ void sexp_shields_off(int n, bool shields_off ) //-Sesquipedalian
 // Goober5000
 void sexp_ingame_ship_kamikaze(ship *shipp, int kdamage)
 {
-	Assertion(shipp, "Invalid ship pointer passed to sexp_ingame_ship_kamikaze.\n");
-	Assertion(kdamage >= 0, "Invalid value passed to sexp_ingame_ship_kamikaze. Kamikaze damage must be >= 0, is %i.\n", kdamage);
+core::Assertion(shipp, "Invalid ship pointer passed to sexp_ingame_ship_kamikaze.\n");
+core::Assertion(kdamage >= 0, "Invalid value passed to sexp_ingame_ship_kamikaze. Kamikaze damage must be >= 0, is %i.\n", kdamage);
 
 	ai_info *aip = &Ai_info[shipp->ai_index];
 
@@ -14891,7 +14891,7 @@ void sexp_ingame_ship_kamikaze(ship *shipp, int kdamage)
 // Goober5000
 void sexp_parse_ship_kamikaze(p_object *parse_obj, int kdamage)
 {
-	Assert(parse_obj);
+core::Assert(parse_obj);
 
     parse_obj->flags.set(Mission::Parse_Object_Flags::AIF_Kamikaze, kdamage > 0);
 	if (kdamage > 0)
@@ -14961,7 +14961,7 @@ void sexp_kamikaze(int n, int kamikaze)
 // Goober5000
 void sexp_ingame_ship_alt_name(ship *shipp, int alt_index)
 {
-	Assert((shipp != NULL) && (alt_index < Mission_alt_type_count));
+core::Assert((shipp != NULL) && (alt_index < Mission_alt_type_count));
 
 	// we might be clearing it
 	if (alt_index < 0)
@@ -14983,7 +14983,7 @@ void sexp_ingame_ship_alt_name(ship *shipp, int alt_index)
 // Goober5000
 void sexp_parse_ship_alt_name(p_object *parse_obj, int alt_index)
 {
-	Assert((parse_obj != NULL) && (alt_index < Mission_alt_type_count));
+core::Assert((parse_obj != NULL) && (alt_index < Mission_alt_type_count));
 
 	// we might be clearing it
 	if (alt_index < 0)
@@ -15164,7 +15164,7 @@ int sexp_key_pressed(int node)
 {
 	int z, t;
 
-	Assert(node != -1);
+core::Assert(node != -1);
 	z = translate_key_to_index(CTEXT(node), false);
 	if (z < 0){
 		return SEXP_FALSE;
@@ -15630,8 +15630,8 @@ void sexp_send_training_message(int node)
 		return;
 	}
 
-	Assert(node >= 0);
-	Assert(Event_index >= 0);
+core::Assert(node >= 0);
+core::Assert(Event_index >= 0);
 
 	if ((CDR(node) >= 0) && (CDR(CDR(node)) >= 0)) {
 		delay = eval_num(CDR(CDR(node))) * 1000;
@@ -16298,7 +16298,7 @@ void sexp_set_weapon(int node, bool primary)
 	ship *shipp;
 	int sindex, requested_bank, windex, requested_ammo = -1, rearm_limit = -1;
 
-	Assert(node != -1);
+core::Assert(node != -1);
 
 	// Check that a ship has been supplied
 	sindex = ship_name_lookup(CTEXT(node));
@@ -16475,21 +16475,21 @@ void multi_sexp_set_countermeasures()
 // KeldorKatarn - Locks or unlocks the afterburner on the requested ship
 void sexp_deal_with_afterburner_lock (int node, bool lock)
 {
-	Assert (node != -1);
+core::Assert (node != -1);
 	sexp_deal_with_ship_flag(node, true, Object::Object_Flags::NUM_VALUES, Ship::Ship_Flags::Afterburner_locked, Mission::Parse_Object_Flags::NUM_VALUES, lock, true);
 }
 
 // Karajorma - locks or unlocks primary weapons on the requested ship
 void sexp_deal_with_primary_lock (int node, bool lock)
 {
-	Assert (node != -1);	
+core::Assert (node != -1);	
 	sexp_deal_with_ship_flag(node, true, Object::Object_Flags::NUM_VALUES, Ship::Ship_Flags::Primaries_locked, Mission::Parse_Object_Flags::SF_Primaries_locked, lock, true);
 
 }
 
 void sexp_deal_with_secondary_lock (int node, bool lock)
 {
-	Assert (node != -1);	
+core::Assert (node != -1);	
 	sexp_deal_with_ship_flag(node, true, Object::Object_Flags::NUM_VALUES, Ship::Ship_Flags::Secondaries_locked, Mission::Parse_Object_Flags::SF_Secondaries_locked, lock, true);
 
 }
@@ -16502,7 +16502,7 @@ void sexp_change_subsystem_name(int node)
 	char *new_name;
 	ship_subsys *subsystem_to_rename;
 
-	Assert (node != -1);
+core::Assert (node != -1);
 
 	// Check that a ship has been supplied
 	ship_index = ship_name_lookup(CTEXT(node));
@@ -16568,7 +16568,7 @@ void multi_sexp_change_subsystem_name()
 void sexp_change_ship_class(int n)
 {
 	int ship_num, class_num = ship_info_lookup(CTEXT(n));
-	Assert(class_num != -1);
+core::Assert(class_num != -1);
 
 	n = CDR(n);
 
@@ -16851,21 +16851,21 @@ void sexp_set_ambient_light(int node)
 	int red, green, blue; 
 	int level = 0;
 
-	Assert(node > -1);
+core::Assert(node > -1);
 	red = eval_num(node); 
 	if (red < 0 || red > 255) {
 		red = 0;
 	}
 
 	node = CDR(node); 
-	Assert(node > -1);
+core::Assert(node > -1);
 	green = eval_num(node); 
 	if (green < 0 || green > 255) {
 		green = 0;
 	}
 
 	node = CDR(node); 
-	Assert(node > -1);
+core::Assert(node > -1);
 	blue = eval_num(node); 
 	if (blue < 0 || blue > 255) {
 		blue = 0;
@@ -17122,7 +17122,7 @@ void sexp_beam_fire(int node, bool at_coords)
 	// hmm, this could be wacky. Let's just simply select the first beam weapon in the turret
 	fire_info.beam_info_index = -1;	
 	for (idx=0; idx<fire_info.turret->weapons.num_primary_banks; idx++) {
-		Assertion(fire_info.turret->weapons.primary_bank_weapons[idx] >= 0 && fire_info.turret->weapons.primary_bank_weapons[idx] < MAX_WEAPON_TYPES,
+	core::Assertion(fire_info.turret->weapons.primary_bank_weapons[idx] >= 0 && fire_info.turret->weapons.primary_bank_weapons[idx] < MAX_WEAPON_TYPES,
 				"sexp_beam_fire: found invalid weapon index (%i), get a coder\n!", fire_info.turret->weapons.primary_bank_weapons[idx]);
 		// store the weapon info index
 		if (Weapon_info[fire_info.turret->weapons.primary_bank_weapons[idx]].wi_flags[Weapon::Info_Flags::Beam]) {
@@ -18504,8 +18504,8 @@ int sexp_is_in_turret_fov(int node)
 	// find the two ships...
 	target_shipnum = ship_name_lookup(target_ship_name);
 	turret_shipnum = ship_name_lookup(turret_ship_name);
-	Assertion(target_shipnum >= 0, "Couldn't find target ship '%s' in sexp_is_in_turret_fov!", target_ship_name);
-	Assertion(turret_shipnum >= 0, "Couldn't find turreted ship '%s' in sexp_is_in_turret_fov!", turret_ship_name);
+core::Assertion(target_shipnum >= 0, "Couldn't find target ship '%s' in sexp_is_in_turret_fov!", target_ship_name);
+core::Assertion(turret_shipnum >= 0, "Couldn't find turreted ship '%s' in sexp_is_in_turret_fov!", turret_ship_name);
 
 	// ...and their objects
 	target_objp = &Objects[Ships[target_shipnum].objnum];
@@ -20051,7 +20051,7 @@ int sexp_return_player_data(int node, int type)
 
 				default:
 					// We should never reach this.
-					Assert(false);
+				core::Assert(false);
 			}
 		}
 	}
@@ -20490,7 +20490,7 @@ int process_special_sexps(int index)
 			return SEXP_FALSE;
 
 	default:
-		Assertion(false, "Special sexp processing code was called for an unsupported node type!");
+	core::Assertion(false, "Special sexp processing code was called for an unsupported node type!");
 	}
 
 	return SEXP_FALSE;
@@ -20501,7 +20501,7 @@ int sexp_string_to_int(int n)
 {
 	bool first_ch = true;
 	char *ch, *buf_ch, buf[TOKEN_LENGTH];
-	Assert (n != -1);
+core::Assert (n != -1);
 
 	// copy all numeric characters to buf
 	// also, copy a sign symbol if we haven't copied numbers yet
@@ -20541,11 +20541,11 @@ void sexp_int_to_string(int n)
 	n = CDR(n);
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	// check variable type
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING))
@@ -20577,11 +20577,11 @@ void sexp_string_concatenate(int n)
 	n = CDR(n);
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	// check variable type
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING))
@@ -20616,12 +20616,12 @@ void sexp_string_concatenate_block(int n)
 		return;
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 	n = CDR(n);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	// check variable type
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING))
@@ -20674,11 +20674,11 @@ void sexp_string_get_substring(int node)
 	n = CDR(n);
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	// check variable type
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING))
@@ -20739,11 +20739,11 @@ void sexp_string_set_substring(int node)
 	n = CDR(n);
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	// check variable type
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING))
@@ -20782,7 +20782,7 @@ void sexp_string_set_substring(int node)
 	}
 
 	// This shouldn't happen
-	Assertion(substring_begin_byte < substring_end_byte,
+core::Assertion(substring_begin_byte < substring_end_byte,
 			  "The begin position of the substring must be less than the end position!");
 
 	new_text.replace(substring_begin_byte, substring_end_byte - substring_begin_byte, new_substring);
@@ -20809,19 +20809,19 @@ void sexp_string_set_substring(int node)
 
 void sexp_modify_variable_xstr(int n)
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	// Only do single player or multi host
 	if ( MULTIPLAYER_CLIENT )
 		return;
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	auto sexp_variable_index = atoi(Sexp_nodes[n].text);
 	n = CDR(n);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING)) {
 		core::Warning(LOCATION, "Variable for modify-variable-xstr has to be a string variable!");
@@ -20846,7 +20846,7 @@ void sexp_debug(int node)
 	#endif
 
 	node = CDR(node); 
-	Assertion (node >= 0, "No message defined in debug SEXP");
+core::Assertion (node >= 0, "No message defined in debug SEXP");
 
 	// we'll suppose it's the string for now
 	warning_message = CTEXT(node);
@@ -21201,7 +21201,7 @@ void sexp_set_camera_position(int n)
 void multi_sexp_set_camera_position()
 {
 	camera *cam = sexp_get_set_camera();
-	Assert(cam != nullptr);
+core::Assert(cam != nullptr);
 
 	vec3d camera_vec;
 	float camera_time = 0.0f;
@@ -22403,11 +22403,11 @@ int sexp_script_eval(int node, int return_type, bool concat_args = false)
 
 				if (n != -1 && success)
 				{
-					Assert(Sexp_nodes[n].first == -1);
+				core::Assert(Sexp_nodes[n].first == -1);
 					int variable_index = atoi(Sexp_nodes[n].text);
 
 					// verify variable set
-					Assert(Sexp_variables[variable_index].type & SEXP_VARIABLE_SET);
+				core::Assert(Sexp_variables[variable_index].type & SEXP_VARIABLE_SET);
 
 					if (!(Sexp_variables[variable_index].type & SEXP_VARIABLE_STRING))
 					{
@@ -22540,7 +22540,7 @@ void multi_sexp_script_eval_multi()
 	// go through all the ships that were sent and see if any of them match this client.
 	else {
 		while (Current_sexp_network_packet.get_ship(sindex)) {
-			Assertion(sindex >= 0, "Illegal value for the ship index sent in multi_sexp_script_eval_multi()! Ship %d does not exist!", sindex); 
+		core::Assertion(sindex >= 0, "Illegal value for the ship index sent in multi_sexp_script_eval_multi()! Ship %d does not exist!", sindex); 
 			if (Player->objnum == Ships[sindex].objnum) {
 				success = Script_system.EvalString(s, s);
 			}
@@ -22603,7 +22603,7 @@ bool test_point_within_box(vec3d *test_point, vec3d *box_corner_1, vec3d *box_co
 int sexp_is_in_box(int n)
 {
 	int i;
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	object_ship_wing_point_team oswpt;
 	sexp_get_object_ship_wing_point_team(&oswpt, CTEXT(n));
@@ -22773,7 +22773,7 @@ void sexp_ship_effect(int n)
 	char	*name;
 	int ship_index, wing_index;
 	
-	Assert ( n != -1 );
+core::Assert ( n != -1 );
 	
 	int effect_num = get_effect_from_name(CTEXT(n));
 	if (effect_num == -1) {
@@ -22948,7 +22948,7 @@ int get_generic_subsys(char *subsys_name)
 		return SUBSYSTEM_TURRET;
 	}
 
-	Assert(SUBSYSTEM_NONE == 0);
+core::Assert(SUBSYSTEM_NONE == 0);
 	return SUBSYSTEM_NONE;
 }
 
@@ -23145,7 +23145,7 @@ const char *sexp_get_result_as_text(int result)
 */
 void add_to_event_log_buffer(int op_num, int result)
 {
-	Assertion ((Current_event_log_buffer != NULL) &&
+core::Assertion ((Current_event_log_buffer != NULL) &&
 				(Current_event_log_variable_buffer != NULL)&& 
 				(Current_event_log_argument_buffer != NULL), "Attempting to write to a non-existent log buffer");
 
@@ -23205,10 +23205,10 @@ int eval_sexp(int cur_node, int referenced_node)
 	if (cur_node == -1)  // empty list, i.e. sexp: ( )
 		return SEXP_FALSE;
 
-	Assert(cur_node >= 0);			// we have special sexp nodes <= -1!!!  MWA
+core::Assert(cur_node >= 0);			// we have special sexp nodes <= -1!!!  MWA
 									// which should be intercepted before we get here.  HOFFOSS
 	type = SEXP_NODE_TYPE(cur_node);
-	Assert( (type == SEXP_LIST) || (type == SEXP_ATOM) );
+core::Assert( (type == SEXP_LIST) || (type == SEXP_ATOM) );
 
 	// trap known true and known false sexpressions.  We don't trap on SEXP_NAN sexpressions since
 	// they may yet evaluate to true or false.
@@ -25460,10 +25460,10 @@ int eval_sexp(int cur_node, int referenced_node)
 			add_to_event_log_buffer(get_operator_index(cur_node), sexp_val);
 		}
 
-		Assert(!Current_sexp_operator.empty()); 
+	core::Assert(!Current_sexp_operator.empty()); 
 		Current_sexp_operator.pop_back();
 
-		Assertion(sexp_val != UNINITIALIZED, "SEXP %s didn't return a value!", CTEXT(cur_node));
+	core::Assertion(sexp_val != UNINITIALIZED, "SEXP %s didn't return a value!", CTEXT(cur_node));
 
 		// if we haven't returned, check the sexp value of the sexpression evaluation.  A special
 		// value of known true or known false means that we should set the sexp.value field for
@@ -25508,7 +25508,7 @@ int eval_sexp(int cur_node, int referenced_node)
 			if (parent_node >= 0)
 			{
 				int arg_num = find_argnum(parent_node, cur_node);
-				Assertion(arg_num >= 0, "Error finding sexp argument.  The SEXP is not listed among its parent's children.");
+			core::Assertion(arg_num >= 0, "Error finding sexp argument.  The SEXP is not listed among its parent's children.");
 
 				// if we need a positive value, make it positive
 				if (query_operator_argument_type(get_operator_index(parent_node), arg_num) == OPF_POSITIVE)
@@ -25536,12 +25536,12 @@ void multi_sexp_eval()
 {
 	int op_num; 
 
-	Assert (MULTIPLAYER_CLIENT); 
+core::Assert (MULTIPLAYER_CLIENT); 
 
 	while (Current_sexp_network_packet.sexp_bytes_left > 0) {
 		op_num = Current_sexp_network_packet.get_next_operator();
 
-		Assert (Current_sexp_network_packet.sexp_bytes_left);
+	core::Assert (Current_sexp_network_packet.sexp_bytes_left);
 
 		if (op_num < 0) {
 			core::Warning(LOCATION, "Received invalid operator number from host in multi_sexp_eval(). Entire packet may be corrupt. Discarding packet"); 
@@ -25960,7 +25960,7 @@ int query_operator_return_type(int op)
 {
 	if (op < FIRST_OP)
 	{
-		Assert(op >= 0 && op < (int)Operators.size());
+	core::Assert(op >= 0 && op < (int)Operators.size());
 		op = Operators[op].value;
 	}
 
@@ -26537,7 +26537,7 @@ int query_operator_return_type(int op)
 				return dynamicSEXP->getReturnType();
 			}
 
-			Assertion(false, "query_operator_return_type() called for unsupported operator type %d!", op);
+		core::Assertion(false, "query_operator_return_type() called for unsupported operator type %d!", op);
 		}
 	}
 
@@ -26556,7 +26556,7 @@ int query_operator_argument_type(int op, int argnum)
 
 	if (op < FIRST_OP)
 	{
-		Assert(index >= 0 && index < (int)Operators.size());
+	core::Assert(index >= 0 && index < (int)Operators.size());
 		op = Operators[index].value;
 
 	} else {
@@ -26566,7 +26566,7 @@ int query_operator_argument_type(int op, int argnum)
 			if (Operators[index].value == op)
 				break;
 
-		Assert(index < (int)Operators.size());
+	core::Assert(index < (int)Operators.size());
 	}
 
 	if (argnum >= Operators[index].max)
@@ -28761,7 +28761,7 @@ int query_operator_argument_type(int op, int argnum)
 				return dynamicSEXP->getArgumentType(argnum);
 			}
 
-			Assertion(false, "query_operator_argument_type(%d, %d) called for unsupported operator type!", op, argnum);
+		core::Assertion(false, "query_operator_argument_type(%d, %d) called for unsupported operator type!", op, argnum);
 		}
 	}
 
@@ -28774,7 +28774,7 @@ void update_sexp_references(const char *old_name, const char *new_name)
 {
 	int i;
 
-	Assert(strlen(new_name) < TOKEN_LENGTH);
+core::Assert(strlen(new_name) < TOKEN_LENGTH);
 	for (i = 0; i < Num_sexp_nodes; i++)
 	{
 		if ((SEXP_NODE_TYPE(i) == SEXP_ATOM) && (Sexp_nodes[i].subtype == SEXP_ATOM_STRING))
@@ -28792,7 +28792,7 @@ void update_sexp_references(const char *old_name, const char *new_name, int form
 		return;
 	}
 
-	Assert(strlen(new_name) < TOKEN_LENGTH);
+core::Assert(strlen(new_name) < TOKEN_LENGTH);
 	for (i = 0; i < Num_sexp_nodes; i++)
 	{
 		if (is_sexp_top_level(i))
@@ -28827,7 +28827,7 @@ void update_sexp_references(const char *old_name, const char *new_name, int form
 		return;
 
 	op = get_operator_index(CTEXT(node));
-	Assert(Sexp_nodes[node].first < 0);
+core::Assert(Sexp_nodes[node].first < 0);
 	n = Sexp_nodes[node].rest;
 	i = 0;
 	while (n >= 0)
@@ -28838,7 +28838,7 @@ void update_sexp_references(const char *old_name, const char *new_name, int form
 		}
 		else
 		{
-			Assert((SEXP_NODE_TYPE(n) == SEXP_ATOM) && ((Sexp_nodes[n].subtype == SEXP_ATOM_NUMBER) || (Sexp_nodes[n].subtype == SEXP_ATOM_STRING)));
+		core::Assert((SEXP_NODE_TYPE(n) == SEXP_ATOM) && ((Sexp_nodes[n].subtype == SEXP_ATOM_NUMBER) || (Sexp_nodes[n].subtype == SEXP_ATOM_STRING)));
 
 			if (query_operator_argument_type(op, i) == format)
 			{
@@ -29251,12 +29251,12 @@ int query_sexp_ai_goal_valid(int sexp_ai_goal, int ship_num)
 		if (Operators[op].value == sexp_ai_goal)
 			break;
 
-	Assert(op < (int)Operators.size());
+core::Assert(op < (int)Operators.size());
 	for (i=0; i<Num_sexp_ai_goal_links; i++)
 		if (Sexp_ai_goal_links[i].op_code == sexp_ai_goal)
 			break;
 
-	Assert(i < Num_sexp_ai_goal_links);
+core::Assert(i < Num_sexp_ai_goal_links);
 	return ai_query_goal_valid(ship_num, Sexp_ai_goal_links[i].ai_goal);
 }
 
@@ -29271,20 +29271,20 @@ int extract_sexp_variable_index(int node)
 
 	// get past the '['
 	start_index = text + 15;
-	Assert(isdigit(*start_index));
+core::Assert(isdigit(*start_index));
 
 	int len = 0;
 
 	while ( *start_index != ']' ) {
 		char_index[len++] = *(start_index++);
-		Assert(len < 3);
+	core::Assert(len < 3);
 	}
 
-	Assert(len > 0);
+core::Assert(len > 0);
 	char_index[len] = 0;	// append null termination to string
 
 	variable_index = atoi(char_index);
-	Assert( (variable_index >= 0) && (variable_index < MAX_SEXP_VARIABLES) );
+core::Assert( (variable_index >= 0) && (variable_index < MAX_SEXP_VARIABLES) );
 
 	return variable_index;
 }
@@ -29299,7 +29299,7 @@ char *CTEXT(int n)
 	char variable_name[TOKEN_LENGTH];
 	char *current_argument; 
 
-	Assertion(n >= 0 && n < Num_sexp_nodes, "Passed an out-of-range node index (%d) to CTEXT!", n);
+core::Assertion(n >= 0 && n < Num_sexp_nodes, "Passed an out-of-range node index (%d) to CTEXT!", n);
 	if ( n < 0 ) {
 		return NULL;
 	}
@@ -29345,7 +29345,7 @@ char *CTEXT(int n)
 		if (Fred_running)
 		{
 			sexp_variable_index = get_index_sexp_variable_name(Sexp_nodes[n].text);
-			Assert(sexp_variable_index != -1);
+		core::Assert(sexp_variable_index != -1);
 		}
 		else
 		{
@@ -29354,8 +29354,8 @@ char *CTEXT(int n)
 		// Reference a Sexp_variable
 		// string format -- "Sexp_variables[xx]=number" or "Sexp_variables[xx]=string", where xx is the index
 
-		Assert( !(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_NOT_USED) );
-		Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+	core::Assert( !(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_NOT_USED) );
+	core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 		if (Log_event) {
 			Current_event_log_variable_buffer->push_back(Sexp_variables[sexp_variable_index].text); 
@@ -29387,7 +29387,7 @@ void init_sexp_vars()
  */
 void add_block_variable(const char *text, const char *var_name, int type, int index)
 {
-	Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
+core::Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
 
 	strcpy_s(Block_variables[index].text, text);
 	strcpy_s(Block_variables[index].variable_name, var_name);
@@ -29412,7 +29412,7 @@ int sexp_add_variable(const char *text, const char *var_name, int type, int inde
 			}
 		}
 	} else {
-		Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
+	core::Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
 	}
 
 	if (index >= 0) {
@@ -29428,7 +29428,7 @@ int sexp_add_variable(const char *text, const char *var_name, int type, int inde
 // Goober5000 - minor variant of the above that is now required for variable arrays
 void sexp_add_array_block_variable(int index, bool is_numeric)
 {
-	Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
+core::Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
 
 	strcpy_s(Sexp_variables[index].text, "");
 	strcpy_s(Sexp_variables[index].variable_name, "variable array block");
@@ -29446,9 +29446,9 @@ void sexp_add_array_block_variable(int index, bool is_numeric)
  */
 void sexp_modify_variable(const char *text, int index, bool sexp_callback)
 {
-	Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
-	Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
-	Assert( !MULTIPLAYER_CLIENT );
+core::Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
+core::Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
+core::Assert( !MULTIPLAYER_CLIENT );
 
 	if (strchr(text, '$') != NULL)
 	{
@@ -29511,18 +29511,18 @@ void sexp_modify_variable(int n)
 	char *new_text;
 	char number_as_str[TOKEN_LENGTH];
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	// Only do single player or multi host
 	if ( MULTIPLAYER_CLIENT )
 		return;
 
 	// get sexp_variable index
-	Assert(Sexp_nodes[n].first == -1);
+core::Assert(Sexp_nodes[n].first == -1);
 	sexp_variable_index = atoi(Sexp_nodes[n].text);
 
 	// verify variable set
-	Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET);
 
 	if (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_NUMBER)
 	{
@@ -29549,7 +29549,7 @@ void sexp_modify_variable(int n)
 
 bool is_sexp_node_numeric(int node)
 {
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// make the common case fast: if the node has a CAR node, that means it uses an operator;
 	// and operators cannot currently return strings
@@ -29572,7 +29572,7 @@ void sexp_set_variable_by_index(int node)
 	char *new_text;
 	char number_as_str[TOKEN_LENGTH];
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// Only do single player or multi host
 	if ( MULTIPLAYER_CLIENT )
@@ -29623,7 +29623,7 @@ int sexp_get_variable_by_index(int node)
 {
 	int sexp_variable_index;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// get sexp_variable index
 	sexp_variable_index = eval_num(node);
@@ -29660,7 +29660,7 @@ void sexp_copy_variable_from_index(int node)
 	int from_index;
 	int to_index;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// Only do single player or multi host
 	if ( MULTIPLAYER_CLIENT )
@@ -29689,7 +29689,7 @@ void sexp_copy_variable_from_index(int node)
 	to_index = atoi(Sexp_nodes[CDR(node)].text);
 
 	// verify variable set
-	Assert(Sexp_variables[to_index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[to_index].type & SEXP_VARIABLE_SET);
 
 	// verify matching types
 	if ( ((Sexp_variables[from_index].type & SEXP_VARIABLE_NUMBER) && !(Sexp_variables[to_index].type & SEXP_VARIABLE_NUMBER))
@@ -29711,7 +29711,7 @@ void sexp_copy_variable_between_indexes(int node)
 	int from_index;
 	int to_index;
 
-	Assert(node >= 0);
+core::Assert(node >= 0);
 
 	// Only do single player or multi host
 	if ( MULTIPLAYER_CLIENT )
@@ -29763,9 +29763,9 @@ void sexp_copy_variable_between_indexes(int node)
 // Different type needed for Fred (1) allow modification of type (2) no callback required
 void sexp_fred_modify_variable(const char *text, const char *var_name, int index, int type)
 {
-	Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
-	Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
-	Assert( (type & SEXP_VARIABLE_NUMBER) || (type & SEXP_VARIABLE_STRING) );
+core::Assert(index >= 0 && index < MAX_SEXP_VARIABLES);
+core::Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
+core::Assert( (type & SEXP_VARIABLE_NUMBER) || (type & SEXP_VARIABLE_STRING) );
 
 	strcpy_s(Sexp_variables[index].text, text);
 	strcpy_s(Sexp_variables[index].variable_name, var_name);
@@ -29869,8 +29869,8 @@ int get_index_sexp_variable_name_special(std::string &text, size_t startpos)
 // Goober5000
 bool sexp_replace_variable_names_with_values(char *text, int max_len)
 {
-	Assert(text != NULL);
-	Assert(max_len >= 0);
+core::Assert(text != NULL);
+core::Assert(max_len >= 0);
 
 	bool replaced_anything = false;
 	char *pos = text;
@@ -29946,7 +29946,7 @@ bool sexp_replace_variable_names_with_values(std::string &text)
 int get_nth_variable_index(int nth, int variable_type)
 {
 	// Loop through Sexp_variables until we have found the one corresponding to the argument
-	Assert ((nth > 0) && (nth < MAX_SEXP_VARIABLES));
+core::Assert ((nth > 0) && (nth < MAX_SEXP_VARIABLES));
 	for (int i=0; i < MAX_SEXP_VARIABLES; i++)	{
 		if ((Sexp_variables[i].type & variable_type)) {
 			nth--; 
@@ -29996,7 +29996,7 @@ int sexp_campaign_file_variable_count()
  */
 int sexp_variable_typed_count(int sexp_variables_index, int variable_type)
 {
-	Assert ((sexp_variables_index >= 0) && (sexp_variables_index < MAX_SEXP_VARIABLES));
+core::Assert ((sexp_variables_index >= 0) && (sexp_variables_index < MAX_SEXP_VARIABLES));
 	// Loop through Sexp_variables until we have found the one corresponding to the argument
 	int count = 0;
 	for (int i=0; i < MAX_SEXP_VARIABLES; i++)	{
@@ -30010,7 +30010,7 @@ int sexp_variable_typed_count(int sexp_variables_index, int variable_type)
 		count++;
 	}
 	// shouldn't ever get here
-	Assert(false);
+core::Assert(false);
 	return -1;
 }
 
@@ -30019,7 +30019,7 @@ int sexp_variable_typed_count(int sexp_variables_index, int variable_type)
  */
 void sexp_variable_delete(int index)
 {
-	Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
+core::Assert(Sexp_variables[index].type & SEXP_VARIABLE_SET);
 
 	Sexp_variables[index].type = SEXP_VARIABLE_NOT_USED;
 }
@@ -30059,7 +30059,7 @@ void sexp_variable_sort()
  */
 int eval_num(int n)
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	if (CAR(n) != -1)				// if argument is a sexp
 		return eval_sexp(CAR(n));

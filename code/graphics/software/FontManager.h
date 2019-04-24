@@ -3,6 +3,7 @@
 #include <vector>
 #include <core/pstypes.h>
 #include <core/toolchain.h>
+#include <core/error.h>
 #include <scp_compiler_detection.h>
 #include <memory>
 
@@ -82,7 +83,7 @@ namespace font {
 		* @return Font pointer
 		*/
 		inline static FSFont *getFont(int index) {
-			Assertion(index >= 0 && index < (int) fonts.size(), "Invalid font index %d given!", index);
+			core::Assertion(index >= 0 && index < (int) fonts.size(), "Invalid font index %d given!", index);
 
 			return fonts[index].get();
 		}

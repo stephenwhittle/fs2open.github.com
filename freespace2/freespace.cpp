@@ -1090,7 +1090,7 @@ void freespace_stop_mission()
  */
 void game_do_networking()
 {
-	Assert( Net_player != NULL );
+core::Assert( Net_player != NULL );
 	if (!(Game_mode & GM_MULTIPLAYER)){
 		return;
 	}
@@ -1145,8 +1145,8 @@ void game_loading_callback(int count)
 {
 	game_do_networking();
 
-	Assert( Game_loading_callback_inited==1 );
-	Assertion( Game_loading_ani.num_frames > 0, "Load Screen animation %s not found, or corrupted. Needs to be an animation with at least 1 frame.", Game_loading_ani.filename );
+core::Assert( Game_loading_callback_inited==1 );
+core::Assertion( Game_loading_ani.num_frames > 0, "Load Screen animation %s not found, or corrupted. Needs to be an animation with at least 1 frame.", Game_loading_ani.filename );
 
 	int do_flip = 0;
 
@@ -1214,7 +1214,7 @@ void game_loading_callback(int count)
 
 void game_loading_callback_init()
 {
-	Assert( Game_loading_callback_inited==0 );
+core::Assert( Game_loading_callback_inited==0 );
 
 	Game_loading_background = bm_load(The_mission.loading_screen[gr_screen.res]);
 	
@@ -1223,7 +1223,7 @@ void game_loading_callback_init()
 
 	generic_anim_init(&Game_loading_ani, Game_loading_ani_fname[gr_screen.res]);
 	generic_anim_load(&Game_loading_ani);
-	Assertion( Game_loading_ani.num_frames > 0, "Load Screen animation %s not found, or corrupted. Needs to be an animation with at least 1 frame.", Game_loading_ani.filename );
+core::Assertion( Game_loading_ani.num_frames > 0, "Load Screen animation %s not found, or corrupted. Needs to be an animation with at least 1 frame.", Game_loading_ani.filename );
 
 	Game_loading_callback_inited = 1;
 	io::mouse::CursorManager::get()->showCursor(false);
@@ -1235,7 +1235,7 @@ void game_loading_callback_init()
 
 void game_loading_callback_close()
 {
-	Assert( Game_loading_callback_inited==1 );
+core::Assert( Game_loading_callback_inited==1 );
 
 	// Make sure bar shows all the way over.
 	game_loading_callback(COUNT_ESTIMATE);
@@ -1693,7 +1693,7 @@ void game_init()
 	Game_current_mission_filename[0] = 0;
 
 	// Moved from rand32, if we're gonna break, break immediately.
-	Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
+core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	// seed the random number generator
 	int game_init_seed = (int) time(NULL);
 	srand( game_init_seed );
@@ -2986,7 +2986,7 @@ float get_shake(float intensity, int decay_time, int max_decay_time)
 	float shake = intensity * (float)(r-RAND_MAX_2) * RAND_MAX_1f;
 	
 	if (decay_time >= 0) {
-		Assert(max_decay_time > 0);
+	core::Assert(max_decay_time > 0);
 		shake *= (0.5f - fl_abs(0.5f - (float) decay_time / (float) max_decay_time));
 	}
 
@@ -3052,9 +3052,9 @@ void apply_view_shake(matrix *eye_orient)
 
 	matrix	tm, tm2;
 	vm_angles_2_matrix(&tm, &tangles);
-	Assert(vm_vec_mag(&tm.vec.fvec) > 0.0f);
-	Assert(vm_vec_mag(&tm.vec.rvec) > 0.0f);
-	Assert(vm_vec_mag(&tm.vec.uvec) > 0.0f);
+core::Assert(vm_vec_mag(&tm.vec.fvec) > 0.0f);
+core::Assert(vm_vec_mag(&tm.vec.rvec) > 0.0f);
+core::Assert(vm_vec_mag(&tm.vec.uvec) > 0.0f);
 	vm_matrix_x_matrix(&tm2, eye_orient, &tm);
 	*eye_orient = tm2;
 }
@@ -3936,9 +3936,9 @@ void game_shade_frame(float  /*frametime*/)
 	GR_DEBUG_SCOPE("Shade frame");
 
 	if (Fade_type != FI_NONE) {
-		Assert(Fade_start_timestamp > 0);
-		Assert(Fade_end_timestamp > 0);
-		Assert(Fade_end_timestamp > Fade_start_timestamp);
+	core::Assert(Fade_start_timestamp > 0);
+	core::Assert(Fade_end_timestamp > 0);
+	core::Assert(Fade_end_timestamp > Fade_start_timestamp);
 
 		if( timestamp() >= Fade_start_timestamp ) {
 			int startAlpha = 0;
@@ -3979,7 +3979,7 @@ void bars_do_frame(float frametime)
 	if((Cutscene_bar_flags & CUB_GRADUAL) && Cutscene_bars_progress < 1.0f)
 	{
 		//Determine how far along we are
-		Assert(Cutscene_delta_time > 0.0f);
+	core::Assert(Cutscene_delta_time > 0.0f);
 
 		Cutscene_bars_progress += frametime / Cutscene_delta_time;
 		if(Cutscene_bars_progress >= 1.0f)
@@ -4101,7 +4101,7 @@ void game_frame(bool paused)
 
 		if ((!(Game_mode & GM_MULTIPLAYER)) || ((Game_mode & GM_MULTIPLAYER) && !(Net_player->flags & NETINFO_FLAG_OBSERVER))) {
 			if (!(Game_mode & GM_STANDALONE_SERVER)){
-				Assert( OBJ_INDEX(Player_obj) >= 0 );
+			core::Assert( OBJ_INDEX(Player_obj) >= 0 );
 			}
 		}
 	
@@ -4149,7 +4149,7 @@ void game_frame(bool paused)
 		// if not actually in a game play state, then return.  This condition could only be true in 
 		// a multiplayer game.
 		if (!actually_playing ) {
-			Assert( Game_mode & GM_MULTIPLAYER );
+		core::Assert( Game_mode & GM_MULTIPLAYER );
 			return;
 		}
 
@@ -4340,7 +4340,7 @@ void game_stop_time()
 void game_start_time()
 {
 	timer_paused--;
-	Assert(timer_paused >= 0);
+core::Assert(timer_paused >= 0);
 	if (timer_paused==0) {
 		fix time;
 		time = timer_get_fixed_seconds();
@@ -4360,7 +4360,7 @@ void game_start_time()
 
 		// Restore the timer_tick stuff...
 		// Normally, you should never access 'timestamp_ticker', consider this a low-level routine
-		Assert( saved_timestamp_ticker > -1 );		// Called out of order, get JAS
+	core::Assert( saved_timestamp_ticker > -1 );		// Called out of order, get JAS
 		timestamp_set_value(saved_timestamp_ticker);
 		saved_timestamp_ticker = -1;
 	}
@@ -4434,7 +4434,7 @@ void game_set_frametime(int state)
 	}
 #endif
 
-	Assertion( Framerate_cap > 0, "Framerate cap %d is too low. Needs to be a positive, non-zero number", Framerate_cap );
+core::Assertion( Framerate_cap > 0, "Framerate cap %d is too low. Needs to be a positive, non-zero number", Framerate_cap );
 
 	// Cap the framerate so it doesn't get too high.
 	if (!Cmdline_NoFPSCap)
@@ -4576,7 +4576,7 @@ void game_flush()
 // debug console
 void game_do_dc_networking()
 {
-	Assert( Game_mode & GM_MULTIPLAYER );
+core::Assert( Game_mode & GM_MULTIPLAYER );
 
 	game_do_state_common( gameseq_get_state() );
 }
@@ -5534,7 +5534,7 @@ void game_leave_state( int old_state, int new_state )
 				break;
 			}
 
-			Assert( Game_mode & GM_MULTIPLAYER );
+		core::Assert( Game_mode & GM_MULTIPLAYER );
 			multi_sync_close();
 			if ( new_state == GS_STATE_GAME_PLAY ){
 				// palette_restore_palette();
@@ -5656,7 +5656,7 @@ void game_enter_state( int old_state, int new_state )
 		case GS_STATE_MAIN_MENU:				
 			// in multiplayer mode, be sure that we are not doing networking anymore.
 			if ( Game_mode & GM_MULTIPLAYER ) {
-				Assert( Net_player != NULL );
+			core::Assert( Net_player != NULL );
 				Net_player->flags &= ~NETINFO_FLAG_DO_NETWORKING;
 			}
 
@@ -5664,7 +5664,7 @@ void game_enter_state( int old_state, int new_state )
 			Game_mode &= ~(GM_MULTIPLAYER);
 
 			// set the game_mode based on the type of player
-			Assert( Player != NULL );
+		core::Assert( Player != NULL );
 
 			if ( Player->flags & PLAYER_FLAGS_IS_MULTI ){
 				Game_mode = GM_MULTIPLAYER;
@@ -7033,7 +7033,7 @@ void game_do_training_checks()
 			i = Training_context_goal_waypoint;
 			do {
 				waypoint *wpt = find_waypoint_at_index(wplp, i);
-				Assert(wpt != NULL);
+			core::Assert(wpt != NULL);
 				d = vm_vec_dist(wpt->get_pos(), &Player_obj->pos);
 				if (d <= Training_context_distance) {
 					Training_context_at_waypoint = i;
@@ -7959,7 +7959,7 @@ void game_unpause()
 int actual_main(int argc, char *argv[])
 {
 	int result = -1;
-	Assert(argc > 0);
+core::Assert(argc > 0);
 	os::dialogs::init();
 #ifdef WIN32
 	// Don't let more than one instance of FreeSpace run.

@@ -32,7 +32,7 @@ pilotfile_convert::~pilotfile_convert()
 
 void pilotfile_convert::startSection(Section section_id)
 {
-	Assert( cfp );
+core::Assert( cfp );
 
 	const int zero = 0;
 
@@ -47,12 +47,12 @@ void pilotfile_convert::startSection(Section section_id)
 
 void pilotfile_convert::endSection()
 {
-	Assert( cfp );
-	Assert( m_size_offset > 0 );
+core::Assert( cfp );
+core::Assert( m_size_offset > 0 );
 
 	size_t cur = cftell(cfp);
 
-	Assert( cur >= m_size_offset );
+core::Assert( cur >= m_size_offset );
 
 	size_t section_size = cur - m_size_offset;
 

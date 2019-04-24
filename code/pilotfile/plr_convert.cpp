@@ -821,7 +821,7 @@ void pilotfile_convert::plr_export_settings()
 
 void pilotfile_convert::plr_export()
 {
-	Assert( cfp != NULL );
+core::Assert( cfp != NULL );
 
 	// header and version
 	cfwrite_int(PLR_FILE_ID, cfp);
@@ -846,7 +846,7 @@ void pilotfile_convert::plr_export()
 
 bool pilotfile_convert::plr_convert(const char *fname, bool inferno)
 {
-	Assert( fname != NULL );
+core::Assert( fname != NULL );
 
 	std::string filename;
 	bool rval = true;

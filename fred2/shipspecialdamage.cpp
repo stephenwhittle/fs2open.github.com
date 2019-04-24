@@ -119,7 +119,7 @@ BOOL ShipSpecialDamage::OnInitDialog()
 		objp = GET_NEXT(objp);
 	}
 
-	Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
+core::Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
 	m_ship_num = Objects[cur_object_index].instance;
 
 	if (!(Ships[m_ship_num].use_special_explosion)) {

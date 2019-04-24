@@ -40,8 +40,8 @@ int collide_debris_ship( obj_pair * pair )
 			return 0;
 	}
 
-	Assert( pdebris->type == OBJ_DEBRIS );
-	Assert( pship->type == OBJ_SHIP );
+core::Assert( pdebris->type == OBJ_DEBRIS );
+core::Assert( pship->type == OBJ_SHIP );
 
 	// don't check collision if it's our own debris and we are dying
 	if ( (pdebris->parent == OBJ_INDEX(pship)) && (Ships[pship->instance].flags[Ship::Ship_Flags::Dying]) )
@@ -200,8 +200,8 @@ int collide_asteroid_ship( obj_pair * pair )
 	if (pasteroid->hull_strength < 0.0f)
 		return 0;
 
-	Assert( pasteroid->type == OBJ_ASTEROID );
-	Assert( pship->type == OBJ_SHIP );
+core::Assert( pasteroid->type == OBJ_ASTEROID );
+core::Assert( pship->type == OBJ_SHIP );
 
 	dist = vm_vec_dist( &pasteroid->pos, &pship->pos );
 

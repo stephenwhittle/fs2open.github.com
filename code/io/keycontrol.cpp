@@ -117,7 +117,7 @@ factor_table::~factor_table() {}
 
 size_t factor_table::getNext(size_t n, size_t current)
 {
-	Assertion(n >= 1, "factor_table::getNext() called with " SIZE_T_ARG ", when only natural numbers make sense; get a coder!\n", n);
+core::Assertion(n >= 1, "factor_table::getNext() called with " SIZE_T_ARG ", when only natural numbers make sense; get a coder!\n", n);
 
 	// Resize lookup table if the value is greater than the current size
 	if (n > _lookup.size())
@@ -531,7 +531,7 @@ void debug_cycle_targeted_ship(int delta)
 		return;
 
 	si_index = Ships[objp->instance].ship_info_index;
-	Assert(si_index != -1 );
+core::Assert(si_index != -1 );
 	species = Ship_info[si_index].species;
 
 	int sanity = 0;
@@ -580,7 +580,7 @@ void debug_max_secondary_weapons(object *objp)
 
 void debug_max_primary_weapons(object *objp)	// Goober5000
 {
-	Assert(objp);	// Goober5000
+core::Assert(objp);	// Goober5000
 
 	int index;
 	ship *shipp = &Ships[objp->instance];
@@ -1721,7 +1721,7 @@ int button_function_critical(int n, net_player *p = NULL)
 	net_player *npl;
 	int at_self;    // flag indicating the object is local (for hud messages, etc)
 
-	Assert(n >= 0);
+core::Assert(n >= 0);
    
 	// multiplayer clients should leave critical button bits alone and pass them to the server instead
 	if (MULTIPLAYER_CLIENT) {
@@ -1792,7 +1792,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 				// multiplayer server should maintain bank/link status here
 				if ( MULTIPLAYER_MASTER ) {
-					Assert(npl != NULL);
+				core::Assert(npl != NULL);
 					multi_server_update_player_weapons(npl,shipp);										
 				}
 			}			
@@ -1813,7 +1813,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 				// multiplayer server should maintain bank/link status here
 				if ( MULTIPLAYER_MASTER ) {
-					Assert(npl != NULL);
+				core::Assert(npl != NULL);
 					multi_server_update_player_weapons(npl,shipp);										
 				}
 			}			
@@ -1833,7 +1833,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 				// multiplayer server should maintain bank/link status here
 				if( MULTIPLAYER_MASTER ){
-					Assert(npl != NULL);
+				core::Assert(npl != NULL);
 					multi_server_update_player_weapons(npl,shipp);										
 				}					
 			}			
@@ -1874,7 +1874,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1888,7 +1888,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1901,7 +1901,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1914,7 +1914,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1927,7 +1927,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1940,7 +1940,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1953,7 +1953,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -1969,7 +1969,7 @@ int button_function_critical(int n, net_player *p = NULL)
 
 			// multiplayer server should maintain bank/link status here
 			if( MULTIPLAYER_MASTER ){
-				Assert(npl != NULL);
+			core::Assert(npl != NULL);
 				multi_server_update_player_weapons(npl,&Ships[objp->instance]);										
 			}
 			break;
@@ -2210,7 +2210,7 @@ bool key_is_targeting(int n)
  */
 int button_function(int n)
 {
-	Assert(n >= 0);
+core::Assert(n >= 0);
 
 	if (Control_config[n].disabled)
 		return 0;

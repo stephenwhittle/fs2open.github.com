@@ -252,7 +252,7 @@ void alpha_colors_init()
 	}
 
 	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
-		mprintf(("TABLES => Starting parse of 'colors.tbl' (checking '#Start Colors' section only)...\n"));
+		core::mprintf("TABLES => Starting parse of 'colors.tbl' (checking '#Start Colors' section only)...\n");
 		parse_colors("colors.tbl");
 	}
 	parse_modular_table(NOX("*-clr.tbm"), parse_colors);
@@ -276,7 +276,7 @@ void alpha_colors_init()
 
 void parse_colors(const char *filename)
 {
-	Assertion(filename != NULL, "parse_colors() called on NULL; get a coder!\n");
+core::Assertion(filename != NULL, "parse_colors() called on NULL; get a coder!\n");
 	
 	try
 	{
@@ -353,7 +353,7 @@ void parse_colors(const char *filename)
 
 void parse_everything_else(const char *filename)
 {
-	Assertion(filename != NULL, "parse_everything_else() called on NULL; get a coder!\n");
+core::Assertion(filename != NULL, "parse_everything_else() called on NULL; get a coder!\n");
 
 	try
 	{
@@ -475,7 +475,7 @@ void parse_everything_else(const char *filename)
 							core::Warning(LOCATION, "Unknown color '%s' in %s, for definition of '%s'; using default ('%s').\n", temp.c_str(), filename, color_names[i], COLOR_NAMES[interface_defaults[i]]);
 						}
 						else {
-							Assertion(j >= 0 && j < TOTAL_COLORS, "Attempting to copy nonexistant color (%d out of 0-%d)!\n", j, TOTAL_COLORS - 1);
+						core::Assertion(j >= 0 && j < TOTAL_COLORS, "Attempting to copy nonexistant color (%d out of 0-%d)!\n", j, TOTAL_COLORS - 1);
 							memcpy(interface_colors[i], COLOR_LIST[j], sizeof(color));
 						}
 					}
@@ -585,7 +585,7 @@ void parse_everything_else(const char *filename)
 
 			required_string("#End");
 		}
-		Assertion(Color_Tags.size() == Tagged_Colors.size(), "Color_Tags and Tagged_Colors size mismatch; get a coder!\n");
+	core::Assertion(Color_Tags.size() == Tagged_Colors.size(), "Color_Tags and Tagged_Colors size mismatch; get a coder!\n");
 
 		if (optional_string("#Default Text Colors")) {
 

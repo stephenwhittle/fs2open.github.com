@@ -289,7 +289,7 @@ void neb2_init()
 		}
 
 		// should always have 6 neb poofs
-		Assert(Neb2_poof_count == 6);
+	core::Assert(Neb2_poof_count == 6);
 	}
 	catch (const parse::ParseException& e)
 	{
@@ -1137,7 +1137,7 @@ void neb2_get_fog_values(float *fnear, float *ffar, object *objp)
 
 	// determine what fog index to use
 	if(objp->type == OBJ_SHIP) {
-		Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 		if((objp->instance >= 0) && (objp->instance < MAX_SHIPS)) {
 			type_index = ship_query_general_type(objp->instance);
 			if(type_index > 0) {

@@ -381,7 +381,7 @@ void brief_do_next_pressed(int play_sound)
 		}
 	}
 
-	Assert(Current_brief_stage >= 0);
+core::Assert(Current_brief_stage >= 0);
 }
 
 // --------------------------------------------------------------------------------------
@@ -404,7 +404,7 @@ void brief_do_prev_pressed()
 	} else {
 		gamesnd_play_iface(InterfaceSounds::BRIEF_STAGE_CHG);
 	}
-	Assert(Current_brief_stage >= 0);
+core::Assert(Current_brief_stage >= 0);
 }
 
 
@@ -426,7 +426,7 @@ void brief_do_start_pressed()
 	} else {
 		gamesnd_play_iface(InterfaceSounds::GENERAL_FAIL);
 	}
-	Assert(Current_brief_stage >= 0);
+core::Assert(Current_brief_stage >= 0);
 }
 
 // --------------------------------------------------------------------------------------
@@ -444,7 +444,7 @@ void brief_do_end_pressed()
 	} else {
 		gamesnd_play_iface(InterfaceSounds::GENERAL_FAIL);
 	}
-	Assert(Current_brief_stage >= 0);
+core::Assert(Current_brief_stage >= 0);
 }
 
 
@@ -534,7 +534,7 @@ void brief_button_do(int i)
 			break;
 
 		case BRIEF_BUTTON_MULTI_LOCK:
-			Assert(Game_mode & GM_MULTIPLAYER);			
+		core::Assert(Game_mode & GM_MULTIPLAYER);			
 			// the "lock" button has been pressed
 			multi_ts_lock_pressed();
 
@@ -998,10 +998,10 @@ void brief_render_closeup_text()
 	gr_set_color_fast(&Color_white);
 
 //	n_lines = split_str(bi->text, CLOSEUP_W - 2*CLOSEUP_TEXT_OFFSET, n_chars, p_str, MAX_ICON_TEXT_LINES);
-	Assert(n_lines != -1);
+core::Assert(n_lines != -1);
 
 	for ( i = 0; i < n_lines; i++ ) {
-		Assert(n_chars[i] < MAX_ICON_TEXT_LINE_LEN);
+	core::Assert(n_chars[i] < MAX_ICON_TEXT_LINE_LEN);
 		strncpy(line, p_str[i], n_chars[i]);
 		line[n_chars[i]] = 0;
 		gr_printf_menu(0,0+i*Closeup_font_height,line);
@@ -1106,7 +1106,7 @@ void brief_render(float frametime)
 
 	if ( Num_brief_stages <= 0 ) {
 		gr_set_color_fast(&Color_white);
-		Assert( Game_current_mission_filename != NULL );
+	core::Assert( Game_current_mission_filename != NULL );
 
 		gr_get_string_size(&w, NULL, XSTR("No Briefing exists for mission: %s", 430));
 		gr_printf_menu((gr_screen.clip_width_unscaled - w) / 2,200,XSTR( "No Briefing exists for mission: %s", 430), Game_current_mission_filename);
@@ -1270,7 +1270,7 @@ int brief_setup_closeup(brief_icon *bi)
 		break;
 	default:
 		brief_get_closeup_ship_modelnum(Closeup_icon);
-		Assert( Closeup_icon->ship_class != -1 );
+	core::Assert( Closeup_icon->ship_class != -1 );
 		sip = &Ship_info[Closeup_icon->ship_class];
 
 		strcpy_s(Closeup_icon->closeup_label,(sip->alt_name[0]) ? sip->alt_name : sip->name);
@@ -1659,7 +1659,7 @@ void brief_do_frame(float frametime)
 				if ( abs(Current_brief_stage - Last_brief_stage) > 1 ) {
 					Quick_transition_stage = Current_brief_stage;
 					Current_brief_stage = Last_brief_stage;
-					Assert(Current_brief_stage >= 0);
+				core::Assert(Current_brief_stage >= 0);
 					Start_fade_up_anim = 1;
 					goto Transition_done;
 				}
@@ -1670,7 +1670,7 @@ void brief_do_frame(float frametime)
 					if ( Briefing->stages[Last_brief_stage].flags & BS_FORWARD_CUT ) {
 						Quick_transition_stage = Current_brief_stage;
 						Current_brief_stage = Last_brief_stage;
-						Assert(Current_brief_stage >= 0);
+					core::Assert(Current_brief_stage >= 0);
 						Start_fade_up_anim = 1;
 						goto Transition_done;
 					} else {
@@ -1681,7 +1681,7 @@ void brief_do_frame(float frametime)
 					if ( Briefing->stages[Last_brief_stage].flags & BS_BACKWARD_CUT ) { 
 						Quick_transition_stage = Current_brief_stage;
 						Current_brief_stage = Last_brief_stage;
-						Assert(Current_brief_stage >= 0);
+					core::Assert(Current_brief_stage >= 0);
 						Start_fade_up_anim = 1;
 						goto Transition_done;
 					} else {
@@ -1929,7 +1929,7 @@ void brief_maybe_blit_scene_cut(float frametime)
 				Current_brief_stage = Last_brief_stage;
 			}
 
-			Assert(Current_brief_stage >= 0);			
+		core::Assert(Current_brief_stage >= 0);			
 			goto Fade_down_anim_start;
 		}
 

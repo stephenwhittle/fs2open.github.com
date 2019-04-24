@@ -145,7 +145,7 @@ void FSLight2GLLight(light* FSLight, gr_light* GLLight) {
 }
 
 static void set_light(int light_num, gr_light* ltp) {
-	Assert(light_num < (int)graphics::MAX_UNIFORM_LIGHTS);
+core::Assert(light_num < (int)graphics::MAX_UNIFORM_LIGHTS);
 
 	vm_vec_transform(&gr_light_uniforms[light_num].position, &ltp->Position, &gr_view_matrix);
 	vm_vec_transform(&gr_light_uniforms[light_num].direction, &ltp->SpotDir, &gr_view_matrix, false);

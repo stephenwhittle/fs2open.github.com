@@ -234,8 +234,8 @@ void pilotfile_convert::csg_import_missions(bool inferno)
 	scoring_conv_t t_score;
 	scoring_conv_INF_t t_inf_score;
 
-	Assert( sizeof(scoring_conv_t) == SCORING_SIZE );
-	Assert( sizeof(scoring_conv_INF_t) == SCORING_INF_SIZE );
+core::Assert( sizeof(scoring_conv_t) == SCORING_SIZE );
+core::Assert( sizeof(scoring_conv_INF_t) == SCORING_INF_SIZE );
 
 	int ship_list_size = (int)csg->ship_list.size();
 
@@ -626,7 +626,7 @@ void pilotfile_convert::csg_import_stats()
 
 void pilotfile_convert::csg_import(bool inferno)
 {
-	Assert( cfp != NULL );
+core::Assert( cfp != NULL );
 
 	char name[35];
 
@@ -1111,7 +1111,7 @@ void pilotfile_convert::csg_export_cutscenes() {
 	}
 
 	// Check for possible overflow because we can only write 32 bit integers
-	Assertion(viewableScenes <= std::numeric_limits<uint>::max(), "Too many viewable cutscenes! Maximum is %ud!", std::numeric_limits<uint>::max());
+core::Assertion(viewableScenes <= std::numeric_limits<uint>::max(), "Too many viewable cutscenes! Maximum is %ud!", std::numeric_limits<uint>::max());
 
 	// output cutscene data in new format
 	cfwrite_uint((uint)viewableScenes, cfp);
@@ -1126,7 +1126,7 @@ void pilotfile_convert::csg_export_cutscenes() {
 
 void pilotfile_convert::csg_export()
 {
-	Assert( cfp != NULL );
+core::Assert( cfp != NULL );
 
 	// header and version
 	cfwrite_int(CSG_FILE_ID, cfp);
@@ -1151,9 +1151,9 @@ void pilotfile_convert::csg_export()
 
 bool pilotfile_convert::csg_convert(const char *fname, bool inferno)
 {
-	Assert( fname != NULL );
-	Assert( plr != NULL);
-	Assert( csg == NULL );
+core::Assert( fname != NULL );
+core::Assert( plr != NULL);
+core::Assert( csg == NULL );
 
 	std::string filename;
 	bool rval = true;

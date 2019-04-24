@@ -277,7 +277,7 @@ void pilot_set_random_pic(player *p)
 	} else {
 		// pick a random name from the list
 		int random_index = rand() % Num_pilot_images;
-		Assert((random_index >= 0) && (random_index < Num_pilot_images));
+	core::Assert((random_index >= 0) && (random_index < Num_pilot_images));
 		strcpy_s(p->image_filename, Pilot_images_arr[random_index]);
 	}	
 }
@@ -297,7 +297,7 @@ void pilot_set_random_squad_pic(player *p)
 	} else {
 		// pick a random name from the list
 		int random_index = rand() % Num_pilot_squad_images;		
-		Assert((random_index >= 0) && (random_index < Num_pilot_squad_images));
+	core::Assert((random_index >= 0) && (random_index < Num_pilot_squad_images));
 		player_set_squad_bitmap(p, Pilot_squad_images_arr[random_index], true);
 		player_set_squad_bitmap(p, Pilot_squad_images_arr[random_index], false);
 	}	
@@ -691,7 +691,7 @@ void player::assign(const player *other)
 	player_was_multi = other->player_was_multi;
 	strcpy_s(language, other->language);
 
-	Assertion(*this == *other, "Equality comparison failed after pilot assignment!");
+core::Assertion(*this == *other, "Equality comparison failed after pilot assignment!");
 }
 
 template<typename T, size_t N>

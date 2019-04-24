@@ -4,8 +4,8 @@
 #include <core/error.h>
 MFCViewport::MFCViewport(HWND hwnd, HDC dc): _windowHandle(hwnd), _device_context(dc)
 {
-	Assertion(hwnd != nullptr, "Invalid window handle!");
-	Assertion(dc != nullptr, "Invalid device context handle!");
+core::Assertion(hwnd != nullptr, "Invalid window handle!");
+core::Assertion(dc != nullptr, "Invalid device context handle!");
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0) {
 		core::Error(LOCATION, "Couldn't init SDL video: %s", SDL_GetError());
@@ -156,7 +156,7 @@ std::unique_ptr<os::Viewport> MFCGraphicsOperations::createViewport(const os::Vi
 	GL_pfd.cDepthBits = (BYTE)(props.pixel_format.depth_size);
 	GL_pfd.cStencilBits = (BYTE)(props.pixel_format.stencil_size);
 
-	Assert(_windowHandle != NULL);
+core::Assert(_windowHandle != NULL);
 
 	auto device_context = GetDC(_windowHandle);
 
@@ -327,8 +327,8 @@ void MFCGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::Ope
 		return;
 	}
 
-	Assertion(view != nullptr, "Both viewport of context must be valid at this point!");
-	Assertion(ctx != nullptr, "Both viewport of context must be valid at this point!");
+core::Assertion(view != nullptr, "Both viewport of context must be valid at this point!");
+core::Assertion(ctx != nullptr, "Both viewport of context must be valid at this point!");
 
 	auto mfcCtx = reinterpret_cast<MFCOpenGLContext*>(ctx);
 	auto mfcView = reinterpret_cast<MFCViewport*>(view);

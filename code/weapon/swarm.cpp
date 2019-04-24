@@ -93,7 +93,7 @@ void swarm_maybe_fire_missile(int shipnum)
 	ship_weapon *swp;
 	int			weapon_info_index;
 
-	Assert(shipnum >= 0 && shipnum < MAX_SHIPS );
+core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS );
 	sp = &Ships[shipnum];
 
 	if ( sp->num_swarm_missiles_to_fire <= 0 ) {
@@ -108,7 +108,7 @@ void swarm_maybe_fire_missile(int shipnum)
 	}
 
 	weapon_info_index = swp->secondary_bank_weapons[sp->swarm_missile_bank];
-	Assert( weapon_info_index >= 0 && weapon_info_index < MAX_WEAPON_TYPES );
+core::Assert( weapon_info_index >= 0 && weapon_info_index < MAX_WEAPON_TYPES );
 
 	// if swarm secondary bank is not a swarm missile, return
 	if ( !(Weapon_info[weapon_info_index].wi_flags[Weapon::Info_Flags::Swarm]) ) {
@@ -166,7 +166,7 @@ void swarm_delete(int i)
 {
 	swarm_info	*swarmp;
 
-	Assert(i >= 0 && i < MAX_SWARM_MISSILES);
+core::Assert(i >= 0 && i < MAX_SWARM_MISSILES);
 	swarmp = &Swarm_missiles[i];
 
 	if ( !(swarmp->flags & SWARM_USED) ) {
@@ -191,7 +191,7 @@ void swarm_update_direction(object *objp)
 	float			vel, target_dist, radius;
 	physics_info	*pi;
 
-	Assert(objp->instance >= 0 && objp->instance < MAX_WEAPONS);
+core::Assert(objp->instance >= 0 && objp->instance < MAX_WEAPONS);
 
 	wp = &Weapons[objp->instance];
 
@@ -271,7 +271,7 @@ void swarm_update_direction(object *objp)
 				missile_dist = SWARM_DIST_OFFSET;
 			}
 			swarmp->angle_offset = asinf(SWARM_DIST_OFFSET / missile_dist);
-			Assert(!fl_is_nan(swarmp->angle_offset));
+		core::Assert(!fl_is_nan(swarmp->angle_offset));
 		}
 
 		vm_vec_sub(&obj_to_target, &swarmp->original_target, &objp->pos);
@@ -416,7 +416,7 @@ void turret_swarm_delete(int i)
 {
 	turret_swarm_info		*tswarmp;
 
-	Assert(i >= 0 && i < MAX_TURRET_SWARM_INFO);
+core::Assert(i >= 0 && i < MAX_TURRET_SWARM_INFO);
 	tswarmp = &Turret_swarm_info[i];
 
 	if ( !(tswarmp->flags & SWARM_USED) ) {
@@ -437,28 +437,28 @@ void turret_swarm_set_up_info(int parent_objnum, ship_subsys *turret, weapon_inf
 	// weapon info pointer
 	//Removed check in the interests of speed -WMC
 	/*
-	Assert((turret_weapon_class >= 0) && (turret_weapon_class < Num_weapon_types));
+core::Assert((turret_weapon_class >= 0) && (turret_weapon_class < Num_weapon_types));
 	if((turret_weapon_class < 0) || (turret_weapon_class >= Num_weapon_types)){
 		return;
 	}
 	*/
 
 	// get ship pointer	
-	Assert((parent_objnum >= 0) && (parent_objnum < MAX_OBJECTS));
+core::Assert((parent_objnum >= 0) && (parent_objnum < MAX_OBJECTS));
 	if((parent_objnum < 0) || (parent_objnum >= MAX_OBJECTS)){
 		return;
 	}
 	parent_obj = &Objects[parent_objnum];
-	Assert(parent_obj->type == OBJ_SHIP);
+core::Assert(parent_obj->type == OBJ_SHIP);
 	shipp = &Ships[parent_obj->instance];
-	Assert((turret->turret_enemy_objnum >= 0) && (turret->turret_enemy_objnum < MAX_OBJECTS));
+core::Assert((turret->turret_enemy_objnum >= 0) && (turret->turret_enemy_objnum < MAX_OBJECTS));
 	if((turret->turret_enemy_objnum < 0) || (turret->turret_enemy_objnum >= MAX_OBJECTS)){
 		return;
 	}
 	target_obj = &Objects[turret->turret_enemy_objnum];
 
 	// valid swarm weapon
-	Assert(((wip->wi_flags[Weapon::Info_Flags::Swarm]) && (wip->swarm_count > 0)) || ((wip->wi_flags[Weapon::Info_Flags::Corkscrew]) && (wip->cs_num_fired > 0)));
+core::Assert(((wip->wi_flags[Weapon::Info_Flags::Swarm]) && (wip->swarm_count > 0)) || ((wip->wi_flags[Weapon::Info_Flags::Corkscrew]) && (wip->cs_num_fired > 0)));
 
 	if(!((wip->wi_flags[Weapon::Info_Flags::Swarm]) || (wip->wi_flags[Weapon::Info_Flags::Corkscrew])) || ((wip->wi_flags[Weapon::Info_Flags::Swarm]) && (wip->swarm_count <= 0)) || ((wip->wi_flags[Weapon::Info_Flags::Corkscrew]) && (wip->cs_num_fired <= 0)))
 		return;
@@ -496,7 +496,7 @@ void turret_swarm_set_up_info(int parent_objnum, ship_subsys *turret, weapon_inf
 
 	// make sure time is sufficient to launch all the missiles before next volley
 #ifndef NDEBUG	
-	Assert(wip->swarm_count * SWARM_MISSILE_DELAY < wip->fire_wait * 1000.0f);
+core::Assert(wip->swarm_count * SWARM_MISSILE_DELAY < wip->fire_wait * 1000.0f);
 #endif
 
     */
@@ -538,7 +538,7 @@ void turret_swarm_maybe_fire_missile(int shipnum)
 
 	// check if ship has any turrets ready to fire
 	if (shipp->num_turret_swarm_info <= 0) {
-		Assert(shipp->num_turret_swarm_info == 0);
+	core::Assert(shipp->num_turret_swarm_info == 0);
 		return;
 	}
 
@@ -556,10 +556,10 @@ void turret_swarm_maybe_fire_missile(int shipnum)
 			{
 				int turret_tsi = subsys->turret_swarm_info_index[k];
 				num_turret_swarm_turrets_left--;
-				Assert(num_turret_swarm_turrets_left >= 0);
+			core::Assert(num_turret_swarm_turrets_left >= 0);
 
 				// get turret_swarm_info
-				Assert( (turret_tsi >= 0) && (turret_tsi < MAX_TURRET_SWARM_INFO) );
+			core::Assert( (turret_tsi >= 0) && (turret_tsi < MAX_TURRET_SWARM_INFO) );
 				tsi = &Turret_swarm_info[turret_tsi];
 				wip = &Weapon_info[tsi->weapon_class];
 
@@ -567,11 +567,11 @@ void turret_swarm_maybe_fire_missile(int shipnum)
 				if ( tsi->parent_sig == parent_obj->signature ) {
 
 					// make sure we have the right turret.
-					Assert(tsi->turret == subsys);
+				core::Assert(tsi->turret == subsys);
 	
 					// check if time to fire
 					if (timestamp_elapsed(tsi->time_to_fire)) {
-						Assert(tsi->num_to_launch > 0);
+					core::Assert(tsi->num_to_launch > 0);
 	
 						// check target still alive
 						if (tsi->target_objnum > -1) {
@@ -632,7 +632,7 @@ void turret_swarm_maybe_fire_missile(int shipnum)
 			}
 		}
 	}
-	Assert(num_turret_swarm_turrets_left == 0);
+core::Assert(num_turret_swarm_turrets_left == 0);
 }
 
 // check Turret_swarm_info for info that are invalid - ie, ships died while firing.

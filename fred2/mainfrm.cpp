@@ -166,7 +166,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct) {
 
 	// Create the combo box
 	z = m_wndToolBar.CommandToIndex(ID_NEW_SHIP_TYPE);
-	Assert(z != -1);
+core::Assert(z != -1);
 	m_wndToolBar.SetButtonInfo(z, ID_NEW_SHIP_TYPE, TBBS_SEPARATOR, 230);
 
 	// Design guide advises 12 pixel gap between combos and buttons

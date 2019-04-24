@@ -344,7 +344,7 @@ void HudGaugeMessages::processMessageBuffer()
 
 void HudGaugeMessages::addPending(const char *text, int source, int x)
 {
-	Assert(text != NULL);
+core::Assert(text != NULL);
 
 	HUD_message_data new_message;
 
@@ -646,7 +646,7 @@ void hud_add_line_to_scrollback(char *text, int source, int t, int x, int y, int
 {
 	line_node *new_line;
 
-	Assert(HUD_msg_inited);
+core::Assert(HUD_msg_inited);
 	if (!text || !strlen(text))
 		return;
 
@@ -682,7 +682,7 @@ void hud_add_msg_to_scrollback(const char *text, int source, int t)
 		return;
 
 	w = 0;
-	Assert(msg_len < HUD_MSG_LENGTH_MAX);
+core::Assert(msg_len < HUD_MSG_LENGTH_MAX);
 	strcpy_s(buf, text);
 	ptr = strstr(buf, NOX(": "));
 	if (ptr) {

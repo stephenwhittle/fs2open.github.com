@@ -20,7 +20,7 @@
 
 #ifdef _MSC_VER
 #	include <crtdbg.h>
-	/* Uncomment SHOW_CALL_STACK to show the call stack in Asserts, Warnings, and Errors */
+	/* Uncomment SHOW_CALL_STACK to show the call stack incore::Asserts, Warnings, and Errors */
 #	define SHOW_CALL_STACK
 #endif // _MSC_VER
 
@@ -694,7 +694,7 @@ void DumpCallsStack( std::ostream& dumpBuffer )
 
 		BYTE* caller = *NextCaller;		// Error sometimes!!!
 
-		// Skip the first EBP as it points to AssertionFailed, which is
+		// Skip the first EBP as it points tocore::AssertionFailed, which is
 		// uninteresting for the user
 
 		if ( depth > 1 )	{

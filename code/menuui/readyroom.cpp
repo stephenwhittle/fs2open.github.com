@@ -674,7 +674,7 @@ void sim_room_scroll_screen_up()
 
 		if (Player->readyroom_listing_mode == MODE_MISSIONS)
 		{
-			Assert(Selected_line > Scroll_offset);
+		core::Assert(Selected_line > Scroll_offset);
 			while (!sim_room_line_query_visible(Selected_line))
 			{
 				Selected_line--;
@@ -713,7 +713,7 @@ void sim_room_scroll_screen_down()
 			while (!sim_room_line_query_visible(Selected_line))
 			{
 				Selected_line++;
-				Assert(Selected_line < Num_lines);
+			core::Assert(Selected_line < Num_lines);
 			}
 		}
 
@@ -728,7 +728,7 @@ void sim_room_scroll_line_down()
 	if (Selected_line < Num_lines - 1) {
 		Selected_line++;
 
-		Assert(Selected_line > Scroll_offset);
+	core::Assert(Selected_line > Scroll_offset);
 		while (!sim_room_line_query_visible(Selected_line))
 		{
 			Scroll_offset++;
@@ -1492,7 +1492,7 @@ void set_new_campaign_line(int n)
 	Num_info_lines = 0;
 	if (str) {
 		Num_info_lines = split_str(str, Cr_info_coords[gr_screen.res][2], Info_text_line_size, Info_text_ptrs, MAX_INFO_LINES);
-		Assert(Num_info_lines >= 0);
+	core::Assert(Num_info_lines >= 0);
 	}
 
 	Desc_scroll_offset = 0;
@@ -1892,7 +1892,7 @@ void campaign_room_do_frame(float  /*frametime*/)
 		if (i >= Num_info_lines)
 			break;
 
-		Assert(Info_text_line_size[i] < MAX_INFO_LINE_LEN);
+	core::Assert(Info_text_line_size[i] < MAX_INFO_LINE_LEN);
 		strncpy(line_text, Info_text_ptrs[i], Info_text_line_size[i]);
 		line_text[Info_text_line_size[i]] = 0;
 		drop_white_space(line_text);

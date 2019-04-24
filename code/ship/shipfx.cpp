@@ -59,7 +59,7 @@ extern float splode_level;
 
 static void shipfx_remove_submodel_ship_sparks(ship *shipp, int submodel_num)
 {
-	Assert(submodel_num != -1);
+core::Assert(submodel_num != -1);
 
 	// maybe no active sparks on submodel
 	if (shipp->num_hits == 0) {
@@ -227,7 +227,7 @@ static void set_ship_submodel_as_blown_off(ship *shipp, const char *name)
 	}
 
 	// set its blown off flag to TRUE
-	Assert(found);
+core::Assert(found);
 	if (found) {
 		pss->submodel_info_1.blown_off = 1;
 	}
@@ -260,7 +260,7 @@ static void shipfx_maybe_create_live_debris_at_ship_death( object *ship_objp )
 			// get submodel that produces live debris
 			int model_get_parent_submodel_for_live_debris( int model_num, int live_debris_model_num );
 			int parent = model_get_parent_submodel_for_live_debris(pm->id, live_debris_submodel);
-			Assert(parent != -1);
+		core::Assert(parent != -1);
 
 			// check if already blown off  (ship model set)
 			if ( !pmi->submodel[parent].blown_off ) {
@@ -274,7 +274,7 @@ static void shipfx_maybe_create_live_debris_at_ship_death( object *ship_objp )
 					}
 				}
 
-				Assert (pss != NULL);
+			core::Assert (pss != NULL);
 				if (pss != NULL) {
 					if (pss->system_info != NULL) {
 						vec3d exp_center, tmp = ZERO_VECTOR;
@@ -503,7 +503,7 @@ void shipfx_actually_warpin(ship *shipp, object *objp)
 	shipp->flags.remove(Ship::Ship_Flags::Arriving_stage_2);
 	// dock leader needs to handle dockees
 	if (object_is_docked(objp)) {
-		Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
+	core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
 		dock_function_info dfi;
 		dock_evaluate_all_docked_objects(objp, &dfi, object_remove_arriving_stage1_ndl_flag_helper);
 		dock_evaluate_all_docked_objects(objp, &dfi, object_remove_arriving_stage2_ndl_flag_helper);
@@ -864,7 +864,7 @@ bool shipfx_eye_in_shadow( vec3d *eye_pos, object * src_obj, int sun_n )
 						polymodel *pm = model_get(sip->cockpit_model_num);
 						int tmap_num = w(mc.t_poly+40);
 
-						Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
+					core::Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
 						if (tmap_num >= MAX_MODEL_TEXTURES) { return 0; }
 						if( !(pm->maps[tmap_num].is_transparent) && strcmp(bm_get_filename(mc.hit_bitmap), "glass.dds") != 0 ) {
 							return true;
@@ -880,7 +880,7 @@ bool shipfx_eye_in_shadow( vec3d *eye_pos, object * src_obj, int sun_n )
 							polymodel *pm = model_get(sip->cockpit_model_num);
 							int tmap_num = mc.bsp_leaf->tmap_num;
 
-							Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
+						core::Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
 							if (tmap_num >= MAX_MODEL_TEXTURES) { return 0; }
 							if ( !(pm->maps[tmap_num].is_transparent) && strcmp(bm_get_filename(mc.hit_bitmap), "glass.dds") != 0 ) {
 								return true;
@@ -909,7 +909,7 @@ bool shipfx_eye_in_shadow( vec3d *eye_pos, object * src_obj, int sun_n )
 						polymodel *pm = model_get(sip->model_num);
 						int tmap_num = w(mc.t_poly+40);
 
-						Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
+					core::Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
 						if (tmap_num >= MAX_MODEL_TEXTURES) { return 0; }
 						if ( !(pm->maps[tmap_num].is_transparent) && strcmp(bm_get_filename(mc.hit_bitmap),"glass.dds") != 0 ) {
 							return true;
@@ -925,7 +925,7 @@ bool shipfx_eye_in_shadow( vec3d *eye_pos, object * src_obj, int sun_n )
 							polymodel *pm = model_get(sip->model_num);
 							int tmap_num = mc.bsp_leaf->tmap_num;
 
-							Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
+						core::Assertion (tmap_num < MAX_MODEL_TEXTURES, "Texture map index (%i) exceeded max", tmap_num);
 							if (tmap_num >= MAX_MODEL_TEXTURES) { return 0; }
 							if ( !(pm->maps[tmap_num].is_transparent) && strcmp(bm_get_filename(mc.hit_bitmap), "glass.dds") != 0 ) {
 								return true;
@@ -1021,7 +1021,7 @@ void shipfx_flash_create(object *objp, int model_num, vec3d *gun_pos, vec3d *gun
 	int i;
 	int objnum = OBJ_INDEX(objp);
 
-	Assert(Ship_flash_inited);
+core::Assert(Ship_flash_inited);
 
 	polymodel *pm = model_get(model_num);
 	int closest_light = -1;
@@ -1081,7 +1081,7 @@ void shipfx_flash_create(object *objp, int model_num, vec3d *gun_pos, vec3d *gun
 		}
 	}
 
-	Assert( Ship_flash[first_slot].objnum == -1 );
+core::Assert( Ship_flash[first_slot].objnum == -1 );
 
 	Ship_flash[first_slot].objnum = objnum;
 	Ship_flash[first_slot].obj_signature = objp->signature;
@@ -1819,8 +1819,8 @@ void shipfx_debris_limit_speed(debris *db, ship *shipp)
 		}
 	}
 
-	Assert(is_valid_vec(&pi->vel));
-	Assert(is_valid_vec(&pi->rotvel));
+core::Assert(is_valid_vec(&pi->vel));
+core::Assert(is_valid_vec(&pi->rotvel));
 }
 
 // ----------------------------------------------------------------------------
@@ -2008,11 +2008,11 @@ void big_explosion_flash(float);
  */
 int shipfx_large_blowup_do_frame(ship *shipp, float frametime)
 {
-	Assert( shipp->large_ship_blowup_index > -1 );
-	Assert( shipp->large_ship_blowup_index < (int)Split_ships.size() );
+core::Assert( shipp->large_ship_blowup_index > -1 );
+core::Assert( shipp->large_ship_blowup_index < (int)Split_ships.size() );
 
 	split_ship *the_split_ship = &Split_ships[shipp->large_ship_blowup_index];
-	Assert( the_split_ship->used );		// Get John
+core::Assert( the_split_ship->used );		// Get John
 
 	// Do fireballs, particles, shockwave here
 	// Note parent ship is still valid, vel and pos updated in obj_move_all
@@ -2057,11 +2057,11 @@ int shipfx_large_blowup_do_frame(ship *shipp, float frametime)
 
 void shipfx_large_blowup_queue_render(model_draw_list *scene, ship* shipp)
 {
-	Assert( shipp->large_ship_blowup_index > -1 );
-	Assert( shipp->large_ship_blowup_index < (int)Split_ships.size() );
+core::Assert( shipp->large_ship_blowup_index > -1 );
+core::Assert( shipp->large_ship_blowup_index < (int)Split_ships.size() );
 
 	split_ship *the_split_ship = &Split_ships[shipp->large_ship_blowup_index];
-	Assert( the_split_ship->used );		// Get John
+core::Assert( the_split_ship->used );		// Get John
 
 	if (the_split_ship->front_ship.length_left > 0) {
 		shipfx_queue_render_ship_halves_and_debris(scene, &the_split_ship->front_ship,shipp);
@@ -2311,15 +2311,15 @@ void shipfx_do_lightning_frame( ship * /*shipp*/ )
 	bolt_info binfo;
 
 	// sanity checks
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 	if(shipp == NULL){
 		return;
 	}
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	if(shipp->ship_info_index < 0){
 		return;
 	}
-	Assert(shipp->objnum >= 0);
+core::Assert(shipp->objnum >= 0);
 	if(shipp->objnum < 0){
 		return;
 	}
@@ -2441,19 +2441,19 @@ void shipfx_do_shockwave_stuff(ship *shipp, shockwave_create_info *sci)
 	int idx;
 
 	// sanity checks
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 	if(shipp == NULL){
 		return;
 	} 
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	if(shipp->ship_info_index < 0){
 		return;
 	}	
-	Assert(shipp->objnum >= 0);
+core::Assert(shipp->objnum >= 0);
 	if(shipp->objnum < 0){
 		return;
 	}
-	Assert(sci != NULL);
+core::Assert(sci != NULL);
 	if (sci == NULL) {
 		return;
 	}
@@ -2536,8 +2536,8 @@ void engine_wash_ship_process(ship *shipp)
 		return;
 	}
 
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
 	objp = &Objects[shipp->objnum];
 	ship_obj *so;
 
@@ -2723,7 +2723,7 @@ void engine_wash_ship_process(ship *shipp)
 
 	// apply damage at rate of 1%/sec
 	if (shipp->wash_intensity > 0) {
-		Assert(max_ship_intensity_objp != NULL);
+	core::Assert(max_ship_intensity_objp != NULL);
 
 		nprintf(("wash", "Wash intensity %.2f\n", shipp->wash_intensity));
 
@@ -3438,7 +3438,7 @@ int WE_Default::warpStart()
 		shipp->flags.set(Ship::Ship_Flags::Arriving_stage_1);
 		// dock leader needs to handle dockees
 		if (object_is_docked(objp)) {
-			Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
+		core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
 			dock_function_info dfi;
 			dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage1_ndl_flag_helper);
 		}
@@ -3491,7 +3491,7 @@ int WE_Default::warpFrame(float frametime)
 			shipp->flags.set(Ship::Ship_Flags::Arriving_stage_2);
 			// if the ship is a dock leader; handle all the dockees
 			if (object_is_docked(objp)) {
-				Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
+			core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The docked ship warping in (%s) should only be the dock leader at this point!\n", shipp->ship_name);
 				dock_function_info dfi;
 				dock_evaluate_all_docked_objects(objp, &dfi, object_remove_arriving_stage1_ndl_flag_helper);
 				dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage2_ndl_flag_helper);
@@ -3744,7 +3744,7 @@ int WE_BSG::warpStart()
 		shipp->flags.set(Ship::Ship_Flags::Arriving_stage_1);
 		// dock leader needs to handle dockees
 		if (object_is_docked(objp)) {
-			Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
+		core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
 			dock_function_info dfi;
 			dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage1_ndl_flag_helper);
 		}
@@ -3800,7 +3800,7 @@ int WE_BSG::warpFrame(float  /*frametime*/)
 					shipp->flags.set(Ship::Ship_Flags::Arriving_stage_2);
 					// dock leader needs to handle dockees
 					if (object_is_docked(objp)) {
-						Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
+					core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
 						dock_function_info dfi;
 						dock_evaluate_all_docked_objects(objp, &dfi, object_remove_arriving_stage1_ndl_flag_helper);
 						dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage2_ndl_flag_helper);
@@ -4047,7 +4047,7 @@ int WE_Homeworld::warpStart()
 		shipp->flags.set(Ship::Ship_Flags::Arriving_stage_1);
 		// dock leader needs to handle dockees
 		if (object_is_docked(objp)) {
-			Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
+		core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
 			dock_function_info dfi;
 			dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage1_ndl_flag_helper);
 		}
@@ -4097,7 +4097,7 @@ int WE_Homeworld::warpFrame(float  /*frametime*/)
 					shipp->flags.set(Ship::Ship_Flags::Arriving_stage_2);
 					// dock leader needs to handle dockees
 					if (object_is_docked(objp)) {
-						Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
+					core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
 						dock_function_info dfi;
 						dock_evaluate_all_docked_objects(objp, &dfi, object_remove_arriving_stage1_ndl_flag_helper);
 						dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage2_ndl_flag_helper);
@@ -4233,7 +4233,7 @@ int WE_Hyperspace::warpStart()
 		shipp->flags.set(Ship::Ship_Flags::Arriving_stage_1);
 		// dock leader needs to handle dockees
 		if (object_is_docked(objp)) {
-			Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
+		core::Assertion(shipp->flags[Ship::Ship_Flags::Dock_leader], "The ship warping in (%s) must be the dock leader at this point!\n", shipp->ship_name);
 			dock_function_info dfi;
 			dock_evaluate_all_docked_objects(objp, &dfi, object_set_arriving_stage1_ndl_flag_helper);
 		}

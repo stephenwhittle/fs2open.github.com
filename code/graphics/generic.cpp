@@ -36,8 +36,8 @@ int generic_anim_init_and_stream(generic_anim *ga, const char *anim_filename, BM
 	char filename[NAME_LENGTH];
 	char *p;
 
-	Assert(ga != NULL);
-	Assert(anim_filename != NULL);
+core::Assert(ga != NULL);
+core::Assert(anim_filename != NULL);
 
 	// hi-res support
 	if (attempt_hi_res && (gr_screen.res == GR_1024)) {
@@ -607,7 +607,7 @@ void generic_anim_render_fixed_frame_delay(generic_anim* ga, float frametime)
  */
 void generic_anim_render_variable_frame_delay(generic_anim* ga, float frametime, float alpha)
 {
-	Assertion(ga->type == BM_TYPE_PNG, "only valid for apngs (currently); get a coder!");
+core::Assertion(ga->type == BM_TYPE_PNG, "only valid for apngs (currently); get a coder!");
 	if (ga->keyframe != 0) {
 		core::Warning(LOCATION, "apngs don't support keyframes");
 		return;
@@ -675,7 +675,7 @@ void generic_anim_render_variable_frame_delay(generic_anim* ga, float frametime,
 				frametime, ga->anim_time, ga->png.anim->frame.delay, ga->png.previous_frame_time,
 				ga->previous_frame, ga->current_frame, ga->png.anim->current_frame));
 
-		Assertion(ga->streaming != 0, "non-streaming apngs not implemented yet");
+	core::Assertion(ga->streaming != 0, "non-streaming apngs not implemented yet");
 		// note: generic anims are not currently ever non-streaming in FSO
 		// I'm not even sure that the existing ani/eff code would allow non-streaming generic anims
 		generic_render_png_stream(ga);

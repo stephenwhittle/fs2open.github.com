@@ -2,7 +2,7 @@
 #include "pilotfile/BinaryFileHandler.h"
 #include <core/toolchain.h>
 pilot::BinaryFileHandler::BinaryFileHandler(CFILE* cfp) : _cfp(cfp) {
-	Assertion(cfp != nullptr, "File pointer must be valid!");
+core::Assertion(cfp != nullptr, "File pointer must be valid!");
 }
 
 pilot::BinaryFileHandler::~BinaryFileHandler() {
@@ -34,7 +34,7 @@ void pilot::BinaryFileHandler::writeString(const char*, const char* str) {
 }
 
 void pilot::BinaryFileHandler::beginWritingSections() {
-	Assertion(!_writingSections, "Section writing nesting is not supported!");
+core::Assertion(!_writingSections, "Section writing nesting is not supported!");
 	_writingSections = true;
 }
 void pilot::BinaryFileHandler::startSectionWrite(Section id) {
@@ -53,7 +53,7 @@ void pilot::BinaryFileHandler::startSectionWrite(Section id) {
 }
 
 void pilot::BinaryFileHandler::endSectionWrite() {
-	Assertion(!_sectionOffsets.empty(), "No active section!");
+core::Assertion(!_sectionOffsets.empty(), "No active section!");
 	auto previous_off = _sectionOffsets.back();
 	_sectionOffsets.pop_back();
 
@@ -65,7 +65,7 @@ void pilot::BinaryFileHandler::endSectionWrite() {
 
 	size_t cur = (size_t) cftell(_cfp);
 
-	Assert(cur >= previous_off.offset);
+core::Assert(cur >= previous_off.offset);
 
 	size_t section_size = cur - previous_off.offset;
 
@@ -79,7 +79,7 @@ void pilot::BinaryFileHandler::endSectionWrite() {
 	}
 }
 void pilot::BinaryFileHandler::endWritingSections() {
-	Assertion(_writingSections, "Section writing ended while not writing sections!");
+core::Assertion(_writingSections, "Section writing ended while not writing sections!");
 	_writingSections = false;
 }
 void pilot::BinaryFileHandler::startArrayWrite(const char*, size_t size, bool short_index) {
@@ -123,7 +123,7 @@ bool pilot::BinaryFileHandler::hasMoreSections() {
 	return !cfeof(_cfp);
 }
 Section pilot::BinaryFileHandler::nextSection() {
-	Assertion(!_in_array, "nextSection() may not be called in an array!");
+core::Assertion(!_in_array, "nextSection() may not be called in an array!");
 
 	if (_section_start_pos != INVALID_SIZE && _section_end_pos != INVALID_SIZE) {
 		cf_set_max_read_len(_cfp, 0);
@@ -158,7 +158,7 @@ void pilot::BinaryFileHandler::endSectionRead() {
 	_section_end_pos = INVALID_SIZE;
 }
 size_t pilot::BinaryFileHandler::startArrayRead(const char*, bool short_index) {
-	Assertion(!_in_array, "Array nesting is not supported!");
+core::Assertion(!_in_array, "Array nesting is not supported!");
 
 	_in_array = true;
 	if (short_index) {
@@ -168,11 +168,11 @@ size_t pilot::BinaryFileHandler::startArrayRead(const char*, bool short_index) {
 	}
 }
 void pilot::BinaryFileHandler::nextArraySection() {
-	Assertion(_in_array, "nextArraySection() may only be called in an array!");
+core::Assertion(_in_array, "nextArraySection() may only be called in an array!");
 	// Nothing to do here in the binary version
 }
 void pilot::BinaryFileHandler::endArrayRead() {
-	Assertion(_in_array, "Array ended while not reading array!");
+core::Assertion(_in_array, "Array ended while not reading array!");
 
 	_in_array = false;
 }

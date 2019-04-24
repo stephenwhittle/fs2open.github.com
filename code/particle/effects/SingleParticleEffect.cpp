@@ -53,9 +53,9 @@ void SingleParticleEffect::initializeSource(ParticleSource& source) {
 
 SingleParticleEffect* SingleParticleEffect::createInstance(int effectID, float minSize, float maxSize,
 														   float lifetime) {
-	Assertion(bm_is_valid(effectID), "Invalid effect id %d passed!", effectID);
-	Assertion(minSize <= maxSize, "Maximum size %f is more than minimum size %f!", maxSize, minSize);
-	Assertion(minSize >= 0.0f, "Minimum size may not be less than zero, got %f!", minSize);
+core::Assertion(bm_is_valid(effectID), "Invalid effect id %d passed!", effectID);
+core::Assertion(minSize <= maxSize, "Maximum size %f is more than minimum size %f!", maxSize, minSize);
+core::Assertion(minSize >= 0.0f, "Minimum size may not be less than zero, got %f!", minSize);
 
 	auto effectPtr = new SingleParticleEffect("");
 	effectPtr->m_particleProperties.m_bitmap = effectID;

@@ -28,7 +28,7 @@ ADE_VIRTVAR(Action, l_LuaSEXP, "function action", "The action of this SEXP", "fu
 	}
 
 	if (ADE_SETTING_VAR) {
-		Assertion(action_arg.isValid(), "Action function reference must be valid!");
+	core::Assertion(action_arg.isValid(), "Action function reference must be valid!");
 
 		lua_sexp.sexp_handle->setAction(action_arg);
 	}

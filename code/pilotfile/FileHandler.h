@@ -82,7 +82,8 @@ class FileHandler {
 
 	virtual void readString(const char* name, char* dest, size_t max_size) {
 		auto string = readString(name);
-		Assertion(string.size() < max_size, "String in file is too long! Maximum is "
+		core::Assertion(string.size() < max_size,
+		                "String in file is too long! Maximum is "
 			SIZE_T_ARG
 			" but the file contained a string with length "
 			SIZE_T_ARG

@@ -146,7 +146,7 @@ namespace particle
 		case PARTICLE_BITMAP:
 		case PARTICLE_BITMAP_PERSISTENT:
 		{
-			Assertion(bm_is_valid(info->optional_data), "Invalid bitmap handle passed to particle create.");
+		core::Assertion(bm_is_valid(info->optional_data), "Invalid bitmap handle passed to particle create.");
 
 			bm_get_info(info->optional_data, NULL, NULL, NULL, &part->nframes, &fps);
 
@@ -239,7 +239,7 @@ namespace particle
 				bool reverse) {
 		particle_info pinfo;
 
-		Assertion((type >= 0) && (type < NUM_PARTICLE_TYPES), "Invalid particle type %d specified!", type);
+	core::Assertion((type >= 0) && (type < NUM_PARTICLE_TYPES), "Invalid particle type %d specified!", type);
 
 		// setup old data
 		pinfo.pos = *pos;
@@ -437,7 +437,7 @@ namespace particle
 		{
 			framenum = part->optional_data;
 
-			Assert( cur_frame < part->nframes );
+		core::Assert( cur_frame < part->nframes );
 
 			batching_add_volume_bitmap(framenum + cur_frame, &pos, part->particle_index % 8, part->radius, alpha);
 

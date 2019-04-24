@@ -190,7 +190,7 @@ void cmd_brief_init_voice()
 {
 	int i;
 
-	Assert(Cur_cmd_brief);
+core::Assert(Cur_cmd_brief);
 	for (i=0; i<Cur_cmd_brief->num_stages; i++) {
 		Cur_cmd_brief->stage[i].wave = -1;
 		if (stricmp(Cur_cmd_brief->stage[i].wave_filename, NOX("none")) != 0 && Cur_cmd_brief->stage[i].wave_filename[0]) {

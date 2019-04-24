@@ -301,8 +301,8 @@ void detail_level_set(int level)
 		Detail.setting = -1;
 		return;
 	}
-	Assert( level >= 0 );
-	Assert( level < NUM_DEFAULT_DETAIL_LEVELS );
+core::Assert( level >= 0 );
+core::Assert( level < NUM_DEFAULT_DETAIL_LEVELS );
 
 	Detail = Detail_defaults[level];
 

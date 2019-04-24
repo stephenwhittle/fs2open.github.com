@@ -812,7 +812,7 @@ void briefing_editor_dlg::OnDeleteStage()
 	audiostream_close_file(m_voice_id, 0);
 	m_voice_id = -1;
 
-	Assert(Briefing->num_stages);
+core::Assert(Briefing->num_stages);
 	z = m_cur_stage;
 	m_cur_stage = -1;
 	update_data(1);
@@ -1028,7 +1028,7 @@ void briefing_editor_dlg::OnMakeIcon()
 	else if (waypoint >= 0)
 	{
 		waypoint_list *wp_list = find_waypoint_list_with_instance(waypoint);
-		Assert(wp_list != NULL);
+	core::Assert(wp_list != NULL);
 		name = wp_list->get_name();
 	}
 	else if (jnp != Jump_nodes.end())
@@ -1127,7 +1127,7 @@ void briefing_editor_dlg::OnMakeIcon()
     flagset<Object::Object_Flags> default_flags;
     default_flags.set(Object::Object_Flags::Renders);
 	icon_obj[m_cur_icon] = obj_create(OBJ_POINT, -1, m_cur_icon, NULL, &pos, 0.0f, default_flags);
-	Assert(icon_obj[m_cur_icon] >= 0);
+core::Assert(icon_obj[m_cur_icon] >= 0);
 	obj_merge_created_list();
 	unmark_all();
 	set_cur_object_index(icon_obj[m_cur_icon]);
@@ -1151,8 +1151,8 @@ void briefing_editor_dlg::delete_icon(int num)
 	if (num < 0)
 		return;
 
-	Assert(m_cur_stage >= 0);
-	Assert(Briefing->stages[m_cur_stage].num_icons);
+core::Assert(m_cur_stage >= 0);
+core::Assert(Briefing->stages[m_cur_stage].num_icons);
 	z = m_cur_icon;
 	if (z == num)
 		z = -1;

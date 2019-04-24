@@ -73,9 +73,9 @@ int iff_init_color(int r, int g, int b)
 	static int num_iff_colors = 0;
 	static temp_color_t temp_colors[MAX_IFF_COLORS];
 
-	Assert(r >= 0 && r <= 255);
-	Assert(g >= 0 && g <= 255);
-	Assert(b >= 0 && b <= 255);
+core::Assert(r >= 0 && r <= 255);
+core::Assert(g >= 0 && g <= 255);
+core::Assert(b >= 0 && b <= 255);
 
 	// make sure we're under the limit
 	if (num_iff_colors >= MAX_IFF_COLORS)
@@ -195,7 +195,7 @@ void iff_init()
 		{
 			int dim_iff_brightness;
 			stuff_int(&dim_iff_brightness);
-			Assert(dim_iff_brightness >= 0 && dim_iff_brightness <= HUD_COLOR_ALPHA_MAX);
+		core::Assert(dim_iff_brightness >= 0 && dim_iff_brightness <= HUD_COLOR_ALPHA_MAX);
 			*iff_color_brightness = dim_iff_brightness;
 		}
 		else
@@ -214,7 +214,7 @@ void iff_init()
 			stuff_int_list(rgb, 3, RAW_INTEGER_TYPE);
 			for (i = 0; i < 3; i++)
 			{
-				Assert(rgb[i] >= 0 && rgb[i] <= 255);
+			core::Assert(rgb[i] >= 0 && rgb[i] <= 255);
 				radar_iff_color[0][1][i] = rgb[i];
 				radar_iff_color[0][0][i] = rgb[i] / 2;
 			}
@@ -225,7 +225,7 @@ void iff_init()
 			stuff_int_list(rgb, 3, RAW_INTEGER_TYPE);
 			for (i = 0; i < 3; i++)
 			{
-				Assert(rgb[i] >= 0 && rgb[i] <= 255);
+			core::Assert(rgb[i] >= 0 && rgb[i] <= 255);
 				radar_iff_color[1][1][i] = rgb[i];
 				radar_iff_color[1][0][i] = rgb[i] / 2;
 			}
@@ -236,7 +236,7 @@ void iff_init()
 			stuff_int_list(rgb, 3, RAW_INTEGER_TYPE);
 			for (i = 0; i < 3; i++)
 			{
-				Assert(rgb[i] >= 0 && rgb[i] <= 255);
+			core::Assert(rgb[i] >= 0 && rgb[i] <= 255);
 				radar_iff_color[2][1][i] = rgb[i];
 				radar_iff_color[2][0][i] = rgb[i] / 2;
 			}
@@ -247,7 +247,7 @@ void iff_init()
 			stuff_int_list(rgb, 3, RAW_INTEGER_TYPE);
 			for (i = 0; i < 3; i++)
 			{
-				Assert(rgb[i] >= 0 && rgb[i] <= 255);
+			core::Assert(rgb[i] >= 0 && rgb[i] <= 255);
 				radar_iff_color[3][1][i] = rgb[i];
 				radar_iff_color[3][0][i] = rgb[i] / 2;
 			}
@@ -258,7 +258,7 @@ void iff_init()
 			stuff_int_list(rgb, 3, RAW_INTEGER_TYPE);
 			for (i = 0; i < 3; i++)
 			{
-				Assert(rgb[i] >= 0 && rgb[i] <= 255);
+			core::Assert(rgb[i] >= 0 && rgb[i] <= 255);
 				radar_iff_color[4][1][i] = rgb[i];
 				radar_iff_color[4][0][i] = rgb[i] / 2;
 			}
@@ -505,7 +505,7 @@ void iff_init()
 int iff_lookup(const char *iff_name)
 {
 	// bogus
-	Assert(iff_name);
+core::Assert(iff_name);
 
 	if(iff_name == NULL)
 		return -1;
@@ -525,7 +525,7 @@ int iff_lookup(const char *iff_name)
  */
 int iff_get_attackee_mask(int attacker_team)
 {
-	Assert(attacker_team >= 0 && attacker_team < Num_iffs);
+core::Assert(attacker_team >= 0 && attacker_team < Num_iffs);
 
 	//	All teams attack all other teams.
 	if (Mission_all_attack)
@@ -547,7 +547,7 @@ int iff_get_attackee_mask(int attacker_team)
  */
 int iff_get_attacker_mask(int attackee_team)
 {
-	Assert(attackee_team >= 0 && attackee_team < Num_iffs);
+core::Assert(attackee_team >= 0 && attackee_team < Num_iffs);
 
 	int i, attacker_bitmask = 0;
 	for (i = 0; i < Num_iffs; i++)
@@ -608,9 +608,9 @@ color *iff_get_color(int color_index, int is_bright)
  */
 color *iff_get_color_by_team(int team, int seen_from_team, int is_bright)
 {
-	Assert(team >= 0 && team < Num_iffs);
-	Assert(seen_from_team < Num_iffs);
-	Assert(is_bright == 0 || is_bright == 1);
+core::Assert(team >= 0 && team < Num_iffs);
+core::Assert(seen_from_team < Num_iffs);
+core::Assert(is_bright == 0 || is_bright == 1);
 
 
 	// is this guy being seen by anyone?
@@ -642,9 +642,9 @@ color *iff_get_color_by_team(int team, int seen_from_team, int is_bright)
  */
 color *iff_get_color_by_team_and_object(int team, int seen_from_team, int is_bright, object *objp)
 {
-	Assert(team >= 0 && team < Num_iffs);
-	Assert(seen_from_team < Num_iffs);
-	Assert(is_bright == 0 || is_bright == 1);
+core::Assert(team >= 0 && team < Num_iffs);
+core::Assert(seen_from_team < Num_iffs);
+core::Assert(is_bright == 0 || is_bright == 1);
 
 	int alt_color_index = -1;
 

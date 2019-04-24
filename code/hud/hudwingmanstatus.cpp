@@ -54,8 +54,8 @@ static int HUD_wingman_flash_is_bright;
 // flag a player wing ship as destroyed
 void hud_set_wingman_status_dead(int wing_index, int wing_pos)
 {
-	Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
-	Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
+core::Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
+core::Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
 
 	HUD_wingman_status[wing_index].status[wing_pos] = HUD_WINGMAN_STATUS_DEAD;
 }
@@ -63,8 +63,8 @@ void hud_set_wingman_status_dead(int wing_index, int wing_pos)
 // flags a given player wing ship as departed
 void hud_set_wingman_status_departed(int wing_index, int wing_pos)
 {
-	Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
-	Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
+core::Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
+core::Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
 
 	HUD_wingman_status[wing_index].status[wing_pos] = HUD_WINGMAN_STATUS_NOT_HERE;
 }
@@ -74,8 +74,8 @@ void hud_set_wingman_status_none(int wing_index, int wing_pos)
 {
 	int i;
 
-	Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
-	Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
+core::Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
+core::Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
 
 	HUD_wingman_status[wing_index].status[wing_pos] = HUD_WINGMAN_STATUS_NONE;
 
@@ -93,8 +93,8 @@ void hud_set_wingman_status_none(int wing_index, int wing_pos)
 // flags a given player wing ship as "alive" (for multiplayer respawns )
 void hud_set_wingman_status_alive(int wing_index, int wing_pos)
 {
-	Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
-	Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
+core::Assert(wing_index >= 0 && wing_index < MAX_SQUADRON_WINGS);
+core::Assert(wing_pos >= 0 && wing_pos < MAX_SHIPS_PER_WING);
 
 	HUD_wingman_status[wing_index].status[wing_pos] = HUD_WINGMAN_STATUS_ALIVE;
 }
@@ -129,7 +129,7 @@ void hud_wingman_kill_multi_teams()
 	if (!IS_MISSION_MULTI_TEAMS)
 		return;
 
-	Assert(MAX_TVT_WINGS == 2); // Goober5000
+core::Assert(MAX_TVT_WINGS == 2); // Goober5000
 
 	wing_index = -1;
 	if (Net_player->p_info.team == 0)

@@ -68,7 +68,7 @@ void ct_level_close()
 void ct_ship_create(ship *shipp)
 {
 	int idx;
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 
 	// null out the ct indices for this guy
 	for(idx=0; idx<MAX_SHIP_CONTRAILS; idx++){
@@ -87,7 +87,7 @@ void ct_ship_delete(ship *shipp)
 {
 	int idx;		
 
-	Assert(shipp != NULL);
+core::Assert(shipp != NULL);
 	// free up any contrails this guy may have had
 	for(idx=0; idx<MAX_SHIP_CONTRAILS; idx++){
 		if(shipp->trail_ptr[idx] != NULL){
@@ -108,8 +108,8 @@ void ct_ship_process(ship *shipp)
 	if (shipp->ab_info[0].texture.bitmap_id != -1)
 		ct_ship_process_ABtrails(shipp);
 
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
 	
 	// if trails aren't enabled, return
 	if (!ct_display_contrails()) {
@@ -125,7 +125,7 @@ void ct_ship_process(ship *shipp)
 		return;
 	}
 
-	Assert(objp->instance >= 0);
+core::Assert(objp->instance >= 0);
 	shipp = &Ships[objp->instance];
 
 	// if the object is below the critical limit
@@ -192,9 +192,9 @@ void ct_update_contrails(ship *shipp)
 	object *objp;
 
 	// get object and ship info
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	objp = &Objects[shipp->objnum];
 	sip = &Ship_info[shipp->ship_info_index];
 
@@ -235,9 +235,9 @@ void ct_create_contrails(ship *shipp)
 	object *objp;
 
 	// get object and ship info
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	objp = &Objects[shipp->objnum];
 	sip = &Ship_info[shipp->ship_info_index];
 
@@ -268,8 +268,8 @@ void ct_ship_process_ABtrails(ship *shipp)
 	object *objp;
 	ship_info* sip;
 
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
 	objp = &Objects[shipp->objnum];	
 	sip=&Ship_info[shipp->ship_info_index];
 
@@ -283,7 +283,7 @@ void ct_ship_process_ABtrails(ship *shipp)
 		return;
 
 
-	Assert(objp->instance >= 0);
+core::Assert(objp->instance >= 0);
 	shipp = &Ships[objp->instance];
 
 
@@ -331,9 +331,9 @@ void ct_create_ABtrails(ship *shipp)
 	object *objp;
 
 	// get object and ship info
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	objp = &Objects[shipp->objnum];
 	sip = &Ship_info[shipp->ship_info_index];
 
@@ -378,9 +378,9 @@ void ct_update_ABtrails(ship *shipp)
 	object *objp;
 
 	// get object and ship info
-	Assert(shipp != NULL);
-	Assert(shipp->objnum >= 0);
-	Assert(shipp->ship_info_index >= 0);
+core::Assert(shipp != NULL);
+core::Assert(shipp->objnum >= 0);
+core::Assert(shipp->ship_info_index >= 0);
 	objp = &Objects[shipp->objnum];
 	sip = &Ship_info[shipp->ship_info_index];
 

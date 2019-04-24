@@ -38,7 +38,7 @@ static void png_scp_read_data(png_structp png_ptr, png_bytep data, png_size_t le
 static void png_scp_write_data(png_structp  png_ptr, png_bytep data, png_size_t length) {
 	auto status = static_cast<png_status*>(png_get_io_ptr(png_ptr));
 
-	Assertion(status != nullptr, "Invalid file pointer in PNG writing function.");
+core::Assertion(status != nullptr, "Invalid file pointer in PNG writing function.");
 
 	auto check = (png_size_t)cfwrite(data, (png_size_t)1, (int)length, status->cfp);
 	if (check != length)
@@ -47,7 +47,7 @@ static void png_scp_write_data(png_structp  png_ptr, png_bytep data, png_size_t 
 static void png_scp_flush(png_structp png_ptr) {
 	auto status = static_cast<png_status*>(png_get_io_ptr(png_ptr));
 
-	Assertion(status != nullptr, "Invalid file pointer in PNG writing function.");
+core::Assertion(status != nullptr, "Invalid file pointer in PNG writing function.");
 
 	cflush(status->cfp);
 }
@@ -125,7 +125,7 @@ int png_read_header(const char *real_filename, CFILE *img_cfp, int *w, int *h, i
 		status.cfp = img_cfp;
 	}
 
-	Assert( status.cfp != NULL );
+core::Assert( status.cfp != NULL );
 
 	if (status.cfp == NULL)
 		return PNG_ERROR_READING;
@@ -395,7 +395,7 @@ void apng_ani::_compose_frame()
 	int u, v, al;
 
 	// our libpng transformations should ensure 4 bytes per pixel by this point
-	Assertion(bpp == 32, "apng frame composition assumes 4 bytes of data per pixel, get a coder!");
+core::Assertion(bpp == 32, "apng frame composition assumes 4 bytes of data per pixel, get a coder!");
 	for (uint j = 0; j < _frameh; j++) {
 		ubyte* sp = _frame_raw.rows[j];
 		ubyte* dp = frame.rows[j + _y_offset] + _x_offset * 4;
@@ -831,7 +831,7 @@ int apng_ani::load_header()
 	}
 
 	// should be at EOF; attach to _frame_offsets to make next_frame code simpler
-	Assertion(cfeof(_cfp) != 0, "apng not at EOF, get a coder!");
+core::Assertion(cfeof(_cfp) != 0, "apng not at EOF, get a coder!");
 	_frame_offsets.push_back(cftell(_cfp));
 
 	// sanity checks

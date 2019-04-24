@@ -198,19 +198,19 @@ ushort multi_get_next_network_signature( int what_kind )
 // and is used mainly for firing weapons.  what_kind tells us permanent or non-permanent signature
 void multi_set_network_signature( ushort signature, int what_kind )
 {
-	Assert( signature != 0 );
+core::Assert( signature != 0 );
 
 	if ( what_kind == MULTI_SIG_SHIP ) {
-		Assert( (signature >= SHIP_SIG_MIN) && (signature <= SHIP_SIG_MAX) );
+	core::Assert( (signature >= SHIP_SIG_MIN) && (signature <= SHIP_SIG_MAX) );
 		Next_ship_signature = signature;
 	} else if ( what_kind == MULTI_SIG_DEBRIS ) {
-		Assert( (signature >= DEBRIS_SIG_MIN) && (signature <= DEBRIS_SIG_MAX) );
+	core::Assert( (signature >= DEBRIS_SIG_MIN) && (signature <= DEBRIS_SIG_MAX) );
 		Next_debris_signature = signature;
 	} else if ( what_kind == MULTI_SIG_ASTEROID ) {
-		Assert( (signature >= ASTEROID_SIG_MIN) && (signature <= ASTEROID_SIG_MAX) );
+	core::Assert( (signature >= ASTEROID_SIG_MIN) && (signature <= ASTEROID_SIG_MAX) );
 		Next_asteroid_signature = signature;
 	} else if ( what_kind == MULTI_SIG_NON_PERMANENT ) {
-		Assert( (signature >= NPERM_SIG_MIN) /*&& (signature <= NPERM_SIG_MAX)*/ );
+	core::Assert( (signature >= NPERM_SIG_MIN) /*&& (signature <= NPERM_SIG_MAX)*/ );
 		Next_non_perm_signature = signature;
 	} else
 		Int3();			// get Allender
@@ -684,7 +684,7 @@ void multi_assign_player_ship( int net_player_num, object *objp,int ship_class )
 	ship *shipp;
 	int idx;
 
-	Assert ( MULTI_CONNECTED(Net_players[net_player_num]) );
+core::Assert ( MULTI_CONNECTED(Net_players[net_player_num]) );
 
 	shipp = &Ships[objp->instance];
 
@@ -701,7 +701,7 @@ void multi_assign_player_ship( int net_player_num, object *objp,int ship_class )
 	// find the parse object for this ship.  Also, set the wingman status stuff so wingman status gauge
 	// works properly.
 	Net_players[net_player_num].p_info.p_objp = mission_parse_get_arrival_ship( shipp->ship_name );
-	Assert( Net_players[net_player_num].p_info.p_objp != NULL );		// get allender -- ship should be on list
+core::Assert( Net_players[net_player_num].p_info.p_objp != NULL );		// get allender -- ship should be on list
 
 	// game server and this client need to initialize this information so object updating
 	// works properly.
@@ -731,7 +731,7 @@ int multi_create_player( int net_player_num, player *pl, const char* name, net_a
 	int player_ship_class = ship_class;
 	int current_player_count;
 
-	Assert ( net_player_num < MAX_PLAYERS );				// probably shoudln't be able to even get into this routine if no room	
+core::Assert ( net_player_num < MAX_PLAYERS );				// probably shoudln't be able to even get into this routine if no room	
 	
 	// blast _any_ old data
 	memset(&Net_players[net_player_num],0,sizeof(net_player));
@@ -843,7 +843,7 @@ int multi_create_player( int net_player_num, player *pl, const char* name, net_a
 void multi_make_player_ai( object *pobj )
 {
 
-	Assert ( pobj != NULL );
+core::Assert ( pobj != NULL );
 
 	if ( pobj->type != OBJ_SHIP )
 		return;
@@ -1048,8 +1048,8 @@ void multi_cull_zombies()
 
 void fill_net_addr(net_addr* addr, ubyte* address, ushort port)
 {
-	Assert(addr != NULL);
-	Assert(address != NULL);
+core::Assert(addr != NULL);
+core::Assert(address != NULL);
 
 	addr->type = Multi_options_g.protocol;
 	memset( addr->addr, 0x00, 6);
@@ -1076,7 +1076,7 @@ char* get_text_address( char * text, ubyte * address )
 			break;
 
 		default:
-			Assert(0);
+		core::Assert(0);
 			break;
 
 	} // end switch
@@ -1280,7 +1280,7 @@ void multi_subsys_update_all()
 {
 	/*
 	int idx;
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 	for(idx=0;idx<MAX_PLAYERS;idx++){
 		if((Net_players[idx].flags & NETINFO_FLAG_CONNECTED) && !psnet_same(&My_addr,&Net_players[idx].addr) && !(Net_players[idx].flags & NETINFO_FLAG_OBSERVER))
 			send_subsys_update_packet(&Net_players[idx]);
@@ -1329,7 +1329,7 @@ void server_verify_filesig(short player_id, ushort sum_sig, int length_sig)
 	int is_builtin;
    
 	player = find_player_id(player_id);
-	Assert(player >= 0);
+core::Assert(player >= 0);
 	if(player < 0){
 		return;
 	}
@@ -1554,8 +1554,8 @@ void multi_maybe_send_repair_info(object *dest_objp, object *source_objp, int co
 	if ( !MULTIPLAYER_MASTER )
 		return;
 	
-	Assert( dest_objp->type == OBJ_SHIP );
-	Assert( dest_objp != source_objp );
+core::Assert( dest_objp->type == OBJ_SHIP );
+core::Assert( dest_objp != source_objp );
 
 	send_repair_info_packet( dest_objp, source_objp, code );
 }
@@ -1588,7 +1588,7 @@ void multi_create_standalone_object()
 
 	// create the default player ship object and use that as my default virtual "ship", and make it "invisible"
 	pobj_num = parse_create_object(Player_start_pobject);
-	Assert(pobj_num != -1);
+core::Assert(pobj_num != -1);
     flagset<Object::Object_Flags> tmp_flags;
 	obj_set_flags(&Objects[pobj_num], tmp_flags + Object::Object_Flags::Player_ship);
 	Objects[pobj_num].net_signature = STANDALONE_SHIP_SIG;
@@ -2369,7 +2369,7 @@ void multi_file_xfer_notify(int handle)
 	// if the incoming filename is a freespace file, set my netplayer state to be "file xfer"
 	if(is_mission){
 		// we'd better not be xferring a file right now
-		Assert(Net_player->s_info.xfer_handle == -1);
+	core::Assert(Net_player->s_info.xfer_handle == -1);
 
 		// force into the multidata directory
 		multi_xfer_handle_force_dir(handle, cf_type);		
@@ -2421,7 +2421,7 @@ void multi_process_valid_join_request(join_request *jr, net_addr *who_from, int 
 	net_player_num = multi_find_open_netplayer_slot();
 	player_num = multi_find_open_player_slot();
 	id_num = multi_get_new_id();
-	Assert((net_player_num != -1) && (player_num != -1));			
+core::Assert((net_player_num != -1) && (player_num != -1));			
 
 	// if he is requesting to join as an observer
 	if(jr->flags & JOIN_FLAG_AS_OBSERVER){			
@@ -2561,7 +2561,7 @@ void multi_process_valid_join_request(join_request *jr, net_addr *who_from, int 
 				}
 				
 				ingame_join_team = lowest_team[1];*/
-				//Assert(ingame_join_team != -1);
+				/core::Assert(ingame_join_team != -1);
 
 				Net_players[net_player_num].p_info.team = ingame_join_team;
 			}
@@ -2770,7 +2770,7 @@ void multi_server_update_player_weapons(net_player *pl,ship *shipp)
 	// engine ets
 	pl->s_info.ship_ets |= ((ushort)shipp->engine_recharge_index);
 
-	Assert( pl->s_info.ship_ets != 0 );
+core::Assert( pl->s_info.ship_ets != 0 );
 }
 
 // flush the multidata cache directory
@@ -3055,7 +3055,7 @@ void multi_update_valid_missions()
 		std_gen_set_text("Querying:", 1);
 	}
 
-	Assert( MULTI_IS_TRACKER_GAME );
+core::Assert( MULTI_IS_TRACKER_GAME );
 
 	// mark all missions on our list as being MVALID_STATUS_UNKNOWN
 	for (idx = 0; idx < Multi_create_mission_list.size(); idx++) {

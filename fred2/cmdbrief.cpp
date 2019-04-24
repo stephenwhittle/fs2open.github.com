@@ -235,7 +235,7 @@ void cmd_brief_dlg::OnDeleteStage()
 	audiostream_close_file(m_wave_id, 0);
 	m_wave_id = -1;
 
-	Assert(Cur_cmd_brief->num_stages);
+core::Assert(Cur_cmd_brief->num_stages);
 	z = m_cur_stage;
 	m_cur_stage = -1;
 	update_data(1);

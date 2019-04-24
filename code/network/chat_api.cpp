@@ -504,7 +504,7 @@ char *ChatGetString(void)
 				
 				return p;
 			}
-			Assert(strlen(Input_chat_buffer) < MAXCHATBUFFER-1);
+		core::Assert(strlen(Input_chat_buffer) < MAXCHATBUFFER-1);
 			strcat_s(Input_chat_buffer,ch);
 		}
 		else
@@ -571,7 +571,7 @@ int AddChatUser(const char *nickname)
 	if(Firstuser==NULL)
 	{
 		Firstuser = (Chat_user *)vm_malloc(sizeof(Chat_user));
-		Assert(Firstuser);
+	core::Assert(Firstuser);
 		strncpy(Firstuser->nick_name, nickname, sizeof(Firstuser->nick_name)-1);
 		Firstuser->next = NULL;
 		AddChatCommandToQueue(CC_USER_JOINING,nickname,strlen(nickname)+1);
@@ -585,7 +585,7 @@ int AddChatUser(const char *nickname)
 		}
 		Curruser->next = (Chat_user *)vm_malloc(sizeof(Chat_user));
 		Curruser = Curruser->next;
-		Assert(Curruser);
+	core::Assert(Curruser);
 		strncpy(Curruser->nick_name, nickname, sizeof(Curruser->nick_name)-1);
 		Curruser->next = NULL;
 		AddChatCommandToQueue(CC_USER_JOINING,nickname,strlen(nickname)+1);
@@ -1130,7 +1130,7 @@ void AddChatCommandToQueue(int command,const void *data,size_t len)
 	if(Firstcommand==NULL)
 	{
 		Firstcommand = (Chat_command *)vm_malloc(sizeof(Chat_command));
-		Assert(Firstcommand);
+	core::Assert(Firstcommand);
 		Firstcommand->next = NULL;
 		Currcommand = Firstcommand;
 	}
@@ -1141,7 +1141,7 @@ void AddChatCommandToQueue(int command,const void *data,size_t len)
 			Currcommand = Currcommand->next;
 		}
 		Currcommand->next = (Chat_command *)vm_malloc(sizeof(Chat_command));
-		Assert(Currcommand->next);
+	core::Assert(Currcommand->next);
 		Currcommand = Currcommand->next;
 	}
 	Currcommand->command = (short)command;
@@ -1239,7 +1239,7 @@ void AddChannel(char *channel,unsigned short numusers,char *topic)
 	if(Firstchannel==NULL)
 	{
 		Firstchannel = (Chat_channel *)vm_malloc(sizeof(Chat_channel));
-		Assert(Firstchannel);
+	core::Assert(Firstchannel);
 		strncpy(Firstchannel->channel_name, channel, sizeof(Firstchannel->channel_name)-1);
 		strncpy(Firstchannel->topic, topic, sizeof(Firstchannel->topic)-1);
 		Firstchannel->users = numusers;
@@ -1253,7 +1253,7 @@ void AddChannel(char *channel,unsigned short numusers,char *topic)
 			Currchannel = Currchannel->next;
 		}
 		Currchannel->next = (Chat_channel *)vm_malloc(sizeof(Chat_channel));
-		Assert(Currchannel->next);
+	core::Assert(Currchannel->next);
 		Currchannel = Currchannel->next;
 		strncpy(Currchannel->channel_name, channel, sizeof(Currchannel->channel_name)-1);
 		strncpy(Currchannel->topic, topic, sizeof(Currchannel->topic)-1);

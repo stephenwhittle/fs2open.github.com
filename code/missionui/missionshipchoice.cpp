@@ -469,7 +469,7 @@ void active_list_add(int ship_class)
 	ss_active_item *sai;
 
 	sai = get_free_active_list_node();
-	Assert(sai != NULL);
+core::Assert(sai != NULL);
 	sai->ship_class = ship_class;
 	list_append(&SS_active_head, sai);
 }
@@ -499,7 +499,7 @@ void init_active_list()
 	int i;
 	ss_active_item	*sai;
 
-	Assert( Ss_pool != NULL );
+core::Assert( Ss_pool != NULL );
 
 	clear_active_list();
 
@@ -816,14 +816,14 @@ void maybe_change_selected_ship(int offset)
 		start_ship_animation(Selected_ss_class, 1);
 	}
 	else
-		Assert( Selected_ss_class == ship_class );
+	core::Assert( Selected_ss_class == ship_class );
 }
 
 void maybe_change_selected_wing_ship(int wb_num, int ws_num)
 {
-	Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
-	Assert(ws_num >= 0 && ws_num < MAX_WING_SLOTS);	
-	Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
+core::Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
+core::Assert(ws_num >= 0 && ws_num < MAX_WING_SLOTS);	
+core::Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
 	
 	if ( Ss_wings[wb_num].wingnum < 0 ) {
 		return;
@@ -1214,7 +1214,7 @@ void ship_select_blit_ship_info()
 	gr_string(Ship_info_coords[gr_screen.res][SHIP_SELECT_X_COORD], y_start, XSTR("Description",1571), GR_RESIZE_MENU);
 	y_start += line_height;
 
-	Assert(strlen(sip->desc));
+core::Assert(strlen(sip->desc));
 
 	int n_lines;
 	int n_chars[MAX_BRIEF_LINES];
@@ -1232,7 +1232,7 @@ void ship_select_blit_ship_info()
 
 		// copy the split up lines into the text lines array
 		for (int idx = 0;idx<n_lines;idx++ ) {
-			Assert(n_chars[idx] < SHIP_SELECT_SHIP_INFO_MAX_LINE_LEN);
+		core::Assert(n_chars[idx] < SHIP_SELECT_SHIP_INFO_MAX_LINE_LEN);
 			strncpy(Ship_select_ship_info_lines[idx], p_str[idx], n_chars[idx]);
 			Ship_select_ship_info_lines[idx][n_chars[idx]] = 0;
 			drop_leading_white_space(Ship_select_ship_info_lines[idx]);		
@@ -1245,7 +1245,7 @@ void ship_select_blit_ship_info()
 		Ship_select_ship_info_line_count = 0;
 	}	
 	
-	Assert(Ship_select_ship_info_line_count < MAX_NUM_SHIP_DESC_LINES);
+core::Assert(Ship_select_ship_info_line_count < MAX_NUM_SHIP_DESC_LINES);
 	gr_set_color_fast(text);
 	for(int idx=0;idx<Ship_select_ship_info_line_count;idx++){
 		gr_string(Ship_info_coords[gr_screen.res][SHIP_SELECT_X_COORD]+4, y_start, Ship_select_ship_info_lines[idx], GR_RESIZE_MENU);
@@ -1433,7 +1433,7 @@ void ship_select_do(float frametime)
 
 	ss_maybe_drop_icon();
 
-	Assert( Ss_icons != NULL );
+core::Assert( Ss_icons != NULL );
 
 	if ( !Background_playing ) {	
 		GR_MAYBE_CLEAR_RES(Ship_select_background_bitmap);
@@ -1606,7 +1606,7 @@ void ss_unload_all_icons()
 	int					i,j;
 	ss_icon_info		*icon;
 
-	Assert( Ss_icons != NULL );
+core::Assert( Ss_icons != NULL );
 
 	for ( i = 0; i < MAX_SHIP_CLASSES; i++ ) {
 		icon = &Ss_icons[i];
@@ -1658,9 +1658,9 @@ void draw_ship_icon_with_number(int screen_offset, int ship_class)
 	//shader *shader_to_use;
 
 
-	Assert( screen_offset >= 0 && screen_offset <= 3 );
-	Assert( ship_class >= 0 );
-	Assert( (Ss_pool != NULL) && (Ss_icons != NULL) );
+core::Assert( screen_offset >= 0 && screen_offset <= 3 );
+core::Assert( ship_class >= 0 );
+core::Assert( (Ss_pool != NULL) && (Ss_icons != NULL) );
 	ss_icon = &Ss_icons[ship_class];
 
 	num_x = Ship_list_coords[gr_screen.res][screen_offset][2];
@@ -1674,7 +1674,7 @@ void draw_ship_icon_with_number(int screen_offset, int ship_class)
 
 	// next check if ship has mouse over it
 	if ( Hot_ss_icon > -1 ) {
-		Assert(Hot_ss_icon <= 3);
+	core::Assert(Hot_ss_icon <= 3);
 		if ( Hot_ss_icon == screen_offset )
 		{
 			if(ss_icon->model_index == -1)
@@ -1774,8 +1774,8 @@ void start_ship_animation(int ship_class, int  /*play_sound*/)
 			mprintf(("Couldn't load model file %s in missionshipchoice.cpp\n", sip->pof_file));
 		}
 	} else {
-		Assert( ship_class >= 0 );
-		Assert( Ss_icons != NULL );
+	core::Assert( ship_class >= 0 );
+	core::Assert( Ss_icons != NULL );
 		
 		if (Ship_anim_class == ship_class) {
 			return;
@@ -1822,7 +1822,7 @@ void start_ship_animation(int ship_class, int  /*play_sound*/)
 
 void ss_unload_all_anims()
 {
-	Assert( Ss_icons != NULL );
+core::Assert( Ss_icons != NULL );
 
 	for ( int i = 0; i < MAX_SHIP_CLASSES; i++ ) {
 		if ( Ss_icons[i].ss_anim.num_frames ) {
@@ -1876,7 +1876,7 @@ void commit_pressed()
 			player_ship_info_index = Team_data[Common_team].default_ship;
 
 		} else {
-			Assert(Selected_ss_class >= 0 );
+		core::Assert(Selected_ss_class >= 0 );
 			player_ship_info_index = Selected_ss_class;
 		}
 
@@ -1977,8 +1977,8 @@ void commit_pressed()
 int pick_from_ship_list(int screen_offset, int ship_class)
 {
 	int rval = -1;
-	Assert(ship_class >= 0);
-	Assert( Ss_pool != NULL );
+core::Assert(ship_class >= 0);
+core::Assert( Ss_pool != NULL );
 
 	if ( Wss_num_wings == 0 )
 		return rval;
@@ -1994,7 +1994,7 @@ int pick_from_ship_list(int screen_offset, int ship_class)
 		mouse_get_pos_unscaled( &mouse_x, &mouse_y );
 		Ss_delta_x = Ship_list_coords[gr_screen.res][screen_offset][0] - mouse_x;
 		Ss_delta_y = Ship_list_coords[gr_screen.res][screen_offset][1] - mouse_y;
-		Assert( Ss_pool[ship_class] >= 0 );
+	core::Assert( Ss_pool[ship_class] >= 0 );
 		rval = 0;
 	}
 
@@ -2010,9 +2010,9 @@ int pick_from_ship_list(int screen_offset, int ship_class)
 void pick_from_wing(int wb_num, int ws_num)
 {
 	int slot_index;
-	Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
-	Assert(ws_num >= 0 && ws_num < MAX_WING_SLOTS);
-	Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
+core::Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
+core::Assert(ws_num >= 0 && ws_num < MAX_WING_SLOTS);
+core::Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
 	
 	ss_wing_info *wb;
 	ss_slot_info *ws;
@@ -2055,7 +2055,7 @@ void pick_from_wing(int wb_num, int ws_num)
 		case WING_SLOT_FILLED:
 			{
 			int mouse_x, mouse_y;
-			Assert(Wss_slots[slot_index].ship_class >= 0);
+		core::Assert(Wss_slots[slot_index].ship_class >= 0);
 			ss_set_carried_icon(slot_index, Wss_slots[slot_index].ship_class);
 
 			mouse_get_pos_unscaled( &mouse_x, &mouse_y );
@@ -2096,8 +2096,8 @@ void draw_wing_block(int wb_num, int hot_slot, int selected_slot, int class_sele
 	color			*color_to_draw = NULL;
 	//shader			*shader_to_use = NULL;
 
-	Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
-	Assert( (Ss_wings != NULL) && (Wss_slots != NULL) && (Ss_icons != NULL) );
+core::Assert(wb_num >= 0 && wb_num < MAX_WING_BLOCKS);
+core::Assert( (Ss_wings != NULL) && (Wss_slots != NULL) && (Ss_icons != NULL) );
 
 	wb = &Ss_wings[wb_num];
 	
@@ -2138,7 +2138,7 @@ void draw_wing_block(int wb_num, int hot_slot, int selected_slot, int class_sele
 			case WING_SLOT_FILLED:
 			case WING_SLOT_FILLED|WING_SLOT_IS_PLAYER:
 
-				Assert(icon);
+			core::Assert(icon);
 
 				if ( class_select >= 0 ) {	// only ship select
 					if ( Carried_ss_icon.from_slot == slot_index ) {
@@ -2249,7 +2249,7 @@ void ss_make_slot_empty(int slot_index)
 	ss_wing_info	*wb;
 	ss_slot_info	*ws;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	// calculate the wing #
 	wing_num = slot_index / MAX_WING_SLOTS;
@@ -2271,7 +2271,7 @@ void ss_make_slot_full(int slot_index)
 	ss_wing_info	*wb;
 	ss_slot_info	*ws;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	// calculate the wing #
 	wing_num = slot_index / MAX_WING_SLOTS;
@@ -2296,12 +2296,12 @@ void ss_blit_ship_icon(int x,int y,int ship_class,int bmap_num)
 	}
 	else
 	{
-		Assert( Ss_icons != NULL );
+	core::Assert( Ss_icons != NULL );
 
 		ss_icon_info *icon = &Ss_icons[ship_class];
 		if(icon->icon_bmaps[bmap_num] != -1)
 		{
-			Assert(icon->icon_bmaps[bmap_num] != -1);	
+		core::Assert(icon->icon_bmaps[bmap_num] != -1);	
 			gr_set_bitmap(icon->icon_bmaps[bmap_num]);
 			gr_bitmap(x,y,GR_RESIZE_MENU);	
 		}
@@ -2365,7 +2365,7 @@ int create_wings()
 	int i,j,k;
 	int found_pobj;
 
-	Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
 
 	for ( i = 0; i < MAX_WING_BLOCKS; i++ ) {
 		
@@ -2381,7 +2381,7 @@ int create_wings()
 			ws = &wb->ss_slots[j];
 			if ((ws->status & WING_SLOT_FILLED ) || (ws->status & WING_SLOT_SHIPS_DISABLED ) || (ws->status & WING_SLOT_WEAPONS_DISABLED )){
 				if ( wp->ship_index[j] >= 0 ) {
-					Assert(Ships[wp->ship_index[j]].objnum >= 0);
+				core::Assert(Ships[wp->ship_index[j]].objnum >= 0);
 				}
 
 				if ( ws->status & WING_SLOT_IS_PLAYER ) {
@@ -2407,7 +2407,7 @@ int create_wings()
 								}
 							}
 						}
-						Assert(found_pobj);
+					core::Assert(found_pobj);
 					}
 					else {
 						// AL 10/04/97
@@ -2450,11 +2450,11 @@ int create_wings()
 					if ( wb->is_late ) {
 						list_remove( &Ship_arrival_list, &Parse_objects[ws->sa_index]);
 						wp->wave_count--;
-						Assert(wp->wave_count >= 0);
+					core::Assert(wp->wave_count >= 0);
 					}
 					else {
 						shipnum = wp->ship_index[j];
-						Assert( shipnum >= 0 && shipnum < MAX_SHIPS );
+					core::Assert( shipnum >= 0 && shipnum < MAX_SHIPS );
 						cleanup_ship_index[j] = shipnum;
 						ship_add_exited_ship( &Ships[shipnum], Ship::Exit_Flags::Player_deleted );
 						obj_delete(Ships[shipnum].objnum);
@@ -2490,8 +2490,8 @@ int create_wings()
 //
 void update_player_ship(int si_index)
 {
-	Assert( si_index >= 0 );
-	Assert( Player_obj != NULL);
+core::Assert( si_index >= 0 );
+core::Assert( Player_obj != NULL);
 
 	// AL 10/04/97
 	// Change the ship type of the player ship if different than current.
@@ -2560,7 +2560,7 @@ int ss_return_original_ship_class(int slot_num)
 {
 	int wnum, snum;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	wnum = slot_num/MAX_WING_SLOTS;
 	snum = slot_num%MAX_WING_SLOTS;
@@ -2573,7 +2573,7 @@ int ss_return_saindex(int slot_num)
 {
 	int wnum, snum;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	wnum = slot_num/MAX_WING_SLOTS;
 	snum = slot_num%MAX_WING_SLOTS;
@@ -2608,7 +2608,7 @@ int ss_return_ship(int wing_block, int wing_slot, int *ship_index, p_object **pp
 
 	ss_slot_info	*ws;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	if (!Wss_num_wings) {
 		*ppobjp = NULL;
@@ -2628,7 +2628,7 @@ int ss_return_ship(int wing_block, int wing_slot, int *ship_index, p_object **pp
 		*ppobjp = &Parse_objects[ws->sa_index];
 	} else {
 		*ship_index = Wings[Ss_wings[wing_block].wingnum].ship_index[wing_slot];
-		Assert(*ship_index != -1);		
+	core::Assert(*ship_index != -1);		
 	}
 
 	return ws->original_ship_class;
@@ -2643,7 +2643,7 @@ void ss_return_name(int wing_block, int wing_slot, char *name)
 	ss_slot_info	*ws;
 	wing				*wp;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	ws = &Ss_wings[wing_block].ss_slots[wing_slot];
 	wp = &Wings[Ss_wings[wing_block].wingnum];		
@@ -2684,7 +2684,7 @@ void ss_reset_selected_ship()
 {
 	int i;
 
-	Assert( (Ss_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wss_slots != NULL) );
 
 	Selected_ss_class = -1;
 
@@ -2741,7 +2741,7 @@ int ss_fixup_team_data(team_data *tdata)
 			ship_in_parse_player = 0;
 			
 			for ( k = 0; k < p_team_data->num_ship_choices; k++ ) {
-				Assert( p_team_data->ship_count[k] >= 0 );
+			core::Assert( p_team_data->ship_count[k] >= 0 );
 				if ( p_team_data->ship_list[k] == Ships[wp->ship_index[j]].ship_info_index ) {
 					ship_in_parse_player = 1;
 					break;
@@ -2763,7 +2763,7 @@ int ss_fixup_team_data(team_data *tdata)
 					ship_in_parse_player = 0;
 			
 					for ( k = 0; k < p_team_data->num_ship_choices; k++ ) {
-						Assert( p_team_data->ship_count[k] >= 0 );
+					core::Assert( p_team_data->ship_count[k] >= 0 );
 						if ( p_team_data->ship_list[k] == p_objp->ship_class ) {
 							ship_in_parse_player = 1;
 							break;
@@ -2785,7 +2785,7 @@ int ss_fixup_team_data(team_data *tdata)
 		// ensure that the default player ship is in the ship_list too
 		ship_in_parse_player = 0;
 		for ( k = 0; k < p_team_data->num_ship_choices; k++ ) {
-			Assert( p_team_data->ship_count[k] >= 0 );
+		core::Assert( p_team_data->ship_count[k] >= 0 );
 			if ( p_team_data->ship_list[k] == p_team_data->default_ship ) {
 				ship_in_parse_player = 1;
 				break;
@@ -2807,7 +2807,7 @@ void ss_init_pool(team_data *pteam)
 {
 	int i;
 
-	Assert( Ss_pool != NULL );
+core::Assert( Ss_pool != NULL );
 
 	for ( i = 0; i < MAX_SHIP_CLASSES; i++ ) {
 		Ss_pool[i] = -1;
@@ -2827,7 +2827,7 @@ void ss_load_icons(int ship_class)
 {
 	ss_icon_info	*icon;
 
-	Assert( Ss_icons != NULL );
+core::Assert( Ss_icons != NULL );
 
 	icon = &Ss_icons[ship_class];
 	ship_info *sip = &Ship_info[ship_class];
@@ -2837,7 +2837,7 @@ void ss_load_icons(int ship_class)
 		int				first_frame, num_frames, i;
 		first_frame = bm_load_animation(sip->icon_filename, &num_frames);
 		
-		Assertion(first_frame != -1, "Failed to load icon %s\n", sip->icon_filename);	// Could not load in icon frames.. get Alan
+	core::Assertion(first_frame != -1, "Failed to load icon %s\n", sip->icon_filename);	// Could not load in icon frames.. get Alan
 		if (first_frame == -1)
 			return;
 	
@@ -2860,7 +2860,7 @@ void ss_load_all_icons()
 {
 	int i, j;
 
-	Assert( (Ss_pool != NULL) && (Ss_icons != NULL) );
+core::Assert( (Ss_pool != NULL) && (Ss_icons != NULL) );
 
 	for ( i = 0; i < MAX_SHIP_CLASSES; i++ ) {
 		// clear out data
@@ -2885,7 +2885,7 @@ int ss_disabled_slot(int slot_num, bool ship_selection)
 		return 0;
 	}
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	// HACK HACK HACK - call the team select function in multiplayer
 	if(Game_mode & GM_MULTIPLAYER) {
@@ -2910,7 +2910,7 @@ int ss_valid_slot(int slot_num)
 	if (ss_disabled_slot(slot_num))
 		return 0;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	status = Ss_wings[slot_num/MAX_WING_SLOTS].ss_slots[slot_num%MAX_WING_SLOTS].status;
 
@@ -2923,7 +2923,7 @@ void ss_clear_slots()
 	int				i,j;
 	ss_slot_info	*slot;
 
-	Assert( (Wss_slots != NULL) && (Ss_wings != NULL) );
+core::Assert( (Wss_slots != NULL) && (Ss_wings != NULL) );
 
 	for ( i = 0; i < MAX_WSS_SLOTS; i++ ) {
 		Wss_slots[i].ship_class = -1;
@@ -2948,7 +2948,7 @@ void ss_clear_wings()
 {
 	int idx;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	for(idx=0;idx<MAX_STARTING_WINGS;idx++){
 		Ss_wings[idx].wingnum = -1;
@@ -2964,7 +2964,7 @@ void ss_init_wing_info(int wing_num,int starting_wing_num)
 	ss_wing_info	*ss_wing;
 	ss_slot_info	*slot;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	ss_wing = &Ss_wings[wing_num];
 
@@ -3017,7 +3017,7 @@ int ss_wing_slot_is_console_player(int index)
 		return 0;
 	}
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	if ( Ss_wings[wingnum].ss_slots[slotnum].status & WING_SLOT_IS_PLAYER ) {
 		return 1;
@@ -3034,7 +3034,7 @@ void ss_init_units()
 	ss_slot_info	*ss_slot;
 	ss_wing_info	*ss_wing;	
 
-	Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_wings != NULL) && (Wss_slots != NULL) );
 
 	for ( i = 0; i < Wss_num_wings; i++ ) {
 
@@ -3131,7 +3131,7 @@ void ss_init_units()
 // set the necessary pointers
 void ss_set_team_pointers(int team)
 {
-	Assert( (team >= 0) && (team < MAX_TVT_TEAMS) );
+core::Assert( (team >= 0) && (team < MAX_TVT_TEAMS) );
 
 	Ss_wings = Ss_wings_teams[team];
 	Ss_icons = Ss_icons_teams[team];
@@ -3140,7 +3140,7 @@ void ss_set_team_pointers(int team)
 // reset the necessary pointers to defaults
 void ss_reset_team_pointers()
 {
-	Assert( !Ship_select_open );
+core::Assert( !Ship_select_open );
 
 	if ( Ship_select_open )
 		return;
@@ -3225,7 +3225,7 @@ void ss_synch_interface()
 	int				i;
 	ss_slot_info	*slot;
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	int old_list_start = SS_active_list_start;
 
@@ -3294,7 +3294,7 @@ int ss_dump_to_list(int from_slot, int to_list, interface_snd_id *sound)
 	int i;
 	wss_unit	*slot;
 
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	slot = &Wss_slots[from_slot];
 
@@ -3327,7 +3327,7 @@ int ss_grab_from_list(int from_list, int to_slot, interface_snd_id *sound)
 	wss_unit        *slot;
 	int i, wep[MAX_SHIP_WEAPONS], wep_count[MAX_SHIP_WEAPONS];
 
-	Assert( (Ss_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wss_slots != NULL) );
 
 	slot = &Wss_slots[to_slot];
 
@@ -3338,7 +3338,7 @@ int ss_grab_from_list(int from_list, int to_slot, interface_snd_id *sound)
 		return 0;
 	}
 
-	Assert(slot->ship_class < 0 );	// slot should be empty
+core::Assert(slot->ship_class < 0 );	// slot should be empty
 
 	// take ship from list->slot
 	Ss_pool[from_list]--;
@@ -3363,7 +3363,7 @@ int ss_swap_list_slot(int from_list, int to_slot, interface_snd_id *sound)
 	int i, wep[MAX_SHIP_WEAPONS], wep_count[MAX_SHIP_WEAPONS];
 	wss_unit        *slot;
 
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	// ensure that pool has ship
 	if ( Ss_pool[from_list] <= 0 )
@@ -3373,7 +3373,7 @@ int ss_swap_list_slot(int from_list, int to_slot, interface_snd_id *sound)
 	}
 
 	slot = &Wss_slots[to_slot];
-	Assert(slot->ship_class >= 0 );        // slot should be filled
+core::Assert(slot->ship_class >= 0 );        // slot should be filled
 
 	// put ship from slot->list
 	Ss_pool[Wss_slots[to_slot].ship_class]++;
@@ -3466,12 +3466,12 @@ void ss_recalc_multiplayer_slots()
 	
 	// no wings
 	if ( Wss_num_wings <= 0 ) {
-		Assert( Wss_slots != NULL );
+	core::Assert( Wss_slots != NULL );
 		Wss_slots[0].ship_class = Team_data[Common_team].default_ship;
 		return;
 	}
 
-	Assert( Ss_wings != NULL );
+core::Assert( Ss_wings != NULL );
 
 	for ( i = 0; i < Wss_num_wings; i++ ) {
 		ss_wing = &Ss_wings[i];

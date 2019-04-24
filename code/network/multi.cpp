@@ -169,7 +169,7 @@ void multi_init()
 	// read in config file
 	multi_options_read_config();
 
-	Assert( Net_player == NULL );
+core::Assert( Net_player == NULL );
 	Multi_id_num = 0;
 
 	// clear out all netplayers
@@ -445,7 +445,7 @@ void multi_client_check_server()
 {
 	int rval;
 
-	Assert( MULTIPLAYER_CLIENT );	
+core::Assert( MULTIPLAYER_CLIENT );	
 
 	// this function can get called while in the popup code below.  So we include this check as a
 	// reentrancy check.
@@ -591,7 +591,7 @@ void process_packet_normal(ubyte* data, header *header_info)
 			break;		
 
 		case XFER_PACKET:
-			Assert(header_info->id >= 0);
+		core::Assert(header_info->id >= 0);
 			int np_index;
 			PSNET_SOCKET_RELIABLE sock;
 			sock = INVALID_SOCKET;
@@ -1047,7 +1047,7 @@ void multi_process_incoming()
 	ubyte *data, *savep;
 	net_addr from_addr;	
 
-	Assert( Multi_read_count < NUM_REENTRANT_LEVELS );
+core::Assert( Multi_read_count < NUM_REENTRANT_LEVELS );
 	savep = net_buffer[Multi_read_count];
 
 	Multi_read_count++;

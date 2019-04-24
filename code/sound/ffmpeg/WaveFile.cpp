@@ -256,7 +256,7 @@ void WaveFile::setAdjustedAudioProperties(const AudioProperties& props) {
 	m_audioProps = props;
 	m_resampleCtx = getSWRContext(m_baseAudioProps, m_audioProps);
 
-	Assertion(m_resampleCtx != nullptr, "Resample context creation failed! This should not happen!");
+core::Assertion(m_resampleCtx != nullptr, "Resample context creation failed! This should not happen!");
 }
 
 size_t WaveFile::handleDecodedFrame(AVFrame* av_frame, uint8_t* out_buffer, size_t buffer_size) {
@@ -283,7 +283,7 @@ size_t WaveFile::getBufferedData(uint8_t* buffer, size_t buffer_size) {
 		auto written = swr_convert(m_resampleCtx, &buffer, dest_num_samples, nullptr, 0);
 
 		auto advance = (size_t) (written * sample_size);
-		Assertion(advance <= buffer_size,
+	core::Assertion(advance <= buffer_size,
 				  "Buffer overrun!!! Decoding has written more data into the buffer than available!");
 
 		return advance;
@@ -303,7 +303,7 @@ int WaveFile::Read(uint8_t* pbDest, size_t cbSize) {
 		auto advance = handleDecodedFrame(m_decodeFrame, pbDest + buffer_pos, cbSize - buffer_pos);
 
 		buffer_pos += advance;
-		Assertion(buffer_pos <= cbSize,
+	core::Assertion(buffer_pos <= cbSize,
 				  "Buffer overrun!!! Decoding has written more data into the buffer than available!");
 
 		if (buffer_pos == cbSize) {

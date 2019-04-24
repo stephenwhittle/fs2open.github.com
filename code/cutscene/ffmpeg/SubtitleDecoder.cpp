@@ -97,7 +97,8 @@ void SubtitleDecoder::pushSubtitleFrame(AVPacket* packet, AVSubtitle* subtitle) 
 		for (auto i = 0; i < 8 && comma_pos != std::string::npos; ++i) {
 			comma_pos = ass_text.find(',', comma_pos + 1);
 		}
-		Assertion(comma_pos != std::string::npos, "Received an ill-formed ASS line from FFmpeg! Text was '%s'.", subtitle_rect->ass);
+		core::Assertion(comma_pos != std::string::npos, "Received an ill-formed ASS line from FFmpeg! Text was '%s'.",
+			            subtitle_rect->ass);
 
 		// This + 1 is safe since comma_pos points to a valid character so the next character is at worst the end of the string
 		processed_text = ass_text.substr(comma_pos + 1);

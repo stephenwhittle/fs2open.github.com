@@ -248,8 +248,8 @@ int ds_get_sid()
 
 int ds_load_buffer(int *sid, int  /*flags*/, ffmpeg::WaveFile* file)
 {
-	Assert(sid != NULL);
-	Assert(file != NULL);
+core::Assert(sid != NULL);
+core::Assert(file != NULL);
 
 	// All sounds are required to have a software buffer
 	*sid = ds_get_sid();
@@ -1017,7 +1017,7 @@ int ds_lock_data(int sid, unsigned char *data, int size)
  */
 void ds_stop_easy(int sid)
 {
-	Assert(sid >= 0);
+core::Assert(sid >= 0);
 
 	int cid = sound_buffers[sid].channel_id;
 
@@ -1230,7 +1230,7 @@ float ds_get_pitch(int channel_id)
 
 void ds_set_pitch(int channel_id, float pitch)
 {
-	Assertion(pitch > 0.0f, "Pitch may not be less than zero!");
+core::Assertion(pitch > 0.0f, "Pitch may not be less than zero!");
 
 	ALint status;
 
@@ -1447,7 +1447,7 @@ int ds_get_data(int  /*sid*/, char * /*data*/)
  */
 int ds_get_size(int sid, int *size)
 {
-	Assert(sid >= 0);
+core::Assert(sid >= 0);
 
 	if ( (sid < 0) || ((size_t)sid >= sound_buffers.size()) ) {
 		return 0;
@@ -1594,9 +1594,9 @@ int ds_eax_get_preset_id(const char *name)
 
 int ds_eax_get_prop(EFXREVERBPROPERTIES **props, const char *name, const char *template_name)
 {
-	Assert( props != NULL );
-	Assert( name != NULL );
-	Assert( strlen(name) > 0 ); //-V805
+core::Assert( props != NULL );
+core::Assert( name != NULL );
+core::Assert( strlen(name) > 0 ); //-V805
 
 	int template_id = -1;
 
@@ -1816,7 +1816,7 @@ void ds_do_frame()
 
 	for (i = 0; i < MAX_CHANNELS; i++) {
 		cp = &Channels[i];
-		Assert( cp != NULL );
+	core::Assert( cp != NULL );
 
 		if (cp->is_voice_msg) {
 			if( cp->source_id == 0 ) {
@@ -1840,7 +1840,7 @@ void ds_do_frame()
  */
 int ds_get_sound_id(int channel_id)
 {
-	Assert( channel_id >= 0 );
+core::Assert( channel_id >= 0 );
 
 	return Channels[channel_id].snd_id;
 }
@@ -1851,7 +1851,7 @@ int ds_get_sound_id(int channel_id)
  * @return
  */
 int ds_get_sound_index(int channel_id) {
-	Assert( channel_id >= 0 );
+core::Assert( channel_id >= 0 );
 
 	return Channels[channel_id].sid;
 }

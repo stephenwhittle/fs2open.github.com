@@ -150,7 +150,7 @@ void multi_team_reset()
 void multi_team_set_captain(net_player *pl,int set)
 {
 	// only the host should ever get here!
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 	// set the player flags as being a captain and notify everyone else of this
 	if(set){
@@ -450,7 +450,7 @@ void multi_team_handle_join(net_player *pl)
 	}
 
 	// only the host should ever do this
-	Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 	if(!(Net_player->flags & NETINFO_FLAG_AM_MASTER)){
 		return;
 	}
@@ -644,7 +644,7 @@ void multi_team_process_packet(unsigned char *data, header *hinfo)
 		ushort player_id;
 		int req_index,req_team;
 
-		Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
+	core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 		// get the packet data
 		GET_USHORT(player_id);
@@ -759,7 +759,7 @@ int multi_team_process_team_update(ubyte *data)
 	int offset = 0;	
 
 	// if I'm the server, bail
-	Assert(!MULTIPLAYER_MASTER);
+core::Assert(!MULTIPLAYER_MASTER);
 	
 	// process all players
 	GET_DATA(stop);
@@ -825,10 +825,10 @@ void multi_team_verify()
 	// if the team has members
 	if(team0_count > 0){
 		// make sure it also has a captain
-		Assert(team0_cap > 0);
+	core::Assert(team0_cap > 0);
 
 		// make sure it only has 1 captain
-		Assert(team0_cap == 1);
+	core::Assert(team0_cap == 1);
 	}
 
 	// determine how many players we have on team 1 and if they have a captain
@@ -850,10 +850,10 @@ void multi_team_verify()
 	// if the team has members
 	if(team1_count > 0){
 		// make sure it also has a captain
-		Assert(team1_cap > 0);
+	core::Assert(team1_cap > 0);
 
 		// make sure it only has 1 captain
-		Assert(team1_cap == 1);
+	core::Assert(team1_cap == 1);
 	}
 #endif
 }

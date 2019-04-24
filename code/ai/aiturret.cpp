@@ -203,7 +203,8 @@ bool is_object_radius_in_turret_fov(object *objp, ship_subsys *ss, vec3d *tvec, 
 			// and we are done with predicted position
 			return true;
 		} else {
-			mprintf(("Warning: Function 'is_object_radius_in_turret_fov' was called\nwithout need to fix turret alignments\n"));
+			core::mprintf(("Warning: Function 'is_object_radius_in_turret_fov' was called\nwithout need to fix turret "
+			               "alignments\n"));
 			return false;
 		}
 	}
@@ -297,7 +298,7 @@ bool all_turret_weapons_have_flags(ship_weapon *swp, Weapon::Info_Flags flags)
  */
 bool turret_weapon_has_flags(ship_weapon *swp, Weapon::Info_Flags flags)
 {
-	Assert(swp != NULL);
+	core::Assert(swp != NULL);
     
 	int i = 0;
 	for(i = 0; i < swp->num_primary_banks; i++)
@@ -323,7 +324,7 @@ bool turret_weapon_has_flags(ship_weapon *swp, Weapon::Info_Flags flags)
  */
 flagset<Weapon::Info_Flags> turret_weapon_aggregate_flags(ship_weapon *swp)
 {
-	Assert(swp != NULL);
+	core::Assert(swp != NULL);
 
     int i = 0;
     flagset<Weapon::Info_Flags> flags;
@@ -351,7 +352,7 @@ flagset<Weapon::Info_Flags> turret_weapon_aggregate_flags(ship_weapon *swp)
  */
 bool turret_weapon_has_subtype(ship_weapon *swp, int subtype)
 {
-	Assert(swp != NULL);
+	core::Assert(swp != NULL);
     
 	int i = 0;
 	for(i = 0; i < swp->num_primary_banks; i++)
@@ -379,8 +380,8 @@ bool turret_weapon_has_subtype(ship_weapon *swp, int subtype)
  */
 weapon_info *get_turret_weapon_wip(ship_weapon *swp, int weapon_num)
 {
-	Assert(weapon_num < MAX_SHIP_WEAPONS);
-	Assert(weapon_num >= 0);
+	core::Assert(weapon_num < MAX_SHIP_WEAPONS);
+	core::Assert(weapon_num >= 0);
 
 	if(weapon_num >= MAX_SHIP_PRIMARY_BANKS)
 		return &Weapon_info[swp->secondary_bank_weapons[weapon_num - MAX_SHIP_PRIMARY_BANKS]];
@@ -390,8 +391,8 @@ weapon_info *get_turret_weapon_wip(ship_weapon *swp, int weapon_num)
 
 int get_turret_weapon_next_fire_stamp(ship_weapon *swp, int weapon_num)
 {
-	Assert(weapon_num < MAX_SHIP_WEAPONS);
-	Assert(weapon_num >= 0);
+	core::Assert(weapon_num < MAX_SHIP_WEAPONS);
+	core::Assert(weapon_num >= 0);
 
 	if(weapon_num >= MAX_SHIP_PRIMARY_BANKS)
 		return swp->next_secondary_fire_stamp[weapon_num - MAX_SHIP_PRIMARY_BANKS];
@@ -456,7 +457,7 @@ int valid_turret_enemy(object *objp, object *turret_parent)
 	}
 
 	if ( objp->type == OBJ_SHIP ) {
-		Assert( objp->instance >= 0 );
+		core::Assert(objp->instance >= 0);
 		ship *shipp;
 		ship_info *sip;
 		shipp = &Ships[objp->instance];
@@ -486,7 +487,7 @@ int valid_turret_enemy(object *objp, object *turret_parent)
 	}
 
 	if ( objp->type == OBJ_WEAPON ) {
-		Assert( objp->instance >= 0 );
+		core::Assert(objp->instance >= 0);
 		weapon *wp = &Weapons[objp->instance];
 		weapon_info *wip = &Weapon_info[wp->weapon_info_index];
 
@@ -1050,7 +1051,7 @@ int get_nearest_turret_objnum(int turret_parent_objnum, ship_subsys *turret_subs
 						for( mo = GET_FIRST(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo) ) {
 							objp = &Objects[mo->objnum];
 							
-							Assert(objp->type == OBJ_WEAPON);
+							core::Assert(objp->type == OBJ_WEAPON);
 							if ((Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Bomb]) || (Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Turret_Interceptable]))
 							{
 								evaluate_obj_as_target(objp, &eeo);
@@ -1073,7 +1074,8 @@ int get_nearest_turret_objnum(int turret_parent_objnum, ship_subsys *turret_subs
 						evaluate_obj_as_target(objp, &eeo);
 					}
 
-					Assert(eeo.nearest_attacker_objnum < 0 || is_target_beam_valid(swp, &Objects[eeo.nearest_attacker_objnum]));
+					core::Assert(eeo.nearest_attacker_objnum < 0 ||
+				                 is_target_beam_valid(swp, &Objects[eeo.nearest_attacker_objnum]));
 						// next highest priority is attacking ship
 					if ( eeo.nearest_attacker_objnum != -1 ) {			// next highest priority is an attacking ship
 						return eeo.nearest_attacker_objnum;
@@ -1217,10 +1219,10 @@ int find_turret_enemy(ship_subsys *turret_subsys, int objnum, vec3d *tpos, vec3d
 
 	enemy_objnum = get_nearest_turret_objnum(objnum, turret_subsys, enemy_team_mask, tpos, tvec, current_enemy, big_only_flag, small_only_flag, tagged_only_flag, beam_flag, flak_flag, laser_flag, missile_flag);
 	if ( enemy_objnum >= 0 ) {
-		Assert( !((Objects[enemy_objnum].flags[Object::Object_Flags::Beam_protected]) && beam_flag) );
-		Assert( !((Objects[enemy_objnum].flags[Object::Object_Flags::Flak_protected]) && flak_flag) );
-		Assert( !((Objects[enemy_objnum].flags[Object::Object_Flags::Laser_protected]) && laser_flag) );
-		Assert( !((Objects[enemy_objnum].flags[Object::Object_Flags::Missile_protected]) && missile_flag) );
+		core::Assert(!((Objects[enemy_objnum].flags[Object::Object_Flags::Beam_protected]) && beam_flag));
+		core::Assert(!((Objects[enemy_objnum].flags[Object::Object_Flags::Flak_protected]) && flak_flag));
+		core::Assert(!((Objects[enemy_objnum].flags[Object::Object_Flags::Laser_protected]) && laser_flag));
+		core::Assert(!((Objects[enemy_objnum].flags[Object::Object_Flags::Missile_protected]) && missile_flag));
 
 		if ( Objects[enemy_objnum].flags[Object::Object_Flags::Protected] ) {
 			Int3();
@@ -1291,7 +1293,9 @@ void ship_get_global_turret_gun_info(object *objp, ship_subsys *ssp, vec3d *gpos
 
 		if (targetp == nullptr) {
 			ship* shipp = &Ships[Objects[ssp->parent_objnum].instance];
-            Assertion(ssp->turret_enemy_objnum >= 0, "The turret enemy object number %d for %s on ship name %s is invalid.", ssp->turret_enemy_objnum, ssp->sub_name, 
+			core::Assertion(ssp->turret_enemy_objnum >= 0,
+			                "The turret enemy object number %d for %s on ship name %s is invalid.",
+			                ssp->turret_enemy_objnum, ssp->sub_name, 
 																								(shipp->has_display_name()) ? shipp->display_name.c_str() : shipp->ship_name);
             object *lep = &Objects[ssp->turret_enemy_objnum];
 
@@ -1547,7 +1551,7 @@ ship_subsys *aifft_find_turret_subsys(object *objp, ship_subsys *ssp, object *en
 	ship_subsys	*best_subsysp = NULL;
 	float dot;
 
-	Assert(enemy_objp->type == OBJ_SHIP);
+	core::Assert(enemy_objp->type == OBJ_SHIP);
 
 	eshipp = &Ships[enemy_objp->instance];
 	esip = &Ship_info[eshipp->ship_info_index];
@@ -1607,7 +1611,7 @@ ship_subsys *aifft_find_turret_subsys(object *objp, ship_subsys *ssp, object *en
 	}
 
 	// DKA:  6/28/99 all subsystems can be destroyed.
-	//Assert(aifft_list_size > 0);
+	//core::Assert(aifft_list_size > 0);
 	if (aifft_list_size == 0) {
 		return best_subsysp;
 	}
@@ -1635,7 +1639,7 @@ ship_subsys *aifft_find_turret_subsys(object *objp, ship_subsys *ssp, object *en
 		}
 	}
 
-	Assert(best_subsysp != &eshipp->subsys_list);
+	core::Assert(best_subsysp != &eshipp->subsys_list);
 
 	*dot_out = best_dot;
 	return best_subsysp;
@@ -1671,7 +1675,7 @@ int turret_should_pick_new_target(ship_subsys *turret)
  */
 void turret_set_next_fire_timestamp(int weapon_num, weapon_info *wip, ship_subsys *turret, ai_info *aip)
 {
-	Assert(weapon_num < MAX_SHIP_WEAPONS);
+	core::Assert(weapon_num < MAX_SHIP_WEAPONS);
 	float wait = 1000.0f;
 
 	if (wip->burst_shots > turret->weapons.burst_counter[weapon_num]) {
@@ -1927,7 +1931,7 @@ bool turret_fire_weapon(int weapon_num, ship_subsys *turret, int parent_objnum, 
 
 						int	num_primary_banks = swp->num_primary_banks;
 
-						Assert(num_primary_banks > 0);
+						core::Assert(num_primary_banks > 0);
 						if (num_primary_banks < 1){
 							return false;
 						}
@@ -2042,7 +2046,7 @@ bool turret_fire_weapon(int weapon_num, ship_subsys *turret, int parent_objnum, 
 						int subsys_index;
 
 						subsys_index = ship_get_index_from_subsys(turret, parent_objnum );
-						Assert( subsys_index != -1 );
+						core::Assert(subsys_index != -1);
 						if(wip->wi_flags[Weapon::Info_Flags::Flak]){			
 							send_flak_fired_packet( parent_objnum, subsys_index, weapon_objnum, flak_range );
 						} else {
@@ -2101,7 +2105,8 @@ void turret_swarm_fire_from_turret(turret_swarm_info *tsi)
 	tsi->turret->turret_next_fire_pos++;
 
 	//check if this really is a swarm. If not, how the hell did it get here?
-	Assert((Weapon_info[tsi->weapon_class].wi_flags[Weapon::Info_Flags::Swarm]) || (Weapon_info[tsi->weapon_class].wi_flags[Weapon::Info_Flags::Corkscrew]));
+	core::Assert((Weapon_info[tsi->weapon_class].wi_flags[Weapon::Info_Flags::Swarm]) ||
+	             (Weapon_info[tsi->weapon_class].wi_flags[Weapon::Info_Flags::Corkscrew]));
 
 
     // *If it's a non-homer, then use the last fire direction instead of turret orientation to fix inaccuracy
@@ -2149,7 +2154,7 @@ void turret_swarm_fire_from_turret(turret_swarm_info *tsi)
 			int subsys_index;
 
 			subsys_index = ship_get_index_from_subsys(tsi->turret, tsi->parent_objnum );
-			Assert( subsys_index != -1 );
+			core::Assert(subsys_index != -1);
 			send_turret_fired_packet( tsi->parent_objnum, subsys_index, weapon_objnum );
 		}
 	}
@@ -2236,10 +2241,10 @@ void ai_fire_from_turret(ship *shipp, ship_subsys *ss, int parent_objnum)
 		}
 	}
 
-	Assert((parent_objnum >= 0) && (parent_objnum < MAX_OBJECTS));
+	core::Assert((parent_objnum >= 0) && (parent_objnum < MAX_OBJECTS));
 	objp = &Objects[parent_objnum];
-	Assert(objp->type == OBJ_SHIP);
-	Assert( shipp->objnum == parent_objnum );
+	core::Assert(objp->type == OBJ_SHIP);
+	core::Assert(shipp->objnum == parent_objnum);
 
 	// Monitor number of calls to ai_fire_from_turret
 	Num_ai_firing++;
@@ -2462,7 +2467,7 @@ void ai_fire_from_turret(ship *shipp, ship_subsys *ss, int parent_objnum)
 	if ( turret_should_pick_new_target(ss) && !ss->scripting_target_override ) {
 		Num_find_turret_enemy++;
 		int objnum = find_turret_enemy(ss, parent_objnum, &gpos, &gvec, ss->turret_enemy_objnum);
-		//Assert(objnum < 0 || is_target_beam_valid(tp, objnum));
+		//core::Assert(objnum < 0 || is_target_beam_valid(tp, objnum));
 
 		if (objnum >= 0 && is_target_beam_valid(&ss->weapons, &Objects[objnum])) {
 			if (ss->turret_enemy_objnum == -1) {
@@ -2525,12 +2530,12 @@ void ai_fire_from_turret(ship *shipp, ship_subsys *ss, int parent_objnum)
 	}
 
 	if ( lep == NULL ){
-		mprintf(("last enemy is null\n"));
+		core::mprintf(("last enemy is null\n"));
 		return;
 	}
 
 	//This can't happen. See above code
-	//Assert(ss->turret_enemy_objnum != -1);
+	//core::Assert(ss->turret_enemy_objnum != -1);
 
 	float dot;
 	bool in_fov;
@@ -2726,7 +2731,7 @@ void ai_fire_from_turret(ship *shipp, ship_subsys *ss, int parent_objnum)
 
 		if(!something_was_ok_to_fire)
 		{
-			mprintf(("nothing ok to fire\n"));
+			core::mprintf(("nothing ok to fire\n"));
             
 			if (ss->turret_best_weapon >= 0) {
 				//Impose a penalty on turret accuracy for losing site of its goal, or just not being able to fire.

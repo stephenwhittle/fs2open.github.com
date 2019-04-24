@@ -68,7 +68,7 @@ void multi_ping_eval_pong(ping_struct *ps, fix pong_time)
 	// if we still have room to add a ping
 	if(ps->num_pings < MAX_PINGS){
 		ps->ping_times[ps->ping_add++] = pong_time - ps->ping_start;
-		Assertion(ps->ping_times[ps->ping_add-1] > 0L, "Non-positive ping value!");
+	core::Assertion(ps->ping_times[ps->ping_add-1] > 0L, "Non-positive ping value!");
 		ps->num_pings++;
 	} 
 	// otherwise if we've wrapped around
@@ -81,7 +81,7 @@ void multi_ping_eval_pong(ping_struct *ps, fix pong_time)
 		}
 
 		ps->ping_times[ps->ping_add] = pong_time - ps->ping_start;
-		Assertion(ps->ping_times[ps->ping_add == 0 ? MAX_PINGS - 1 : ps->ping_add - 1] > 0L, "Non-positive ping value!");
+	core::Assertion(ps->ping_times[ps->ping_add == 0 ? MAX_PINGS - 1 : ps->ping_add - 1] > 0L, "Non-positive ping value!");
 	}
 
 	// calculate the average ping time

@@ -59,7 +59,7 @@ void text_view_dlg::set(int ship_class)
 		return;
 
 	fp = cfopen("ships.tbl", "r");
-	Assert(fp);
+core::Assert(fp);
 
 	
 	while (cfgets(line, 255, fp)) {
@@ -117,7 +117,7 @@ void text_view_dlg::set(int ship_class)
 		tbl_file_names[n] += ".tbm";
 
 		fp = cfopen(tbl_file_names[n].c_str(), "r");
-		Assert(fp);
+	core::Assert(fp);
 
 		memset( line, 0, sizeof(line) );
 		memset( line2, 0, sizeof(line2) );

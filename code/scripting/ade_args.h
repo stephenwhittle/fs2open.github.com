@@ -47,7 +47,7 @@ template <typename T>
 typename std::enable_if<std::is_floating_point<T>::value, bool>::type
 get_single_arg(lua_State* L, const get_args_state& state, char fmt, T* f)
 {
-	Assertion(fmt == 'f' || fmt == 'd', "Invalid character '%c' for number type!", fmt);
+core::Assertion(fmt == 'f' || fmt == 'd', "Invalid character '%c' for number type!", fmt);
 
 	if (lua_isnumber(L, state.nargs)) {
 		*f = (T)lua_tonumber(L, state.nargs);
@@ -63,7 +63,7 @@ typename std::enable_if<std::is_integral<T>::value, bool>::type
 get_single_arg(lua_State* L, const get_args_state& state, char fmt, T* i)
 {
 	// fix is also an int for C++ so we need to check the format character to determine what should be done
-	Assertion(fmt == 'i' || fmt == 'x', "Invalid character '%c' for number type!", fmt);
+core::Assertion(fmt == 'i' || fmt == 'x', "Invalid character '%c' for number type!", fmt);
 
 	if (lua_isnumber(L, state.nargs)) {
 		if (fmt == 'x') {
@@ -82,7 +82,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, const c
 
 template <typename T>
 bool ade_odata_getter_helper(lua_State* L, const get_args_state& state, char fmt, T&& od) {
-	Assertion(fmt == 'o', "Invalid character '%c' for object type!", fmt);
+core::Assertion(fmt == 'o', "Invalid character '%c' for object type!", fmt);
 
 	if (lua_isuserdata(L, state.nargs)) {
 		// Use the helper function
@@ -134,14 +134,14 @@ inline bool get_args_actual(lua_State* /*L*/, get_args_state& state, const char*
 		++fmt;
 	}
 	// Now there should be nothing left in the parameter string
-	Assertion(strlen(fmt) == 0, "No class parameters left but format is not empty!");
+	core::Assertion(strlen(fmt) == 0, "No class parameters left but format is not empty!");
 	return true;
 }
 
 template <typename T, typename... Args>
 bool get_args_actual(lua_State* L, get_args_state& state, const char* fmt, T&& current, Args&&... args)
 {
-	Assertion(strlen(fmt) > 0, "Format was empty but there were still parameters in the argument list!");
+core::Assertion(strlen(fmt) > 0, "Format was empty but there were still parameters in the argument list!");
 
 	if (state.nargs > state.total_args) {
 		return true;
@@ -270,13 +270,13 @@ template <typename T>
 typename std::enable_if<std::is_same<typename std::remove_cv<T>::type, bool>::value, void>::type
 set_single_arg(lua_State* L, char fmt, T b)
 {
-	Assertion(fmt == 'b', "Invalid format character '%c' for boolean type!", fmt);
+core::Assertion(fmt == 'b', "Invalid format character '%c' for boolean type!", fmt);
 	lua_pushboolean(L, b ? 1 : 0);
 }
 template <typename T>
 typename std::enable_if<std::is_floating_point<T>::value, void>::type set_single_arg(lua_State* L, char fmt, T f)
 {
-	Assertion(fmt == 'f' || fmt == 'd', "Invalid character '%c' for number type!", fmt);
+core::Assertion(fmt == 'f' || fmt == 'd', "Invalid character '%c' for number type!", fmt);
 	lua_pushnumber(L, static_cast<lua_Number>(f));
 }
 template <typename T>
@@ -284,7 +284,7 @@ typename std::enable_if<!std::is_same<T, bool>::value && std::is_integral<T>::va
 set_single_arg(lua_State* L, char fmt, T i)
 {
 	// fix is also an int for C++ so we need to check the format character to determine what should be done
-	Assertion(fmt == 'i' || fmt == 'x', "Invalid character '%c' for number type!", fmt);
+core::Assertion(fmt == 'i' || fmt == 'x', "Invalid character '%c' for number type!", fmt);
 
 	if (fmt == 'x') {
 		lua_pushnumber(L, static_cast<lua_Number>(f2fl((fix)i)));
@@ -296,7 +296,7 @@ void set_single_arg(lua_State* L, char fmt, const char* s);
 template<typename T>
 void set_single_arg(lua_State* L, char fmt, ade_odata_setter<T>&& od)
 {
-	Assertion(fmt == 'o', "Invalid format character '%c' for object type!", fmt);
+core::Assertion(fmt == 'o', "Invalid format character '%c' for object type!", fmt);
 	// Use the common helper method
 	luacpp::convert::pushValue(L, std::forward<ade_odata_setter<T>>(od));
 }
@@ -309,13 +309,13 @@ void set_single_arg(lua_State* /*L*/, char fmt, const luacpp::LuaFunction& func)
 // This is not a template function so we can put the implementation in a source file
 inline void set_args_actual(lua_State* /*L*/, set_args_state& /*state*/, const char* fmt)
 {
-	Assertion(strlen(fmt) == 0, "No class parameters left but format is not empty!");
+	core::Assertion(strlen(fmt) == 0, "No class parameters left but format is not empty!");
 }
 
 template <typename T, typename... Args>
 void set_args_actual(lua_State* L, set_args_state& state, const char* fmt, T&& current, Args&&... args)
 {
-	Assertion(strlen(fmt) > 0, "Format was empty but there were still parameters in the argument list!");
+core::Assertion(strlen(fmt) > 0, "Format was empty but there were still parameters in the argument list!");
 
 	if (*fmt == '*') {
 		lua_pushnil(L);

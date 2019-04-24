@@ -947,7 +947,7 @@ void debrief_choose_voice(char *voice_dest, char *voice_base, int persona_index,
 
 void debrief_choose_medal_variant(char *buf, int medal_earned, int zero_based_version_index)
 {
-	Assert(buf != NULL && medal_earned >= 0 && zero_based_version_index >= 0);
+core::Assert(buf != NULL && medal_earned >= 0 && zero_based_version_index >= 0);
 
 	// start with the regular file name, adapted for resolution
 	sprintf(buf, NOX("%s%s"), Resolution_prefixes[gr_screen.res], Medals[medal_earned].debrief_bitmap);
@@ -970,7 +970,7 @@ void debrief_choose_medal_variant(char *buf, int medal_earned, int zero_based_ve
 			version++;
 
 		sprintf(number, NOX("%.2d"), version);
-		Assert(strlen(number) == 2);
+	core::Assert(strlen(number) == 2);
 		strncpy(p, number, 2);
 	}
 }
@@ -1070,7 +1070,7 @@ void debrief_traitor_init()
 
 			required_string("$Num stages:");
 			stuff_int(&debrief->num_stages);
-			Assert(debrief->num_stages == 1);
+		core::Assert(debrief->num_stages == 1);
 
 			stage_num = 0;
 			stagep = &debrief->stages[stage_num++];
@@ -1277,7 +1277,7 @@ void debrief_multi_list_draw()
 void debrief_kick_selected_player()
 {
 	if(Multi_list_select >= 0){
-		Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
+	core::Assert(Net_player->flags & NETINFO_FLAG_GAME_HOST);
 		multi_kick_player(Multi_list[Multi_list_select].net_player_index);
 	}
 }
@@ -1286,7 +1286,7 @@ void debrief_kick_selected_player()
 // get optional mission popup text 
 void debrief_assemble_optional_mission_popup_text(char *buffer, char *mission_loop_desc)
 {
-	Assert(buffer != NULL);
+core::Assert(buffer != NULL);
 	// base message
 
 	if (mission_loop_desc == NULL) {
@@ -1355,7 +1355,7 @@ void debrief_accept(int ok_to_post_start_game_event)
 				int cur = Campaign.current_mission;
 				bool require_repeat_mission = (Campaign.current_mission == Campaign.next_mission);
 				if (Campaign.missions[cur].flags & CMISSION_FLAG_HAS_LOOP) {
-					Assert(Campaign.loop_mission != CAMPAIGN_LOOP_MISSION_UNINITIALIZED);
+				core::Assert(Campaign.loop_mission != CAMPAIGN_LOOP_MISSION_UNINITIALIZED);
 				}
 
 				if ( (Campaign.missions[cur].flags & CMISSION_FLAG_HAS_LOOP) && (Campaign.loop_mission != -1) && !require_repeat_mission ) {
@@ -1562,8 +1562,8 @@ void debrief_stats_render()
 						gr_printf_menu(0, y, "%s", XSTR( "All-time Kills by Ship Type", 448));
 
 				} else if (i > 1) {
-					//Assert: Was debrief_setup_ship_kill_stats called?
-					Assert(Debrief_stats_kills != NULL);
+					/core::Assert: Was debrief_setup_ship_kill_stats called?
+				core::Assert(Debrief_stats_kills != NULL);
 
 					gr_printf_menu(0, y, "%s", Debrief_stats_kills[i - 2].text);
 					gr_printf_menu(Debrief_text_x2[gr_screen.res], y, "%d", Debrief_stats_kills[i - 2].num);
@@ -1741,7 +1741,7 @@ void debrief_setup_ship_kill_stats(int  /*stage_num*/)
 	int *kill_arr;	//DTP max ships
 	debrief_stats_kill_info	*kill_info;
 
-	Assert(Current_stage < DEBRIEF_NUM_STATS_PAGES);
+core::Assert(Current_stage < DEBRIEF_NUM_STATS_PAGES);
 	if ( Current_stage == DEBRIEF_MISSION_STATS || Current_stage == DEBRIEF_ALLTIME_STATS )
 		return;
 
@@ -1750,7 +1750,7 @@ void debrief_setup_ship_kill_stats(int  /*stage_num*/)
 		Debrief_stats_kills = new debrief_stats_kill_info[Ship_info.size()];
 	}
 
-	Assert(Debrief_player != NULL);
+core::Assert(Debrief_player != NULL);
 
 	// kill_ar points to an array of MAX_SHIP_TYPE ints
 	if ( Current_stage == DEBRIEF_MISSION_KILLS ) {
@@ -1927,7 +1927,7 @@ void debrief_init()
 {
 	int i;
 
-	Assert(!Debrief_inited);
+core::Assert(!Debrief_inited);
 //	Campaign.loop_enabled = 0;
 	Campaign.loop_mission = CAMPAIGN_LOOP_MISSION_UNINITIALIZED;
 
@@ -2064,7 +2064,7 @@ void debrief_close()
 	int i;
 	scoring_struct *sc;
 
-	Assert(Debrief_inited);
+core::Assert(Debrief_inited);
 
 	// if the mission wasn't accepted, clear out my stats
 	// we need to evaluate a little differently for multiplayer since the conditions for "accepting" 
@@ -2249,7 +2249,7 @@ void debrief_award_text_clear() {
 // this is the nastiest code I have ever written.  if you are modifying this, i feel bad for you.
 void debrief_add_award_text(const char *str)
 {
-	Assert(Debrief_award_text_num_lines < AWARD_TEXT_MAX_LINES);
+core::Assert(Debrief_award_text_num_lines < AWARD_TEXT_MAX_LINES);
 	if (Debrief_award_text_num_lines >= AWARD_TEXT_MAX_LINES) {
 		return;
 	}
@@ -2289,7 +2289,7 @@ void debrief_do_frame(float frametime)
 	const char *please_wait_str = XSTR("Please Wait", 1242);
 	char buf[256];
 
-	Assert(Debrief_inited);	
+core::Assert(Debrief_inited);	
 
 	// Goober5000 - accept immediately if skipping debriefing
 	if (The_mission.flags[Mission::Mission_Flags::Toggle_debriefing])
@@ -2485,7 +2485,7 @@ void debrief_do_frame(float frametime)
 		case DEBRIEF_TAB:
 			if ( Num_debrief_stages <= 0 ) {
 				gr_set_color_fast(&Color_white);
-				Assert( Game_current_mission_filename != NULL );
+			core::Assert( Game_current_mission_filename != NULL );
 				gr_printf_menu(Debrief_text_wnd_coords[gr_screen.res][0], Debrief_text_wnd_coords[gr_screen.res][1], XSTR( "No Debriefing for mission: %s", 458), Game_current_mission_filename);
 
 			} else {
@@ -2562,7 +2562,7 @@ void debrief_do_frame(float frametime)
 
 	// check to see if we should be showing a pilot info popup in multiplayer (if a guy was double clicked)
 	if ((Game_mode & GM_MULTIPLAYER) && Debrief_should_show_popup) {
-		Assert((Multi_list_select >= 0) && (Multi_list_select < Multi_list_size));
+	core::Assert((Multi_list_select >= 0) && (Multi_list_select < Multi_list_size));
 		multi_pinfo_popup(&Net_players[Multi_list[Multi_list_select].net_player_index]);
 
 		Debrief_should_show_popup = 0;

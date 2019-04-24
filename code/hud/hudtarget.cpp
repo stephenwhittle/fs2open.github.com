@@ -419,11 +419,11 @@ ship_subsys* advance_subsys(ship_subsys* cur, int next_flag)
 // select a sorted turret subsystem on a ship if no other subsys has been selected
 void hud_maybe_set_sorted_turret_subsys(ship* shipp)
 {
-	Assert((Player_ai->target_objnum >= 0) && (Player_ai->target_objnum < MAX_OBJECTS));
+core::Assert((Player_ai->target_objnum >= 0) && (Player_ai->target_objnum < MAX_OBJECTS));
 	if (!((Player_ai->target_objnum >= 0) && (Player_ai->target_objnum < MAX_OBJECTS))) {
 		return;
 	}
-	Assert(Objects[Player_ai->target_objnum].type == OBJ_SHIP);
+core::Assert(Objects[Player_ai->target_objnum].type == OBJ_SHIP);
 	if (Objects[Player_ai->target_objnum].type != OBJ_SHIP) {
 		return;
 	}
@@ -835,7 +835,7 @@ void hud_target_hotkey_select(int k)
 	// if current target is not in list, then target and next_target will be NULL
 	// so we use the first found target
 	if (target == NULL) {
-		Assert(first_target != NULL);
+	core::Assert(first_target != NULL);
 		if (first_target != NULL) {
 			target      = first_target;
 			next_target = first_target;
@@ -866,7 +866,7 @@ void hud_target_hotkey_select(int k)
 		}
 	}
 
-	Assert(target != END_OF_LIST(plist));
+core::Assert(target != END_OF_LIST(plist));
 
 	if (Player_obj != target->objp) {
 		set_target_objnum(Player_ai, OBJ_INDEX(target->objp));
@@ -963,7 +963,7 @@ void hud_init_ballistic_index()
 //
 void hud_init_targeting()
 {
-	Assert(Player_ai != NULL);
+core::Assert(Player_ai != NULL);
 
 	// make sure there is no current target
 	set_target_objnum(Player_ai, -1);
@@ -1123,7 +1123,7 @@ void hud_target_common(int team_mask, int next_flag)
 					break;
 			}
 
-			Assertion(jnp != Jump_nodes.end(), "Failed to find jump node with object index %d; trace out and fix!\n",
+		core::Assertion(jnp != Jump_nodes.end(), "Failed to find jump node with object index %d; trace out and fix!\n",
 			          OBJ_INDEX(A));
 
 			if (jnp->IsHidden())
@@ -1362,7 +1362,7 @@ void hud_target_missile(object* source_obj, int next_flag)
 	if (source_obj->type != OBJ_SHIP)
 		return;
 
-	Assert(Ships[source_obj->instance].ai_index != -1);
+core::Assert(Ships[source_obj->instance].ai_index != -1);
 	aip = &Ai_info[Ships[source_obj->instance].ai_index];
 
 	end = &Missile_obj_list;
@@ -1381,11 +1381,11 @@ void hud_target_missile(object* source_obj, int next_flag)
 			continue;
 		}
 
-		Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+	core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 		A = &Objects[mo->objnum];
 
-		Assert(A->type == OBJ_WEAPON);
-		Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
+	core::Assert(A->type == OBJ_WEAPON);
+	core::Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
 		wp  = &Weapons[A->instance];
 		wip = &Weapon_info[wp->weapon_info_index];
 
@@ -1628,8 +1628,8 @@ int turret_compare_func(const void* e1, const void* e2)
 	eval_next_turret* p1 = (eval_next_turret*)e1;
 	eval_next_turret* p2 = (eval_next_turret*)e2;
 
-	Assert(p1->type != TYPE_NONE);
-	Assert(p2->type != TYPE_NONE);
+core::Assert(p1->type != TYPE_NONE);
+core::Assert(p2->type != TYPE_NONE);
 
 	if (p1->type != p2->type) {
 		return (p1->type - p2->type);
@@ -1936,7 +1936,7 @@ bool evaluate_ship_as_closest_target(esct* esct_p)
 	turret_is_attacking          = FALSE;
 
 	object* objp = &Objects[esct_p->shipp->objnum];
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	if (objp->type != OBJ_SHIP) {
 		return false;
 	}
@@ -2198,7 +2198,7 @@ void hud_update_closest_turret()
 	    closest_subsys = NULL;
 
 
-	    Assert(Ship_info[shipp->ship_info_index].flags & (SIF_BIG_SHIP|SIF_HUGE_SHIP));
+	   core::Assert(Ship_info[shipp->ship_info_index].flags & (SIF_BIG_SHIP|SIF_HUGE_SHIP));
 
 	    for (ss=GET_FIRST(&shipp->subsys_list); ss!=END_OF_LIST(&shipp->subsys_list); ss=GET_NEXT(ss)) {
 	        if ( (ss->system_info->type == SUBSYSTEM_TURRET) && (ss->current_hits > 0) ) {
@@ -2956,7 +2956,7 @@ void hud_process_homing_missiles()
 
 	for (mo = GET_NEXT(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo)) {
 		A = &Objects[mo->objnum];
-		Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
+	core::Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
 
 		wp = &Weapons[A->instance];
 
@@ -3023,7 +3023,7 @@ void HudGaugeMissileTriangles::render(float /*frametime*/)
 
 	for (mo = GET_NEXT(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo)) {
 		A = &Objects[mo->objnum];
-		Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
+	core::Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
 
 		wp = &Weapons[A->instance];
 
@@ -3079,7 +3079,7 @@ void hud_process_remote_detonate_missile()
 
 	// check for currently locked missiles (highest precedence)
 	for (mo = GET_FIRST(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo)) {
-		Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+	core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 		mobjp = &Objects[mo->objnum];
 
 		if ((Player_obj != NULL) && (mobjp->parent_sig == Player_obj->parent_sig)) {
@@ -3121,7 +3121,7 @@ void hud_show_message_sender()
 		return;
 
 	targetp = &Objects[Ships[Message_shipnum].objnum];
-	Assert(targetp != NULL);
+core::Assert(targetp != NULL);
 
 	if (targetp->type != OBJ_SHIP) {
 		// if it's not a ship (maybe it got ship-vanished in the middle of talking) then clear Message_shipnum
@@ -3150,7 +3150,7 @@ void hud_show_message_sender()
 		return;
 	}
 
-	Assert(targetp->instance >= 0 && targetp->instance < MAX_SHIPS);
+core::Assert(targetp->instance >= 0 && targetp->instance < MAX_SHIPS);
 
 	// check the object flags to see if this ship is gone.  If so, then don't do this stuff anymore
 	if (targetp->flags[Object::Object_Flags::Should_be_dead]) {
@@ -3203,9 +3203,9 @@ void hud_prune_hotkeys()
 			remove_item = 0;
 
 			objp = hitem->objp;
-			Assert(objp != NULL);
+		core::Assert(objp != NULL);
 			if (objp->type == OBJ_SHIP) {
-				Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
+			core::Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS);
 				sp = &Ships[objp->instance];
 			} else {
 				// if the object isn't a ship, it shouldn't be on the list, so remove it without question
@@ -3254,7 +3254,7 @@ void hud_show_selection_set()
 	if (set == -1)
 		return;
 
-	Assert((set >= 0) && (set < MAX_KEYED_TARGETS));
+core::Assert((set >= 0) && (set < MAX_KEYED_TARGETS));
 	plist = &(Players[Player_num].keyed_targets[set]);
 
 	count = 0;
@@ -3270,12 +3270,12 @@ void hud_show_selection_set()
 
 	for (hitem = GET_FIRST(plist); hitem != END_OF_LIST(plist); hitem = GET_NEXT(hitem)) {
 		targetp = hitem->objp;
-		Assert(targetp != NULL);
+	core::Assert(targetp != NULL);
 
 		ship* target_shipp = NULL;
 
-		Assert(targetp->type == OBJ_SHIP);
-		Assert(targetp->instance >= 0 && targetp->instance < MAX_SHIPS);
+	core::Assert(targetp->type == OBJ_SHIP);
+	core::Assert(targetp->instance >= 0 && targetp->instance < MAX_SHIPS);
 		target_shipp = &Ships[targetp->instance];
 
 		if ((Game_mode & GM_MULTIPLAYER) && (target_shipp == Player_ship)) {
@@ -3402,7 +3402,7 @@ void hud_show_targeting_gauges(float frametime)
 
 	if (target_point.codes != 0) {
 		// draw the offscreen indicator at the edge of the screen where the target is closest to
-		Assert(Player_ai->target_objnum >= 0);
+	core::Assert(Player_ai->target_objnum >= 0);
 
 		// AL 11-11-97:	don't draw the indicator if the ship is messaging, the indicator is drawn
 		// in the message sending color in hud_show_message_sender()
@@ -3607,8 +3607,8 @@ int hud_get_best_primary_bank(float* range)
 
 		// calculate the range of the weapon, and only display the lead target indicator
 		// if the weapon can actually hit the target
-		Assert(bank_to_fire >= 0 && bank_to_fire < swp->num_primary_banks);
-		Assert(swp->primary_bank_weapons[bank_to_fire] < MAX_WEAPON_TYPES);
+	core::Assert(bank_to_fire >= 0 && bank_to_fire < swp->num_primary_banks);
+	core::Assert(swp->primary_bank_weapons[bank_to_fire] < MAX_WEAPON_TYPES);
 
 		if (swp->primary_bank_weapons[bank_to_fire] < 0)
 			continue;
@@ -5000,7 +5000,7 @@ void hud_target_last_transmit()
 
 	int play_fail_sound = 1;
 	int transmit_index  = Transmit_target_current_slot;
-	Assert(transmit_index >= 0);
+core::Assert(transmit_index >= 0);
 	for (i = 0; i < MAX_TRANSMIT_TARGETS; i++) {
 		if (Transmit_target_list[transmit_index].objnum >= 0) {
 			int transmit_objnum = Transmit_target_list[transmit_index].objnum;
@@ -5044,7 +5044,7 @@ void hud_target_last_transmit()
 	// Was just bogus code in the call to hud_restore_subsystem_target(). -- MK, 9/15/99, 1:59 pm.
 	int targeted_objnum;
 	targeted_objnum = Transmit_target_list[transmit_index].objnum;
-	Assert((targeted_objnum >= 0) && (targeted_objnum < MAX_OBJECTS));
+core::Assert((targeted_objnum >= 0) && (targeted_objnum < MAX_OBJECTS));
 
 	if ((targeted_objnum >= 0) && (targeted_objnum < MAX_OBJECTS)) {
 		set_target_objnum(Player_ai, Transmit_target_list[transmit_index].objnum);
@@ -5060,9 +5060,9 @@ void hud_target_last_transmit_add(int ship_num)
 	int ship_objnum;
 
 	ship_objnum = Ships[ship_num].objnum;
-	Assert(ship_objnum >= 0 && ship_objnum < MAX_OBJECTS);
+core::Assert(ship_objnum >= 0 && ship_objnum < MAX_OBJECTS);
 	ship_objp = &Objects[ship_objnum];
-	Assert(ship_objp->type == OBJ_SHIP);
+core::Assert(ship_objp->type == OBJ_SHIP);
 
 	// don't add ourselves to the list
 	if (Player_obj == ship_objp) {
@@ -5302,7 +5302,7 @@ void HudGaugeAfterburner::render(float /*frametime*/)
 		return;
 	}
 
-	Assert(Player_ship);
+core::Assert(Player_ship);
 	if (!(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Afterburner])) {
 		// Goober5000 - instead of drawing an empty burner gauge, don't draw the gauge at all
 		return;
@@ -5846,8 +5846,8 @@ void HudGaugeWeapons::render(float /*frametime*/)
 	if (Player_obj->type == OBJ_OBSERVER)
 		return;
 
-	Assert(Player_obj->type == OBJ_SHIP);
-	Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
+core::Assert(Player_obj->type == OBJ_SHIP);
+core::Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
 
 	sw = &Ships[Player_obj->instance].weapons;
 	np = sw->num_primary_banks;
@@ -6492,8 +6492,8 @@ void HudGaugeWarheadCount::render(float /*frametime*/)
 		return;
 	}
 
-	Assert(Player_obj->type == OBJ_SHIP);
-	Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
+core::Assert(Player_obj->type == OBJ_SHIP);
+core::Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
 
 	ship_weapon* sw = &Ships[Player_obj->instance].weapons;
 
@@ -6684,8 +6684,8 @@ void HudGaugePrimaryWeapons::render(float /*frametime*/)
 	if (Player_obj->type == OBJ_OBSERVER)
 		return;
 
-	Assert(Player_obj->type == OBJ_SHIP);
-	Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
+core::Assert(Player_obj->type == OBJ_SHIP);
+core::Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
 
 	sw = &Ships[Player_obj->instance].weapons;
 
@@ -6779,8 +6779,8 @@ void HudGaugeSecondaryWeapons::render(float /*frametime*/)
 
 	int num_primaries, num_secondaries;
 
-	Assert(Player_obj->type == OBJ_SHIP);
-	Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
+core::Assert(Player_obj->type == OBJ_SHIP);
+core::Assert(Player_obj->instance >= 0 && Player_obj->instance < MAX_SHIPS);
 
 	sw = &Ships[Player_obj->instance].weapons;
 

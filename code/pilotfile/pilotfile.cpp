@@ -29,7 +29,7 @@ pilotfile::~pilotfile()
 
 void pilotfile::startSection(Section section_id)
 {
-	Assert( cfp );
+core::Assert( cfp );
 
 	const int zero = 0;
 
@@ -44,12 +44,12 @@ void pilotfile::startSection(Section section_id)
 
 void pilotfile::endSection()
 {
-	Assert( cfp );
-	Assert( m_size_offset > 0 );
+core::Assert( cfp );
+core::Assert( m_size_offset > 0 );
 
 	size_t cur = cftell(cfp);
 
-	Assert( cur >= m_size_offset );
+core::Assert( cur >= m_size_offset );
 
 	size_t section_size = cur - m_size_offset;
 
@@ -212,7 +212,7 @@ void pilotfile::update_stats_backout(scoring_struct *stats, bool training)
 		if (j >= 0) {
 			p_stats->medals_earned[j].val = std::max(0,p_stats->medals_earned[j].val--);
 		} else {
-			Assertion(true, "Medal '%s' not found, should have been added by pilotfile::update_stats.", Medals[stats->m_medal_earned].name);
+		core::Assertion(true, "Medal '%s' not found, should have been added by pilotfile::update_stats.", Medals[stats->m_medal_earned].name);
 		}
 	}
 
@@ -248,7 +248,7 @@ void pilotfile::update_stats_backout(scoring_struct *stats, bool training)
 				break;
 			}
 		}
-		Assertion (p_stats->rank >= 0, "Rank became negative.");
+	core::Assertion (p_stats->rank >= 0, "Rank became negative.");
 	}
 
 	// badges
@@ -267,7 +267,7 @@ void pilotfile::update_stats_backout(scoring_struct *stats, bool training)
 			if (j >= 0) {
 				p_stats->medals_earned[j].val = 0;
 			} else {
-				Assertion (false, "Badge '%s' not found, should have been added by pilotfile::update_stats.", Medals[stats->m_badge_earned[medal]].name);
+			core::Assertion (false, "Badge '%s' not found, should have been added by pilotfile::update_stats.", Medals[stats->m_badge_earned[medal]].name);
 			}
 		}
 	}

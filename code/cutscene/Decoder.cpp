@@ -1,5 +1,6 @@
 #include "cutscene/Decoder.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 #include <memory>
 
 namespace cutscene {
@@ -47,7 +48,7 @@ void Decoder::stopDecoder() {
 }
 
 void Decoder::pushAudioData(AudioFramePtr&& data) {
-	Assertion(data, "Invalid audio data passed!");
+	core::Assertion(data, "Invalid audio data passed!");
 
 	try {
 		m_audioQueue->push_back(std::move(data));
@@ -58,7 +59,7 @@ void Decoder::pushAudioData(AudioFramePtr&& data) {
 }
 
 void Decoder::pushSubtitleData(SubtitleFramePtr&& data) {
-	Assertion(data, "Invalid audio data passed!");
+	core::Assertion(data, "Invalid audio data passed!");
 
 	try {
 		m_subtitleQueue->push_back(std::move(data));
@@ -69,7 +70,7 @@ void Decoder::pushSubtitleData(SubtitleFramePtr&& data) {
 }
 
 void Decoder::pushFrameData(VideoFramePtr&& frame) {
-	Assertion(frame, "Invalid video data passed!");
+	core::Assertion(frame, "Invalid video data passed!");
 
 	try {
 		m_videoQueue->push_back(std::move(frame));

@@ -324,7 +324,7 @@ int event_music_cycle_pattern()
 			// AL 06-24-99: maybe switch to battle 2 if hull is less than 70%
 			if (Player_obj != NULL && Player_ship != NULL)
 			{
-				Assert(Player_ship->ship_max_hull_strength != 0.0f);
+			core::Assert(Player_ship->ship_max_hull_strength != 0.0f);
 
 				float integrity = Player_obj->hull_strength / Player_ship->ship_max_hull_strength;
 				if (integrity < HULL_VALUE_TO_PLAY_INTENSE_BATTLE_MUSIC)
@@ -384,7 +384,7 @@ void event_music_force_switch()
 	if ( Patterns[new_pattern].num_measures == 0 )
 		return;	// invalid pattern
 
-	Assert(new_pattern >= 0 && new_pattern < MAX_PATTERNS);
+core::Assert(new_pattern >= 0 && new_pattern < MAX_PATTERNS);
 	audiostream_play(Patterns[new_pattern].handle, (Master_event_music_volume * aav_music_volume), 0);	// no looping
 	audiostream_set_sample_cutoff(Patterns[new_pattern].handle, fl2i(Patterns[new_pattern].num_measures * Patterns[new_pattern].samples_per_measure) );
 	Patterns[Current_pattern].next_pattern = Patterns[Current_pattern].default_next_pattern;
@@ -417,7 +417,7 @@ void event_music_do_frame()
 		Event_music_begun = TRUE;
 		if ( Current_pattern != -1  && Patterns[Current_pattern].handle >= 0) {
 			//WMC - removed in favor of if
-			//Assert(Patterns[Current_pattern].handle >= 0 );
+			//core::Assert(Patterns[Current_pattern].handle >= 0 );
 			audiostream_play(Patterns[Current_pattern].handle, (Master_event_music_volume * aav_music_volume), 0);	// no looping
 			audiostream_set_sample_cutoff(Patterns[Current_pattern].handle, fl2i(Patterns[Current_pattern].num_measures * Patterns[Current_pattern].samples_per_measure) );
 		}
@@ -553,7 +553,7 @@ void event_music_level_init(int force_soundtrack)
 		return;
 	}
 
-	Assert(Current_soundtrack_num >= 0 && Current_soundtrack_num < Num_soundtracks);
+core::Assert(Current_soundtrack_num >= 0 && Current_soundtrack_num < Num_soundtracks);
 
 	if (Current_soundtrack_num < 0 || Current_soundtrack_num > Num_soundtracks)
 		return;
@@ -671,7 +671,7 @@ void event_music_level_close()
 	if ( Current_soundtrack_num >= 0 && Current_soundtrack_num < MAX_SOUNDTRACKS ) {
 		SOUNDTRACK_INFO *strack;
    
-		Assert( Current_soundtrack_num >= 0 && Current_soundtrack_num < MAX_SOUNDTRACKS );
+	core::Assert( Current_soundtrack_num >= 0 && Current_soundtrack_num < MAX_SOUNDTRACKS );
 		strack = &Soundtracks[Current_soundtrack_num];
 
 		// close the pattern files
@@ -801,7 +801,7 @@ int event_music_enemy_arrival()
 		// AL 7-25-99: If hull is less than 70% then switch to battle 2 or 3, otherwise switch to 1 or 2
 		bool play_intense_battle_music = false;
 		if (Player_obj != NULL && Player_ship != NULL) {
-			Assert(Player_ship->ship_max_hull_strength != 0);
+		core::Assert(Player_ship->ship_max_hull_strength != 0);
 
 			float integrity = Player_obj->hull_strength / Player_ship->ship_max_hull_strength;
 			if (integrity < HULL_VALUE_TO_PLAY_INTENSE_BATTLE_MUSIC)
@@ -870,7 +870,7 @@ int event_music_friendly_arrival()
 		return 0;
 
 	// Goober5000 - to avoid array out-of-bounds
-	//Assert(Current_pattern >= 0 && Current_pattern < MAX_PATTERNS);
+	/core::Assert(Current_pattern >= 0 && Current_pattern < MAX_PATTERNS);
 
 	if(Current_pattern < 0 || Current_pattern >= MAX_PATTERNS)
 		return 0;
@@ -892,7 +892,7 @@ int event_music_friendly_arrival()
 		{
 			// Goober5000 - I didn't touch this part... for some reason, FS2 only has one
 			// arrival music pattern, and this is it
-			Assert(Patterns[SONG_AARV_1].handle >= 0 );
+		core::Assert(Patterns[SONG_AARV_1].handle >= 0 );
 			audiostream_play(Patterns[SONG_AARV_1].handle, (Master_event_music_volume * aav_music_volume), 0);	// no looping
 			audiostream_set_sample_cutoff(Patterns[SONG_AARV_1].handle, fl2i(Patterns[SONG_AARV_1].num_measures * Patterns[SONG_AARV_1].samples_per_measure) );
 		}
@@ -972,7 +972,7 @@ int event_music_primary_goal_failed()
 	}
 
 	if ( Current_pattern != -1 ) {
-		Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
+	core::Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
 		Patterns[Current_pattern].next_pattern = next_pattern;
 		Patterns[Current_pattern].force_pattern = TRUE;
 	}
@@ -1046,7 +1046,7 @@ int event_music_player_death()
 		return 0;	// already playing
 
 	if ( Current_pattern != -1 ) {
-		Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
+	core::Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
 		Patterns[Current_pattern].next_pattern = SONG_DEAD_1;
 		Patterns[Current_pattern].force_pattern = TRUE;
 	}
@@ -1067,7 +1067,7 @@ int event_music_player_respawn()
 	if ( Event_music_level_inited == FALSE )
 		return -1;
 
-//	Assert(Current_pattern == SONG_DEAD_1);
+//core::Assert(Current_pattern == SONG_DEAD_1);
 
 	Event_Music_battle_started = 0;
 	Patterns[Current_pattern].next_pattern = SONG_NRML_1;
@@ -1397,7 +1397,7 @@ void event_music_change_pattern(int new_pattern)
 		return;	// already playing
 
 	if ( Current_pattern != -1 ) {
-		Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
+	core::Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
 		Patterns[Current_pattern].next_pattern = new_pattern;
 		Patterns[Current_pattern].force_pattern = TRUE;
 	}
@@ -1431,7 +1431,7 @@ void event_music_disable()
 	if (Current_pattern == -1)
 		return;
 
-	Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
+core::Assert( Current_pattern >= 0 && Current_pattern < MAX_PATTERNS );
 	if (  audiostream_is_playing(Patterns[Current_pattern].handle) ) {
 			audiostream_stop(Patterns[Current_pattern].handle);	// stop current and rewind
 	}
@@ -1602,7 +1602,7 @@ int event_music_next_soundtrack(int delta)
 // Goober5000 - along the same lines; this is for the sexp
 void event_sexp_change_soundtrack(char *name)
 {
-	Assert(name);
+core::Assert(name);
 
 	int i, new_soundtrack = -1;
 
@@ -1679,7 +1679,7 @@ int event_music_get_spooled_music_index(const std::string& name)
 // set a score based on name
 void event_music_set_score(int score_index, const char *name)
 {
-	Assert(score_index < NUM_SCORES);
+core::Assert(score_index < NUM_SCORES);
 
 	// find the correct index for the event music
 	Mission_music[score_index] = event_music_get_spooled_music_index(name);

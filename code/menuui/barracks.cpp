@@ -302,7 +302,7 @@ void barracks_squad_change_popup();
 //
 
 #define STRCPY1(a, b) do {	\
-	Assert(strlen(b) < STAT_COLUMN1_W); \
+core::Assert(strlen(b) < STAT_COLUMN1_W); \
 	strcpy_s(a, b); \
 } while (false)
 
@@ -333,27 +333,27 @@ void barracks_init_stats(scoring_struct *stats)
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;	
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Primary weapon shots:", 51));
 	sprintf(Stats[Num_stat_lines], "%u", stats->p_shots_fired);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Primary weapon hits:", 52));
 	sprintf(Stats[Num_stat_lines], "%u", stats->p_shots_hit);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Primary friendly hits:", 53));
 	sprintf(Stats[Num_stat_lines], "%u", stats->p_bonehead_hits);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Primary hit %:", 54));
 	if (stats->p_shots_fired > 0) {
 		f = (float) stats->p_shots_hit * 100.0f / (float) stats->p_shots_fired;
@@ -363,7 +363,7 @@ void barracks_init_stats(scoring_struct *stats)
 	sprintf(Stats[Num_stat_lines], XSTR( "%.1f%%", 55), f);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Primary friendly hit %:", 56));
 	if (stats->p_shots_fired > 0) {
 		f = (float) stats->p_bonehead_hits * 100.0f / (float) stats->p_shots_fired;
@@ -373,27 +373,27 @@ void barracks_init_stats(scoring_struct *stats)
 	sprintf(Stats[Num_stat_lines], XSTR( "%.1f%%", 55), f);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Secondary weapon shots:", 57));
 	sprintf(Stats[Num_stat_lines], "%u", stats->s_shots_fired);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR( "Secondary weapon hits:", 58));
 	sprintf(Stats[Num_stat_lines], "%u", stats->s_shots_hit);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Secondary friendly hits:", 59));
 	sprintf(Stats[Num_stat_lines], "%u", stats->s_bonehead_hits);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Secondary hit %:", 60));
 	if (stats->s_shots_fired > 0) {
 		f = (float)stats->s_shots_hit * 100.0f / (float)stats->s_shots_fired;
@@ -404,7 +404,7 @@ void barracks_init_stats(scoring_struct *stats)
 	sprintf(Stats[Num_stat_lines], XSTR("%.1f%%", 55), f);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Secondary friendly hit %:", 61));
 	if (stats->s_shots_fired > 0) {
 		f = (float)stats->s_bonehead_hits * 100.0f / (float)stats->s_shots_fired;
@@ -415,37 +415,37 @@ void barracks_init_stats(scoring_struct *stats)
 	sprintf(Stats[Num_stat_lines], XSTR("%.1f%%", 55), f);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Total kills:", 62));
 	sprintf(Stats[Num_stat_lines], "%d", stats->kill_count_ok);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Assists:", 63));
 	sprintf(Stats[Num_stat_lines], "%d", stats->assists);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	strcpy_s(Stat_labels[Num_stat_lines], XSTR("Current Score:", 1583));
 	sprintf(Stats[Num_stat_lines], "%d", stats->score);
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
@@ -454,26 +454,26 @@ void barracks_init_stats(scoring_struct *stats)
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
-	Assert(Num_stat_lines < Max_stat_lines);
+core::Assert(Num_stat_lines < Max_stat_lines);
 	Stat_labels[Num_stat_lines][0] = 0;
 	Stats[Num_stat_lines][0] = 0;
 	Num_stat_lines++;
 
 	// Goober5000 - make sure we have room for all ships
-	Assert((Num_stat_lines + Ship_info.size()) < Max_stat_lines);
+core::Assert((Num_stat_lines + Ship_info.size()) < Max_stat_lines);
 
 	i = 0;
 	for (auto it = Ship_info.cbegin(); it != Ship_info.cend(); i++, ++it) {
 		if (stats->kills[i]) {
-			Assert(Num_stat_lines < Max_stat_lines);
+		core::Assert(Num_stat_lines < Max_stat_lines);
 
-			// Goober5000 - in case above Assert isn't triggered (such as in non-debug builds)
+			// Goober5000 - in case abovecore::Assert isn't triggered (such as in non-debug builds)
 			if (Num_stat_lines >= Max_stat_lines)
 			{
 				break;
 			}
 
-			Assert(strlen(it->name) + 1 < STAT_COLUMN1_W);
+		core::Assert(strlen(it->name) + 1 < STAT_COLUMN1_W);
 			sprintf(Stat_labels[Num_stat_lines], NOX("%s:"), it->name);
 			sprintf(Stats[Num_stat_lines], "%d", stats->kills[i]);
 			Num_stat_lines++;
@@ -484,7 +484,7 @@ void barracks_init_stats(scoring_struct *stats)
 	}
 
 	// add the score from kills
-	Assert((Num_stat_lines + 1) < Max_stat_lines);
+core::Assert((Num_stat_lines + 1) < Max_stat_lines);
 	STRCPY1(Stat_labels[Num_stat_lines], XSTR("Score from kills only:", 1636));
 	sprintf(Stats[Num_stat_lines], "%d", score_from_kills);
 	Num_stat_lines++;
@@ -632,7 +632,7 @@ void barracks_create_new_pilot()
 
 	// move other pilot names and ranks down to make room for the new one
 	int idx = Num_pilots;
-	Assert(Num_pilots >= 0);
+core::Assert(Num_pilots >= 0);
 	while (idx--) {
 		strcpy(Pilots[idx + 1], Pilots[idx]);
 		Pilot_ranks[idx + 1] = Pilot_ranks[idx];
@@ -1001,7 +1001,7 @@ void barracks_init_player_stuff(int mode)
 				break;
 			}
 		}
-		Assert(j < Num_pilots);  // Pilot not found?  How is that possible?
+	core::Assert(j < Num_pilots);  // Pilot not found?  How is that possible?
 	}
 
 	for (i=0; i<Num_pilots; i++) {

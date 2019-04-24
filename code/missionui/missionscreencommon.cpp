@@ -413,7 +413,7 @@ void common_set_interface_palette(const char *filename)
 	if (!filename)
 		filename = NOX("palette01");
 
-	Assert(strlen(filename) <= MAX_FILENAME_LEN);
+core::Assert(strlen(filename) <= MAX_FILENAME_LEN);
 	if ( (InterfacePaletteBitmap != -1) && !stricmp(filename, buf) )
 		return;  // already set to this palette
 
@@ -468,7 +468,7 @@ int common_flash_bright()
 // set the necessary pointers
 void common_set_team_pointers(int team)
 {
-	Assert( (team >= 0) && (team < MAX_TVT_TEAMS) );
+core::Assert( (team >= 0) && (team < MAX_TVT_TEAMS) );
 
 	Wss_slots = Wss_slots_teams[team];
 	Ss_pool = Ss_pool_teams[team];
@@ -484,7 +484,7 @@ void common_reset_team_pointers()
 	ss_reset_team_pointers();
 	wl_reset_team_pointers();
 
-	// these are done last so that we can make use of the Assert()'s in the above
+	// these are done last so that we can make use of thecore::Assert()'s in the above
 	// functions to make sure the screens are exited and this is safe
 	Wss_slots = NULL;
 	Ss_pool = NULL;
@@ -1045,7 +1045,7 @@ void wss_save_loadout()
 {
 	int i,j;
 
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	// save the ship pool
 	for ( i = 0; i < MAX_SHIP_CLASSES; i++ ) {
@@ -1074,7 +1074,7 @@ void wss_maybe_restore_loadout()
 	int i,j;
 	wss_unit	*slot;
 
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	// only restore if mission hasn't changed
 	if ( stricmp(Player_loadout.last_modified, The_mission.modified) != 0 ) {
@@ -1152,7 +1152,7 @@ void wss_maybe_restore_loadout()
 
 		if ((slot->ship_class >= 0) && (slot->ship_class < static_cast<int>(Ship_info.size()))) {
 			--this_loadout_ships[slot->ship_class];
-			Assertion((this_loadout_ships[slot->ship_class] >= 0), "Attempting to restore the previous missions loadout has resulted in an invalid number of ships available");
+		core::Assertion((this_loadout_ships[slot->ship_class] >= 0), "Attempting to restore the previous missions loadout has resulted in an invalid number of ships available");
 
 		}
 		// restore the ship class for each slot
@@ -1161,7 +1161,7 @@ void wss_maybe_restore_loadout()
 		for ( j = 0; j < MAX_SHIP_WEAPONS; j++ ) {
 			if ((slot->ship_class >= 0) && (slot->wep[j] >= 0) && (slot->wep[j] < Num_weapon_types)) {
 				this_loadout_weapons[slot->wep[j]] -= slot->wep_count[j];
-				Assertion((this_loadout_weapons[slot->wep[j]] >= 0), "Attempting to restore the previous missions loadout has resulted in an invalid number of weapons available");
+			core::Assertion((this_loadout_weapons[slot->wep[j]] >= 0), "Attempting to restore the previous missions loadout has resulted in an invalid number of weapons available");
 			}
 
 			Wss_slots[i].wep[j]= slot->wep[j];
@@ -1267,7 +1267,7 @@ int wss_slots_all_empty()
 {
 	int i;
 
-	Assert( Wss_slots != NULL );
+core::Assert( Wss_slots != NULL );
 
 	for ( i = 0; i < MAX_WSS_SLOTS; i++ ) {
 		if ( Wss_slots[i].ship_class >= 0 ) 
@@ -1285,7 +1285,7 @@ int wss_get_mode(int from_slot, int from_list, int to_slot, int to_list, int wl_
 {
 	int mode, to_slot_empty=0;
 
-	Assert( Wss_slots != NULL );
+core::Assert( Wss_slots != NULL );
 
 	if ( wl_ship_slot >= 0 ) {
 		// weapons loadout
@@ -1328,8 +1328,8 @@ int store_wss_data(ubyte *block, int max_size, interface_snd_id sound,int player
 
 	// this function assumes that the data is going to be used over the network
 	// so make a non-network version of this function if needed
-	Assert( Game_mode & GM_MULTIPLAYER );
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( Game_mode & GM_MULTIPLAYER );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	if ( !(Game_mode & GM_MULTIPLAYER) )
 		return 0;
@@ -1339,7 +1339,7 @@ int store_wss_data(ubyte *block, int max_size, interface_snd_id sound,int player
 	for ( i = 0; i < static_cast<int>(Ship_info.size()); i++ ) {
 		if ( Ss_pool[i] > 0 ) {	
 			block[offset++] = (ubyte)i;
-			Assert( Ss_pool[i] < UCHAR_MAX );
+		core::Assert( Ss_pool[i] < UCHAR_MAX );
 			
 			// take care of sign issues
 			if(Ss_pool[i] == -1){
@@ -1367,7 +1367,7 @@ int store_wss_data(ubyte *block, int max_size, interface_snd_id sound,int player
 	block[offset++] = 0xff; // signals start of unit data
 
 	for ( i=0; i<MAX_WSS_SLOTS; i++ ) {
-		Assert( Wss_slots[i].ship_class < UCHAR_MAX );
+	core::Assert( Wss_slots[i].ship_class < UCHAR_MAX );
 		if(Wss_slots[i].ship_class == -1){
 			block[offset++] = 0xff;
 		} else {
@@ -1375,14 +1375,14 @@ int store_wss_data(ubyte *block, int max_size, interface_snd_id sound,int player
 		}
 		for ( j = 0; j < MAX_SHIP_WEAPONS; j++ ) {
 			// take care of sign issues
-			Assert( Wss_slots[i].wep[j] < UCHAR_MAX );			
+		core::Assert( Wss_slots[i].wep[j] < UCHAR_MAX );			
 			if(Wss_slots[i].wep[j] == -1){
 				block[offset++] = 0xff;
 			} else {
 				block[offset++] = (ubyte)(Wss_slots[i].wep[j]);
 			}
 
-			Assert( Wss_slots[i].wep_count[j] < SHRT_MAX );
+		core::Assert( Wss_slots[i].wep_count[j] < SHRT_MAX );
 			ishort = INTEL_SHORT( (short)Wss_slots[i].wep_count[j] );
 
 			memcpy(&(block[offset]), &(ishort), sizeof(short) );
@@ -1412,7 +1412,7 @@ int store_wss_data(ubyte *block, int max_size, interface_snd_id sound,int player
 	memcpy(block+offset,&player_id,sizeof(player_id));
 	offset += sizeof(player_id);
 
-	Assert( offset < max_size );
+core::Assert( offset < max_size );
 	return offset;
 }
 
@@ -1425,8 +1425,8 @@ int restore_wss_data(ubyte *block)
 
 	// this function assumes that the data is going to be used over the network
 	// so make a non-network version of this function if needed
-	Assert( Game_mode & GM_MULTIPLAYER );
-	Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
+core::Assert( Game_mode & GM_MULTIPLAYER );
+core::Assert( (Ss_pool != NULL) && (Wl_pool != NULL) && (Wss_slots != NULL) );
 
 	if ( !(Game_mode & GM_MULTIPLAYER) )
 		return 0;

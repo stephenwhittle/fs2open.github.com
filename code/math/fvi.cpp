@@ -470,7 +470,7 @@ int fvi_point_face(const vec3d *checkp, int nv, vec3d const *const *verts, const
 
 			beta = (v0*u1 - u0*v1) / (v2*u1 - u2*v1);
 			if ((beta >=0.0f) && (beta<=1.0f))	{
-				Assert(beta != UNINITIALIZED_VALUE);
+			core::Assert(beta != UNINITIALIZED_VALUE);
 				alpha = (u0 - beta*u2)/u1;
 				inter = ((alpha>=0.0f)&&(alpha+beta<=1.0f));
 			}
@@ -593,13 +593,13 @@ int fvi_sphere_perp_edge(vec3d *intersect_point, const vec3d *sphere_center_star
 	vec3d temp;
 	// next two temp should be same as starting velocities
 	vm_vec_projection_onto_plane(&temp, sphere_velocity, &z_hat);
-	Assert ( !vm_vec_cmp(&temp, sphere_velocity) );
+core::Assert ( !vm_vec_cmp(&temp, sphere_velocity) );
 	vm_vec_projection_onto_plane(&temp, &edge_velocity,  &z_hat);
-	Assert ( !vm_vec_cmp(&temp, &edge_velocity) );
+core::Assert ( !vm_vec_cmp(&temp, &edge_velocity) );
 
 	// should return V0
 	vm_project_point_onto_plane(&Xe_proj, &V0, &z_hat, &V0);
-	Assert ( !vm_vec_cmp(&Xe_proj, &V0) );
+core::Assert ( !vm_vec_cmp(&Xe_proj, &V0) );
 
 	vm_project_point_onto_plane(&Xs_proj, sphere_center_start, &z_hat, &V0);
 
@@ -884,19 +884,19 @@ TryVertex:
 
 		// set hitpoint to closest vetex hit, if any
 		if ( v0_hit ) {
-			Assert(sphere_v0 != UNINITIALIZED_VALUE);
+		core::Assert(sphere_v0 != UNINITIALIZED_VALUE);
 			t_sphere_hit = sphere_v0;
 			temp_edge_hit = v0;
 
 			if (v1_hit) {
-				Assert( sphere_v1 != UNINITIALIZED_VALUE );
+			core::Assert( sphere_v1 != UNINITIALIZED_VALUE );
 				if (sphere_v1 < sphere_v0) {
 					t_sphere_hit = sphere_v1;
 					temp_edge_hit = v1;
 				}
 			}
 		} else if ( v1_hit ) {
-			Assert(sphere_v1 != UNINITIALIZED_VALUE);
+		core::Assert(sphere_v1 != UNINITIALIZED_VALUE);
 			t_sphere_hit = sphere_v1;
 			temp_edge_hit = v1;
 		} else {
@@ -971,7 +971,7 @@ int fvi_check_sphere_sphere(const vec3d *x_p0, const vec3d *x_p1, const vec3d *x
 	float time1, time2;
 
 	// Check that there are either 0 or 2 pointers to time
-	Assert( (!(t1) && !(t2)) || (t1 && t2) );
+core::Assert( (!(t1) && !(t2)) || (t1 && t2) );
 
 	vm_vec_sub(&delta_x, x_s0, x_p0);
 	delta_x_sqr = vm_vec_mag_squared(&delta_x);

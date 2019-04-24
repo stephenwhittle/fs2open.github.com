@@ -278,7 +278,7 @@ int RECVFROM(SOCKET  /*s*/, char *buf, int  /*len*/, int  /*flags*/, sockaddr *f
 	int ret_len;
 
 	// bad type
-	Assert((psnet_type >= 0) && (psnet_type < PSNET_NUM_TYPES));
+core::Assert((psnet_type >= 0) && (psnet_type < PSNET_NUM_TYPES));
 	if((psnet_type < 0) || (psnet_type >= PSNET_NUM_TYPES)){
 		return -1;
 	}	
@@ -305,7 +305,7 @@ int RECVFROM(SOCKET  /*s*/, char *buf, int  /*len*/, int  /*flags*/, sockaddr *f
 		break;
 
 	default:
-		Assert(0);
+	core::Assert(0);
 		break;
 	}
 
@@ -326,7 +326,7 @@ int SELECT(int nfds, fd_set * readfds, fd_set * writefds, fd_set * exceptfds, st
 	}	
 	
 	// bad type
-	Assert((psnet_type >= 0) && (psnet_type < PSNET_NUM_TYPES));
+core::Assert((psnet_type >= 0) && (psnet_type < PSNET_NUM_TYPES));
 	if((psnet_type < 0) || (psnet_type >= PSNET_NUM_TYPES)){
 		return -1;
 	}	
@@ -410,7 +410,7 @@ void PSNET_TOP_LAYER_PROCESS()
 			break;
 		
 		default:
-			Assert(0);
+		core::Assert(0);
 			return;
 		}
 
@@ -429,7 +429,7 @@ void PSNET_TOP_LAYER_PROCESS()
 			break;
 
 		default:
-			Assert(0);
+		core::Assert(0);
 			return;
 			// break;
 		}
@@ -441,7 +441,7 @@ void PSNET_TOP_LAYER_PROCESS()
 
 		// determine the packet type
 		int packet_type = packet_read.data[0];	
-		Assertion(((packet_type >= 0) && (packet_type < PSNET_NUM_TYPES)), "Invalid packet_type found. Packet type %d does not exist", packet_type);
+	core::Assertion(((packet_type >= 0) && (packet_type < PSNET_NUM_TYPES)), "Invalid packet_type found. Packet type %d does not exist", packet_type);
 		if((packet_type >= 0) && (packet_type < PSNET_NUM_TYPES)){
 			// buffer the packet
 			psnet_buffer_packet(&Psnet_top_buffers[packet_type], packet_read.data + 1, read_len - 1, &from_addr);
@@ -743,7 +743,7 @@ void psnet_string_to_addr( net_addr * address, char * text )
 	}
 
 	// copy the text string to local storage to look for ports
-	Assert( strlen(text) < 255 );
+core::Assert( strlen(text) < 255 );
 	strcpy_s(str, text);
 	c = strrchr(str, ':');
 	port = NULL;
@@ -775,7 +775,7 @@ void psnet_string_to_addr( net_addr * address, char * text )
 			break;
 
 		default:
-			Assert(0);
+		core::Assert(0);
 			break;
 
 	} // end switch
@@ -866,7 +866,7 @@ int psnet_send( net_addr * who_to, void * data, int len, int np_index )
 			break;
 
 		default:
-			Assert(0);	// unknown protocol
+		core::Assert(0);	// unknown protocol
 			break;
 
 	} // end switch
@@ -944,7 +944,7 @@ int psnet_is_valid_ip_string( char *ip_string, int  /*allow_port*/ )
 	char str[255], *c;
 
 	// our addresses may have ports, so make local copy and remove port number
-	Assert( strlen(ip_string) < 255 );
+core::Assert( strlen(ip_string) < 255 );
 	strcpy_s(str, ip_string);
 	c = strrchr(str, ':');
 	if ( c ){
@@ -1085,7 +1085,7 @@ int psnet_rel_send(PSNET_SOCKET_RELIABLE socketid, ubyte *data, int length, int 
 		return -1;
 	}
 
-	Assert(length < (int)sizeof(reliable_header));
+core::Assert(length < (int)sizeof(reliable_header));
 	psnet_rel_work();
 
 	rsocket=&Reliable_sockets[socketid];
@@ -1389,7 +1389,7 @@ void psnet_rel_work()
 					if(rsocket){
 						if(rsocket->sbuffers[i]){
 							if(rsocket->ssequence[i] == INTEL_INT(*acksig)){								
-								Assert(rsocket->sbuffers[i] != NULL);
+							core::Assert(rsocket->sbuffers[i] != NULL);
 								vm_free(rsocket->sbuffers[i]);
 								rsocket->sbuffers[i] = NULL;	
 								rsocket->ssequence[i] = 0;
@@ -1880,7 +1880,7 @@ int psnet_buffer_get_next(network_packet_buffer_list *l, ubyte *data, int *lengt
 	}
 
 	// at this point, we should _always_ have found the buffer
-	Assert(found_buf);	
+core::Assert(found_buf);	
 	
 	// copy out the buffer data
 	memcpy(data, l->psnet_buffers[idx].data, l->psnet_buffers[idx].len);

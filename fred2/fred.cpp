@@ -272,12 +272,12 @@ BOOL CFREDApp::InitInstance() {
 	// setup the fred exe directory so CFILE can init properly
 	/*
 	c = GetCommandLine();
-	Assert(c != NULL);
+core::Assert(c != NULL);
 	if(c == NULL){
 	return FALSE;
 	}
 	tok = strtok(c, " \n");
-	Assert(tok != NULL);
+core::Assert(tok != NULL);
 	if(tok == NULL){
 	return FALSE;
 	}
@@ -287,7 +287,7 @@ BOOL CFREDApp::InitInstance() {
 
 	// we need a full path, and if run from a shell that may not happen, so work that case out...
 
-	Assert(strlen(__argv[0]) > 2);
+core::Assert(strlen(__argv[0]) > 2);
 
 	// see if we have a ':', and if not then assume that we don't have a full path
 	memset(Fred_exe_dir, 0, sizeof(Fred_exe_dir));
@@ -345,7 +345,7 @@ int CFREDApp::init_window(window_data *wndd, CWnd *wnd, int adjust, int pre) {
 	if (wndd->processed)
 		return -2;
 
-	Assert(wnd->GetSafeHwnd());
+core::Assert(wnd->GetSafeHwnd());
 	wnd->GetWindowPlacement(&p);
 	width = p.rcNormalPosition.right - p.rcNormalPosition.left;
 	height = p.rcNormalPosition.bottom - p.rcNormalPosition.top + adjust;

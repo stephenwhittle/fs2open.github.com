@@ -9,7 +9,7 @@
 #include "tracing/tracing.h"
 #include "ship/ship.h"
 #include <math/RandomRange.h>
-
+#include <core/path.h>
 namespace {
 
 class DecalDefinition {
@@ -110,7 +110,7 @@ class DecalDefinition {
 	}
 
 	void loadBitmaps() {
-		if (_diffuseBitmap == -1 && VALID_FNAME(_diffuseFilename)) {
+		if (_diffuseBitmap == -1 && core::fs::VALID_FNAME(_diffuseFilename)) {
 			_diffuseBitmap = bm_load_either(_diffuseFilename.c_str());
 			if (_diffuseBitmap == -1) {
 				core::Warning(LOCATION,
@@ -119,7 +119,7 @@ class DecalDefinition {
 						_name.c_str());
 			}
 		}
-		if (_glowBitmap == -1 && VALID_FNAME(_glowFilename)) {
+		if (_glowBitmap == -1 && core::fs::VALID_FNAME(_glowFilename)) {
 			_glowBitmap = bm_load_either(_glowFilename.c_str());
 			if (_glowBitmap == -1) {
 				core::Warning(LOCATION,
@@ -128,7 +128,7 @@ class DecalDefinition {
 						_name.c_str());
 			}
 		}
-		if (_normalBitmap == -1 && VALID_FNAME(_normalMapFilename)) {
+		if (_normalBitmap == -1 && core::fs::VALID_FNAME(_normalMapFilename)) {
 			_normalBitmap = bm_load_either(_normalMapFilename.c_str());
 			if (_normalBitmap == -1) {
 				core::Warning(LOCATION,
@@ -203,24 +203,24 @@ void parse_decals_table(const char* filename) {
 
 		required_string("#End");
 	} catch (const parse::ParseException& e) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+		core::mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
 		return;
 	}
 
 	if (!gr_is_capable(CAPABILITY_DEFERRED_LIGHTING)) {
 		// we need deferred lighting
 		decal_system_active = false;
-		mprintf(("Note: Decal system has been disabled due to lack of deferred lighting.\n"));
+		core::mprintf(("Note: Decal system has been disabled due to lack of deferred lighting.\n"));
 	}
 	if (!gr_is_capable(CAPABILITY_NORMAL_MAP)) {
 		// We need normal mapping for the full feature range
 		decal_system_active = false;
-		mprintf(("Note: Decal system has been disabled due to lack of normal mapping.\n"));
+		core::mprintf(("Note: Decal system has been disabled due to lack of normal mapping.\n"));
 	}
 	if (!gr_is_capable(CAPABILITY_SEPARATE_BLEND_FUNCTIONS)) {
 		// WWe need separate blending functions for different color buffers
 		decal_system_active = false;
-		mprintf(("Note: Decal system has been disabled due to lack of separate color buffer blend functions.\n"));
+		core::mprintf(("Note: Decal system has been disabled due to lack of separate color buffer blend functions.\n"));
 	}
 }
 
@@ -247,7 +247,8 @@ struct Decal {
 		}
 
 		if (orig_obj_type != object.objp->type) {
-			mprintf(("Decal object type for object %d has changed from %s to %s. Please let m!m know about this\n",
+			core::mprintf(
+			    ("Decal object type for object %d has changed from %s to %s. Please let m!m know about this\n",
 			         OBJ_INDEX(object.objp), Object_type_names[orig_obj_type], Object_type_names[object.objp->type]));
 			return false;
 		}
@@ -264,7 +265,7 @@ struct Decal {
 			auto shipp = &Ships[objp->instance];
 			auto model_instance = model_get_instance(shipp->model_instance_num);
 
-			Assertion(submodel >= 0 && submodel < model_get(object_get_model(objp))->n_models,
+core::Assertion(submodel >= 0 && submodel < model_get(object_get_model(objp))->n_models,
 					  "Invalid submodel number detected!");
 			auto smi = &model_instance->submodel[submodel];
 
@@ -371,7 +372,7 @@ void loadBitmaps(const creation_info& info) {
 		return;
 	}
 
-	Assertion(info.definition_handle >= 0 && info.definition_handle < (int) decalDefinitions.size(),
+core::Assertion(info.definition_handle >= 0 && info.definition_handle < (int)decalDefinitions.size(),
 			  "Invalid decal handle detected!");
 
 	auto& def = decalDefinitions[info.definition_handle];
@@ -387,7 +388,7 @@ void pageInDecal(const creation_info& info) {
 		return;
 	}
 
-	Assertion(info.definition_handle >= 0 && info.definition_handle < (int) decalDefinitions.size(),
+core::Assertion(info.definition_handle >= 0 && info.definition_handle < (int)decalDefinitions.size(),
 			  "Invalid decal handle detected!");
 
 	decalDefinitions[info.definition_handle].pageIn();
@@ -398,7 +399,7 @@ void initializeMission() {
 }
 
 matrix4 getDecalTransform(Decal& decal) {
-	Assertion(decal.object.objp->type == OBJ_SHIP, "Only ships are currently supported for decals!");
+	core::Assertion(decal.object.objp->type == OBJ_SHIP, "Only ships are currently supported for decals!");
 
 	auto objp = decal.object.objp;
 	auto ship = &Ships[objp->instance];
@@ -478,7 +479,7 @@ void renderAll() {
 		int glow_bm = -1;
 		int normal_bm = -1;
 
-		Assertion(decal.definition_handle >= 0 && decal.definition_handle < (int) decalDefinitions.size(),
+core::Assertion(decal.definition_handle >= 0 && decal.definition_handle < (int)decalDefinitions.size(),
 				  "Invalid decal handle detected!");
 		auto& decalDef = decalDefinitions[decal.definition_handle];
 
@@ -521,7 +522,7 @@ addDecal(creation_info& info, object* host, int submodel, const vec3d& local_pos
 		return;
 	}
 
-	Assertion(info.definition_handle >= 0 && info.definition_handle < (int) decalDefinitions.size(),
+core::Assertion(info.definition_handle >= 0 && info.definition_handle < (int)decalDefinitions.size(),
 			  "Invalid decal handle detected!");
 	auto& def = decalDefinitions[info.definition_handle];
 

@@ -205,8 +205,8 @@ void opengl_bind_buffer_object(int handle)
 {
 	GR_DEBUG_SCOPE("Bind buffer handle");
 
-	Assert(handle >= 0);
-	Assert((size_t)handle < GL_buffer_objects.size());
+core::Assert(handle >= 0);
+core::Assert((size_t)handle < GL_buffer_objects.size());
 
 	opengl_buffer_object &buffer_obj = GL_buffer_objects[handle];
 
@@ -230,12 +230,12 @@ void opengl_bind_buffer_object(int handle)
 	}
 }
 GLuint opengl_buffer_get_id(GLenum expected_type, int handle) {
-	Assert(handle >= 0);
-	Assert((size_t)handle < GL_buffer_objects.size());
+core::Assert(handle >= 0);
+core::Assert((size_t)handle < GL_buffer_objects.size());
 
 	opengl_buffer_object &buffer_obj = GL_buffer_objects[handle];
 
-	Assertion(expected_type == buffer_obj.type, "Expected buffer type did not match the actual buffer type!");
+core::Assertion(expected_type == buffer_obj.type, "Expected buffer type did not match the actual buffer type!");
 
 	return buffer_obj.buffer_id;
 }
@@ -243,12 +243,12 @@ GLuint opengl_buffer_get_id(GLenum expected_type, int handle) {
 void gr_opengl_update_buffer_data(int handle, size_t size, void* data)
 {
 	// This has to be verified by the caller or else we will run into OPenGL errors
-	Assertion(size > 0, "Buffer updates must include some data!");
+core::Assertion(size > 0, "Buffer updates must include some data!");
 
 	GR_DEBUG_SCOPE("Update buffer data");
 
-	Assert(handle >= 0);
-	Assert((size_t)handle < GL_buffer_objects.size());
+core::Assert(handle >= 0);
+core::Assert((size_t)handle < GL_buffer_objects.size());
 
 	opengl_buffer_object &buffer_obj = GL_buffer_objects[handle];
 
@@ -282,8 +282,8 @@ void gr_opengl_update_buffer_data_offset(int handle, size_t offset, size_t size,
 {
 	GR_DEBUG_SCOPE("Update buffer data with offset");
 
-	Assert(handle >= 0);
-	Assert((size_t)handle < GL_buffer_objects.size());
+core::Assert(handle >= 0);
+core::Assert((size_t)handle < GL_buffer_objects.size());
 
 	opengl_buffer_object &buffer_obj = GL_buffer_objects[handle];
 
@@ -298,8 +298,8 @@ void gr_opengl_delete_buffer(int handle)
 
 	GR_DEBUG_SCOPE("Deleting buffer");
 
-	Assert(handle >= 0);
-	Assert((size_t)handle < GL_buffer_objects.size());
+core::Assert(handle >= 0);
+core::Assert((size_t)handle < GL_buffer_objects.size());
 
 	opengl_buffer_object &buffer_obj = GL_buffer_objects[handle];
 
@@ -343,12 +343,12 @@ void gr_opengl_bind_uniform_buffer(uniform_block_type bind_point, size_t offset,
 	GLuint buffer_handle = 0;
 
 	if (buffer != -1) {
-		Assert(buffer >= 0);
-		Assert((size_t)buffer < GL_buffer_objects.size());
+	core::Assert(buffer >= 0);
+	core::Assert((size_t)buffer < GL_buffer_objects.size());
 
 		opengl_buffer_object &buffer_obj = GL_buffer_objects[buffer];
 
-		Assertion(buffer_obj.type == GL_UNIFORM_BUFFER, "Only uniform buffers are valid for this function!");
+	core::Assertion(buffer_obj.type == GL_UNIFORM_BUFFER, "Only uniform buffers are valid for this function!");
 		buffer_handle = buffer_obj.buffer_id;
 	}
 
@@ -537,9 +537,9 @@ void opengl_render_model_program(model_material* material_info, indexed_vertex_s
 
 	GLenum element_type = (datap->flags & VB_FLAG_LARGE_INDEX) ? GL_UNSIGNED_INT : GL_UNSIGNED_SHORT;
 
-	Assert(vert_source);
-	Assertion(vert_source->Vbuffer_handle >= 0, "The vertex data must be located in a GPU buffer!");
-	Assertion(vert_source->Ibuffer_handle >= 0, "The index values must be located in a GPU buffer!");
+core::Assert(vert_source);
+core::Assertion(vert_source->Vbuffer_handle >= 0, "The vertex data must be located in a GPU buffer!");
+core::Assertion(vert_source->Ibuffer_handle >= 0, "The index values must be located in a GPU buffer!");
 
 	// basic setup of all data
 	opengl_bind_vertex_layout(bufferp->layout,
@@ -680,12 +680,12 @@ void opengl_tnl_set_material(material* material_info, bool set_base_map, bool se
 	int base_map = material_info->get_texture_map(TM_BASE_TYPE);
 	vec4 clr = material_info->get_color();
 
-	Assert(shader_handle >= 0);
+core::Assert(shader_handle >= 0);
 
 	opengl_shader_set_current(shader_handle);
 
 	if (material_info->has_buffer_blend_modes()) {
-		Assertion(GLAD_GL_ARB_draw_buffers_blend != 0,
+	core::Assertion(GLAD_GL_ARB_draw_buffers_blend != 0,
 				  "Buffer blend modes are not supported at the moment! Query the capability before using this feature.");
 
 		auto enable_blend = false;
@@ -715,7 +715,7 @@ void opengl_tnl_set_material(material* material_info, bool set_base_map, bool se
 		if (!clip_params.enabled) {
 			GL_state.ClipDistance(0, false);
 		} else {
-			Assertion(Current_shader != NULL && (Current_shader->shader == SDR_TYPE_MODEL
+		core::Assertion(Current_shader != NULL && (Current_shader->shader == SDR_TYPE_MODEL
 				|| Current_shader->shader == SDR_TYPE_PASSTHROUGH_RENDER
 				|| Current_shader->shader == SDR_TYPE_DEFAULT_MATERIAL),
 					  "Clip planes are not supported by this shader!");
@@ -778,7 +778,7 @@ void opengl_tnl_set_model_material(model_material *material_info)
 
 	gr_set_center_alpha(material_info->get_center_alpha());
 
-	Assert( Current_shader->shader == SDR_TYPE_MODEL );
+core::Assert( Current_shader->shader == SDR_TYPE_MODEL );
 
 	GL_state.Texture.SetShaderMode(GL_TRUE);
 
@@ -818,7 +818,7 @@ void opengl_tnl_set_model_material(model_material *material_info)
 			Current_shader->program->Uniforms.setUniformi("sEnvmap", render_pass);
 
 			gr_opengl_tcache_set(ENVMAP, TCACHE_TYPE_CUBEMAP, &u_scale, &v_scale, &array_index, render_pass);
-			Assertion(array_index == 0, "Cube map arrays are not supported yet!");
+		core::Assertion(array_index == 0, "Cube map arrays are not supported yet!");
 
 			++render_pass;
 		}
@@ -913,11 +913,11 @@ void opengl_tnl_set_material_particle(particle_material * material_info)
 	}
 
 	if ( !Cmdline_no_deferred_lighting ) {
-		Assert(Scene_position_texture != 0);
+	core::Assert(Scene_position_texture != 0);
 
 		GL_state.Texture.Enable(1, GL_TEXTURE_2D, Scene_position_texture);
 	} else {
-		Assert(Scene_depth_texture != 0);
+	core::Assert(Scene_depth_texture != 0);
 
 		GL_state.Texture.Enable(1, GL_TEXTURE_2D, Scene_depth_texture);
 	}
@@ -966,7 +966,7 @@ void opengl_tnl_set_material_distortion(distortion_material* material_info)
 		Current_shader->program->Uniforms.setUniformf("use_offset", 0.0f);
 	}
 
-	Assert(Scene_depth_texture != 0);
+core::Assert(Scene_depth_texture != 0);
 
 	GL_state.Texture.Enable(1, GL_TEXTURE_2D, Scene_depth_texture);
 }
@@ -1078,7 +1078,7 @@ void opengl_bind_vertex_component(const vertex_format_data &vert_component, size
 	opengl_vertex_bind &bind_info = GL_array_binding_data[vert_component.format_type];
 	opengl_vert_attrib &attrib_info = GL_vertex_attrib_info[bind_info.attribute_id];
 
-	Assert(bind_info.attribute_id == attrib_info.attribute_id);
+core::Assert(bind_info.attribute_id == attrib_info.attribute_id);
 
 	GLubyte *data_src = reinterpret_cast<GLubyte*>(base_offset) + vert_component.offset;
 

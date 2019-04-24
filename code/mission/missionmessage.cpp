@@ -312,7 +312,7 @@ int add_avi( char *avi_name )
 	int i;
 	message_extra extra; 
 
-	Assert (strlen(avi_name) < MAX_FILENAME_LEN );
+core::Assert (strlen(avi_name) < MAX_FILENAME_LEN );
 
 	// check to see if there is an existing avi being used here
 	for ( i = 0; i < (int)Message_avis.size(); i++ ) {
@@ -336,7 +336,7 @@ int add_wave( const char *wave_name )
 	int i;
 	message_extra extra; 
 
-	Assert (strlen(wave_name) < MAX_FILENAME_LEN );
+core::Assert (strlen(wave_name) < MAX_FILENAME_LEN );
 
 	// check to see if there is an existing wave being used here
 	for ( i = 0; i < (int)Message_waves.size(); i++ ) {
@@ -832,7 +832,7 @@ void message_kill_all( int kill_all )
 {
 	int i;
 
-	Assert( Num_messages_playing );
+core::Assert( Num_messages_playing );
 
 	// kill sounds for all voices currently playing
 	for ( i = 0; i < Num_messages_playing; i++ ) {
@@ -863,7 +863,7 @@ void message_kill_all( int kill_all )
 // function to kill nth playing message
 void message_kill_playing( int message_num )
 {
-	Assert( message_num < Num_messages_playing );
+core::Assert( message_num < Num_messages_playing );
 
 	/*if ( (Playing_messages[message_num].anim != NULL) && anim_playing(Playing_messages[message_num].anim) ) {
 		anim_stop_playing( Playing_messages[message_num].anim );
@@ -995,7 +995,7 @@ void message_remove_from_queue(message_q *q)
 //
 void message_load_wave(int index, const char *filename)
 {
-	Assertion(index >= 0, "Invalid index passed!");
+core::Assertion(index >= 0, "Invalid index passed!");
 
 	if (Message_waves[index].num.isValid()) {
 		return;
@@ -1349,7 +1349,7 @@ void message_queue_process()
 					//             here, since message_kill_playing() seems to always set Playing_messages[i].shipnum to -1
 					// MWA 3/24/98 -- save shipnum before killing message
 					// 
-					Assert( shipnum >= 0 );
+				core::Assert( shipnum >= 0 );
 					if ( !(Ships[shipnum].flags[Ship::Ship_Flags::Ship_has_screamed]) && !(Ships[shipnum].flags[Ship::Ship_Flags::No_death_scream]) ) {
 						ship_scream( &Ships[shipnum] );
 					}
@@ -1437,9 +1437,9 @@ void message_queue_process()
 	}
 
 	q = &MessageQ[0];
-	Assert ( q->message_num != -1 );
-	Assert ( q->priority != -1 );
-	Assert ( q->time_added != -1 );
+core::Assert ( q->message_num != -1 );
+core::Assert ( q->priority != -1 );
+core::Assert ( q->time_added != -1 );
 
 	if ( Num_messages_playing ) {
 		// peek at the first message on the queue to see if it should interrupt, or overlap a currently
@@ -1970,7 +1970,7 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 	// see if there is a persona assigned to this ship.  If not, then try to assign one!!!
 	if ( shipp ) {
 		// Karajorma - the game should assert if a silenced ship gets this far
-		Assert( !(shipp->flags[Ship::Ship_Flags::No_builtin_messages]) );
+	core::Assert( !(shipp->flags[Ship::Ship_Flags::No_builtin_messages]) );
 
 		if ( shipp->persona_index == -1 )
 			shipp->persona_index = message_get_persona( shipp );
@@ -1981,7 +1981,7 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 			nprintf(("messaging", "Couldn't find persona for %s\n", shipp->ship_name ));	
 
 		// be sure that this ship can actually send a message!!! (i.e. not-not-flyable -- get it!)
-		Assert( Ship_info[shipp->ship_info_index].is_flyable() );		// get allender or alan
+	core::Assert( Ship_info[shipp->ship_info_index].is_flyable() );		// get allender or alan
 	} else {
 		persona_index = The_mission.command_persona;				// use the terran command persona
 	}
@@ -2095,7 +2095,7 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 		}
 	}
 
-	Assertion (random_selection == 0, "unable to randomly select built in message correctly, still have %d selections left", random_selection); 
+core::Assertion (random_selection == 0, "unable to randomly select built in message correctly, still have %d selections left", random_selection); 
 
 	// get who this message is from -- kind of a hack since we assume Terran Command in the
 	// absence of a ship.  This will be fixed later
@@ -2185,7 +2185,7 @@ void message_maybe_distort()
 
 	// distort the number of voices currently playing
 	for ( i = 0; i < Num_messages_playing; i++ ) {
-		Assert(Playing_messages[i].wave.isValid());
+	core::Assert(Playing_messages[i].wave.isValid());
 
 		was_muted = 0;
 
@@ -2256,7 +2256,7 @@ void message_maybe_distort_text(char *text, int shipnum)
 
 			++i;
 		}
-		Assertion(result_str.size() <= buffer_size, "Buffer after scrambling message is bigger than before!");
+	core::Assertion(result_str.size() <= buffer_size, "Buffer after scrambling message is bigger than before!");
 		strcpy(text, result_str.c_str());
 		return;
 	}
@@ -2299,7 +2299,7 @@ void message_maybe_distort_text(char *text, int shipnum)
 		if ( Distort_next >= MAX_DISTORT_LEVELS )
 			Distort_next = 0;
 	}
-	Assertion(result_str.size() <= buffer_size, "Buffer after scrambling message is bigger than before!");
+core::Assertion(result_str.size() <= buffer_size, "Buffer after scrambling message is bigger than before!");
 	strcpy(text, result_str.c_str());
 	
 	Distort_next = 0;

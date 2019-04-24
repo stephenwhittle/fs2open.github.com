@@ -53,7 +53,7 @@ bool ObjectClassInfoEntry::Parse()
 		char buf[NAME_LENGTH];
 		char buf2[NAME_LENGTH+3];	//for the end tag and name buffer
 
-		Assert( sizeof(buf2) >= (sizeof(buf) + 3) );
+	core::Assert( sizeof(buf2) >= (sizeof(buf) + 3) );
 
 		//Find the name of the thing we're parsing
 		parse_advance(1);
@@ -427,7 +427,7 @@ GUIObject* GUIScreen::Add(GUIObject* new_gauge)
 		return NULL;
 	}
 
-	Assert(this != NULL);
+core::Assert(this != NULL);
 
 	//First - do we have anything with the same name.
 	for (GUIObject *tgp = (GUIObject*) GET_FIRST(&Guiobjects); tgp != END_OF_LIST(&Guiobjects); tgp = (GUIObject*) GET_NEXT(tgp)) {
@@ -571,7 +571,7 @@ GUISystem::~GUISystem()
 
 GUIScreen *GUISystem::PushScreen(GUIScreen *csp)
 {
-	Assert(csp != NULL);
+core::Assert(csp != NULL);
 	list_append(&Screens, csp);
 	csp->OwnerSystem = this;
 	csp->ScreenClassInfo = GetScreenClassInfo(csp->Name);
@@ -2170,8 +2170,8 @@ void Text::AddLine(const std::string &in_line)
 
 void Text::SetSaveLoc(int *int_ptr, int save_method, int max_value, int min_value)
 {
-	Assert(int_ptr != NULL);		//Naughty.
-	Assert(min_value < max_value);	//Mmm-hmm.
+core::Assert(int_ptr != NULL);		//Naughty.
+core::Assert(min_value < max_value);	//Mmm-hmm.
 
 	SaveType = T_ST_INT;
 	if (save_method == T_ST_CLOSE) {
@@ -2189,8 +2189,8 @@ void Text::SetSaveLoc(int *int_ptr, int save_method, int max_value, int min_valu
 
 void Text::SetSaveLoc(short int *sint_ptr, int save_method, short int max_value, short int min_value)
 {
-	Assert(sint_ptr != NULL);		//Naughty.
-	Assert(min_value < max_value);	//Mmm-hmm.
+core::Assert(sint_ptr != NULL);		//Naughty.
+core::Assert(min_value < max_value);	//Mmm-hmm.
 
 	SaveType = T_ST_SINT;
 	if (save_method == T_ST_CLOSE) {
@@ -2208,8 +2208,8 @@ void Text::SetSaveLoc(short int *sint_ptr, int save_method, short int max_value,
 
 void Text::SetSaveLoc(float *ptr, int save_method, float max_value, float min_value)
 {
-	Assert(ptr != NULL);		//Naughty.
-	Assert(min_value < max_value);	//Causes problems with floats
+core::Assert(ptr != NULL);		//Naughty.
+core::Assert(min_value < max_value);	//Causes problems with floats
 
 	SaveType = T_ST_FLOAT;
 	if (save_method == T_ST_CLOSE) {
@@ -2227,7 +2227,7 @@ void Text::SetSaveLoc(float *ptr, int save_method, float max_value, float min_va
 
 void Text::SetSaveLoc(char *ptr, int save_method, uint max_length, uint min_length)
 {
-	Assert(ptr != NULL);		//Naughty.
+core::Assert(ptr != NULL);		//Naughty.
 
 	SaveType = T_ST_CHAR;
 	if (save_method == T_ST_CLOSE) {
@@ -2245,7 +2245,7 @@ void Text::SetSaveLoc(char *ptr, int save_method, uint max_length, uint min_leng
 
 void Text::SetSaveStringAlloc(char **ptr, int save_method, int mem_flags, uint max_length, uint min_length)
 {
-	Assert(ptr != NULL);		//Naughty.
+core::Assert(ptr != NULL);		//Naughty.
 
 	if (mem_flags == T_ST_NEW) {
 		SaveType = T_ST_NEW;
@@ -2271,8 +2271,8 @@ void Text::SetSaveStringAlloc(char **ptr, int save_method, int mem_flags, uint m
 
 void Text::SetSaveLoc(ubyte *ptr, int save_method, int max_value, int min_value)
 {
-	Assert(ptr != NULL);		//Naughty.
-	Assert(min_value < max_value);	//Mmm-hmm.
+core::Assert(ptr != NULL);		//Naughty.
+core::Assert(min_value < max_value);	//Mmm-hmm.
 
 	SaveType = T_ST_UBYTE;
 	if (save_method == T_ST_CLOSE) {

@@ -111,8 +111,8 @@ int ship_ship_check_collision(collision_info_struct *ship_ship_hit_info, vec3d *
 	object *light_obj = ship_ship_hit_info->light;
 	int	player_involved;	// flag to indicate that A or B is the Player_obj
 
-	Assert( heavy_obj->type == OBJ_SHIP );
-	Assert( light_obj->type == OBJ_SHIP );
+core::Assert( heavy_obj->type == OBJ_SHIP );
+core::Assert( light_obj->type == OBJ_SHIP );
 
 	ship *heavy_shipp = &Ships[heavy_obj->instance];
 	ship *light_shipp = &Ships[light_obj->instance];
@@ -459,7 +459,7 @@ static int check_special_cruiser_asteroid_collision(object *heavy, object *light
 	int asteroid_type;
 
 	if (heavy->type == OBJ_ASTEROID) {
-		Assert(lighter->type == OBJ_SHIP);
+	core::Assert(lighter->type == OBJ_SHIP);
 		if (Ship_info[Ships[lighter->instance].ship_info_index].is_big_or_huge()) {
 
 			asteroid_type = Asteroids[heavy->instance].asteroid_type;
@@ -477,7 +477,7 @@ static int check_special_cruiser_asteroid_collision(object *heavy, object *light
 			}
 		}
 	} else if (lighter->type == OBJ_ASTEROID) {
-		Assert(heavy->type == OBJ_SHIP);
+	core::Assert(heavy->type == OBJ_SHIP);
 		if (Ship_info[Ships[heavy->instance].ship_info_index].is_big_or_huge()) {
 
 			asteroid_type = Asteroids[lighter->instance].asteroid_type;
@@ -539,8 +539,8 @@ void calculate_ship_ship_collision_physics(collision_info_struct *ship_ship_hit_
 	object *lighter = ship_ship_hit_info->light;
 
 	// gurgh... this includes asteroids and debris too
-	Assert(heavy->type == OBJ_SHIP || heavy->type == OBJ_ASTEROID || heavy->type == OBJ_DEBRIS);
-	Assert(lighter->type == OBJ_SHIP || lighter->type == OBJ_ASTEROID || lighter->type == OBJ_DEBRIS);
+core::Assert(heavy->type == OBJ_SHIP || heavy->type == OBJ_ASTEROID || heavy->type == OBJ_DEBRIS);
+core::Assert(lighter->type == OBJ_SHIP || lighter->type == OBJ_ASTEROID || lighter->type == OBJ_DEBRIS);
 
 	ship_info *light_sip = (lighter->type == OBJ_SHIP) ? &Ship_info[Ships[lighter->instance].ship_info_index] : NULL;
 	ship_info *heavy_sip = (heavy->type == OBJ_SHIP) ? &Ship_info[Ships[heavy->instance].ship_info_index] : NULL;
@@ -553,11 +553,11 @@ void calculate_ship_ship_collision_physics(collision_info_struct *ship_ship_hit_
 
 	if (special_cruiser_asteroid_collision) {
 		if (cruiser_light) {
-			Assert(lighter->phys_info.mass < cruiser_mass);
+		core::Assert(lighter->phys_info.mass < cruiser_mass);
 			copy_mass = lighter->phys_info.mass;
 			lighter->phys_info.mass = cruiser_mass;
 		} else {
-			Assert(heavy->phys_info.mass < cruiser_mass);
+		core::Assert(heavy->phys_info.mass < cruiser_mass);
 			copy_mass = heavy->phys_info.mass;
 			heavy->phys_info.mass = cruiser_mass;
 		}
@@ -818,7 +818,7 @@ void calculate_ship_ship_collision_physics(collision_info_struct *ship_ship_hit_
 	vm_vec_sub(&direction_light, &ship_ship_hit_info->light_rel_vel, &local_vel_from_submodel);
 	vm_vec_normalize_safe(&direction_light);
 
-	Assert( !vm_is_vec_nan(&direction_light) );
+core::Assert( !vm_is_vec_nan(&direction_light) );
 	vm_vec_scale_add2(&heavy->pos, &direction_light,  0.2f * lighter->phys_info.mass / (heavy->phys_info.mass + lighter->phys_info.mass));
 	vm_vec_scale_add2(&heavy->pos, &ship_ship_hit_info->collision_normal, -0.1f * lighter->phys_info.mass / (heavy->phys_info.mass + lighter->phys_info.mass));
 	//For landings, we want minimal movement on the light ship (just enough to keep the collision detection honest)
@@ -1073,8 +1073,8 @@ int collide_ship_ship( obj_pair * pair )
 	if ( A->type == OBJ_WAYPOINT ) return 1;
 	if ( B->type == OBJ_WAYPOINT ) return 1;
 	
-	Assert( A->type == OBJ_SHIP );
-	Assert( B->type == OBJ_SHIP );
+core::Assert( A->type == OBJ_SHIP );
+core::Assert( B->type == OBJ_SHIP );
 
 	if (reject_due_collision_groups(A,B))
 		return 0;

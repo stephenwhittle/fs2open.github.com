@@ -2,13 +2,13 @@
 
 #include <core/pstypes.h>
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core/SystemInterface.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 namespace scpui {
 
@@ -49,7 +49,7 @@ class RocketSystemInterface : public Rocket::Core::SystemInterface {
 	              const Rocket::Core::String& path) override;
 
 	/**
-	 * @details Logs a message using the FSO logging and message routines. Errors, Warnings, and Assertions will use the
+	 * @details Logs a message using the FSO logging and message routines. Errors, Warnings, andcore::Assertions will use the
 	 * respective dialogs while logging and debug messages will be directed to the FSO log.
 	 *
 	 * @param type

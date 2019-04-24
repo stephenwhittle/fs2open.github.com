@@ -302,7 +302,7 @@ object *Autopilot_flight_leader = NULL;
  */
 void ai_set_rearm_status(int team, int time)
 {
-	Assert( time >= 0 );
+	core::Assert(time >= 0);
 
 	Iff_info[team].ai_rearm_timestamp = timestamp(time * 1000);
 }
@@ -317,7 +317,7 @@ int ai_good_time_to_rearm(object *objp)
 {
 	int team;
 
-	Assert(objp->type == OBJ_SHIP);
+	core::Assert(objp->type == OBJ_SHIP);
 	team = Ships[objp->instance].team;
 	
 	return timestamp_valid(Iff_info[team].ai_rearm_timestamp);
@@ -328,7 +328,7 @@ int ai_good_time_to_rearm(object *objp)
  */
 void ai_good_secondary_time( int team, int weapon_index, int max_fire_count, char *shipname )
 {
-	Assert(shipname != NULL);
+	core::Assert(shipname != NULL);
 	int index;
 	huge_fire_info new_info; 
 
@@ -354,7 +354,7 @@ int is_preferred_weapon(int weapon_num, object *firer_objp, object *target_objp)
 	ship *firer_ship;
 	std::vector<huge_fire_info>::iterator hfi;
 
-	Assert( firer_objp->type == OBJ_SHIP );
+	core::Assert(firer_objp->type == OBJ_SHIP);
 	firer_ship = &Ships[firer_objp->instance];
 	firer_team = firer_ship->team;
 
@@ -428,7 +428,7 @@ void garbage_collect_path_points()
 			if ((aip->path_length > 0) && (aip->path_start > -1)) {
 
 				for (i=aip->path_start; i<aip->path_start + aip->path_length; i++) {
-					Assert(pp_xlate[i] == 0);	//	If this is not 0, then two paths use this point!
+					core::Assert(pp_xlate[i] == 0); //	If this is not 0, then two paths use this point!
 					pp_xlate[i] = 1;
 				}
 			}
@@ -457,10 +457,10 @@ void garbage_collect_path_points()
 			ai_info	*aip = &Ai_info[shipp->ai_index];
 
 			if ((aip->path_length > 0) && (aip->path_start > -1)) {
-				Assert(aip->path_start < MAX_PATH_POINTS);
+				core::Assert(aip->path_start < MAX_PATH_POINTS);
 				aip->path_start = pp_xlate[aip->path_start];
 
-				Assert((aip->path_cur >= 0) && (aip->path_cur < MAX_PATH_POINTS));
+				core::Assert((aip->path_cur >= 0) && (aip->path_cur < MAX_PATH_POINTS));
 				aip->path_cur = pp_xlate[aip->path_cur];
 			}
 		}
@@ -824,7 +824,7 @@ void parse_aitbl()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse 'ai.tbl'!  Error message = %s.\n", e.what()));
+		core::mprintf(("TABLES: Unable to parse 'ai.tbl'!  Error message = %s.\n", e.what()));
 		return;
 	}
 }
@@ -846,7 +846,7 @@ void ai_init()
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "ai.tbl", e.what()));
+			core::mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "ai.tbl", e.what()));
 		}
 
 		ai_inited = 1;
@@ -904,7 +904,7 @@ bool is_object_stealth_ship(object* objp)
  */
 void init_ai_stealth_info(ai_info *aip, object *stealth_objp)
 {
-	Assert(is_object_stealth_ship(stealth_objp));
+	core::Assert(is_object_stealth_ship(stealth_objp));
 
 	// set necessary ai info for new stealth target
 	aip->stealth_last_pos = stealth_objp->pos;
@@ -980,12 +980,12 @@ int ai_is_stealth_visible(object *viewer_objp, object *stealth_objp)
 	vec3d vec_to_stealth;
 	float dot_to_stealth, dist_to_stealth, max_stealth_dist;
 
-	Assert(stealth_objp->type == OBJ_SHIP);
+	core::Assert(stealth_objp->type == OBJ_SHIP);
 	shipp = &Ships[stealth_objp->instance];
-	Assert(viewer_objp->type == OBJ_SHIP);
+	core::Assert(viewer_objp->type == OBJ_SHIP);
 
 	// check if stealth ship
-	Assert(shipp->flags[Ship::Ship_Flags::Stealth]);
+	core::Assert(shipp->flags[Ship::Ship_Flags::Stealth]);
 
 	// check if in neb and below awac level for visible
 	if ( !ship_is_visible_by_team(stealth_objp, &Ships[viewer_objp->instance]) ) {
@@ -1052,7 +1052,7 @@ void update_ai_stealth_info_with_error(ai_info *aip)
 	object *stealth_objp;
 
 	// make sure I am targeting a stealth ship
-	Assert( is_object_stealth_ship(&Objects[aip->target_objnum]) );
+	core::Assert(is_object_stealth_ship(&Objects[aip->target_objnum]));
 	stealth_objp = &Objects[aip->target_objnum];
 
 	// if update is due to weapon fire, get exact stealth position
@@ -1120,7 +1120,7 @@ void ai_update_danger_weapon(int attacked_objnum, int weapon_objnum)
 			}
 		}
 	} else {
-		Assert(old_weapon_objp != NULL);
+		core::Assert(old_weapon_objp != NULL);
 		old_dist = compute_dots(old_weapon_objp, objp, &old_dot, NULL);
 	
 		if (old_dot < 0.5f) {
@@ -1248,7 +1248,8 @@ objp->orient = objp_orient_copy; //-V587
 	#ifndef NDEBUG
 	if (!((objp->type == OBJ_WEAPON) && (Weapon_info[Weapons[objp->instance].weapon_info_index].subtype == WP_MISSILE))) {
 		if (delta_time < 0.25f && vm_vec_dot(&objp->orient.vec.fvec, &tvec) < 0.1f)
-			mprintf(("A ship rotated too far. Offending vessel is %s, please investigate.\n", Ships[objp->instance].ship_name));
+			core::mprintf(("A ship rotated too far. Offending vessel is %s, please investigate.\n",
+			               Ships[objp->instance].ship_name));
 	}
 	#endif
 	pip->rotvel = vel_out;
@@ -1271,7 +1272,7 @@ int set_target_objnum(ai_info *aip, int objnum)
 		// ignore this assert if a multiplayer observer
 		if((Game_mode & GM_MULTIPLAYER) && (aip == Player_ai) && (Player_obj->type == OBJ_OBSERVER)){
 		} else {
-			Assert(objnum != Ships[aip->shipnum].objnum);	//	make sure not targeting self
+			core::Assert(objnum != Ships[aip->shipnum].objnum); //	make sure not targeting self
 		}
 
 		// if stealth target, init ai_info for stealth
@@ -1298,7 +1299,7 @@ int ai_select_primary_weapon(object *objp, object *other_objp, Weapon::Info_Flag
  */
 ship_subsys *set_targeted_subsys(ai_info *aip, ship_subsys *new_subsys, int parent_objnum)
 {
-	Assert(aip != NULL);
+	core::Assert(aip != NULL);
 
 	aip->last_subsys_target = aip->targeted_subsys;
 	aip->targeted_subsys = new_subsys;
@@ -1308,7 +1309,7 @@ ship_subsys *set_targeted_subsys(ai_info *aip, ship_subsys *new_subsys, int pare
 		// Make new_subsys target
 		if (new_subsys->system_info->type == SUBSYSTEM_ENGINE) {
 			if ( aip != Player_ai ) {
-				Assert( aip->shipnum >= 0 );
+				core::Assert(aip->shipnum >= 0);
 				ai_select_primary_weapon(&Objects[Ships[aip->shipnum].objnum], &Objects[parent_objnum], Weapon::Info_Flags::Puncture);
 				ship_primary_changed(&Ships[aip->shipnum]);	// AL: maybe send multiplayer information when AI ship changes primaries
 			}
@@ -1340,7 +1341,7 @@ ship_subsys *set_targeted_subsys(ai_info *aip, ship_subsys *new_subsys, int pare
 void ai_object_init(object * obj, int ai_index)
 {
 	ai_info	*aip;
-	Assert(ai_index >= 0 && ai_index < MAX_AI_INFO);
+	core::Assert(ai_index >= 0 && ai_index < MAX_AI_INFO);
 
 	aip = &Ai_info[ai_index];
 
@@ -1582,7 +1583,7 @@ float turn_toward_tangent_with_axis(object *objp, object *center_objp, float rad
 	// get r_vec
 	vm_vec_sub(&r_vec, &objp->pos, &center_vec);
 
-	Assert( (vm_vec_dot(&r_vec, &center_objp->orient.vec.fvec) < 0.0001));
+	core::Assert((vm_vec_dot(&r_vec, &center_objp->orient.vec.fvec) < 0.0001));
 
 	// get theta vec - perp to r_vec and z_vec
 	vm_vec_cross(&theta_vec, &center_objp->orient.vec.fvec, &r_vec);
@@ -1590,7 +1591,7 @@ float turn_toward_tangent_with_axis(object *objp, object *center_objp, float rad
 #ifndef NDEBUG
 	float mag;
 	mag = vm_vec_normalize(&theta_vec);
-	Assert(mag > 0.9999 && mag < 1.0001);
+	core::Assert(mag > 0.9999 && mag < 1.0001);
 #endif
 
 	vec3d temp;
@@ -1599,7 +1600,7 @@ float turn_toward_tangent_with_axis(object *objp, object *center_objp, float rad
 #ifndef NDEBUG
 	float dot;
 	dot = vm_vec_dot(&temp, &center_objp->orient.vec.fvec);
-	Assert( dot >0.9999 && dot < 1.0001);
+	core::Assert(dot > 0.9999 && dot < 1.0001);
 #endif
 
 	// find pt on clylinder with closest z
@@ -1696,7 +1697,7 @@ int num_enemies_attacking(int objnum)
 
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		objp = &Objects[so->objnum];
-		Assert(objp->instance != -1);
+		core::Assert(objp->instance != -1);
 		sp = &Ships[objp->instance];
 
 		if (Ai_info[sp->ai_index].target_objnum == objnum)
@@ -1736,10 +1737,10 @@ float get_wing_lowest_max_speed(object *objp)
 	object	*o;
 	ship_obj	*so;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
+	core::Assert(objp->type == OBJ_SHIP);
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
 	shipp = &Ships[objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+	core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 	aip = &Ai_info[shipp->ai_index];
 
 	wingnum = aip->wing;
@@ -1749,7 +1750,7 @@ float get_wing_lowest_max_speed(object *objp)
 	if ( wingnum == -1 )
 		return lowest_max_speed;
 
-	Assert(wingnum >= 0);
+	core::Assert(wingnum >= 0);
 
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		o = &Objects[so->objnum];
@@ -1788,10 +1789,10 @@ float get_wing_lowest_av_ab_speed(object *objp)
 	ship_obj	*so;
 	ship_info *sip;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
+	core::Assert(objp->type == OBJ_SHIP);
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
 	shipp = &Ships[objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+	core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 	aip = &Ai_info[shipp->ai_index];
 	sip = &Ship_info[shipp->ship_info_index];
 
@@ -1811,7 +1812,7 @@ float get_wing_lowest_av_ab_speed(object *objp)
 	if ( wingnum == -1 )
 		return lowest_max_av_ab_speed;
 
-	Assert(wingnum >= 0);
+	core::Assert(wingnum >= 0);
 
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		o = &Objects[so->objnum];
@@ -2075,7 +2076,7 @@ int get_nearest_objnum(int objnum, int enemy_team_mask, int enemy_wing, float ra
 		danger_weapon_objp = &Objects[aip->danger_weapon_objnum];
 		// validate weapon
 		if (danger_weapon_objp->signature == aip->danger_weapon_signature) {
-			Assert(danger_weapon_objp->type == OBJ_WEAPON);
+			core::Assert(danger_weapon_objp->type == OBJ_WEAPON);
 			// check if parent is a ship
 			if (danger_weapon_objp->parent >= 0) {
 				if ( is_object_stealth_ship(&Objects[danger_weapon_objp->parent]) ) {
@@ -2161,7 +2162,7 @@ int num_turrets_attacking(object *turret_parent, int target_objnum)
 	int count = 0;
 	shipp = &Ships[turret_parent->instance];
 
-	Assert(turret_parent->type == OBJ_SHIP);
+	core::Assert(turret_parent->type == OBJ_SHIP);
 
 	for (ss=GET_FIRST(&shipp->subsys_list); ss!=END_OF_LIST(&shipp->subsys_list); ss=GET_NEXT(ss)) {
 		// check if subsys is alive
@@ -2281,9 +2282,9 @@ void ai_attack_object(object *attacker, object *attacked, ship_subsys *ssp, int 
 	int temp;
 	ai_info	*aip;
 
-	Assert(attacker != NULL);
-	Assert(attacker->instance != -1);
-	Assert(Ships[attacker->instance].ai_index != -1);
+	core::Assert(attacker != NULL);
+	core::Assert(attacker->instance != -1);
+	core::Assert(Ships[attacker->instance].ai_index != -1);
 
 	aip = &Ai_info[Ships[attacker->instance].ai_index];
 	force_avoid_player_check(attacker, aip);
@@ -2297,7 +2298,8 @@ void ai_attack_object(object *attacker, object *attacked, ship_subsys *ssp, int 
 
 	//	Only set to chase if a fighter or bomber, otherwise just return.
 	if (!(Ship_info[Ships[attacker->instance].ship_info_index].is_small_ship()) && (attacked != NULL)) {
-		nprintf(("AI", "AI ship %s is large ship ordered to attack %s\n", Ships[attacker->instance].ship_name, Ships[attacked->instance].ship_name));
+		core::nprintf(("AI", "AI ship %s is large ship ordered to attack %s\n", Ships[attacker->instance].ship_name,
+		               Ships[attacked->instance].ship_name));
 	}
 
 	//	This is how "engage enemy" gets processed
@@ -2349,9 +2351,9 @@ void ai_attack_wing(object *attacker, int wingnum)
 {
 	ai_info	*aip;
 
-	Assert(attacker != NULL);
-	Assert(attacker->instance != -1);
-	Assert(Ships[attacker->instance].ai_index != -1);
+	core::Assert(attacker != NULL);
+	core::Assert(attacker->instance != -1);
+	core::Assert(Ships[attacker->instance].ai_index != -1);
 
 	aip = &Ai_info[Ships[attacker->instance].ai_index];
 
@@ -2385,10 +2387,10 @@ void ai_evade_object(object *evader, object *evaded)
 {
 	ai_info	*aip;
 
-	Assert(evader != NULL);
-	Assert(evaded != NULL);
-	Assert(evader->instance != -1);
-	Assert(Ships[evader->instance].ai_index != -1);
+	core::Assert(evader != NULL);
+	core::Assert(evaded != NULL);
+	core::Assert(evader->instance != -1);
+	core::Assert(Ships[evader->instance].ai_index != -1);
 
 	if (evaded == evader) {
 		Int3();	//	Bogus!  Who tried to get me to evade myself!  Trace out and fix!
@@ -2463,11 +2465,11 @@ void ai_ignore_object(object *ignorer, object *ignored, int ignore_new)
 {
 	ai_info	*aip;
 
-	Assert(ignorer != NULL);
-	Assert(ignored != NULL);
-	Assert(ignorer->instance != -1);
-	Assert(Ships[ignorer->instance].ai_index != -1);
-	Assert(ignorer != ignored);
+	core::Assert(ignorer != NULL);
+	core::Assert(ignored != NULL);
+	core::Assert(ignorer->instance != -1);
+	core::Assert(Ships[ignorer->instance].ai_index != -1);
+	core::Assert(ignorer != ignored);
 
 	aip = &Ai_info[Ships[ignorer->instance].ai_index];
 
@@ -2508,10 +2510,10 @@ void ai_ignore_wing(object *ignorer, int wingnum)
 {
 	ai_info	*aip;
 
-	Assert(ignorer != NULL);
-	Assert(ignorer->instance != -1);
-	Assert(Ships[ignorer->instance].ai_index != -1);
-	Assert((wingnum >= 0) && (wingnum < MAX_WINGS));
+	core::Assert(ignorer != NULL);
+	core::Assert(ignorer->instance != -1);
+	core::Assert(Ships[ignorer->instance].ai_index != -1);
+	core::Assert((wingnum >= 0) && (wingnum < MAX_WINGS));
 
 	aip = &Ai_info[Ships[ignorer->instance].ai_index];
 
@@ -2536,11 +2538,11 @@ void add_path_point(vec3d *pos, int path_num, int path_index, int modify_index)
 	pnode	*pnp;
 
 	if (modify_index == -1) {
-		Assert(Ppfp-Path_points < MAX_PATH_POINTS-1);
+		core::Assert(Ppfp - Path_points < MAX_PATH_POINTS - 1);
 		pnp = Ppfp;
 		Ppfp++;
 	} else {
-		Assert((modify_index >= 0) && (modify_index < MAX_PATH_POINTS-1));
+		core::Assert((modify_index >= 0) && (modify_index < MAX_PATH_POINTS - 1));
 		pnp = &Path_points[modify_index];
 	}
 
@@ -2661,7 +2663,7 @@ void copy_xlate_model_path_points(object *objp, model_path *mp, int dir, int cou
 		start_index = 0;
 		finish_index = MIN(count, mp->nverts);
 	} else {
-		Assert(dir == -1);	//	direction must be up by 1 or down by 1 and it's neither!
+		core::Assert(dir == -1); //	direction must be up by 1 or down by 1 and it's neither!
 		start_index = mp->nverts-1;
 		finish_index = MAX(-1, mp->nverts-1-count);
 	}
@@ -2737,7 +2739,7 @@ void create_model_path(object *pl_objp, object *mobjp, int path_num, int subsys_
 	pnode			*ppfp_start = Ppfp;
 	vec3d		gp0;
 
-	Assert(path_num >= 0);
+	core::Assert(path_num >= 0);
 
 	//	Do garbage collection if necessary.
 	if (Ppfp-Path_points + 64 > MAX_PATH_POINTS) {
@@ -2746,12 +2748,12 @@ void create_model_path(object *pl_objp, object *mobjp, int path_num, int subsys_
 	}
 
 	aip->path_start = (int)(Ppfp - Path_points);
-	Assert(path_num < pm->n_paths);
+	core::Assert(path_num < pm->n_paths);
 	
 	mp = &pm->paths[path_num];
 	num_points = mp->nverts;
 
-	Assert(Ppfp-Path_points + num_points + 4 < MAX_PATH_POINTS);
+	core::Assert(Ppfp - Path_points + num_points + 4 < MAX_PATH_POINTS);
 
 	vm_vec_unrotate(&gp0, &mp->verts[0].pos, &mobjp->orient);
 	vm_vec_add2(&gp0, &mobjp->pos);
@@ -2829,7 +2831,7 @@ void create_model_exit_path(object *pl_objp, object *mobjp, int path_num, int co
 	model_path	*mp;
 	pnode			*ppfp_start = Ppfp;
 
-	Assert(path_num >= 0);
+	core::Assert(path_num >= 0);
 
 	//	Do garbage collection if necessary.
 	if (Ppfp-Path_points + 64 > MAX_PATH_POINTS) {
@@ -2838,12 +2840,12 @@ void create_model_exit_path(object *pl_objp, object *mobjp, int path_num, int co
 	}
 
 	aip->path_start = (int)(Ppfp - Path_points);
-	Assert(path_num < pm->n_paths);
+	core::Assert(path_num < pm->n_paths);
 	
 	mp = &pm->paths[path_num];
 	num_points = mp->nverts;
 
-	Assert(Ppfp-Path_points + num_points + 4 < MAX_PATH_POINTS);
+	core::Assert(Ppfp - Path_points + num_points + 4 < MAX_PATH_POINTS);
 
 	copy_xlate_model_path_points(mobjp, mp, -1, count, path_num, NULL);
 
@@ -2898,7 +2900,7 @@ void ai_find_path(object *pl_objp, int objnum, int path_num, int exit_flag, int 
 {
 	ai_info	*aip = &Ai_info[Ships[pl_objp->instance].ai_index];
 
-	Assert(path_num >= 0);
+	core::Assert(path_num >= 0);
 
 	//	This is test code, find an object with paths.
 	if (objnum != -1) {
@@ -3006,11 +3008,11 @@ void ai_stay_still(object *still_objp, vec3d *view_pos)
 	ship	*shipp;
 	ai_info	*aip;
 
-	Assert(still_objp->type == OBJ_SHIP);
-	Assert((still_objp->instance >= 0) && (still_objp->instance < MAX_OBJECTS));
+	core::Assert(still_objp->type == OBJ_SHIP);
+	core::Assert((still_objp->instance >= 0) && (still_objp->instance < MAX_OBJECTS));
 
 	shipp = &Ships[still_objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+	core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 
 	aip = &Ai_info[shipp->ai_index];
 
@@ -3029,7 +3031,7 @@ void ai_stay_still(object *still_objp, vec3d *view_pos)
 // would be a freighter and dockee would be a cargo).
 void ai_do_objects_docked_stuff(object *docker, int docker_point, object *dockee, int dockee_point, bool update_clients)
 {
-	Assert((docker != NULL) && (dockee != NULL));
+	core::Assert((docker != NULL) && (dockee != NULL));
 
 	// make sure they're not already docked!
 	if (dock_check_find_direct_docked_object(docker, dockee))
@@ -3053,9 +3055,9 @@ void ai_do_objects_docked_stuff(object *docker, int docker_point, object *dockee
 #ifndef NDEBUG
 			// support ship can only dock with one thing at a time
 			if (Ship_info[Ships[docker->instance].ship_info_index].flags[Ship::Info_Flags::Support])
-				Assert(docker->dock_list->next == NULL);
+				core::Assert(docker->dock_list->next == NULL);
 			else
-				Assert(dockee->dock_list->next == NULL);
+				core::Assert(dockee->dock_list->next == NULL);
 #endif
 
 			// set stuff for both objects
@@ -3075,7 +3077,7 @@ void ai_do_objects_docked_stuff(object *docker, int docker_point, object *dockee
 // Goober5000 - dockee must always be non-NULL
 void ai_do_objects_undocked_stuff( object *docker, object *dockee )
 {
-	Assert((docker != NULL) && (dockee != NULL));
+	core::Assert((docker != NULL) && (dockee != NULL));
 
 	// make sure they're not already undocked!
 	if (!dock_check_find_direct_docked_object(docker, dockee))
@@ -3119,16 +3121,16 @@ void ai_do_objects_undocked_stuff( object *docker, object *dockee )
 //		AIDO_UNDOCK		set goal of undocking
 void ai_dock_with_object(object *docker, int docker_index, object *dockee, int dockee_index, int dock_type)
 {
-	Assert(docker != NULL);
-	Assert(dockee != NULL);
-	Assert(docker->type == OBJ_SHIP);
-	Assert(dockee->type == OBJ_SHIP);
-	Assert(docker->instance >= 0);
-	Assert(dockee->instance >= 0);
-	Assert(Ships[docker->instance].ai_index >= 0);
-	Assert(Ships[dockee->instance].ai_index >= 0);
-	Assert(docker_index >= 0);
-	Assert(dockee_index >= 0);
+	core::Assert(docker != NULL);
+	core::Assert(dockee != NULL);
+	core::Assert(docker->type == OBJ_SHIP);
+	core::Assert(dockee->type == OBJ_SHIP);
+	core::Assert(docker->instance >= 0);
+	core::Assert(dockee->instance >= 0);
+	core::Assert(Ships[docker->instance].ai_index >= 0);
+	core::Assert(Ships[dockee->instance].ai_index >= 0);
+	core::Assert(docker_index >= 0);
+	core::Assert(dockee_index >= 0);
 
 	ai_info *aip = &Ai_info[Ships[docker->instance].ai_index];
 
@@ -3160,7 +3162,7 @@ void ai_dock_with_object(object *docker, int docker_index, object *dockee, int d
 	if (dock_type == AIDO_UNDOCK)
 	{
 		polymodel	*pm = model_get(Ship_info[Ships[dockee->instance].ship_info_index].model_num);
-		Assert( pm->docking_bays[dockee_index].num_spline_paths > 0 );
+		core::Assert(pm->docking_bays[dockee_index].num_spline_paths > 0);
 	}
 #endif
 
@@ -3226,7 +3228,7 @@ void ai_start_fly_to_ship(object *objp, int shipnum)
 
 	aip->target_objnum = Ships[shipnum].objnum;	
 
-	Assert(aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC);
+	core::Assert(aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC);
 }
 
 
@@ -3236,7 +3238,7 @@ void ai_start_fly_to_ship(object *objp, int shipnum)
 void ai_start_waypoints(object *objp, waypoint_list *wp_list, int wp_flags)
 {
 	ai_info	*aip;
-	Assert(wp_list != NULL);
+	core::Assert(wp_list != NULL);
 
 	aip = &Ai_info[Ships[objp->instance].ai_index];
 
@@ -3265,7 +3267,7 @@ void ai_start_waypoints(object *objp, waypoint_list *wp_list, int wp_flags)
 	aip->wp_flags = wp_flags;
 	aip->mode = AIM_WAYPOINTS;
 
-	Assert(aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC);
+	core::Assert(aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC);
 }
 
 /**
@@ -3275,9 +3277,9 @@ void ai_do_stay_near(object *objp, object *other_objp, float dist)
 {
 	ai_info	*aip;
 
-	Assert(objp != other_objp);		//	Bogus!  Told to stay near self.
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+	core::Assert(objp != other_objp); //	Bogus!  Told to stay near self.
+	core::Assert(objp->type == OBJ_SHIP);
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 
 	aip = &Ai_info[Ships[objp->instance].ai_index];
 
@@ -3294,8 +3296,8 @@ void ai_do_safety(object *objp)
 {
 	ai_info	*aip;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+	core::Assert(objp->type == OBJ_SHIP);
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 
 	aip = &Ai_info[Ships[objp->instance].ai_index];
 
@@ -3321,14 +3323,15 @@ void ai_form_on_wing(object *objp, object *goal_objp)
 		}
 	}
 
-	Assert(objp != goal_objp);		//	Bogus!  Told to form on own's wing!
+	core::Assert(objp != goal_objp); //	Bogus!  Told to form on own's wing!
 
 	shipp = &Ships[objp->instance];
 	sip = &Ship_info[shipp->ship_info_index];
 
 	//	Only fighters or bombers allowed to form on wing.
 	if (!(sip->is_fighter_bomber())) {
-		nprintf(("AI", "Warning: Ship %s tried to form on player's wing, but not fighter or bomber.\n", shipp->ship_name));
+		core::nprintf(
+		    ("AI", "Warning: Ship %s tried to form on player's wing, but not fighter or bomber.\n", shipp->ship_name));
 		return;
 	}
 
@@ -3363,7 +3366,7 @@ int ai_formation_object_get_slotnum(int objnum, object *objp)
 					slotnum++;
 	}
 
-	Assert(o != END_OF_LIST(&obj_used_list));	//	Didn't find objp in list of used ships.  Impossible!
+	core::Assert(o != END_OF_LIST(&obj_used_list)); //	Didn't find objp in list of used ships.  Impossible!
 
 	return slotnum;
 }
@@ -3529,16 +3532,16 @@ void modify_model_path_points(object *objp)
 	pnode			*pnp;
 	int			path_num, dir;
 
-	Assert((aip->path_start >= 0) && (aip->path_start < MAX_PATH_POINTS));
+	core::Assert((aip->path_start >= 0) && (aip->path_start < MAX_PATH_POINTS));
 
 	pnp = &Path_points[aip->path_start];
 	while ((pnp->path_index == -1) && (pnp-Path_points - aip->path_start < aip->path_length))
 		pnp++;
 
 	path_num = pnp->path_num;
-	Assert((path_num >= 0) && (path_num < pm->n_paths));
+	core::Assert((path_num >= 0) && (path_num < pm->n_paths));
 	
-	Assert(pnp->path_index != -1);	//	If this is -1, that means we never found the model path points
+	core::Assert(pnp->path_index != -1); //	If this is -1, that means we never found the model path points
 
 	dir = 1;
 	if ( aip->ai_flags[AI::AI_Flags::Use_exit_path] ) {
@@ -3571,7 +3574,7 @@ float maybe_recreate_path(object *objp, ai_info *aip, int force_recreate_flag, i
 {
 	int	hashval;
 
-	Assert(&Ai_info[Ships[objp->instance].ai_index] == aip);
+core::Assert(&Ai_info[Ships[objp->instance].ai_index] == aip);
 
 	if ((aip->mode == AIM_BAY_EMERGE) || (aip->mode == AIM_BAY_DEPART))
 		if ((OBJ_INDEX(objp) % 4) == (Framecount % 4))
@@ -3783,17 +3786,17 @@ float ai_path_0()
 
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
-	Assert(aip->goal_objnum != -1);
-	Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
+	core::Assert(aip->goal_objnum != -1);
+	core::Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
 
 	gobjp = &Objects[aip->goal_objnum];
 
 	if (aip->path_start == -1) {
-		Assert(aip->goal_objnum >= 0 && aip->goal_objnum < MAX_OBJECTS);
+	core::Assert(aip->goal_objnum >= 0 && aip->goal_objnum < MAX_OBJECTS);
 		int path_num;
-		Assert(aip->active_goal >= 0);
+	core::Assert(aip->active_goal >= 0);
 		ai_goal *aigp = &aip->goals[aip->active_goal];
-		Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
+	core::Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
 
 		path_num = ai_return_path_num_from_dockbay(&Objects[aip->goal_objnum], aigp->dockee.index);
 		ai_find_path(Pl_objp, aip->goal_objnum, path_num, 0);
@@ -3809,8 +3812,8 @@ float ai_path_0()
 		nvp = &Path_points[aip->path_cur + aip->path_dir].pos;
 	else {
 		//	If this is 0, then path length must be 1 which means we have no direction!
-		Assert((aip->path_cur - aip->path_dir >= aip->path_start) && (aip->path_cur - aip->path_dir - aip->path_start < num_points));
-		//	Cleanup for above Assert() which we hit too near release. -- MK, 5/24/98.
+	core::Assert((aip->path_cur - aip->path_dir >= aip->path_start) && (aip->path_cur - aip->path_dir - aip->path_start < num_points));
+		//	Cleanup for abovecore::Assert() which we hit too near release. -- MK, 5/24/98.
 		if (aip->path_cur - aip->path_dir - aip->path_start >= num_points) {
 			if (aip->path_dir == 1)
 				aip->path_cur = aip->path_start;
@@ -3900,7 +3903,7 @@ float ai_path_0()
 			(((r >= 0.0f) && (r <= 1.0f)) && (vm_vec_dist_quick(&nearest_point, &gcvp) < (MIN_DIST_TO_WAYPOINT_GOAL + Pl_objp->radius)))) {
 			aip->path_cur += aip->path_dir;
 			if (((aip->path_cur - aip->path_start) > (num_points+1)) || (aip->path_cur < aip->path_start)) {
-				Assert(aip->mode != AIM_DOCK);		//	If docking, should never get this far, getting to last point handled outside ai_path()
+			core::Assert(aip->mode != AIM_DOCK);		//	If docking, should never get this far, getting to last point handled outside ai_path()
 				aip->path_dir = -aip->path_dir;
 			}
 		}
@@ -3926,17 +3929,17 @@ float ai_path_1()
 
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
-	Assert(aip->goal_objnum != -1);
-	Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
+core::Assert(aip->goal_objnum != -1);
+core::Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
 
 	gobjp = &Objects[aip->goal_objnum];
 
 	if (aip->path_start == -1) {
-		Assert(aip->goal_objnum >= 0 && aip->goal_objnum < MAX_OBJECTS);
+	core::Assert(aip->goal_objnum >= 0 && aip->goal_objnum < MAX_OBJECTS);
 		int path_num;
-		Assert(aip->active_goal >= 0);
+	core::Assert(aip->active_goal >= 0);
 		ai_goal *aigp = &aip->goals[aip->active_goal];
-		Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
+	core::Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
 
 		path_num = ai_return_path_num_from_dockbay(&Objects[aip->goal_objnum], aigp->dockee.index);
 		ai_find_path(Pl_objp, aip->goal_objnum, path_num, 0);
@@ -3952,8 +3955,8 @@ float ai_path_1()
 		nvp = &Path_points[aip->path_cur + aip->path_dir].pos;
 	else {
 		//	If this is 0, then path length must be 1 which means we have no direction!
-		Assert((aip->path_cur - aip->path_dir >= aip->path_start) && (aip->path_cur - aip->path_dir - aip->path_start < num_points));
-		//	Cleanup for above Assert() which we hit too near release. -- MK, 5/24/98.
+	core::Assert((aip->path_cur - aip->path_dir >= aip->path_start) && (aip->path_cur - aip->path_dir - aip->path_start < num_points));
+		//	Cleanup for abovecore::Assert() which we hit too near release. -- MK, 5/24/98.
 		if (aip->path_cur - aip->path_dir - aip->path_start >= num_points) {
 			if (aip->path_dir == 1)
 				aip->path_cur = aip->path_start;
@@ -4066,7 +4069,7 @@ float ai_path_1()
 			(((r >= 0.0f) && (r <= 1.0f)) && (vm_vec_dist_quick(&nearest_point, &gcvp) < (MIN_DIST_TO_WAYPOINT_GOAL + Pl_objp->radius)))) {
 			aip->path_cur += aip->path_dir;
 			if (((aip->path_cur - aip->path_start) > (num_points+1)) || (aip->path_cur < aip->path_start)) {
-				Assert(aip->mode != AIM_DOCK);		//	If docking, should never get this far, getting to last point handled outside ai_path()
+			core::Assert(aip->mode != AIM_DOCK);		//	If docking, should never get this far, getting to last point handled outside ai_path()
 				aip->path_dir = -aip->path_dir;
 			}
 		}
@@ -4251,7 +4254,7 @@ void ai_fly_to_target_position(vec3d* target_pos, bool* pl_done_p=NULL, bool* pl
 	int j;
 	bool ab_allowed = true;
 
-	Assert( target_pos != NULL );
+core::Assert( target_pos != NULL );
 
 	if ( pl_done_p != NULL ) {
 		// initialize this to false now incase we leave early so that that
@@ -4323,7 +4326,7 @@ void ai_fly_to_target_position(vec3d* target_pos, bool* pl_done_p=NULL, bool* pl
 		&& carry_flag
 		&& ((The_mission.flags[Mission::Mission_Flags::Use_ap_cinematics]) || (Pl_objp != Autopilot_flight_leader)) )
 	{
-		Assertion( Autopilot_flight_leader != NULL, "When under autopilot there must be a flight leader" );
+	core::Assertion( Autopilot_flight_leader != NULL, "When under autopilot there must be a flight leader" );
 		// snap wings into formation them into formation
 		if (The_mission.flags[Mission::Mission_Flags::Use_ap_cinematics]) {
 			if (aip->wing != -1) {
@@ -4537,7 +4540,7 @@ void ai_fly_to_target_position(vec3d* target_pos, bool* pl_done_p=NULL, bool* pl
 						}
 					}
 				} else {
-					Assertion( pl_treat_as_ship_p != NULL,
+				core::Assertion( pl_treat_as_ship_p != NULL,
 						"pl_done_p cannot be NULL while pl_treat_as_ship_p is not NULL" );
 				}
 		}
@@ -4561,7 +4564,7 @@ void ai_waypoints()
 		}
 	}
 	
-	Assert(!aip->wp_list->get_waypoints().empty());	// What? Is this zero? Probably never got initialized!
+core::Assert(!aip->wp_list->get_waypoints().empty());	// What? Is this zero? Probably never got initialized!
 
 	bool done, treat_as_ship;
 	ai_fly_to_target_position(aip->wp_list->get_waypoints()[aip->wp_index].get_pos(), &done, &treat_as_ship);
@@ -4626,7 +4629,7 @@ void ai_fly_to_ship()
 		aip->mode = AIM_NONE;
 		return;
 	}
-	Assert( aip->goals[aip->active_goal].target_name != NULL );
+core::Assert( aip->goals[aip->active_goal].target_name != NULL );
 	if ( aip->goals[aip->active_goal].target_name[0] == '\0' ) {
 		core::Warning(LOCATION, "'%s' is trying to fly-to-ship without a name for the ship", Ships[Pl_objp->instance].ship_name);
 		aip->mode = AIM_NONE;
@@ -4760,7 +4763,7 @@ int maybe_resume_previous_mode(object *objp, ai_info *aip)
 
 	if (aip->mode == AIM_EVADE_WEAPON) {
 		if (timestamp_elapsed(aip->mode_time) || (((aip->nearest_locked_object == -1) || (Objects[aip->nearest_locked_object].type != OBJ_WEAPON)) && (aip->danger_weapon_objnum == -1))) {
-			Assert(aip->previous_mode != AIM_EVADE_WEAPON);
+		core::Assert(aip->previous_mode != AIM_EVADE_WEAPON);
 			aip->mode = aip->previous_mode;
 			aip->submode = aip->previous_submode;
 			aip->submode_start_time = Missiontime;
@@ -4781,7 +4784,7 @@ int maybe_resume_previous_mode(object *objp, ai_info *aip)
 			if (dist > (MAX_GUARD_DIST + guard_objp->radius) * 6) {
 				if ((En_objp != NULL) && (En_objp->type == OBJ_SHIP)) {
 					if (vm_vec_dist_quick(&guard_objp->pos, &En_objp->pos) > (MAX_GUARD_DIST + guard_objp->radius) * 6) {
-						Assert(aip->previous_mode == AIM_GUARD);
+					core::Assert(aip->previous_mode == AIM_GUARD);
 						aip->mode = aip->previous_mode;
 						aip->submode = AIS_GUARD_PATROL;
 						aip->submode_start_time = Missiontime;
@@ -4943,7 +4946,7 @@ void evade_weapon()
 		return;
 	}
 
-	Assert(weapon_objp != NULL);
+core::Assert(weapon_objp != NULL);
 
 	if (weapon_objp->type != OBJ_WEAPON) {
 		if (aip->mode == AIM_EVADE_WEAPON)
@@ -5223,7 +5226,7 @@ static int ai_select_primary_weapon_OLD(const object *objp, Weapon::Info_Flags f
 	ship	*shipp = &Ships[objp->instance];
 	ship_weapon *swp = &shipp->weapons;
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
 
 	if (flags == Weapon::Info_Flags::Puncture) {
 		if (swp->current_primary_bank >= 0) {
@@ -5273,7 +5276,7 @@ static int ai_select_primary_weapon_OLD(const object *objp, Weapon::Info_Flags f
 		//	Wasn't able to find a non-puncture weapon.  Stick with what we have.
 	}
 
-	Assert( swp->current_primary_bank != -1 );		// get Alan or Allender
+core::Assert( swp->current_primary_bank != -1 );		// get Alan or Allender
 
 	return swp->current_primary_bank;
 }
@@ -5312,7 +5315,7 @@ int ai_select_primary_weapon(object *objp, object *other_objp, Weapon::Info_Flag
 		return ai_select_primary_weapon_OLD(objp, flags);
 	}
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
 	
 	//made it so it only selects puncture weapons if the active goal is to disable something -Bobboau
 	if ((flags == Weapon::Info_Flags::Puncture) && (Ai_info[shipp->ai_index].goals[0].ai_mode & (AI_GOAL_DISARM_SHIP | AI_GOAL_DISABLE_SHIP))) 
@@ -5595,7 +5598,7 @@ void set_primary_weapon_linkage(object *objp)
 
 	if (all_ballistic)
 	{
-		Assert(total_ammo);	// Goober5000: div-0 check
+	core::Assert(total_ammo);	// Goober5000: div-0 check
 		float ammo_pct = float (current_ammo) / float (total_ammo) * 100.0f;
 
 		// link according to defined levels
@@ -5626,7 +5629,7 @@ int ai_fire_primary_weapon(object *objp)
 	ai_info		*aip;
 	object		*enemy_objp;
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
 
 	aip = &Ai_info[shipp->ai_index];
 
@@ -5935,7 +5938,7 @@ void ai_maybe_announce_shockwave_weapon(object *firing_objp, int weapon_index)
 
 		for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 			object	*A = &Objects[so->objnum];
-			Assert(A->type == OBJ_SHIP);
+		core::Assert(A->type == OBJ_SHIP);
 
 			if (Ships[A->instance].team == firing_ship_team) {
 				ai_info	*aip = &Ai_info[Ships[A->instance].ai_index];
@@ -5961,7 +5964,7 @@ float compute_incoming_payload(object *target_objp)
 		object	*objp;
 
 		objp = &Objects[mo->objnum];
-		Assert(objp->type == OBJ_WEAPON);
+	core::Assert(objp->type == OBJ_WEAPON);
 		if (Weapons[objp->instance].homing_object == target_objp) {
 			payload += Weapon_info[Weapons[objp->instance].weapon_info_index].damage;
 		}
@@ -6047,12 +6050,12 @@ int ai_fire_secondary_weapon(object *objp)
 		return rval;
 #endif
 
-	Assert( objp != NULL );
-	Assert(objp->type == OBJ_SHIP);
+core::Assert( objp != NULL );
+core::Assert(objp->type == OBJ_SHIP);
 	shipp = &Ships[objp->instance];
 	swp = &shipp->weapons;
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()));
 
 	//	Select secondary weapon.
 	current_bank = swp->current_secondary_bank;
@@ -6061,7 +6064,7 @@ int ai_fire_secondary_weapon(object *objp)
 		return rval;
 	}
 
-	Assert(current_bank < shipp->weapons.num_secondary_banks);
+core::Assert(current_bank < shipp->weapons.num_secondary_banks);
 
 	weapon_info	*wip = &Weapon_info[shipp->weapons.secondary_bank_weapons[current_bank]];
 
@@ -6389,8 +6392,8 @@ void set_predicted_enemy_pos(vec3d *predicted_enemy_pos, object *pobjp, vec3d *e
 	weapon_info *wip;
 	vec3d	target_moving_direction;
 
-	Assert( enemy_pos != NULL );
-	Assert( enemy_vel != NULL );
+core::Assert( enemy_pos != NULL );
+core::Assert( enemy_vel != NULL );
 
 	wip = ai_get_weapon(&shipp->weapons);
 	target_moving_direction = *enemy_vel;
@@ -6496,9 +6499,9 @@ void ai_chase_ct()
 	ship_info	*sip;
 	ai_info		*aip;
 
-	Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
 	sip = &Ship_info[Ships[Pl_objp->instance].ship_info_index];
-	Assert(Ships[Pl_objp->instance].ai_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ai_index >= 0);
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
 	//	Make a continuous turn towards any combination of possibly negated
@@ -6920,7 +6923,7 @@ void mabs_pick_goal_point(object *objp, object *big_objp, vec3d *collision_point
 				}
 			}
 
-			Assert(i != -1);
+		core::Assert(i != -1);
 			if (i != -1) {
 				*avoid_pos = goals[min_index].pos;
 				return;
@@ -7002,9 +7005,9 @@ void ai_stealth_find()
 	vec3d new_pos, vec_to_enemy;
 	float dist_to_enemy, dot_to_enemy, dot_from_enemy;
 
-	Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
 	sip = &Ship_info[Ships[Pl_objp->instance].ship_info_index];
-	Assert(Ships[Pl_objp->instance].ai_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ai_index >= 0);
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
 	// get time since last seen
@@ -7084,9 +7087,9 @@ void ai_stealth_sweep()
 	ai_info		*aip;
 	ship_info	*sip;
 
-	Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ship_info_index >= 0);
 	sip = &Ship_info[Ships[Pl_objp->instance].ship_info_index];
-	Assert(Ships[Pl_objp->instance].ai_index >= 0);
+core::Assert(Ships[Pl_objp->instance].ai_index >= 0);
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
 	vec3d goal_pt;
@@ -7351,11 +7354,11 @@ int ai_set_attack_subsystem(object *objp, int subnum)
 	ship_subsys	*ssp;
 	object		*attacked_objp;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0);
 
 	attacker_shipp = &Ships[objp->instance];
-	Assert(attacker_shipp->ai_index >= 0);
+core::Assert(attacker_shipp->ai_index >= 0);
 
 	aip = &Ai_info[attacker_shipp->ai_index];
 
@@ -7403,7 +7406,7 @@ void ai_set_guard_vec(object *objp, object *guard_objp)
 	aip = &Ai_info[Ships[objp->instance].ai_index];
 
 	//	Handle case of bogus call in which ship is told to guard self.
-	Assert(objp != guard_objp);
+core::Assert(objp != guard_objp);
 	if (objp == guard_objp) {
 		vm_vec_rand_vec_quick(&aip->guard_vec);
 		vm_vec_scale(&aip->guard_vec, 100.0f);
@@ -7440,10 +7443,10 @@ void ai_set_guard_wing(object *objp, int wingnum)
 	ai_info	*aip;
 	int		leader_objnum, leader_shipnum;
 
-	Assert(wingnum >= 0);
+core::Assert(wingnum >= 0);
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0);
 
 	// shouldn't set the ai mode for the player
 	if ( objp == Player_obj ) {
@@ -7452,7 +7455,7 @@ void ai_set_guard_wing(object *objp, int wingnum)
 
 	shipp = &Ships[objp->instance];
 
-	Assert(shipp->ai_index >= 0);
+core::Assert(shipp->ai_index >= 0);
 
 	aip = &Ai_info[shipp->ai_index];
 	force_avoid_player_check(objp, aip);
@@ -7470,7 +7473,7 @@ void ai_set_guard_wing(object *objp, int wingnum)
 		leader_shipnum = Wings[wingnum].ship_index[0];
 		leader_objnum = Ships[leader_shipnum].objnum;
 
-		Assert((leader_objnum >= 0) && (leader_objnum < MAX_OBJECTS));
+	core::Assert((leader_objnum >= 0) && (leader_objnum < MAX_OBJECTS));
 		
 		if (leader_objnum == OBJ_INDEX(objp)) {
 			return;
@@ -7496,13 +7499,13 @@ void ai_set_guard_object(object *objp, object *other_objp)
 	ai_info	*aip;
 	int		other_objnum;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert(objp->instance >= 0);
-	Assert(objp != other_objp);
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->instance >= 0);
+core::Assert(objp != other_objp);
 
 	shipp = &Ships[objp->instance];
 
-	Assert(shipp->ai_index >= 0);
+core::Assert(shipp->ai_index >= 0);
 
 	aip = &Ai_info[shipp->ai_index];
 	aip->avoid_check_timestamp = timestamp(1);
@@ -7523,7 +7526,7 @@ void ai_set_guard_object(object *objp, object *other_objp)
 		aip->submode = AIS_GUARD_STATIC;
 		aip->submode_start_time = Missiontime;
 
-		Assert(other_objnum >= 0);	//	Hmm, bogus object and we need its position for guard_vec.
+	core::Assert(other_objnum >= 0);	//	Hmm, bogus object and we need its position for guard_vec.
 
 		ai_set_guard_vec(objp, &Objects[other_objnum]);
 
@@ -7965,7 +7968,7 @@ void ai_cruiser_chase()
 	// really track down and chase
 	else {
 		// check valid submode
-		Assert( (aip->submode == SM_ATTACK) || (aip->submode == SM_BIG_APPROACH) || (aip->submode == SM_BIG_CIRCLE) || (aip->submode == SM_BIG_PARALLEL) );
+	core::Assert( (aip->submode == SM_ATTACK) || (aip->submode == SM_BIG_APPROACH) || (aip->submode == SM_BIG_CIRCLE) || (aip->submode == SM_BIG_PARALLEL) );
 
 		// just entering, approach enemy ship
 		if (aip->submode == SM_ATTACK) {
@@ -8157,7 +8160,7 @@ void ai_chase()
 		return;
 	}
 
-	Assert( En_objp != NULL );
+core::Assert( En_objp != NULL );
 
 	if ( En_objp->type == OBJ_SHIP ) {
         enemy_sip_flags = Ship_info[Ships[En_objp->instance].ship_info_index].flags;
@@ -8221,7 +8224,7 @@ void ai_chase()
 		//	Set predicted_enemy_pos.
 		//	See if attacking a subsystem.
 		if (aip->targeted_subsys != NULL) {
-			Assert(En_objp->type == OBJ_SHIP);
+		core::Assert(En_objp->type == OBJ_SHIP);
 			if (get_shield_pct(En_objp) < HULL_DAMAGE_THRESHOLD_PERCENT) {
 				if (aip->targeted_subsys != NULL) {
 					get_subsystem_pos(&enemy_pos, En_objp, aip->targeted_subsys);
@@ -8716,7 +8719,7 @@ void ai_chase()
 				tswp = &temp_shipp->weapons;
 				if ( tswp->num_primary_banks > 0 ) {
 					float	scale;
-					Assert(tswp->current_primary_bank < tswp->num_primary_banks);
+				core::Assert(tswp->current_primary_bank < tswp->num_primary_banks);
 					weapon_info	*pwip = &Weapon_info[tswp->primary_bank_weapons[tswp->current_primary_bank]];
 
 					//	Less likely to fire if far away and moving.
@@ -8954,8 +8957,8 @@ void set_goal_dock_orient(matrix *dom, vec3d *docker_p0, vec3d *docker_p1, vec3d
 // Return the rotating submodel on which is mounted the specified dockpoint, or -1 for none.
 int find_parent_rotating_submodel(polymodel *pm, int dock_index)
 {
-	Assertion(pm != nullptr, "pm cannot be null!");
-	Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
+core::Assertion(pm != nullptr, "pm cannot be null!");
+core::Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
 	int path_num, submodel;
 
 	// make sure we have a spline path to check against before going any further
@@ -8988,8 +8991,8 @@ int find_parent_rotating_submodel(polymodel *pm, int dock_index)
 // pruned version of below function
 void find_adjusted_dockpoint_normal(vec3d *global_p0_norm, object *objp, polymodel *pm, int submodel, int dock_index)
 {
-	Assertion(global_p0_norm != nullptr && objp != nullptr && pm != nullptr, "arguments cannot be null!");
-	Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
+core::Assertion(global_p0_norm != nullptr && objp != nullptr && pm != nullptr, "arguments cannot be null!");
+core::Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
 
 	// are we basing this off a rotating submodel?
 	if (submodel >= 0)
@@ -9007,9 +9010,9 @@ void find_adjusted_dockpoint_normal(vec3d *global_p0_norm, object *objp, polymod
 // Goober5000
 void find_adjusted_dockpoint_info(vec3d *global_p0, vec3d *global_p1, vec3d *global_p0_norm, object *objp, polymodel *pm, int modelnum, int submodel, int dock_index)
 {
-	Assertion(global_p0 != nullptr && global_p1 != nullptr && global_p0_norm != nullptr && objp != nullptr && pm != nullptr, "arguments cannot be null!");
-	Assertion(pm->id == modelnum, "inconsistent polymodel and modelnum!");
-	Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
+core::Assertion(global_p0 != nullptr && global_p1 != nullptr && global_p0_norm != nullptr && objp != nullptr && pm != nullptr, "arguments cannot be null!");
+core::Assertion(pm->id == modelnum, "inconsistent polymodel and modelnum!");
+core::Assertion(dock_index >= 0 && dock_index < pm->n_docks, "for model %s, dock_index %d must be >= 0 and < %d!", pm->filename, dock_index, pm->n_docks);
 
 	// are we basing this off a rotating submodel?
 	if (submodel >= 0)
@@ -9085,11 +9088,11 @@ float dock_orient_and_approach(object *docker_objp, int docker_index, object *do
 	pm0 = model_get( sip0->model_num );
 	pm1 = model_get( sip1->model_num );
 
-	Assert( docker_index >= 0 );
-	Assert( dockee_index >= 0 );
+core::Assert( docker_index >= 0 );
+core::Assert( dockee_index >= 0 );
 
-	Assert(pm0->docking_bays[docker_index].num_slots == 2);
-	Assert(pm1->docking_bays[dockee_index].num_slots == 2);
+core::Assert(pm0->docking_bays[docker_index].num_slots == 2);
+core::Assert(pm1->docking_bays[dockee_index].num_slots == 2);
 
 
 	// Goober5000 - check if we're attached to a rotating submodel
@@ -9229,7 +9232,7 @@ float dock_orient_and_approach(object *docker_objp, int docker_index, object *do
 			//	Note, we're interested in distance from goal, so if we're still turning, bash that into return value.
 			fdist += 10.0f * vm_vec_mag_quick(&omega_out);
 		} else {
-			Assert(dock_mode == DOA_DOCK_STAY);
+		core::Assert(dock_mode == DOA_DOCK_STAY);
 			matrix temp, m_offset;
 			vec3d origin_docker_point, adjusted_docker_point, v_offset;
 
@@ -9256,7 +9259,7 @@ float dock_orient_and_approach(object *docker_objp, int docker_index, object *do
 	{
 		//	Undocking.
 		//	Move to point on dock path nearest to dock station.
-		Assert(aip->path_length >= 2);
+	core::Assert(aip->path_length >= 2);
 		fdist = dock_move_towards_point(docker_objp, &docker_objp->pos, &Path_points[aip->path_start + aip->path_length-2].pos, speed_scale, 0.0f, rdinfo);
 
 		break;
@@ -9267,7 +9270,7 @@ float dock_orient_and_approach(object *docker_objp, int docker_index, object *do
 		//	Move to point on dock path nearest to dock station and orient away from big ship.
 		int		desired_index;
 
-		Assert(aip->path_length >= 2);
+	core::Assert(aip->path_length >= 2);
 		
 		desired_index = aip->path_length-2;
 		fdist = dock_move_towards_point(docker_objp, &docker_objp->pos, &Path_points[aip->path_start + desired_index].pos, speed_scale, 0.0f, rdinfo);
@@ -9404,9 +9407,9 @@ void remove_farthest_attacker(int objnum)
 
 	if (farthest_objp != NULL) {
 		ai_info	*aip;
-		Assert(farthest_objp->type == OBJ_SHIP);
-		Assert((farthest_objp->instance > -1) && (farthest_objp->instance < MAX_SHIPS));
-		Assert(Ships[farthest_objp->instance].ai_index > -1);
+	core::Assert(farthest_objp->type == OBJ_SHIP);
+	core::Assert((farthest_objp->instance > -1) && (farthest_objp->instance < MAX_SHIPS));
+	core::Assert(Ships[farthest_objp->instance].ai_index > -1);
 
 		aip = &Ai_info[Ships[farthest_objp->instance].ai_index];
 
@@ -9472,7 +9475,7 @@ void guard_object_was_hit(object *guard_objp, object *hitter_objp)
 	if (aip->ai_flags[AI::AI_Flags::No_dynamic])	//	Not allowed to pursue dynamic goals.  So, why are we guarding?
 		return;
 
-	Assert( (hitter_objp->type == OBJ_SHIP) || (hitter_objp->type == OBJ_ASTEROID) || (hitter_objp->type == OBJ_WEAPON) );
+core::Assert( (hitter_objp->type == OBJ_SHIP) || (hitter_objp->type == OBJ_ASTEROID) || (hitter_objp->type == OBJ_WEAPON) );
 
 	hitter_objnum = OBJ_INDEX(hitter_objp);
 
@@ -9607,7 +9610,7 @@ int ai_guard_find_nearby_bomb(object *guarding_objp, object *guarded_objp)
 	weapon_info	*wip;
 
 	for ( mo = GET_NEXT(&Missile_obj_list); mo != END_OF_LIST(&Missile_obj_list); mo = GET_NEXT(mo) ) {
-		Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+	core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 		bomb_objp = &Objects[mo->objnum];
 
 		wp = &Weapons[bomb_objp->instance];
@@ -9757,8 +9760,8 @@ void ai_guard_find_nearby_object()
  */
 float get_cylinder_points(object *other_objp, object *cyl_objp, vec3d *axis_pt, vec3d *r_vec, float *radius)
 {
-	Assert(other_objp->type == OBJ_SHIP);
-	Assert(cyl_objp->type == OBJ_SHIP);
+core::Assert(other_objp->type == OBJ_SHIP);
+core::Assert(cyl_objp->type == OBJ_SHIP);
 
 	// get radius of cylinder
 	polymodel *pm = model_get(Ship_info[Ships[cyl_objp->instance].ship_info_index].model_num);
@@ -9980,7 +9983,7 @@ void ai_guard()
 		return;
 	}
 
-	Assert(aip->guard_objnum != -1);
+core::Assert(aip->guard_objnum != -1);
 
 	guard_objp = &Objects[aip->guard_objnum];
 
@@ -9996,7 +9999,7 @@ void ai_guard()
 	}
 
 	//	Not sure whether this should be impossible, or a reasonable cleanup condition.
-	//	For now (3/31/97), it's getting trapped by an Assert, so clean it up.
+	//	For now (3/31/97), it's getting trapped by ancore::Assert, so clean it up.
 	if (guard_objp->type != OBJ_SHIP) {
 		aip->guard_objnum = -1;
 		return;
@@ -10182,9 +10185,9 @@ void ai_do_objects_repairing_stuff( object *repaired_objp, object *repair_objp, 
 	p_team = -1;
 
 	// repaired_objp should not be null, but repair_objp will be null when a support ship is just warping in
-	Assert(repaired_objp != NULL);
+core::Assert(repaired_objp != NULL);
 
-	Assert( repaired_objp->type == OBJ_SHIP);
+core::Assert( repaired_objp->type == OBJ_SHIP);
 	aip = &Ai_info[Ships[repaired_objp->instance].ai_index];
 
 	if(Game_mode & GM_MULTIPLAYER){
@@ -10282,7 +10285,7 @@ void ai_do_objects_repairing_stuff( object *repaired_objp, object *repair_objp, 
 	case REPAIR_INFO_COMPLETE:
 		// clear the being repaired flag -- and 
 		if ( p_index >= 0 ) {
-			Assert( repair_objp );
+		core::Assert( repair_objp );
 			
 			hud_support_view_stop();			
 			
@@ -10295,7 +10298,7 @@ void ai_do_objects_repairing_stuff( object *repaired_objp, object *repair_objp, 
 
 	case REPAIR_INFO_ONWAY:
 		// need to set the signature so that clients in multiplayer games rearm correctly
-		Assert( repair_objp );
+	core::Assert( repair_objp );
 		aip->support_ship_signature = repair_objp->signature;
 		aip->support_ship_objnum = OBJ_INDEX(repair_objp);
 		stamp = timestamp(-1);
@@ -10313,7 +10316,7 @@ void ai_do_objects_repairing_stuff( object *repaired_objp, object *repair_objp, 
         
 		switch ( how ) {
 		case REPAIR_INFO_ONWAY:
-			Assert( repaired_objp != NULL );
+		core::Assert( repaired_objp != NULL );
 			aip->goal_objnum = OBJ_INDEX(repaired_objp);
 			aip->ai_flags.set(AI::AI_Flags::Repairing);
 			break;
@@ -10360,12 +10363,12 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 		case AIS_DOCK_0:
 		{
 			// get them from the active goal
-			Assert(aigp != NULL);
-			Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
+		core::Assert(aigp != NULL);
+		core::Assert(aigp->flags[AI::Goal_Flags::Dockee_index_valid] && aigp->flags[AI::Goal_Flags::Docker_index_valid]);
 			docker_index = aigp->docker.index;
 			dockee_index = aigp->dockee.index;
-			Assert(docker_index >= 0);
-			Assert(dockee_index >= 0);
+		core::Assert(docker_index >= 0);
+		core::Assert(dockee_index >= 0);
 			break;
 		}
 
@@ -10378,11 +10381,11 @@ void ai_get_dock_goal_indexes(object *objp, ai_info *aip, ai_goal *aigp, object 
 		case AIS_UNDOCK_0:
 		{
 			// get them from the guy I'm docked to
-			Assert(goal_objp != NULL);
+		core::Assert(goal_objp != NULL);
 			docker_index = dock_find_dockpoint_used_by_object(objp, goal_objp);
 			dockee_index = dock_find_dockpoint_used_by_object(goal_objp, objp);
-			Assert(docker_index >= 0);
-			Assert(dockee_index >= 0);
+		core::Assert(docker_index >= 0);
+		core::Assert(dockee_index >= 0);
 			break;
 		}
 
@@ -10422,7 +10425,7 @@ void ai_cleanup_dock_mode_subjective(object *objp)
 		if (aip->goal_objnum >= 0)
 		{
 			goal_objp = &Objects[aip->goal_objnum];
-			Assert(goal_objp->type == OBJ_SHIP);
+		core::Assert(goal_objp->type == OBJ_SHIP);
 			goal_shipp = &Ships[goal_objp->instance];
 		}
 		else
@@ -10489,11 +10492,11 @@ void ai_cleanup_rearm_mode(object *objp)
 	ai_info *aip = &Ai_info[Ships[objp->instance].ai_index];
 
 	if (aip->ai_flags[AI::AI_Flags::Repairing]) {
-		Assert( aip->goal_objnum != -1 );
+	core::Assert( aip->goal_objnum != -1 );
 		ai_do_objects_repairing_stuff( &Objects[aip->goal_objnum], objp, REPAIR_INFO_KILLED );
 	} else if ( aip->ai_flags[AI::AI_Flags::Being_repaired] ) {
 		// MWA/Goober5000 -- note that we have to use support object here instead of goal_objnum.
-		Assert( aip->support_ship_objnum != -1 );
+	core::Assert( aip->support_ship_objnum != -1 );
 		ai_do_objects_repairing_stuff( objp, &Objects[aip->support_ship_objnum], REPAIR_INFO_ABORT );
 	} else if ( aip->ai_flags[AI::AI_Flags::Awaiting_repair] ) {
 		// MWA/Goober5000 -- note that we have to use support object here instead of goal_objnum.
@@ -10516,11 +10519,11 @@ void ai_still()
 	ship	*shipp;
 	ai_info	*aip;
 
-	Assert(Pl_objp->type == OBJ_SHIP);
-	Assert((Pl_objp->instance >= 0) && (Pl_objp->instance < MAX_OBJECTS));
+core::Assert(Pl_objp->type == OBJ_SHIP);
+core::Assert((Pl_objp->instance >= 0) && (Pl_objp->instance < MAX_OBJECTS));
 
 	shipp = &Ships[Pl_objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 
 	aip = &Ai_info[shipp->ai_index];
 
@@ -10640,7 +10643,7 @@ void ai_dock()
 	if (aip->goal_objnum >= 0)
 	{
 		goal_objp = &Objects[aip->goal_objnum];
-		Assert(goal_objp->type == OBJ_SHIP);
+	core::Assert(goal_objp->type == OBJ_SHIP);
 		goal_shipp = &Ships[goal_objp->instance];
 	}
 	else
@@ -10669,7 +10672,7 @@ void ai_dock()
 		ai_path();
 		if (aip->path_length < 4)
 		{
-			Assert(goal_objp != NULL);
+		core::Assert(goal_objp != NULL);
 			ship_info *goal_sip = &Ship_info[goal_shipp->ship_info_index];
 			char *goal_ship_class_name = goal_sip->name;
 			char *goal_dock_path_name = model_get(goal_sip->model_num)->paths[aip->mp_index].name;
@@ -10709,7 +10712,7 @@ void ai_dock()
 				model_anim_start_type(goal_shipp, TRIGGER_TYPE_DOCKING_STAGE_2, dockee_index, 1);
 
 				aip->path_cur--;
-				Assert(aip->path_cur-aip->path_start >= 0);
+			core::Assert(aip->path_cur-aip->path_start >= 0);
 			} else if (aip->path_cur-aip->path_start >= aip->path_length-2) {
 				if (Pl_objp->phys_info.speed > goal_objp->phys_info.speed + 1.5f) {
 					set_accel_for_target_speed(Pl_objp, goal_objp->phys_info.speed);
@@ -10741,7 +10744,7 @@ void ai_dock()
 			model_anim_start_type(goal_shipp, TRIGGER_TYPE_DOCKING_STAGE_2, dockee_index, -1);
 		} else {
 			dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_APPROACH);
-			Assert(dist != UNINITIALIZED_VALUE);
+		core::Assert(dist != UNINITIALIZED_VALUE);
 
 			float	tolerance;
 			if (goal_objp->flags[Object::Object_Flags::Player_ship])
@@ -10763,7 +10766,7 @@ void ai_dock()
 
 	case AIS_DOCK_3:
 	{
-		Assert(aip->goal_objnum != -1);
+	core::Assert(aip->goal_objnum != -1);
 		int	r;
 
 		if ((r = maybe_dock_obstructed(Pl_objp, goal_objp,0)) != -1) {
@@ -10778,7 +10781,7 @@ void ai_dock()
 			rotating_dockpoint_info rdinfo;
 
 			float dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_DOCK, &rdinfo);
-			Assert(dist != UNINITIALIZED_VALUE);
+		core::Assert(dist != UNINITIALIZED_VALUE);
 
 			float tolerance = 2*flFrametime * (1.0f + fl_sqrt(goal_objp->phys_info.speed));
 
@@ -10792,7 +10795,7 @@ void ai_dock()
 			{
 				// - Removed by MK on 11/7/97, causes errors for ships docked at mission start: maybe_recreate_path(Pl_objp, aip, 1);
 				dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_DOCK);
-				Assert(dist != UNINITIALIZED_VALUE);
+			core::Assert(dist != UNINITIALIZED_VALUE);
 
 				physics_ship_init(Pl_objp);
 
@@ -10844,10 +10847,10 @@ void ai_dock()
 	{
 		//	This mode is only for rearming/repairing.
 		//	The ship that is performing the rearm enters this mode after it docks.
-		Assert((aip->goal_objnum >= -1) && (aip->goal_objnum < MAX_OBJECTS));
+	core::Assert((aip->goal_objnum >= -1) && (aip->goal_objnum < MAX_OBJECTS));
 
 		float dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_DOCK);
-		Assert(dist != UNINITIALIZED_VALUE);
+	core::Assert(dist != UNINITIALIZED_VALUE);
 
 		ai_info		*goal_aip = &Ai_info[goal_shipp->ai_index];
 
@@ -10923,7 +10926,7 @@ void ai_dock()
 
 		// set up the path points for the undocking procedure
 		path_num = ai_return_path_num_from_dockbay(goal_objp, dockee_index);
-		Assert(path_num >= 0);
+	core::Assert(path_num >= 0);
 		ai_find_path(Pl_objp, OBJ_INDEX(goal_objp), path_num, 0);
 
 		// Play a ship docking detach sound
@@ -10952,7 +10955,7 @@ void ai_dock()
 		}
 
 		dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_UNDOCK_1, &rdinfo);
-		Assert(dist != UNINITIALIZED_VALUE);
+	core::Assert(dist != UNINITIALIZED_VALUE);
 
 		float dist_to_dock;
 
@@ -10978,11 +10981,11 @@ void ai_dock()
 		float dist;
 
 		// get pointer to docked object's aip to reset flags, etc
-		Assert( aip->goal_objnum != -1 );
+	core::Assert( aip->goal_objnum != -1 );
 
 		//	Second stage of undocking.
 		dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_UNDOCK_2);
-		Assert(dist != UNINITIALIZED_VALUE);
+	core::Assert(dist != UNINITIALIZED_VALUE);
 		
 		// If at goal point, or quite far away from dock object
 		// NOTE: the speed check has an etra 5 thousandths added on to account for some floating point error
@@ -11021,7 +11024,7 @@ void ai_dock()
 		else
 		{
 			float dist = dock_orient_and_approach(Pl_objp, docker_index, goal_objp, dockee_index, DOA_UNDOCK_3);
-			Assert(dist != UNINITIALIZED_VALUE);
+		core::Assert(dist != UNINITIALIZED_VALUE);
 
 			if (dist < Pl_objp->radius/2 + 5.0f) {
 				aip->submode = AIS_UNDOCK_4;
@@ -11228,7 +11231,7 @@ int get_wing_index(object *objp, int wingnum)
 	wing	*wingp;
 	int	i;
 
-	Assert((wingnum >= 0) && (wingnum < MAX_WINGS));
+core::Assert((wingnum >= 0) && (wingnum < MAX_WINGS));
 
 	wingp = &Wings[wingnum];
 
@@ -11240,7 +11243,7 @@ int get_wing_index(object *objp, int wingnum)
 }
 
 //	Given a wing, return a pointer to the object of its leader.
-//	Asserts if object not found.
+//core::Asserts if object not found.
 //	Currently, the wing leader is defined as the first object in the wing.
 //	wingnum		Wing number in Wings array.
 //	If wing leader is disabled, swap it with another ship.
@@ -11253,11 +11256,11 @@ object *get_wing_leader(int wingnum)
 		return NULL;
 	}
 
-	Assert( wingnum < MAX_WINGS );
+core::Assert( wingnum < MAX_WINGS );
 
 	wingp = &Wings[wingnum];
 
-	Assert(wingp->current_count != 0);			//	Make sure there is a leader
+core::Assert(wingp->current_count != 0);			//	Make sure there is a leader
 
 	ship_num = wingp->ship_index[0];
 
@@ -11296,7 +11299,7 @@ void get_wing_delta(vec3d *_delta_vec, int wing_index)
 {
 	int	wi0;
 
-	Assert(wing_index >= 0);
+core::Assert(wing_index >= 0);
 
 	int	k, row, column;
 
@@ -11329,7 +11332,7 @@ float gwlr_1(object *objp, ai_info *aip)
 	object	*o;
 	ship_obj	*so;
 
-	Assert(wingnum >= 0);
+core::Assert(wingnum >= 0);
 
 	max_radius = objp->radius;
 
@@ -11372,10 +11375,10 @@ float get_wing_largest_radius(object *objp, int formation_object_flag)
 	ship		*shipp;
 	ai_info	*aip;
 
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert((objp->instance >= 0) && (objp->instance < MAX_OBJECTS));
 	shipp = &Ships[objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 	aip = &Ai_info[shipp->ai_index];
 
 	if (formation_object_flag) {
@@ -11450,11 +11453,11 @@ void render_wing_phantoms(object *objp)
 	int		wing_index;		//	Index in wing struct, defines 3-space location in wing.
 	vec3d	goal_point;
 	
-	Assert(objp->type == OBJ_SHIP);
-	Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+core::Assert(objp->type == OBJ_SHIP);
+core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 
 	shipp = &Ships[objp->instance];
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 
 	aip = &Ai_info[shipp->ai_index];
 
@@ -11496,9 +11499,9 @@ void render_wing_phantoms_all()
 
 		objp = &Objects[so->objnum];
 		
-		Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+	core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 		shipp = &Ships[objp->instance];
-		Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+	core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 
 		aip = &Ai_info[shipp->ai_index];
 
@@ -11595,16 +11598,16 @@ int ai_formation()
 	vec3d	goal_point, future_goal_point_5, future_goal_point_2, future_goal_point_x, future_goal_point_1000x, vec_to_goal, dir_to_goal;
 	float		dot_to_goal, dist_to_goal, leader_speed;
 
-	Assert(Pl_objp->type == OBJ_SHIP);
-	Assert((Pl_objp->instance >= 0) && (Pl_objp->instance < MAX_SHIPS));
+core::Assert(Pl_objp->type == OBJ_SHIP);
+core::Assert((Pl_objp->instance >= 0) && (Pl_objp->instance < MAX_SHIPS));
 
 	shipp = &Ships[Pl_objp->instance];
 
-	Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
+core::Assert((shipp->ai_index >= 0) && (shipp->ai_index < MAX_AI_INFO));
 
 	aip = &Ai_info[shipp->ai_index];
 
-	Assert(!(aip->ai_flags[AI::AI_Flags::Formation_wing] && aip->ai_flags[AI::AI_Flags::Formation_object]));	//	Make sure not both types of formation flying in effect.
+core::Assert(!(aip->ai_flags[AI::AI_Flags::Formation_wing] && aip->ai_flags[AI::AI_Flags::Formation_object]));	//	Make sure not both types of formation flying in effect.
 
 	//	Determine which kind of formation flying.
 	//	If tracking an object, not in waypoint mode:
@@ -11617,7 +11620,7 @@ int ai_formation()
 		wing_index = ai_formation_object_get_slotnum(aip->goal_objnum, Pl_objp);
 		leader_objp = &Objects[aip->goal_objnum];
 	} else {	//	Formation flying in waypoint mode.
-		Assert(aip->ai_flags[AI::AI_Flags::Formation_wing]);
+	core::Assert(aip->ai_flags[AI::AI_Flags::Formation_wing]);
 
 		if ( (aip->mode != AIM_WAYPOINTS) && (aip->mode != AIM_FLY_TO_SHIP) ) {
 			aip->ai_flags.remove(AI::AI_Flags::Formation_wing);
@@ -11662,7 +11665,7 @@ int ai_formation()
 		}
 	}
 
-	Assert(leader_objp != NULL);
+core::Assert(leader_objp != NULL);
 	laip = &Ai_info[Ships[leader_objp->instance].ai_index];
 
 	//	Make sure we're really in this wing.
@@ -11963,7 +11966,7 @@ void ai_do_repair_frame(object *objp, ai_info *aip, float frametime)
 
 		//	Curious -- object numbers match, but signatures do not.
 		//	Must mean original repair ship died and was replaced by current ship.
-		Assert(Objects[support_objnum].signature == aip->support_ship_signature);
+	core::Assert(Objects[support_objnum].signature == aip->support_ship_signature);
 	
 		repair_aip = &Ai_info[Ships[Objects[support_objnum].instance].ai_index];
 
@@ -12020,7 +12023,7 @@ void ai_do_repair_frame(object *objp, ai_info *aip, float frametime)
 //	Goober5000 - The child should always keep up with the parent.
 void call_doa(object *child, object *parent)
 {
-	Assert(dock_check_find_direct_docked_object(parent, child));
+core::Assert(dock_check_find_direct_docked_object(parent, child));
 
 	// get indexes
 	int parent_index = dock_find_dockpoint_used_by_object(parent, child);
@@ -12145,7 +12148,7 @@ void ai_chase_circle(object *objp)
 	target_speed = sip->max_speed/4.0f;
 	aip = &Ai_info[Ships[Pl_objp->instance].ai_index];
 
-	Assert(vm_vec_mag(&aip->goal_point) >= 0.0f);		//	Supposedly detects bogus vector
+core::Assert(vm_vec_mag(&aip->goal_point) >= 0.0f);		//	Supposedly detects bogus vector
 
 	goal_point = aip->goal_point;
 
@@ -12175,7 +12178,7 @@ void ai_chase_circle(object *objp)
 		}
 	}
 
-	Assert(vm_vec_mag(&aip->goal_point) >= 0.0f);		//	Supposedly detects bogus vector
+core::Assert(vm_vec_mag(&aip->goal_point) >= 0.0f);		//	Supposedly detects bogus vector
 
 	turn_towards_tangent(Pl_objp, &goal_point, 10*objp->radius + 200.0f);
 
@@ -12473,9 +12476,9 @@ void maybe_evade_dumbfire_weapon(ai_info *aip)
 //          done     =>   true if the object has is finished with the path, or is dead
 void ai_manage_bay_doors(object *pl_objp, ai_info *aip, bool done)
 {
-	Assert( pl_objp );
-	Assert( pl_objp->instance >= 0 );
-	Assert( aip );
+core::Assert( pl_objp );
+core::Assert( pl_objp->instance >= 0 );
+core::Assert( aip );
 
 	ship *shipp = &Ships[pl_objp->instance];
 
@@ -12597,7 +12600,7 @@ int ai_acquire_emerge_path(object *pl_objp, int parent_objnum, int allowed_path_
 	create_model_exit_path(pl_objp, parent_objp, path_index, pm->paths[path_index].nverts);
 
 	// now return to the caller what the starting world pos and starting fvec for the ship will be
-	Assert((aip->path_start >= 0) && (aip->path_start < MAX_PATH_POINTS));
+core::Assert((aip->path_start >= 0) && (aip->path_start < MAX_PATH_POINTS));
 	pnp = &Path_points[aip->path_start];
 	*pos = pnp->pos;
 
@@ -12644,8 +12647,8 @@ void ai_bay_emerge()
 	ship *shipp;
 	int		parent_died=0;
 
-	Assert( Pl_objp != NULL );
-	Assert( Pl_objp->instance >= 0 );
+core::Assert( Pl_objp != NULL );
+core::Assert( Pl_objp->instance >= 0 );
 
 	shipp = &Ships[Pl_objp->instance];
 	aip = &Ai_info[shipp->ai_index];
@@ -12669,7 +12672,7 @@ void ai_bay_emerge()
 	}
 
 	if ( !parent_died ) {
-		Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
+	core::Assert(Objects[aip->goal_objnum].type == OBJ_SHIP);
 		if ( Ships[Objects[aip->goal_objnum].instance].flags[Ship::Ship_Flags::Dying] ) {
 			parent_died = 1;
 		}
@@ -12726,7 +12729,7 @@ int ai_find_closest_depart_path(ai_info *aip, polymodel *pm, int allowed_path_ma
 
 	best_free_path = best_path = -1;
 	min_free_dist = min_dist = 1e20f;
-	Assert(aip->shipnum >= 0);
+core::Assert(aip->shipnum >= 0);
 	source = &Objects[Ships[aip->shipnum].objnum].pos;
 
 	for ( i = 0; i < bay->num_paths; i++ )
@@ -12828,7 +12831,7 @@ int ai_acquire_depart_path(object *pl_objp, int parent_objnum, int allowed_path_
 	shipp->bay_doors_launched_from = (ubyte)ship_bay_path;
 	shipp->bay_doors_parent_shipnum = parent_objp->instance;
 
-	Assert(path_index < pm->n_paths);
+core::Assert(path_index < pm->n_paths);
 	ai_find_path(pl_objp, parent_objnum, path_index, 0);
 
 	// Set this flag, so we don't bother recreating the path... we won't need to update the path
@@ -12994,7 +12997,7 @@ void ai_execute_behavior(ai_info *aip)
 		break;
 	case AIM_STRAFE:
 		if (En_objp) {
-			Assert(En_objp->type == OBJ_SHIP);
+		core::Assert(En_objp->type == OBJ_SHIP);
 			ai_big_strafe();	// strafe a big ship
 		} else {
 			aip->mode = AIM_NONE;
@@ -13055,7 +13058,7 @@ int num_allies_rearming(object *objp)
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		object	*A;
 		
-		Assert (so->objnum != -1);
+	core::Assert (so->objnum != -1);
 		A = &Objects[so->objnum];
 
 		if (Ships[A->instance].team == team) {
@@ -13081,7 +13084,7 @@ int maybe_request_support(object *objp)
 	int i;
 	float r;
 
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	shipp = &Ships[objp->instance];
 	aip = &Ai_info[shipp->ai_index];
 	sip = &Ship_info[shipp->ship_info_index];
@@ -13210,7 +13213,7 @@ void ai_maybe_depart(object *objp)
 	if ( The_mission.game_type & MISSION_TYPE_TRAINING )
 		return;
 
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 
 	shipp = &Ships[objp->instance];
 	ai_info	*aip = &Ai_info[shipp->ai_index];
@@ -13270,7 +13273,7 @@ void ai_warp_out(object *objp)
 	{
 		// you shouldn't hit this... if you do, then I need to add a check for it
 		// in whatever function initiates a warpout
-		Assert (!(shipp->flags[Ship::Ship_Flags::No_subspace_drive]));
+	core::Assert (!(shipp->flags[Ship::Ship_Flags::No_subspace_drive]));
 
 		// flag us as trying to warp so that this function keeps getting called
 		// (in other words, if we can't warp just yet, we want to warp at the first
@@ -13365,14 +13368,14 @@ static int ai_find_shockwave_weapon(const object *objp)
 		weapon		*wp;
 		weapon_info	*wip;
 	
-		Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
+	core::Assert(mo->objnum >= 0 && mo->objnum < MAX_OBJECTS);
 		A = &Objects[mo->objnum];
 
-		Assert(A->type == OBJ_WEAPON);
-		Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
+	core::Assert(A->type == OBJ_WEAPON);
+	core::Assert((A->instance >= 0) && (A->instance < MAX_WEAPONS));
 		wp = &Weapons[A->instance];
 		wip = &Weapon_info[wp->weapon_info_index];
-		Assert( wip->subtype == WP_MISSILE );
+	core::Assert( wip->subtype == WP_MISSILE );
 
 		if (wip->shockwave.speed > 0.0f) {
 			float	dist;
@@ -13402,7 +13405,7 @@ void ai_announce_ship_dying(object *dying_objp)
 
 		for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 			object	*A = &Objects[so->objnum];
-			Assert(A->type == OBJ_SHIP);
+		core::Assert(A->type == OBJ_SHIP);
 
 			// Goober5000 - the disallow is now handled uniformly in the ai_avoid_shockwave function
 			/*if (Ship_info[Ships[A->instance].ship_info_index].flags & (SIF_SMALL_SHIP | SIF_FREIGHTER | SIF_TRANSPORT))*/ {
@@ -13430,11 +13433,11 @@ static int ai_find_shockwave_ship(object *objp)
 		object		*A;
 		ship			*shipp;
 	
-		Assert(so->objnum >= 0 && so->objnum < MAX_OBJECTS);
+	core::Assert(so->objnum >= 0 && so->objnum < MAX_OBJECTS);
 		A = &Objects[so->objnum];
 
-		Assert(A->type == OBJ_SHIP);
-		Assert((A->instance >= 0) && (A->instance < MAX_SHIPS));
+	core::Assert(A->type == OBJ_SHIP);
+	core::Assert((A->instance >= 0) && (A->instance < MAX_SHIPS));
 		shipp = &Ships[A->instance];
 		//	Only look at objects in the process of dying.
 		if (shipp->flags[Ship::Ship_Flags::Dying]) {
@@ -13473,7 +13476,7 @@ int aas_1(object *objp, ai_info *aip, vec3d *safe_pos)
 		}
 
 		//	OK, we have reason to believe we should avoid aip->shockwave_object.
-		Assert(aip->shockwave_object > -1);
+	core::Assert(aip->shockwave_object > -1);
 		object	*weapon_objp = &Objects[aip->shockwave_object];
 		if (weapon_objp->type != OBJ_WEAPON) {
 			aip->ai_flags.remove(AI::AI_Flags::Avoid_shockwave_weapon);
@@ -13561,7 +13564,7 @@ int aas_1(object *objp, ai_info *aip, vec3d *safe_pos)
 			}
 		}
 
-		Assert(aip->shockwave_object > -1);
+	core::Assert(aip->shockwave_object > -1);
 		object	*ship_objp = &Objects[aip->shockwave_object];
 		if (ship_objp == objp) {
 			aip->shockwave_object = -1;
@@ -13704,7 +13707,7 @@ int ai_await_repair_frame(object *objp, ai_info *aip)
 //	Maybe should only do this if they are preventing their wing from re-entering.
 void ai_maybe_self_destruct(object *objp, ai_info *aip)
 {
-	Assertion(objp->type == OBJ_SHIP, "ai_maybe_self_destruct() can only be called with objects that are ships!");
+core::Assertion(objp->type == OBJ_SHIP, "ai_maybe_self_destruct() can only be called with objects that are ships!");
 	ship *shipp = &Ships[objp->instance];
 
 	//	Some IFFs can be repaired, so no self-destruct.
@@ -13865,7 +13868,7 @@ void ai_frame(int objnum)
 	ai_info	*aip = &Ai_info[shipp->ai_index];
 	int		target_objnum;
 
-	Assert((aip->mode != AIM_WAYPOINTS) || (aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC));
+core::Assert((aip->mode != AIM_WAYPOINTS) || (aip->active_goal != AI_ACTIVE_GOAL_DYNAMIC));
 
 	// Set globals defining the current object and its enemy object.
 	Pl_objp = &Objects[objnum];
@@ -13919,7 +13922,7 @@ void ai_frame(int objnum)
 	ai_preprocess_ignore_objnum(aip);
 	target_objnum = set_target_objnum(aip, aip->target_objnum);
 
-	Assert(objnum != target_objnum);
+core::Assert(objnum != target_objnum);
 
 	ai_manage_shield(Pl_objp, aip);
 	
@@ -14018,7 +14021,7 @@ void ai_frame(int objnum)
 	// check if targeted subsystem has been destroyed, if so, move onto another subsystem
 	// if trying to disable or disarm the target
 	if ((En_objp != NULL) && ( aip->targeted_subsys != NULL )) {
-		Assert(En_objp->type == OBJ_SHIP);
+	core::Assert(En_objp->type == OBJ_SHIP);
 		if ( aip->targeted_subsys->current_hits <= 0.0f ) {
 			int subsys_type;
 
@@ -14134,8 +14137,8 @@ void ai_process( object * obj, int ai_index, float frametime )
 
 	int rfc = 1;		//	Assume will be Reading Flying Controls.
 
-	Assert( obj->type == OBJ_SHIP );
-	Assert( ai_index >= 0 );
+core::Assert( obj->type == OBJ_SHIP );
+core::Assert( ai_index >= 0 );
 
 	AI_frametime = frametime;
 	if (OBJ_INDEX(obj) <= Last_ai_obj) {
@@ -14200,7 +14203,7 @@ void init_ai_object(int objnum)
 	objp = &Objects[objnum];
 	ship_index = objp->instance;
 	ai_index = Ships[ship_index].ai_index;
-	Assert((ai_index >= 0) && (ai_index < MAX_AI_INFO));
+core::Assert((ai_index >= 0) && (ai_index < MAX_AI_INFO));
 
 	aip = &Ai_info[ai_index];
 
@@ -14433,9 +14436,9 @@ void init_aip_from_class_and_profile(ai_info *aip, ai_class *aicp, ai_profile_t 
 
 void ai_do_default_behavior(object *obj)
 {
-    Assert(obj != NULL);
-    Assert(obj->instance != -1);
-    Assert(Ships[obj->instance].ai_index != -1);
+   core::Assert(obj != NULL);
+   core::Assert(obj->instance != -1);
+   core::Assert(Ships[obj->instance].ai_index != -1);
 
     ai_info	*aip = &Ai_info[Ships[obj->instance].ai_index];
     ship_info* sip = &Ship_info[Ships[obj->instance].ship_info_index];
@@ -14537,9 +14540,9 @@ void maybe_process_friendly_hit(object *objp_hitter, object *objp_hit, object *o
 			return;
 		}
 
-		Assert(objp_hitter->type == OBJ_SHIP);
-		Assert(objp_hit->type == OBJ_SHIP);
-		Assert((objp_weapon->type == OBJ_WEAPON) || (objp_weapon->type == OBJ_BEAM));  //beam added for traitor detection - FUBAR
+	core::Assert(objp_hitter->type == OBJ_SHIP);
+	core::Assert(objp_hit->type == OBJ_SHIP);
+	core::Assert((objp_weapon->type == OBJ_WEAPON) || (objp_weapon->type == OBJ_BEAM));  //beam added for traitor detection - FUBAR
 
 		ship	*shipp_hitter = &Ships[objp_hitter->instance];
 		ship	*shipp_hit = &Ships[objp_hit->instance];
@@ -14651,7 +14654,7 @@ void maybe_process_friendly_hit(object *objp_hitter, object *objp_hit, object *o
  */
 void maybe_set_dynamic_chase(ai_info *aip, int hitter_objnum)
 {
-	Assert(Ship_info[Ships[aip->shipnum].ship_info_index].is_fighter_bomber());
+core::Assert(Ship_info[Ships[aip->shipnum].ship_info_index].is_fighter_bomber());
 
 	// limit the number of ships attacking hitter_objnum (for now, only if hitter_objnum is player)
 	if ( ai_maybe_limit_attackers(hitter_objnum) == 1 ) {
@@ -14714,7 +14717,7 @@ void big_ship_collide_recover_start(object *objp, object *big_objp, vec3d *colli
 {
 	ai_info	*aip;
 
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 
 	aip = &Ai_info[Ships[objp->instance].ai_index];
 
@@ -14751,15 +14754,15 @@ float max_lethality = 0.0f;
 void ai_update_lethality(object *pship_obj, object *other_obj, float damage)
 {
 	// Goober5000 - stop any trickle-down errors from ship_do_damage
-	Assert(other_obj);
+core::Assert(other_obj);
 	if (!other_obj)
 	{
 		return;
 	}
 
-	Assert(pship_obj);	// Goober5000
-	Assert(pship_obj->type == OBJ_SHIP);
-	Assert(other_obj->type == OBJ_WEAPON || other_obj->type == OBJ_SHOCKWAVE);
+core::Assert(pship_obj);	// Goober5000
+core::Assert(pship_obj->type == OBJ_SHIP);
+core::Assert(other_obj->type == OBJ_WEAPON || other_obj->type == OBJ_SHOCKWAVE);
 	int dont_count = FALSE;
 
 	int parent = other_obj->parent;
@@ -14817,7 +14820,7 @@ void ai_ship_hit(object *objp_ship, object *hit_objp, vec3d *hit_normal)
 		// Added OBJ_BEAM for traitor detection - FUBAR
 		if ((hit_objp->type == OBJ_WEAPON) || (hit_objp->type == OBJ_BEAM)) {
 			hitter_objnum = hit_objp->parent;
-			Assert((hitter_objnum < MAX_OBJECTS));
+		core::Assert((hitter_objnum < MAX_OBJECTS));
 			if (hitter_objnum == -1) {
 				return; // Possible SSM, bail while we still can.
 			}
@@ -14828,7 +14831,7 @@ void ai_ship_hit(object *objp_ship, object *hit_objp, vec3d *hit_normal)
 			Int3();	// Should never happen.
 			return;
 		}
-		Assert(objp_hitter != NULL);
+	core::Assert(objp_hitter != NULL);
 		hitter_aip = &Ai_info[Ships[objp_hitter->instance].ai_index];
 		hitter_aip->last_hit_target_time = Missiontime;
 		return;
@@ -14858,7 +14861,7 @@ void ai_ship_hit(object *objp_ship, object *hit_objp, vec3d *hit_normal)
 		}
 		
 		hitter_objnum = hit_objp->parent;
-		Assert((hitter_objnum >= 0) && (hitter_objnum < MAX_OBJECTS));
+	core::Assert((hitter_objnum >= 0) && (hitter_objnum < MAX_OBJECTS));
 		objp_hitter = &Objects[hitter_objnum];
 
 		// lets not check hits by ghosts any further either
@@ -14911,7 +14914,7 @@ void ai_ship_hit(object *objp_ship, object *hit_objp, vec3d *hit_normal)
 	if (hit_objp->flags[Object::Object_Flags::Protected])
 		return;
 
-	Assert(objp_hitter != NULL);
+core::Assert(objp_hitter != NULL);
 	hitter_aip = &Ai_info[Ships[objp_hitter->instance].ai_index];
 	hitter_aip->last_hit_target_time = Missiontime;
 	
@@ -14942,7 +14945,7 @@ void ai_ship_hit(object *objp_ship, object *hit_objp, vec3d *hit_normal)
 
 	//	If in AIM_STRAFE mode and got hit by target, maybe attack turret if appropriate
 	if (aip->mode == AIM_STRAFE) {
-		Assert(hitter_objnum != -2);
+	core::Assert(hitter_objnum != -2);
 		if (aip->target_objnum == hitter_objnum) {
 			if ( hit_objp->type == OBJ_WEAPON ) {
 				ai_big_strafe_maybe_attack_turret(objp_ship, hit_objp);
@@ -15108,8 +15111,8 @@ void ai_ship_destroy(int shipnum)
 	ship_obj	*so;
 	ai_info	*dead_aip;
 
-	Assert((shipnum >= 0) && (shipnum < MAX_SHIPS));
-	Assert((Ships[shipnum].ai_index >= 0) && (Ships[shipnum].ai_index < MAX_AI_INFO));
+core::Assert((shipnum >= 0) && (shipnum < MAX_SHIPS));
+core::Assert((Ships[shipnum].ai_index >= 0) && (Ships[shipnum].ai_index < MAX_AI_INFO));
 	objnum = Ships[shipnum].objnum;
 	dead_aip = &Ai_info[Ships[shipnum].ai_index];
 
@@ -15128,10 +15131,10 @@ void ai_ship_destroy(int shipnum)
 	//	For all objects that had this ship as a target, wipe it out, forcing find of a new enemy.
 	for ( so = GET_FIRST(&Ship_obj_list); so != END_OF_LIST(&Ship_obj_list); so = GET_NEXT(so) ) {
 		other_objp = &Objects[so->objnum];
-		Assert(other_objp->instance != -1);
+	core::Assert(other_objp->instance != -1);
 
 		shipp = &Ships[other_objp->instance];
-		Assert(shipp->ai_index != -1);
+	core::Assert(shipp->ai_index != -1);
 
 		ai_info	*aip = &Ai_info[shipp->ai_index];
 
@@ -15168,7 +15171,7 @@ void ai_ship_destroy(int shipnum)
 void ai_deathroll_start(object *dying_objp)
 {
 	// make sure this is a ship
-	Assert(dying_objp->type == OBJ_SHIP);
+core::Assert(dying_objp->type == OBJ_SHIP);
 
 	// mark objects we are docked with so we can do damage and separate during death roll
 	for (dock_instance *ptr = dying_objp->dock_list; ptr != NULL; ptr = ptr->next)
@@ -15209,16 +15212,16 @@ int ai_abort_rearm_request(object *requester_objp)
 	ship		*requester_shipp;
 	ai_info	*requester_aip;
 
-	Assert(requester_objp->type == OBJ_SHIP);
+core::Assert(requester_objp->type == OBJ_SHIP);
 	if(requester_objp->type != OBJ_SHIP){
 		return 0;
 	}
-	Assert((requester_objp->instance >= 0) && (requester_objp->instance < MAX_SHIPS));	
+core::Assert((requester_objp->instance >= 0) && (requester_objp->instance < MAX_SHIPS));	
 	if((requester_objp->instance < 0) || (requester_objp->instance >= MAX_SHIPS)){
 		return 0;
 	}
 	requester_shipp = &Ships[requester_objp->instance];
-	Assert((requester_shipp->ai_index >= 0) && (requester_shipp->ai_index < MAX_AI_INFO));		
+core::Assert((requester_shipp->ai_index >= 0) && (requester_shipp->ai_index < MAX_AI_INFO));		
 	if((requester_shipp->ai_index < 0) || (requester_shipp->ai_index >= MAX_AI_INFO)){
 		return 0;
 	}	
@@ -15240,7 +15243,7 @@ int ai_abort_rearm_request(object *requester_objp)
 			//	before this code comes around.
 			if (repair_objp->signature == requester_aip->support_ship_signature) {
 
-				Assert( repair_objp->type == OBJ_SHIP );
+			core::Assert( repair_objp->type == OBJ_SHIP );
 
 				// if support ship is in the process of undocking, don't do anything.
 				if ( repair_aip->submode < AIS_UNDOCK_0 ) {
@@ -15296,7 +15299,7 @@ void ai_add_rearm_goal( object *requester_objp, object *support_objp )
 	requester_shipp = &Ships[requester_objp->instance];
 	requester_aip = &Ai_info[requester_shipp->ai_index];
 
-	Assert( support_shipp->ai_index != -1 );
+core::Assert( support_shipp->ai_index != -1 );
 	support_aip = &Ai_info[support_shipp->ai_index];
 
 	// if the requester is a player object, issue the order as the squadmate messaging code does.  Doing so
@@ -15318,16 +15321,16 @@ int ai_issue_rearm_request(object *requester_objp)
 	ship		*requester_shipp;
 	ai_info	*requester_aip;
 
-	Assert(requester_objp->type == OBJ_SHIP);
-	Assert((requester_objp->instance >= 0) && (requester_objp->instance < MAX_SHIPS));
+core::Assert(requester_objp->type == OBJ_SHIP);
+core::Assert((requester_objp->instance >= 0) && (requester_objp->instance < MAX_SHIPS));
 	requester_shipp = &Ships[requester_objp->instance];
 
-	Assert((requester_shipp->ai_index >= 0) && (requester_shipp->ai_index < MAX_AI_INFO));
+core::Assert((requester_shipp->ai_index >= 0) && (requester_shipp->ai_index < MAX_AI_INFO));
 	requester_aip = &Ai_info[requester_shipp->ai_index];
 	
 	// these should have already been caught by the time we get here!
-	Assert(!(requester_aip->ai_flags[AI::AI_Flags::Awaiting_repair]));
-	Assert(is_support_allowed(requester_objp));
+core::Assert(!(requester_aip->ai_flags[AI::AI_Flags::Awaiting_repair]));
+core::Assert(is_support_allowed(requester_objp));
 
 	requester_aip->next_rearm_request_timestamp = timestamp(NEXT_REARM_TIMESTAMP);	//	Might request again after this much time.
 
@@ -15344,13 +15347,13 @@ int ai_issue_rearm_request(object *requester_objp)
 	}
 	// we are able to service a request
 	else if (result == 1 || result == 3) {
-		Assert(objp != NULL);
+	core::Assert(objp != NULL);
 		ai_do_objects_repairing_stuff( requester_objp, objp, REPAIR_INFO_QUEUE );
 		return OBJ_INDEX(objp);
 	}
 	// we aren't able to do anything!
 	else {
-		Assert(result == 4);
+	core::Assert(result == 4);
 		UNREACHABLE("This case should have already been caught by the is_support_allowed precheck!");
 		return -1;
 	}
@@ -15395,9 +15398,9 @@ int ai_return_path_num_from_dockbay(object *dockee_objp, int dockbay_index)
 
 		pm = model_get(Ship_info[Ships[dockee_objp->instance].ship_info_index].model_num );
 
-		Assert(pm->n_docks > dockbay_index);
-		Assert(pm->docking_bays[dockbay_index].num_spline_paths > 0);
-		Assert(pm->docking_bays[dockbay_index].splines != NULL);
+	core::Assert(pm->n_docks > dockbay_index);
+	core::Assert(pm->docking_bays[dockbay_index].num_spline_paths > 0);
+	core::Assert(pm->docking_bays[dockbay_index].splines != NULL);
 		
 		if(pm->n_docks <= dockbay_index){
 			return -1;

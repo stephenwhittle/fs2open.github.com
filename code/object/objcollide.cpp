@@ -123,8 +123,8 @@ void obj_add_pair( object *A, object *B, int check_time, int add_to_end )
 		return;
 	}
 
-	Assert( A->type < 127 );
-	Assert( B->type < 127 );
+core::Assert( A->type < 127 );
+core::Assert( B->type < 127 );
 
 	ctype = COLLISION_OF(A->type,B->type);
 	switch( ctype )	{
@@ -358,7 +358,7 @@ void obj_add_pair( object *A, object *B, int check_time, int add_to_end )
 	if ( Num_pairs >= (Num_pairs_allocated - 20) ) {
 		int i;
 
-		Assert( Obj_pairs != NULL );
+	core::Assert( Obj_pairs != NULL );
 
 		int old_pair_count = Num_pairs_allocated;
 		obj_pair *old_pairs_ptr = Obj_pairs;
@@ -377,7 +377,7 @@ void obj_add_pair( object *A, object *B, int check_time, int add_to_end )
 		} else {
 			Num_pairs_allocated += PAIRS_BUMP;
 
-			Assert( Obj_pairs != NULL );
+		core::Assert( Obj_pairs != NULL );
 
 			// have to reset all of the "next" ptrs for the old set and handle the new set
 			for (i = 0; i < Num_pairs_allocated; i++) {
@@ -426,7 +426,7 @@ void obj_add_pair( object *A, object *B, int check_time, int add_to_end )
 			last = &pair_used_list;
 			
 		last->next = new_pair;
-		Assert(new_pair != NULL);
+	core::Assert(new_pair != NULL);
 		new_pair->next = NULL;
 	}
 	else {
@@ -561,7 +561,7 @@ int vector_object_collision(vec3d *start_pos, vec3d *end_pos, object *objp, floa
 int weapon_will_never_hit( object *obj_weapon, object *other, obj_pair * current_pair )
 {
 
-	Assert( obj_weapon->type == OBJ_WEAPON );
+core::Assert( obj_weapon->type == OBJ_WEAPON );
 	weapon *wp = &Weapons[obj_weapon->instance];
 	weapon_info *wip = &Weapon_info[wp->weapon_info_index];
 
@@ -759,7 +759,7 @@ int pp_collide(vec3d *curpos, vec3d *goalpos, object *goalobjp, float radius)
 	mc_info mc;
 	mc_info_init(&mc);
 
-	Assert(goalobjp->type == OBJ_SHIP);
+core::Assert(goalobjp->type == OBJ_SHIP);
 
 	mc.model_instance_num = Ships[goalobjp->instance].model_instance_num;
 	mc.model_num = Ship_info[Ships[goalobjp->instance].ship_info_index].model_num;			// Fill in the model to check
@@ -912,7 +912,7 @@ int collide_remove_weapons( )
 	num_deleted = 0;
 	for ( i = 0; i < MAX_WEAPONS; i++ ) {
 		if ( crw_status[i] == CRW_CAN_DELETE ) {
-			Assert( Weapons[i].objnum != -1 );
+		core::Assert( Weapons[i].objnum != -1 );
 			obj_delete( Weapons[i].objnum );
 			num_deleted++;
 		}
@@ -1166,8 +1166,8 @@ float obj_get_collider_endpoint(int obj_num, int axis, bool min)
 
 void obj_quicksort_colliders(std::vector<int> *list, int left, int right, int axis)
 {
-	Assert( axis >= 0 );
-	Assert( axis <= 2 );
+core::Assert( axis >= 0 );
+core::Assert( axis <= 2 );
 
 	if ( right > left ) {
 		int pivot_index = left + (right - left) / 2;
@@ -1224,8 +1224,8 @@ void obj_collide_pair(object *A, object *B)
 		return;
 	}
 
-	Assert( A->type < 127 );
-	Assert( B->type < 127 );
+core::Assert( A->type < 127 );
+core::Assert( B->type < 127 );
 
 	ctype = COLLISION_OF(A->type,B->type);
 	switch( ctype )	{

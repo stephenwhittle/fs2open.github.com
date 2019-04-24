@@ -29,7 +29,7 @@ const char* effectTypeNames[static_cast<int64_t>(EffectType::MAX)] = {
 };
 
 const char* getEffectTypeName(EffectType type) {
-	Assertion(static_cast<int64_t>(type) >= static_cast<int64_t>(EffectType::Single)
+core::Assertion(static_cast<int64_t>(type) >= static_cast<int64_t>(EffectType::Single)
 				  && static_cast<int64_t>(type) < static_cast<int64_t>(EffectType::MAX),
 			  "Invalid effect type specified!");
 
@@ -124,7 +124,7 @@ namespace particle {
 std::unique_ptr<ParticleManager> ParticleManager::m_manager = nullptr;
 
 void ParticleManager::init() {
-	Assertion(m_manager == nullptr, "ParticleManager was not properly shut down!");
+core::Assertion(m_manager == nullptr, "ParticleManager was not properly shut down!");
 
 	m_manager.reset(new ParticleManager());
 
@@ -132,7 +132,7 @@ void ParticleManager::init() {
 }
 
 void ParticleManager::shutdown() {
-	Assertion(m_manager != nullptr, "ParticleManager was not properly inited!");
+core::Assertion(m_manager != nullptr, "ParticleManager was not properly inited!");
 
 	m_manager = nullptr;
 }
@@ -213,7 +213,7 @@ void ParticleManager::doFrame(float) {
 
 ParticleEffectHandle ParticleManager::addEffect(ParticleEffectPtr effect)
 {
-	Assertion(effect, "Invalid effect pointer passed!");
+core::Assertion(effect, "Invalid effect pointer passed!");
 
 #ifndef NDEBUG
 	if (!effect->getName().empty()) {

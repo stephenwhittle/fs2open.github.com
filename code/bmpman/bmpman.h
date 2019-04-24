@@ -358,7 +358,7 @@ void bm_get_filename(int bitmapnum, char *filename);
 /**
  * @brief Gets the filename of the bitmap indexed by handle, which must exist.
  *
- * @details If the bitmap does not exist (i.e. the handle is invalid), then an Assertion halts program execution.
+ * @details If the bitmap does not exist (i.e. the handle is invalid), then ancore::Assertion halts program execution.
  *
  * @returns A const char* to the filename of the bitmap
  *

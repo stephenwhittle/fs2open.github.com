@@ -46,7 +46,7 @@ namespace os
 		
 		/**
 		 * @brief Displays an assert message.
-		 * @note Used by Assert() and Assertion() to display an error message, should not be used directly
+		 * @note Used bycore::Assert() andcore::Assertion() to display an error message, should not be used directly
 		 *
 		 * @param text The text to display
 		 * @param filename The source code filename where this function was called
@@ -69,7 +69,7 @@ namespace os
 		/**
 		 * @brief Shows an error dialog.
 		 * Only use this function if the program is in an unrecoverable state because of invalid user data, programming errors should
-		 * be handled with Assert() and Assertion(). This function usually doesn't return as the generated error is considered fatal.
+		 * be handled withcore::Assert() andcore::Assertion(). This function usually doesn't return as the generated error is considered fatal.
 		 *
 		 * @param filename The source code filename where this function was called
 		 * @param line The source code line number where this function was called

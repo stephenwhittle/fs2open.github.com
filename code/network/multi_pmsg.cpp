@@ -590,8 +590,8 @@ void multi_msg_send_squadmsg_packet(net_player *target,net_player *source,int co
 	char s_val;
 	int packet_size;
 
-	Assert(source != NULL);
-	Assert(target != NULL);
+core::Assert(source != NULL);
+core::Assert(target != NULL);
 	if((source == NULL) || (target == NULL)){
 		return;
 	}

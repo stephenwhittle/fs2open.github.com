@@ -1104,7 +1104,7 @@ void load_gauge(int gauge, gauge_settings* settings)
 		break;
 	default:
 		// It's either -1, indicating we're ignoring a parse error, or it's a coding error.
-		Assertion(gauge == -1, "Invalid value '%d' passed to load_gauge(); get a coder!\n", gauge);
+	core::Assertion(gauge == -1, "Invalid value '%d' passed to load_gauge(); get a coder!\n", gauge);
 		break;
 	}
 }

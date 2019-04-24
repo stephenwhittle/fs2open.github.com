@@ -1,14 +1,14 @@
 #pragma once
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core/Element.h>
 #include <Rocket/Core/Geometry.h>
 #include <Rocket/Core/Texture.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 namespace scpui {
 namespace elements {

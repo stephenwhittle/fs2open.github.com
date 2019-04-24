@@ -34,7 +34,7 @@ CJumpNode::CJumpNode() : m_radius(0.0f), m_modelnum(-1), m_objnum(-1), m_flags(0
  */
 CJumpNode::CJumpNode(vec3d *position) : m_radius(0.0f), m_modelnum(-1), m_objnum(-1), m_flags(0)
 {	
-	Assert(position != NULL);
+core::Assert(position != NULL);
 	
 	gr_init_alphacolor(&m_display_color, 0, 255, 0, 255);
 	
@@ -142,7 +142,7 @@ int CJumpNode::GetSCPObjectNumber()
  */
 object *CJumpNode::GetSCPObject()
 {
-	Assert(m_objnum != -1);
+core::Assert(m_objnum != -1);
     return &Objects[m_objnum];
 }
 
@@ -191,7 +191,7 @@ void CJumpNode::SetAlphaColor(int r, int g, int b, int alpha)
  */
 void CJumpNode::SetModel(char *model_name, bool show_polys)
 {
-	Assert(model_name != NULL);
+core::Assert(model_name != NULL);
 	
 	//Try to load the new model; if we can't, then we can't set it
 	int new_model = model_load(model_name, 0, NULL, 0);
@@ -225,11 +225,11 @@ void CJumpNode::SetModel(char *model_name, bool show_polys)
  */
 void CJumpNode::SetName(const char *new_name)
 {
-	Assert(new_name != NULL);
+core::Assert(new_name != NULL);
     
 	#ifndef NDEBUG
 	CJumpNode* check = jumpnode_get_by_name(new_name);
-	Assertion((check == this || !check), "Jumpnode %s is being renamed to %s, but a jump node with that name already exists in the mission!\n", m_name, new_name);
+core::Assertion((check == this || !check), "Jumpnode %s is being renamed to %s, but a jump node with that name already exists in the mission!\n", m_name, new_name);
 	#endif
     
 	strcpy_s(m_name, new_name);
@@ -313,8 +313,8 @@ void CJumpNode::Render(vec3d *pos, vec3d *view_pos)
 */
 void CJumpNode::Render(model_draw_list* scene, vec3d *pos, vec3d *view_pos)
 {
-	Assert(pos != NULL);
-	// Assert(view_pos != NULL); - view_pos can be NULL
+core::Assert(pos != NULL);
+	//core::Assert(view_pos != NULL); - view_pos can be NULL
 
 	if(m_flags & JN_HIDE)
 		return;
@@ -381,7 +381,7 @@ void CJumpNode::Render(model_draw_list* scene, vec3d *pos, vec3d *view_pos)
  */
 CJumpNode *jumpnode_get_by_name(const char* name)
 {
-	Assert(name != NULL);
+core::Assert(name != NULL);
 	std::list<CJumpNode>::iterator jnp;
 
 	for (jnp = Jump_nodes.begin(); jnp != Jump_nodes.end(); ++jnp) {	
@@ -400,7 +400,7 @@ CJumpNode *jumpnode_get_by_name(const char* name)
  */
 CJumpNode *jumpnode_get_which_in(object *objp)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 	std::list<CJumpNode>::iterator jnp;
 	float radius, dist;
 

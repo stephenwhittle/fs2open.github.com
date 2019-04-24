@@ -57,9 +57,9 @@ void draw_brackets_square(graphics::line_draw_list* draw_list, int x1, int y1, i
 	}
 	
 	width = x2 - x1;
-	Assert( width > 0);
+core::Assert( width > 0);
 	height = y2 - y1;
-	Assert( height > 0);
+core::Assert( height > 0);
 
 	// make the brackets extend 25% of the way along the width or height
 	int bracket_width = width/4;
@@ -224,7 +224,7 @@ int num_ships_attacking(int target_objnum);
 
 int draw_subsys_brackets(graphics::line_draw_list* draw_list, ship_subsys* subsys, int min_width, int min_height, bool draw, bool set_color, int* draw_coords)
 {
-	Assertion(subsys != NULL, "Invalid subsystem pointer passed to draw_subsys_brackets!");
+core::Assertion(subsys != NULL, "Invalid subsystem pointer passed to draw_subsys_brackets!");
 
 	int		target_objnum;
 	object* targetp;
@@ -233,9 +233,9 @@ int draw_subsys_brackets(graphics::line_draw_list* draw_list, ship_subsys* subsy
 	int x1,x2,y1,y2;
 
 	target_objnum = subsys->parent_objnum;
-	Assert(target_objnum != -1);
+core::Assert(target_objnum != -1);
 	targetp = &Objects[target_objnum];
-	Assert( targetp->type == OBJ_SHIP );
+core::Assert( targetp->type == OBJ_SHIP );
 
 	get_subsystem_world_pos(targetp, subsys, &subobj_pos);
 
@@ -548,10 +548,10 @@ void HudGaugeBrackets::renderBoundingBrackets(int x1, int y1, int x2, int y2, in
 	gr_unsize_screen_pos(&x2, &y2);
 
 	width = x2-x1;
-	Assert(width>=0);
+core::Assert(width>=0);
 
 	height = y2-y1;
-	Assert(height>=0);
+core::Assert(height>=0);
 
 	if ( (width >= (base_w)) && (height >= (base_h)) ) {
 		return;
@@ -698,9 +698,9 @@ void HudGaugeBrackets::renderBoundingBracketsSubobject()
 
 			subsys = Player_ai->targeted_subsys;
 			target_objnum = Player_ai->target_objnum;
-			Assert(target_objnum != -1);
+		core::Assert(target_objnum != -1);
 			targetp = &Objects[target_objnum];
-			Assert( targetp->type == OBJ_SHIP );
+		core::Assert( targetp->type == OBJ_SHIP );
 
 			gr_set_screen_scale(base_w, base_h);
 

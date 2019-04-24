@@ -277,7 +277,7 @@ void brief_parse_icon_tbl()
 	size_t species;
 	char name[MAX_FILENAME_LEN];
 
-	Assert(!Species_info.empty());
+core::Assert(!Species_info.empty());
 	const size_t max_icons = Species_info.size() * MIN_BRIEF_ICONS;
 
 	try
@@ -392,13 +392,13 @@ void mission_brief_common_init()
 
 				if (Briefings[i].stages[j].icons == NULL) {
 					Briefings[i].stages[j].icons = (brief_icon *)vm_malloc(sizeof(brief_icon) * MAX_STAGE_ICONS);
-					Assert( Briefings[i].stages[j].icons != NULL );
+				core::Assert( Briefings[i].stages[j].icons != NULL );
 					memset( Briefings[i].stages[j].icons, 0, sizeof(brief_icon) * MAX_STAGE_ICONS );
 				}
 
 				if (Briefings[i].stages[j].lines == NULL) {
 					Briefings[i].stages[j].lines = (brief_line *)vm_malloc(sizeof(brief_line) * MAX_BRIEF_STAGE_LINES);
-					Assert( Briefings[i].stages[j].lines != NULL );
+				core::Assert( Briefings[i].stages[j].lines != NULL );
 					memset( Briefings[i].stages[j].lines, 0, sizeof(brief_line) * MAX_BRIEF_STAGE_LINES );
 				}	
 
@@ -688,7 +688,7 @@ void brief_init_map()
 	vec3d *pos;
 	matrix *orient;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 
 	pos = &Briefing->stages[0].camera_pos;
 	orient = &Briefing->stages[0].camera_orient;
@@ -862,7 +862,7 @@ void brief_render_icon(int stage_num, int icon_num, float frametime, int selecte
 	float			bxf, byf, dist=0.0f;
 	bool mirror_icon;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	
 	bi = &Briefing->stages[stage_num].icons[icon_num];
 	mirror_icon = (bi->flags & BI_MIRROR_ICON)? true:false;
@@ -1048,7 +1048,7 @@ void brief_render_icons(int stage_num, float frametime)
 {
 	int i, num_icons, num_lines;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	
 	num_icons = Briefing->stages[stage_num].num_icons;
 	num_lines = Briefing->stages[stage_num].num_lines;
@@ -1073,7 +1073,7 @@ void brief_start_highlight_anims(int stage_num)
 	brief_icon		*bi;
 	int				x,y,i,anim_w,anim_h;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	bs = &Briefing->stages[stage_num];
 	
 	for ( i = 0; i < bs->num_icons; i++ ) {
@@ -1110,7 +1110,7 @@ void brief_render_map(int stage_num, float frametime)
 		return;
 	}
 
-	Assert(Briefing);
+core::Assert(Briefing);
 
 	g3_start_frame(0);
 	g3_set_view_matrix(&Current_cam_pos, &Current_cam_orient, Briefing_window_FOV);
@@ -1143,7 +1143,7 @@ void brief_blit_stage_num(int stage_num, int stage_max)
 {
 	char buf[64];
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	gr_set_color_fast(&Color_text_heading);
 	sprintf(buf, XSTR( "Stage %d of %d", 394), stage_num + 1, stage_max);
 	if (Game_mode & GM_MULTIPLAYER) {
@@ -1164,7 +1164,7 @@ void brief_blit_stage_num(int stage_num, int stage_max)
  * @param instance index of Colored_stream of the text page to display
  */
 void brief_render_line(int line_num, int x, int y, int instance) {
-	Assert(0 <= instance && instance < (int) (sizeof(Colored_stream) / sizeof(*Colored_stream)));
+core::Assert(0 <= instance && instance < (int) (sizeof(Colored_stream) / sizeof(*Colored_stream)));
 
 	std::vector<colored_char>* src = &Colored_stream[instance].at(line_num);
 
@@ -1207,7 +1207,7 @@ void brief_render_line(int line_num, int x, int y, int instance) {
 			//when the current color changes, the accumulated character sequence is drawn.
 			if (current_char.color != last_color) {
 				//add a 0 terminal character to make line a valid C string
-				Assert(char_seq_pos < sizeof(char_seq));
+			core::Assert(char_seq_pos < sizeof(char_seq));
 				char_seq[char_seq_pos] = 0;
 				{
 					// Draw coloured text, and increment cariage position
@@ -1222,14 +1222,14 @@ void brief_render_line(int line_num, int x, int y, int instance) {
 				last_color = current_char.color;
 			}
 			auto encoded_size = unicode::encoded_size(current_char.letter);
-			Assert(char_seq_pos + encoded_size - 1 < sizeof(char_seq));
+		core::Assert(char_seq_pos + encoded_size - 1 < sizeof(char_seq));
 			unicode::encode(current_char.letter, &char_seq[char_seq_pos]);
 			char_seq_pos += encoded_size;
 		}
 
 		// Draw the final chunk of acumulated characters
 		// Add a 0 terminal character to make line a valid C string
-		Assert(char_seq_pos < sizeof(char_seq));
+	core::Assert(char_seq_pos < sizeof(char_seq));
 		char_seq[char_seq_pos] = 0;
 		{
 			// Draw coloured text, and increment cariage position
@@ -1246,12 +1246,12 @@ void brief_render_line(int line_num, int x, int y, int instance) {
 		char_seq_pos = 0;
 		for (size_t current_pos = truncate_len; current_pos < truncate_len + bright_len; current_pos++) {
 			auto encoded_size = unicode::encoded_size(src->at(current_pos).letter);
-			Assert(char_seq_pos + encoded_size - 1 < sizeof(char_seq));
+		core::Assert(char_seq_pos + encoded_size - 1 < sizeof(char_seq));
 			unicode::encode(src->at(current_pos).letter, &char_seq[char_seq_pos]);
 			char_seq_pos += encoded_size;
 		}
 
-		Assert(char_seq_pos < (int) sizeof(char_seq));
+	core::Assert(char_seq_pos < (int) sizeof(char_seq));
 		char_seq[char_seq_pos] = 0;
 		gr_set_color_fast(&Color_bright_white);
 		gr_string(x + offset, y, char_seq, GR_RESIZE_MENU);
@@ -1351,7 +1351,7 @@ void brief_reset_icons(int stage_num)
 	brief_icon		*bi;
 	int				i;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	bs = &Briefing->stages[stage_num];
 
 	for ( i = 0; i < bs->num_icons; i++ ) {
@@ -1473,8 +1473,8 @@ bool is_a_word_separator(unicode::codepoint_t character)
  */
 int brief_text_colorize(char *src, int instance, char default_color_stack[], int &color_stack_index)
 {
-	Assert(src);
-	Assert((0 <= instance) && (instance < (int)(sizeof(Colored_stream) / sizeof(*Colored_stream))));
+core::Assert(src);
+core::Assert((0 <= instance) && (instance < (int)(sizeof(Colored_stream) / sizeof(*Colored_stream))));
 
 	briefing_line dest_line;	//the resulting vector of colored character
 	char active_color_index;	//the current drawing color
@@ -1581,9 +1581,9 @@ int brief_color_text_init(const char* src, int w, const char default_color, int 
 		default_color_stack[0] = default_color;
 	}
 
-	Assert(src != NULL);
+core::Assert(src != NULL);
 	n_lines = split_str(src, w, n_chars, p_str, BRIEF_META_CHAR);
-	Assert(n_lines >= 0);
+core::Assert(n_lines >= 0);
 
 	//for compatability reasons truncate text from everything except the fiction viewer
 	if ((max_lines > 0) && (n_lines > max_lines)) {
@@ -1599,7 +1599,7 @@ int brief_color_text_init(const char* src, int w, const char default_color, int 
 		n_chars.push_back(0);
 	}
 	for (i=0; i<n_lines; i++) {
-		Assert(n_chars[i] < MAX_BRIEF_LINE_LEN);
+	core::Assert(n_chars[i] < MAX_BRIEF_LINE_LEN);
 		strncpy(tmp_brief_line, p_str[i], n_chars[i]);
 		tmp_brief_line[n_chars[i]] = 0;
 		drop_leading_white_space(tmp_brief_line);
@@ -1654,9 +1654,9 @@ int brief_set_move_list(int new_stage, int current_stage, float time)
 	int				i,j,k,num_movers,is_gone=0;
 	vec3d			zero_v = ZERO_VECTOR;
 
-	Assert(new_stage != current_stage);
+core::Assert(new_stage != current_stage);
 	
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	newb = &Briefing->stages[new_stage];
 	cb = &Briefing->stages[current_stage];
 	num_movers = 0;
@@ -1760,7 +1760,7 @@ void brief_set_new_stage(vec3d *pos, matrix *orient, int time, int stage_num)
 	const char *msg;
 	int num_movers, new_time, not_objv = 1;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	new_time = time;
 
 	if (stage_num >= Briefing->num_stages) {
@@ -1971,33 +1971,33 @@ grid *brief_create_grid(grid *gridp, vec3d *forward, vec3d *right, vec3d *center
 	int	i, ncols2, nrows2, d = 1;
 	vec3d	dfvec, drvec, cur, cur2, tvec, uvec, save, save2;
 
-	Assert(square_size > 0.0);
+core::Assert(square_size > 0.0);
 	if (double_fine_gridlines)
 		d = 2;
 
 	if (gridp == NULL)
 		gridp = (grid *) vm_malloc(sizeof(grid));
 
-	Assert(gridp);
+core::Assert(gridp);
 
 	gridp->center = *center;
 	gridp->square_size = square_size;
 
 	//	Create the plane equation.
-	Assert(!IS_VEC_NULL(forward));
-	Assert(!IS_VEC_NULL(right));
+core::Assert(!IS_VEC_NULL(forward));
+core::Assert(!IS_VEC_NULL(right));
 
 	vm_vec_copy_normalize(&dfvec, forward);
 	vm_vec_copy_normalize(&drvec, right);
 
 	vm_vec_cross(&uvec, &dfvec, &drvec);
 	
-	Assert(!IS_VEC_NULL(&uvec));
+core::Assert(!IS_VEC_NULL(&uvec));
 
 	gridp->gmatrix.vec.uvec = uvec;
 
 	gridp->planeD = -(center->xyz.x * uvec.xyz.x + center->xyz.y * uvec.xyz.y + center->xyz.z * uvec.xyz.z);
-	Assert(!fl_is_nan(gridp->planeD));
+core::Assert(!fl_is_nan(gridp->planeD));
 
 	gridp->gmatrix.vec.fvec = dfvec;
 	gridp->gmatrix.vec.rvec = drvec;
@@ -2016,7 +2016,7 @@ grid *brief_create_grid(grid *gridp, vec3d *forward, vec3d *right, vec3d *center
 	gridp->nrows = nrows;
 	ncols2 = ncols / 2;
 	nrows2 = nrows / 2;
-	Assert(ncols < MAX_GRIDLINE_POINTS && nrows < MAX_GRIDLINE_POINTS);
+core::Assert(ncols < MAX_GRIDLINE_POINTS && nrows < MAX_GRIDLINE_POINTS);
 
 	// Create the points along the edges of the grid, so we can just draw lines
 	// between them to form the grid.  
@@ -2196,7 +2196,7 @@ void brief_voice_load_all()
 	int			i;
 	brief_stage	*bs;
 
-	Assert( Briefing != NULL );
+core::Assert( Briefing != NULL );
 	for ( i = 0; i < Briefing->num_stages; i++ ) {
 		bs = &Briefing->stages[i];
 		if ( strnicmp(bs->voice, NOX("none"), 4) != 0 ) {
@@ -2296,7 +2296,7 @@ void brief_reset_last_new_stage()
  */
 void brief_common_get_icon_dimensions(int *w, int *h, brief_icon *bi)
 {
-	Assert(bi != NULL);
+core::Assert(bi != NULL);
 
 	// in case anything goes wrong
 	*w=0;

@@ -277,7 +277,7 @@ reticle_follow(_slew), active(false), off_by_default(false), sexp_override(false
 disabled_views(_disabled_views), only_render_in_chase_view(false), custom_gauge(false), textoffset_x(0), textoffset_y(0), texture_target(-1),
 canvas_w(-1), canvas_h(-1), target_w(-1), target_h(-1)
 {
-	Assert(gauge_config <= NUM_HUD_GAUGES && gauge_config >= 0);
+core::Assert(gauge_config <= NUM_HUD_GAUGES && gauge_config >= 0);
 
 	position[0] = 0;
 	position[1] = 0;
@@ -372,7 +372,7 @@ void HudGauge::getPosition(int *x, int *y)
 
 void HudGauge::initBaseResolution(int w, int h)
 {
-	Assert(w >= 640 && h >= 480);
+core::Assert(w >= 640 && h >= 480);
 
 	base_w = w;
 	base_h = h;
@@ -470,7 +470,7 @@ void HudGauge::setGaugeColor(int bright_index)
 
 		// intensity
 		default: 
-			Assert((bright_index >= 0) && (bright_index < HUD_NUM_COLOR_LEVELS));
+		core::Assert((bright_index >= 0) && (bright_index < HUD_NUM_COLOR_LEVELS));
 			if(bright_index < 0){
 				bright_index = 0;
 			}
@@ -576,7 +576,7 @@ void HudGauge::updatePopUp(bool pop_up_flag)
 
 void HudGauge::startPopUp(int time) 
 {
-	//Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+	//core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 	if ( !pop_up ) {
 		return;
 	}
@@ -586,7 +586,7 @@ void HudGauge::startPopUp(int time)
 
 int HudGauge::popUpActive()
 {
-	//Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+	//core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 	if ( !pop_up ) {
 		return 0;
 	}
@@ -1439,7 +1439,7 @@ void hud_update_frame(float  /*frametime*/)
 	}
 
 	if (retarget_turret && can_target) {
-		Assert(!retarget);
+	core::Assert(!retarget);
 		void hud_update_closest_turret();
 		hud_update_closest_turret();
 	}
@@ -1506,7 +1506,7 @@ void hud_update_frame(float  /*frametime*/)
 	ship	*target_shipp = NULL;
 	
 	if ( targetp->type == OBJ_SHIP ) {
-		Assert ( targetp->instance >=0 && targetp->instance < MAX_SHIPS );
+	core::Assert ( targetp->instance >=0 && targetp->instance < MAX_SHIPS );
 		target_shipp = &Ships[targetp->instance];
 		Player->target_is_dying = target_shipp->flags[Ship::Ship_Flags::Dying];
 
@@ -1538,7 +1538,7 @@ void hud_update_frame(float  /*frametime*/)
 
 	// Switch to battle track when a targeted ship is hostile (it attacks you) and within BATTLE_START_MIN_TARGET_DIST
 	if (targetp->type == OBJ_SHIP && Event_Music_battle_started == 0 ) {
-		Assert( target_shipp != NULL );
+	core::Assert( target_shipp != NULL );
 
 		// Goober5000
 		if (iff_x_attacks_y(target_shipp->team, Player_ship->team))
@@ -1618,7 +1618,7 @@ void hud_render_preprocess(float frametime)
 
 	if ( Viewer_mode & (VM_EXTERNAL | VM_WARP_CHASE | VM_PADLOCK_ANY ) ) {
 		// If the player is warping out, don't draw the targeting gauges
-		Assert(Player != NULL);
+	core::Assert(Player != NULL);
 		if ( Player->control_mode != PCM_NORMAL ) {
 			return;
 		}
@@ -2093,8 +2093,8 @@ void HudGaugeDamage::render(float  /*frametime*/)
 			}
 		}
 
-		Assert(best_index >= 0);
-		Assert(best_str >= 0);
+	core::Assert(best_index >= 0);
+	core::Assert(best_str >= 0);
 
 		DamageInfo info;
 
@@ -2289,7 +2289,7 @@ int hud_anim_load(hud_anim *ha)
 		return -1;
 	}
 
-	Assert(fps != 0);
+core::Assert(fps != 0);
 	ha->total_time = i2fl(ha->num_frames)/fps;
 	return 0;
 }
@@ -2752,7 +2752,7 @@ int hud_support_find_closest( int objnum )
             
 			if ( !(shipp->flags[Ship::Ship_Flags::Dying] || shipp->flags[Ship::Ship_Flags::Exploded]) ) {
 
-				Assert( objp->type == OBJ_SHIP );
+			core::Assert( objp->type == OBJ_SHIP );
 				aip = &Ai_info[Ships[Objects[sop->objnum].instance].ai_index];
 				pship_index = objp->instance;
 
@@ -2762,7 +2762,7 @@ int hud_support_find_closest( int objnum )
 					// we can use == in the next statement (and should) since a ship will only ever be
 					// following one order at a time.
 					if ( aip->goals[i].ai_mode == AI_GOAL_REARM_REPAIR ) {
-						Assert( aip->goals[i].target_name );
+					core::Assert( aip->goals[i].target_name );
 						sindex = ship_name_lookup( aip->goals[i].target_name );
 						if ( sindex == pship_index )
 							return sop->objnum;
@@ -2894,7 +2894,7 @@ void HudGaugeSupport::render(float  /*frametime*/)
 
 	show_time = 0;
 	if (Player_ai->ai_flags[AI::AI_Flags::Being_repaired]) {
-		Assert(Player_ship->ship_max_hull_strength > 0);
+	core::Assert(Player_ship->ship_max_hull_strength > 0);
 		
 		if (!Cmdline_rearm_timer)
 		{
@@ -2971,7 +2971,7 @@ void HudGaugeSupport::render(float  /*frametime*/)
 	if ( show_time ) {
 		int seconds, minutes;
 
-		Assert( Hud_support_objnum != -1 );
+	core::Assert( Hud_support_objnum != -1 );
 
 		// Ensure support ship is still alive
 		if ( (Objects[Hud_support_objnum].signature != Hud_support_obj_sig) || (Hud_support_target_sig != Player_obj->signature) ) {
@@ -3000,7 +3000,7 @@ void HudGaugeSupport::render(float  /*frametime*/)
  */
 void hud_set_default_color()
 {
-	Assert(HUD_color_alpha >= 0 && HUD_color_alpha < HUD_NUM_COLOR_LEVELS);
+core::Assert(HUD_color_alpha >= 0 && HUD_color_alpha < HUD_NUM_COLOR_LEVELS);
 	gr_set_color_fast(&HUD_color_defaults[HUD_color_alpha]);
 }
 
@@ -3088,7 +3088,7 @@ static int Vm_other_ship_gauges[NUM_VM_OTHER_SHIP_GAUGES] =
  */
 int hud_gauge_active(int gauge_index)
 {
-	Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 
 	// AL: Special code: Only show two gauges when not viewing from own ship
 	if ( Viewer_mode & VM_OTHER_SHIP ) {
@@ -3108,7 +3108,7 @@ int hud_gauge_active(int gauge_index)
  */
 int hud_gauge_is_popup(int gauge_index)
 {
-	Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 	return hud_config_popup_flag_is_set(gauge_index);
 }
 
@@ -3118,7 +3118,7 @@ int hud_gauge_is_popup(int gauge_index)
  */
 void hud_gauge_popup_start(int gauge_index, int time) 
 {
-	Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 	if ( !hud_gauge_is_popup(gauge_index) ) {
 		return;
 	}
@@ -3148,7 +3148,7 @@ void hud_gauge_popup_start(int gauge_index, int time)
  */
 void hud_gauge_start_flash(int gauge_index)
 {
-	Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 
 	size_t num_gauges, i; 
 
@@ -3201,7 +3201,7 @@ void hud_set_gauge_color(int gauge_index, int bright_index)
 
 		// Intensity
 		default: 
-			Assert((bright_index >= 0) && (bright_index < HUD_NUM_COLOR_LEVELS));
+		core::Assert((bright_index >= 0) && (bright_index < HUD_NUM_COLOR_LEVELS));
 			if(bright_index < 0){
 				bright_index = 0;
 			}
@@ -3249,7 +3249,7 @@ void hud_set_gauge_color(int gauge_index, int bright_index)
  */
 int hud_gauge_maybe_flash(int gauge_index)
 {
-	Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
+core::Assert(gauge_index >=0 && gauge_index < NUM_HUD_GAUGES);
 	int flash_status=-1;
 	if ( !timestamp_elapsed(HUD_gauge_flash_duration[gauge_index]) ) {
 		if ( timestamp_elapsed(HUD_gauge_flash_next[gauge_index]) ) {

@@ -17,7 +17,7 @@ std::unordered_map<int, std::unique_ptr<sexp::DynamicSEXP>> operator_const_mappi
 std::unordered_map<int, int> next_free_operator_mapping;
 
 int get_next_free_operator(int category) {
-	Assertion(category != OP_CATEGORY_CHANGE, "The primary change category is full so it can't be used for new operators!");
+core::Assertion(category != OP_CATEGORY_CHANGE, "The primary change category is full so it can't be used for new operators!");
 
 	auto iter = next_free_operator_mapping.find(category);
 

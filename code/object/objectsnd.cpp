@@ -111,7 +111,7 @@ DCF(objsnd, "Persistent sound stuff" )
 			vec3d source_pos;
 			float distance;
 
-			Assert(osp != NULL);
+		core::Assert(osp != NULL);
 			if (!osp->instance.isValid()) {
 				continue;
 				//sprintf(buf1,"OFF");
@@ -248,7 +248,7 @@ void obj_snd_stop(object *objp, int index)
 					case OBJ_DEBRIS:
 					case OBJ_ASTEROID:
 						Num_obj_sounds_playing--;
-						Assert(Num_obj_sounds_playing >= 0);					
+					core::Assert(Num_obj_sounds_playing >= 0);					
 						break;
 
 					default:
@@ -273,7 +273,7 @@ void obj_snd_stop(object *objp, int index)
 			case OBJ_DEBRIS:
 			case OBJ_ASTEROID:
 				Num_obj_sounds_playing--;
-				Assert(Num_obj_sounds_playing >= 0);					
+			core::Assert(Num_obj_sounds_playing >= 0);					
 				break;
 
 			default:
@@ -317,7 +317,7 @@ int obj_snd_stop_lowest_vol(float new_vol)
 	
 	lowest_vol = 1000.0f;
 	for ( osp = GET_FIRST(&obj_snd_list); osp !=END_OF_LIST(&obj_snd_list); osp = GET_NEXT(osp) ) {
-		Assert(osp->objnum != -1);
+	core::Assert(osp->objnum != -1);
 		objp = &Objects[osp->objnum];
 
 		if ((osp->instance.isValid()) && (osp->vol < lowest_vol)) {
@@ -386,7 +386,7 @@ void maybe_play_flyby_snd(float closest_dist, object *closest_objp, object *list
 						return;
 				}				
 
-				Assert(closest_objp->type == OBJ_SHIP);
+			core::Assert(closest_objp->type == OBJ_SHIP);
 				if(closest_objp->type != OBJ_SHIP){
 					return;
 				}
@@ -462,7 +462,7 @@ void obj_snd_do_frame()
 	}
 
 	for ( osp = GET_FIRST(&obj_snd_list); osp !=END_OF_LIST(&obj_snd_list); osp = GET_NEXT(osp) ) {
-		Assert(osp != NULL);
+	core::Assert(osp != NULL);
 		objp = &Objects[osp->objnum];
 		if ( Player_obj == objp && observer_obj == Player_obj ) {
 			// we don't play the engine sound if the view is from the player
@@ -605,7 +605,7 @@ void obj_snd_do_frame()
 						Num_obj_sounds_playing++;
 					}
 				}
-				Assert(Num_obj_sounds_playing <= MAX_OBJ_SOUNDS_PLAYING);
+			core::Assert(Num_obj_sounds_playing <= MAX_OBJ_SOUNDS_PLAYING);
 
 			} // 		end if ( distance < Snds[osp->id].max )
 		} // 		if ( osp->instance == -1 )
@@ -622,7 +622,7 @@ void obj_snd_do_frame()
 					}
 				}
 
-				Assert(sound_index != -1);
+			core::Assert(sound_index != -1);
 				obj_snd_stop(objp, sound_index);						// currently playing sound has gone past maximum
 			}
 		}
@@ -754,11 +754,11 @@ int obj_snd_assign(int objnum, gamesnd_id sndnum, vec3d *pos, int main, int flag
 void obj_snd_delete(int objnum, int index)
 {
 	//Sanity checking
-	Assert(objnum > -1 && objnum < MAX_OBJECTS);
+core::Assert(objnum > -1 && objnum < MAX_OBJECTS);
 
 	object *objp = &Objects[objnum];
 	
-	Assert(index > -1 && index < (int) objp->objsnd_num.size());
+core::Assert(index > -1 && index < (int) objp->objsnd_num.size());
 
 	obj_snd *osp = &Objsnds[objp->objsnd_num[index]];
 

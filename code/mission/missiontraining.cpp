@@ -291,7 +291,7 @@ void HudGaugeDirectives::render(float  /*frametime*/)
 
 		// maybe split the directives line
 		second_line = split_str_once(buf, max_line_width);
-		Assert( second_line != buf );
+	core::Assert( second_line != buf );
 
 		// blit the background frames
 		setGaugeColor();
@@ -335,7 +335,7 @@ void training_mission_init()
 {
 	int i;
 
-	Assert(!Training_num_lines);
+core::Assert(!Training_num_lines);
 	Training_obj_num_lines = 0;
 	Training_message_queue_count = 0;
 	Training_failure = 0;
@@ -821,7 +821,7 @@ void message_training_setup(int m, int length, char *special_message)
 	training_process_message(Training_buf);
 	Training_num_lines = split_str(Training_buf, TRAINING_LINE_WIDTH, Training_line_lengths, Training_lines, MAX_TRAINING_MESSAGE_LINES);
 
-	Assert(Training_num_lines >= 0);
+core::Assert(Training_num_lines >= 0);
 
 	if ((message_play_training_voice(Messages[m].wave_info.index) < 0) || (Master_voice_volume <= 0)) {
 		if (length > 0)
@@ -841,7 +841,7 @@ void message_training_queue(const char *text, int timestamp, int length)
 	int m;
 	char temp_buf[TRAINING_MESSAGE_LENGTH];
 
-	Assert(Training_message_queue_count < TRAINING_MESSAGE_QUEUE_MAX);
+core::Assert(Training_message_queue_count < TRAINING_MESSAGE_QUEUE_MAX);
 	if (Training_message_queue_count < TRAINING_MESSAGE_QUEUE_MAX) {
 		if (!stricmp(text, NOX("none"))) {
 			m = -1;
@@ -850,7 +850,7 @@ void message_training_queue(const char *text, int timestamp, int length)
 				if (!stricmp(text, Messages[m].name))
 					break;
 
-			Assert(m < Num_messages);
+		core::Assert(m < Num_messages);
 			if (m >= Num_messages)
 				return;
 		}
@@ -1086,7 +1086,7 @@ void training_process_message(char *message)
 	dest = Training_buf;
 	while (*src) {
 		if (!strnicmp(src, NOX("<b>"), 3)) {
-			Assert(count < MAX_TRAINING_MESSAGE_MODS);
+		core::Assert(count < MAX_TRAINING_MESSAGE_MODS);
 			src += 3;
 			Training_message_mods[count].pos = dest;
 			Training_message_mods[count].mode = TMMOD_BOLD;
@@ -1094,7 +1094,7 @@ void training_process_message(char *message)
 		}
 
 		if (!strnicmp(src, NOX("</b>"), 4)) {
-			Assert(count < MAX_TRAINING_MESSAGE_MODS);
+		core::Assert(count < MAX_TRAINING_MESSAGE_MODS);
 			src += 4;
 			Training_message_mods[count].pos = dest;
 			Training_message_mods[count].mode = TMMOD_NORMAL;

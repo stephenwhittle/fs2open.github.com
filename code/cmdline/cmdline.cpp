@@ -552,72 +552,72 @@ void cmdline_debug_print_cmdline()
 {
 	cmdline_parm *parmp;
 	int found = 0;
-	mprintf(("Passed cmdline options:"));
+	core::mprintf(("Passed cmdline options:"));
 
 	for (parmp = GET_FIRST(&Parm_list); parmp !=END_OF_LIST(&Parm_list); parmp = GET_NEXT(parmp) ) {
 		if ( parmp->name_found ) {
 			if ( parmp->args != NULL ) {
-				mprintf(("\n  %s %s", parmp->name, parmp->args));
+				core::mprintf(("\n  %s %s", parmp->name, parmp->args));
 			} else {
-				mprintf(("\n  %s", parmp->name));
+				core::mprintf(("\n  %s", parmp->name));
 			}
 			found++;
 		}
 	}
 
 	if ( !found )
-		mprintf(("\n  <none>"));
+		core::mprintf(("\n  <none>"));
 
-	mprintf(("\n"));
+	core::mprintf(("\n"));
 
 	//Print log messages about any deprecated flags we found - CommanderDJ
 	if(Cmdline_deprecated_spec == 1)
 	{
-		mprintf(("Deprecated flag '-spec' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-spec' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_glow == 1)
 	{
-		mprintf(("Deprecated flag '-glow' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-glow' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_normal == 1)
 	{
-		mprintf(("Deprecated flag '-normal' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-normal' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_env == 1)
 	{
-		mprintf(("Deprecated flag '-env' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-env' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_tbp == 1)
 	{
-		mprintf(("Deprecated flag '-tbp' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-tbp' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_jpgtga == 1)
 	{
-		mprintf(("Deprecated flag '-jpgtga' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-jpgtga' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_nohtl == 1)
 	{
-		mprintf(("Deprecated flag '-nohtl' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-nohtl' found. Please remove from your cmdline.\n"));
 	}
 
 	if(Cmdline_deprecated_brief_lighting == 1)
 	{
-		mprintf(("Deprecated flag '-brief_lighting' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-brief_lighting' found. Please remove from your cmdline.\n"));
 	}
 
 	if (Cmdline_deprecated_missile_lighting) 
 	{
-		mprintf(("Deprecated flag '-missile_lighting' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-missile_lighting' found. Please remove from your cmdline.\n"));
 	}
 
 	if (Cmdline_deprecated_cache_bitmaps) {
-		mprintf(("Deprecated flag '-cache_bitmaps' found. Please remove from your cmdline.\n"));
+		core::mprintf(("Deprecated flag '-cache_bitmaps' found. Please remove from your cmdline.\n"));
 	}
 }
 #endif
@@ -675,7 +675,7 @@ char *drop_extra_chars(char *str)
  */
 bool parm_stuff_args(cmdline_parm *parm, int argc, char *argv[], int index)
 {
-	Assert(index < argc);
+	core::Assert(index < argc);
 
 	if (index + 1 < argc)
 	{
@@ -1047,12 +1047,12 @@ cmdline_parm::cmdline_parm(const char *name_, const char *help_, const int arg_t
 	name_found = 0;
 
 	if (Parm_list_inited == 0) {
-		Assertion(&Parm_list == this, "Coding error! 1st initialised cmdline_parm must be static Parm_list\n");
+		core::Assertion(&Parm_list == this, "Coding error! 1st initialised cmdline_parm must be static Parm_list\n");
 		list_init(this);
 		Parm_list_inited = 1;
 	} else {
-		Assertion(name, "Coding error! cmdline_parm's must have a non-NULL name\n");
-		Assertion(name[0] == '-', "Coding error! cmdline_parm's must start with a '-'\n");
+		core::Assertion(name, "Coding error! cmdline_parm's must have a non-NULL name\n");
+		core::Assertion(name[0] == '-', "Coding error! cmdline_parm's must start with a '-'\n");
 		// not in the static Parm_list init, so lookup the NULL help args
 		if (help == NULL) {
 			help = get_param_desc(name);
@@ -1098,7 +1098,9 @@ int cmdline_parm::found()
 // returns - the interger representation for the parameter argument
 int cmdline_parm::get_int()
 {
-	Assertion(arg_type == AT_INT, "Coding error! Cmdline arg (%s) called cmdline_parm::get_int() with invalid arg_type (%s)", name, cmdline_arg_types[arg_type]);
+	core::Assertion(arg_type == AT_INT,
+	                "Coding error! Cmdline arg (%s) called cmdline_parm::get_int() with invalid arg_type (%s)", name,
+	                cmdline_arg_types[arg_type]);
 	check_if_args_is_valid();
 
 	size_t offset = 0;
@@ -1123,7 +1125,9 @@ int cmdline_parm::get_int()
 // returns - the float representation for the parameter argument
 float cmdline_parm::get_float()
 {
-	Assertion(arg_type == AT_FLOAT, "Coding error! Cmdline arg (%s) called cmdline_parm::get_float() with invalid arg_type (%s)", name, cmdline_arg_types[arg_type]);
+	core::Assertion(arg_type == AT_FLOAT,
+	                "Coding error! Cmdline arg (%s) called cmdline_parm::get_float() with invalid arg_type (%s)", name,
+	                cmdline_arg_types[arg_type]);
 	check_if_args_is_valid();
 
 	size_t offset = 0;
@@ -1148,7 +1152,9 @@ float cmdline_parm::get_float()
 // returns - the string value for the parameter argument
 char *cmdline_parm::str()
 {
-	Assertion(arg_type == AT_STRING, "Coding error! Cmdline arg (%s) called cmdline_parm::str() with invalid arg_type (%s)", name, cmdline_arg_types[arg_type]);
+	core::Assertion(arg_type == AT_STRING,
+	                "Coding error! Cmdline arg (%s) called cmdline_parm::str() with invalid arg_type (%s)", name,
+	                cmdline_arg_types[arg_type]);
 	check_if_args_is_valid();
 
 	return args;
@@ -1469,7 +1475,7 @@ static void write_flags_file() {
 }
 
 static flag_output_type get_flags_output_type() {
-	Assertion(get_flags_arg.found(), "This function is only valid if -get_flags is present!");
+	core::Assertion(get_flags_arg.found(), "This function is only valid if -get_flags is present!");
 
 	if (!get_flags_arg.has_param()) {
 		// Default to binary mode

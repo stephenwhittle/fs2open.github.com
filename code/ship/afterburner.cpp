@@ -71,16 +71,16 @@ void afterburners_start(object *objp)
 	ship			*shipp;
 	float			percent_left;
 
-	Assert( objp != NULL );
+core::Assert( objp != NULL );
 
 	if(objp->type == OBJ_OBSERVER)
 		return;
 
-	Assert( objp->type == OBJ_SHIP);
-	Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
+core::Assert( objp->type == OBJ_SHIP);
+core::Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
 
 	shipp = &Ships[objp->instance];
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
 	sip = &Ship_info[shipp->ship_info_index];
 	
 	// bail if afterburners are locked
@@ -167,9 +167,9 @@ void afterburners_start(object *objp)
  */
 void afterburners_update(object *objp, float fl_frametime)
 {
-	Assert( objp != NULL );
-	Assert( objp->type == OBJ_SHIP );
-	Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
+core::Assert( objp != NULL );
+core::Assert( objp->type == OBJ_SHIP );
+core::Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
 	
 	ship_info *sip;
 	ship *shipp;
@@ -177,7 +177,7 @@ void afterburners_update(object *objp, float fl_frametime)
 
 	shipp = &Ships[objp->instance];
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
 	sip = &Ship_info[shipp->ship_info_index];
 
 	if ( (objp->flags[Object::Object_Flags::Player_ship] ) && (Game_mode & GM_DEAD) ) {
@@ -278,15 +278,15 @@ void afterburners_update(object *objp, float fl_frametime)
  */
 void afterburners_stop(object *objp, int key_released)
 {
-	Assert( objp != NULL );
-	Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
+core::Assert( objp != NULL );
+core::Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
 	
 	ship_info *sip;
 	ship *shipp;
 
 	shipp = &Ships[objp->instance];
 
-	Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
+core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cast<int>(Ship_info.size()) );
 	sip = &Ship_info[shipp->ship_info_index];
 
 	if ( (objp->flags[Object::Object_Flags::Player_ship]) && key_released ) {

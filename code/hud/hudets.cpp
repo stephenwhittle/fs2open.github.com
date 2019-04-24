@@ -41,7 +41,7 @@ void ets_init_ship(object* obj)
 		return;
 	}
 
-	Assert(obj->type == OBJ_SHIP);
+core::Assert(obj->type == OBJ_SHIP);
 	sp = &Ships[obj->instance];
 	
 	sp->weapon_energy = Ship_info[sp->ship_info_index].max_weapon_reserve;
@@ -148,9 +148,9 @@ void update_ets(object* objp, float fl_frametime)
 
 float ets_get_max_speed(object* objp, float engine_energy)
 {
-	Assertion(objp != NULL, "Invalid object pointer passed!");
-	Assertion(objp->type == OBJ_SHIP, "Object needs to be a ship object!");
-	Assertion(engine_energy >= 0.0f && engine_energy <= 1.0f, "Invalid float passed, needs to be in [0, 1], was %f!", engine_energy);
+core::Assertion(objp != NULL, "Invalid object pointer passed!");
+core::Assertion(objp->type == OBJ_SHIP, "Object needs to be a ship object!");
+core::Assertion(engine_energy >= 0.0f && engine_energy <= 1.0f, "Invalid float passed, needs to be in [0, 1], was %f!", engine_energy);
 
 	ship* shipp = &Ships[objp->instance];
 

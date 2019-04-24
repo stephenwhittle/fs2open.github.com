@@ -623,7 +623,7 @@ void model_draw_list::render_all(gr_zbuffer_type depth_mode)
 	GR_DEBUG_SCOPE("Render draw list");
 	TRACE_SCOPE(tracing::SubmitDraws);
 
-	Assertion(Render_initialized, "init_render must be called before any render_all call!");
+core::Assertion(Render_initialized, "init_render must be called before any render_all call!");
 
 	Scene_light_handler.resetLightState();
 
@@ -839,7 +839,7 @@ void model_render_add_lightning( model_draw_list *scene, model_render_params* in
 	const int AG2 = 128;
 	const int AB2 = 10;
 
-	Assert( sm->num_arcs > 0 );
+core::Assert( sm->num_arcs > 0 );
 
 	if ( interp->get_model_flags() & MR_SHOW_OUTLINE_PRESET ) {
 		return;
@@ -933,7 +933,7 @@ int model_render_determine_detail(float depth, int  /*obj_num*/, int model_num, 
 
 	polymodel *pm = model_get(model_num);
 
-	Assert( pm->n_detail_levels < MAX_MODEL_DETAIL_LEVELS );
+core::Assert( pm->n_detail_levels < MAX_MODEL_DETAIL_LEVELS );
 
 	int i;
 
@@ -978,8 +978,8 @@ void model_render_buffers(model_draw_list* scene, model_material *rendering_mate
 	const uint debug_flags = interp->get_debug_flags();
 	const int obj_num = interp->get_object_number();
 
-	Assert(buffer != NULL);
-	Assert(detail_level >= 0);
+core::Assert(buffer != NULL);
+core::Assert(detail_level >= 0);
 
 	if ( (mn >= 0) && (mn < pm->n_models) ) {
 		model = &pm->submodel[mn];
@@ -1457,7 +1457,7 @@ gr_alpha_blend model_render_determine_blend_mode(int base_bitmap, bool blending)
 
 bool model_render_check_detail_box(vec3d *view_pos, polymodel *pm, int submodel_num, uint flags)
 {
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	bsp_info *model = &pm->submodel[submodel_num];
 
@@ -2001,7 +2001,7 @@ void model_render_glow_points(polymodel *pm, ship *shipp, matrix *orient, vec3d 
 				continue;
 
 			for (j = 0; j < bank->num_points; j++) {
-				Assert( bank->points != NULL );
+			core::Assert( bank->points != NULL );
 				int flick;
 
 				if (pm->submodel[pm->detail[0]].num_arcs) {
@@ -2106,7 +2106,7 @@ void model_queue_render_thrusters(model_render_params *interp, polymodel *pm, in
 		}
 
 		for (j = 0; j < bank->num_points; j++) {
-			Assert( bank->points != NULL );
+		core::Assert( bank->points != NULL );
 
 			float d, D;
 			vec3d tempv;
@@ -2406,7 +2406,7 @@ void model_render_arc(vec3d *v1, vec3d *v2, color *primary, color *secondary, fl
 	interp_render_arc_segment(v1, v2, 0);
 
 	// use primary color for fist pass
-	Assert( primary );
+core::Assert( primary );
 
 	g3_render_rod(primary, Num_arc_segment_points, Arc_segment_points, arc_width);
 
@@ -2754,7 +2754,7 @@ void model_render_queue(model_render_params *interp, model_draw_list *scene, int
 		rendering_material.set_lighting(false);
 	}
 
-	Assertion(!(model_flags & MR_STENCIL_READ && model_flags & MR_STENCIL_WRITE),
+core::Assertion(!(model_flags & MR_STENCIL_READ && model_flags & MR_STENCIL_WRITE),
 			  "Enabling stencil read and write at the same time is not supported!");
 
 	if (model_flags & MR_STENCIL_READ) {

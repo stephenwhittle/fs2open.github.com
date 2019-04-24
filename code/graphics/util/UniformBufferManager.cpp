@@ -52,7 +52,7 @@ UniformBuffer* UniformBufferManager::getBuffer() {
 		auto buffer = _retiredBuffers.back();
 
 		// Sanity check
-		Assertion(!buffer->isInUse(), "Retired buffer is in use!");
+	core::Assertion(!buffer->isInUse(), "Retired buffer is in use!");
 
 		_retiredBuffers.pop_back();
 		_usedBuffers.push_back(buffer);

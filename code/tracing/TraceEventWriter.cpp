@@ -41,7 +41,7 @@ void writeTime(std::ofstream& out, std::uint64_t time) {
 }
 
 void writeCompleteEvent(std::ofstream& out_str, const trace_event* evt) {
-	Assertion(evt->type == EventType::Complete, "Event must be a complete event!");
+core::Assertion(evt->type == EventType::Complete, "Event must be a complete event!");
 
 	out_str << ",\"dur\":";
 	writeTime(out_str, evt->duration);

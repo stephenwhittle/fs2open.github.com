@@ -269,7 +269,7 @@ void techroom_init_desc(char *src, int w)
 	}
 
 	Text_size = split_str(src, w, Text_line_size, Text_lines, MAX_TEXT_LINES);
-	Assert(Text_size >= 0 && Text_size < MAX_TEXT_LINES);
+core::Assert(Text_size >= 0 && Text_size < MAX_TEXT_LINES);
 }
 
 void techroom_unload_animation()
@@ -304,7 +304,7 @@ void techroom_unload_animation()
 
 void techroom_select_new_entry()
 {
-	Assert(Current_list != NULL);
+core::Assert(Current_list != NULL);
 	if (Current_list == NULL || Current_list_size <= 0) {
 		Cur_entry_index = Cur_entry = -1;
 		techroom_init_desc(NULL,0);
@@ -312,7 +312,7 @@ void techroom_select_new_entry()
 	}
 
 	Cur_entry_index = Current_list[Cur_entry].index;
-	Assert( Cur_entry_index >= 0 );
+core::Assert( Cur_entry_index >= 0 );
 
 	// if we are in the ships tab, load the ship model
 	if (Tab == SHIPS_DATA_TAB) {
@@ -1068,7 +1068,7 @@ void techroom_intel_init()
 
 		Intel_info_size = 0;
 		while (optional_string("$Entry:")) {
-			Assert(Intel_info_size < MAX_INTEL_ENTRIES);
+		core::Assert(Intel_info_size < MAX_INTEL_ENTRIES);
 			if (Intel_info_size >= MAX_INTEL_ENTRIES) {
 				mprintf(("TECHMENU: Too many intel entries!\n"));
 				break;

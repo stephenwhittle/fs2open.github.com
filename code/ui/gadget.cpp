@@ -85,7 +85,7 @@ int UI_GADGET::set_bmaps(const char *ani_fname, int nframes, int start_frame)
 	// load all the bitmaps
 	bm_filename = ani_fname;
 
-	Assertion(nframes < MAX_BMAPS_PER_GADGET, "Too many frames specified (%d), must be less than MAX_BMAPS_PER_GADGET", nframes);
+core::Assertion(nframes < MAX_BMAPS_PER_GADGET, "Too many frames specified (%d), must be less than MAX_BMAPS_PER_GADGET", nframes);
 	m_num_frames = nframes;
 	for(idx=start_frame; idx<nframes; idx++){
 		// clear the string

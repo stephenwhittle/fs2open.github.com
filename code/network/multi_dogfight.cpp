@@ -172,7 +172,7 @@ void multi_df_eval_kill(net_player *killer, object *dead_obj)
 	if(dead_index < 0){
 		return;
 	}
-	Assert(dead_index < MAX_PLAYERS);
+core::Assert(dead_index < MAX_PLAYERS);
 	if(dead_index == NET_PLAYER_INDEX(killer)){
 		return;
 	}
@@ -213,7 +213,7 @@ void multi_df_debrief_init()
 
 	// load background bitmap
 	Multi_df_background_bitmap = bm_load(Multi_df_background_fname[gr_screen.res]);
-	Assert(Multi_df_background_bitmap);
+core::Assert(Multi_df_background_bitmap);
 
 	// create the UI window
 	Multi_df_window.create(0, 0, gr_screen.max_w_unscaled, gr_screen.max_h_unscaled, 0);
@@ -411,7 +411,7 @@ void multi_df_blit_kill_matrix()
 		gr_get_string_size(&str_len, NULL, squashed_string);
 
 		// set color and blit the string		
-		Assert(Multi_df_score[idx].np_index >= 0);
+	core::Assert(Multi_df_score[idx].np_index >= 0);
 		if(Multi_df_score[idx].np_index >= 0){
 			gr_set_color_fast(Color_netplayer[Multi_df_score[idx].np_index]);
 		}
@@ -439,7 +439,7 @@ void multi_df_blit_kill_matrix()
 		strcpy_s(squashed_string, Multi_df_score[idx].callsign);
 		font::force_fit_string(squashed_string, CALLSIGN_LEN, (int)max_text_width);
 		gr_get_string_size(&str_len, NULL, squashed_string);		
-		Assert(Multi_df_score[idx].np_index >= 0);
+	core::Assert(Multi_df_score[idx].np_index >= 0);
 		if(Multi_df_score[idx].np_index >= 0){
 			gr_set_color_fast(Color_netplayer[Multi_df_score[idx].np_index]);
 		}
@@ -454,7 +454,7 @@ void multi_df_blit_kill_matrix()
 				gr_set_color_fast(&Color_grey);
 			} else {
 				row_total += multi_df_stuff_kills(squashed_string, idx, s_idx);
-				Assert(Multi_df_score[idx].np_index >= 0);
+			core::Assert(Multi_df_score[idx].np_index >= 0);
 				if(Multi_df_score[idx].np_index >= 0){
 					gr_set_color_fast(Color_netplayer[Multi_df_score[idx].np_index]);
 				}				

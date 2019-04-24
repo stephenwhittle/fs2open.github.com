@@ -337,7 +337,7 @@ void debriefing_editor_dlg::OnDeleteStage()
 	audiostream_close_file(m_voice_id, 0);
 	m_voice_id = -1;
 
-	Assert(Debriefing->num_stages);
+core::Assert(Debriefing->num_stages);
 	z = m_cur_stage;
 	m_cur_stage = -1;
 	update_data(1);

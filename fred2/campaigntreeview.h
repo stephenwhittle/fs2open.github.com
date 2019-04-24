@@ -90,7 +90,7 @@ public:
 protected:
 	virtual ~campaign_tree_view();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
+	virtual voidcore::AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 

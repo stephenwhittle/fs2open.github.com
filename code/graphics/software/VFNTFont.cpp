@@ -8,7 +8,7 @@ namespace font
 
 	VFNTFont::VFNTFont(font *fnt) : FSFont()
 	{
-		Assertion(fnt != NULL, "Invalid font passed to constructor of VFNTFont!");
+	core::Assertion(fnt != NULL, "Invalid font passed to constructor of VFNTFont!");
 
 		this->fontPtr = fnt;
 

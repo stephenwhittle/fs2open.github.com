@@ -179,7 +179,7 @@ int pcx_read_bitmap_8bpp( char * real_filename, ubyte *org_data, ubyte *palette 
 				data = buffer[buffer_pos++];
 				if ( buffer_pos == buffer_size )	{
 					buffer_size = cfread( buffer, 1, buffer_size, PCXfile );
-					Assert( buffer_size > 0 );
+				core::Assert( buffer_size > 0 );
 					buffer_pos = 0;
 				}
 				if ((data & 0xC0) == 0xC0)     {
@@ -187,7 +187,7 @@ int pcx_read_bitmap_8bpp( char * real_filename, ubyte *org_data, ubyte *palette 
 					data = buffer[buffer_pos++];
 					if ( buffer_pos == buffer_size )	{
 						buffer_size = cfread( buffer, 1, buffer_size, PCXfile );
-						Assert( buffer_size > 0 );
+					core::Assert( buffer_size > 0 );
 						buffer_pos = 0;
 					}
 				} else {
@@ -277,7 +277,7 @@ int pcx_read_bitmap( const char * real_filename, ubyte *org_data, ubyte * /*pal*
 	buffer_size = 1024;
 	buffer_pos = 0;
 	
-//	Assert( buffer_size == 1024 );	// AL: removed to avoid optimized warning 'unreachable code'
+//core::Assert( buffer_size == 1024 );	// AL: removed to avoid optimized warning 'unreachable code'
 	
 	buffer_size = cfread( buffer, 1, buffer_size, PCXfile );
 
@@ -291,7 +291,7 @@ int pcx_read_bitmap( const char * real_filename, ubyte *org_data, ubyte * /*pal*
 				data = buffer[buffer_pos++];
 				if ( buffer_pos == buffer_size )	{
 					buffer_size = cfread( buffer, 1, buffer_size, PCXfile );
-					Assert( buffer_size > 0 );
+				core::Assert( buffer_size > 0 );
 					buffer_pos = 0;
 				}
 				if ((data & 0xC0) == 0xC0)     {
@@ -299,7 +299,7 @@ int pcx_read_bitmap( const char * real_filename, ubyte *org_data, ubyte * /*pal*
 					data = buffer[buffer_pos++];
 					if ( buffer_pos == buffer_size )	{
 						buffer_size = cfread( buffer, 1, buffer_size, PCXfile );
-						Assert( buffer_size > 0 );
+					core::Assert( buffer_size > 0 );
 						buffer_pos = 0;
 					}
 				} else {

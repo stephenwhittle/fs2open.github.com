@@ -650,7 +650,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 		float	temp;
 		
 		stuff_float(&temp);
-		Assert(temp >= 0.0f);
+	core::Assert(temp >= 0.0f);
 		Entry_delay_time = fl2f(temp);
 	}
 	else
@@ -756,7 +756,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 			core::WarningEx(LOCATION, "Mission: %s\nUnknown AI profile %s!", pm->name, temp );
 	}
 
-	Assert( The_mission.ai_profile != NULL );
+core::Assert( The_mission.ai_profile != NULL );
 
 	// Kazan - player use AI at start?
 	if (pm->flags[Mission::Mission_Flags::Player_start_ai])
@@ -792,7 +792,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 void parse_player_info(mission *pm)
 {
 	char temp[NAME_LENGTH];
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	// alternate type names begin here	
 	mission_parse_reset_alt();
@@ -848,7 +848,7 @@ void parse_player_info2(mission *pm)
 		total = stuff_loadout_list(list, MAX_SHIP_CLASSES * 4, MISSION_LOADOUT_SHIP_LIST);
 
 		// make sure we have a count which is divisible by four since four values are added for each ship
-		Assert((total%4) == 0); 
+	core::Assert((total%4) == 0); 
 
 		num_choices = 0;
 
@@ -901,7 +901,7 @@ void parse_player_info2(mission *pm)
 							break;
 						}
 					}
-					Assertion( i < static_cast<int>(Ship_info.size()), "Mission: %s: Could not find a valid default ship.\n", pm->name );
+				core::Assertion( i < static_cast<int>(Ship_info.size()), "Mission: %s: Could not find a valid default ship.\n", pm->name );
 				}
 			}
 		}
@@ -913,7 +913,7 @@ void parse_player_info2(mission *pm)
 		total = stuff_loadout_list(list2, MAX_WEAPON_TYPES * 4, MISSION_LOADOUT_WEAPON_LIST);
 
 		// make sure we have a count which is divisible by four since four values are added for each ship
-		Assert((total%4) == 0); 
+	core::Assert((total%4) == 0); 
 		num_choices = 0;
 
 		for (i = 0; i < total; i += 4) {
@@ -1318,7 +1318,7 @@ void parse_cmd_brief(mission * /*pm*/)
 {
 	int stage;
 
-	Assert(!Cur_cmd_brief->num_stages);
+core::Assert(!Cur_cmd_brief->num_stages);
 	stage = 0;
 
 	required_string("#Command Briefing");
@@ -1327,7 +1327,7 @@ void parse_cmd_brief(mission * /*pm*/)
 	parse_custom_bitmap("$Background 640:", "$Background 1024:", Cur_cmd_brief->background[GR_640], Cur_cmd_brief->background[GR_1024]);
 
 	while (optional_string("$Stage Text:")) {
-		Assert(stage < CMD_BRIEF_STAGES_MAX);
+	core::Assert(stage < CMD_BRIEF_STAGES_MAX);
 		stuff_string(Cur_cmd_brief->stage[stage].text, F_MULTITEXT, NULL);
 
 		required_string("$Ani Filename:");
@@ -1389,12 +1389,12 @@ void parse_briefing(mission * /*pm*/, int flags)
 
 		required_string("$num_stages:");
 		stuff_int(&bp->num_stages);
-		Assert(bp->num_stages <= MAX_BRIEF_STAGES);
+	core::Assert(bp->num_stages <= MAX_BRIEF_STAGES);
 
 		stage_num = 0;
 		while (required_string_either("$end_briefing", "$start_stage")) {
 			required_string("$start_stage");
-			Assert(stage_num < MAX_BRIEF_STAGES);
+		core::Assert(stage_num < MAX_BRIEF_STAGES);
 
 			if (stage_num >= bp->num_stages) {
 				error_display(1,
@@ -1418,11 +1418,11 @@ void parse_briefing(mission * /*pm*/, int flags)
 				stuff_int(&bs->num_lines);
 
 				if ( Fred_running )	{
-					Assert(bs->lines!=NULL);
+				core::Assert(bs->lines!=NULL);
 				} else {
 					if ( bs->num_lines > 0 )	{
 						bs->lines = (brief_line *)vm_malloc(sizeof(brief_line)*bs->num_lines);
-						Assert(bs->lines!=NULL);
+					core::Assert(bs->lines!=NULL);
 					}
 				}
 
@@ -1441,11 +1441,11 @@ void parse_briefing(mission * /*pm*/, int flags)
 			stuff_int(&bs->num_icons);
 
 			if ( Fred_running )	{
-				Assert(bs->icons!=NULL);
+			core::Assert(bs->icons!=NULL);
 			} else {
 				if ( bs->num_icons > 0 )	{
 					bs->icons = (brief_icon *)vm_malloc(sizeof(brief_icon)*bs->num_icons);
-					Assert(bs->icons!=NULL);
+				core::Assert(bs->icons!=NULL);
 				}
 			}
 
@@ -1459,7 +1459,7 @@ void parse_briefing(mission * /*pm*/, int flags)
 			else
 				bs->formula = Locked_sexp_true;
 
-			Assert(bs->num_icons <= MAX_STAGE_ICONS );
+		core::Assert(bs->num_icons <= MAX_STAGE_ICONS );
 
 			// static alias stuff - stupid, but it seems to be necessary
 			static const char *temp_team_names[MAX_IFFS];
@@ -1469,7 +1469,7 @@ void parse_briefing(mission * /*pm*/, int flags)
 			while (required_string_either("$end_stage", "$start_icon"))
 			{
 				required_string("$start_icon");
-				Assert(icon_num < MAX_STAGE_ICONS);
+			core::Assert(icon_num < MAX_STAGE_ICONS);
 				// Make sure we don't cause a buffer overflow if $num_icons is wrong
 				if (icon_num >= bs->num_icons) {
 					error_display(1,
@@ -1626,10 +1626,10 @@ void parse_debriefing_new(mission * /*pm*/)
 
 		required_string("$Num stages:");
 		stuff_int(&db->num_stages);
-		Assert(db->num_stages <= MAX_DEBRIEF_STAGES);
+	core::Assert(db->num_stages <= MAX_DEBRIEF_STAGES);
 
 		while (required_string_either("#", "$Formula")) {
-			Assert(stage_num < MAX_DEBRIEF_STAGES);
+		core::Assert(stage_num < MAX_DEBRIEF_STAGES);
 			dbs = &db->stages[stage_num++];
 			required_string("$Formula:");
 			dbs->formula = get_sexp_main();
@@ -1641,7 +1641,7 @@ void parse_debriefing_new(mission * /*pm*/)
 			stuff_string(dbs->recommendation_text, F_MULTITEXT, NULL);
 		} // end while
 
-		Assert(db->num_stages == stage_num);
+	core::Assert(db->num_stages == stage_num);
 	}
 
 	if ( nt != Num_teams )
@@ -1807,7 +1807,7 @@ int parse_create_object(p_object *pobjp)
 
 		// we should only be calling this for dock leaders, because the dock leader
 		// governs the creation of his entire group
-		Assert((pobjp->flags[Mission::Parse_Object_Flags::SF_Dock_leader]));
+	core::Assert((pobjp->flags[Mission::Parse_Object_Flags::SF_Dock_leader]));
 
 		// if the leader will be destroyed before the mission starts, then *only* create the leader;
 		// don't create the rest of the group (this is what retail did)
@@ -1884,7 +1884,7 @@ int parse_create_object_sub(p_object *p_objp)
 
 	// base level creation - need ship name in case of duplicate textures
 	objnum = ship_create(&p_objp->orient, &p_objp->pos, p_objp->ship_class, p_objp->name);
-	Assert(objnum != -1);
+core::Assert(objnum != -1);
 	shipnum = Objects[objnum].instance;
 
 	shipp = &Ships[shipnum];
@@ -2171,7 +2171,7 @@ int parse_create_object_sub(p_object *p_objp)
 			free_sexp2(p_objp->ai_goals);	// free up sexp nodes for reuse, since they aren't needed anymore.
 	}
 
-	Assert(sip->model_num != -1);
+core::Assert(sip->model_num != -1);
 
 	// initialize subsystem statii here.  The subsystems are given a percentage damaged.  So a percent value
 	// of 20% means that the subsystem is 20% damaged (*not* 20% of max hits).  This is opposite the way
@@ -2220,7 +2220,7 @@ int parse_create_object_sub(p_object *p_objp)
 				}
 				else if (wp->primary_bank_weapons[j] >= 0 && Weapon_info[wp->primary_bank_weapons[j]].wi_flags[Weapon::Info_Flags::Ballistic])
 				{
-					Assertion(Weapon_info[wp->primary_bank_weapons[j]].cargo_size > 0.0f,
+				core::Assertion(Weapon_info[wp->primary_bank_weapons[j]].cargo_size > 0.0f,
 							"Primary weapon cargo size <= 0. Ship (%s) Subsystem (%s) Bank (%i) Weapon (%s)",
 							shipp->ship_name, sssp->name, j, Weapon_info[wp->primary_bank_weapons[j]].name);
 
@@ -2237,7 +2237,7 @@ int parse_create_object_sub(p_object *p_objp)
 				}
 				else if (wp->secondary_bank_weapons[j] >= 0)
 				{
-					Assertion(Weapon_info[wp->secondary_bank_weapons[j]].cargo_size > 0.0f,
+				core::Assertion(Weapon_info[wp->secondary_bank_weapons[j]].cargo_size > 0.0f,
 							"Secondary weapon cargo size <= 0. Ship (%s) Subsystem (%s) Bank (%i) Weapon (%s)",
 							shipp->ship_name, sssp->name, j, Weapon_info[wp->secondary_bank_weapons[j]].name);
 
@@ -2313,7 +2313,7 @@ int parse_create_object_sub(p_object *p_objp)
 				if (Fred_running) {
 					ptr->weapons.primary_bank_ammo[j] = sssp->primary_ammo[j];
 				} else if (ptr->weapons.primary_bank_weapons[j] >= 0 && Weapon_info[ptr->weapons.primary_bank_weapons[j]].wi_flags[Weapon::Info_Flags::Ballistic]) {
-					Assertion(Weapon_info[ptr->weapons.primary_bank_weapons[j]].cargo_size > 0.0f,
+				core::Assertion(Weapon_info[ptr->weapons.primary_bank_weapons[j]].cargo_size > 0.0f,
 							"Primary weapon cargo size <= 0. Ship (%s) Subsystem (%s) Bank (%i) Weapon (%s)",
 							shipp->ship_name, sssp->name, j, Weapon_info[ptr->weapons.primary_bank_weapons[j]].name);
 
@@ -2327,7 +2327,7 @@ int parse_create_object_sub(p_object *p_objp)
 				if (Fred_running) {
 					ptr->weapons.secondary_bank_ammo[j] = sssp->secondary_ammo[j];
 				} else if (ptr->weapons.secondary_bank_weapons[j] >= 0) {
-					Assertion(Weapon_info[ptr->weapons.secondary_bank_weapons[j]].cargo_size > 0.0f,
+				core::Assertion(Weapon_info[ptr->weapons.secondary_bank_weapons[j]].cargo_size > 0.0f,
 							"Secondary weapon cargo size <= 0. Ship (%s) Subsystem (%s) Bank (%i) Weapon (%s)",
 							shipp->ship_name, sssp->name, j, Weapon_info[ptr->weapons.secondary_bank_weapons[j]].name);
 
@@ -2481,10 +2481,10 @@ int parse_create_object_sub(p_object *p_objp)
  */
 void parse_bring_in_docked_wing(p_object *p_objp, int wingnum, int shipnum)
 {
-	Assert(!Fred_running);
-	Assert(p_objp != NULL);
-	Assert(wingnum >= 0);
-	Assert(shipnum >= 0);
+core::Assert(!Fred_running);
+core::Assert(p_objp != NULL);
+core::Assert(wingnum >= 0);
+core::Assert(shipnum >= 0);
 	int j, index;
 	wing *wingp = &Wings[wingnum];
 
@@ -2508,7 +2508,7 @@ void parse_bring_in_docked_wing(p_object *p_objp, int wingnum, int shipnum)
 	wingp->total_arrived_count++;
 	wingp->current_count++;
 	// make sure we haven't created too many ships
-	Assert(wingp->current_count <= MAX_SHIPS_PER_WING);
+core::Assert(wingp->current_count <= MAX_SHIPS_PER_WING);
 
 	// at this point the wing has arrived, so handle the stuff for this particular ship
 
@@ -2544,7 +2544,7 @@ void parse_bring_in_docked_wing(p_object *p_objp, int wingnum, int shipnum)
 // Goober5000
 void resolve_parse_flags(object *objp, flagset<Mission::Parse_Object_Flags> &parse_flags)
 {
-    Assert(objp != NULL);
+   core::Assert(objp != NULL);
     ship *shipp = &Ships[objp->instance];
 
     if (parse_flags[Mission::Parse_Object_Flags::SF_Cargo_known])
@@ -2713,7 +2713,7 @@ void fix_old_special_explosions(p_object *p_objp, int variable_index)
 {
 	int i;
 
-	Assertion(!(p_objp->use_special_explosion), "Mission appears to be using both the new and old method of special explosions for %s. Old method values used", p_objp->name); 
+core::Assertion(!(p_objp->use_special_explosion), "Mission appears to be using both the new and old method of special explosions for %s. Old method values used", p_objp->name); 
 	
 	// check all the variables are valid
 	for ( i = variable_index; i < (variable_index + BLOCK_EXP_SIZE); i++ ) {
@@ -2738,7 +2738,7 @@ void fix_old_special_hits(p_object *p_objp, int variable_index)
 {
 	int i; 
 
-	Assertion( ((p_objp->special_hitpoints == 0) && (p_objp->special_shield == -1)),"Mission appears to be using both the new and old method of special hitpoints for %s", p_objp->name);  
+core::Assertion( ((p_objp->special_hitpoints == 0) && (p_objp->special_shield == -1)),"Mission appears to be using both the new and old method of special hitpoints for %s", p_objp->name);  
 	
 	// check all the variables are valid
 	for ( i = variable_index; i < (variable_index + BLOCK_HIT_SIZE); i++ ) {
@@ -2789,7 +2789,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
     char name[NAME_LENGTH];
 	ship_info *sip;
 
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	// Goober5000
 	p_objp->created_object = NULL;
@@ -2976,7 +2976,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	parse_common_object_data(p_objp);  // get initial conditions and subsys status
 	count = 0;
 	while (required_string_either("$Arrival Location:", "$Status Description:"))	{
-		Assert(count < MAX_OBJECT_STATUS);
+	core::Assert(count < MAX_OBJECT_STATUS);
 
 		find_and_stuff("$Status Description:", &p_objp->status_type[count], F_NAME, Status_desc_names, Num_status_names, "Status Description");
 		find_and_stuff("$Status:", &p_objp->status[count], F_NAME, Status_type_names, Num_status_names, "Status Type");
@@ -3034,7 +3034,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	if (!Fred_running && (p_objp->arrival_cue >= 0))
 	{
 		// eval the arrival cue.  if the cue is true, set up the timestamp for the arrival delay
-		Assert (p_objp->arrival_delay <= 0);
+	core::Assert (p_objp->arrival_delay <= 0);
 
 		// don't eval arrival_cues when just looking for player information.
 		// evaluate to determine if sexp is always false.
@@ -3127,7 +3127,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	p_objp->escort_priority = 0;
     if (optional_string("+Escort Priority:"))
     {
-        Assert(p_objp->flags[Mission::Parse_Object_Flags::SF_Escort]);
+       core::Assert(p_objp->flags[Mission::Parse_Object_Flags::SF_Escort]);
         stuff_int(&p_objp->escort_priority);
     }
 
@@ -3244,7 +3244,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 		p_objp->ship_max_hull_strength = sip->max_hull_strength;
 	}
 
-	Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check (not shield because we might not have one)
+core::Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check (not shield because we might not have one)
 	p_objp->max_shield_recharge = sip->max_shield_recharge;
 
 
@@ -3261,7 +3261,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	if (optional_string("+Hotkey:"))
 	{
 		stuff_int(&p_objp->hotkey);
-		Assert((p_objp->hotkey >= 0) && (p_objp->hotkey < 10));
+	core::Assert((p_objp->hotkey >= 0) && (p_objp->hotkey < 10));
 	}
 
 	// Goober5000
@@ -3304,7 +3304,7 @@ int parse_object(mission *pm, int  /*flag*/, p_object *p_objp)
 	if (optional_string("+Destroy At:"))
 	{
 		stuff_int(&p_objp->destroy_before_mission_time);
-		Assert (p_objp->destroy_before_mission_time >= 0);
+	core::Assert (p_objp->destroy_before_mission_time >= 0);
 		p_objp->arrival_cue = Locked_sexp_true;
 		p_objp->arrival_delay = timestamp(0);
 	}
@@ -3472,7 +3472,7 @@ void mission_parse_handle_late_arrivals(p_object *p_objp)
 	if (p_objp->created_object != NULL)
 		return;
 
-	Assert( p_objp->ship_class >= 0 );
+core::Assert( p_objp->ship_class >= 0 );
 
 	sip = &Ship_info[p_objp->ship_class];
 
@@ -3500,7 +3500,7 @@ void mission_parse_maybe_create_parse_object(p_object *pobjp)
 	// created all the objects in a docked group simultaneously.
 	if (pobjp->created_object != NULL)
 	{
-		Assert(object_is_docked(pobjp));
+	core::Assert(object_is_docked(pobjp));
 		return;
 	}
 
@@ -3517,7 +3517,7 @@ void mission_parse_maybe_create_parse_object(p_object *pobjp)
             (pobjp->flags[Mission::Parse_Object_Flags::SF_Reinforcement]))))
 	{
 		// we can't add ships getting destroyed to the arrival list!!!
-		Assert (pobjp->destroy_before_mission_time < 0);
+	core::Assert (pobjp->destroy_before_mission_time < 0);
 
 		// add to arrival list
 		list_append(&Ship_arrival_list, pobjp);
@@ -3696,7 +3696,7 @@ void update_loadout_totals(team_data *current_team, int loadout_index)
 	// Fix the loadout variables to show that the class has less available if there are still ships available
 	if (current_team->ship_count[loadout_index] > 0)
 	{
-		Assert (current_team->loadout_total > 0); 
+	core::Assert (current_team->loadout_total > 0); 
 
 		current_team->ship_count[loadout_index]--;
 		current_team->loadout_total--;
@@ -3719,7 +3719,7 @@ bool is_ship_assignable(p_object *p_objp)
 	loadout_index = get_reassigned_index(data_for_team, p_objp->ship_class);
 	if (loadout_index != -1 )
 	{
-		Assert (data_for_team->loadout_total > 0);
+	core::Assert (data_for_team->loadout_total > 0);
 
 		update_loadout_totals(data_for_team, loadout_index);
 			
@@ -3784,7 +3784,7 @@ void process_loadout_objects()
 		p_object *p_objp = &Parse_objects[reassignments[m]];
 		team_data *current_team = &Team_data[p_objp->team];
 		bool loadout_assigned = false;
-        Assert(p_objp->flags[Mission::Parse_Object_Flags::SF_Set_class_dynamically]);
+       core::Assert(p_objp->flags[Mission::Parse_Object_Flags::SF_Set_class_dynamically]);
 
 		// First thing to check is whether we actually have any ships left to assign
 		if (current_team->loadout_total == 0)
@@ -3803,7 +3803,7 @@ void process_loadout_objects()
 					update_loadout_totals(current_team, j);
 					// We will need to assign a new class too (if a p_object the same class was available
 					// it should have been assigned by attempt_loadout_assignation_from_defaults()
-					Assert (p_objp->ship_class != current_team->ship_list[j]);
+				core::Assert (p_objp->ship_class != current_team->ship_list[j]);
 					swap_parse_object(p_objp, current_team->ship_list[j]);
 
 					loadout_assigned = true;
@@ -3813,14 +3813,14 @@ void process_loadout_objects()
 		}
 			
 		// We should never reach here with an unassigned loadout
-		Assert (loadout_assigned);
+	core::Assert (loadout_assigned);
 	}
 }
 
 extern int Multi_ping_timestamp;
 void parse_objects(mission *pm, int flag)
 {	
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	required_string("#Objects");	
 
@@ -3882,8 +3882,8 @@ void swap_parse_object(p_object *p_obj, int new_ship_class)
 	// Hitpoints
 	// We need to take into account that the ship might have been assigned special hitpoints so we can't 
 	// simply swap old for new. 
-	Assert (p_obj->ship_max_hull_strength > 0);
-	Assert (old_ship_info->max_hull_strength > 0);
+core::Assert (p_obj->ship_max_hull_strength > 0);
+core::Assert (old_ship_info->max_hull_strength > 0);
 	
 	float hp_multiplier = p_obj->ship_max_hull_strength / old_ship_info->max_hull_strength;
 	p_obj->ship_max_hull_strength = new_ship_info->max_hull_strength * hp_multiplier;
@@ -4025,7 +4025,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 		// which should always give a number >= 0;
 		if ( wingp->arrival_delay <= 0 ) {
 			wingp->arrival_delay = timestamp( -wingp->arrival_delay * 1000 );
-			Assert ( wingp->arrival_delay >= 0 );
+		core::Assert ( wingp->arrival_delay >= 0 );
 		}
 
 		if ( !timestamp_elapsed( wingp->arrival_delay ) )
@@ -4037,7 +4037,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 			int shipnum;
 			char *name;
 
-			Assert( wingp->arrival_anchor >= 0 );
+		core::Assert( wingp->arrival_anchor >= 0 );
 			name = Parse_names[wingp->arrival_anchor];
 
 			// see if ship is in mission.
@@ -4089,7 +4089,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 			// if at least one of these is valid, then reset the timestamp.  If they are both zero, we will create the
 			// wave
 			if ( (wingp->wave_delay_min > 0) || (wingp->wave_delay_max > 0) ) {
-				Assert ( wingp->wave_delay_min <= wingp->wave_delay_max );
+			core::Assert ( wingp->wave_delay_min <= wingp->wave_delay_max );
 				time_to_arrive = wingp->wave_delay_min + (int)(frand() * (wingp->wave_delay_max - wingp->wave_delay_min));
 
 				// MWA -- 5/18/98
@@ -4154,7 +4154,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 		if (p_objp->wingnum != wingnum)
 			continue;
 
-		Assert( (p_objp->pos_in_wing >= 0) && (p_objp->pos_in_wing < MAX_SHIPS_PER_WING) );
+	core::Assert( (p_objp->pos_in_wing >= 0) && (p_objp->pos_in_wing < MAX_SHIPS_PER_WING) );
 	
 		// when ingame joining, we need to create a specific ship out of the list of ships for a
 		// wing.  specific_instance is a 0 based integer which specified which ship in the wing
@@ -4182,7 +4182,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 				continue;
 		}
 
-        Assert(!(p_objp->flags[Mission::Parse_Object_Flags::SF_Cannot_arrive]));		// get allender
+       core::Assert(!(p_objp->flags[Mission::Parse_Object_Flags::SF_Cannot_arrive]));		// get allender
 
 		// if we have the maximum number of ships in the wing, we must bail as well
 		if (wingp->current_count >= MAX_SHIPS_PER_WING)
@@ -4283,7 +4283,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 	}
 
 	// we should always have enough ships in the list!!!
-	Assert (num_to_create == 0);
+core::Assert (num_to_create == 0);
 
 	// wing current_count needs to match the end of the ship_index[] list, but there
 	// is a very off chance it could have holes in it (especially if it's a red-alert
@@ -4351,7 +4351,7 @@ int parse_wing_create_ships( wing *wingp, int num_to_create, int force, int spec
 		// test code to check to be sure that all ships in the wing are ignoring the same types
 		// of orders from the leader
 		if ( Fred_running ) {
-			Assert( wingp->ship_index[wingp->special_ship] != -1 );
+		core::Assert( wingp->ship_index[wingp->special_ship] != -1 );
 			int orders = Ships[wingp->ship_index[0]].orders_accepted;
 			for (it = 0; it < wingp->current_count; it++ ) {
 				if (it == wingp->special_ship)
@@ -4378,7 +4378,7 @@ void parse_wing(mission *pm)
     char wing_flag_strings[PARSEABLE_WING_FLAGS][NAME_LENGTH];
 	wing *wingp;
 
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 	wingp = &Wings[Num_wings];
 
 	required_string("$Name:");
@@ -4434,7 +4434,7 @@ void parse_wing(mission *pm)
 
 	required_string("$Waves:");
 	stuff_int(&wingp->num_waves);
-	Assert ( wingp->num_waves >= 1 );		// there must be at least 1 wave
+core::Assert ( wingp->num_waves >= 1 );		// there must be at least 1 wave
 
 	wingp->current_wave = 0;
 
@@ -4543,7 +4543,7 @@ void parse_wing(mission *pm)
 	wingp->hotkey = -1;
 	if (optional_string("+Hotkey:")) {
 		stuff_int(&wingp->hotkey);
-		Assert((wingp->hotkey >= 0) && (wingp->hotkey < 10));
+	core::Assert((wingp->hotkey >= 0) && (wingp->hotkey < 10));
 	}
 
 	if (optional_string("+Flags:")) {
@@ -4663,7 +4663,7 @@ void parse_wing(mission *pm)
 		for (std::vector<p_object>::iterator p_objp = Parse_objects.begin(); p_objp != Parse_objects.end(); ++p_objp) {
 			if ( !strcmp(ship_name, p_objp->name) ) {
 				// get Allender -- ship appears to be in multiple wings
-				Assert (p_objp->wingnum == -1);
+			core::Assert (p_objp->wingnum == -1);
 
 				// assign wingnum
 				p_objp->wingnum = wingnum;
@@ -4702,7 +4702,7 @@ void parse_wings(mission *pm)
 	required_string("#Wings");
 	while (required_string_either("#Events", "$Name:"))
 	{
-		Assert(Num_wings < MAX_WINGS);
+	core::Assert(Num_wings < MAX_WINGS);
 		parse_wing(pm);
 		Num_wings++;
 	}
@@ -4730,7 +4730,7 @@ void resolve_path_masks(int anchor, int *path_mask)
 		p_object *parent_pobjp;
 
 		// get anchor ship
-		Assert(!(anchor & SPECIAL_ARRIVAL_ANCHOR_FLAG));
+	core::Assert(!(anchor & SPECIAL_ARRIVAL_ANCHOR_FLAG));
 		parent_pobjp = mission_parse_get_parse_object(Parse_names[anchor]);
 
 		// Load the anchor ship model with subsystems and all; it'll need to be done for this mission anyway
@@ -4830,8 +4830,8 @@ void post_process_ships_wings()
 			{
 				int shipnum = ship_name_lookup(p_objp->name);
 
-				Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
-				Assert(p_objp->pos_in_wing >= 0 && p_objp->pos_in_wing < MAX_SHIPS_PER_WING);
+			core::Assert(shipnum >= 0 && shipnum < MAX_SHIPS);
+			core::Assert(p_objp->pos_in_wing >= 0 && p_objp->pos_in_wing < MAX_SHIPS_PER_WING);
 
 				Wings[p_objp->wingnum].ship_index[p_objp->pos_in_wing] = shipnum;
 			}
@@ -4963,7 +4963,7 @@ void parse_events(mission *pm)
 	required_string("#Events");
 
 	while (required_string_either( "#Goals", "$Formula:")) {
-		Assert( Num_mission_events < MAX_MISSION_EVENTS );
+	core::Assert( Num_mission_events < MAX_MISSION_EVENTS );
 		parse_event(pm);
 		Num_mission_events++;
 	}
@@ -4977,8 +4977,8 @@ void parse_goal(mission *pm)
 
 	goalp = &Mission_goals[Num_goals++];
 
-	Assert(Num_goals < MAX_GOALS);
-	Assert(pm != NULL);
+core::Assert(Num_goals < MAX_GOALS);
+core::Assert(pm != NULL);
 
 	find_and_stuff("$Type:", &goalp->type, F_NAME, Goal_type_names, Num_goal_type_names, "goal type");
 
@@ -5039,7 +5039,7 @@ void parse_goals(mission *pm)
 
 void parse_waypoint_list(mission *pm)
 {
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	char name_buf[NAME_LENGTH];
 	required_string("$Name:");
@@ -5148,8 +5148,8 @@ void parse_reinforcement(mission *pm)
 	p_object *rforce_obj = NULL;
 	int instance = -1;
 
-	Assert(Num_reinforcements < MAX_REINFORCEMENTS);
-	Assert(pm != NULL);
+core::Assert(Num_reinforcements < MAX_REINFORCEMENTS);
+core::Assert(pm != NULL);
 	ptr = &Reinforcements[Num_reinforcements];
 
 	required_string("$Name:");
@@ -5423,7 +5423,7 @@ void parse_asteroid_fields(mission *pm)
 {
 	int i, count, subtype;
 
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 	for (i=0; i<MAX_ASTEROID_FIELDS; i++)
 		Asteroid_field.num_initial_asteroids = 0;
 
@@ -5437,7 +5437,7 @@ void parse_asteroid_fields(mission *pm)
 		float speed, density;
 		int type;
 
-		Assert(i < 1);
+	core::Assert(i < 1);
 		required_string("$Density:");
 		stuff_float(&density);
 
@@ -5742,9 +5742,9 @@ bool post_process_mission()
 
 	// the player_start_shipname had better exist at this point!
 	Player_start_shipnum = ship_name_lookup( Player_start_shipname );
-	Assert( Player_start_shipnum != -1 );
+core::Assert( Player_start_shipnum != -1 );
 	Player_start_pobject = mission_parse_get_parse_object( Player_start_shipname );
-	Assert( Player_start_pobject != NULL );
+core::Assert( Player_start_pobject != NULL );
 
 	// Assign objnum, shipnum, etc. to the player structure
 	objnum = Ships[Player_start_shipnum].objnum;
@@ -5779,7 +5779,7 @@ bool post_process_mission()
 
 	// when TVT, hack starting wings to be team wings
 	if(MULTI_TEAM){
-		Assert(MAX_TVT_WINGS <= MAX_STARTING_WINGS);
+	core::Assert(MAX_TVT_WINGS <= MAX_STARTING_WINGS);
 		for (i=0; i<MAX_STARTING_WINGS; i++)
 		{
 			if (i<MAX_TVT_WINGS)
@@ -5838,7 +5838,7 @@ bool post_process_mission()
 			int result, bad_node, op;
 
 			op = get_operator_index(CTEXT(i));
-			Assert(op != -1);  // need to make sure it is an operator before we treat it like one..
+		core::Assert(op != -1);  // need to make sure it is an operator before we treat it like one..
 			result = check_sexp_syntax( i, query_operator_return_type(op), 1, &bad_node);
 
 			// entering this if statement will result in program termination!!!!!
@@ -6042,7 +6042,7 @@ bool parse_main(const char *mission_name, int flags)
 	// fill in Ship_class_names array with the names from the ship_info struct;
 	Num_parse_names = 0;
 	Num_path_restrictions = 0;
-	Assert(Ship_info.size() <= MAX_SHIP_CLASSES);
+core::Assert(Ship_info.size() <= MAX_SHIP_CLASSES);
 
 	i = 0;
 	for (auto it = Ship_info.begin(); it != Ship_info.end(); i++, ++it)
@@ -6516,7 +6516,7 @@ int mission_parse_get_multi_mission_info( const char *filename )
 	if ( get_mission_info(filename, &The_mission) )
 		return -1;
 
-	Assert( The_mission.game_type & MISSION_TYPE_MULTI );		// assume multiplayer only for now?
+core::Assert( The_mission.game_type & MISSION_TYPE_MULTI );		// assume multiplayer only for now?
 
 	// return the number of parse_players.  later, we might want to include (optionally?) the number
 	// of other ships in the main players wing (usually wing 'alpha') for inclusion of number of
@@ -6587,7 +6587,7 @@ int mission_set_arrival_location(int anchor, int location, int dist, int objnum,
 	if ( location == ARRIVE_AT_LOCATION )
 		return -1;
 
-	Assert(anchor >= 0);
+core::Assert(anchor >= 0);
 
 	// this ship might possibly arrive at another location.  The location is based on the
 	// proximity of some ship (and some other special tokens)
@@ -6614,14 +6614,14 @@ int mission_set_arrival_location(int anchor, int location, int dist, int objnum,
 	// arrive at its placed location
 	if (shipnum < 0)
 	{
-		Assert ( location != ARRIVE_FROM_DOCK_BAY );		// bogus data somewhere!!!  get mwa
+	core::Assert ( location != ARRIVE_FROM_DOCK_BAY );		// bogus data somewhere!!!  get mwa
 		nprintf (("allender", "couldn't find ship for arrival anchor -- using location ship created at"));
 		return -1;
 	}
 
 	// take the shipnum and get the position.  once we have positions, we can determine where
 	// to make this ship appear
-	Assert ( shipnum != -1 );
+core::Assert ( shipnum != -1 );
 	anchor_objnum = Ships[shipnum].objnum;
 	anchor_pos = Objects[anchor_objnum].pos;
 
@@ -6736,7 +6736,7 @@ void mission_parse_mark_reinforcement_available(char *name)
 		}
 	}
 
-	Assert ( i < Num_reinforcements );
+core::Assert ( i < Num_reinforcements );
 }
 
 /**
@@ -6773,7 +6773,7 @@ int mission_did_ship_arrive(p_object *objp)
 			objp->arrival_delay = timestamp( -objp->arrival_delay * 1000 );
 
 			// make sure we have a valid timestamp
-			Assert( objp->arrival_delay > 0 );
+		core::Assert( objp->arrival_delay > 0 );
 		}
 		
 		// if the timestamp hasn't elapsed, move onto the next ship.
@@ -6786,7 +6786,7 @@ int mission_did_ship_arrive(p_object *objp)
 			int shipnum;
 			char *name;
 
-			Assert( objp->arrival_anchor >= 0 );
+		core::Assert( objp->arrival_anchor >= 0 );
 			name = Parse_names[objp->arrival_anchor];
 	
 			// see if ship is in mission.
@@ -6818,7 +6818,7 @@ int mission_did_ship_arrive(p_object *objp)
 
 		// since this ship is not in a wing, create a SHIP_ARRIVE entry
 		//mission_log_add_entry( LOG_SHIP_ARRIVE, objp->name, NULL );
-		Assert(object_num >= 0 && object_num < MAX_OBJECTS);
+	core::Assert(object_num >= 0 && object_num < MAX_OBJECTS);
 		
 		// Play the music track for an arrival
 		if ( !(Ships[Objects[object_num].instance].flags[Ship::Ship_Flags::No_arrival_music]) )
@@ -7124,7 +7124,7 @@ int ship_can_use_warp_drive(ship *shipp)
  */
 int mission_do_departure(object *objp, bool goal_is_to_warp)
 {
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp->type == OBJ_SHIP);
 	int location, anchor, path_mask;
 	ship *shipp = &Ships[objp->instance];
 	ai_info *aip = &Ai_info[shipp->ai_index];
@@ -7176,7 +7176,7 @@ int mission_do_departure(object *objp, bool goal_is_to_warp)
 		int anchor_shipnum;
 		char *name;
 
-		Assert(anchor >= 0);
+	core::Assert(anchor >= 0);
 		name = Parse_names[anchor];
 
 		// see if ship is yet to arrive.  If so, then warp.
@@ -7261,7 +7261,7 @@ void mission_eval_departures()
 		if (objp->type == OBJ_SHIP) {
 			ship	*shipp;
 
-			Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
+		core::Assert((objp->instance >= 0) && (objp->instance < MAX_SHIPS));
 
 			shipp = &Ships[objp->instance];
 			
@@ -7321,7 +7321,7 @@ void mission_eval_departures()
 				if ( (shipp->is_departing()) || (shipp->flags[Ship::Ship_Flags::Dying]) )
 					continue;
 
-				Assert ( shipp->objnum != -1 );
+			core::Assert ( shipp->objnum != -1 );
 				objp = &Objects[shipp->objnum];
 
 				mission_do_departure( objp );
@@ -7346,11 +7346,11 @@ int allocate_subsys_status()
 	int i;
 	// set primary weapon ammunition here, but does it actually matter? - Goober5000
 
-	Assert(Subsys_index >= 0);
+core::Assert(Subsys_index >= 0);
 
 	// we allocate in blocks of MIN_SUBSYS_STATUS_SIZE so if we need more then make more
 	if ( (Subsys_status == NULL) || (Subsys_index >= (Subsys_status_size - 1)) ) {
-		Assert( MIN_SUBSYS_STATUS_SIZE > 0 );
+	core::Assert( MIN_SUBSYS_STATUS_SIZE > 0 );
 
 		Subsys_status_size += MIN_SUBSYS_STATUS_SIZE;
 		Subsys_status = (subsys_status*)vm_realloc(Subsys_status, sizeof(subsys_status) * Subsys_status_size );
@@ -7460,8 +7460,8 @@ int get_parse_name_index(const char *name)
 		if (!stricmp(name, Parse_names[i]))
 			return i;
 
-	Assert(i < MAX_SHIPS + MAX_WINGS);
-	Assert(strlen(name) < NAME_LENGTH);
+core::Assert(i < MAX_SHIPS + MAX_WINGS);
+core::Assert(strlen(name) < NAME_LENGTH);
 	strcpy_s(Parse_names[i], name);
 	return Num_parse_names++;
 }
@@ -7590,7 +7590,7 @@ void mission_add_to_arriving_support( object *requester_objp )
 	int i;
 	ship *shipp;
 
-	Assert ( Arriving_support_ship );
+core::Assert ( Arriving_support_ship );
 
 	if ( Num_arriving_repair_targets == MAX_AI_GOALS ) {
 		mprintf(("Reached MAX_AI_GOALS trying to add repair request!\n"));
@@ -7652,7 +7652,7 @@ void mission_bring_in_support_ship( object *requester_objp )
 	ship *requester_shipp;
 	int i, j, requester_species;
 
-	Assert ( requester_objp->type == OBJ_SHIP );
+core::Assert ( requester_objp->type == OBJ_SHIP );
 	requester_shipp = &Ships[requester_objp->instance];	//	MK, 10/23/97, used to be ->type, bogus, no?
 
 	// if the support ship is already arriving, add the requester to the list
@@ -7676,7 +7676,7 @@ void mission_bring_in_support_ship( object *requester_objp )
 
 	//	Choose position to warp in ship.
 	//	Temporary, but changed by MK because it used to be exactly behind the player.
-	//	This could cause an Assert if the player immediately targeted it (before moving).
+	//	This could cause ancore::Assert if the player immediately targeted it (before moving).
 	//	Tend to put in front of the player to aid him in flying towards the ship.
 
 	if (!get_warp_in_pos(&warp_in_pos, requester_objp, 1.0f, 0.1f, 1.0f))
@@ -7838,7 +7838,7 @@ int mission_is_repair_scheduled( object *objp )
 	if ( !Arriving_support_ship )
 		return 0;
 
-	Assert ( objp->type == OBJ_SHIP );
+core::Assert ( objp->type == OBJ_SHIP );
 	name = Ships[objp->instance].ship_name;
 	for (i = 0; i < Num_arriving_repair_targets; i++ ) {
 		if ( !strcmp( name, Arriving_repair_targets[i]) )
@@ -7861,7 +7861,7 @@ int mission_remove_scheduled_repair( object *objp )
 
 	// itereate through the target list looking for this ship name.  If not found, we
 	// can simply return.
-	Assert ( objp->type == OBJ_SHIP );
+core::Assert ( objp->type == OBJ_SHIP );
 	name = Ships[objp->instance].ship_name;
 	for (index = 0; index < Num_arriving_repair_targets; index++ ) {
 		if ( !strcmp( name, Arriving_repair_targets[index]) )

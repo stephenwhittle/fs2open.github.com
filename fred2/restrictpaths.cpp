@@ -46,9 +46,9 @@ BOOL restrict_paths::OnInitDialog()
 {
 	// get stuff from params
 	m_model = model_get(Ship_info[m_ship_class].model_num);
-	Assert(m_model->ship_bay);
+core::Assert(m_model->ship_bay);
 	m_num_paths = m_model->ship_bay->num_paths;
-	Assert(m_num_paths > 0);
+core::Assert(m_num_paths > 0);
 				
 	// misc window crap
 	CDialog::OnInitDialog();

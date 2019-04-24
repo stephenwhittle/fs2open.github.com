@@ -41,10 +41,10 @@ void flak_pick_range(object *objp, vec3d * /*firing_pos*/, vec3d *predicted_targ
 	vec3d temp;
 	
 	// make sure this flak object is valid
-	Assert(objp->type == OBJ_WEAPON);
-	Assert(objp->instance >= 0);
-	Assert(Weapons[objp->instance].weapon_info_index >= 0);
-	Assert(Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Flak]);	
+core::Assert(objp->type == OBJ_WEAPON);
+core::Assert(objp->instance >= 0);
+core::Assert(Weapons[objp->instance].weapon_info_index >= 0);
+core::Assert(Weapon_info[Weapons[objp->instance].weapon_info_index].wi_flags[Weapon::Info_Flags::Flak]);	
 
 	weapon_info* wip = &Weapon_info[Weapons[objp->instance].weapon_info_index];
 
@@ -120,11 +120,11 @@ void flak_jitter_aim(vec3d *dir, float dist_to_target, float weapon_subsys_stren
 void flak_muzzle_flash(vec3d *pos, vec3d *dir, physics_info *pip, int turret_weapon_class)
 {
 	// sanity
-	Assert((turret_weapon_class >= 0) && (turret_weapon_class < Num_weapon_types));
+core::Assert((turret_weapon_class >= 0) && (turret_weapon_class < Num_weapon_types));
 	if((turret_weapon_class < 0) || (turret_weapon_class >= Num_weapon_types)){
 		return;
 	}
-	Assert(Weapon_info[turret_weapon_class].wi_flags[Weapon::Info_Flags::Flak]);
+core::Assert(Weapon_info[turret_weapon_class].wi_flags[Weapon::Info_Flags::Flak]);
 	if(!(Weapon_info[turret_weapon_class].wi_flags[Weapon::Info_Flags::Flak])){
 		return;
 	}
@@ -141,8 +141,8 @@ void flak_muzzle_flash(vec3d *pos, vec3d *dir, physics_info *pip, int turret_wea
  */
 void flak_set_range(object *objp, float range)
 {
-	Assert(objp->type == OBJ_WEAPON);
-	Assert(objp->instance >= 0);	
+core::Assert(objp->type == OBJ_WEAPON);
+core::Assert(objp->instance >= 0);	
 
 	// setup the flak info
 	Weapons[objp->instance].det_range = range;
@@ -153,8 +153,8 @@ void flak_set_range(object *objp, float range)
  */
 float flak_get_range(object *objp)
 {
-	Assert(objp->type == OBJ_WEAPON);
-	Assert(objp->instance >= 0);	
+core::Assert(objp->type == OBJ_WEAPON);
+core::Assert(objp->instance >= 0);	
 	
 	return Weapons[objp->instance].det_range;
 }

@@ -98,7 +98,7 @@ float atan2_safe(float y, float x)
 float vm_vec_projection_parallel(vec3d *component, const vec3d *src, const vec3d *unit_vec)
 {
 	float mag;
-	Assert( vm_vec_mag(unit_vec) > 0.999f  &&  vm_vec_mag(unit_vec) < 1.001f );
+core::Assert( vm_vec_mag(unit_vec) > 0.999f  &&  vm_vec_mag(unit_vec) < 1.001f );
 
 	mag = vm_vec_dot(src, unit_vec);
 	vm_vec_copy_scale(component, unit_vec, mag);
@@ -113,7 +113,7 @@ float vm_vec_projection_parallel(vec3d *component, const vec3d *src, const vec3d
 void vm_vec_projection_onto_plane(vec3d *projection, const vec3d *src, const vec3d *unit_normal)
 {
 	float mag;
-	Assert( vm_vec_mag(unit_normal) > 0.999f  &&  vm_vec_mag(unit_normal) < 1.001f );
+core::Assert( vm_vec_mag(unit_normal) > 0.999f  &&  vm_vec_mag(unit_normal) < 1.001f );
 
 	mag = vm_vec_dot(src, unit_normal);
 	*projection = *src;
@@ -130,7 +130,7 @@ void vm_project_point_onto_plane(vec3d *new_point, const vec3d *point, const vec
 {
 	float D;		// plane constant in Ax+By+Cz+D = 0   or   dot(X,n) - dot(Xp,n) = 0, so D = -dot(Xp,n)
 	float dist;
-	Assert( vm_vec_mag(plane_normal) > 0.999f  &&  vm_vec_mag(plane_normal) < 1.001f );
+core::Assert( vm_vec_mag(plane_normal) > 0.999f  &&  vm_vec_mag(plane_normal) < 1.001f );
 
 	D = -vm_vec_dot(plane_point, plane_normal);
 	dist = vm_vec_dot(point, plane_normal) + D;
@@ -509,7 +509,7 @@ float vm_vec_copy_normalize_quick(vec3d *dest,const vec3d *src)
 
 	im = vm_vec_imag(src);
 
-	Assert(im > 0.0f);
+core::Assert(im > 0.0f);
 
 	dest->xyz.x = src->xyz.x*im;
 	dest->xyz.y = src->xyz.y*im;
@@ -527,7 +527,7 @@ float vm_vec_normalize_quick(vec3d *src)
 
 	im = vm_vec_imag(src);
 
-	Assert(im > 0.0f);
+core::Assert(im > 0.0f);
 
 	src->xyz.x = src->xyz.x*im;
 	src->xyz.y = src->xyz.y*im;
@@ -546,7 +546,7 @@ float vm_vec_copy_normalize_quick_mag(vec3d *dest, const vec3d *src)
 
 	m = vm_vec_mag_quick(src);
 
-	Assert(m > 0.0f);
+core::Assert(m > 0.0f);
 
 	float im = 1.0f / m;
 
@@ -586,9 +586,9 @@ float vm_vec_normalized_dir_quick(vec3d *dest, const vec3d *end, const vec3d *st
 //dest CANNOT equal either source
 vec3d *vm_vec_normal(vec3d *dest, const vec3d *p0, const vec3d *p1, const vec3d *p2)
 {
-	Assert(dest != p0);
-	Assert(dest != p1);
-	Assert(dest != p2);
+core::Assert(dest != p0);
+core::Assert(dest != p1);
+core::Assert(dest != p2);
 
 	vm_vec_perp(dest,p0,p1,p2);
 
@@ -641,9 +641,9 @@ int vm_test_parallel(const vec3d *src0, const vec3d *src1)
 //dest CANNOT equal either source
 vec3d *vm_vec_perp(vec3d *dest, const vec3d *p0, const vec3d *p1,const vec3d *p2)
 {
-	Assert(dest != p0);
-	Assert(dest != p1);
-	Assert(dest != p2);
+core::Assert(dest != p0);
+core::Assert(dest != p1);
+core::Assert(dest != p2);
 
 	vec3d t0,t1;
 
@@ -855,7 +855,7 @@ matrix *vm_vector_2_matrix_norm(matrix *m, const vec3d *fvec, const vec3d *uvec,
 	vec3d *yvec=&temp.vec.uvec;
 	vec3d *zvec=&temp.vec.fvec;
 
-	Assert(fvec != NULL);
+core::Assert(fvec != NULL);
 
 	*zvec = *fvec;
 
@@ -911,7 +911,7 @@ matrix *vm_vector_2_matrix_norm(matrix *m, const vec3d *fvec, const vec3d *uvec,
 // also be a normalized vector.  It took me awhile to verify online that this was true. ;)
 vec3d *vm_vec_rotate(vec3d *dest, const vec3d *src, const matrix *m)
 {
-	Assert(dest != src);
+core::Assert(dest != src);
 
 	dest->xyz.x = (src->xyz.x*m->vec.rvec.xyz.x)+(src->xyz.y*m->vec.rvec.xyz.y)+(src->xyz.z*m->vec.rvec.xyz.z);
 	dest->xyz.y = (src->xyz.x*m->vec.uvec.xyz.x)+(src->xyz.y*m->vec.uvec.xyz.y)+(src->xyz.z*m->vec.uvec.xyz.z);
@@ -937,7 +937,7 @@ vec3d *vm_vec_rotate(vec3d *dest, const vec3d *src, const matrix *m)
 // also be a normalized vector.  It took me awhile to verify online that this was true. ;)
 vec3d *vm_vec_unrotate(vec3d *dest, const vec3d *src, const matrix *m)
 {
-	Assert(dest != src);
+core::Assert(dest != src);
 
 	dest->xyz.x = (src->xyz.x*m->vec.rvec.xyz.x)+(src->xyz.y*m->vec.uvec.xyz.x)+(src->xyz.z*m->vec.fvec.xyz.x);
 	dest->xyz.y = (src->xyz.x*m->vec.rvec.xyz.y)+(src->xyz.y*m->vec.uvec.xyz.y)+(src->xyz.z*m->vec.fvec.xyz.y);
@@ -962,7 +962,7 @@ matrix *vm_transpose(matrix *m)
 //dest CANNOT equal source. use vm_transpose() if this is the case
 matrix *vm_copy_transpose(matrix *dest, const matrix *src)
 {
-	Assert(dest != src);
+core::Assert(dest != src);
 
 	dest->vec.rvec.xyz.x = src->vec.rvec.xyz.x;
 	dest->vec.rvec.xyz.y = src->vec.uvec.xyz.x;
@@ -984,7 +984,7 @@ matrix *vm_copy_transpose(matrix *dest, const matrix *src)
 //dest CANNOT equal either source
 matrix *vm_matrix_x_matrix(matrix *dest, const matrix *src0, const matrix *src1)
 {
-	Assert(dest!=src0 && dest!=src1);
+core::Assert(dest!=src0 && dest!=src1);
 
 	dest->vec.rvec.xyz.x = vm_vec_dot3(src0->vec.rvec.xyz.x,src0->vec.uvec.xyz.x,src0->vec.fvec.xyz.x, &src1->vec.rvec);
 	dest->vec.uvec.xyz.x = vm_vec_dot3(src0->vec.rvec.xyz.x,src0->vec.uvec.xyz.x,src0->vec.fvec.xyz.x, &src1->vec.uvec);
@@ -1042,8 +1042,8 @@ angles *vm_extract_angles_matrix(angles *a, const matrix *m)
 // http://books.google.com/books?id=X3hmuhBoFF0C&printsec=frontcover#v=onepage&q&f=false
 angles *vm_extract_angles_matrix_alternate(angles *a, const matrix *m)
 {
-	Assert(a != NULL);
-	Assert(m != NULL);
+core::Assert(a != NULL);
+core::Assert(m != NULL);
 
 	// Extract pitch from m32, being careful for domain errors with
 	// asin().  We could have values slightly out of range due to
@@ -1576,7 +1576,7 @@ void vm_matrix_to_rot_axis_and_angle(const matrix *m, float *theta, vec3d *rot_a
 		vm_vec_make(rot_axis, 1.0f, 0.0f, 0.0f);
 	} else if (cos_theta > -0.999999875f) { // angle is within limits between 0 and PI
 		*theta = acosf(cos_theta);
-		Assert( !fl_is_nan(*theta) );
+	core::Assert( !fl_is_nan(*theta) );
 
 		rot_axis->xyz.x = (m->vec.uvec.xyz.z - m->vec.fvec.xyz.y);
 		rot_axis->xyz.y = (m->vec.fvec.xyz.x - m->vec.rvec.xyz.z);
@@ -1651,8 +1651,8 @@ static float away(float w_in, float w_max, float theta_goal, float aa, float del
 static float approach(float w_in, float w_max, float theta_goal, float aa, float delta_t, float *w_out, int no_overshoot)
 {
 	float delta_theta;		// amount rotated during time delta_t
-	Assert(w_in >= 0);
-	Assert(theta_goal > 0);
+core::Assert(w_in >= 0);
+core::Assert(theta_goal > 0);
 	float effective_aa;
 
 	if (aa == 0) {
@@ -1672,7 +1672,7 @@ static float approach(float w_in, float w_max, float theta_goal, float aa, float
 		if (delta_theta > theta_goal) {	// pass goal during this frame
 			float t_goal = (-w_in + fl_sqrt(w_in*w_in +2.0f*effective_aa*theta_goal)) / effective_aa;
 			// get time to theta_goal and away
-			Assert(t_goal < delta_t);
+		core::Assert(t_goal < delta_t);
 			w_in -= effective_aa*t_goal;
 			delta_theta = w_in*t_goal + 0.5f*effective_aa*t_goal*t_goal;
 			delta_theta -= away(-w_in, w_max, 0.0f, aa, delta_t - t_goal, w_out, no_overshoot);
@@ -1692,7 +1692,7 @@ static float approach(float w_in, float w_max, float theta_goal, float aa, float
 	} else if (w_in*w_in < 2.0f*0.95f*aa*theta_goal) {	// undershoot condition
 		// find peak angular velocity
 		float wp_sqr = fl_abs(aa*theta_goal + 0.5f*w_in*w_in);
-		Assert(wp_sqr >= 0);
+	core::Assert(wp_sqr >= 0);
 
 		if (wp_sqr > w_max*w_max) {
 			float time_to_w_max = (w_max - w_in) / aa;
@@ -1728,7 +1728,7 @@ static float approach(float w_in, float w_max, float theta_goal, float aa, float
 				// reaches wp this frame
 				float wp = fl_sqrt(wp_sqr);
 				float time_to_wp = (wp - w_in) / aa;
-				//Assert(time_to_wp > 0);	//WMC - this is not needed, right?
+				//core::Assert(time_to_wp > 0);	//WMC - this is not needed, right?
 
 				// accel
 				*w_out = wp;
@@ -1755,7 +1755,7 @@ static float approach(float w_in, float w_max, float theta_goal, float aa, float
 		} else {
 			// move toward goal
 			*w_out = w_in - aa*delta_t;
-			Assert(*w_out >= 0);
+		core::Assert(*w_out >= 0);
 			delta_theta = 0.5f*(w_in + *w_out)*delta_t;
 			return delta_theta;
 		}
@@ -1780,8 +1780,8 @@ static float away(float w_in, float w_max, float theta_goal, float aa, float del
 	float t0;			// time to velocity is 0
 	float t_excess;	// time remaining in interval after velocity is 0
 
-	Assert(theta_goal >=0);
-	Assert(w_in <= 0);
+core::Assert(theta_goal >=0);
+core::Assert(w_in <= 0);
 
 	if ((-w_in < 1e-5) && (theta_goal < 1e-5)) {
 		*w_out = 0.0f;
@@ -1936,8 +1936,8 @@ void vm_matrix_interpolate(const matrix *goal_orient, const matrix *curr_orient,
 	// functions approach and away.  first find the magnitude		
 	// of the rotation and then normalize the axis
 	rot_axis = theta_end;
-	Assert(is_valid_vec(&rot_axis));
-	Assert(vm_vec_mag(&rot_axis) > 0);
+core::Assert(is_valid_vec(&rot_axis));
+core::Assert(vm_vec_mag(&rot_axis) > 0);
 
 	//	normalize rotation axis and determine total rotation angle
 	theta = vm_vec_normalize(&rot_axis);
@@ -1948,7 +1948,7 @@ void vm_matrix_interpolate(const matrix *goal_orient, const matrix *curr_orient,
 	} else {
 	// otherwise rotate to better position
 		vm_quaternion_rotate(&Mtemp1, theta, &rot_axis);
-		Assert(is_valid_matrix(&Mtemp1));
+	core::Assert(is_valid_matrix(&Mtemp1));
 		vm_matrix_x_matrix(next_orient, curr_orient, &Mtemp1);
 		vm_orthogonalize_matrix(next_orient);
 	}
@@ -2185,7 +2185,7 @@ void vm_forward_interpolate(const vec3d *goal_f, const matrix *orient, const vec
 	} else {
 		vm_quaternion_rotate( &Mtemp1, theta, &rot_axis );
 		vm_matrix_x_matrix( next_orient, orient, &Mtemp1 );
-		Assert(is_valid_matrix(next_orient));
+	core::Assert(is_valid_matrix(next_orient));
 		vtemp = *w_out;
 		vm_vec_rotate( w_out, &vtemp, &Mtemp1 );
 	}
@@ -2266,7 +2266,7 @@ void vm_find_bounding_sphere(const vec3d *pnts, int num_pnts, vec3d *center, flo
 	vm_vec_sub(&diff, &dia2, center);
 	rad_sq = vm_vec_mag_squared(&diff);
 	rad = fl_sqrt(rad_sq);
-	Assert( !fl_is_nan(rad) );
+core::Assert( !fl_is_nan(rad) );
 
 	// second pass
 	for ( i = 0; i < num_pnts; i++ ) {

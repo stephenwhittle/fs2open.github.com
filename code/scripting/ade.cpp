@@ -35,7 +35,7 @@ using namespace scripting;
 //Index 2 - String (ie the key we're trying to access; Object.string, Object:string, Object['string'], etc)
 //Index 3 - (Optional) Argument we are trying to set Object.String = Argument
 int ade_index_handler(lua_State* L) {
-	Assert(L != NULL);
+core::Assert(L != NULL);
 
 	const int obj_ldx = 1;
 	const int key_ldx = 2;
@@ -262,13 +262,13 @@ size_t ade_manager::addTableEntry(const ade_table_entry& entry) {
 	return _table_entries.size() - 1;
 }
 ade_table_entry& ade_manager::getEntry(size_t idx) {
-	Assertion(idx < _table_entries.size(), "Invalid index "
+core::Assertion(idx < _table_entries.size(), "Invalid index "
 		SIZE_T_ARG
 		" specified!", idx);
 	return _table_entries[idx];
 }
 const ade_table_entry& ade_manager::getEntry(size_t idx) const {
-	Assertion(idx < _table_entries.size(), "Invalid index "
+core::Assertion(idx < _table_entries.size(), "Invalid index "
 		SIZE_T_ARG
 		" specified!", idx);
 	return _table_entries[idx];
@@ -730,7 +730,7 @@ ade_func::ade_func(const char* name,
 				   const char* desc,
 				   const char* ret_type,
 				   const char* ret_desc) {
-	Assertion(strcmp(name, "__gc") != 0, "__gc is a reserved function name! An API function may not use it!");
+core::Assertion(strcmp(name, "__gc") != 0, "__gc is a reserved function name! An API function may not use it!");
 
 	ade_table_entry ate;
 
@@ -753,7 +753,7 @@ ade_virtvar::ade_virtvar(const char* name,
 						 const char* desc,
 						 const char* ret_type,
 						 const char* ret_desc) {
-	Assertion(strcmp(name, "__gc") != 0, "__gc is a reserved function name! An API function may not use it!");
+core::Assertion(strcmp(name, "__gc") != 0, "__gc is a reserved function name! An API function may not use it!");
 
 	ade_table_entry ate;
 
@@ -968,7 +968,7 @@ void load_default_script(lua_State* L, const char* name)
 		source_name = name;
 
 		auto cfp = cfopen(name, "rb", CFILE_NORMAL, CF_TYPE_SCRIPTS);
-		Assertion(cfp != nullptr, "Failed to open default file!");
+	core::Assertion(cfp != nullptr, "Failed to open default file!");
 
 		auto length = cfilelength(cfp);
 

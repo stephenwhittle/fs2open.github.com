@@ -24,7 +24,7 @@ int get_new_query_slot() {
 }
 
 query_object_slot& get_query_slot(int handle) {
-	Assertion(handle >= 0 && handle < (int)query_objects.size(), "Query object index %d is invalid!", handle);
+core::Assertion(handle >= 0 && handle < (int)query_objects.size(), "Query object index %d is invalid!", handle);
 	return query_objects[handle];
 }
 
@@ -46,7 +46,7 @@ void gr_opengl_query_value(int obj, QueryType type) {
 
 	switch(type) {
 		case QueryType::Timestamp:
-			Assertion(GLAD_GL_ARB_timer_query, "Timestamp queries are not available! Availability must be checked before calling this function!");
+		core::Assertion(GLAD_GL_ARB_timer_query, "Timestamp queries are not available! Availability must be checked before calling this function!");
 			glQueryCounter(slot.name, GL_TIMESTAMP);
 			break;
 		default:

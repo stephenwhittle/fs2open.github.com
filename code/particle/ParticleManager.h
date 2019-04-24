@@ -66,7 +66,7 @@ class ParticleManager {
 	 * @return The particle manager
 	 */
 	static inline ParticleManager* get() {
-		Assertion(m_manager != nullptr, "ParticleManager was not properly inited!");
+		core::Assertion(m_manager != nullptr, "ParticleManager was not properly inited!");
 
 		return m_manager.get();
 	}
@@ -83,7 +83,7 @@ class ParticleManager {
 	 */
 	inline ParticleEffectPtr getEffect(ParticleEffectHandle effectID)
 	{
-		Assertion(effectID.value() >= 0 &&
+		core::Assertion(effectID.value() >= 0 &&
 		              effectID.value() < static_cast<ParticleEffectHandle::impl_type>(m_effects.size()),
 		          "Particle effect index " PTRDIFF_T_ARG " is invalid!", effectID.value());
 

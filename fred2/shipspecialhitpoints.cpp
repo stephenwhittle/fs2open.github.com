@@ -85,8 +85,8 @@ BOOL ShipSpecialHitpoints::OnInitDialog()
 		objp = GET_NEXT(objp);
 	}
 
-	Assert(num_selected_ships);
-	Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
+core::Assert(num_selected_ships);
+core::Assert (Objects[cur_object_index].flags[Object::Object_Flags::Marked]);
 	m_ship_num = Objects[cur_object_index].instance; 
 
 	// get the details from the first ship

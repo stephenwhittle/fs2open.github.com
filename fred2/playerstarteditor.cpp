@@ -428,7 +428,7 @@ void player_start_editor::OnSelchangeShipList()
 				}
 				// If the number of ships was set by a variable
 				else {
-					Assert (Sexp_variables[static_ship_variable_pool[selected_team][si_index]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[static_ship_variable_pool[selected_team][si_index]].type & SEXP_VARIABLE_NUMBER);
 
 					m_ship_pool = atoi(Sexp_variables[static_ship_variable_pool[selected_team][si_index]].text);
 					int selected_variable = sexp_variable_typed_count(static_ship_variable_pool[selected_team][si_index], SEXP_VARIABLE_NUMBER);
@@ -470,7 +470,7 @@ void player_start_editor::OnSelchangeShipVariablesList()
 		int sexp_index = get_nth_variable_index(selection+1, SEXP_VARIABLE_STRING);
 
 		if (sexp_index > -1) {
-			Assert(selection == sexp_variable_typed_count(sexp_index, SEXP_VARIABLE_STRING));
+		core::Assert(selection == sexp_variable_typed_count(sexp_index, SEXP_VARIABLE_STRING));
 
 			// Is this item checked? 
 			if (m_ship_variable_list.GetCheck(selection)) {
@@ -482,7 +482,7 @@ void player_start_editor::OnSelchangeShipVariablesList()
 					m_ship_quantity_variable.SetCurSel(0); 						
 				}
 				else {
-					Assert (Sexp_variables[dynamic_ship_variable_pool[selected_team][sexp_index]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[dynamic_ship_variable_pool[selected_team][sexp_index]].type & SEXP_VARIABLE_NUMBER);
 					m_ship_pool = atoi(Sexp_variables[dynamic_ship_variable_pool[selected_team][sexp_index]].text);
 					int selected_variable = sexp_variable_typed_count(dynamic_ship_variable_pool[selected_team][sexp_index], SEXP_VARIABLE_NUMBER);
 					m_ship_quantity_variable.SetCurSel(selected_variable + 1);
@@ -520,7 +520,7 @@ void player_start_editor::OnSelchangeShipVariablesCombo()
 	m_ship_quantity_variable.GetLBText(m_ship_quantity_variable.GetCurSel(), variable_name);
 	int sexp_index = get_index_sexp_variable_name(variable_name);
 
-	Assert ((sexp_index > -1) || (!strcmp("Don't Use Variables", variable_name))); 
+core::Assert ((sexp_index > -1) || (!strcmp("Don't Use Variables", variable_name))); 
 
 	// See if the ship_list was selected
 	int ship_index = GetSelectedShipListIndex(); 
@@ -537,13 +537,13 @@ void player_start_editor::OnSelchangeShipVariablesCombo()
 	}
 
 	// Somethings gone wrong if they're both marked as true
-	Assert (! (update_static_pool && update_dynamic_pool));
+core::Assert (! (update_static_pool && update_dynamic_pool));
 
 	// Update the ship_pool
 	if (update_static_pool || update_dynamic_pool) {
 		int new_quantity = 5;
 		if (sexp_index > -1) {
-			Assert (Sexp_variables[sexp_index].type & SEXP_VARIABLE_NUMBER); 
+		core::Assert (Sexp_variables[sexp_index].type & SEXP_VARIABLE_NUMBER); 
 			new_quantity = atoi(Sexp_variables[sexp_index].text); 
 		}
 
@@ -593,7 +593,7 @@ void player_start_editor::OnSelchangeWeaponList()
 				}
 				// If the number of ships was set by a variable
 				else {
-					Assert (Sexp_variables[static_weapon_variable_pool[selected_team][wi_index]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[static_weapon_variable_pool[selected_team][wi_index]].type & SEXP_VARIABLE_NUMBER);
 
 					m_weapon_pool = atoi(Sexp_variables[static_weapon_variable_pool[selected_team][wi_index]].text);
 					int selected_variable = sexp_variable_typed_count(static_weapon_variable_pool[selected_team][wi_index], SEXP_VARIABLE_NUMBER);
@@ -634,7 +634,7 @@ void player_start_editor::OnSelchangeWeaponVariablesList()
 		int sexp_index = get_nth_variable_index(selection+1, SEXP_VARIABLE_STRING);
 
 		if (sexp_index > -1) {
-			Assert(selection == sexp_variable_typed_count(sexp_index, SEXP_VARIABLE_STRING));
+		core::Assert(selection == sexp_variable_typed_count(sexp_index, SEXP_VARIABLE_STRING));
 
 			// Is this item checked? 
 			if (m_weapon_variable_list.GetCheck(selection)) {
@@ -646,7 +646,7 @@ void player_start_editor::OnSelchangeWeaponVariablesList()
 					m_weapon_quantity_variable.SetCurSel(0); 						
 				}
 				else {
-					Assert (Sexp_variables[dynamic_weapon_variable_pool[selected_team][sexp_index]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[dynamic_weapon_variable_pool[selected_team][sexp_index]].type & SEXP_VARIABLE_NUMBER);
 					m_weapon_pool = atoi(Sexp_variables[dynamic_weapon_variable_pool[selected_team][sexp_index]].text);
 					int selected_variable = sexp_variable_typed_count(dynamic_weapon_variable_pool[selected_team][sexp_index], SEXP_VARIABLE_NUMBER);
 					m_weapon_quantity_variable.SetCurSel(selected_variable + 1);
@@ -683,7 +683,7 @@ void player_start_editor::OnSelchangeWeaponVariablesCombo()
 	m_weapon_quantity_variable.GetLBText(m_weapon_quantity_variable.GetCurSel(), variable_name);
 	int sexp_index = get_index_sexp_variable_name(variable_name);
 
-	Assert ((sexp_index > -1) || (!strcmp("Don't Use Variables", variable_name))); 
+core::Assert ((sexp_index > -1) || (!strcmp("Don't Use Variables", variable_name))); 
 
 	// See if the weapon_list was selected
 	int weapon_index = GetSelectedWeaponListIndex(); 
@@ -700,13 +700,13 @@ void player_start_editor::OnSelchangeWeaponVariablesCombo()
 	}
 
 	// Somethings gone wrong if they're both marked as true
-	Assert (! (update_static_pool && update_dynamic_pool));
+core::Assert (! (update_static_pool && update_dynamic_pool));
 
 	// Update the weapon_pool
 	if (update_static_pool || update_dynamic_pool) {
 		int new_quantity = 100;
 		if (sexp_index > -1) {
-			Assert (Sexp_variables[sexp_index].type & SEXP_VARIABLE_NUMBER); 
+		core::Assert (Sexp_variables[sexp_index].type & SEXP_VARIABLE_NUMBER); 
 			new_quantity = atoi(Sexp_variables[sexp_index].text); 
 		}
 
@@ -749,7 +749,7 @@ void player_start_editor::OnOK()
 		for (idx=0; idx < num_sexp_variables; idx++) 		{
 			// As soon as we come across a sexp_variable we are using
 			if (dynamic_ship_pool[i][idx] != -1) 			{
-				Assert (Sexp_variables[idx].type & SEXP_VARIABLE_STRING); 
+			core::Assert (Sexp_variables[idx].type & SEXP_VARIABLE_STRING); 
 				int ship_class = ship_info_lookup(Sexp_variables[idx].text);
 				
 				// If the variable doesn't actually contain a valid ship class name. Warn the user and skip to the next one
@@ -784,7 +784,7 @@ void player_start_editor::OnOK()
 
 				// Copy the variable to Team_data
 				if (idx != -1) {
-					Assert (idx < MAX_SEXP_VARIABLES);
+				core::Assert (idx < MAX_SEXP_VARIABLES);
 					strcpy_s(Team_data[i].ship_list_variables[num_choices], Sexp_variables[idx].variable_name);
 				}
 				else {
@@ -798,7 +798,7 @@ void player_start_editor::OnOK()
 					strcpy_s(Team_data[i].ship_count_variables[num_choices], ""); 
 				}
 				else {
-					Assert (Sexp_variables[dynamic_ship_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[dynamic_ship_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
 
 					strcpy_s(Team_data[i].ship_count_variables[num_choices], Sexp_variables[dynamic_ship_variable_pool[i][idx]].variable_name);
 					Team_data[i].ship_count[num_choices] = atoi(Sexp_variables[dynamic_ship_variable_pool[i][idx]].text);
@@ -822,7 +822,7 @@ void player_start_editor::OnOK()
 					strcpy_s(Team_data[i].ship_count_variables[num_choices], "");
 				}
 				else {
-					Assert (Sexp_variables[static_ship_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[static_ship_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
 					
 					strcpy_s(Team_data[i].ship_count_variables[num_choices], Sexp_variables[static_ship_variable_pool[i][idx]].variable_name);
 					Team_data[i].ship_count[num_choices] = atoi(Sexp_variables[static_ship_variable_pool[i][idx]].text);
@@ -842,7 +842,7 @@ void player_start_editor::OnOK()
 		for (idx=0; idx < num_sexp_variables; idx++) {
 			// As soon as we come across a sexp_variable we are using
 			if (dynamic_weapon_pool[i][idx] != -1) {
-				Assert (Sexp_variables[idx].type & SEXP_VARIABLE_STRING); 
+			core::Assert (Sexp_variables[idx].type & SEXP_VARIABLE_STRING); 
 				int weapon_class = weapon_info_lookup(Sexp_variables[idx].text);
 				
 				// If the variable doesn't actually contain a valid ship class name. Warn the user and skip to the next one
@@ -870,7 +870,7 @@ void player_start_editor::OnOK()
 				}
 				else 
 				{
-					Assert (Sexp_variables[dynamic_weapon_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[dynamic_weapon_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
 
 					strcpy_s(Team_data[i].weaponry_amount_variable[num_choices], Sexp_variables[dynamic_weapon_variable_pool[i][idx]].variable_name);
 					Team_data[i].weaponry_count[num_choices] = atoi(Sexp_variables[dynamic_weapon_variable_pool[i][idx]].text);
@@ -898,7 +898,7 @@ void player_start_editor::OnOK()
 				}
 				else 
 				{
-					Assert (Sexp_variables[static_weapon_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
+				core::Assert (Sexp_variables[static_weapon_variable_pool[i][idx]].type & SEXP_VARIABLE_NUMBER);
 					
 					strcpy_s(Team_data[i].weaponry_amount_variable[num_choices], Sexp_variables[static_weapon_variable_pool[i][idx]].variable_name);
 					Team_data[i].weaponry_count[num_choices] = atoi(Sexp_variables[static_weapon_variable_pool[i][idx]].text);
@@ -983,7 +983,7 @@ void player_start_editor::UpdateQuantityVariable(CComboBox *variable_list, int p
 	{
 		char variable_value[TOKEN_LENGTH];
 		sprintf(variable_value, "%d", pool_value); 
-		Assert (Sexp_variables[variable_index].type & SEXP_VARIABLE_NUMBER);
+	core::Assert (Sexp_variables[variable_index].type & SEXP_VARIABLE_NUMBER);
 		sexp_fred_modify_variable(variable_value, variable_name, variable_index, SEXP_VARIABLE_NUMBER);
 	}
 }

@@ -658,7 +658,7 @@ sound_handle snd_play_3d(game_snd* gs, vec3d* source_pos, vec3d* listen_pos, flo
 
 	// any stereo sounds will not play in proper 3D, but they should have
 	// been converted to mono already!
-	Assertion( snd->info.n_channels == 1, "Sound should be mono! Sound file: %s", snd->filename );
+core::Assertion( snd->info.n_channels == 1, "Sound should be mono! Sound file: %s", snd->filename );
 
 	sound_handle handle;
 	if (Cmdline_no_3d_sound) {
@@ -701,7 +701,7 @@ void snd_update_3d_pos(sound_handle soundnum, game_snd* gs, vec3d* new_pos, floa
 		if (!ds_initialized)
 			return;
 
-		Assertion( gs != NULL, "*gs was NULL in snd_update_3d_pos(); get a coder!\n" );
+	core::Assertion( gs != NULL, "*gs was NULL in snd_update_3d_pos(); get a coder!\n" );
 
 		channel = ds_get_channel(soundnum);
 		if (channel == -1) {
@@ -746,7 +746,7 @@ int snd_get_3d_vol_and_pan(game_snd *gs, vec3d *pos, float* vol, float *pan, flo
 	if (!ds_initialized)
 		return -1;
 
-	Assertion( gs != NULL, "*gs was NULL in snd_get_3d_vol_and_pan(); get a coder!\n" );
+core::Assertion( gs != NULL, "*gs was NULL in snd_get_3d_vol_and_pan(); get a coder!\n" );
 
 	float min_range = (float) (fl2i( (gs->min) * range_factor));
 	float max_range = (float) ((int)std::lround((gs->max) * range_factor));
@@ -1058,12 +1058,12 @@ int snd_get_duration(sound_load_id snd_id)
 	if (!snd_id.isValid())
 		return 0;
 
-	Assertion( !Sounds.empty(), "Sounds vector is empty. Why are we trying to look up an index?\n" );
+core::Assertion( !Sounds.empty(), "Sounds vector is empty. Why are we trying to look up an index?\n" );
 	
 	if ( Sounds.empty() )
 		return 0;
 
-	Assertion(Sounds[snd_id.value()].duration > 0, "Sound duration for sound %s is bogus (%d)\n",
+core::Assertion(Sounds[snd_id.value()].duration > 0, "Sound duration for sound %s is bogus (%d)\n",
 	          Sounds[snd_id.value()].filename, Sounds[snd_id.value()].duration);
 
 	if (Sounds[snd_id.value()].duration > 0)
@@ -1075,7 +1075,7 @@ int snd_get_duration(sound_load_id snd_id)
 // return the time in ms for the duration of the sound
 const char* snd_get_filename(sound_load_id snd_id)
 {
-	Assertion(snd_id.isValid(), "Invalid sound id %d!", snd_id.value());
+core::Assertion(snd_id.isValid(), "Invalid sound id %d!", snd_id.value());
 
 	return Sounds[snd_id.value()].filename;
 }
@@ -1163,13 +1163,13 @@ void snd_set_pos(sound_handle snd_handle, float val, int as_pct)
 
 	// set position as an absolute from 0 to 1
 	if(as_pct){
-		Assert((val >= 0.0) && (val <= 1.0));
+	core::Assert((val >= 0.0) && (val <= 1.0));
 		ds_set_position(ds_get_channel(snd_handle),(uint32_t)((float)snd->size * val));
 	} 
 	// set the position as an absolute # of seconds from the beginning of the sound
 	else {
 		float bps;
-		Assert(val <= (float)snd->duration/1000.0f);
+	core::Assert(val <= (float)snd->duration/1000.0f);
 		bps = (float)snd->sample_rate * (float)snd->bits;							// data rate			
 		ds_set_position(ds_get_channel(snd_handle),(uint32_t)(bps * val));
 	}
@@ -1190,7 +1190,7 @@ int snd_num_playing()
 //				!0	=>	fail
 int snd_get_data(sound_load_id handle, char* data)
 {
-	Assert(handle.isValid());
+core::Assert(handle.isValid());
 
 	if (ds_get_data(Sounds[handle.value()].sid, data)) {
 		return -1;
@@ -1202,7 +1202,7 @@ int snd_get_data(sound_load_id handle, char* data)
 // return the size of the sound data associated with the sound handle
 int snd_size(sound_load_id handle, int* size)
 {
-	Assert(handle.isValid());
+core::Assert(handle.isValid());
 
 	if (ds_get_size(Sounds[handle.value()].sid, size)) {
 		return -1;
@@ -1214,7 +1214,7 @@ int snd_size(sound_load_id handle, int* size)
 // retrieve the bits per sample and frequency for a given sound
 void snd_get_format(sound_load_id handle, int* bits_per_sample, int* frequency)
 {
-	Assert((handle.isValid()) && ((size_t)handle.value() < Sounds.size()));
+core::Assert((handle.isValid()) && ((size_t)handle.value() < Sounds.size()));
 
 	if (bits_per_sample)
 		*bits_per_sample = Sounds[handle.value()].info.bits;
@@ -1265,7 +1265,7 @@ int snd_time_remaining(sound_handle handle)
 		bits_per_sample = 16;
 	}
 
-	Assert( bits_per_sample >= 8 );
+core::Assert( bits_per_sample >= 8 );
 
 	current_offset = ds_get_play_position(channel);
 	max_offset = ds_get_channel_size(channel);
@@ -1384,7 +1384,7 @@ void snd_do_frame()
 
 void snd_adjust_audio_volume(int type, float percent, int time)
 {
-	Assert( type >= 0 && type < 3 );
+core::Assert( type >= 0 && type < 3 );
 	
 	if ( type >= 0 && type < 3 ) {
 		switch (type) {
@@ -1475,9 +1475,9 @@ EnhancedSoundData::EnhancedSoundData() {
 EnhancedSoundData::EnhancedSoundData(const int new_priority, const unsigned int new_limit) :
 	priority(new_priority), limit(new_limit)
 {
-	Assertion(priority >= SND_ENHANCED_PRIORITY_MUST_PLAY && priority <= SND_ENHANCED_PRIORITY_LOW,
+core::Assertion(priority >= SND_ENHANCED_PRIORITY_MUST_PLAY && priority <= SND_ENHANCED_PRIORITY_LOW,
 			  "EnhancedSoundData ctor given invalid priority %d", priority);
-	Assertion(limit > 0, "EnhancedSoundData ctor given invalid limit %d", limit);
+core::Assertion(limit > 0, "EnhancedSoundData ctor given invalid limit %d", limit);
 }
 game_snd_entry::game_snd_entry() {
 	filename[0] = 0;

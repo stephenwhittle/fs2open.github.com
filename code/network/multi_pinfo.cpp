@@ -224,7 +224,7 @@ void multi_pinfo_popup(net_player *np)
 	}
 
 	// set the player for informational purposes
-	Assert(np != NULL);	
+core::Assert(np != NULL);	
 
 	// play the popup appear sound
 	gamesnd_play_iface(InterfaceSounds::POPUP_APPEAR);
@@ -387,7 +387,7 @@ void multi_pinfo_popup_do()
 		game_do_state_common(gameseq_get_state());
 		
 		// draw the background bitmap and the ui window over it
-		Assert(Multi_pinfo_screen_save != -1);
+	core::Assert(Multi_pinfo_screen_save != -1);
 		gr_reset_clip();
 		gr_restore_screen(Multi_pinfo_screen_save);		
 

@@ -129,11 +129,11 @@ public:
 
 #ifdef _DEBUG
 	/**
-	 * @brief Asserts if the document is valid
+	 * @briefcore::Asserts if the document is valid
 	 *
-	 * @details Currently just calls the CDocument's AssertValid()
+	 * @details Currently just calls the CDocument'score::AssertValid()
 	 */
-	virtual void AssertValid() const;
+	virtual voidcore::AssertValid() const;
 
 	/**
 	 * @brief Dumps debug info(?) to the given dump context

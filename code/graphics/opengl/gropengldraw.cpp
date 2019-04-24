@@ -734,7 +734,7 @@ void opengl_render_primitives(primitive_type prim_type, vertex_layout* layout, i
 {
 	GR_DEBUG_SCOPE("Render primitives");
 
-	Assertion(buffer_handle >= 0, "A valid buffer handle is required! Use the immediate buffer if data is not in GPU buffer yet.");
+core::Assertion(buffer_handle >= 0, "A valid buffer handle is required! Use the immediate buffer if data is not in GPU buffer yet.");
 
 	opengl_bind_vertex_layout(*layout, opengl_buffer_get_id(GL_ARRAY_BUFFER, buffer_handle), 0, byte_offset);
 

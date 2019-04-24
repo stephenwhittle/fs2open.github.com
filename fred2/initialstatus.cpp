@@ -164,9 +164,9 @@ BOOL initial_status::OnInitDialog()
 
 	m_ship = cur_ship;
 	if (m_ship == -1) {
-		Assert((Objects[cur_object_index].type == OBJ_SHIP) || (Objects[cur_object_index].type == OBJ_START));
+	core::Assert((Objects[cur_object_index].type == OBJ_SHIP) || (Objects[cur_object_index].type == OBJ_START));
 		m_ship = get_ship_from_obj(cur_object_index);
-		Assert(m_ship >= 0);
+	core::Assert(m_ship >= 0);
 	}
 
 	// initialize dockpoint stuff
@@ -267,7 +267,7 @@ BOOL initial_status::OnInitDialog()
 						m_has_shields = 2;
 				}
 
-				Assert((objp->type == OBJ_SHIP) || (objp->type == OBJ_START));
+			core::Assert((objp->type == OBJ_SHIP) || (objp->type == OBJ_START));
 				
 				if (Ships[get_ship_from_obj(objp)].flags[Ship::Ship_Flags::Force_shields_on]) {
 					if (!m_force_shields)
@@ -589,7 +589,7 @@ void initial_status::change_subsys()
 	if (cur_subsys != LB_ERR) {
 		ptr = GET_FIRST(&Ships[m_ship].subsys_list);
 		while (cur_subsys--) {
-			Assert(ptr != END_OF_LIST(&Ships[m_ship].subsys_list));
+		core::Assert(ptr != END_OF_LIST(&Ships[m_ship].subsys_list));
 			ptr = GET_NEXT(ptr);
 		}
 
@@ -619,7 +619,7 @@ void initial_status::change_subsys()
 	} else {
 		ptr = GET_FIRST(&Ships[m_ship].subsys_list);
 		while (z--) {
-			Assert(ptr != END_OF_LIST(&Ships[m_ship].subsys_list));
+		core::Assert(ptr != END_OF_LIST(&Ships[m_ship].subsys_list));
 			ptr = GET_NEXT(ptr);
 		}
 

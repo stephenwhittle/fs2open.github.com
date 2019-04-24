@@ -101,7 +101,7 @@ void load_filter_info(void)
 		if (inbuf[z] == '\n')
 			inbuf[z] = 0;
 
-		Assert( strlen(inbuf+1) < NAME_LENGTH );
+	core::Assert( strlen(inbuf+1) < NAME_LENGTH );
 		strcpy_s(new_filter.name, inbuf + 1);
 
 		if ( !stricmp(new_filter.name, "error") ) {
@@ -207,7 +207,7 @@ void outwnd_print(const char *id, const char *tmp)
 		if (Outwnd_no_filter_file)
 			return;
 
-		Assert( strlen(id)+1 < NAME_LENGTH );
+	core::Assert( strlen(id)+1 < NAME_LENGTH );
 		outwnd_filter_struct new_filter;
 
 		strcpy_s(new_filter.name, id);

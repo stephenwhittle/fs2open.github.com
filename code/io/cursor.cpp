@@ -132,7 +132,7 @@ namespace io
 				// Use the bmpman function for this. That also ensures that APNG cursors work correctly 
 				auto frameIndex = static_cast<size_t>(bm_get_anim_frame(mBitmapHandle, diffSeconds, 0.0f, true));
 
-				Assert(frameIndex < mAnimationFrames.size());
+			core::Assert(frameIndex < mAnimationFrames.size());
 
 				if (mLastFrame != frameIndex)
 				{
@@ -179,9 +179,9 @@ namespace io
 
 		Cursor* CursorManager::loadFromBitmap(int bitmapHandle)
 		{
-			Assertion(gr_screen.mode != GR_STUB, "Cursors can not be used with the stub renderer!");
+		core::Assertion(gr_screen.mode != GR_STUB, "Cursors can not be used with the stub renderer!");
 
-			Assertion(bm_is_valid(bitmapHandle), "%d is no valid bitmap handle!", bitmapHandle);
+		core::Assertion(bm_is_valid(bitmapHandle), "%d is no valid bitmap handle!", bitmapHandle);
 
 			int nframes;
 			int fps;
@@ -208,7 +208,7 @@ namespace io
 
 		void CursorManager::setCurrentCursor(Cursor* cursor)
 		{
-			Assertion(cursor, "Invalid cursor pointer passed!");
+		core::Assertion(cursor, "Invalid cursor pointer passed!");
 
 			mCurrentCursor = cursor;
 			mCurrentCursor->enable();
@@ -236,7 +236,7 @@ namespace io
 		
 		std::pair<bool, bool> CursorManager::popStatus()
 		{
-			Assertion(mStatusStack.size() > 1, "Can't pop the last status!");
+		core::Assertion(mStatusStack.size() > 1, "Can't pop the last status!");
 			
 			auto current = mStatusStack.back();
 			

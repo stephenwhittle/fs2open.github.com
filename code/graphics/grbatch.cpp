@@ -713,7 +713,7 @@ int batch_add_bitmap(int texture, int tmap_flags, vertex *pnt, int orient, float
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -742,7 +742,7 @@ int geometry_batch_add_bitmap(int texture, int tmap_flags, vertex *pnt, int orie
 		item->texture = texture;
 	}
 	
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -775,7 +775,7 @@ int batch_add_bitmap_rotated(int texture, int tmap_flags, vertex *pnt, float ang
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -805,7 +805,7 @@ int batch_add_tri(int texture, int tmap_flags, vertex *verts, float alpha)
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -835,7 +835,7 @@ int batch_add_quad(int texture, int tmap_flags, vertex *verts, float alpha)
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -853,8 +853,8 @@ int batch_add_polygon(int texture, int tmap_flags, vec3d *pos, matrix *orient, f
 	if(width == 0 || height == 0)
 		return 0;
 
-	Assert(pos != NULL);
-	Assert(orient != NULL);
+core::Assert(pos != NULL);
+core::Assert(orient != NULL);
 
 	//Let's begin.
 
@@ -915,7 +915,7 @@ int batch_add_polygon(int texture, int tmap_flags, vec3d *pos, matrix *orient, f
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -945,7 +945,7 @@ int batch_add_beam(int texture, int tmap_flags, vec3d *start, vec3d *end, float 
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = intensity;
@@ -967,7 +967,7 @@ void batch_render_lasers(int buffer_handle)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		gr_set_bitmap(bi->second.texture, GR_ALPHABLEND_FILTER, GR_BITBLT_MODE_NORMAL, 0.99999f);
 		if ( buffer_handle >= 0 ) {
 			bi->second.batch.render_buffer(buffer_handle, TMAP_FLAG_TEXTURED | TMAP_FLAG_XPARENT | TMAP_HTL_3D_UNLIT | TMAP_FLAG_RGB | TMAP_FLAG_GOURAUD | TMAP_FLAG_CORRECT | TMAP_FLAG_EMISSIVE);
@@ -987,7 +987,7 @@ void batch_load_buffer_lasers(effect_vertex* buffer, int *n_verts)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		bi->second.batch.load_buffer(buffer, n_verts);
 	}
 }
@@ -1002,7 +1002,7 @@ void batch_render_geometry_map_bitmaps(int buffer_handle)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		gr_set_bitmap(bi->second.texture, GR_ALPHABLEND_FILTER, GR_BITBLT_MODE_NORMAL, bi->second.alpha);
 		if ( buffer_handle >= 0 ) {
 			bi->second.batch.render_buffer(buffer_handle, bi->second.tmap_flags);
@@ -1022,7 +1022,7 @@ void batch_render_geometry_shader_map_bitmaps(int buffer_handle)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		gr_set_bitmap(bi->second.texture, GR_ALPHABLEND_FILTER, GR_BITBLT_MODE_NORMAL, bi->second.alpha);
 		bi->second.batch.render_buffer(buffer_handle, bi->second.tmap_flags);
 	}
@@ -1038,7 +1038,7 @@ void batch_load_buffer_geometry_map_bitmaps(effect_vertex* buffer, int *n_verts)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		bi->second.batch.load_buffer(buffer, n_verts);
 	}
 }
@@ -1053,7 +1053,7 @@ void batch_load_buffer_geometry_shader_map_bitmaps(particle_pnt* buffer, size_t 
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		bi->second.batch.load_buffer(buffer, n_verts);
 	}
 }
@@ -1104,7 +1104,7 @@ void batch_render_all(int stream_buffer)
 		batch_load_buffer_distortion_map_bitmaps((effect_vertex*)Batch_buffer, &n_verts);
 		gr_update_buffer_data(stream_buffer, Batch_buffer_size, Batch_buffer);
 
-		Assert(n_verts <= n_to_render);
+	core::Assert(n_verts <= n_to_render);
 
 		batch_render_lasers(stream_buffer);
 		batch_render_geometry_map_bitmaps(stream_buffer);
@@ -1152,7 +1152,7 @@ int distortion_add_bitmap_rotated(int texture, int tmap_flags, vertex *pnt, floa
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Distortion particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Distortion particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = alpha;
@@ -1182,7 +1182,7 @@ int distortion_add_beam(int texture, int tmap_flags, vec3d *start, vec3d *end, f
 		item->texture = texture;
 	}
 
-	Assertion( (item->laser == false), "Distortion particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
+core::Assertion( (item->laser == false), "Distortion particle effect %s used as laser glow or laser bitmap\n", bm_get_filename(texture) );
 
 	item->tmap_flags = tmap_flags;
 	item->alpha = intensity;
@@ -1204,7 +1204,7 @@ void batch_render_distortion_map_bitmaps(int buffer_handle)
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		gr_set_bitmap(bi->second.texture, GR_ALPHABLEND_NONE, GR_BITBLT_MODE_NORMAL, bi->second.alpha);
 
 		if ( buffer_handle >= 0 ) {
@@ -1225,7 +1225,7 @@ void batch_load_buffer_distortion_map_bitmaps(effect_vertex* buffer, int *n_vert
 		if ( !bi->second.batch.need_to_render() )
 			continue;
 
-		Assert( bi->second.texture >= 0 );
+	core::Assert( bi->second.texture >= 0 );
 		bi->second.batch.load_buffer(buffer, n_verts);
 	}
 }

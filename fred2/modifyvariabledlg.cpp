@@ -578,7 +578,7 @@ void CModifyVariableDlg::validate_var_name(int set_focus)
 int CModifyVariableDlg::get_sexp_var_index()
 {
 	int index = m_translate_combo_to_sexp[m_combo_last_modified_index];
-	Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
+core::Assert( (index >= 0) && (index < MAX_SEXP_VARIABLES) );
 
 	return index;
 }

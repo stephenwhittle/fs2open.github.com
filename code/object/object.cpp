@@ -271,12 +271,12 @@ int free_object_slots(int num_used)
 // Goober5000
 float get_hull_pct(object *objp)
 {
-	Assert(objp);
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp);
+core::Assert(objp->type == OBJ_SHIP);
 
 	float total_strength = Ships[objp->instance].ship_max_hull_strength;
 
-	Assert(total_strength > 0.0f);	// unlike shield, no ship can have 0 hull
+core::Assert(total_strength > 0.0f);	// unlike shield, no ship can have 0 hull
 
 	if (total_strength == 0.0f)
 		return 0.0f;
@@ -289,12 +289,12 @@ float get_hull_pct(object *objp)
 
 float get_sim_hull_pct(object *objp)
 {
-	Assert(objp);
-	Assert(objp->type == OBJ_SHIP);
+core::Assert(objp);
+core::Assert(objp->type == OBJ_SHIP);
 
 	float total_strength = Ships[objp->instance].ship_max_hull_strength;
 
-	Assert(total_strength > 0.0f);	// unlike shield, no ship can have 0 hull
+core::Assert(total_strength > 0.0f);	// unlike shield, no ship can have 0 hull
 
 	if (total_strength == 0.0f)
 		return 0.0f;
@@ -308,7 +308,7 @@ float get_sim_hull_pct(object *objp)
 // Goober5000
 float get_shield_pct(object *objp)
 {
-	Assert(objp);
+core::Assert(objp);
 
 	// bah - we might have asteroids
 	if (objp->type != OBJ_SHIP)
@@ -397,7 +397,7 @@ int obj_allocate(void)
 
 	// Find next available object
 	objp = GET_FIRST(&obj_free_list);
-	Assert ( objp != &obj_free_list );		// shouldn't have the dummy element
+core::Assert ( objp != &obj_free_list );		// shouldn't have the dummy element
 
 	// remove objp from the free list
 	list_remove( &obj_free_list, objp );
@@ -439,7 +439,7 @@ void obj_free(int objnum)
 		obj_init();
 	}
 
-	Assert( objnum >= 0 );	// Trying to free bogus object!!!
+core::Assert( objnum >= 0 );	// Trying to free bogus object!!!
 
 	// get object pointer
 	objp = &Objects[objnum];
@@ -455,7 +455,7 @@ void obj_free(int objnum)
 
 	Objects[objnum].type = OBJ_NONE;
 
-	Assert(Num_objects >= 0);
+core::Assert(Num_objects >= 0);
 
 	if (objnum == Highest_object_index) {
 		while (Highest_object_index >= 0 && Objects[Highest_object_index].type == OBJ_NONE) {
@@ -483,12 +483,12 @@ int obj_create(ubyte type,int parent_obj,int instance, matrix * orient,
 		return -1;
 
 	obj = &Objects[objnum];
-	Assert(obj->type == OBJ_NONE);		//make sure unused 
+core::Assert(obj->type == OBJ_NONE);		//make sure unused 
 
 	// clear object in preparation for setting of custom values
 	obj->clear();
 
-	Assert(Object_next_signature > 0);	// 0 is bogus!
+core::Assert(Object_next_signature > 0);	// 0 is bogus!
 	obj->signature = Object_next_signature++;
 
 	obj->type 					= type;
@@ -545,7 +545,7 @@ void obj_delete(int objnum)
 {
 	object *objp;
 
-	Assert(objnum >= 0 && objnum < MAX_OBJECTS);
+core::Assert(objnum >= 0 && objnum < MAX_OBJECTS);
 	objp = &Objects[objnum];
 	if (objp->type == OBJ_NONE) {
 		mprintf(("obj_delete() called for already deleted object %d.\n", objnum));
@@ -734,7 +734,7 @@ void obj_player_fire_stuff( object *objp, control_info ci )
 {
 	ship *shipp;
 
-	Assert( objp->flags[Object::Object_Flags::Player_ship]);
+core::Assert( objp->flags[Object::Object_Flags::Player_ship]);
 
 	// try and get the ship pointer
 	shipp = NULL;
@@ -818,8 +818,8 @@ void obj_move_call_physics(object *objp, float frametime)
 
 			if (shipp->weapons.num_secondary_banks > 0) {
 				polymodel *pm = model_get(Ship_info[shipp->ship_info_index].model_num);
-				Assertion( pm != NULL, "No polymodel found for ship %s", Ship_info[shipp->ship_info_index].name );
-				Assertion( pm->missile_banks != NULL, "Ship %s has %d secondary banks, but no missile banks could be found.\n", Ship_info[shipp->ship_info_index].name, shipp->weapons.num_secondary_banks );
+			core::Assertion( pm != NULL, "No polymodel found for ship %s", Ship_info[shipp->ship_info_index].name );
+			core::Assertion( pm->missile_banks != NULL, "Ship %s has %d secondary banks, but no missile banks could be found.\n", Ship_info[shipp->ship_info_index].name, shipp->weapons.num_secondary_banks );
 
 				for (int i = 0; i < shipp->weapons.num_secondary_banks; i++) {
 					//if there are no missles left don't bother
@@ -1409,7 +1409,7 @@ void obj_move_all(float frametime)
 	std::vector<object*> cmeasure_list;
 	const bool global_cmeasure_timer = (Cmeasures_homing_check > 0);
 
-	Assertion(Cmeasures_homing_check >= 0, "Cmeasures_homing_check is %d in obj_move_all(); it should never be negative. Get a coder!\n", Cmeasures_homing_check);
+core::Assertion(Cmeasures_homing_check >= 0, "Cmeasures_homing_check is %d in obj_move_all(); it should never be negative. Get a coder!\n", Cmeasures_homing_check);
 
 	if (global_cmeasure_timer)
 		Cmeasures_homing_check--;
@@ -1802,27 +1802,27 @@ void obj_get_average_ship_pos( vec3d *pos )
  */
 int obj_team(object *objp)
 {
-	Assert( objp != NULL );
+core::Assert( objp != NULL );
 	int team = -1;
 
 	switch ( objp->type ) {
 		case OBJ_SHIP:
-			Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
+		core::Assert( objp->instance >= 0 && objp->instance < MAX_SHIPS );
 			team = Ships[objp->instance].team;
 			break;
 
 		case OBJ_DEBRIS:
 			team = debris_get_team(objp);
-			Assertion(team != -1, "Obj_team called for a debris object with no team.");
+		core::Assertion(team != -1, "Obj_team called for a debris object with no team.");
 			break;
 
 /*		case OBJ_CMEASURE:
-			Assert( objp->instance >= 0 && objp->instance < MAX_CMEASURES);
+		core::Assert( objp->instance >= 0 && objp->instance < MAX_CMEASURES);
 			team = Cmeasures[objp->instance].team;
 			break;
 */
 		case OBJ_WEAPON:
-			Assert( objp->instance >= 0 && objp->instance < MAX_WEAPONS );
+		core::Assert( objp->instance >= 0 && objp->instance < MAX_WEAPONS );
 			team = Weapons[objp->instance].team;
 			break;
 
@@ -1849,7 +1849,7 @@ int obj_team(object *objp)
 			break;
 	} // end switch
 
-	Assertion(team != -1, "Obj_team called for a object of type %s with no team.",  Object_type_names[objp->type]);
+core::Assertion(team != -1, "Obj_team called for a object of type %s with no team.",  Object_type_names[objp->type]);
 	return team;
 }
 
@@ -1862,7 +1862,7 @@ void obj_add_pairs(int objnum)
 {
 	object	*objp;
 
-	Assert(objnum != -1);
+core::Assert(objnum != -1);
 	objp = &Objects[objnum];	
 
 	// don't do anything if its already in the object pair list
@@ -1920,9 +1920,9 @@ void obj_remove_pairs( object * a )
 			// is equal to 'a' and we modify 'num_pairs' in one of these and then use the value
 			// stored in 'a' later one... will the optimizer find that?  Hmmm...
 			tmp->a->num_pairs--;
-			Assert( tmp->a->num_pairs > -1 );
+		core::Assert( tmp->a->num_pairs > -1 );
 			tmp->b->num_pairs--;
-			Assert( tmp->b->num_pairs > -1 );
+		core::Assert( tmp->b->num_pairs > -1 );
 			parent->next = tmp->next;
 			tmp->a = tmp->b = NULL;
 			tmp->next = pair_free_list.next;
@@ -1990,7 +1990,7 @@ int object_is_dead_docked(object *objp)
  */
 void object_set_gliding(object *objp, bool enable, bool force)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 
 	if(enable) {
 		if (!force) {
@@ -2013,7 +2013,7 @@ void object_set_gliding(object *objp, bool enable, bool force)
  */
 bool object_get_gliding(object *objp)
 {
-	Assert(objp != NULL);
+core::Assert(objp != NULL);
 
 	return ( ((objp->phys_info.flags & PF_GLIDING) != 0) || ((objp->phys_info.flags & PF_FORCE_GLIDE) != 0));
 }
@@ -2028,7 +2028,7 @@ bool object_glide_forced(object *objp)
  */
 int obj_get_by_signature(int sig)
 {
-	Assert(sig > 0);
+core::Assert(sig > 0);
 
 	object *objp = GET_FIRST(&obj_used_list);
 	while( objp !=END_OF_LIST(&obj_used_list) )

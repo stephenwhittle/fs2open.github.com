@@ -477,7 +477,7 @@ void display_ship_info() {
 
 	objp = GET_FIRST(&obj_used_list);
 	while (objp != END_OF_LIST(&obj_used_list)) {
-		Assert(objp->type != OBJ_NONE);
+	core::Assert(objp->type != OBJ_NONE);
 		Fred_outline = 0;
 		render = 1;
 		if (OBJ_INDEX(objp) == cur_object_index)
@@ -521,7 +521,7 @@ void display_ship_info() {
 					} else if (objp->type == OBJ_WAYPOINT) {
 						int idx;
 						waypoint_list *wp_list = find_waypoint_list_with_instance(objp->instance, &idx);
-						Assert(wp_list != NULL);
+					core::Assert(wp_list != NULL);
 						sprintf(buf, "%s\nWaypoint %d", wp_list->get_name(), idx + 1);
 
 					} else if (objp->type == OBJ_POINT) {
@@ -533,7 +533,7 @@ void display_ship_info() {
 					} else if (objp->type == OBJ_JUMP_NODE) {
 						strcpy_s(buf, "Jump Node");
 					} else
-						Assert(0);
+					core::Assert(0);
 				}
 
 				if (Show_coordinates) {
@@ -944,7 +944,7 @@ void game_do_frame() {
 
 			objp = GET_FIRST(&obj_used_list);
 			while (objp != END_OF_LIST(&obj_used_list)) {
-				Assert(objp->type != OBJ_NONE);
+			core::Assert(objp->type != OBJ_NONE);
 				if ((objp->flags[Object::Object_Flags::Marked]) && (cur_object_index != OBJ_INDEX(objp))) {
 					if (Group_rotate) {
 						matrix rot_trans;
@@ -1002,7 +1002,7 @@ void game_do_frame() {
 		break;
 
 	default:
-		Assert(0);
+	core::Assert(0);
 	}
 
 	if (Lookat_mode && query_valid_object()) {
@@ -1024,7 +1024,7 @@ void game_do_frame() {
 		break;
 
 	default:
-		Assert(0);
+	core::Assert(0);
 	}
 
 	maybe_create_new_grid(The_grid, &eye_pos, &eye_orient);
@@ -1542,7 +1542,7 @@ void render_frame() {
 		} else if (Objects[Cursor_over].type == OBJ_WAYPOINT) {
 			int idx;
 			waypoint_list *wp_list = find_waypoint_list_with_instance(inst, &idx);
-			Assert(wp_list != NULL);
+		core::Assert(wp_list != NULL);
 			sprintf(buf, "%s\nWaypoint %d\n( %.1f , %.1f , %.1f ) ", wp_list->get_name(), idx + 1, pos.xyz.x, pos.xyz.y, pos.xyz.z);
 
 		} else if (Objects[Cursor_over].type == OBJ_POINT) {
@@ -1708,7 +1708,7 @@ void render_model_x_htl(vec3d *pos, grid *gridp, int col_scheme) {
 void render_one_model_briefing_screen(object *objp) {
 	if (objp->type == OBJ_POINT) {
 		if (objp->instance != BRIEFING_LOOKAT_POINT_ID) {
-			Assert(Briefing_dialog);
+		core::Assert(Briefing_dialog);
 			Briefing_dialog->draw_icon(objp);
 			render_model_x_htl(&objp->pos, The_grid);
 			render_count++;
@@ -1722,7 +1722,7 @@ void render_one_model_htl(object *objp) {
 	uint debug_flags = 0;
 	object *o2;
 
-	Assert(objp->type != OBJ_NONE);
+core::Assert(objp->type != OBJ_NONE);
 
 	if (objp->type == OBJ_JUMP_NODE) {
 		return;
@@ -1830,14 +1830,14 @@ void render_one_model_htl(object *objp) {
 
 		} else if (objp->type == OBJ_POINT) {
 			if (objp->instance != BRIEFING_LOOKAT_POINT_ID) {
-				Assert(Briefing_dialog);
+			core::Assert(Briefing_dialog);
 				return;
 			}
 
 			r = 196;	g = 32;	b = 196;
 
 		} else
-			Assert(0);
+		core::Assert(0);
 
 		float size = fl_sqrt(vm_vec_dist(&eye_pos, &objp->pos) / 20.0f);
 
@@ -1873,7 +1873,7 @@ void render_one_model_nohtl(object *objp) {
 	uint debug_flags = 0;
 	object *o2;
 
-	Assert(objp->type != OBJ_NONE);
+core::Assert(objp->type != OBJ_NONE);
 
 	if (objp->type == OBJ_JUMP_NODE) {
 		return;
@@ -1979,7 +1979,7 @@ void render_one_model_nohtl(object *objp) {
 			r = 196;	g = 32;	b = 196;
 
 		} else
-			Assert(0);
+		core::Assert(0);
 
 		if (Fred_outline)
 			draw_orient_sphere2(Fred_outline, objp, r, g, b);

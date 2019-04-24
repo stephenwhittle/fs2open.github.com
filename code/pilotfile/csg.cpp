@@ -118,7 +118,7 @@ void pilotfile::csg_read_info()
 	idx = cfread_int(cfp);
 
 	// check the idx is within bounds
-	Assertion ((idx < (int)ship_list.size()), "Campaign file contains an incorrect value for the last flown ship class. No data in ship_list for ship number %d.", idx); 
+core::Assertion ((idx < (int)ship_list.size()), "Campaign file contains an incorrect value for the last flown ship class. No data in ship_list for ship number %d.", idx); 
 	if (idx >= (int)ship_list.size())
 		idx = -1;
 	else if (idx != -1)
@@ -1214,7 +1214,7 @@ void pilotfile::csg_write_cutscenes() {
 	}
 
 	// Check for possible overflow because we can only write 32 bit integers
-	Assertion(viewableScenes <= std::numeric_limits<uint>::max(), "Too many viewable cutscenes! Maximum is %ud!", std::numeric_limits<uint>::max());
+core::Assertion(viewableScenes <= std::numeric_limits<uint>::max(), "Too many viewable cutscenes! Maximum is %ud!", std::numeric_limits<uint>::max());
 
 	cfwrite_uint((uint)viewableScenes, cfp);
 
@@ -1235,7 +1235,7 @@ void pilotfile::csg_read_lastmissions()
 
 	// restore list of most recently played missions
 	Num_recent_missions = cfread_int( cfp );
-	Assert(Num_recent_missions <= MAX_RECENT_MISSIONS);
+core::Assert(Num_recent_missions <= MAX_RECENT_MISSIONS);
 	for ( i = 0; i < Num_recent_missions; i++ ) {
 		char *cp;
 
@@ -1358,7 +1358,7 @@ bool pilotfile::load_savefile(player *_p, const char *campaign)
 	}
 
 	// set player ptr first thing
-	Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
+core::Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
 	p = _p;
 
 	// build up filename for the savefile...
@@ -1532,7 +1532,7 @@ bool pilotfile::save_savefile()
 	}
 
 	// set player ptr first thing
-	Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
+core::Assert( (Player_num >= 0) && (Player_num < MAX_PLAYERS) );
 	p = &Players[Player_num];
 
 	if ( !strlen(Campaign.filename) ) {
@@ -1556,7 +1556,7 @@ bool pilotfile::save_savefile()
 	// assertion before writing so that we don't corrupt the .csg by asserting halfway through writing
 	// assertion should also prevent loss of major campaign progress
 	// i.e. lose one mission, not several missions worth (in theory)
-	Assertion(Red_alert_wingman_status.size() <= MAX_SHIPS, "Invalid number of Red_alert_wingman_status entries: " SIZE_T_ARG "\n", Red_alert_wingman_status.size());
+core::Assertion(Red_alert_wingman_status.size() <= MAX_SHIPS, "Invalid number of Red_alert_wingman_status entries: " SIZE_T_ARG "\n", Red_alert_wingman_status.size());
 
 	// open it, hopefully...
 	cfp = cfopen(filename.c_str(), "wb", CFILE_NORMAL, CF_TYPE_PLAYERS, false,

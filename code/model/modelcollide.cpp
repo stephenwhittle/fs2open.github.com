@@ -64,7 +64,7 @@ void model_collide_free_point_list()
 // NOTE: SHOULD ONLY EVER BE CALLED FROM model_allocate_interp_data()!!!
 void model_collide_allocate_point_list(int n_points)
 {
-	Assert( n_points > 0 );
+core::Assert( n_points > 0 );
 
 	if (Mc_point_list != NULL) {
 		vm_free(Mc_point_list);
@@ -280,7 +280,7 @@ static void mc_check_sphereline_face( int nv, vec3d ** verts, vec3d * plane_pnt,
 				//mprintf(("Estimated radius error: Estimate %f, actual %f Mc->radius\n", temp_dist, Mc->radius));
 			}
 			vm_vec_sub( &temp_dir, &hit_point, &temp_sphere );
-			// Assert( vm_vec_dot( &temp_dir, &Mc_direction ) > 0 );
+			//core::Assert( vm_vec_dot( &temp_dir, &Mc_direction ) > 0 );
 			*/
 		}
 	}
@@ -299,7 +299,7 @@ static void mc_check_sphereline_face( int nv, vec3d ** verts, vec3d * plane_pnt,
 		// Mc->hit_dist stores the best edge time of *all* faces
 		float sphere_time;
 		if ( fvi_polyedge_sphereline(&hit_point, &Mc_p0, &Mc_direction, Mc->radius, nv, verts, &sphere_time)) {
-			Assert( sphere_time >= 0.0f );
+		core::Assert( sphere_time >= 0.0f );
 			/*
 			vm_vec_scale_add( &temp_sphere, &Mc_p0, &Mc_direction, sphere_time );
 			temp_dist = vm_vec_dist( &temp_sphere, &hit_point );
@@ -308,7 +308,7 @@ static void mc_check_sphereline_face( int nv, vec3d ** verts, vec3d * plane_pnt,
 				//mprintf(("Estimated radius error: Estimate %f, actual %f Mc->radius\n", temp_dist, Mc->radius));
 			}
 			vm_vec_sub( &temp_dir, &hit_point, &temp_sphere );
-//			Assert( vm_vec_dot( &temp_dir, &Mc_direction ) > 0 );
+//		core::Assert( vm_vec_dot( &temp_dir, &Mc_direction ) > 0 );
 			*/
 
 			if ( (Mc->num_hits==0) || (sphere_time < Mc->hit_dist) ) {
@@ -337,7 +337,7 @@ static void mc_check_sphereline_face( int nv, vec3d ** verts, vec3d * plane_pnt,
 			//		Mc->hit_normal.xyz.x, Mc->hit_normal.xyz.y, Mc->hit_normal.xyz.z,
 			//		hit_point.xyz.x, hit_point.xyz.y, hit_point.xyz.z));
 			} else  {	// Not best so far
-				Assert(Mc->num_hits>0);
+			core::Assert(Mc->num_hits>0);
 				Mc->num_hits++;
 			}
 		}
@@ -362,7 +362,7 @@ void model_collide_defpoints(ubyte * p)
 	ubyte * normcount = p+20;
 	vec3d *src = vp(p+offset);
 	
-	Assert( Mc_point_list != NULL );
+core::Assert( Mc_point_list != NULL );
 
 	for (n=0; n<nverts; n++ ) {
 		Mc_point_list[n] = src;
@@ -382,7 +382,7 @@ int model_collide_parse_bsp_defpoints(ubyte * p)
 
 	model_collide_allocate_point_list(nverts);
 
-	Assert( Mc_point_list != NULL );
+core::Assert( Mc_point_list != NULL );
 
 	for (n=0; n<nverts; n++ ) {
 		Mc_point_list[n] = src;
@@ -464,7 +464,7 @@ void model_collide_tmappoly(ubyte * p)
 	}
 
 	int tmap_num = w(p+40);
-	Assert(tmap_num >= 0 && tmap_num < MAX_MODEL_TEXTURES);	// Goober5000
+core::Assert(tmap_num >= 0 && tmap_num < MAX_MODEL_TEXTURES);	// Goober5000
 
 	if ( (!(Mc->flags & MC_CHECK_INVISIBLE_FACES)) && (Mc_pm->maps[tmap_num].textures[TM_BASE_TYPE].GetTexture() < 0) )	{
 		// Don't check invisible polygons.
@@ -667,7 +667,7 @@ void model_collide_parse_bsp_tmappoly(bsp_collision_leaf *leaf, std::vector<mode
 
 	int tmap_num = w(p+40);
 
-	Assert(tmap_num >= 0 && tmap_num < MAX_MODEL_TEXTURES);
+core::Assert(tmap_num >= 0 && tmap_num < MAX_MODEL_TEXTURES);
 
 	verts = (model_tmap_vert *)(p+44);
 
@@ -744,7 +744,7 @@ void model_collide_parse_bsp(bsp_collision_tree *tree, void *model_ptr, int vers
 	int next_chunk_type;
 	int next_chunk_size;
 
-	Assert(chunk_type == OP_DEFPOINTS);
+core::Assert(chunk_type == OP_DEFPOINTS);
 
 	int n_verts = model_collide_parse_bsp_defpoints(p);
 
@@ -826,7 +826,7 @@ void model_collide_parse_bsp(bsp_collision_tree *tree, void *model_ptr, int vers
 			next_p = p + chunk_size;
 			next_chunk_type = w(next_p);
 
-			Assert( next_chunk_type == OP_EOF );
+		core::Assert( next_chunk_type == OP_EOF );
 
 			++i;
 			break;
@@ -876,7 +876,7 @@ void model_collide_parse_bsp(bsp_collision_tree *tree, void *model_ptr, int vers
 				leaf_buffer.back().next = -1;
 			}
 
-			Assert(next_chunk_type == OP_EOF);
+		core::Assert(next_chunk_type == OP_EOF);
 
 			++i;
 			break;
@@ -884,7 +884,7 @@ void model_collide_parse_bsp(bsp_collision_tree *tree, void *model_ptr, int vers
 	}
 
 	// copy point list
-	Assert(n_verts != -1);
+core::Assert(n_verts != -1);
 
 	tree->point_list = (vec3d*)vm_malloc(sizeof(vec3d) * n_verts);
 
@@ -1061,8 +1061,8 @@ void mc_check_subobj( int mn )
 	bsp_info * sm;
 	int i;
 
-	Assert( mn >= 0 );
-	Assert( mn < Mc_pm->n_models );
+core::Assert( mn >= 0 );
+core::Assert( mn < Mc_pm->n_models );
 	if ( (mn < 0) || (mn>=Mc_pm->n_models) ) return;
 	
 	sm = &Mc_pm->submodel[mn];

@@ -444,7 +444,7 @@ void main_hall_init(const std::string &main_hall_name)
 	
 	// assign the proper main hall data
 	Main_hall = main_hall_get_pointer(main_hall_to_load);
-	Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; get a coder!\n", main_hall_to_load.c_str());
+core::Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; get a coder!\n", main_hall_to_load.c_str());
 
 	// check if we have to change the ready room's description
 	if(Main_hall->default_readyroom) {
@@ -1144,7 +1144,7 @@ void main_hall_start_music()
 	}
 
 	filename = Spooled_music[Main_hall_music_index].filename;
-	Assert(filename != NULL);
+core::Assert(filename != NULL);
 
 	// get handle
 	Main_hall_music_handle = audiostream_open(filename, ASF_MENUMUSIC);
@@ -1201,7 +1201,7 @@ void main_hall_render_misc_anims(float frametime, bool over_doors)
 							// okay... now we need to make sure all anims in this group are paused and -1
 							for (jdx = 0; jdx < Main_hall->num_misc_animations; jdx++) {
 								if (Main_hall->misc_anim_group.at(jdx) == Main_hall->misc_anim_group.at(idx)) {
-									Assert(group_anims_weve_checked.size() < INT_MAX);
+								core::Assert(group_anims_weve_checked.size() < INT_MAX);
 									if ((int)group_anims_weve_checked.size() <= jdx) {
 										group_anims_weve_checked.push_back(true);
 									} else {
@@ -1218,7 +1218,7 @@ void main_hall_render_misc_anims(float frametime, bool over_doors)
 
 							// if the entire group is paused and off, pick a random one to regenerate
 							if (all_neg1) {
-								Assert(group_indexes.size() < INT_MAX);
+							core::Assert(group_indexes.size() < INT_MAX);
 								regen_idx = group_indexes[rand() % (int)group_indexes.size()];
 							}
 						}
@@ -1243,13 +1243,13 @@ void main_hall_render_misc_anims(float frametime, bool over_doors)
 					Main_hall->misc_anim_delay.at(idx).at(0) = -1;
 
 					// reset the "should be playing" flags
-					Assert(Main_hall->misc_anim_sound_flag.at(idx).size() < INT_MAX);
+				core::Assert(Main_hall->misc_anim_sound_flag.at(idx).size() < INT_MAX);
 					for (s_idx = 0; s_idx < (int)Main_hall->misc_anim_sound_flag.at(idx).size(); s_idx++) {
 						Main_hall->misc_anim_sound_flag.at(idx).at(s_idx) = 0;
 					}
 				}
 			} else { // animation is not paused
-				Assert(Main_hall->misc_anim_special_sounds.at(idx).size() < INT_MAX);
+			core::Assert(Main_hall->misc_anim_special_sounds.at(idx).size() < INT_MAX);
 				for (s_idx = 0; s_idx < (int)Main_hall->misc_anim_special_sounds.at(idx).size(); s_idx++) {
 					// if we've passed the trigger point, then play the sound and break out of the loop
 					if ( (Main_hall_misc_anim.at(idx).current_frame >= Main_hall->misc_anim_special_trigger.at(idx).at(s_idx)) 
@@ -1281,7 +1281,7 @@ void main_hall_render_misc_anims(float frametime, bool over_doors)
 					// don't reset sound for MISC_ANIM_MODE_HOLD
 					if (Main_hall->misc_anim_modes.at(idx) != MISC_ANIM_MODE_HOLD) {
 						// reset the "should be playing" flags
-						Assert(Main_hall->misc_anim_sound_flag.at(idx).size() < INT_MAX);
+					core::Assert(Main_hall->misc_anim_sound_flag.at(idx).size() < INT_MAX);
 						for (s_idx = 0; s_idx < (int)Main_hall->misc_anim_sound_flag.at(idx).size(); s_idx++) {
 							Main_hall->misc_anim_sound_flag.at(idx).at(s_idx) = 0;
 						}
@@ -1307,7 +1307,7 @@ void main_hall_render_door_anims(float frametime)
 	int idx;
 
 	// render all door animations
-	Assert(Main_hall_door_anim.size() < INT_MAX);
+core::Assert(Main_hall_door_anim.size() < INT_MAX);
 	for (idx = 0; idx < (int)Main_hall_door_anim.size(); idx++) {
 		if (Main_hall_door_anim.at(idx).num_frames > 0) {
 		// first pair : coords of where to play a given door anim
@@ -1510,7 +1510,7 @@ void main_hall_cull_door_sounds()
 {
 	int idx;
 	// basically just set the handle of any finished sound to be -1, so that we know its free any where else in the code we may need it
-	Assert(Main_hall_door_sound_handles.size() < INT_MAX);
+core::Assert(Main_hall_door_sound_handles.size() < INT_MAX);
 	for (idx = 0; idx < (int)Main_hall_door_sound_handles.size(); idx++) {
 		if ((Main_hall_door_sound_handles.at(idx).isValid()) && !snd_is_playing(Main_hall_door_sound_handles.at(idx))) {
 			Main_hall_door_sound_handles.at(idx) = sound_handle::invalid();
@@ -2312,7 +2312,7 @@ void parse_main_hall_table(const char* filename)
 					}
 
 					// we need one flag for each sound
-					Assert(m->misc_anim_special_sounds.at(idx).size() < INT_MAX);
+				core::Assert(m->misc_anim_special_sounds.at(idx).size() < INT_MAX);
 					for (s_idx = 0; s_idx < (int)m->misc_anim_special_sounds.at(idx).size(); s_idx++) {
 						m->misc_anim_sound_flag.at(idx).push_back(0);
 					}

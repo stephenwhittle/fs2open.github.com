@@ -106,7 +106,7 @@ void load_shield_hit_bitmap()
         if (Species_info[i].shield_anim.filename[0] != '\0')
         {
 		    Species_info[i].shield_anim.first_frame = bm_load_animation(Species_info[i].shield_anim.filename, &Species_info[i].shield_anim.num_frames, nullptr, nullptr, nullptr, true);
-		    Assertion((Species_info[i].shield_anim.first_frame >= 0), "Error while loading shield hit ani: %s for species: %s\n", Species_info[i].shield_anim.filename, Species_info[i].species_name);
+		   core::Assertion((Species_info[i].shield_anim.first_frame >= 0), "Error while loading shield hit ani: %s for species: %s\n", Species_info[i].shield_anim.filename, Species_info[i].species_name);
         }
 	}
 }
@@ -249,7 +249,7 @@ void free_global_tri_records(int shnum)
 {
 	int	i;
 
-	Assert((shnum >= 0) && (shnum < MAX_SHIELD_HITS));
+core::Assert((shnum >= 0) && (shnum < MAX_SHIELD_HITS));
 
 	for (i=0; i<Shield_hits[shnum].num_tris; i++){
 		Global_tris[Shield_hits[shnum].tri_list[i]].used = 0;
@@ -355,8 +355,8 @@ void shield_render_triangle(int texture, float alpha, gshield_tri *trip, matrix 
 			
 		verts[j].texture_position.u = trip->verts[j].u;
 		verts[j].texture_position.v = trip->verts[j].v;
-		Assert((trip->verts[j].u >= 0.0f) && (trip->verts[j].u <= UV_MAX));
-		Assert((trip->verts[j].v >= 0.0f) && (trip->verts[j].v <= UV_MAX));
+	core::Assert((trip->verts[j].u >= 0.0f) && (trip->verts[j].u <= UV_MAX));
+	core::Assert((trip->verts[j].v >= 0.0f) && (trip->verts[j].v <= UV_MAX));
 	}
 
 	verts[0].r = r;
@@ -429,7 +429,7 @@ void render_shield(int shield_num)
 		return;
 	}
 
-	Assert(Shield_hits[shield_num].objnum >= 0);
+core::Assert(Shield_hits[shield_num].objnum >= 0);
 
 	objp = &Objects[Shield_hits[shield_num].objnum];
 
@@ -478,7 +478,7 @@ void render_shield(int shield_num)
 	int bitmap_id, frame_num;
 
 	// Do some sanity checking
-	Assert( (si->species >= 0) && (si->species < (int)Species_info.size()) );
+core::Assert( (si->species >= 0) && (si->species < (int)Species_info.size()) );
 
 	generic_anim *sa = &Species_info[si->species].shield_anim;
 	polymodel *pm = model_get(si->model_num);
@@ -601,7 +601,7 @@ int get_global_shield_tri()
 		shnum = myrand() % MAX_SHIELD_HITS;
 	}
 
-	Assert((shnum >= 0) && (shnum < MAX_SHIELD_HITS));
+core::Assert((shnum >= 0) && (shnum < MAX_SHIELD_HITS));
 
 	return shnum;
 }
@@ -830,7 +830,7 @@ void shield_point_multi_setup()
 {
 	int i;
 
-	Assert( MULTIPLAYER_CLIENT );
+core::Assert( MULTIPLAYER_CLIENT );
 
 	if ( Num_multi_shield_points == 0 )
 		return;
@@ -878,7 +878,7 @@ void create_shield_explosion_all(object *objp)
 	// some some reason, clients seem to have a bogus count valud on occation.  I"ll chalk it up
 	// to missed packets :-)  MWA 2/6/98
 	if ( !MULTIPLAYER_CLIENT ) {
-		Assert(count == 0);	//	Couldn't find all the alleged shield hits.  Bogus!
+	core::Assert(count == 0);	//	Couldn't find all the alleged shield hits.  Bogus!
 	}
 }
 

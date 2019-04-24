@@ -127,7 +127,7 @@ int jpeg_read_header(const char *real_filename, CFILE *img_cfp, int *w, int *h, 
 		jpeg_file = img_cfp;
 	}
 
-	Assert( jpeg_file != NULL );
+core::Assert( jpeg_file != NULL );
 
 	if (jpeg_file == NULL)
 		return JPEG_ERROR_READING;
@@ -219,7 +219,7 @@ int jpeg_read_bitmap(const char *real_filename, ubyte *image_data, ubyte * /*pal
 		jpeg_info.out_color_components = dest_size;	// may need/have to match above
 
 		// Actually check the precondition specified in the comment above
-		Assertion(dest_size == 3, "JPEG decompression currently only support 24-bit bitmap locking!");
+	core::Assertion(dest_size == 3, "JPEG decompression currently only support 24-bit bitmap locking!");
 
 		// multiplying by rec_outbuf_height isn't required but is more efficient
 		int size = jpeg_info.output_width * jpeg_info.output_components * jpeg_info.rec_outbuf_height;

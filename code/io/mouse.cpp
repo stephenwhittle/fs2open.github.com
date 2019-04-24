@@ -359,7 +359,7 @@ int mouse_up_count(int n)
 			break;
 
 		default:
-			Assert(0);	// can't happen
+		core::Assert(0);	// can't happen
 			break;
 	} // end switch
 

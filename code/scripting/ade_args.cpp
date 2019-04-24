@@ -21,7 +21,7 @@ bool Ade_get_args_lfunction = false;
 
 bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, bool* b)
 {
-	Assertion(fmt == 'b', "Invalid character '%c' for boolean type!", fmt);
+core::Assertion(fmt == 'b', "Invalid character '%c' for boolean type!", fmt);
 
 	if (lua_isboolean(L, state.nargs)) {
 		*b = lua_toboolean(L, state.nargs) > 0;
@@ -34,7 +34,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, bool* b
 }
 bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, const char** s)
 {
-	Assertion(fmt == 's', "Invalid character '%c' for string type!", fmt);
+core::Assertion(fmt == 's', "Invalid character '%c' for string type!", fmt);
 
 	if (lua_isstring(L, state.nargs)) {
 		auto value = lua_tostring(L, state.nargs);
@@ -77,7 +77,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, const c
 }
 bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, luacpp::LuaTable* t)
 {
-	Assertion(fmt == 't', "Invalid character '%c' for table type!", fmt);
+core::Assertion(fmt == 't', "Invalid character '%c' for table type!", fmt);
 
 	// Get a table
 	if (!luacpp::convert::popValue(L, *t, state.nargs, false)) {
@@ -89,7 +89,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, luacpp:
 }
 bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, luacpp::LuaFunction* f)
 {
-	Assertion(fmt == 'u', "Invalid character '%c' for function type!", fmt);
+core::Assertion(fmt == 'u', "Invalid character '%c' for function type!", fmt);
 
 	// Get a function
 	if (!luacpp::convert::popValue(L, *f, state.nargs, false)) {
@@ -104,7 +104,7 @@ bool get_single_arg(lua_State* L, const get_args_state& state, char fmt, luacpp:
 
 void set_single_arg(lua_State* L, char fmt, const char* s)
 {
-	Assertion(fmt == 's', "Invalid format character '%c' for string type!", fmt);
+core::Assertion(fmt == 's', "Invalid format character '%c' for string type!", fmt);
 	// WMC - Isn't working with HookVar for some strange reason
 	lua_pushstring(L, s);
 }
@@ -115,7 +115,7 @@ void set_single_arg(lua_State* L, char fmt, luacpp::LuaTable* table)
 }
 void set_single_arg(lua_State*, char fmt, const luacpp::LuaTable& table)
 {
-	Assertion(fmt == 't', "Invalid format character '%c' for table type!", fmt);
+core::Assertion(fmt == 't', "Invalid format character '%c' for table type!", fmt);
 	table.pushValue();
 }
 
@@ -125,7 +125,7 @@ void set_single_arg(lua_State* L, char fmt, luacpp::LuaFunction* func)
 }
 void set_single_arg(lua_State*, char fmt, const luacpp::LuaFunction& func)
 {
-	Assertion(fmt == 'u', "Invalid format character '%c' for function type!", fmt);
+core::Assertion(fmt == 'u', "Invalid format character '%c' for function type!", fmt);
 	func.pushValue();
 }
 

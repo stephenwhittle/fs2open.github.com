@@ -243,7 +243,7 @@ void HudGaugeRadarOrb::drawBlips(int blip_type, int bright, int distort)
 	blip *blip_head = NULL;
 	vec3d pos;
 
-	Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
+core::Assert((blip_type >= 0) && (blip_type < MAX_BLIP_TYPES));
 
 
 	// Need to set font.
@@ -330,8 +330,8 @@ void HudGaugeRadarOrb::doneDrawingHtl()
 
 int HudGaugeRadarOrb::calcAlpha(vec3d* pt)
 {
-    Assert(pt);
-    Assert(Player_obj);
+   core::Assert(pt);
+   core::Assert(Player_obj);
 
     vec3d new_pt;
     vec3d fvec = { { { 0.0f, 0.0f, 1.0f } } };
@@ -485,7 +485,7 @@ void HudGaugeRadarOrb::drawContactImage(vec3d *pnt, int rad, int idx, int clr_id
     // need to get bitmap info
     bm_get_info(idx, &w, &h);
 
-    Assert(w > 0);
+   core::Assert(w > 0);
 
     // get multiplier
     if (h == w) {
@@ -505,7 +505,7 @@ void HudGaugeRadarOrb::drawContactImage(vec3d *pnt, int rad, int idx, int clr_id
         sizef = radius;
 
     //Make so no evil things happen
-    Assert(mult > 0.0f);
+   core::Assert(mult > 0.0f);
 
     //modify size according to value from tables
     sizef *= mult;

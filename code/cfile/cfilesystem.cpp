@@ -116,7 +116,9 @@ cf_file *cf_get_file(int index)
 // Create a new file and return a pointer to it.
 cf_file *cf_create_file()
 {
-	Assertion(Num_files < CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS, "Too many files found. CFile cannot handle more than %d files.\n", CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS);
+	core::Assertion(Num_files < CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS,
+	                "Too many files found. CFile cannot handle more than %d files.\n",
+	                CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS);
 
 	uint block = Num_files / CF_NUM_FILES_PER_BLOCK;
 	uint offset = Num_files % CF_NUM_FILES_PER_BLOCK;
@@ -324,7 +326,7 @@ void cf_build_pack_list( cf_root *root )
 				stat(globinfo.gl_pathv[j], &statbuf);
 
 				if ( S_ISREG(statbuf.st_mode) ) {
-					Assert(root_index < temp_root_count);
+				core::Assert(root_index < temp_root_count);
 
 					// get a temp pointer
 					rptr_sort = &temp_roots_sort[root_index++];
@@ -884,7 +886,7 @@ void cf_search_memory_root(int root_index) {
 				break;
 			}
 		}
-		Assertion(pathtype != -1, "Default file '%s%s%s' does not use a valid path type!",
+		core::Assertion(pathtype != -1, "Default file '%s%s%s' does not use a valid path type!",
 				  default_file.path_type,
 				  core::fs::path::preferred_separator,
 				  default_file.filename);
@@ -2422,8 +2424,8 @@ void cfile_spew_pack_file_crcs()
 
 bool cf_check_location_flags(uint32_t check_flags, uint32_t desired_flags)
 {
-	Assertion((check_flags & CF_LOCATION_ROOT_MASK) != 0, "check_flags must have a valid root value");
-	Assertion((check_flags & CF_LOCATION_TYPE_MASK) != 0, "check_flags must have a valid type value");
+	core::Assertion((check_flags & CF_LOCATION_ROOT_MASK) != 0, "check_flags must have a valid root value");
+	core::Assertion((check_flags & CF_LOCATION_TYPE_MASK) != 0, "check_flags must have a valid type value");
 
 	auto check_root         = check_flags & CF_LOCATION_ROOT_MASK;
 	auto desired_root_flags = desired_flags & CF_LOCATION_ROOT_MASK;

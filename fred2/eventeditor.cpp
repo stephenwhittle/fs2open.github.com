@@ -378,7 +378,7 @@ void event_editor::OnBeginlabeleditEventTree(NMHDR* pNMHDR, LRESULT* pResult)
 		*pResult = 0;
 		modified = 1;
 		edit = m_event_tree.GetEditControl();
-		Assert(edit);
+	core::Assert(edit);
 		edit->SetLimitText(NAME_LENGTH - 1);
 
 	} else
@@ -632,7 +632,7 @@ int event_editor::handler(int code, int node, char *str)
 				if (m_events[i].formula == node)
 					break;
 
-			Assert(i < m_num_events);
+		core::Assert(i < m_num_events);
 			index = i;
 			while (i < m_num_events - 1) {
 				m_events[i] = m_events[i + 1];
@@ -653,8 +653,8 @@ int event_editor::handler(int code, int node, char *str)
 				if (m_events[i].formula == node)
 					break;
 
-			Assert(i < m_num_events);
-			Assert(strlen(str) < NAME_LENGTH);
+		core::Assert(i < m_num_events);
+		core::Assert(strlen(str) < NAME_LENGTH);
 			strcpy_s(m_events[i].name, str);
 			return node;
 
@@ -838,7 +838,7 @@ void event_editor::insert_handler(int old, int node)
 		}
 	}
 
-	Assert(i < m_num_events);
+core::Assert(i < m_num_events);
 	m_events[i].formula = node;
 	return;
 }
@@ -971,7 +971,7 @@ void event_editor::OnSelchangedEventTree(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 	}
 
-	Assert(i < m_num_events);
+core::Assert(i < m_num_events);
 	cur_event = i;
 	update_cur_event();
 	
@@ -1135,14 +1135,14 @@ void event_editor::swap_handler(int node1, int node2)
 		}
 	}
 
-	Assert(index1 < m_num_events);
+core::Assert(index1 < m_num_events);
 	for (index2=0; index2<m_num_events; index2++){
 		if (m_events[index2].formula == node2){
 			break;
 		}
 	}
 
-	Assert(index2 < m_num_events);
+core::Assert(index2 < m_num_events);
 	m = m_events[index1];
 //	m_events[index1] = m_events[index2];
 	while (index1 < index2) {
@@ -1311,7 +1311,7 @@ void event_editor::OnDeleteMsg()
 	char buf[256];
 
 	// handle this case somewhat gracefully
-	Assertion((m_cur_msg >= -1) && (m_cur_msg < m_num_messages), "Unexpected m_cur_msg value (%d); expected either -1, or between 0-%d. Get a coder!\n", m_cur_msg, m_num_messages - 1);
+core::Assertion((m_cur_msg >= -1) && (m_cur_msg < m_num_messages), "Unexpected m_cur_msg value (%d); expected either -1, or between 0-%d. Get a coder!\n", m_cur_msg, m_num_messages - 1);
 	if((m_cur_msg < 0) || (m_cur_msg >= m_num_messages)){
 		return;
 	}

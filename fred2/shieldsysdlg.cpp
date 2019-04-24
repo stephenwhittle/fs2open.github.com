@@ -126,7 +126,7 @@ void shield_sys_dlg::OnOK()
 
 void shield_sys_dlg::OnSelchangeTeam()
 {
-	Assert(m_team >= 0);
+core::Assert(m_team >= 0);
 	if (((CButton *) GetDlgItem(IDC_TEAM_YES))->GetCheck())
 		Shield_sys_teams[m_team] = 0;
 	else if (((CButton *) GetDlgItem(IDC_TEAM_NO))->GetCheck())
@@ -151,7 +151,7 @@ void shield_sys_dlg::set_team()
 
 void shield_sys_dlg::OnSelchangeType()
 {
-	Assert(m_type >= 0);
+core::Assert(m_type >= 0);
 	if (((CButton *) GetDlgItem(IDC_TYPE_YES))->GetCheck())
 		Shield_sys_types[m_type] = 0;
 	else if (((CButton *) GetDlgItem(IDC_TYPE_NO))->GetCheck())

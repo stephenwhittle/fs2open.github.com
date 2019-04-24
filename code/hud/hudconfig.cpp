@@ -859,7 +859,7 @@ void hud_config_render_gauges()
 			}
 
 			if ( HC_gauge_regions[i].bitmap >= 0 ) {
-				Assert(offset < HC_gauge_regions[i].nframes);
+			core::Assert(offset < HC_gauge_regions[i].nframes);
 				gr_set_bitmap(HC_gauge_regions[i].bitmap+offset);
 				gr_bitmap(HC_gauge_regions[i].x, HC_gauge_regions[i].y, GR_RESIZE_MENU);
 			}
@@ -1390,8 +1390,8 @@ void hud_config_render_special_bitmaps()
 void hud_config_update_brightness()
 {
 	// HUD_color_alpha = HC_sliders[gr_screen.res][HC_BRIGHTNESS_SLIDER].slider.pos+3;
-	// Assert(HUD_color_alpha >= HUD_COLOR_ALPHA_USER_MIN);
-	// Assert(HUD_color_alpha <= HUD_COLOR_ALPHA_USER_MAX);
+	//core::Assert(HUD_color_alpha >= HUD_COLOR_ALPHA_USER_MIN);
+	//core::Assert(HUD_color_alpha <= HUD_COLOR_ALPHA_USER_MAX);
 }
 
 // redraw any pressed buttons, needed since the glow on pressed buttons might get clipped off by

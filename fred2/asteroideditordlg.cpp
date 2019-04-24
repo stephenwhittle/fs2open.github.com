@@ -404,7 +404,7 @@ void asteroid_editor::update_init()
 		MODIFY(a_field[last_field].inner_max_bound.xyz.z, (float) atof(m_box_max_z));
 	}
 
-	Assert(cur_field >= 0);
+core::Assert(cur_field >= 0);
 	// get from temp asteroid field into class
 	m_enable_asteroids = a_field[cur_field].num_initial_asteroids ? TRUE : FALSE;
 	m_enable_inner_bounds = a_field[cur_field].has_inner_bound ? TRUE : FALSE;

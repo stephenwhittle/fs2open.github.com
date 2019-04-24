@@ -361,7 +361,7 @@ void popup_split_lines(popup_info *pi, int flags)
 	n_chars[0]=0;
 
 	nlines = split_str(pi->raw_text, 1000, n_chars, p_str, POPUP_MAX_LINES);
-	Assert(nlines >= 0 && nlines <= POPUP_MAX_LINES );
+core::Assert(nlines >= 0 && nlines <= POPUP_MAX_LINES );
 
 	if ( flags & (PF_TITLE | PF_TITLE_BIG) ) {
 		// get first line out
@@ -375,12 +375,12 @@ void popup_split_lines(popup_info *pi, int flags)
 	}
 
 	nlines = split_str(pi->raw_text, Popup_text_coords[gr_screen.res][2], n_chars, p_str, POPUP_MAX_LINES);
-	Assert(nlines >= 0 && nlines <= POPUP_MAX_LINES );
+core::Assert(nlines >= 0 && nlines <= POPUP_MAX_LINES );
 
 	pi->nlines = nlines - body_offset;
 
 	for ( i = 0; i < pi->nlines; i++ ) {
-		Assert(n_chars[i+body_offset] < POPUP_MAX_LINE_CHARS);
+	core::Assert(n_chars[i+body_offset] < POPUP_MAX_LINE_CHARS);
 		strncpy(pi->msg_lines[i], p_str[i+body_offset], n_chars[i+body_offset]);
 		pi->msg_lines[i][n_chars[i+body_offset]] = 0;
 	}
@@ -1005,7 +1005,7 @@ int popup(int flags, int nchoices, ... )
 
 	Popup_flags = flags;
 
-	Assert( nchoices > 0 && nchoices <= POPUP_MAX_CHOICES );
+core::Assert( nchoices > 0 && nchoices <= POPUP_MAX_CHOICES );
 	Popup_info.nchoices = nchoices;
 
 	va_start(args, nchoices );
@@ -1115,9 +1115,9 @@ char *popup_input(int flags, const char *caption, int max_output_len)
 	// popup_maybe_assign_keypress(&Popup_info, 0, "&Cancel");	
 
 	// get msg text
-	Assert(caption != NULL);
+core::Assert(caption != NULL);
 	strcpy_s(Popup_info.raw_text, caption);	
-	Assert(strlen(Popup_info.raw_text) < POPUP_MAX_CHARS );
+core::Assert(strlen(Popup_info.raw_text) < POPUP_MAX_CHARS );
 
 	// set input text length
 	if((max_output_len > POPUP_INPUT_MAX_CHARS) || (max_output_len == -1)){

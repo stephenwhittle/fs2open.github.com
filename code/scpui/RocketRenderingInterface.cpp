@@ -10,14 +10,14 @@
 #undef GetFirstChild
 #endif
 
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include "RocketRenderingInterface.h"
 #include "RocketFileInterface.h"
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 #include "graphics/2d.h"
 #include "graphics/material.h"
@@ -174,7 +174,7 @@ bool RocketRenderingInterface::GenerateTexture(TextureHandle& texture_handle, co
 void RocketRenderingInterface::ReleaseTexture(TextureHandle texture)
 {
 	GR_DEBUG_SCOPE("libRocket::ReleaseTexture");
-	Assertion(texture, "Invalid texture handle!");
+core::Assertion(texture, "Invalid texture handle!");
 
 	auto tex = get_texture(texture);
 
@@ -242,7 +242,7 @@ int RocketRenderingInterface::getBitmapNum(Rocket::Core::TextureHandle handle)
 }
 void RocketRenderingInterface::setAnimationFrame(Rocket::Core::TextureHandle handle, int frame)
 {
-	Assertion(handle != 0, "Invalid handle for setAnimationFrame");
+core::Assertion(handle != 0, "Invalid handle for setAnimationFrame");
 
 	get_texture(handle)->frame_num = frame;
 }

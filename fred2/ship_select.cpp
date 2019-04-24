@@ -247,7 +247,7 @@ void ship_select::create_list()
 			{
 				int waypoint_num;
 				waypoint_list *wp_list = find_waypoint_list_with_instance(ptr->instance, &waypoint_num);
-				Assert(wp_list != NULL);
+			core::Assert(wp_list != NULL);
 				sprintf(text, "%s:%d", wp_list->get_name(), waypoint_num + 1);
 				m_ship_list.AddString(text);
 				obj_index[list_size++] = ptr;
@@ -277,7 +277,7 @@ void ship_select::OnOK()
 	}
 
 	if (query_valid_object() && (Marked == 1) && (Objects[cur_object_index].type == OBJ_POINT)) {
-		Assert(Briefing_dialog);
+	core::Assert(Briefing_dialog);
 		Briefing_dialog->icon_select(Objects[cur_object_index].instance);
 
 	} else {
@@ -461,7 +461,7 @@ void ship_select::OnSelchangeWingList()
 		z = (m_wing_list.GetSel(i) > 0) ? 1 : 0;
 		if (z != wing_sel_last[i]) {
 			waypoint_list *wp_list = find_waypoint_list_at_index(wing_index[i]);
-			Assert(wp_list != NULL);
+		core::Assert(wp_list != NULL);
 			std::vector<waypoint>::iterator jj;
 			for (j = 0, jj = wp_list->get_waypoints().begin(); jj != wp_list->get_waypoints().end(); ++j, ++jj) {
 				for (k=0; k<list_size; k++) {
@@ -508,7 +508,7 @@ void ship_select::OnSelchangeShipList()
 
 	for (i=wlist_size; i<wplist_size; i++) {
 		waypoint_list *wp_list = find_waypoint_list_at_index(wing_index[i]);
-		Assert(wp_list != NULL);
+	core::Assert(wp_list != NULL);
 		std::vector<waypoint>::iterator jj;
 
 		count = 0;

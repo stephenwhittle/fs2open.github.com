@@ -359,7 +359,7 @@ static void starfield_create_bitmap_buffer(const int si_idx)
 		}
 	}
 
-	Assert( j == sbi->n_verts );
+core::Assert( j == sbi->n_verts );
 }
 
 // take the Starfield_bitmap_instances[] and make all the vertex buffers that you'll need to draw it 
@@ -382,7 +382,7 @@ static void starfield_bitmap_entry_init(starfield_bitmap *sbm)
 {
 	int i;
 
-	Assert( sbm != NULL );
+core::Assert( sbm != NULL );
 
 	memset( sbm, 0, sizeof(starfield_bitmap) );
 
@@ -1082,7 +1082,7 @@ void stars_get_sun_pos(int sun_n, vec3d *pos)
 	matrix rot;
 
 	// sanity
-	Assert( sun_n < (int)Suns.size() );
+core::Assert( sun_n < (int)Suns.size() );
 
 	if ( (sun_n >= (int)Suns.size()) || (sun_n < 0) ) {
 		return;
@@ -1194,7 +1194,7 @@ void stars_draw_lens_flare(vertex *sun_vex, int sun_n)
 	float dx,dy;
 	vertex flare_vex = *sun_vex; //copy over to flare_vex to get all sorts of properties
 
-	Assert( sun_n < (int)Suns.size() );
+core::Assert( sun_n < (int)Suns.size() );
 
 	if ( (sun_n >= (int)Suns.size()) || (sun_n < 0) ) {
 		return;
@@ -1248,7 +1248,7 @@ void stars_draw_sun_glow(int sun_n)
 
 	// sanity
 	//WMC - Dunno why this is getting hit...
-	//Assert( sun_n < (int)Suns.size() );
+	/core::Assert( sun_n < (int)Suns.size() );
 
 	if ( (sun_n >= (int)Suns.size()) || (sun_n < 0) ) {
 		return;
@@ -1447,17 +1447,17 @@ void subspace_render()
 
 	if ( Subspace_model_inner == -1 )	{
 		Subspace_model_inner = model_load( "subspace_small.pof", 0, NULL );
-		Assert(Subspace_model_inner >= 0);
+	core::Assert(Subspace_model_inner >= 0);
 	}
 
 	if ( Subspace_model_outer == -1 )	{
 		Subspace_model_outer = model_load( "subspace_big.pof", 0, NULL );
-		Assert(Subspace_model_outer >= 0);
+	core::Assert(Subspace_model_outer >= 0);
 	}
 
 	if ( Subspace_glow_bitmap == -1 )	{
 		Subspace_glow_bitmap = bm_load( NOX("SunGlow01"));
-		Assert(Subspace_glow_bitmap >= 0);
+	core::Assert(Subspace_glow_bitmap >= 0);
 	}
 
 	if ( !Rendering_to_env ) {
@@ -1856,9 +1856,9 @@ void stars_page_in()
 
 	if ( Game_subspace_effect )	{
 		Subspace_model_inner = model_load( "subspace_small.pof", 0, NULL );
-		Assert(Subspace_model_inner >= 0);
+	core::Assert(Subspace_model_inner >= 0);
 		Subspace_model_outer = model_load( "subspace_big.pof", 0, NULL );
-		Assert(Subspace_model_outer >= 0);
+	core::Assert(Subspace_model_outer >= 0);
 
 		polymodel *pm;
 		
@@ -2208,7 +2208,7 @@ int stars_add_sun_entry(starfield_list_entry *sun_ptr)
 	int idx, i;
 	starfield_bitmap_instance sbi;
 
-	Assert(sun_ptr != NULL);
+core::Assert(sun_ptr != NULL);
 
 	// copy information
 	sbi.ang.p = sun_ptr->ang.p;
@@ -2302,7 +2302,7 @@ int stars_add_bitmap_entry(starfield_list_entry *sle)
 	int idx;
 	starfield_bitmap_instance sbi;
 
-	Assert(sle != NULL);
+core::Assert(sle != NULL);
 
 	// copy information
 	sbi.ang.p = sle->ang.p;
@@ -2387,7 +2387,7 @@ starfield_bitmap *stars_get_bitmap_entry(int index, bool is_a_sun)
 	int max_index = (is_a_sun) ? (int)Suns.size() : (int)Starfield_bitmap_instances.size();
 
 	//WMC - Commented out because it keeps happening, and I don't know what this means.
-	//Assert( (index >= 0) && (index < max_index) );
+	/core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return NULL;
@@ -2412,7 +2412,7 @@ void stars_mark_instance_unused(int index, bool is_a_sun)
 {
 	int max_index = (is_a_sun) ? (int)Suns.size() : (int)Starfield_bitmap_instances.size();
 
-	Assert( (index >= 0) && (index < max_index) );
+core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return;
@@ -2438,7 +2438,7 @@ const char *stars_get_name_from_instance(int index, bool is_a_sun)
 {
 	int max_index = (is_a_sun) ? (int)Suns.size() : (int)Starfield_bitmap_instances.size();
 
-	Assert( (index >= 0) && (index < max_index) );
+core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return NOX("<none>");
@@ -2495,7 +2495,7 @@ const char *stars_get_name_FRED(int index, bool is_a_sun)
 
 	int max_index = (is_a_sun) ? (int)Sun_bitmaps.size() : (int)Starfield_bitmaps.size();
 
-	Assert( (index >= 0) && (index < max_index) );
+core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return NULL;
@@ -2517,8 +2517,8 @@ void stars_modify_entry_FRED(int index, const char *name, starfield_list_entry *
 	int idx;
 	int add_new = index > ((is_a_sun) ? (int)Sun_bitmaps.size() : (int)Starfield_bitmaps.size());
 
-	Assert( index >= 0 );
-	Assert( sbi_new != NULL );
+core::Assert( index >= 0 );
+core::Assert( sbi_new != NULL );
 
     // copy information
     sbi.ang.p = sbi_new->ang.p;
@@ -2568,7 +2568,7 @@ void stars_delete_entry_FRED(int index, bool is_a_sun)
 
 	int max_index = (is_a_sun) ? (int)Suns.size() : (int)Starfield_bitmap_instances.size();
 
-	Assert( (index >= 0) && (index < max_index) );
+core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return;

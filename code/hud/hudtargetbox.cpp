@@ -457,7 +457,7 @@ void HudGaugeTargetBox::renderTargetIntegrity(int disabled,int force_obj_num)
 	}
 
 	if(force_obj_num == -1)
-		Assert(Player_ai->target_objnum >= 0 );
+	core::Assert(Player_ai->target_objnum >= 0 );
 
 	clip_h = fl2i( (1 - Pl_target_integrity) * integrity_bar_h );
 
@@ -1553,7 +1553,7 @@ extern flagset<Weapon::Info_Flags> turret_weapon_aggregate_flags(ship_weapon *sw
 extern bool turret_weapon_has_subtype(ship_weapon *swp, int subtype);
 void get_turret_subsys_name(ship_weapon *swp, char *outstr)
 {
-	Assert(swp != NULL);	// Goober5000 //WMC
+core::Assert(swp != NULL);	// Goober5000 //WMC
 
 	//WMC - find the first weapon, if there is one
 	if (swp->num_primary_banks || swp->num_secondary_banks) {
@@ -1615,8 +1615,8 @@ void HudGaugeTargetBox::renderTargetShipInfo(object *target_objp)
 	char			outstr_class[NAME_LENGTH];
 	float			ship_integrity, shield_strength;
 
-	Assert(target_objp);	// Goober5000
-	Assert(target_objp->type == OBJ_SHIP);
+core::Assert(target_objp);	// Goober5000
+core::Assert(target_objp->type == OBJ_SHIP);
 	target_shipp = &Ships[target_objp->instance];
 
 	// set up colors
@@ -1815,7 +1815,7 @@ int hud_targetbox_subsystem_in_view(object *target_objp, int *sx, int *sy)
 		}
 
 		// get screen coords, adjusting for autocenter
-		Assert(target_objp->type == OBJ_SHIP);
+	core::Assert(target_objp->type == OBJ_SHIP);
 		if (target_objp->type == OBJ_SHIP) {
 			pm = model_get(Ship_info[Ships[target_objp->instance].ship_info_index].model_num);
 			if (pm->flags & PM_FLAG_AUTOCEN) {
@@ -2018,12 +2018,12 @@ void HudGaugeTargetBox::showTargetData(float  /*frametime*/)
 
 			switch (aip->mode) {
 			case AIM_CHASE:
-				Assert(aip->submode <= SM_BIG_PARALLEL);	//	Must be <= largest chase submode value.
+			core::Assert(aip->submode <= SM_BIG_PARALLEL);	//	Must be <= largest chase submode value.
 				sprintf(outstr2," / %s",Submode_text[aip->submode]);
 				strcat_s(outstr,outstr2);
 				break;
 			case AIM_STRAFE:
-				Assert(aip->submode <= AIS_STRAFE_POSITION);	//	Must be <= largest chase submode value.
+			core::Assert(aip->submode <= AIS_STRAFE_POSITION);	//	Must be <= largest chase submode value.
 				sprintf(outstr2," / %s",Strafe_submode_text[aip->submode-AIS_STRAFE_ATTACK]);
 				strcat_s(outstr,outstr2);
 				break;
@@ -2249,8 +2249,8 @@ void hud_update_target_static()
  */
 void hud_update_ship_status(object *targetp)
 {
-    Assert( targetp != NULL );
-    Assert( (targetp->instance >= 0) && (targetp->instance < MAX_SHIPS) );
+   core::Assert( targetp != NULL );
+   core::Assert( (targetp->instance >= 0) && (targetp->instance < MAX_SHIPS) );
     
     if ( (targetp->instance >= 0) && (targetp->instance < MAX_SHIPS) ) {
     	// print out status of ship for the targetbox

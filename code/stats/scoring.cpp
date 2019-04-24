@@ -71,7 +71,7 @@ void parse_rank_tbl()
 		skip_to_string("[RANK NAMES]");
 		ignore_white_space();
 		while (required_string_either("#End", "$Name:")) {
-			Assert(idx < NUM_RANKS);
+		core::Assert(idx < NUM_RANKS);
 			required_string("$Name:");
 			stuff_string(Ranks[idx].name, F_NAME, NAME_LENGTH);
 			required_string("$Points:");
@@ -320,7 +320,7 @@ void scoring_eval_rank( scoring_struct *sc )
 
 	// if the ranks do not match, then "grant" the new rank
 	if ( old_rank != new_rank ) {
-		Assert( new_rank >= 0 );
+	core::Assert( new_rank >= 0 );
 		sc->m_promotion_earned = new_rank;
 		sc->rank = new_rank;
 	}
@@ -449,13 +449,13 @@ void scoring_backout_accept( scoring_struct *score )
 	// if the player was given a medal, take it back
 	if ( score->m_medal_earned != -1 ) {
 		score->medal_counts[score->m_medal_earned]--;
-		Assert( score->medal_counts[score->m_medal_earned] >= 0 );
+	core::Assert( score->medal_counts[score->m_medal_earned] >= 0 );
 	}
 
 	// if the player was promoted, take it back
 	if ( score->m_promotion_earned != -1) {
 		score->rank--;
-		Assert( score->rank >= 0 );
+	core::Assert( score->rank >= 0 );
 	}	
 
 	score->flight_time -= (unsigned int)f2fl(Missiontime);
@@ -1062,7 +1062,7 @@ void scoring_eval_assists(ship *sp,int killer_sig, bool is_enemy_player)
 				
 				// Don't scale in TvT and dogfight
 				if (is_enemy_player) {
-					Assert(Game_mode & GM_MULTIPLAYER); 
+				core::Assert(Game_mode & GM_MULTIPLAYER); 
 					scoring_scale_factor = 1.0f;
 				}
 				else {
@@ -1193,7 +1193,7 @@ void scoring_eval_hit(object *hit_obj, object *other_obj,int from_blast)
 							Net_players[player_num].m_player->stats.mp_shots_hit++; 
 						}
 
-						// Assert( Net_players[player_num].player->stats.mp_shots_hit <= Net_players[player_num].player->stats.mp_shots_fired );
+						//core::Assert( Net_players[player_num].player->stats.mp_shots_hit <= Net_players[player_num].player->stats.mp_shots_fired );
 						break;
 					case WP_MISSILE :
 						// friendly hit, once it hits a friendly, its done
@@ -1270,7 +1270,7 @@ float scoring_get_scale_factor()
 	}
 
 	// check for bogus Skill_level values
-	Assert((Game_skill_level >= 0) && (Game_skill_level < NUM_SKILL_LEVELS));
+core::Assert((Game_skill_level >= 0) && (Game_skill_level < NUM_SKILL_LEVELS));
 	if((Game_skill_level < 0) || (Game_skill_level > NUM_SKILL_LEVELS-1)){
 		return Scoring_scale_factors[0];
 	}

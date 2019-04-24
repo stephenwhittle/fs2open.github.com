@@ -386,9 +386,9 @@ void credits_parse_table(const char* filename)
 				numLines = split_str(line.c_str(), Credits_text_coords[gr_screen.res][2], charNum, lines);
 
 				// Make sure that we have valid data
-				Assertion(lines.size() == (size_t)numLines, "split_str reported %d lines but vector contains " SIZE_T_ARG " entries!", numLines, lines.size());
+			core::Assertion(lines.size() == (size_t)numLines, "split_str reported %d lines but vector contains " SIZE_T_ARG " entries!", numLines, lines.size());
 
-				Assertion(lines.size() <= charNum.size(),
+			core::Assertion(lines.size() <= charNum.size(),
 					"Something has gone wrong while splitting strings. Got " SIZE_T_ARG " lines but only " SIZE_T_ARG " chacter lengths.",
 					lines.size(), charNum.size());
 
@@ -759,7 +759,7 @@ void credits_do_frame(float  /*frametime*/)
 	if((bm1 != -1) && (bm2 != -1)){
 		GR_DEBUG_SCOPE("Render credits bitmap");
 
-		Assert(percent >= 0 && percent <= 100);
+	core::Assert(percent >= 0 && percent <= 100);
 
 		// get width and height
 		bm_get_info(bm1, &bw1, &bh1, NULL, NULL, NULL);	

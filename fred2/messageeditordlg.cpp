@@ -109,7 +109,7 @@ BOOL CMessageEditorDlg::OnInitDialog()
 	list = (CListBox *) GetDlgItem(IDC_MESSAGE_LIST);
 	list->ResetContent();
 	for (i=0; i<Num_messages; i++) {
-		//Assert(list->FindStringExact(-1, Messages[i].name) == CB_ERR);
+		/core::Assert(list->FindStringExact(-1, Messages[i].name) == CB_ERR);
 		// mwa we should probably not include builtin messages into this list!
 		list->AddString(Messages[i].name);
 	}
@@ -297,7 +297,7 @@ int CMessageEditorDlg::find_event()
 
 	for (i=0; i<Num_mission_events; i++) {
 		node = Mission_events[i].formula;
-		Assertion(node >= 0, "Can't have a formula point to sexp node -1!");
+	core::Assertion(node >= 0, "Can't have a formula point to sexp node -1!");
 
 		if ( get_operator_const(CTEXT(node)) == OP_WHEN || get_operator_const(CTEXT(node)) == OP_EVERY_TIME
 			|| get_operator_const(CTEXT(node)) == OP_WHEN_ARGUMENT || get_operator_const(CTEXT(node)) == OP_EVERY_TIME_ARGUMENT
@@ -409,7 +409,7 @@ int CMessageEditorDlg::update(int num)
 			if (m_event_num >= 0) {  // need to delete event
 				i = m_event_num;
 				free_sexp2(Mission_events[i].formula);
-				Assert(i < Num_mission_events);
+			core::Assert(i < Num_mission_events);
 				while (i < Num_mission_events - 1) {
 					Mission_events[i] = Mission_events[i + 1];
 					i++;
@@ -431,7 +431,7 @@ int CMessageEditorDlg::update(int num)
 					goto exit;
 				}
 
-				Assert(Num_mission_events < MAX_MISSION_EVENTS);
+			core::Assert(Num_mission_events < MAX_MISSION_EVENTS);
 				m_event_num = Num_mission_events++;
 				string_copy(Mission_events[m_event_num].name, m_message_name, NAME_LENGTH - 1);
 				Mission_events[m_event_num].repeat_count = 1;
@@ -470,7 +470,7 @@ void CMessageEditorDlg::OnDelete()
 	char buf[256];
 	int i;
 
-	Assert((m_cur_msg >= 0) && (m_cur_msg < Num_messages));
+core::Assert((m_cur_msg >= 0) && (m_cur_msg < Num_messages));
 	if (Messages[m_cur_msg].avi_info.name)
 		free(Messages[m_cur_msg].avi_info.name);
 	if (Messages[m_cur_msg].wave_info.name)
@@ -579,7 +579,7 @@ void CMessageEditorDlg::OnBeginlabeleditTree(NMHDR* pNMHDR, LRESULT* pResult)
 		*pResult = 0;
 		modified = 1;
 		edit = m_tree.GetEditControl();
-		Assert(edit);
+	core::Assert(edit);
 		edit->SetLimitText(NAME_LENGTH - 1);
 
 	} else

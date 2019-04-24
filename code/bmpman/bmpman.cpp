@@ -16,6 +16,7 @@
 #include <windows.h>
 #endif
 
+#include <core/path.h>
 #include "core/error.h"
 #include "anim/animplay.h"
 #include "anim/packunpack.h"
@@ -113,18 +114,18 @@ static bool bm_is_anim(bitmap_entry* entry)
 }
 
 bitmap_slot* bm_get_slot(int handle, bool separate_ani_frames) {
-	Assertion(handle >= 0, "Invalid handle %d passed to bm_get_slot!", handle);
+	core::Assertion(handle >= 0, "Invalid handle %d passed to bm_get_slot!", handle);
 
 	// The lower 16-bit contain the index in the bitmap block
 	auto index = handle & 0xFFFF;
 	// The upper 16-bit contain the number of the used block
 	auto block_index = handle >> 16;
 
-	Assertion(block_index >= 0 && block_index < (int) bm_blocks.size(),
+	core::Assertion(block_index >= 0 && block_index < (int) bm_blocks.size(),
 			  "Bitmap handle %d has an invalid block number %d!",
 			  handle,
 			  block_index);
-	Assertion(index >= 0 && index < (int) bm_blocks[block_index].size(),
+	core::Assertion(index >= 0 && index < (int) bm_blocks[block_index].size(),
 			  "Bitmap handle %d has an invalid block index %d!",
 			  handle,
 			  index);
@@ -245,8 +246,8 @@ static int find_block_of(int n, int start_block = 0);
 
 
 static int get_handle(int block, int index) {
-	Assertion(block >= 0, "Negative block values are not allowed!");
-	Assertion(index >= 0, "Negative index values are not allowed!");
+	core::Assertion(block >= 0, "Negative block values are not allowed!");
+	core::Assertion(index >= 0, "Negative index values are not allowed!");
 
 	return (uint32_t) block << 16 | (uint16_t) index;
 }
@@ -528,7 +529,7 @@ int bm_create(int bpp, int w, int h, void *data, int flags) {
 		core::Assert((bpp == 16) || (bpp == 24) || (bpp == 32));
 	}
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	int n = find_block_of(1);
 
@@ -849,7 +850,10 @@ int bm_get_info(int handle, int *w, int * h, ubyte * flags, int *nframes, int *f
 
 	auto entry = bm_get_entry(handle);
 
-	Assertion(entry->handle == handle, "Invalid bitmap handle %d passed to bm_get_info().\nThis might be due to an invalid animation somewhere else.\n", handle);		// INVALID BITMAP HANDLE!
+	core::Assertion(entry->handle == handle,
+	                "Invalid bitmap handle %d passed to bm_get_info().\nThis might be due to an invalid animation "
+	                "somewhere else.\n",
+	                handle); // INVALID BITMAP HANDLE!
 
 	if ((entry->type == BM_TYPE_NONE) || (entry->handle != handle)) {
 		if (w) *w = 0;
@@ -919,7 +923,7 @@ int bm_get_tcache_type(int num) {
 }
 
 BM_TYPE bm_get_type(int handle) {
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	return bm_get_entry(handle)->type;
 }
@@ -935,7 +939,7 @@ bool bm_has_alpha_channel(int handle) {
 }
 
 void bm_init() {
-	Assertion(!bm_inited, "bmpman cannot be initialized more than once!");
+	core::Assertion(!bm_inited, "bmpman cannot be initialized more than once!");
 
 	// Allocate one block by default
 	allocate_new_block();
@@ -1118,7 +1122,7 @@ int bm_load(const char *real_filename) {
 	CFILE *img_cfp = NULL;
 	int handle = -1;
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	// if no file was passed then get out now
 	if ((real_filename == NULL) || (strlen(real_filename) <= 0))
@@ -1169,7 +1173,7 @@ int bm_load(const char *real_filename) {
 	free_slot = find_block_of(1);
 
 	if (free_slot < 0) {
-		Assertion(free_slot < 0, "Could not find free BMPMAN slot for bitmap: %s", real_filename);
+		core::Assertion(free_slot < 0, "Could not find free BMPMAN slot for bitmap: %s", real_filename);
 		if (img_cfp != nullptr)
 			cfclose(img_cfp);
 		return -1;
@@ -1423,7 +1427,7 @@ int bm_load_animation(const char *real_filename, int *nframes, int *fps, int *ke
 	size_t img_size = 0;
 	char clean_name[MAX_FILENAME_LEN];
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	// set output param defaults before going any further
 	if (nframes != nullptr)
@@ -1838,7 +1842,7 @@ int bm_load_sub_slow(const char *real_filename, const int num_ext, const char **
 bitmap * bm_lock(int handle, int bpp, ubyte flags, bool nodebug) {
 	bitmap			*bmp;
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	auto be = bm_get_entry(handle);
 
@@ -2107,7 +2111,8 @@ void bm_lock_apng(int /*handle*/, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte /
 		cumulative_frame_delay += the_apng->frame.delay;
 		be->info.ani.apng.frame_delay = cumulative_frame_delay;
 
-		nprintf(("apng", "locking apng frame: %s (%i|%i|%i) (%f) " SIZE_T_ARG "\n", be->filename, bpp, bmp->bpp, bm->true_bpp, be->info.ani.apng.frame_delay, be->mem_taken));
+		core::nprintf("apng", "locking apng frame: %s (%i|%i|%i) (%f) " SIZE_T_ARG "\n", be->filename, bpp, bmp->bpp,
+		               bm->true_bpp, be->info.ani.apng.frame_delay, be->mem_taken);
 	}
 }
 
@@ -2255,7 +2260,7 @@ void bm_lock_pcx(int handle, bitmap_slot *bs, bitmap *bmp, int bpp, ubyte flags)
 	pcx_error = pcx_read_bitmap(filename, data, NULL, (bpp >> 3), (flags & BMP_AABITMAP), (flags & BMP_MASK_BITMAP) != 0, be->dir_type);
 
 	if (pcx_error != PCX_ERROR_NONE) {
-		mprintf(("Couldn't load PCX!!! (%s)\n", filename));
+		core::mprintf(("Couldn't load PCX!!! (%s)\n", filename));
 		return;
 	}
 
@@ -2422,7 +2427,7 @@ int bm_make_render_target(int width, int height, int flags) {
 	int bpp = 32;
 	int size = 0;
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	// Find an open slot (starting from the end)
 	int n = find_block_of(1);
@@ -2537,7 +2542,7 @@ void bm_page_in_stop() {
 	char busy_text[60];
 #endif
 
-	nprintf(("BmpInfo", "BMPMAN: Loading all used bitmaps.\n"));
+	core::nprintf("BmpInfo", "BMPMAN: Loading all used bitmaps.\n");
 
 	// Load all the ones that are supposed to be loaded for this level.
 	int n = 0;
@@ -2554,7 +2559,7 @@ void bm_page_in_stop() {
 					TRACE_SCOPE(tracing::PageInSingleBitmap);
 					if (bm_preloading) {
 						if (!gr_preload(entry.handle, (entry.preloaded == 2))) {
-							mprintf(("Out of VRAM.  Done preloading.\n"));
+							core::mprintf(("Out of VRAM.  Done preloading.\n"));
 							bm_preloading = 0;
 						}
 					} else {
@@ -2588,7 +2593,7 @@ void bm_page_in_stop() {
 		}
 	}
 
-	nprintf(("BmpInfo", "BMPMAN: Loaded %d bitmaps that are marked as used for this level.\n", n));
+	core::nprintf("BmpInfo", "BMPMAN: Loaded %d bitmaps that are marked as used for this level.\n", n);
 
 #ifndef NDEBUG
 	int total_bitmaps = 0;
@@ -2602,12 +2607,12 @@ void bm_page_in_stop() {
 				total_bitmaps++;
 			}
 			if (entry.type == BM_TYPE_USER) {
-				mprintf(("User bitmap '%s'\n", entry.filename));
+				core::mprintf(("User bitmap '%s'\n", entry.filename));
 			}
 		}
 	}
 
-	mprintf(("Bmpman: %d/%d bitmap slots in use.\n", total_bitmaps, total_slots));
+	core::mprintf("Bmpman: %d/%d bitmap slots in use.\n", total_bitmaps, total_slots);
 #endif
 
 	Bm_paging = 0;
@@ -2715,22 +2720,25 @@ void bm_print_bitmaps() {
 
 			if (entry.type != BM_TYPE_NONE) {
 				if (entry.data_size) {
-					nprintf(("BMP DEBUG", "BMPMAN = num: %d, name: %s, handle: %d - (%s) size: %.3fM\n", entry.handle, entry.filename, entry.handle, entry.data_size
+					core::nprintf("BMP DEBUG", "BMPMAN = num: %d, name: %s, handle: %d - (%s) size: %.3fM\n",
+					               entry.handle, entry.filename, entry.handle,
+					               entry.data_size
 																																					 ? NOX(
-							"*LOCKED*") : NOX(""), ((float) entry.data_size / 1024.0f) / 1024.0f));
+							"*LOCKED*") : NOX(""), ((float) entry.data_size / 1024.0f) / 1024.0f);
 				} else {
-					nprintf(("BMP DEBUG", "BMPMAN = num: %d, name: %s, handle: %d\n", entry.handle, entry.filename, entry.handle));
+					core::nprintf("BMP DEBUG", "BMPMAN = num: %d, name: %s, handle: %d\n", entry.handle,
+					               entry.filename, entry.handle);
 				}
 			}
 		}
 	}
 
-	nprintf(("BMP DEBUG", "BMPMAN = LOCKED memory usage: %.3fM\n", ((float) bm_texture_ram / 1024.0f) / 1024.0f));
+	core::nprintf("BMP DEBUG", "BMPMAN = LOCKED memory usage: %.3fM\n", ((float)bm_texture_ram / 1024.0f) / 1024.0f);
 #endif
 }
 
 int bm_release(int handle, int clear_render_targets) {
-	Assert(handle >= 0);
+	core::Assert(handle >= 0);
 
 	bitmap_entry *be;
 
@@ -2740,16 +2748,19 @@ int bm_release(int handle, int clear_render_targets) {
 		return 0;	// Already been released?
 	}
 
-	Assertion(be->handle == handle, "Invalid bitmap handle number %d (expected %d) for %s passed to bm_release()\n", be->handle, handle, be->filename);
+	core::Assertion(be->handle == handle,
+	                "Invalid bitmap handle number %d (expected %d) for %s passed to bm_release()\n", be->handle, handle,
+	                be->filename);
 
 	if (!clear_render_targets && ((be->type == BM_TYPE_RENDER_TARGET_STATIC) || (be->type == BM_TYPE_RENDER_TARGET_DYNAMIC))) {
-		nprintf(("BmpMan", "Tried to release a render target!\n"));
+		core::nprintf("BmpMan", "Tried to release a render target!\n");
 		return 0;
 	}
 
 	// If it is locked, cannot free it.
 	if (be->ref_count != 0) {
-		nprintf(("BmpMan", "Tried to release %s that has a lock count of %d.. not releasing\n", be->filename, be->ref_count));
+		core::nprintf("BmpMan", "Tried to release %s that has a lock count of %d.. not releasing\n", be->filename,
+		               be->ref_count);
 		return 0;
 	}
 
@@ -2760,12 +2771,13 @@ int bm_release(int handle, int clear_render_targets) {
 		be->load_count--;
 
 	if (be->load_count != 0) {
-		nprintf(("BmpMan", "Tried to release %s that has a load count of %d.. not releasing\n", be->filename, be->load_count + 1));
+		core::nprintf("BmpMan", "Tried to release %s that has a load count of %d.. not releasing\n", be->filename,
+		               be->load_count + 1);
 		return 0;
 	}
 
 	if (be->type != BM_TYPE_USER) {
-		nprintf(("BmpMan", "Releasing bitmap %s with handle %i\n", be->filename, handle));
+		core::nprintf("BmpMan", "Releasing bitmap %s with handle %i\n", be->filename, handle);
 	}
 
 	// be sure that all frames of an ani are unloaded - taylor
@@ -2832,7 +2844,7 @@ int bm_release(int handle, int clear_render_targets) {
 }
 
 int bm_reload(int bitmap_handle, const char* filename) {
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	// if no file was passed then get out now
 	if ((filename == NULL) || (strlen(filename) <= 0))
@@ -2844,7 +2856,8 @@ int bm_reload(int bitmap_handle, const char* filename) {
 		return -1;
 
 	if (entry->ref_count) {
-		nprintf(("BmpMan", "Trying to reload a bitmap that is still locked. Filename: %s, ref_count: %d", entry->filename, entry->ref_count));
+		core::nprintf("BmpMan", "Trying to reload a bitmap that is still locked. Filename: %s, ref_count: %d",
+		               entry->filename, entry->ref_count);
 		return -1;
 	}
 
@@ -2909,7 +2922,7 @@ void bm_set_components_argb_16_tex(ubyte *pixel, ubyte *rv, ubyte *gv, ubyte *bv
 }
 
 void bm_set_low_mem(int mode) {
-	Assert((mode >= 0) && (mode <= 2));
+	core::Assert((mode >= 0) && (mode <= 2));
 
 	CLAMP(mode, 0, 2);
 	Bm_low_mem = mode;
@@ -2923,7 +2936,7 @@ bool bm_set_render_target(int handle, int face) {
 	if (handle >= 0) {
 		if ((entry->type != BM_TYPE_RENDER_TARGET_STATIC) && (entry->type != BM_TYPE_RENDER_TARGET_DYNAMIC)) {
 			// odds are that someone passed a normal texture created with bm_load()
-			mprintf(("Trying to set invalid bitmap (handle: %i) as render target!\n", handle));
+			core::mprintf("Trying to set invalid bitmap (handle: %i) as render target!\n", handle);
 			return false;
 		}
 	}
@@ -3011,11 +3024,12 @@ int bm_unload(int handle, int clear_render_targets, bool nodebug) {
 		return -1;		// Already been released
 	}
 
-	Assert(be->handle == handle);		// INVALID BITMAP HANDLE!
+	core::Assert(be->handle == handle); // INVALID BITMAP HANDLE!
 
 	// If it is locked, cannot free it.
 	if (be->ref_count != 0 && !nodebug) {
-		nprintf(("BmpMan", "Tried to unload %s that has a lock count of %d.. not unloading\n", be->filename, be->ref_count));
+		core::nprintf("BmpMan", "Tried to unload %s that has a lock count of %d.. not unloading\n", be->filename,
+		               be->ref_count);
 		return 0;
 	}
 
@@ -3027,7 +3041,8 @@ int bm_unload(int handle, int clear_render_targets, bool nodebug) {
 			be->load_count--;
 
 		if (be->load_count != 0 && !nodebug) {
-			nprintf(("BmpMan", "Tried to unload %s that has a load count of %d.. not unloading\n", be->filename, be->load_count + 1));
+			core::nprintf("BmpMan", "Tried to unload %s that has a load count of %d.. not unloading\n", be->filename,
+			               be->load_count + 1);
 			return 0;
 		}
 	}
@@ -3045,12 +3060,13 @@ int bm_unload(int handle, int clear_render_targets, bool nodebug) {
 
 		for (i = 0; i < first_entry->info.ani.num_frames; i++) {
 			if (!nodebug)
-				nprintf(("BmpMan", "Unloading %s frame %d.  %dx%dx%d\n", be->filename, i, bmp->w, bmp->h, bmp->bpp));
+				core::nprintf(
+				    "BmpMan", "Unloading %s frame %d.  %dx%dx%d\n", be->filename, i, bmp->w, bmp->h, bmp->bpp);
 			bm_free_data(bm_get_slot(first + i));		// clears flags, bbp, data, etc
 		}
 	} else {
 		if (!nodebug)
-			nprintf(("BmpMan", "Unloading %s.  %dx%dx%d\n", be->filename, bmp->w, bmp->h, bmp->bpp));
+			core::nprintf("BmpMan", "Unloading %s.  %dx%dx%d\n", be->filename, bmp->w, bmp->h, bmp->bpp);
 		bm_free_data(bm_get_slot(handle));		// clears flags, bbp, data, etc
 	}
 
@@ -3095,14 +3111,15 @@ int bm_unload_fast(int handle, int clear_render_targets) {
 
 	// If it is locked, cannot free it.
 	if (be->ref_count != 0) {
-		nprintf(("BmpMan", "Tried to unload_fast %s that has a lock count of %d.. not unloading\n", be->filename, be->ref_count));
+		core::nprintf("BmpMan", "Tried to unload_fast %s that has a lock count of %d.. not unloading\n", be->filename,
+		               be->ref_count);
 		return 0;
 	}
 
-	Assert(be->handle == handle);		// INVALID BITMAP HANDLE!
+	core::Assert(be->handle == handle); // INVALID BITMAP HANDLE!
 
 	// unlike bm_unload(), we handle each frame of an animation separately, for safer use in the graphics API
-	nprintf(("BmpMan", "Fast-unloading %s.  %dx%dx%d\n", be->filename, bmp->w, bmp->h, bmp->bpp));
+	core::nprintf("BmpMan", "Fast-unloading %s.  %dx%dx%d\n", be->filename, bmp->w, bmp->h, bmp->bpp);
 	bm_free_data_fast(handle);		// clears flags, bbp, data, etc
 
 	return 1;
@@ -3111,19 +3128,19 @@ int bm_unload_fast(int handle, int clear_render_targets) {
 void bm_unlock(int handle) {
 	bitmap_entry	*be;
 
-	Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
+	core::Assertion(bm_inited, "bmpman must be initialized before this function can be called!");
 
 	be = bm_get_entry(handle);
 
 	be->ref_count--;
-	Assert(be->ref_count >= 0);		// Trying to unlock data more times than lock was called!!!
+	core::Assert(be->ref_count >= 0); // Trying to unlock data more times than lock was called!!!
 }
 
 void bm_update_memory_used(int n, size_t size)
 {
 #ifdef BMPMAN_NDEBUG
 	auto entry = bm_get_entry(n);
-	Assert( entry->data_size == 0 );
+	core::Assert(entry->data_size == 0);
 	entry->data_size += size;
 	bm_texture_ram += size;
 #endif
@@ -3131,7 +3148,8 @@ void bm_update_memory_used(int n, size_t size)
 
 static int find_block_of(int n, int start_block)
 {
-	Assertion(n < (int) BM_BLOCK_SIZE, "Can not allocate bitmap block with %d slots! Block size is only "
+	core::Assertion(n < (int)BM_BLOCK_SIZE,
+	                "Can not allocate bitmap block with %d slots! Block size is only "
 		SIZE_T_ARG
 		"!", n, BM_BLOCK_SIZE);
 
@@ -3243,9 +3261,9 @@ int bmpman_count_available_slots() {
 }
 
 bool bm_validate_filename(const std::string& file, bool single_frame, bool animation) {
-	Assertion(single_frame || animation, "At least one of single_frame or animation must be true!");
+	core::Assertion(single_frame || animation, "At least one of single_frame or animation must be true!");
 
-	if (!VALID_FNAME(file.c_str())) {
+	if (!core::fs::VALID_FNAME(file.c_str())) {
 		return false;
 	}
 
@@ -3265,7 +3283,7 @@ bool bm_validate_filename(const std::string& file, bool single_frame, bool anima
 	return false;
 }
 SDL_Surface* bm_to_sdl_surface(int handle) {
-	Assertion(bm_is_valid(handle), "%d is no valid bitmap handle!", handle);
+	core::Assertion(bm_is_valid(handle), "%d is no valid bitmap handle!", handle);
 
 	int w;
 	int h;

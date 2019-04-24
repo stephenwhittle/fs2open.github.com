@@ -503,7 +503,7 @@ bool ConditionedHook::ConditionsValid(int action, object *objp, int more_data)
 
 bool ConditionedHook::IsOverride(script_state* sys, int action)
 {
-	Assert(sys != NULL);
+core::Assert(sys != NULL);
 	// bool b = false;
 
 	//Do the actions
@@ -520,7 +520,7 @@ bool ConditionedHook::IsOverride(script_state* sys, int action)
 
 bool ConditionedHook::Run(class script_state* sys, int action)
 {
-	Assert(sys != NULL);
+core::Assert(sys != NULL);
 
 	// Do the actions
 	for (auto & Action : Actions) {
@@ -846,7 +846,7 @@ void script_state::ParseChunkSub(script_function& script_func, const char* debug
 {
 	using namespace luacpp;
 
-	Assert(debug_str != NULL);
+core::Assert(debug_str != NULL);
 
 	//Lua
 	script_func.language = SC_LUA;

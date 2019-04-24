@@ -104,8 +104,8 @@ int mission_campaign_get_info(const char *filename, char *name, int *type, int *
 	int i, success = 0;
 	char campaign_type[NAME_LENGTH], fname[MAX_FILENAME_LEN];
 
-	Assert( name != NULL );
-	Assert( type != NULL );
+core::Assert( name != NULL );
+core::Assert( type != NULL );
 
 	strncpy(fname, filename, MAX_FILENAME_LEN - 1);
 	auto fname_len = strlen(fname);
@@ -113,7 +113,7 @@ int mission_campaign_get_info(const char *filename, char *name, int *type, int *
 		strcat_s(fname, FS_CAMPAIGN_FILE_EXT);
 		fname_len += 4;
 	}
-	Assert(fname_len < MAX_FILENAME_LEN);
+core::Assert(fname_len < MAX_FILENAME_LEN);
 
 	*type = -1;
 	do {
@@ -170,7 +170,7 @@ int mission_campaign_get_info(const char *filename, char *name, int *type, int *
 		}
 	} while (0);
 
-	Assert(success);
+core::Assert(success);
 	return success;
 }
 
@@ -305,7 +305,7 @@ void mission_campaign_build_list(bool desc, bool sort, bool multiplayer)
 	// now get the list of all mission names
 	// NOTE: we don't do sorting here, but we assume CF_SORT_NAME, and do it manually below
 	rc = cf_get_file_list(MAX_CAMPAIGNS, Campaign_file_names, CF_TYPE_MISSIONS, wild_card, CF_SORT_NONE);
-	Assert( rc == Num_campaigns );
+core::Assert( rc == Num_campaigns );
 
 	// now sort everything, if we are supposed to
 	if (sort) {
@@ -457,7 +457,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 
 		// copy filename to campaign structure minus the extension
 		auto len = strlen(filename) - 4;
-		Assert(len < MAX_FILENAME_LEN);
+	core::Assert(len < MAX_FILENAME_LEN);
 		strncpy(Campaign.filename, filename, len);
 		Campaign.filename[len] = '\0';
 
@@ -556,7 +556,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 			if ( optional_string("+Formula:") ) {
 				cm->formula = get_sexp_main();
 				if ( !Fred_running ) {
-					Assert ( cm->formula != -1 );
+				core::Assert ( cm->formula != -1 );
 					sexp_mark_persistent( cm->formula );
 
 				} else {
@@ -593,7 +593,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 			if ( optional_string("+Formula:") ) {
 				cm->mission_loop_formula = get_sexp_main();
 				if ( !Fred_running ) {
-					Assert ( cm->mission_loop_formula != -1 );
+				core::Assert ( cm->mission_loop_formula != -1 );
 					sexp_mark_persistent( cm->mission_loop_formula );
 
 				} else {
@@ -752,20 +752,20 @@ void mission_campaign_savefile_generate_root(char *filename, player *pl)
 {
 	char base[_MAX_FNAME];
 
-	Assert ( strlen(Campaign.filename) != 0 ); //-V805
+core::Assert ( strlen(Campaign.filename) != 0 ); //-V805
 
 	if (pl == NULL) {
-		Assert((Player_num >= 0) && (Player_num < MAX_PLAYERS));
+	core::Assert((Player_num >= 0) && (Player_num < MAX_PLAYERS));
 		pl = &Players[Player_num];
 	}
 
-	Assert( pl != NULL );
+core::Assert( pl != NULL );
 
 	// build up the filename for the save file.  There could be a problem with filename length,
 	// but this problem can get fixed in several ways -- ignore the problem for now though.
 	_splitpath( Campaign.filename, NULL, NULL, base, NULL );
 
-	Assert ( (strlen(base) + strlen(pl->callsign) + 1) < _MAX_FNAME );
+core::Assert ( (strlen(base) + strlen(pl->callsign) + 1) < _MAX_FNAME );
 
 	sprintf( filename, NOX("%s.%s."), pl->callsign, base );
 }
@@ -951,7 +951,7 @@ void mission_campaign_store_goals_and_events()
 	mission_obj->num_goals = Num_goals;
 	if ( mission_obj->num_goals > 0 ) {
 		mission_obj->goals = (mgoal *)vm_malloc( sizeof(mgoal) * Num_goals );
-		Assert( mission_obj->goals != NULL );
+	core::Assert( mission_obj->goals != NULL );
 	}
 
 	// copy the needed info from the Mission_goal struct to our internal structure
@@ -963,7 +963,7 @@ void mission_campaign_store_goals_and_events()
 			strcpy_s( mission_obj->goals[i].name, goal_name);
 		} else
 			strcpy_s( mission_obj->goals[i].name, Mission_goals[i].name );
-		Assert ( Mission_goals[i].satisfied != GOAL_INCOMPLETE );		// should be true or false at this point!!!
+	core::Assert ( Mission_goals[i].satisfied != GOAL_INCOMPLETE );		// should be true or false at this point!!!
 		mission_obj->goals[i].status = (char)Mission_goals[i].satisfied;
 	}
 
@@ -977,7 +977,7 @@ void mission_campaign_store_goals_and_events()
 	mission_obj->num_events = Num_mission_events;
 	if ( mission_obj->num_events > 0 ) {
 		mission_obj->events = (mevent *)vm_malloc( sizeof(mevent) * Num_mission_events );
-		Assert( mission_obj->events != NULL );
+	core::Assert( mission_obj->events != NULL );
 	}
 
 	// copy the needed info from the Mission_goal struct to our internal structure
@@ -1095,7 +1095,7 @@ void mission_campaign_mission_over(bool do_next_mission)
 	}
 
 	mission_num = Campaign.current_mission;
-	Assert( mission_num != -1 );
+core::Assert( mission_num != -1 );
 	mission_obj = &Campaign.missions[mission_num];
 
 	// determine if any ships/weapons were granted this mission
@@ -1283,7 +1283,7 @@ int mission_campaign_get_filenames(char *filename, char dest[][NAME_LENGTH], int
 	// read the mission file and get the list of mission filenames
 	try
 	{
-		Assert( strlen(filename) < MAX_FILENAME_LEN );  // make sure no overflow
+	core::Assert( strlen(filename) < MAX_FILENAME_LEN );  // make sure no overflow
 		read_file_text(filename);
 		reset_parse();
 
@@ -1315,7 +1315,7 @@ std::string mission_campaign_get_name(const char* filename)
 	std::string filename_str = filename;
 	filename_str += FS_CAMPAIGN_FILE_EXT;
 	try {
-		Assertion(filename_str.size() < MAX_FILENAME_LEN,
+	core::Assertion(filename_str.size() < MAX_FILENAME_LEN,
 		          "Filename (%s) is too long. Is " SIZE_T_ARG " bytes long but maximum is %d.", filename_str.c_str(),
 		          filename_str.size(), MAX_FILENAME_LEN); // make sure no overflow
 		read_file_text(filename_str.c_str());
@@ -1424,7 +1424,7 @@ void read_mission_goal_list(int num)
 		Campaign.missions[num].num_goals = count;
 		if (count) {
 			Campaign.missions[num].goals = (mgoal *)vm_malloc(count * sizeof(mgoal));
-			Assert(Campaign.missions[num].goals);  // make sure we got the memory
+		core::Assert(Campaign.missions[num].goals);  // make sure we got the memory
 			memset(Campaign.missions[num].goals, 0, count * sizeof(mgoal));
 
 			for (i = 0; i < count; i++){
@@ -1435,7 +1435,7 @@ void read_mission_goal_list(int num)
 		Campaign.missions[num].num_events = event_count;
 		if (event_count) {
 			Campaign.missions[num].events = (mevent *)vm_malloc(event_count * sizeof(mevent));
-			Assert(Campaign.missions[num].events);
+		core::Assert(Campaign.missions[num].events);
 			memset(Campaign.missions[num].events, 0, event_count * sizeof(mevent));
 
 			for (i = 0; i < event_count; i++){
@@ -1491,13 +1491,13 @@ void mission_campaign_maybe_play_movie(int type)
 	char *filename;
 
 	// only support pre mission movies for now.
-	Assert ( type == CAMPAIGN_MOVIE_PRE_MISSION );
+core::Assert ( type == CAMPAIGN_MOVIE_PRE_MISSION );
 
 	if ( !(Game_mode & GM_CAMPAIGN_MODE) )
 		return;
 
 	mission_idx = Campaign.current_mission;
-	Assert( mission_idx != -1 );
+core::Assert( mission_idx != -1 );
 
 	// get a possible filename for a movie to play.
 	filename = NULL;
@@ -1566,11 +1566,11 @@ void mission_campaign_save_persistent( int type, int sindex )
 	// based on the type of information, save it off for possible saving into the campsign
 	// savefile when the mission is over
 	if ( type == CAMPAIGN_PERSISTENT_SHIP ) {
-		Assert( Num_granted_ships < MAX_SHIP_CLASSES );
+	core::Assert( Num_granted_ships < MAX_SHIP_CLASSES );
 		Granted_ships[Num_granted_ships] = sindex;
 		Num_granted_ships++;
 	} else if ( type == CAMPAIGN_PERSISTENT_WEAPON ) {
-		Assert( Num_granted_weapons < MAX_WEAPON_TYPES );
+	core::Assert( Num_granted_weapons < MAX_WEAPON_TYPES );
 		Granted_weapons[Num_granted_weapons] = sindex;
 		Num_granted_weapons++;
 	} else

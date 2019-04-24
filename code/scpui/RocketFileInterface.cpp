@@ -6,13 +6,13 @@
 #include "cfile/cfile.h"
 #include "mod_table/mod_table.h"
 #include <core/toolchain.h>
-// Our Assert conflicts with the definitions inside libRocket
-#pragma push_macro("Assert")
-#undef Assert
+// Ourcore::Assert conflicts with the definitions inside libRocket
+#pragma push_macro(core::Assert")
+#undefcore::Assert
 
 #include <Rocket/Core/Log.h>
 
-#pragma pop_macro("Assert")
+#pragma pop_macro(core::Assert")
 
 using namespace Rocket::Core;
 
@@ -62,7 +62,7 @@ bool RocketFileInterface::Seek(FileHandle file, long offset, int origin)
 		cf_seek_mode = CF_SEEK_END;
 		break;
 	default:
-		Assertion(false, "Invalid seek mode encountered!");
+	core::Assertion(false, "Invalid seek mode encountered!");
 		return false;
 	}
 

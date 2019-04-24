@@ -97,7 +97,7 @@ void waypoint_path_dlg::OnInitMenu(CMenu* pMenu)
 	if (cur_waypoint_list != NULL)
 	{
 		int index = find_index_of_waypoint_list(cur_waypoint_list);
-		Assert(index >= 0);
+	core::Assert(index >= 0);
 		m->CheckMenuItem(ID_WAYPOINT_MENU + index, MF_BYCOMMAND | MF_CHECKED);
 	}
 
@@ -130,7 +130,7 @@ void waypoint_path_dlg::initialize_data(int full_update)
 
 	if (query_valid_object() && Objects[cur_object_index].type == OBJ_WAYPOINT)
 	{
-		Assert(cur_waypoint_list == find_waypoint_list_with_instance(Objects[cur_object_index].instance));
+	core::Assert(cur_waypoint_list == find_waypoint_list_with_instance(Objects[cur_object_index].instance));
 	}
 
 	if (cur_waypoint_list != NULL) {
@@ -171,7 +171,7 @@ int waypoint_path_dlg::update_data(int redraw)
 
 	if (query_valid_object() && Objects[cur_object_index].type == OBJ_WAYPOINT)
 	{
-		Assert(cur_waypoint_list == find_waypoint_list_with_instance(Objects[cur_object_index].instance));
+	core::Assert(cur_waypoint_list == find_waypoint_list_with_instance(Objects[cur_object_index].instance));
 	}
 
 	if (cur_waypoint_list != NULL) {

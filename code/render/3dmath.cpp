@@ -99,7 +99,7 @@ ubyte g3_rotate_vertex(vertex *dest, const vec3d *src)
 {
 #if 0
 	vec3d tempv;
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 	vm_vec_sub(&tempv,src,&View_position);
 	vm_vec_rotate( (vec3d *)&dest->x, &tempv, &View_matrix );
 	dest->flags = 0;	//not projected
@@ -156,7 +156,7 @@ ubyte g3_rotate_vertex(vertex *dest, const vec3d *src)
 
 ubyte g3_rotate_faraway_vertex(vertex *dest, const vec3d *src)
 {	
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	MONITOR_INC( NumRotations, 1 );	
 
@@ -173,7 +173,7 @@ ubyte g3_rotate_vector(vec3d *dest, const vec3d *src)
 {
 	vec3d tempv;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	MONITOR_INC( NumRotations, 1 );	
 
@@ -186,7 +186,7 @@ ubyte g3_project_vector(const vec3d *p, float *sx, float *sy )
 {
 	float w;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if ( p->xyz.z <= MIN_Z ) return PF_OVERFLOW;
 
@@ -204,7 +204,7 @@ int g3_project_vertex(vertex *p)
 {
 	float w;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if ( p->flags & PF_PROJECTED )
 		return p->flags;
@@ -233,7 +233,7 @@ void g3_point_to_vec(vec3d *v, int sx, int sy)
 {
 	vec3d	tempv;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	tempv.xyz.x =  ((float)sx - Canv_w2) / Canv_w2;
 	tempv.xyz.y = -((float)sy - Canv_h2) / Canv_h2;
@@ -269,7 +269,7 @@ void g3_point_to_vec_delayed(vec3d *v, int sx, int sy)
 
 vec3d *g3_rotate_delta_vec(vec3d *dest, const vec3d *src)
 {
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 	return vm_vec_rotate(dest,src,&View_matrix);
 }
 

@@ -68,7 +68,7 @@ void model_octant_find_shields( polymodel * pm, model_octant * oct )
 	}
 
 	oct->shield_tris = (shield_tri **)vm_malloc( sizeof(shield_tri *) * oct->nshield_tris );
-	Assert(oct->shield_tris!=NULL);
+core::Assert(oct->shield_tris!=NULL);
 
 	n = 0;
 		
@@ -85,7 +85,7 @@ void model_octant_find_shields( polymodel * pm, model_octant * oct )
 		}
 	}
 
-	Assert( oct->nshield_tris == n );
+core::Assert( oct->nshield_tris == n );
 }
 
     
@@ -110,7 +110,7 @@ void moff_defpoints(ubyte * p, int just_count)
 
 	model_allocate_interp_data( nverts, nnorms );
 
-	Assert( Interp_verts != NULL );
+core::Assert( Interp_verts != NULL );
 
 	for (n=0; n<nverts; n++ )	{
 		Interp_verts[n] = src;
@@ -145,7 +145,7 @@ void moff_tmappoly(ubyte * p, polymodel * pm, model_octant * oct, int just_count
 		vec3d center_point;
 		vm_vec_zero( &center_point );
 
-		Assert( Interp_verts != NULL );
+	core::Assert( Interp_verts != NULL );
 
 		for (i=0;i<nv;i++)	{
 			vm_vec_add2( &center_point, Interp_verts[verts[i].vertnum] );
@@ -206,7 +206,7 @@ void moff_flatpoly(ubyte * p, polymodel * pm, model_octant * oct, int just_count
 		vec3d center_point;
 		vm_vec_zero( &center_point );
 
-		Assert( Interp_verts != NULL );
+	core::Assert( Interp_verts != NULL );
 
 		for (i=0;i<nv;i++)	{
 			vm_vec_add2( &center_point, Interp_verts[verts[i*2]] );
@@ -301,7 +301,7 @@ void model_octant_find_faces( polymodel * pm, model_octant * oct )
 	}
 
 	oct->verts = (vec3d **)vm_malloc( sizeof(vec3d *) * oct->nverts );
-	Assert(oct->verts!=NULL);
+core::Assert(oct->verts!=NULL);
 
 	oct->nverts = 0;
 	model_octant_find_faces_sub(pm, oct, p, 0 );

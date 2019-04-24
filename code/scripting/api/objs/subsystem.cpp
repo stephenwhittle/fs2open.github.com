@@ -209,7 +209,7 @@ ADE_VIRTVAR(GunPosition, l_Subsystem, "vector", "Subsystem gun position with reg
 		return ade_set_error(L, "o", l_Vector.Set(vmd_zero_vector));
 
 	polymodel *pm = model_get(Ship_info[Ships[sso->objp->instance].ship_info_index].model_num);
-	Assert(pm != NULL);
+core::Assert(pm != NULL);
 
 	if(sso->ss->system_info->turret_gun_sobj < 0)
 		return ade_set_error(L, "o", l_Vector.Set(vmd_zero_vector));

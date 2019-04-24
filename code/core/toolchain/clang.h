@@ -30,14 +30,15 @@
 #endif
 
 #define ASSUME(x)
+/*
 
 #if defined(NDEBUG)
 #	define Assertion(expr, msg, ...)  do { } while (false)
 #else
-/*
- * NOTE: Assertion() can only use its proper functionality in compilers
+/ *
+ * NOTE:core::Assertion() can only use its proper functionality in compilers
  * that support variadic macros.
- */
+ * /
 #	define Assertion(expr, msg, ...)                                      \
 		do {                                                              \
 			if (!(expr)) {                                                \
@@ -45,6 +46,7 @@
 			}                                                             \
 		} while (false)
 #endif
+*/
 
 /* C++11 Standard Detection */
 #if !defined(HAVE_CXX11)

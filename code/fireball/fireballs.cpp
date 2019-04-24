@@ -55,7 +55,7 @@ void fireball_play_warphole_open_sound(int ship_class, fireball *fb)
 	float		range_multiplier = 1.0f;
 	object	*fireball_objp;	
 		
-	Assert((fb != NULL) && (fb->objnum >= 0));
+	core::Assert((fb != NULL) && (fb->objnum >= 0));
 	if((fb == NULL) || (fb->objnum < 0)){
 		return;
 	}
@@ -104,7 +104,7 @@ void fireball_play_warphole_close_sound(fireball *fb)
 
 static void fireball_generate_unique_id(char *unique_id, int buffer_len, int fireball_index)
 {
-	Assert((fireball_index >= 0) && (fireball_index < MAX_FIREBALL_TYPES));
+	core::Assert((fireball_index >= 0) && (fireball_index < MAX_FIREBALL_TYPES));
 
 	switch (fireball_index)
 	{
@@ -148,7 +148,7 @@ static void fireball_generate_unique_id(char *unique_id, int buffer_len, int fir
  */
 static void fireball_set_default_color(int idx)
 {
-	Assert((idx >= 0) && (idx < MAX_FIREBALL_TYPES));
+	core::Assert((idx >= 0) && (idx < MAX_FIREBALL_TYPES));
 
 	switch (idx)
 	{
@@ -184,7 +184,7 @@ static void fireball_set_default_color(int idx)
 
 static void fireball_set_default_warp_attributes(int idx)
 {
-	Assert((idx >= 0) && (idx < MAX_FIREBALL_TYPES));
+	core::Assert((idx >= 0) && (idx < MAX_FIREBALL_TYPES));
 
 	switch (idx)
 	{
@@ -199,7 +199,7 @@ static void fireball_set_default_warp_attributes(int idx)
 
 void fireball_info_clear(fireball_info *fb)
 {
-	Assert(fb != nullptr);
+	core::Assert(fb != nullptr);
 	memset(fb, 0, sizeof(fireball_info));
 
 	for (int i = 0; i < MAX_FIREBALL_LOD; ++i)
@@ -356,7 +356,7 @@ static void parse_fireball_tbl(const char *table_filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", table_filename, e.what()));
+		core::mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", table_filename, e.what()));
 		return;
 	}
 }
@@ -405,14 +405,14 @@ void fireball_load_data()
 		}
 
 		if (strlen(fd->warp_glow) > 0) {
-			mprintf(("Loading warp glow '%s'\n", fd->warp_glow));
+			core::mprintf(("Loading warp glow '%s'\n", fd->warp_glow));
 			fd->warp_glow_bitmap = bm_load(fd->warp_glow);
 		} else {
 			fd->warp_glow_bitmap = -1;
 		}
 
 		if (strlen(fd->warp_ball) > 0) {
-			mprintf(("Loading warp ball '%s'\n", fd->warp_ball));
+			core::mprintf(("Loading warp ball '%s'\n", fd->warp_ball));
 			fd->warp_ball_bitmap = bm_load(fd->warp_ball);
 		} else {
 			fd->warp_ball_bitmap = -1;
@@ -457,11 +457,11 @@ void fireball_delete( object * obj )
 	num = obj->instance;
 	fb = &Fireballs[num];
 
-	Assert( fb->objnum == OBJ_INDEX(obj));
+	core::Assert(fb->objnum == OBJ_INDEX(obj));
 
 	Fireballs[num].objnum = -1;
 	Num_fireballs--;
-	Assert( Num_fireballs >= 0 );
+	core::Assert(Num_fireballs >= 0);
 }
 
 /**
@@ -525,7 +525,7 @@ int fireball_is_perishable(object * obj)
 
 	num = obj->instance;
 	objnum = OBJ_INDEX(obj);
-	Assert( Fireballs[num].objnum == objnum );
+	core::Assert(Fireballs[num].objnum == objnum);
 
 	fb = &Fireballs[num];
 
@@ -585,7 +585,7 @@ int fireball_is_warp(object * obj)
 
 	num = obj->instance;
 	objnum = OBJ_INDEX(obj);
-	Assert( Fireballs[num].objnum == objnum );
+	core::Assert(Fireballs[num].objnum == objnum);
 
 	fb = &Fireballs[num];
 
@@ -629,7 +629,7 @@ void fireball_process_post(object * obj, float frame_time)
 
 	num = obj->instance;
 	objnum = OBJ_INDEX(obj);
-	Assert( Fireballs[num].objnum == objnum );
+	core::Assert(Fireballs[num].objnum == objnum);
 
 	fb = &Fireballs[num];
 
@@ -653,7 +653,7 @@ float fireball_lifeleft( object *obj )
 
 	num = obj->instance;
 	objnum = OBJ_INDEX(obj);
-	Assert( Fireballs[num].objnum == objnum );
+	core::Assert(Fireballs[num].objnum == objnum);
 
 	fb = &Fireballs[num];
 
@@ -670,7 +670,7 @@ float fireball_lifeleft_percent( object *obj )
 
 	num = obj->instance;
 	objnum = OBJ_INDEX(obj);
-	Assert( Fireballs[num].objnum == objnum );
+	core::Assert(Fireballs[num].objnum == objnum);
 
 	fb = &Fireballs[num];
 
@@ -773,8 +773,8 @@ int fireball_create(vec3d *pos, int fireball_type, int render_type, int parent_o
 	fireball_info	*fd;
 	fireball_lod	*fl;
 
-	Assert( fireball_type > -1 );
-	Assert( fireball_type < Num_fireball_types );
+	core::Assert(fireball_type > -1);
+	core::Assert(fireball_type < Num_fireball_types);
 
 	fd = &Fireball_info[fireball_type];
 
@@ -801,7 +801,7 @@ int fireball_create(vec3d *pos, int fireball_type, int render_type, int parent_o
 				break;
 			}
 		}
-		Assert( n != MAX_FIREBALLS );
+		core::Assert(n != MAX_FIREBALLS);
 	}
 
 	fb = &Fireballs[n];
@@ -888,7 +888,7 @@ int fireball_create(vec3d *pos, int fireball_type, int render_type, int parent_o
 	}
 
 	if ( fb->fireball_render_type == FIREBALL_WARP_EFFECT )	{
-		Assert( warp_lifetime >= 4.0f );		// Warp lifetime must be at least 4 seconds!
+		core::Assert(warp_lifetime >= 4.0f); // Warp lifetime must be at least 4 seconds!
 		if ( warp_lifetime < 4.0f )
 			warp_lifetime = 4.0f;
 		fb->total_time = warp_lifetime;	// in seconds
@@ -954,7 +954,7 @@ void fireballs_page_in()
 
 		// load the warp model, if we have one
 		if (strlen(fd->warp_model) > 0 && cf_exists_full(fd->warp_model, CF_TYPE_MODELS)) {
-			mprintf(("Loading warp model '%s'\n", fd->warp_model));
+			core::mprintf(("Loading warp model '%s'\n", fd->warp_model));
 			fd->warp_model_id = model_load(fd->warp_model, 0, nullptr, 0);
 		} else {
 			fd->warp_model_id = -1;
@@ -964,7 +964,7 @@ void fireballs_page_in()
 
 void fireball_get_color(int idx, float *red, float *green, float *blue)
 {
-	Assert( red && blue && green );
+	core::Assert(red && blue && green);
 
 	if ( (idx < 0) || (idx >= Num_fireball_types) ) {
 		Int3();
@@ -985,7 +985,7 @@ void fireball_get_color(int idx, float *red, float *green, float *blue)
 
 int fireball_ship_explosion_type(ship_info *sip)
 {
-	Assert( sip != NULL );
+	core::Assert(sip != NULL);
 
 	int index = -1;
 	int ship_fireballs = (int)sip->explosion_bitmap_anims.size();
@@ -1006,7 +1006,7 @@ int fireball_ship_explosion_type(ship_info *sip)
 
 int fireball_asteroid_explosion_type(asteroid_info *aip)
 {
-	Assert( aip != NULL );
+	core::Assert(aip != NULL);
 
 	if (aip->explosion_bitmap_anims.empty())
 		return -1;

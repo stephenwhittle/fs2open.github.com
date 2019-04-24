@@ -78,7 +78,7 @@ void g3_start_frame_func(int zbuffer_flag, const char * /*filename*/, int  /*lin
 	int width, height;
 	float aspect;
 
- 	Assert( G3_count == 0 );
+ core::Assert( G3_count == 0 );
 	G3_count++;
 
 	// Get the values from the 2d...
@@ -116,7 +116,7 @@ void g3_start_frame_func(int zbuffer_flag, const char * /*filename*/, int  /*lin
 void g3_end_frame_func(const char * /*filename*/, int  /*lineno*/)
 {
 	G3_count--;
-	Assert( G3_count == 0 );
+core::Assert( G3_count == 0 );
 
 	free_point_num = 0;
 }
@@ -141,7 +141,7 @@ void g3_set_view(camera *cam)
  */
 void g3_set_view_matrix(const vec3d *view_pos, const matrix *view_matrix, float zoom)
 {
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	View_zoom = zoom;
 	View_position = *view_pos;
@@ -199,9 +199,9 @@ void g3_start_instance_matrix(const vec3d *pos, const matrix *orient, bool set_a
 	vec3d tempv;
 	matrix tempm,tempm2;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
-	Assert(instance_depth<MAX_INSTANCE_DEPTH);
+core::Assert(instance_depth<MAX_INSTANCE_DEPTH);
 
 	instance_stack[instance_depth].m = View_matrix;
 	instance_stack[instance_depth].p = View_position;
@@ -276,7 +276,7 @@ void g3_start_instance_angles(const vec3d *pos, const angles *orient)
 {
 	matrix tm;
 
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	if (orient==NULL) {
 		g3_start_instance_matrix(pos,NULL);
@@ -297,11 +297,11 @@ void g3_start_instance_angles(const vec3d *pos, const angles *orient)
  */
 void g3_done_instance(bool use_api)
 {
-	Assert( G3_count == 1 );
+core::Assert( G3_count == 1 );
 
 	instance_depth--;
 
-	Assert(instance_depth >= 0);
+core::Assert(instance_depth >= 0);
 
 	View_position = instance_stack[instance_depth].p;
 	View_matrix = instance_stack[instance_depth].m;
