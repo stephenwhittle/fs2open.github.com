@@ -670,6 +670,8 @@ int bmpman_count_available_slots();
  */
 bool bm_validate_filename(const std::string& file, bool single_frame, bool animation);
 
+struct SDL_Surface;
+
 SDL_Surface* bm_to_sdl_surface(int handle);
 
 #endif

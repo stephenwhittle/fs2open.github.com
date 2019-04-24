@@ -3,7 +3,7 @@
 #pragma once
 
 #include <core/pstypes.h>
-
+#include <core/error.h>
 #include "object/object.h"
 
 #include "particle/particle.h"

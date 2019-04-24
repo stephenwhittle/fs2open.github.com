@@ -3,6 +3,7 @@
 #include <vector>
 #include <core/pstypes.h>
 #include <core/toolchain.h>
+#include <scp_compiler_detection.h>
 #include <memory>
 
 namespace font {

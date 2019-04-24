@@ -25,4 +25,4 @@ target_include_directories(core PUBLIC
 	${CMAKE_CURRENT_LIST_DIR})
 
 target_compile_options( core PUBLIC -utf-8)
-target_link_libraries(core PUBLIC simplesignal dbgtools ghc_filesystem)
+target_link_libraries(core PUBLIC generated simplesignal dbgtools ghc_filesystem)

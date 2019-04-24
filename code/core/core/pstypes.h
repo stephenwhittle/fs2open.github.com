@@ -208,15 +208,7 @@ typedef struct coord2d {
 extern int Global_warning_count;
 extern int Global_error_count;
 
-// To debug printf do this:
-// mprintf(( "Error opening %s\n", filename ));
-#ifndef NDEBUG
-#define mprintf(args) outwnd_printf2 args
-#define nprintf(args) outwnd_printf args
-#else
-#define mprintf(args)
-#define nprintf(args)
-#endif
+
 
 #define LOCATION __FILE__,__LINE__
 

@@ -14,6 +14,7 @@
 
 
 #include <core/pstypes.h>
+#include "scp_compiler_detection.h"
 #include <vector>
 #include <string>
 #include <list>
