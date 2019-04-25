@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdarg>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <climits>
 
 

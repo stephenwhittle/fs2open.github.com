@@ -10,7 +10,7 @@
 
 
 #include <cstdio>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <csetjmp>
 
 #include <core/pstypes.h>

@@ -29,7 +29,7 @@
 #define WSAGetLastError()  (errno)
 #endif
 
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cctype>

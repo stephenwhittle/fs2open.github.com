@@ -22,7 +22,6 @@
 #include <cstdio>    // For NULL, etc
 #include <cstdlib>
 #include <memory.h>
-#include <cstring>
 #include <algorithm>
 #include <cstdint>
 #include <string>
@@ -390,8 +389,7 @@ std::string dump_stacktrace();
 	// std::is_trivial              4.5   ?       2012 (2010 only duplicates std::is_pod)
 	// static_assert                4.3   2.9     2010
 	#include <type_traits>
-	#include <cstring>
-
+	
 	// MEMSET!
 	const auto ptr_memset = std::memset;
 	#define memset memset_if_trivial_else_error

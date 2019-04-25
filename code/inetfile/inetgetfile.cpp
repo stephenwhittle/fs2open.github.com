@@ -16,7 +16,7 @@
 #include <direct.h>
 #endif
 #include <cstdio>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 
 #include "inetfile/cftp.h"
 #include "inetfile/chttpget.h"

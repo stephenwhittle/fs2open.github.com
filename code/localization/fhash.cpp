@@ -11,7 +11,7 @@
 
 #include <cstdlib>
 #include <memory.h>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <core/pstypes.h>
 #include "localization/fhash.h"
 #include <core/toolchain.h>

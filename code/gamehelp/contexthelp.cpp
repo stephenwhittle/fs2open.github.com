@@ -8,7 +8,7 @@
 */ 
 
 
-#include <cstring>
+
 #include <csetjmp>
 
 #include "core/error.h"
@@ -33,6 +33,7 @@
 #include "network/multiui.h"
 #include "parse/parselo.h"
 #include "globalincs/fsmemory.h"
+#include <globalincs/safe_strings.h>
 
 
 ////////////////////////////////////////////////////////////////////
