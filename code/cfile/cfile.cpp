@@ -11,7 +11,7 @@
 #define _CFILE_INTERNAL 
 
 #include <cstdlib>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <cstdio>
 #include <cerrno>
 #include <sys/stat.h>

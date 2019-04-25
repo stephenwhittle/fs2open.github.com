@@ -12,7 +12,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <ctime>
 
 #ifdef _WIN32

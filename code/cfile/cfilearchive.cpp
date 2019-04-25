@@ -12,7 +12,7 @@
 #define _CFILE_INTERNAL 
 
 #include <cstdlib>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <cstdio>
 
 #ifdef _WIN32
