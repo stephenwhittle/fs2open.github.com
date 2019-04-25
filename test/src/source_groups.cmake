@@ -20,6 +20,10 @@ add_file_folder("Graphics"
 	   graphics/test_font.cpp
 )
 
+add_file_folder("math"
+	math/test_bitarray.cpp
+)
+
 add_file_folder("menuui"
     menuui/test_intel_parse.cpp
 )
