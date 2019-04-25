@@ -4,7 +4,7 @@
 #include "cfile/cfilesystem.h"
 #include "osapi/dialogs.h"
 #include "globalincs/fsmemory.h"
-
+#include <globalincs/scp_defines.h>
 
 extern int cfread_lua_number(double *buf, CFILE *cfile);
 namespace scripting {

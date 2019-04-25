@@ -40,7 +40,6 @@ std::vector<outwnd_filter_struct>& filter_vector() {
 	return vec;
 }
 
-void outwnd_print(const char *id = NULL, const char *temp = NULL);
 
 ubyte Outwnd_no_filter_file = 0;		// 0 = .cfg file found, 1 = not found and warning not printed yet, 2 = not found and warning printed
 
@@ -116,7 +115,7 @@ void load_filter_info(void)
 	}
 
 	if ( ferror(fp) && !feof(fp) )
-		nprintf(("Error", "Error reading \"%s\"\n", pathname));
+	 core::nprintf("Error", "Error reading \"%s\"\n", pathname);
 
 	fclose(fp);
 }
@@ -273,8 +272,8 @@ void outwnd_init()
 			strftime(datestr, sizeof(datestr) - 1, "%a %b %d %H:%M:%S %Y", localtime(&timedate));
 
 			outwnd_printf("General", "Opened log '%s', %s ...\n", logpath.c_str(), datestr);
-			mprintf(("Legacy config mode is %s.\nReason: %s\n", os_is_legacy_mode() ? "ENABLED" : "DISABLED",
-			         Osapi_legacy_mode_reason));
+		 core::mprintf("Legacy config mode is %s.\nReason: %s\n", os_is_legacy_mode() ? "ENABLED" : "DISABLED",
+			         Osapi_legacy_mode_reason);
 		}
 	}
 }

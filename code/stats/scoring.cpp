@@ -482,7 +482,7 @@ void scoring_level_close(int accepted)
 		scoring_struct *sc;
 
 		if(Game_mode & GM_MULTIPLAYER){
-			nprintf(("Network","Storing stats for all players now\n"));
+		 core::nprintf("Network","Storing stats for all players now\n");
 			for(idx=0;idx<MAX_PLAYERS;idx++){
 				if(MULTI_CONNECTED(Net_players[idx]) && !MULTI_STANDALONE(Net_players[idx])){
 					// get the scoring struct
@@ -495,7 +495,7 @@ void scoring_level_close(int accepted)
 				}
 			}
 		} else {
-			nprintf(("General","Storing stats now\n"));
+		 core::nprintf("General","Storing stats now\n");
 			scoring_do_accept( &Player->stats );
 		}
 
@@ -658,7 +658,7 @@ int scoring_eval_kill(object *ship_objp)
 		net_player_num = multi_find_player_by_object(ship_objp);
 		if(net_player_num != -1){
 			Net_players[net_player_num].m_player->stats.m_player_deaths++;
-			nprintf(("Network","Setting player %s deaths to %d\n",Net_players[net_player_num].m_player->callsign,Net_players[net_player_num].m_player->stats.m_player_deaths));
+		 core::nprintf("Network","Setting player %s deaths to %d\n",Net_players[net_player_num].m_player->callsign,Net_players[net_player_num].m_player->stats.m_player_deaths);
 			dead_plr = &Net_players[net_player_num];
 			is_enemy_player = true;
 		}
@@ -1057,7 +1057,7 @@ void scoring_eval_assists(ship *sp,int killer_sig, bool is_enemy_player)
 				// player has to equal the threshold to get an assist
 				if ((sp->damage_ship[idx]/sp->total_damage_received) >= Assist_percentage) {
 					plr->stats.m_assists++;	
-					nprintf(("Network","-==============GAVE PLAYER %s AN ASSIST=====================-\n",plr->callsign));
+				 core::nprintf("Network","-==============GAVE PLAYER %s AN ASSIST=====================-\n",plr->callsign);
 				}
 				
 				// Don't scale in TvT and dogfight
@@ -1289,7 +1289,7 @@ void scoring_bash_rank(player *pl,int rank)
 {	
 	// if this is an invalid rank, do nothing
 	if((rank < RANK_ENSIGN) || (rank > RANK_ADMIRAL)){
-		nprintf(("General","Could not bash player rank - invalid value!!!\n"));
+	 core::nprintf("General","Could not bash player rank - invalid value!!!\n");
 		return;
 	}
 

@@ -1987,7 +1987,7 @@ core::Assert( Wss_slots != NULL );
 		common_buttons_maybe_reload(&Weapon_ui_window);	// AL 11-21-97: this is necessary since we may returning from the hotkey
 																		// screen, which can release common button bitmaps.
 		common_reset_buttons();
-		nprintf(("Alan","weapon_select_init() returning without doing anything\n"));
+	 core::nprintf("Alan","weapon_select_init() returning without doing anything\n");
 
 		// if we're in multiplayer always select the player's ship
 		wl_reset_selected_slot();
@@ -1995,7 +1995,7 @@ core::Assert( Wss_slots != NULL );
 		return;
 	}
 
-	nprintf(("Alan","entering weapon_select_init()\n"));
+ core::nprintf("Alan","entering weapon_select_init()\n");
 	common_select_init();
 
 
@@ -2451,7 +2451,7 @@ void weapon_select_do(float frametime)
 
 	if ( wl_choice >= 0 ) {
 		if ( snazzy_action == SNAZZY_CLICKED ) {
-			nprintf(("Alan","got one\n"));
+		 core::nprintf("Alan","got one\n");
 		} 
 	}
 
@@ -2858,11 +2858,11 @@ void weapon_select_do(float frametime)
 void weapon_select_close()
 {
 	if ( !Weapon_select_open ) {
-		nprintf(("Alan","weapon_select_close() returning without doing anything\n"));
+	 core::nprintf("Alan","weapon_select_close() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan", "Entering weapon_select_close()\n"));
+ core::nprintf("Alan", "Entering weapon_select_close()\n");
 
 	// done with the bitmaps, so unlock it
 	bm_unlock(WeaponSelectMaskBitmap);

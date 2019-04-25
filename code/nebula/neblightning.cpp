@@ -387,7 +387,7 @@ void nebl_render_all()
 
 						Num_lbolts--;
 
-						nprintf(("lightning", "Released bolt. %d used nodes!\n", Num_lnodes));
+					 core::nprintf("lightning", "Released bolt. %d used nodes!\n", Num_lnodes);
 					}
 
 					b->used = 0;
@@ -659,7 +659,7 @@ l_node *nebl_new()
 
 	// if we're out of nodes
 	if(Num_lnodes >= MAX_LIGHTNING_NODES){
-		nprintf(("lightning", "Out of lightning nodes!\n"));
+	 core::nprintf("lightning", "Out of lightning nodes!\n");
 		return NULL;
 	}
 

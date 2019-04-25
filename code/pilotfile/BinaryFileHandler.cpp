@@ -1,6 +1,7 @@
 
 #include "pilotfile/BinaryFileHandler.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 pilot::BinaryFileHandler::BinaryFileHandler(CFILE* cfp) : _cfp(cfp) {
 core::Assertion(cfp != nullptr, "File pointer must be valid!");
 }

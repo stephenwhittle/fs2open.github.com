@@ -32,7 +32,7 @@
 #include <cstdio>
 #include <climits>
 #include <algorithm>
-
+#include <core/error.h>
 #include <core/pstypes.h>
 #include "network/psnet2.h"
 #include "network/multi.h"
@@ -45,7 +45,7 @@
 #include "cmdline/cmdline.h"
 #include "math/floating.h"
 #include "globalincs/fsmemory.h"
-
+#include <SDL_endian.h>
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS
 //

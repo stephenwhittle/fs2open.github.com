@@ -916,7 +916,7 @@ void process_debug_keys(int k)
 			} else {
 				Debug_octant++;
 			}
-			nprintf(("General", "Debug_octant == %d\n", Debug_octant));
+		 core::nprintf("General", "Debug_octant == %d\n", Debug_octant);
 			break;
 
 		case KEY_DEBUGGED + KEY_P:

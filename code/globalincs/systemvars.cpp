@@ -115,7 +115,7 @@ int myrand()
 	int rval;
 	rval = rand();
 	Rand_count++;
-//	nprintf(("Alan","RAND: %d\n", rval));
+// core::nprintf("Alan","RAND: %d\n", rval);
 	return rval;
 }
 

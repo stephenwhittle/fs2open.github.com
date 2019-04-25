@@ -220,14 +220,14 @@ int free_object_slots(int num_used)
 	original_num_to_free = num_to_free;
 
 	if (num_to_free > olind) {
-		nprintf(("allender", "Warning: Asked to free %i objects, but can only free %i.\n", num_to_free, olind));
+	 core::nprintf("allender", "Warning: Asked to free %i objects, but can only free %i.\n", num_to_free, olind);
 		num_to_free = olind;
 	}
 
 	for (i=0; i<num_to_free; i++)
 		if ( (Objects[obj_list[i]].type == OBJ_DEBRIS) && (Debris[Objects[obj_list[i]].instance].flags & DEBRIS_EXPIRE) ) {
 			num_to_free--;
-			nprintf(("allender", "Freeing   DEBRIS object %3i\n", obj_list[i]));
+		 core::nprintf("allender", "Freeing   DEBRIS object %3i\n", obj_list[i]);
 			Objects[obj_list[i]].flags.set(Object::Object_Flags::Should_be_dead);
 		}
 
@@ -238,7 +238,7 @@ int free_object_slots(int num_used)
 		object *tmp_obj = &Objects[obj_list[i]];
 		if ( (tmp_obj->type == OBJ_FIREBALL) && (fireball_is_perishable(tmp_obj)) ) {
 			num_to_free--;
-			nprintf(("allender", "Freeing FIREBALL object %3i\n", obj_list[i]));
+		 core::nprintf("allender", "Freeing FIREBALL object %3i\n", obj_list[i]);
 			tmp_obj->flags.set(Object::Object_Flags::Should_be_dead);
 		}
 	}
@@ -385,7 +385,7 @@ int obj_allocate(void)
 		int	num_freed;
 
 		num_freed = free_object_slots(MAX_OBJECTS-10);
-		nprintf(("warning", " *** Freed %i objects\n", num_freed));
+	 core::nprintf("warning", " *** Freed %i objects\n", num_freed);
 	}
 
 	if (Num_objects >= MAX_OBJECTS) {
@@ -608,7 +608,7 @@ core::Assert(objnum >= 0 && objnum < MAX_OBJECTS);
 			return;
 		} else {
 			// we need to be able to delete GHOST objects in multiplayer to allow for player respawns.
-			nprintf(("Network","Deleting GHOST object\n"));
+		 core::nprintf("Network","Deleting GHOST object\n");
 		}		
 		break;
 	case OBJ_OBSERVER:

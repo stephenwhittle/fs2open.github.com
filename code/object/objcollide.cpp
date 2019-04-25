@@ -344,7 +344,7 @@ core::Assert( B->type < 127 );
 	// collision pair list.
 
 	if ( pair_free_list.next == NULL )	{
-		nprintf(( "collision", "Out of object pairs!! Not all collisions will work!\n" ));
+	 core::nprintf( "collision", "Out of object pairs!! Not all collisions will work!\n" );
 		return;
 	}
 

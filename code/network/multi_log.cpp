@@ -163,7 +163,7 @@ void ml_string(const char *string, int add_time)
 	}
 
 #if defined(MULTI_LOGFILE_ECHO_TO_DEBUG)
-	// nprintf(("Network","%s\n",tmp));
+	// core::nprintf("Network","%s\n",tmp);
  core::mprintf("ML %s", tmp);
 #endif
 }

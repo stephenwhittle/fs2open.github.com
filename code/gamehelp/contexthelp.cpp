@@ -269,7 +269,7 @@ void launch_context_help()
 			break;
 
 		default:
-			nprintf(("Warning","WARNING ==> There is no context help available for state %s\n", GS_state_text[Source_game_state-1]));
+		 core::nprintf("Warning","WARNING ==> There is no context help available for state %s\n", GS_state_text[Source_game_state-1]);
 			break;
 
 	} // end switch

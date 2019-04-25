@@ -114,7 +114,7 @@ core::Assert(bmap >= 0);
 		}
 		*/
 	} else {
-		nprintf(("UI", "Warning: tried to switch bitmap mask to the same bitmap\n"));
+	 core::nprintf("UI", "Warning: tried to switch bitmap mask to the same bitmap\n");
 	}
 }
 

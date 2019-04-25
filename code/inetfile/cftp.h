@@ -16,6 +16,8 @@
 
 #include <cstdio>
 
+#include <SDL_thread.h>
+
 #ifdef WIN32
 #include <winsock.h>
 #endif

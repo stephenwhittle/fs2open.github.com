@@ -84,7 +84,7 @@ void mission_log_cull_obsolete_entries()
 {
 	int i, index;
 
-	nprintf(("missionlog", "culling obsolete entries.  starting last entry %d.\n", last_entry));
+ core::nprintf("missionlog", "culling obsolete entries.  starting last entry %d.\n", last_entry);
 	// find the first obsolete entry
 	for (i = 0; i < last_entry; i++ ) 
 		if ( log_entries[i].flags & MLF_OBSOLETE )
@@ -111,7 +111,7 @@ void mission_log_cull_obsolete_entries()
 	} while ( i < last_entry );
 
 #ifndef NDEBUG
-	nprintf(("missionlog", "Ending entry: %d.\n", last_entry));
+ core::nprintf("missionlog", "Ending entry: %d.\n", last_entry);
 #endif
 }
 
@@ -146,7 +146,7 @@ void mission_log_obsolete_entries(LogType type, const char *pname)
 		// these include removing all non-essential entries from the log.  These entries are entries 
 		// which has not been asked for by mission_log_get_time
 		if ( last_entry > LOG_CULL_MARK ) {
-			nprintf(("missionlog", "marking the first %d non-essential log entries as obsolete\n", LOG_LAST_DITCH_CULL_NUM));
+		 core::nprintf("missionlog", "marking the first %d non-essential log entries as obsolete\n", LOG_LAST_DITCH_CULL_NUM);
 			for (i = 0; i < LOG_LAST_DITCH_CULL_NUM; i++ ) {
 				entry = &log_entries[i];
 				if ( !(entry->flags & MLF_ESSENTIAL) ){
@@ -161,7 +161,7 @@ void mission_log_obsolete_entries(LogType type, const char *pname)
 			// mark the first 20% of the log as obsolete and compress.  Don't do this unless we are *really*
 			// in trouble
 			if ( last_entry > LOG_CULL_DOORDIE_MARK ) {
-				nprintf(("missionlog", "removing the first %d entries in the mission log!!!!\n", LOG_LAST_DITCH_CULL_NUM));
+			 core::nprintf("missionlog", "removing the first %d entries in the mission log!!!!\n", LOG_LAST_DITCH_CULL_NUM);
 				for (i = 0; i < LOG_LAST_DITCH_CULL_NUM; i++ ){
 					entry->flags |= MLF_OBSOLETE;
 				}
@@ -289,7 +289,7 @@ void mission_log_add_entry(LogType type, const char *pname, const char *sname, i
 					}
 				}
  			} else {
-				nprintf(("missionlog", "No secondary name for ship destroyed log entry!\n"));
+			 core::nprintf("missionlog", "No secondary name for ship destroyed log entry!\n");
 			}
 		} else if ( (type == LOG_SHIP_SUBSYS_DESTROYED) && (Ship_info[Ships[index].ship_info_index].is_small_ship()) ) {
 			// make subsystem destroyed entries for small ships hidden
@@ -377,7 +377,7 @@ void mission_log_add_entry(LogType type, const char *pname, const char *sname, i
 #ifndef NDEBUG
 	if ( !(last_entry % 10) ) {
 		if ( (last_entry > LOG_HALFWAY_REPORT_NUM) && (last_entry > last_entry_save) ){
-			nprintf(("missionlog", "new highwater point reached for mission log (%d entries).\n", last_entry));
+		 core::nprintf("missionlog", "new highwater point reached for mission log (%d entries).\n", last_entry);
 		}
 	}
 #endif

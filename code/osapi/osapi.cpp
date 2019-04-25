@@ -14,7 +14,11 @@
 #include "freespace.h"
 #include "parse/parselo.h"
 #include <core/path.h>
-
+#include <SDL_filesystem.h>
+#include <SDL_version.h>
+#include <SDL.h>
+#include <SDL_assert.h>
+#include <osapi/outwnd.h>
 #ifdef SCP_UNIX
 #include <sys/stat.h>
 #elif defined(WIN32)
@@ -256,8 +260,8 @@ void os_init(const char * wclass, const char * title, const char * app_name)
 	SDL_VERSION(&compiled);
 	SDL_GetVersion(&linked);
 
-	mprintf(("  Initializing SDL %d.%d.%d (compiled with %d.%d.%d)...\n", linked.major, linked.minor, linked.patch,
-	         compiled.major, compiled.minor, compiled.patch));
+ core::mprintf("  Initializing SDL %d.%d.%d (compiled with %d.%d.%d)...\n", linked.major, linked.minor, linked.patch,
+	         compiled.major, compiled.minor, compiled.patch);
 
 	if (SDL_Init(SDL_INIT_EVENTS) < 0)
 	{

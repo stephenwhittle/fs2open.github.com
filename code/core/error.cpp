@@ -106,10 +106,13 @@ void AssertImplWithMessage(bool expr, const char* expression, const char* file, 
 
 void mprintf(const char* format, ...)
 {
+	std::string formatString;
 	va_list args;
 	va_start(args, format);
-	core::nprintf("General", format, args);
+	core::vsprintf(formatString, format, args);
 	va_end(args);
+	console_output_handler.emit("General", formatString.c_str());
+	
 }
 
 void nprintf(const char* id, const char* format, ...)

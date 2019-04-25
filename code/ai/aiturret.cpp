@@ -750,7 +750,7 @@ void evaluate_obj_as_target(object *objp, eval_enemy_obj_struct *eeo)
 				turret_has_no_target = true;
 			}
 			if ( (turret_has_no_target) || object_in_turret_fov(objp, ss, eeo->tvec, eeo->tpos, dist + objp->radius) ) {
-				// nprintf(("AI", "Nearest enemy = %s, dist = %7.3f, dot = %6.3f, fov = %6.3f\n", Ships[objp->instance].ship_name, dist, vm_vec_dot(&v2e, tvec), tp->turret_fov));
+				// core::nprintf("AI", "Nearest enemy = %s, dist = %7.3f, dot = %6.3f, fov = %6.3f\n", Ships[objp->instance].ship_name, dist, vm_vec_dot(&v2e, tvec), tp->turret_fov);
 				eeo->nearest_attacker_dist = dist_comp;
 				eeo->nearest_attacker_objnum = OBJ_INDEX(objp);
 			}
@@ -1157,7 +1157,7 @@ int find_turret_enemy(ship_subsys *turret_subsys, int objnum, vec3d *tpos, vec3d
 		if (Objects[target_objnum].signature == aip->target_signature) {
 			if (iff_matches_mask(Ships[Objects[target_objnum].instance].team, enemy_team_mask)) {
 				if ( !(Objects[target_objnum].flags[Object::Object_Flags::Protected]) ) {		// check this flag as well
-					// nprintf(("AI", "Frame %i: Object %i resuming goal of object %i\n", AI_FrameCount, objnum, target_objnum));
+					// core::nprintf("AI", "Frame %i: Object %i resuming goal of object %i\n", AI_FrameCount, objnum, target_objnum);
 					return target_objnum;
 				}
 			}

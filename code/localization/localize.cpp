@@ -484,7 +484,7 @@ void lcl_set_language(int lang)
 {
 	Lcl_current_lang = lang;
 
-	nprintf(("General", "Setting language to %s\n", Lcl_languages[lang].lang_name));
+ core::nprintf("General", "Setting language to %s\n", Lcl_languages[lang].lang_name);
 
 core::Assertion((Lcl_current_lang >= 0) && (Lcl_current_lang < (int)Lcl_languages.size()), "Attempt to set language to an invalid language");
 

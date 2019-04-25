@@ -13,7 +13,7 @@
 #include <core/pstypes.h>
 #include <SDL.h>
 #include "SDL_joystick.h"
-
+#include <scp_compiler_detection.h>
 // z64: Moved up here for compatibility. Bye bye, organization!
 const int JOY_NUM_BUTTONS = 32;
 const int JOY_NUM_HAT_POS = 4;

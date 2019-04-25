@@ -16,6 +16,7 @@
 #include "localization/localize.h"
 #include "scripting/scripting.h"
 #include "cmdline/cmdline.h"
+#include <SDL_mutex.h>
 
 #define THREADED	// to use the proper set of macros
 #include "osapi/osapi.h"

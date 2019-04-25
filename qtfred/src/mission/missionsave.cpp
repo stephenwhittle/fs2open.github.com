@@ -2336,7 +2336,7 @@ void CFred_mission_save::save_mission_internal(const char* pathname) {
 	fred_parse_flag = 0;
 	fp = cfopen(pathname, "wt", CFILE_NORMAL, CF_TYPE_MISSIONS);
 	if (!fp) {
-		nprintf(("Error", "Can't open mission file to save.\n"));
+	 core::nprintf("Error", "Can't open mission file to save.\n");
 		err = -1;
 		return;
 	}

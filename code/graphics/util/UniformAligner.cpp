@@ -3,6 +3,7 @@
 
 #include "UniformAligner.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace {
 
 size_t alignSize(size_t size, size_t align) {

@@ -558,7 +558,7 @@ static bool load_cached_shader_binary(opengl::ShaderProgram* program, const std:
 	auto metadata_fp = cfopen(metadata.c_str(), "rb", CFILE_NORMAL, CF_TYPE_CACHE, false,
 	                          CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 	if (!metadata_fp) {
-		nprintf(("ShaderCache", "Metadata file does not exist.\n"));
+	 core::nprintf("ShaderCache", "Metadata file does not exist.\n");
 		return false;
 	}
 
@@ -593,14 +593,14 @@ static bool load_cached_shader_binary(opengl::ShaderProgram* program, const std:
 
 	if (!supported) {
 		// This can happen in case an implementation stops supporting a particular binary format
-		nprintf(("ShaderCache", "Unsupported binary format %d encountered in shader cache.\n", binary_format));
+	 core::nprintf("ShaderCache", "Unsupported binary format %d encountered in shader cache.\n", binary_format);
 		return false;
 	}
 
 	auto binary_fp = cfopen(binary.c_str(), "rb", CFILE_NORMAL, CF_TYPE_CACHE, false,
 	                        CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 	if (!binary_fp) {
-		nprintf(("ShaderCache", "Binary file does not exist.\n"));
+	 core::nprintf("ShaderCache", "Binary file does not exist.\n");
 		return false;
 	}
 	

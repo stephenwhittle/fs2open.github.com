@@ -83,7 +83,7 @@ void multi_kick_player(int player_index, int ban, int reason)
 {	
 	// only the standalone should be able to kick the host of the game
 	if(!(Game_mode & GM_STANDALONE_SERVER) && ((Net_players[player_index].flags & NETINFO_FLAG_GAME_HOST) || (Net_players[player_index].flags & NETINFO_FLAG_AM_MASTER))){
-		nprintf(("Network","Cannot kick the host or server of a game!\n"));
+	 core::nprintf("Network","Cannot kick the host or server of a game!\n");
 	} else {
 		// if we're the master, then delete the guy
 		if(Net_player->flags & NETINFO_FLAG_AM_MASTER){
@@ -246,13 +246,13 @@ core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 	// check to see if this guy is allowed to make such a request
 	if((from_player == -1) || !multi_kick_can_kick(&Net_players[from_player]) ){
-		nprintf(("Network","Received a kick request from an invalid player!!\n"));
+	 core::nprintf("Network","Received a kick request from an invalid player!!\n");
 	} 
 	// otherwise, process the request fully
 	else {
 		// make sure we have a valid player to kick
 		if(player_num == -1){
-			nprintf(("Network","Received request to kick an unknown player!\n"));
+		 core::nprintf("Network","Received request to kick an unknown player!\n");
 		} else {
 			// will handle all the rest of the details
 			multi_kick_player(player_num,ban,reason);

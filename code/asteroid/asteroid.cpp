@@ -40,7 +40,7 @@
 #include "species_defs/species_defs.h"
 #include "stats/scoring.h"
 #include "weapon/weapon.h"
-
+#include <core/path.h>
 #include <algorithm>
 
 #define			ASTEROID_OBJ_USED	(1<<0)				// flag used in asteroid_obj struct
@@ -252,7 +252,7 @@ object *asteroid_create(asteroid_field *asfieldp, int asteroid_type, int asteroi
 	}
 
 	if (n >= MAX_ASTEROIDS) {
-		nprintf(("Warning","Could not create asteroid, no more slots left\n"));
+	 core::nprintf("Warning","Could not create asteroid, no more slots left\n");
 		return NULL;
 	}
 
@@ -460,7 +460,7 @@ core::Assert( asteroid_subtype < NUM_DEBRIS_POFS );
 
 	asip = &Asteroid_info[asteroid_info_index];
 
-	if ( !VALID_FNAME(asip->pof_files[asteroid_subtype]) )
+	if ( !core::fs::VALID_FNAME(asip->pof_files[asteroid_subtype]) )
 		return;
 
 	asip->model_num[asteroid_subtype] = model_load( asip->pof_files[asteroid_subtype], 0, NULL );
@@ -478,7 +478,7 @@ core::Assert( asteroid_subtype < NUM_DEBRIS_POFS );
 			}
 			else
 			{
-				nprintf(("Warning",  "For asteroid '%s', detail level mismatch (POF needs %d)", asip->name, pm->n_detail_levels));
+			 core::nprintf("Warning",  "For asteroid '%s', detail level mismatch (POF needs %d)", asip->name, pm->n_detail_levels);
 			}
 		}	
 		// Stuff detail level distances.
@@ -772,7 +772,7 @@ static void maybe_throw_asteroid(int count)
 		return;
 	}
 
-	nprintf(("AI", "Incoming asteroids: %i\n", count));
+ core::nprintf("AI", "Incoming asteroids: %i\n", count);
 
 	if (count > The_mission.ai_profile->max_incoming_asteroids[Game_skill_level])
 		return;
@@ -1965,7 +1965,7 @@ core::Assertion(!Species_info.empty(),
 		required_string("$Impact Explosion:");
 		stuff_string(impact_ani_file, F_NAME, MAX_FILENAME_LEN);
 
-		if (VALID_FNAME(impact_ani_file)) {
+		if (core::fs::VALID_FNAME(impact_ani_file)) {
 			int num_frames;
 			Asteroid_impact_explosion_ani = bm_load_animation(impact_ani_file, &num_frames, nullptr, nullptr, nullptr, true);
 		}
@@ -2160,7 +2160,7 @@ void asteroid_page_in()
 	if (Asteroid_field.num_initial_asteroids > 0 ) {
 		int i, j, k;
 
-		nprintf(( "Paging", "Paging in asteroids\n" ));
+	 core::nprintf( "Paging", "Paging in asteroids\n" );
 
 
 		// max of MAX_ACTIVE_DEBRIS_TYPES possible debris field models

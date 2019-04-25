@@ -6,6 +6,7 @@
 #include "math/RandomRange.h"
 #include <particle/ParticleEffect.h>
 #include <math/vecmat.h>
+#include <scp_compiler_detection.h>
 namespace particle {
 namespace effects {
 

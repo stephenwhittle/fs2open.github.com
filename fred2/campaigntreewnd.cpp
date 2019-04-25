@@ -384,7 +384,7 @@ int campaign_tree_wnd::error(const char *msg, ...)
 	core::vsprintf(buf, msg, args);
 	va_end(args);
 
-	nprintf(("Error", buf.c_str()));
+ core::nprintf("Error", buf.c_str());
 	if (MessageBox(buf.c_str(), "Error", MB_OKCANCEL | MB_ICONEXCLAMATION) == IDOK)
 		return 0;
 
@@ -404,7 +404,7 @@ int campaign_tree_wnd::internal_error(const char *msg, ...)
 	core::sprintf(buf2, "%s\n\nThis is an internal error.  Please let Hoffoss\n"
 		"know about this so he can fix it.  Click cancel to debug.", buf.c_str());
 
-	nprintf(("Error", buf.c_str()));
+ core::nprintf("Error", buf.c_str());
 	if (MessageBox(buf2.c_str(), "Internal Error", MB_OKCANCEL | MB_ICONEXCLAMATION) == IDCANCEL)
 		Int3();  // drop to debugger so the problem can be analyzed.
 

@@ -121,7 +121,7 @@ void multi_team_maybe_add_score(int points, int team)
 
 	// add team score
 	Multi_team_score[team] += (int)(points * scoring_get_scale_factor());
-	nprintf(("Network", "TVT : adding %d points to team %d (total == %d)\n", points, team, Multi_team_score[team]));
+ core::nprintf("Network", "TVT : adding %d points to team %d (total == %d)\n", points, team, Multi_team_score[team]);
 }
 
 // reset all players and assign them to default teams
@@ -129,7 +129,7 @@ void multi_team_reset()
 {
 	int idx;
 
-	nprintf(("Network","MULTI TEAM : resetting\n"));
+ core::nprintf("Network","MULTI TEAM : resetting\n");
 	
 	// unset everyone's captaincy and locked flags	
 	for(idx=0;idx<MAX_PLAYERS;idx++){
@@ -154,10 +154,10 @@ core::Assert(Net_player->flags & NETINFO_FLAG_AM_MASTER);
 
 	// set the player flags as being a captain and notify everyone else of this
 	if(set){
-		nprintf(("Network","MULTI TEAM : Server setting player %s team %d captain\n",pl->m_player->callsign,pl->p_info.team));
+	 core::nprintf("Network","MULTI TEAM : Server setting player %s team %d captain\n",pl->m_player->callsign,pl->p_info.team);
 		pl->flags |= NETINFO_FLAG_TEAM_CAPTAIN;
 	} else {
-		nprintf(("Network","MULTI TEAM : Server unsetting player %s as team %d captain\n",pl->m_player->callsign,pl->p_info.team));
+	 core::nprintf("Network","MULTI TEAM : Server unsetting player %s as team %d captain\n",pl->m_player->callsign,pl->p_info.team);
 		pl->flags &= ~(NETINFO_FLAG_TEAM_CAPTAIN);
 	}	
 }
@@ -167,7 +167,7 @@ void multi_team_set_team(net_player *pl,int team)
 {	
 	// if i'm the server of the game, do it now
 	if(Net_player->flags & NETINFO_FLAG_AM_MASTER){		
-		nprintf(("Network","MULTI TEAM : Server/Host setting player %s to team %d and locking\n",pl->m_player->callsign,team));
+	 core::nprintf("Network","MULTI TEAM : Server/Host setting player %s to team %d and locking\n",pl->m_player->callsign,team);
 
 		pl->p_info.team = team;
 
@@ -179,7 +179,7 @@ void multi_team_set_team(net_player *pl,int team)
 		// check to see if the resulting team rosters need a captain
 		multi_team_sync_captains();
 	} else {
-		nprintf(("Network","MULTI TEAM : Sending team change request to server\n"));
+	 core::nprintf("Network","MULTI TEAM : Sending team change request to server\n");
 		multi_team_send_team_request(pl,team);
 	}
 
@@ -192,12 +192,12 @@ void multi_team_process_team_change_request(net_player *pl,net_player *who_from,
 {
 	// if this player has already been locked, don't do anything
 	if((pl->flags & NETINFO_FLAG_TEAM_LOCKED) && !(who_from->flags & NETINFO_FLAG_GAME_HOST)){
-		nprintf(("Network","MULTI TEAM : Server ignoring team change request because player is locked\n"));
+	 core::nprintf("Network","MULTI TEAM : Server ignoring team change request because player is locked\n");
 		return;
 	} 
 
 	// otherwise set the team for the player and send an update
-	nprintf(("Network","MULTI TEAM : Server changing player %s to team %d from client request\n",pl->m_player->callsign,team));
+ core::nprintf("Network","MULTI TEAM : Server changing player %s to team %d from client request\n",pl->m_player->callsign,team);
 	pl->p_info.team = team;
 	pl->flags &= ~(NETINFO_FLAG_TEAM_CAPTAIN);					
 
@@ -653,7 +653,7 @@ void multi_team_process_packet(unsigned char *data, header *hinfo)
 		// if i'm the host of the game, process here		
 		req_index = find_player_id(player_id);
 		if( (req_index == -1) || (player_index == -1) ){
-			nprintf(("Network","Could not find player to process team change request !\n"));
+		 core::nprintf("Network","Could not find player to process team change request !\n");
 		} else {
 			multi_team_process_team_change_request(&Net_players[req_index],&Net_players[player_index],req_team);
 		}		

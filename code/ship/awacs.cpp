@@ -154,9 +154,9 @@ void awacs_update_all_levels()
 #ifndef NDEBUG 
 	/*
 	for (idx=0; idx<MAX_TVT_TEAMS; idx++){
-		nprintf(("General", "Team %d AWACS == %f\n", idx, Awacs_team[idx]));
+	 core::nprintf("General", "Team %d AWACS == %f\n", idx, Awacs_team[idx]);
 	}
-	nprintf(("General", "AWACS level == %f\n", Awacs_level));
+ core::nprintf("General", "AWACS level == %f\n", Awacs_level);
 	*/
 #endif
 }

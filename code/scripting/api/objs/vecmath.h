@@ -8,7 +8,7 @@
 #include "scripting/ade.h"
 #include "scripting/ade_api.h"
 #include "math/vecmat.h"
-
+#include <globalincs/scp_defines.h>
 namespace scripting {
 namespace api {
 

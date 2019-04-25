@@ -93,7 +93,7 @@ void CALLBACK TimeProc(unsigned int /*id*/, unsigned int /*msg*/, DWORD_PTR /*us
 		return;
 	}
 
-	nprintf(("Alan","In callback\n"));
+ core::nprintf("Alan","In callback\n");
 	Rtv_callback();
 }
 #else

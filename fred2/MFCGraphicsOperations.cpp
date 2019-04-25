@@ -2,6 +2,7 @@
 #include "MFCGraphicsOperations.h"
 #include <vector>
 #include <core/error.h>
+#include <SDL.h>
 MFCViewport::MFCViewport(HWND hwnd, HDC dc): _windowHandle(hwnd), _device_context(dc)
 {
 core::Assertion(hwnd != nullptr, "Invalid window handle!");
@@ -186,9 +187,9 @@ core::Assert(_windowHandle != NULL);
 		return nullptr;
 	}
 
-	mprintf(("  Requested SDL Video values = R: %d, G: %d, B: %d, depth: %d, stencil: %d\n",
+ core::mprintf("  Requested SDL Video values = R: %d, G: %d, B: %d, depth: %d, stencil: %d\n",
 		props.pixel_format.red_size, props.pixel_format.green_size, props.pixel_format.blue_size,
-		props.pixel_format.depth_size, props.pixel_format.stencil_size));
+		props.pixel_format.depth_size, props.pixel_format.stencil_size);
 
 	return std::unique_ptr<os::Viewport>(new MFCViewport(_windowHandle, device_context));
 }

@@ -634,7 +634,7 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 	// determine who send the packet	
 	player_index = find_player_id(hinfo->id);
 	if(player_index == -1){
-		nprintf(("Network","Couldn't find player for processing respawn packet!\n"));
+	 core::nprintf("Network","Couldn't find player for processing respawn packet!\n");
 	}
 
 	// get the opcode
@@ -664,7 +664,7 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 		GET_STRING(parse_name);
 		player_index = find_player_id(player_id);
 		if(player_index == -1){
-			nprintf(("Network","Couldn't find player to respawn!\n"));
+		 core::nprintf("Network","Couldn't find player to respawn!\n");
 			break;
 		}
 
@@ -683,18 +683,18 @@ void multi_respawn_process_packet(ubyte *data, header *hinfo)
 		GET_DATA(code);
 
 		if(player_index == -1){
-			nprintf(("Network","Received respawn request from unknown player!\n"));
+		 core::nprintf("Network","Received respawn request from unknown player!\n");
 			break;
 		} 		     		
-		nprintf(("Network","Received respawn request for player %s\n", Net_players[player_index].m_player->callsign));
+	 core::nprintf("Network","Received respawn request for player %s\n", Net_players[player_index].m_player->callsign);
 
 		// make sure he's not making an invalid request
 		if((code == 0) && !(Net_players[player_index].flags & NETINFO_FLAG_RESPAWNING)){
-			nprintf(("Network","This player shouldn't be respawning!\n"));
+		 core::nprintf("Network","This player shouldn't be respawning!\n");
 			Int3();
 			break;
 		} else if((code == 1) && !(Net_players[player_index].flags & NETINFO_FLAG_LIMBO)){
-			nprintf(("Network","This is a respawn observer request from a player who shouldn't be respawning as an observer!\n"));
+		 core::nprintf("Network","This is a respawn observer request from a player who shouldn't be respawning as an observer!\n");
 			Int3();
 			break;
 		}

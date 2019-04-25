@@ -261,7 +261,7 @@ core::Assert( pship->type == OBJ_SHIP );
 
 				if ((ship_damage > 500.0f) && (ship_damage > Ships[pship->instance].ship_max_hull_strength/8.0f)) {
 					ship_damage = Ships[pship->instance].ship_max_hull_strength/8.0f;
-					nprintf(("AI", "Pinning damage to %s from asteroid at %7.3f (%7.3f percent)\n", Ships[pship->instance].ship_name, ship_damage, 100.0f * ship_damage/Ships[pship->instance].ship_max_hull_strength));
+				 core::nprintf("AI", "Pinning damage to %s from asteroid at %7.3f (%7.3f percent)\n", Ships[pship->instance].ship_name, ship_damage, 100.0f * ship_damage/Ships[pship->instance].ship_max_hull_strength);
 				}
 
 				//	Decrease damage during warp out because it's annoying when your escoree dies during warp out.

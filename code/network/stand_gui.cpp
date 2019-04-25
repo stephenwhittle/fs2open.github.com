@@ -37,7 +37,7 @@
 #include "cfile/cfile.h"
 #include "fs2netd/fs2netd_client.h"
 #include "osapi/osapi.h"
-
+#include <osapi/outwnd.h>
 #include <string>
 
 

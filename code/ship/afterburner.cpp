@@ -294,7 +294,7 @@ core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cas
 	}
 
 	if ( !(sip->flags[Ship::Info_Flags::Afterburner]) )	{
-		nprintf(("Warning","Ship type %s does not have afterburner capability\n", sip->name));
+	 core::nprintf("Warning","Ship type %s does not have afterburner capability\n", sip->name);
 		return;
 	}
 

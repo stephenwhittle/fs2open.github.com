@@ -8,6 +8,7 @@
 #include <math/bitarray.h>
 #include <core/pstypes.h>
 #include <math/RandomRange.h>
+#include <scp_compiler_detection.h>
 
 namespace particle {
 namespace effects {

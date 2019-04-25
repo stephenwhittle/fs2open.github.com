@@ -1540,7 +1540,7 @@ void ai_big_strafe_retreat1()
 	if ( dist < 70 ) {
 		aip->submode = AIS_STRAFE_POSITION;
 		aip->submode_start_time = Missiontime;
-//		nprintf(("Alan","Ship %s entering AIS_STRAFE_POSITION\n", Ships[aip->shipnum].ship_name));
+//	 core::nprintf("Alan","Ship %s entering AIS_STRAFE_POSITION\n", Ships[aip->shipnum].ship_name);
 		return;
 	}
 
@@ -1592,7 +1592,7 @@ void ai_big_strafe_retreat2()
 	if ( dist < 70 ) {
 		aip->submode = AIS_STRAFE_POSITION;
 		aip->submode_start_time = Missiontime;
-//		nprintf(("Alan","Ship %s entering AIS_STRAFE_POSITION\n", Ships[aip->shipnum].ship_name));
+//	 core::nprintf("Alan","Ship %s entering AIS_STRAFE_POSITION\n", Ships[aip->shipnum].ship_name);
 		return;
 	}
 
@@ -1769,7 +1769,7 @@ int ai_big_maybe_enter_strafe_mode(const object *pl_objp, int weapon_objnum)
 	aip->submode_parm0 = Missiontime;	// use parm0 as time strafe mode entered (i.e. MODE start time)
 	aip->submode = AIS_STRAFE_AVOID;
 	aip->submode_start_time = Missiontime;
-//	nprintf(("Alan","%s Accepted strafe mode\n", Ships[pl_objp->instance].ship_name));
+// core::nprintf("Alan","%s Accepted strafe mode\n", Ships[pl_objp->instance].ship_name);
 
 	return 1;
 }

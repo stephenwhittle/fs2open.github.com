@@ -843,9 +843,9 @@ int opengl_check_for_errors(const char *err_at)
 
 	if (err != GL_NO_ERROR) {
 		if (err_at != NULL) {
-			nprintf(("OpenGL", "OpenGL Error from %s: %#x\n", err_at, err));
+		 core::nprintf("OpenGL", "OpenGL Error from %s: %#x\n", err_at, err);
 		} else {
-			nprintf(("OpenGL", "OpenGL Error:  %#x\n", err));
+		 core::nprintf("OpenGL", "OpenGL Error:  %#x\n", err);
 		}
 
 		num_errors++;
@@ -1280,12 +1280,12 @@ static void APIENTRY debug_callback(GLenum source, GLenum type, GLuint id, GLenu
 	}
 
 	if (print_to_general_log) {
-		mprintf(("OpenGL Debug: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n",
-			sourceStr, typeStr, id, severityStr, message));
+	 core::mprintf("OpenGL Debug: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n",
+			sourceStr, typeStr, id, severityStr, message);
 	} else {
 		// We still print these messages but only to the special debug stream
-		nprintf(("OpenGL Debug", "OpenGL Debug: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n",
-			sourceStr, typeStr, id, severityStr, message));
+	 core::nprintf("OpenGL Debug", "OpenGL Debug: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n",
+			sourceStr, typeStr, id, severityStr, message);
 	}
 	printf("OpenGL Debug: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n",
 		   sourceStr, typeStr, id, severityStr, message);
@@ -1375,10 +1375,10 @@ bool gr_opengl_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps)
 		GL_initted = false;
 	}
 
-	mprintf(( "Initializing OpenGL graphics device at %ix%i with %i-bit color...\n",
+ core::mprintf( "Initializing OpenGL graphics device at %ix%i with %i-bit color...\n",
 		  gr_screen.max_w,
 		  gr_screen.max_h,
-		  gr_screen.bits_per_pixel ));
+		  gr_screen.bits_per_pixel );
 
 	// Load the RenderDoc API if available before doing anything with OpenGL
 	renderdoc::loadApi();
@@ -1415,7 +1415,7 @@ bool gr_opengl_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps)
 #ifndef NDEBUG
 	// Set up the debug extension if present
 	if (GLAD_GL_ARB_debug_output) {
-		nprintf(("OpenGL Debug", "Using OpenGL debug extension\n"));
+	 core::nprintf("OpenGL Debug", "Using OpenGL debug extension\n");
 		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 		GLuint unusedIds = 0;
 		glDebugMessageControlARB(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, &unusedIds, true);
@@ -1535,9 +1535,9 @@ bool gr_opengl_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps)
  core::mprintf( "  Max elements indices: %i\n", GL_max_elements_indices );
  core::mprintf( "  Max texture size: %ix%i\n", GL_max_texture_width, GL_max_texture_height );
 
-	mprintf(( "  Max render buffer size: %ix%i\n",
+ core::mprintf( "  Max render buffer size: %ix%i\n",
 		  GL_max_renderbuffer_size,
-		  GL_max_renderbuffer_size ));
+		  GL_max_renderbuffer_size );
 
  core::mprintf( "  Can use compressed textures: %s\n", Use_compressed_textures ? NOX("YES") : NOX("NO") );
  core::mprintf( "  Texture compression available: %s\n", Texture_compression_available ? NOX("YES") : NOX("NO") );

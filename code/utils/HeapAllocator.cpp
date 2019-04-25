@@ -1,5 +1,6 @@
 #include "utils/HeapAllocator.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace {
 
 const size_t HEAP_SIZE_INCREASE = 1 * 1024 * 1024; // Always increment in 1MB steps

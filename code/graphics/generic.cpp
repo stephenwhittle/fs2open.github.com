@@ -1,4 +1,5 @@
 #include "core/error.h"
+#include <core/path.h>
 #include "anim/packunpack.h"
 #include "globalincs/globals.h"
 #include "graphics/2d.h"
@@ -140,7 +141,7 @@ int generic_anim_load(generic_anim *ga)
 {
 	int fps;
 
-	if ( !VALID_FNAME(ga->filename) )
+	if ( !core::fs::VALID_FNAME(ga->filename) )
 		return -1;
 
 	ga->first_frame = bm_load_animation(ga->filename, &ga->num_frames, &fps, &ga->keyframe, &ga->total_time);
@@ -227,8 +228,8 @@ int generic_anim_stream(generic_anim *ga, const bool cache)
 				ga->type = BM_TYPE_NONE;
 				return -1;
 			}
-			nprintf(("apng", "apng read OK (%ix%i@%i) duration (%f)\n", ga->png.anim->w, ga->png.anim->h,
-					ga->png.anim->bpp, ga->png.anim->anim_time));
+		 core::nprintf("apng", "apng read OK (%ix%i@%i) duration (%f)\n", ga->png.anim->w, ga->png.anim->h,
+					ga->png.anim->bpp, ga->png.anim->anim_time);
 		}
 		ga->png.anim->goto_start();
 		ga->current_frame = 0;
@@ -311,7 +312,7 @@ int generic_anim_stream(generic_anim *ga, const bool cache)
 
 int generic_bitmap_load(generic_bitmap *gb)
 {
-	if ( !VALID_FNAME(gb->filename) )
+	if ( !core::fs::VALID_FNAME(gb->filename) )
 		return -1;
 
 	gb->bitmap_id = bm_load(gb->filename);
@@ -505,7 +506,7 @@ void generic_render_png_stream(generic_anim* ga)
 		}
 	}
 	catch (const apng::ApngException& e) {
-		nprintf(("apng", "Unable to get next/prev apng frame: %s\n", e.what()));
+	 core::nprintf("apng", "Unable to get next/prev apng frame: %s\n", e.what());
 		return;
 	}
 
@@ -671,9 +672,9 @@ core::Assertion(ga->type == BM_TYPE_PNG, "only valid for apngs (currently); get 
 		}
 
 		// verbose debug; but quite useful
-		nprintf(("apng", "apng generic render timings/frames: %04f %04f %04f %04f | %03i %03i %03i\n",
+	 core::nprintf("apng", "apng generic render timings/frames: %04f %04f %04f %04f | %03i %03i %03i\n",
 				frametime, ga->anim_time, ga->png.anim->frame.delay, ga->png.previous_frame_time,
-				ga->previous_frame, ga->current_frame, ga->png.anim->current_frame));
+				ga->previous_frame, ga->current_frame, ga->png.anim->current_frame);
 
 	core::Assertion(ga->streaming != 0, "non-streaming apngs not implemented yet");
 		// note: generic anims are not currently ever non-streaming in FSO

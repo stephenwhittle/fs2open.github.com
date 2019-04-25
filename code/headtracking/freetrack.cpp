@@ -1,6 +1,6 @@
 
 #include "headtracking/freetrack.h"
-
+#include <core/error.h>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

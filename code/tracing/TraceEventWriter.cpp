@@ -3,6 +3,7 @@
 
 #include <iomanip>
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace
 {
 using namespace tracing;

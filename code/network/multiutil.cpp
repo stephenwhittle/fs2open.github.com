@@ -743,7 +743,7 @@ core::Assert ( net_player_num < MAX_PLAYERS );				// probably shoudln't be able 
 	Net_players[net_player_num].flags = (NETINFO_FLAG_DO_NETWORKING);
 		
 	if ( ship_class == -1 ) {
-		nprintf(("Network","Network ==> ship class is -1, creating a default ship for multiplayer\n"));
+	 core::nprintf("Network","Network ==> ship class is -1, creating a default ship for multiplayer\n");
 
 		// find the ship that matches the string stored in default_player_ship
 
@@ -769,7 +769,7 @@ core::Assert ( net_player_num < MAX_PLAYERS );				// probably shoudln't be able 
 	}
 	
 	if ( player_ship_class >= static_cast<int>(Ship_info.size()) ) {
-		nprintf(("Network","Network ==> Ship class was %d Creating a default ship for multiplayer\n", player_ship_class));
+	 core::nprintf("Network","Network ==> Ship class was %d Creating a default ship for multiplayer\n", player_ship_class);
 		player_ship_class = multi_ship_class_lookup(default_player_ship);
 	}
 
@@ -1033,7 +1033,7 @@ void multi_cull_zombies()
 
 		if ( (current_time - Net_players[i].last_heard_time) > inactive_limit) {
 			HUD_printf(XSTR("Dumping %s after prolonged inactivity",902),Net_players[i].m_player->callsign);
-			nprintf(("Network", "Assuming %s is a zombie, removing from game\n", Net_players[i].m_player->callsign));
+		 core::nprintf("Network", "Assuming %s is a zombie, removing from game\n", Net_players[i].m_player->callsign);
 
 			multi_kick_player(i,0);			
 		}
@@ -1506,7 +1506,7 @@ int multi_netplayer_flag_check(int flags,int ignore_standalone)
 void multi_eval_socket_error(PSNET_SOCKET sock, int error)
 {
 	if ( error == WSAENOTSOCK ){
-		nprintf(("Network","Socket connection terminated and/or nonexistent, bailing..\n"));
+	 core::nprintf("Network","Socket connection terminated and/or nonexistent, bailing..\n");
 
 		// mwa -- don't go back to main menu.  You don't want host to do this.  Maybe we can ignore it
 		// because of a leaving player.
@@ -1514,12 +1514,12 @@ void multi_eval_socket_error(PSNET_SOCKET sock, int error)
 	}
 
 	if ( (error != WSAECONNRESET) && (error != WSAECONNABORTED) && (error != WSAESHUTDOWN) ) {
-		nprintf(("Network", "Error %d received on reliable socket -- ignoring\n", error));
+	 core::nprintf("Network", "Error %d received on reliable socket -- ignoring\n", error);
 		return;
 	}
 
 	if(error == WSAESHUTDOWN){
-		nprintf(("Network","Received WSAESHUTDOWN on client socket. Cool.\n"));
+	 core::nprintf("Network","Received WSAESHUTDOWN on client socket. Cool.\n");
 	}
 
 	// mwa -- always return for now because debugging with the stuff below is a real pain.
@@ -1529,7 +1529,7 @@ void multi_eval_socket_error(PSNET_SOCKET sock, int error)
 	if( Net_player->flags & NETINFO_FLAG_AM_MASTER ) {
 		int idx;
 
-		nprintf(("Network", "pitching player because drop on reliable socket\n"));
+	 core::nprintf("Network", "pitching player because drop on reliable socket\n");
 		// find the netplayer whose socket we have an error on.  Dump the player when we find him.
 		// NOTE : make sure not to ban him
 		for(idx=0;idx<MAX_PLAYERS;idx++){
@@ -1539,7 +1539,7 @@ void multi_eval_socket_error(PSNET_SOCKET sock, int error)
 			}
 		}
 	} else {
-		nprintf(("Network", "Communications to server lost -- quitting game\n"));
+	 core::nprintf("Network", "Communications to server lost -- quitting game\n");
 		multi_quit_game(PROMPT_NONE, MULTI_END_NOTIFY_NONE, MULTI_END_ERROR_CONTACT_LOST);
 	}
 }
@@ -1624,7 +1624,7 @@ active_game *multi_new_active_game( void )
 
 	new_game = (active_game *)vm_malloc(sizeof(active_game));
 	if ( new_game == NULL ) {
-		nprintf(("Network", "Cannot allocate space for new active game structure\n"));
+	 core::nprintf("Network", "Cannot allocate space for new active game structure\n");
 		return NULL;
 	}	
 
@@ -1761,7 +1761,7 @@ server_item *multi_new_server_item( void )
 
 	new_game = (server_item *)vm_malloc(sizeof(server_item));
 	if ( new_game == NULL ) {
-		nprintf(("Network", "Cannot allocate space for new server_item structure\n"));
+	 core::nprintf("Network", "Cannot allocate space for new server_item structure\n");
 		return NULL;
 	}
 
@@ -2561,7 +2561,7 @@ core::Assert((net_player_num != -1) && (player_num != -1));
 				}
 				
 				ingame_join_team = lowest_team[1];*/
-				/core::Assert(ingame_join_team != -1);
+				//core::Assert(ingame_join_team != -1);
 
 				Net_players[net_player_num].p_info.team = ingame_join_team;
 			}
@@ -2750,7 +2750,7 @@ void multi_server_update_player_weapons(net_player *pl,ship *shipp)
 
 	// secondary bank status
 	if ( shipp->weapons.current_secondary_bank < 0 ) {
-		nprintf(("Network", "bashing %s's current sbank to 0\n", shipp->ship_name));
+	 core::nprintf("Network", "bashing %s's current sbank to 0\n", shipp->ship_name);
 		shipp->weapons.current_secondary_bank = 0;
 	}
 	pl->s_info.cur_secondary_bank = (char)shipp->weapons.current_secondary_bank;
@@ -2776,7 +2776,7 @@ core::Assert( pl->s_info.ship_ets != 0 );
 // flush the multidata cache directory
 void multi_flush_multidata_cache()
 {
-	nprintf(("Network","FLUSHING MULTIDATA CACHE\n"));
+ core::nprintf("Network","FLUSHING MULTIDATA CACHE\n");
 	
 	// call the cfile function to flush the directory
 	cfile_flush_dir(CF_TYPE_MULTI_CACHE);
@@ -2951,7 +2951,7 @@ void multi_get_mission_checksum(const char *filename)
 			multi_quit_game(PROMPT_ALL, MULTI_END_NOTIFY_KICKED_CANT_XFER);
 		}
 	}
-	nprintf(("Network","NET FILE CHECKSUM : %d %d\n",Multi_current_file_checksum,Multi_current_file_length));
+ core::nprintf("Network","NET FILE CHECKSUM : %d %d\n",Multi_current_file_checksum,Multi_current_file_length);
 }
 
 char multi_unit_to_char(float unit)

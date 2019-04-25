@@ -127,7 +127,7 @@ void multi_data_do()
 					if((Net_player != &Net_players[p_idx]) && MULTI_CONNECTED(Net_players[p_idx]) && (Net_players[p_idx].reliable_socket != INVALID_SOCKET) && (Multi_data[idx].status[p_idx] == 0)){						
 						// queue up the file to send to him, or at least try to
 						if(multi_xfer_send_file(Net_players[p_idx].reliable_socket, Multi_data[idx].filename, CF_TYPE_ANY, MULTI_XFER_FLAG_AUTODESTROY | MULTI_XFER_FLAG_QUEUE) < 0){
-							nprintf(("Network", "Failed to send data file! Trying again later...\n"));
+						 core::nprintf("Network", "Failed to send data file! Trying again later...\n");
 						} else {
 							// mark his status
 							Multi_data[idx].status[p_idx] = 1;
@@ -153,7 +153,7 @@ void multi_data_handle_incoming(int handle)
 	// get the filename of the file
 	fname = multi_xfer_get_filename(handle);
 	if(fname == NULL){
-		nprintf(("Network", "Could not get file xfer filename! wacky...!\n"));
+	 core::nprintf("Network", "Could not get file xfer filename! wacky...!\n");
 
 		// kill the stream
 		multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);
@@ -162,7 +162,7 @@ void multi_data_handle_incoming(int handle)
 
 	// if this is not a valid data file
 	if(!multi_data_is_data(fname)){
-		nprintf(("Network", "Not accepting xfer request because its not a valid data file!\n"));
+	 core::nprintf("Network", "Not accepting xfer request because its not a valid data file!\n");
 		
 		// kill the stream		
 		multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);	
@@ -172,7 +172,7 @@ void multi_data_handle_incoming(int handle)
 	// if we already have a copy of this file, abort the xfer		
 	// Does file exist in \multidata?
 	if (cf_exists(fname, CF_TYPE_MULTI_CACHE)) {
-		nprintf(("Network", "Not accepting file xfer because a duplicate exists!\n"));			
+	 core::nprintf("Network", "Not accepting file xfer because a duplicate exists!\n");			
 	
 		// kill the stream		
 		multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);	
@@ -187,7 +187,7 @@ void multi_data_handle_incoming(int handle)
 	// if I'm the server of the game, do stuff a little differently
 	if(Net_player->flags & NETINFO_FLAG_AM_MASTER){		
 		if(player_index == -1){
-			nprintf(("Network", "Could not find player for incoming player data stream!\n"));
+		 core::nprintf("Network", "Could not find player for incoming player data stream!\n");
 
 			// kill the stream
 			multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);
@@ -211,7 +211,7 @@ void multi_data_handle_incoming(int handle)
 	else {
 		// if i'm not accepting pilot pics, abort
 		if(!(Net_player->p_info.options.flags & MLO_FLAG_ACCEPT_PIX)){
-			nprintf(("Network", "Client not accepting files because we don't want 'em!\n"));
+		 core::nprintf("Network", "Client not accepting files because we don't want 'em!\n");
 
 			// kill the stream		
 			multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);	
@@ -225,7 +225,7 @@ void multi_data_handle_incoming(int handle)
 		multi_xfer_handle_force_dir(handle, CF_TYPE_MULTI_CACHE);
 
 		// begin receiving the file
-		nprintf(("Network", "Client receiving xfer handle %d\n",handle));
+	 core::nprintf("Network", "Client receiving xfer handle %d\n",handle);
 	}		
 }
 
@@ -385,13 +385,13 @@ int multi_data_add_new(char *filename, int player_index)
 	// try and get a free slot
 	slot = multi_data_get_free();
 	if(slot < 0){
-		nprintf(("Network", "Could not get free np_data slot! yikes!\n"));		
+	 core::nprintf("Network", "Could not get free np_data slot! yikes!\n");		
 		return 0;
 	}
 
 	// if the netgame isn't flagged as accepting data files
 	if(!(Netgame.options.flags & MSO_FLAG_ACCEPT_PIX)){
-		nprintf(("Network", "Server not accepting pilot pic because we don't want 'em!\n"));	
+	 core::nprintf("Network", "Server not accepting pilot pic because we don't want 'em!\n");	
 		return 0;
 	}			
 

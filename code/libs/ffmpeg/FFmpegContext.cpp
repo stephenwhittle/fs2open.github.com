@@ -1,6 +1,7 @@
 
 #include "FFmpegContext.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace {
 const size_t AVIO_BUFFER_SIZE = 8192;
 

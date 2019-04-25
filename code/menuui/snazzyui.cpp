@@ -228,7 +228,7 @@ void read_menu_tbl(const char* menu_name, char* bkg_filename, char* mask_filenam
 			if (p1) {
 				p2 = strchr( tmp_line+1, '\"' );
 				if (!p2) {
-					nprintf(("Warning","Error parsing menu file\n"));
+				 core::nprintf("Warning","Error parsing menu file\n");
 
 					return;
 				}

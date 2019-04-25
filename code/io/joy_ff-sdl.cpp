@@ -449,7 +449,7 @@ static void joy_ff_start_effect(haptic_effect_t *eff, const char* /* name */)
 		return;
 	}
 
-//	nprintf(("Joystick", "FF: Starting effect %s\n", name));
+// core::nprintf("Joystick", "FF: Starting effect %s\n", name);
 
 	SDL_HapticRunEffect(haptic, eff->id, 1);
 }
@@ -483,7 +483,7 @@ void joy_ff_play_vector_effect(vec3d *v, float scaler)
 	vec3d vf;
 	float x, y;
 
-//	nprintf(("Joystick", "FF: vec = { %f, %f, %f } s = %f\n", v->xyz.x, v->xyz.y, v->xyz.z, scaler));
+// core::nprintf("Joystick", "FF: vec = { %f, %f, %f } s = %f\n", v->xyz.x, v->xyz.y, v->xyz.z, scaler);
 	vm_vec_copy_scale(&vf, v, scaler);
 	x = vf.xyz.x;
 	vf.xyz.x = 0.0f;
@@ -507,7 +507,7 @@ void joy_ff_play_dir_effect(float x, float y)
 	}
 
 	if (joy_ff_effect_playing(&pHitEffect1) || joy_ff_effect_playing(&pHitEffect2)) {
-		nprintf(("Joystick", "FF: HitEffect already playing.  Skipping\n"));
+	 core::nprintf("Joystick", "FF: HitEffect already playing.  Skipping\n");
 		return;
 	}
 
@@ -622,7 +622,7 @@ void joy_ff_play_secondary_shoot(int gain)
 		}
 
 		secondary_ff_level = gain;
-		nprintf(("Joystick", "FF: Secondary force = 0x%04x\n", pSecShootEffect.eff.constant.level));
+	 core::nprintf("Joystick", "FF: Secondary force = 0x%04x\n", pSecShootEffect.eff.constant.level);
 	}
 
 	joy_ff_start_effect(&pSecShootEffect, "SecShootEffect");
@@ -654,7 +654,7 @@ void joy_ff_adjust_handling(int speed)
 		pSpring.eff.condition.left_coeff[i] = coeff;
 	}
 
-//	nprintf(("Joystick", "FF: New handling force = 0x%04x\n", coeff));
+// core::nprintf("Joystick", "FF: New handling force = 0x%04x\n", coeff);
 
 	SDL_HapticUpdateEffect(haptic, pSpring.id, &pSpring.eff);
 }
@@ -739,7 +739,7 @@ void joy_ff_afterburn_on()
 	joy_ff_start_effect(&pAfterburn1, "Afterburn1");
 	joy_ff_start_effect(&pAfterburn2, "Afterburn2");
 
-//	nprintf(("Joystick", "FF: Afterburn started\n"));
+// core::nprintf("Joystick", "FF: Afterburn started\n");
 
 	Joy_ff_afterburning = 1;
 }
@@ -764,7 +764,7 @@ void joy_ff_afterburn_off()
 
 	Joy_ff_afterburning = 0;
 
-//	nprintf(("Joystick", "FF: Afterburn stopped\n"));
+// core::nprintf("Joystick", "FF: Afterburn stopped\n");
 }
 
 void joy_ff_explode()

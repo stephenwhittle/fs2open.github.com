@@ -431,7 +431,7 @@ core::Assert( new_item != &Beam_free_list );		// shouldn't have the dummy elemen
 	objnum = obj_create(OBJ_BEAM, ((fire_info->shooter != NULL) ? OBJ_INDEX(fire_info->shooter) : -1), BEAM_INDEX(new_item), &vmd_identity_matrix, &vmd_zero_vector, 1.0f, default_flags);
 	if(objnum < 0){
 		beam_delete(new_item);
-		nprintf(("General", "obj_create() failed for beam weapon! bah!\n"));
+	 core::nprintf("General", "obj_create() failed for beam weapon! bah!\n");
 		Int3();
 		return -1;
 	}
@@ -562,7 +562,7 @@ core::Assert(wip->b_info.beam_type == BEAM_TYPE_C);
 
 	if(objnum < 0){
 		beam_delete(new_item);
-		nprintf(("General", "obj_create() failed for beam weapon! bah!\n"));
+	 core::nprintf("General", "obj_create() failed for beam weapon! bah!\n");
 		Int3();
 		return -1;
 	}
@@ -878,7 +878,7 @@ void beam_type_d_get_status(beam *b, int *shot_index, int *fire_wait)
 	*shot_index = (int)(beam_time / shot_time);
 	
 	if(*shot_index >= b->binfo.shot_count){
-		nprintf(("Beam","Shot of type D beam had bad shot_index value\n"));
+	 core::nprintf("Beam","Shot of type D beam had bad shot_index value\n");
 		*shot_index = b->binfo.shot_count - 1;
 	}	
 
@@ -1813,7 +1813,7 @@ void beam_delete(beam *b)
 	// subtract one
 	Beam_count--;
 core::Assert(Beam_count >= 0);
-	nprintf(("Beam", "Recycled beam (%d beams remaining)\n", Beam_count));
+ core::nprintf("Beam", "Recycled beam (%d beams remaining)\n", Beam_count);
 }
 
 // given an object, return its model num
@@ -2257,7 +2257,7 @@ void beam_aim(beam *b)
 			// ...then jitter based on shot_aim (requires target)
 			beam_jitter_aim(b, b->binfo.shot_aim[b->shot_index]);
 		}
-		nprintf(("AI", "Frame %i: FIRING\n", Framecount));
+	 core::nprintf("AI", "Frame %i: FIRING\n", Framecount);
 		break;
 
 	case BEAM_TYPE_E:
@@ -3457,14 +3457,14 @@ int beam_ok_to_fire(beam *b)
 			}
 
 			if (!(turret_fov_test(b->subsys, &turret_normal, &aim_dir))) {
-				nprintf(("BEAM", "BEAM : powering beam down because of FOV condition!\n"));
+			 core::nprintf("BEAM", "BEAM : powering beam down because of FOV condition!\n");
 				return 0;
 			}
 		} else {
 			vec3d turret_dir, turret_pos, temp;
 			beam_get_global_turret_gun_info(b->objp, b->subsys, &turret_pos, &turret_dir, 1, &temp, (b->flags & BF_IS_FIGHTER_BEAM) > 0);
 			if (vm_vec_dot(&aim_dir, &turret_dir) < b->subsys->system_info->turret_fov) {
-				nprintf(("BEAM", "BEAM : powering beam down because of FOV condition!\n"));
+			 core::nprintf("BEAM", "BEAM : powering beam down because of FOV condition!\n");
 				return 0;
 			}
 		}

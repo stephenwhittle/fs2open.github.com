@@ -2,6 +2,7 @@
 #include "shields.h"
 #include "enums.h"
 #include "object/objectshield.h"
+#include<globalincs/scp_defines.h>
 
 namespace scripting {
 namespace api {

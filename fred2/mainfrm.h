@@ -95,7 +95,7 @@ public:
 	/**
 	 * @briefcore::Asserts the window is valid
 	 */
-	virtual voidcore::AssertValid() const;
+	virtual void AssertValid() const;
 
 	/**
 	 * @brief Presumably called when a stack dump is required

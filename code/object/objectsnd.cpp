@@ -409,7 +409,7 @@ void maybe_play_flyby_snd(float closest_dist, object *closest_objp, object *list
 
 				//float dist = vm_vec_dist(&closest_objp->pos, &View_position);
 				//nprintf(("AI", "Frame %i: Playing flyby sound, species = %i, size = %i, dist = %7.3f\n", Framecount, species, ship_size, dist));
-//				nprintf(("AI", "Frame %i: Playing flyby sound, species = %i, size = %i, dist = %7.3f\n", Framecount, Debug_1, Debug_2, dist));
+//			 core::nprintf("AI", "Frame %i: Playing flyby sound, species = %i, size = %i, dist = %7.3f\n", Framecount, Debug_1, Debug_2, dist);
 //Debug_1 = (Debug_1+1)%3;
 //Debug_2 = (Debug_2+1)%2;
 
@@ -713,7 +713,7 @@ int obj_snd_assign(int objnum, gamesnd_id sndnum, vec3d *pos, int main, int flag
 
 	objp->objsnd_num[sound_index] = obj_snd_get_slot();
 	if ( objp->objsnd_num[sound_index] == -1 ) {
-		nprintf(("Sound", "SOUND ==> No free object-linked sounds left\n"));
+	 core::nprintf("Sound", "SOUND ==> No free object-linked sounds left\n");
 		return -1;
 	}
 	snd = &Objsnds[objp->objsnd_num[sound_index]];

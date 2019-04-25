@@ -22,6 +22,7 @@
 #include "localization/localize.h"
 #include "mod_table/mod_table.h"
 #include <core/path.h>
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
@@ -1252,7 +1253,7 @@ int event_editor::save_message(int num)
 		}
 
 		ptr = (char *) (LPCTSTR) m_avi_filename;
-		if ( !ptr || !VALID_FNAME(ptr) ) {
+		if ( !ptr || !core::fs::VALID_FNAME(ptr) ) {
 			m_messages[num].avi_info.name = NULL;
 		} else {
 			m_messages[num].avi_info.name = strdup(ptr);
@@ -1263,7 +1264,7 @@ int event_editor::save_message(int num)
 		}
 
 		ptr = (char *) (LPCTSTR) m_wave_filename;
-		if ( !ptr || !VALID_FNAME(ptr) ) {
+		if ( !ptr || !core::fs::VALID_FNAME(ptr) ) {
 			m_messages[num].wave_info.name = NULL;
 		} else {
 			m_messages[num].wave_info.name = strdup(ptr);

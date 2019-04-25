@@ -196,7 +196,7 @@ core::Assert(Cur_cmd_brief);
 		if (stricmp(Cur_cmd_brief->stage[i].wave_filename, NOX("none")) != 0 && Cur_cmd_brief->stage[i].wave_filename[0]) {
 			Cur_cmd_brief->stage[i].wave = audiostream_open(Cur_cmd_brief->stage[i].wave_filename, ASF_VOICE);
 			if (Cur_cmd_brief->stage[i].wave < 0) {
-				nprintf(("General", "Failed to load \"%s\"\n", Cur_cmd_brief->stage[i].wave_filename));
+			 core::nprintf("General", "Failed to load \"%s\"\n", Cur_cmd_brief->stage[i].wave_filename);
 			}
 		}
 	}

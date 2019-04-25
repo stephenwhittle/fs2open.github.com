@@ -252,7 +252,7 @@ void wing_editor::initialize_data_safe(int full_update)
 	int i, enable = TRUE, player_wing = 0, player_enabled = 1;
 	CComboBox *arrival_box, *departure_box;
 
-	nprintf(("Fred routing", "Wing dialog load safe\n"));
+ core::nprintf("Fred routing", "Wing dialog load safe\n");
 	if (!GetSafeHwnd())
 		return;
 
@@ -503,7 +503,7 @@ void wing_editor::initialize_data(int full_update)
 	int i;
 	CWnd *w = NULL;
 
-	nprintf(("Fred routing", "Wing dialog load\n"));
+ core::nprintf("Fred routing", "Wing dialog load\n");
 	if (!GetSafeHwnd())
 		return;
 
@@ -544,7 +544,7 @@ int wing_editor::update_data(int redraw)
 	int i, z;
 	object *ptr;
 
-	nprintf(("Fred routing", "Wing dialog save\n"));
+ core::nprintf("Fred routing", "Wing dialog save\n");
 	if (!GetSafeHwnd())
 		return 0;
 
@@ -748,7 +748,7 @@ void wing_editor::update_data_safe()
 	char buf[512];
 	int i, d, hotkey = -1;
 
-	nprintf(("Fred routing", "Wing dialog save safe\n"));
+ core::nprintf("Fred routing", "Wing dialog save safe\n");
 	if (!GetSafeHwnd())
 		return;
 
@@ -997,7 +997,7 @@ void wing_editor::OnEndlabeleditDepartureTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 int wing_editor::verify()
 {
-	nprintf(("Fred routing", "Wing dialog verify\n"));
+ core::nprintf("Fred routing", "Wing dialog verify\n");
 	if (!GetSafeHwnd() || !modified)
 		return 0;
 

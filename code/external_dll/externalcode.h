@@ -2,7 +2,7 @@
 #define EXTERNALCODE_H_INCLUDED_
 
 #include <core/pstypes.h>
-
+#include <core/error.h>
 #include <SDL_loadso.h>
 
 /* This class loads external libraries for FSO use.

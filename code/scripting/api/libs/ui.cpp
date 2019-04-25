@@ -12,12 +12,12 @@
 #include "scripting/lua/LuaTable.h"
 
 // Ourcore::Assert conflicts with the definitions inside libRocket
-#pragma push_macro(core::Assert")
-#undefcore::Assert
+#pragma push_macro("Assert")
+#undef Assert
 
 #include <Rocket/Core/Lua/LuaType.h>
 
-#pragma pop_macro(core::Assert")
+#pragma pop_macro("Assert")
 
 namespace scripting {
 namespace api {

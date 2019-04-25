@@ -1,6 +1,7 @@
 
 #include "LuaConvert.h"
 #include "osapi/dialogs.h"
+#include <core/error.h>
 namespace luacpp {
 namespace convert {
 namespace internal {

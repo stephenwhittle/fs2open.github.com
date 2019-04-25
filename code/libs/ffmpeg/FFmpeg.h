@@ -5,6 +5,7 @@
 
 #include <exception>
 #include <stdexcept>
+#include <scp_compiler_detection.h>
 
 namespace libs {
 namespace ffmpeg {

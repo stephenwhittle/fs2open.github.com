@@ -4,8 +4,8 @@
 #include "AnimationElement.h"
 
 // Ourcore::Assert conflicts with the definitions inside libRocket
-#pragma push_macro(core::Assert")
-#undefcore::Assert
+#pragma push_macro("Assert")
+#undef Assert
 
 #include <Rocket/Core.h>
 #include <Rocket/Core/ElementDocument.h>
@@ -13,7 +13,7 @@
 #include <Rocket/Core/String.h>
 #include <scpui/RocketRenderingInterface.h>
 
-#pragma pop_macro(core::Assert")
+#pragma pop_macro("Assert")
 
 namespace scpui {
 namespace elements {

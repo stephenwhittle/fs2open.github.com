@@ -22,7 +22,7 @@
 #include "CampaignTreeWnd.h"
 
 #include <core/path.h>
-
+#include <osapi/outwnd.h>
 #include "globalincs/mspdb_callstack.h"
 #include "graphics/2d.h"
 #include "io/key.h"

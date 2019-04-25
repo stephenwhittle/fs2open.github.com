@@ -684,7 +684,7 @@ static void parse_engine_wash(bool replace)
 	ewp = get_engine_wash_pointer(ewt.name);
 	if (ewp != NULL) {
 		if (replace) {
-			nprintf(("Warning", "More than one version of engine wash %s exists; using newer version.", ewt.name));
+		 core::nprintf("Warning", "More than one version of engine wash %s exists; using newer version.", ewt.name);
 		} else {
 			core::Error(LOCATION, "Error:  Engine wash %s already exists.  All engine wash names must be unique.",
 			            ewt.name);
@@ -3213,7 +3213,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		char fname[MAX_NAME_LEN];
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
-		if (VALID_FNAME(fname))
+		if (core::fs::VALID_FNAME(fname))
 			sip->shield_impact_explosion_anim = Weapon_explosions.Load(fname);
 	}
 
@@ -3559,9 +3559,9 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		stuff_float(&sip->closeup_zoom);
 
 		if (sip->closeup_zoom <= 0.0f) {
-			mprintf(("Warning!  Ship '%s' has a $Closeup_zoom value that is less than or equal to 0 (%f). Setting to "
+		 core::mprintf("Warning!  Ship '%s' has a $Closeup_zoom value that is less than or equal to 0 (%f). Setting to "
 			         "default value.\n",
-			         sip->name, sip->closeup_zoom));
+			         sip->name, sip->closeup_zoom);
 			sip->closeup_zoom = 0.5f;
 		}
 	}
@@ -3656,21 +3656,21 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Thruster Normal Flame:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_anim_init(&sip->thruster_flame_info.normal, name_tmp);
 	}
 
 	if (optional_string("$Thruster Afterburner Flame:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_anim_init(&sip->thruster_flame_info.afterburn, name_tmp);
 	}
 
 	if (optional_string("$Thruster Bitmap 1:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp)) {
+		if (core::fs::VALID_FNAME(name_tmp)) {
 			strcpy_s(sip->thruster_glow_info.normal.filename, name_tmp);
 			thruster_glow_anim_load(&sip->thruster_glow_info.normal);
 		}
@@ -3679,7 +3679,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Thruster Bitmap 1a:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp)) {
+		if (core::fs::VALID_FNAME(name_tmp)) {
 			strcpy_s(sip->thruster_glow_info.afterburn.filename, name_tmp);
 			thruster_glow_anim_load(&sip->thruster_glow_info.afterburn);
 		}
@@ -3692,14 +3692,14 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Thruster Bitmap 2:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_secondary_glow_info.normal, name_tmp);
 	}
 
 	if (optional_string("$Thruster Bitmap 2a:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_secondary_glow_info.afterburn, name_tmp);
 	}
 
@@ -3720,14 +3720,14 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Thruster Bitmap 3:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_tertiary_glow_info.normal, name_tmp);
 	}
 
 	if (optional_string("$Thruster Bitmap 3a:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_tertiary_glow_info.afterburn, name_tmp);
 	}
 
@@ -3739,14 +3739,14 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 	if (optional_string("$Thruster Bitmap Distortion:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_distortion_info.normal, name_tmp);
 	}
 
 	if (optional_string("$Thruster Bitmap Distortion a:")) {
 		stuff_string(name_tmp, F_NAME, sizeof(name_tmp));
 
-		if (VALID_FNAME(name_tmp))
+		if (core::fs::VALID_FNAME(name_tmp))
 			generic_bitmap_init(&sip->thruster_distortion_info.afterburn, name_tmp);
 	}
 
@@ -4360,8 +4360,8 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 						stuff_float(&tempf);
 
 						if (tempf < 0) {
-							mprintf(("RoF multiplier clamped to 0 for subsystem '%s' in %s '%s'.\n", sp->subobj_name,
-							         info_type_name, sip->name));
+						 core::mprintf("RoF multiplier clamped to 0 for subsystem '%s' in %s '%s'.\n", sp->subobj_name,
+							         info_type_name, sip->name);
 							sp->turret_rof_scaler = 0;
 						} else {
 							sp->turret_rof_scaler = tempf;
@@ -4449,13 +4449,13 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 			}
 
 			if (old_flags) {
-				mprintf(("Use of deprecated subsystem syntax.  Please use the $Flags: field for subsystem flags.\n\n"
+			 core::mprintf("Use of deprecated subsystem syntax.  Please use the $Flags: field for subsystem flags.\n\n"
 				         "At least one of the following tags was used on %s '%s', subsystem %s:\n"
 				         "\t+untargetable\n"
 				         "\t+carry-no-damage\n"
 				         "\t+use-multiple-guns\n"
 				         "\t+fire-down-normals\n",
-				         info_type_name, sip->name, sp->subobj_name));
+				         info_type_name, sip->name, sp->subobj_name);
 			}
 
 			while (optional_string("$animation:")) {
@@ -5472,7 +5472,7 @@ void physics_ship_init(object* objp)
 		float vmass = size.xyz.x * size.xyz.y * size.xyz.z;
 		float amass = 4.65f * (float)pow(vmass, (2.0f / 3.0f));
 
-		nprintf(("Physics", "pi->mass==0.0f. setting to %f\n", amass));
+	 core::nprintf("Physics", "pi->mass==0.0f. setting to %f\n", amass);
 		core::Warning(LOCATION, "%s (%s) has no mass! setting to %f", sinfo->name, sinfo->pof_file, amass);
 		pm->mass = amass;
 		pi->mass = amass * sinfo->density;
@@ -5482,7 +5482,7 @@ void physics_ship_init(object* objp)
 	// if pm's MOI is invalid, compensate
 	if (IS_VEC_NULL(&pm->moment_of_inertia.vec.rvec) && IS_VEC_NULL(&pm->moment_of_inertia.vec.uvec) &&
 	    IS_VEC_NULL(&pm->moment_of_inertia.vec.fvec)) {
-		nprintf(("Physics", "pm->moment_of_inertia is invalid for %s!\n", pm->filename));
+	 core::nprintf("Physics", "pm->moment_of_inertia is invalid for %s!\n", pm->filename);
 		core::Warning(LOCATION, "%s (%s) has a null moment of inertia!", sinfo->name, sinfo->pof_file);
 
 		// TODO: generate MOI properly
@@ -6571,23 +6571,23 @@ static int subsys_set(int objnum, int ignore_subsys_info)
 		}
 
 		if ((ship_system->system_info->flags[Model::Subsystem_Flags::Turret_salvo]) && (number_of_weapons > 1)) {
-			mprintf(("\"salvo mode\" flag used with turret which has more than one weapon defined for it\nsubsystem "
+		 core::mprintf("\"salvo mode\" flag used with turret which has more than one weapon defined for it\nsubsystem "
 			         "'%s' on ship type '%s'.\nonly single weapon will be used\n",
-			         model_system->subobj_name, sinfo->name));
+			         model_system->subobj_name, sinfo->name);
 		}
 
 		if ((ship_system->system_info->flags[Model::Subsystem_Flags::Turret_fixed_fp]) &&
 		    (number_of_weapons > model_system->turret_num_firing_points)) {
-			mprintf(("\"fixed firingpoint\" flag used with turret which has more weapons defined for it than it has "
+		 core::mprintf("\"fixed firingpoint\" flag used with turret which has more weapons defined for it than it has "
 			         "firingpoints\nsubsystem '%s' on ship type '%s'.\nweapons will share firingpoints\n",
-			         model_system->subobj_name, sinfo->name));
+			         model_system->subobj_name, sinfo->name);
 		}
 
 		if ((ship_system->system_info->flags[Model::Subsystem_Flags::Turret_fixed_fp]) &&
 		    (number_of_weapons < model_system->turret_num_firing_points)) {
-			mprintf(("\"fixed firingpoint\" flag used with turret which has less weapons defined for it than it has "
+		 core::mprintf("\"fixed firingpoint\" flag used with turret which has less weapons defined for it than it has "
 			         "firingpoints\nsubsystem '%s' on ship type '%s'.\nsome of the firingpoints will be left unused\n",
-			         model_system->subobj_name, sinfo->name));
+			         model_system->subobj_name, sinfo->name);
 		}
 
 		if ((ship_system->system_info->flags[Model::Subsystem_Flags::Share_fire_direction]) &&
@@ -7367,21 +7367,21 @@ core::Assert(Objects[Ships[shipnum].objnum].flags[Object::Object_Flags::Should_b
 #ifndef NDEBUG
 	switch (cleanup_mode) {
 	case SHIP_DESTROYED:
-		nprintf(("Alan", "SHIP DESTROYED: %s'\n'", shipp->ship_name));
+	 core::nprintf("Alan", "SHIP DESTROYED: %s'\n'", shipp->ship_name);
 		break;
 	case SHIP_DEPARTED:
 	case SHIP_DEPARTED_WARP:
 	case SHIP_DEPARTED_BAY:
-		nprintf(("Alan", "SHIP DEPARTED: %s'\n'", shipp->ship_name));
+	 core::nprintf("Alan", "SHIP DEPARTED: %s'\n'", shipp->ship_name);
 		break;
 	case SHIP_DESTROYED_REDALERT:
-		nprintf(("Alan", "SHIP REDALERT DESTROYED: %s'\n'", shipp->ship_name));
+	 core::nprintf("Alan", "SHIP REDALERT DESTROYED: %s'\n'", shipp->ship_name);
 		break;
 	case SHIP_DEPARTED_REDALERT:
-		nprintf(("Alan", "SHIP REDALERT DEPARTED: %s'\n'", shipp->ship_name));
+	 core::nprintf("Alan", "SHIP REDALERT DEPARTED: %s'\n'", shipp->ship_name);
 		break;
 	case SHIP_VANISHED:
-		nprintf(("Alan", "SHIP VANISHED: %s'\n'", shipp->ship_name));
+	 core::nprintf("Alan", "SHIP VANISHED: %s'\n'", shipp->ship_name);
 		break;
 	default:
 		// Can't Happen, but we should've already caught this
@@ -8091,7 +8091,7 @@ static void ship_chase_shield_energy_targets(ship* shipp, object* obj, float fra
 
 static int thruster_glow_anim_load(generic_anim* ga)
 {
-	if (!VALID_FNAME(ga->filename))
+	if (!core::fs::VALID_FNAME(ga->filename))
 		return -1;
 
 	int fps = 15;
@@ -8665,8 +8665,8 @@ static void lethality_decay(ai_info* aip)
 				int num_turrets_attacking(object * turret_parent, int target_objnum);
 				num_turrets = num_turrets_attacking(&Objects[aip->target_objnum], Ships[aip->shipnum].objnum);
 			}
-			nprintf(("lethality", "Player lethality: %.1f, num turrets targeting player: %d\n", aip->lethality,
-			         num_turrets));
+		 core::nprintf("lethality", "Player lethality: %.1f, num turrets targeting player: %d\n", aip->lethality,
+			         num_turrets);
 		}
 	}
 #endif
@@ -8723,7 +8723,7 @@ void ship_process_post(object* obj, float frametime)
 	ship_info* sip;
 
 	if (obj->type != OBJ_SHIP) {
-		nprintf(("Network", "Ignoring non-ship object in ship_process_post()\n"));
+	 core::nprintf("Network", "Ignoring non-ship object in ship_process_post()\n");
 		return;
 	}
 
@@ -9208,7 +9208,7 @@ core::Assert(pm != NULL);
 			ci->texture.bitmap_id =
 			    sip->afterburner_trail.bitmap_id; // table loaded bitmap used on this ships burner trails
 
-			nprintf(("AB TRAIL", "AB trail point #%d made for '%s'\n", shipp->ab_count, shipp->ship_name));
+		 core::nprintf("AB TRAIL", "AB trail point #%d made for '%s'\n", shipp->ab_count, shipp->ship_name);
 
 			shipp->ab_count++;
 		}
@@ -9294,8 +9294,8 @@ core::Assertion((ship_type >= 0) && (ship_type < static_cast<int>(Ship_info.size
 			core::Warning(LOCATION, "For ship '%s', detail level\nmismatch. Table has %d,\nPOF has %d.", sip->name,
 			        sip->num_detail_levels, pm->n_detail_levels);
 		} else {
-			nprintf(("Warning", "For ship '%s', detail level mismatch. Table has %d, POF has %d.", sip->name,
-			         sip->num_detail_levels, pm->n_detail_levels));
+		 core::nprintf("Warning", "For ship '%s', detail level mismatch. Table has %d, POF has %d.", sip->name,
+			         sip->num_detail_levels, pm->n_detail_levels);
 		}
 	}
 	for (i = 0; i < pm->n_detail_levels; i++)
@@ -9479,8 +9479,8 @@ core::Assert(n >= 0 && n < MAX_SHIPS);
 			core::Warning(LOCATION, "For ship '%s', detail level\nmismatch. Table has %d,\nPOF has %d.", sip->name,
 			        sip->num_detail_levels, pm->n_detail_levels);
 		} else {
-			nprintf(("Warning", "For ship '%s', detail level mismatch. Table has %d, POF has %d.", sip->name,
-			         sip->num_detail_levels, pm->n_detail_levels));
+		 core::nprintf("Warning", "For ship '%s', detail level mismatch. Table has %d, POF has %d.", sip->name,
+			         sip->num_detail_levels, pm->n_detail_levels);
 		}
 	}
 	for (i = 0; i < pm->n_detail_levels; i++)
@@ -10065,7 +10065,7 @@ core::Assert(objp->hull_strength > 0.0f);
 
 				ci->texture.bitmap_id =
 				    sip->afterburner_trail.bitmap_id; // table loaded bitmap used on this ships burner trails
-				nprintf(("AB TRAIL", "AB trail point #%d made for '%s'\n", sp->ab_count, sp->ship_name));
+			 core::nprintf("AB TRAIL", "AB trail point #%d made for '%s'\n", sp->ab_count, sp->ship_name);
 				sp->ab_count++;
 			core::Assert(MAX_SHIP_CONTRAILS > sp->ab_count);
 			}
@@ -10271,7 +10271,7 @@ int ship_launch_countermeasure(object* objp, int rand_val)
 	cobjnum = weapon_create(&pos, &objp->orient, shipp->current_cmeasure, OBJ_INDEX(objp));
 	if (cobjnum >= 0) {
 		cmeasure_set_ship_launch_vel(&Objects[cobjnum], objp, arand);
-		nprintf(("Network", "Cmeasure created by %s\n", shipp->ship_name));
+	 core::nprintf("Network", "Cmeasure created by %s\n", shipp->ship_name);
 
 		// Play sound effect for counter measure launch
 	core::Assert(shipp->current_cmeasure < Num_weapon_types);
@@ -11828,8 +11828,8 @@ core::Assert((swp->secondary_bank_weapons[bank] >= 0) && (swp->secondary_bank_we
 		int num_slots;
 
 		if (bank > pm->n_missiles) {
-			nprintf(("WARNING", "WARNING ==> Tried to fire bank %d, but ship has only %d banks\n", bank + 1,
-			         pm->n_missiles));
+		 core::nprintf("WARNING", "WARNING ==> Tried to fire bank %d, but ship has only %d banks\n", bank + 1,
+			         pm->n_missiles);
 			return 0; // we can make a quick out here!!!
 		}
 
@@ -14730,8 +14730,8 @@ core::Assertion(
 	    quadrant_num, hit_objp->n_quadrants);
 
 	if (hit_objp->shield_quadrant[quadrant_num] > max_quadrant)
-		mprintf(("Warning: \"%s\" has shield quadrant strength of %f out of %f\n", Ships[hit_objp->instance].ship_name,
-		         hit_objp->shield_quadrant[quadrant_num], max_quadrant));
+	 core::mprintf("Warning: \"%s\" has shield quadrant strength of %f out of %f\n", Ships[hit_objp->instance].ship_name,
+		         hit_objp->shield_quadrant[quadrant_num], max_quadrant);
 
 	return hit_objp->shield_quadrant[quadrant_num] / max_quadrant;
 }
@@ -14810,7 +14810,7 @@ static int ship_is_getting_locked(ship* shipp)
 				dist      = vm_vec_dist_quick(&objp->pos, &Objects[shipp->objnum].pos);
 				wep_range = ship_get_secondary_weapon_range(&Ships[objp->instance]);
 				if (wep_range > dist) {
-					nprintf(("Alan", "AI ship is seeking lock\n"));
+				 core::nprintf("Alan", "AI ship is seeking lock\n");
 					return 1;
 				}
 			}
@@ -15836,7 +15836,7 @@ void ship_do_cargo_revealed(ship* shipp, int from_network)
 		return;
 	}
 
-	nprintf(("Network", "Revealing cargo for %s\n", shipp->ship_name));
+ core::nprintf("Network", "Revealing cargo for %s\n", shipp->ship_name);
 
 	// send the packet if needed
 	if ((Game_mode & GM_MULTIPLAYER) && !from_network) {
@@ -15859,7 +15859,7 @@ void ship_do_cap_subsys_cargo_revealed(ship* shipp, ship_subsys* subsys, int fro
 		return;
 	}
 
-	nprintf(("Network", "Revealing cap ship subsys cargo for %s\n", shipp->ship_name));
+ core::nprintf("Network", "Revealing cap ship subsys cargo for %s\n", shipp->ship_name);
 
 	// send the packet if needed
 	if ((Game_mode & GM_MULTIPLAYER) && !from_network) {
@@ -15889,7 +15889,7 @@ void ship_do_cargo_hidden(ship* shipp, int from_network)
 		return;
 	}
 
-	nprintf(("Network", "Hiding cargo for %s\n", shipp->ship_name));
+ core::nprintf("Network", "Hiding cargo for %s\n", shipp->ship_name);
 
 	// send the packet if needed
 	if ((Game_mode & GM_MULTIPLAYER) && !from_network) {
@@ -15908,7 +15908,7 @@ void ship_do_cap_subsys_cargo_hidden(ship* shipp, ship_subsys* subsys, int from_
 		return;
 	}
 
-	nprintf(("Network", "Hiding cap ship subsys cargo for %s\n", shipp->ship_name));
+ core::nprintf("Network", "Hiding cap ship subsys cargo for %s\n", shipp->ship_name);
 
 	// send the packet if needed
 	if ((Game_mode & GM_MULTIPLAYER) && !from_network) {
@@ -16032,7 +16032,7 @@ void ship_page_in()
 	// Mark any support ship types as used
 	for (auto sip = Ship_info.begin(); sip != Ship_info.end(); ++sip) {
 		if (sip->flags[Ship::Info_Flags::Support]) {
-			nprintf(("Paging", "Found support ship '%s'\n", sip->name));
+		 core::nprintf("Paging", "Found support ship '%s'\n", sip->name);
 			i = (int)std::distance(Ship_info.begin(), sip);
 			ship_class_used[i]++;
 
@@ -16052,7 +16052,7 @@ void ship_page_in()
 		if (Ships[i].objnum < 0)
 			continue;
 
-		nprintf(("Paging", "Found ship '%s'\n", Ships[i].ship_name));
+	 core::nprintf("Paging", "Found ship '%s'\n", Ships[i].ship_name);
 		ship_class_used[Ships[i].ship_info_index]++;
 
 		// check if we are going to use a Knossos device and make sure the special warp ani gets pre-loaded
@@ -16085,7 +16085,7 @@ void ship_page_in()
 
 		// page in all of the textures if the model is already loaded
 		if (sip->model_num >= 0) {
-			nprintf(("Paging", "Paging in textures for ship '%s'\n", Ships[i].ship_name));
+		 core::nprintf("Paging", "Paging in textures for ship '%s'\n", Ships[i].ship_name);
 			model_page_in_textures(sip->model_num, Ships[i].ship_info_index);
 			// need to make sure and do this again, after we are sure that all of the textures are ready
 			ship_init_afterburners(&Ships[i]);
@@ -16101,7 +16101,7 @@ void ship_page_in()
 	// Mark any ships that might warp in in the future as used
 	for (p_object* p_objp = GET_FIRST(&Ship_arrival_list); p_objp != END_OF_LIST(&Ship_arrival_list);
 	     p_objp           = GET_NEXT(p_objp)) {
-		nprintf(("Paging", "Found future arrival ship '%s'\n", p_objp->name));
+	 core::nprintf("Paging", "Found future arrival ship '%s'\n", p_objp->name);
 		ship_class_used[p_objp->ship_class]++;
 
 		// This will go through Subsys_index[] and grab all weapons: primary, secondary, and turrets
@@ -16119,7 +16119,7 @@ void ship_page_in()
 
 		// page in any replacement textures
 		if (Ship_info[p_objp->ship_class].model_num >= 0) {
-			nprintf(("Paging", "Paging in textures for future arrival ship '%s'\n", p_objp->name));
+		 core::nprintf("Paging", "Paging in textures for future arrival ship '%s'\n", p_objp->name);
 			model_page_in_textures(Ship_info[p_objp->ship_class].model_num, p_objp->ship_class);
 		}
 
@@ -16169,8 +16169,8 @@ void ship_page_in()
 					// to still point to the old model index; this makes sure it doesn't happen. -zookeeper
 					for (k = 0; k < sip->n_subsystems; k++) {
 						if (sip->model_num != sip->subsystems[k].model_num) {
-							mprintf(("Ship %s has model_num %i but its subsystem %s has model_num %i, fixing...\n",
-							         sip->name, sip->model_num, sip->subsystems[k].name, sip->subsystems[k].model_num));
+						 core::mprintf("Ship %s has model_num %i but its subsystem %s has model_num %i, fixing...\n",
+							         sip->name, sip->model_num, sip->subsystems[k].name, sip->subsystems[k].model_num);
 							sip->subsystems[k].model_num = sip->model_num;
 						}
 					}
@@ -16283,7 +16283,7 @@ void ship_page_in()
 		}
 	}
 
-	nprintf(("Paging", "There are %d ship classes used in this mission.\n", num_ship_types_used));
+ core::nprintf("Paging", "There are %d ship classes used in this mission.\n", num_ship_types_used);
 
 	// Page in the thruster effects
 	// Make sure thrusters are loaded
@@ -16387,7 +16387,7 @@ void ship_page_in_textures(int ship_index)
 		bm_page_in_texture(sip->thruster_tertiary_glow_info.afterburn.bitmap_id);
 
 	// splodeing bitmap
-	if (VALID_FNAME(sip->splodeing_texture_name)) {
+	if (core::fs::VALID_FNAME(sip->splodeing_texture_name)) {
 		sip->splodeing_texture = bm_load(sip->splodeing_texture_name);
 		bm_page_in_texture(sip->splodeing_texture);
 	}

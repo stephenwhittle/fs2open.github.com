@@ -1,6 +1,7 @@
 
 #include "physics_info.h"
 #include "vecmath.h"
+#include <globalincs/scp_defines.h>
 
 namespace scripting {
 namespace api {

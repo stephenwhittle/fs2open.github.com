@@ -886,10 +886,8 @@ void cf_search_memory_root(int root_index) {
 				break;
 			}
 		}
-		core::Assertion(pathtype != -1, "Default file '%s%s%s' does not use a valid path type!",
-				  default_file.path_type,
-				  core::fs::path::preferred_separator,
-				  default_file.filename);
+		core::Assertion(pathtype != -1, "Default file '%s' does not use a valid path type!",
+				  (core::fs::path(default_file.path_type)/ default_file.filename).c_str());
 
 		cf_file *file = cf_create_file();
 
@@ -1591,7 +1589,7 @@ int cf_get_file_list(std::vector<std::string>& list, int pathtype, const char* f
 #if defined _WIN32
 	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
 	                              location_flags);
-	strcat_s(filespec, core::fs::preferred_separator_string);
+	//strcat_s(filespec, core::fs::preferred_separator_string);
 	strcat_s(filespec, filter);
 
 	_finddata_t find;
@@ -1627,8 +1625,9 @@ int cf_get_file_list(std::vector<std::string>& list, int pathtype, const char* f
 		} while (!_findnext(find_handle, &find));
 
 		_findclose( find_handle );
+	} else {
+		core::mprintf("FindNext returned %d", errno);
 	}
-
 #elif defined SCP_UNIX
 	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
 	                              location_flags);

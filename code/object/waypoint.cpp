@@ -198,7 +198,7 @@ core::Assert(name != NULL);
 			const char *index_str = name + len + 1;
 			if (*index_str == '\0')
 			{
-				nprintf(("waypoints", "possible error with waypoint name '%s': no waypoint number after the colon\n", name));
+			 core::nprintf("waypoints", "possible error with waypoint name '%s': no waypoint number after the colon\n", name);
 				continue;
 			}
 
@@ -214,7 +214,7 @@ core::Assert(name != NULL);
 			}
 			if (!valid)
 			{
-				nprintf(("waypoints", "possible error with waypoint name '%s': string after the colon is not a number\n", name));
+			 core::nprintf("waypoints", "possible error with waypoint name '%s': string after the colon is not a number\n", name);
 				continue;
 			}
 
@@ -222,7 +222,7 @@ core::Assert(name != NULL);
 			uint index = atoi(index_str);
 			if (index < 1 || index > ii->get_waypoints().size())
 			{
-				nprintf(("waypoints", "possible error with waypoint name '%s': waypoint number is out of range\n", name));
+			 core::nprintf("waypoints", "possible error with waypoint name '%s': waypoint number is out of range\n", name);
 				continue;
 			}
 

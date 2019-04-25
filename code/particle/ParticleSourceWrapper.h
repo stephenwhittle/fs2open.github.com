@@ -4,7 +4,7 @@
 
 #include <core/pstypes.h>
 #include "ParticleSource.h"
-
+#include <scp_compiler_detection.h>
 enum class WeaponState : uint32_t;
 
 namespace particle

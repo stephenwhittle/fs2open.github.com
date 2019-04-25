@@ -226,8 +226,8 @@ core::Assertion(!initialized, "Discord integration can only be initialized once!
 	DiscordEventHandlers handlers;
 	memset(&handlers, 0, sizeof(handlers));
 	handlers.ready = [](const DiscordUser* connectedUser) {
-		mprintf(("Discord: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator,
-		         connectedUser->userId));
+	 core::mprintf("Discord: connected to user %s#%s - %s\n", connectedUser->username, connectedUser->discriminator,
+		         connectedUser->userId);
 		discord_ready = true;
 		update_presence();
 	};

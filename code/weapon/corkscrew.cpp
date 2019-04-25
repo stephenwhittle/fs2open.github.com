@@ -128,7 +128,7 @@ int cscrew_create(object *obj)
 	}
 
 	if ( i >= MAX_CORKSCREW_MISSILES ) {
-		nprintf(("Warning","No more corkscrew missiles are available\n"));
+	 core::nprintf("Warning","No more corkscrew missiles are available\n");
 		return -1;
 	}
 

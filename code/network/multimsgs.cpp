@@ -755,7 +755,7 @@ void process_game_chat_packet( ubyte *data, header *hinfo )
 	
 	// if we couldn't find the player - bail
 	if(player_index == -1){
-		nprintf(("Network","Could not find player for processing game chat packet!\n"));
+	 core::nprintf("Network","Could not find player for processing game chat packet!\n");
 		return;
 	}
 
@@ -1703,7 +1703,7 @@ void send_leave_game_packet(short player_id, int kicked_reason, net_player *targ
 	// this is the case where to server is tossing a player (or indicating a respawned player has quit or become an observer)
 	// so he has to tell everyone that this guy left
 	else {
-		nprintf(("Network","Sending a leave game packet to all players (server)\n"));
+	 core::nprintf("Network","Sending a leave game packet to all players (server)\n");
 
 		// a couple of important checks
 	core::Assert(player_id != Net_player->player_id);
@@ -1742,11 +1742,11 @@ void process_leave_game_packet(ubyte* data, header* hinfo)
 	// determine who is dropping and printf out a notification
 	player_num = find_player_id(deader_id);
 	if (player_num == -1) {
-		nprintf(("Network", "Received leave game packet for unknown player, ignoring\n"));
+	 core::nprintf("Network", "Received leave game packet for unknown player, ignoring\n");
 		return;
 
 	} else {
-		nprintf(("Network", "Received a leave game notice for %s\n", Net_players[player_num].m_player->callsign));
+	 core::nprintf("Network", "Received a leave game notice for %s\n", Net_players[player_num].m_player->callsign);
 	}
 
 	// a hook to display that a player was kicked
@@ -1775,7 +1775,7 @@ void process_leave_game_packet(ubyte* data, header* hinfo)
 
 		// otherwise indicate someone was kicked
 		} else {
-			nprintf(("Network","%s was kicked\n",Net_players[player_num].m_player->callsign));			
+		 core::nprintf("Network","%s was kicked\n",Net_players[player_num].m_player->callsign);			
 
 			// display the result
 			memset(str, 0, 512);
@@ -1801,7 +1801,7 @@ void process_leave_game_packet(ubyte* data, header* hinfo)
 	// leave the game if the host and/or master has dropped
 	/*
 	if (((Net_players[player_num].flags & NETINFO_FLAG_AM_MASTER) || (Net_players[player_num].flags & NETINFO_FLAG_GAME_HOST)) ) {		
-		nprintf(("Network","Host and/or server has left the game - aborting...\n"));
+	 core::nprintf("Network","Host and/or server has left the game - aborting...\n");
 
 		// NETLOG
 		ml_string(NOX("Host and/or server has left the game"));
@@ -1820,7 +1820,7 @@ void process_leave_game_packet(ubyte* data, header* hinfo)
 	if (Game_mode & GM_STANDALONE_SERVER) {
       // returns true if we should reset the standalone
 		if (std_remove_player(&Net_players[player_num])) {
-			nprintf(("Network", "Should reset!!\n"));
+		 core::nprintf("Network", "Should reset!!\n");
 			return;
 		}
 
@@ -2507,7 +2507,7 @@ core::Assert ( Net_player->flags & NETINFO_FLAG_AM_MASTER );
 
 		temp = 0;
 		ADD_USHORT(temp);
-		nprintf(("Network","Don't know other_obj for ship kill packet, sending NULL\n"));
+	 core::nprintf("Network","Don't know other_obj for ship kill packet, sending NULL\n");
 	} else {
 		ADD_USHORT( other_objp->net_signature );
 	}
@@ -2591,7 +2591,7 @@ void process_ship_kill_packet( ubyte *data, header *hinfo )
 	// if I am unable to find the ship object which was killed, I have to bail and rely on getting
 	// another message from the server that this happened!
 	if ( sobjp == NULL ) {
-		nprintf(("Network", "Couldn't find net signature %d for kill packet\n", ship_sig));		
+	 core::nprintf("Network", "Couldn't find net signature %d for kill packet\n", ship_sig);		
 		return;
 	}
 
@@ -2687,7 +2687,7 @@ core::Assert ( !(Net_player->flags & NETINFO_FLAG_AM_MASTER) );
 		if ( objp != NULL ) {
 			objnum = parse_create_object(objp);
 		} else {
-			nprintf(("Network", "Ship with sig %d not found on ship arrival list -- not creating!!\n", signature));
+		 core::nprintf("Network", "Ship with sig %d not found on ship arrival list -- not creating!!\n", signature);
 		}
 	} else {
 	core::Assert( Arriving_support_ship );
@@ -2750,11 +2750,11 @@ void process_wing_create_packet( ubyte *data, header *hinfo )
 
 	// do a sanity check on the wing to be sure that we are actually working on a valid wing
 	if ( (index < 0) || (index >= Num_wings) || (Wings[index].num_waves == -1) ) {
-		nprintf(("Network", "Invalid index %d for wing create packet\n", index));
+	 core::nprintf("Network", "Invalid index %d for wing create packet\n", index);
 		return;
 	}
 	if ( (num_to_create <= 0) || (num_to_create > Wings[index].wave_count) ) {
-		nprintf(("Network", "Invalid number of ships to create (%d) for wing %s\n", num_to_create, Wings[index].name));
+	 core::nprintf("Network", "Invalid number of ships to create (%d) for wing %s\n", num_to_create, Wings[index].name);
 		return;
 	}
 
@@ -2803,7 +2803,7 @@ void process_ship_depart_packet( ubyte *data, header *hinfo )
 	// find the object which is departing
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "Couldn't find object with net signature %d to depart\n", signature ));
+	 core::nprintf("network", "Couldn't find object with net signature %d to depart\n", signature );
 		return;
 	}
 
@@ -2814,7 +2814,7 @@ void process_ship_depart_packet( ubyte *data, header *hinfo )
 				ship_actually_depart(objp->instance, s_method); 
 			}
 			else {
-				nprintf(("network", "Can not process ship depart packed. Object with net signature %d is not a ship!\n", signature ));	
+			 core::nprintf("network", "Can not process ship depart packed. Object with net signature %d is not a ship!\n", signature );	
 				return;
 			}
 			break;
@@ -2860,7 +2860,7 @@ void process_cargo_revealed_packet( ubyte *data, header *hinfo )
 	// get a ship pointer and call the ship function to reveal the cargo
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("Network", "Could not find object with net signature %d for cargo revealed\n", signature ));
+	 core::nprintf("Network", "Could not find object with net signature %d for cargo revealed\n", signature );
 		return;
 	}
 
@@ -2912,7 +2912,7 @@ void process_cargo_hidden_packet( ubyte *data, header *hinfo )
 	// get a ship pointer and call the ship function to hide the cargo
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("Network", "Could not find object with net signature %d for cargo hidden\n", signature ));
+	 core::nprintf("Network", "Could not find object with net signature %d for cargo hidden\n", signature );
 		return;
 	}
 
@@ -3074,7 +3074,7 @@ void process_secondary_fired_packet(ubyte* data, header* hinfo, int from_player)
 		// find the object (based on network signatures) for the object that fired
 		objp = multi_get_network_object( net_signature );
 		if ( objp == NULL ) {
-			nprintf(("Network", "Could not find ship for fire secondary packet!"));
+		 core::nprintf("Network", "Could not find ship for fire secondary packet!");
 			return;
 		}
 
@@ -3188,7 +3188,7 @@ void process_countermeasure_fired_packet( ubyte *data, header *hinfo )
 
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "Could find object whose countermeasures are being launched!!!\n"));
+	 core::nprintf("network", "Could find object whose countermeasures are being launched!!!\n");
 		return;
 	}
 	if(objp->type != OBJ_SHIP){
@@ -3199,7 +3199,7 @@ void process_countermeasure_fired_packet( ubyte *data, header *hinfo )
 	// make it so ship can fire right away!
 	Ships[objp->instance].cmeasure_fire_stamp = timestamp(0);
 	if ( objp == Player_obj ){
-		nprintf(("network", "firing countermeasure from my ship\n"));
+	 core::nprintf("network", "firing countermeasure from my ship\n");
 	}
 
 	ship_launch_countermeasure( objp, rand_val );		
@@ -3290,7 +3290,7 @@ void process_turret_fired_packet( ubyte *data, header *hinfo )
 	// find the object
 	objp = multi_get_network_object( pnet_signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "could find parent object with net signature %d for turret firing\n", pnet_signature));
+	 core::nprintf("network", "could find parent object with net signature %d for turret firing\n", pnet_signature);
 		return;
 	}
 
@@ -3637,7 +3637,7 @@ void process_mission_request_packet(ubyte * /*data*/, header *hinfo)
 	// fill in the address information of where this came from	
 	player_num = find_player_id(hinfo->id);
 	if(player_num == -1){
-		nprintf(("Network","Could not find player to send mission list items to!\n"));
+	 core::nprintf("Network","Could not find player to send mission list items to!\n");
 		return;
 	}
 
@@ -3806,7 +3806,7 @@ void process_ingame_nak(ubyte *data, header *hinfo)
 	switch(state){
 	case ACK_FILE_ACCEPTED :
 	core::Assert(Net_player->flags & NETINFO_FLAG_INGAME_JOIN);
-		nprintf(("Network","Mission file rejected by server, aborting...\n"));
+	 core::nprintf("Network","Mission file rejected by server, aborting...\n");
 		multi_quit_game(PROMPT_NONE, MULTI_END_NOTIFY_FILE_REJECTED);		
 		break;
 	}	
@@ -4060,7 +4060,7 @@ void process_netplayer_slot_packet(ubyte *data, header *hinfo)
 		GET_INT(ship_index);
 		player_num = find_player_id(player_id);
 		if(player_num < 0){
-			nprintf(("Network","Error looking up player for object/slot assignment!!\n"));
+		 core::nprintf("Network","Error looking up player for object/slot assignment!!\n");
 		} else {
 			// call the function in multiutil.cpp to set up the player object stuff
 			// being careful not to muck with the standalone object
@@ -4126,7 +4126,7 @@ void process_ship_weapon_change( ubyte *data, header *hinfo )
 
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "Unable to locate ship with signature %d for weapon state change\n", signature));
+	 core::nprintf("network", "Unable to locate ship with signature %d for weapon state change\n", signature);
 		return;
 	}
 	//core::Assert( objp->type == OBJ_SHIP );
@@ -4320,13 +4320,13 @@ core::Assert(MULTIPLAYER_MASTER);
 
 	player_num = find_player_id(hinfo->id);
 	if(player_num == -1){
-		nprintf(("Network","Received player order packet from unknown player\n"));		
+	 core::nprintf("Network","Received player order packet from unknown player\n");		
 		return;
 	}	
 
 	objp = &Objects[Net_players[player_num].m_player->objnum];
 	if ( objp->type != OBJ_SHIP ) {
-		nprintf(("Network", "not doing player order because object requestting is not a ship\n"));
+	 core::nprintf("Network", "not doing player order because object requestting is not a ship\n");
 		return;
 	}
 
@@ -4343,7 +4343,7 @@ core::Assert(MULTIPLAYER_MASTER);
 
 	// if this player is not allowed to do messaging, quit here
 	if( !multi_can_message(&Net_players[player_num]) ){
-		nprintf(("Network","Received player order packet from player not allowed to give orders!!\n"));
+	 core::nprintf("Network","Received player order packet from player not allowed to give orders!!\n");
 		return;
 	}
 
@@ -4522,7 +4522,7 @@ void process_subsystem_destroyed_packet( ubyte *data, header *hinfo )
 		// call to get the pointer to the subsystem we should be working on
 		subsysp = ship_get_indexed_subsys( shipp, (int)uindex );
 		if (subsysp == NULL) {
-			nprintf(("Network", "Could not find subsys %d for ship %s to process as being destroyed\n", (int)uindex, shipp->ship_name ));
+		 core::nprintf("Network", "Could not find subsys %d for ship %s to process as being destroyed\n", (int)uindex, shipp->ship_name );
 			PACKET_SET_SIZE();
 			return;
 		}
@@ -4582,7 +4582,7 @@ void process_subsystem_cargo_revealed_packet( ubyte *data, header *hinfo )
 	// get a ship pointer and call the ship function to reveal the cargo
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("Network", "Could not find object with net signature %d for cargo revealed\n", signature ));
+	 core::nprintf("Network", "Could not find object with net signature %d for cargo revealed\n", signature );
 		return;
 	}
 
@@ -4596,7 +4596,7 @@ void process_subsystem_cargo_revealed_packet( ubyte *data, header *hinfo )
 	// call to get the pointer to the subsystem we should be working on
 	subsysp = ship_get_indexed_subsys( shipp, (int)uindex );
 	if (subsysp == NULL) {
-		nprintf(("Network", "Could not find subsys for ship %s for cargo revealed\n", Ships[objp->instance].ship_name ));
+	 core::nprintf("Network", "Could not find subsys for ship %s for cargo revealed\n", Ships[objp->instance].ship_name );
 		return;
 	}
 
@@ -4651,7 +4651,7 @@ void process_subsystem_cargo_hidden_packet( ubyte *data, header *hinfo )
 	// get a ship pointer and call the ship function to reveal the cargo
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("Network", "Could not find object with net signature %d for cargo hidden\n", signature ));
+	 core::nprintf("Network", "Could not find object with net signature %d for cargo hidden\n", signature );
 		return;
 	}
 
@@ -4665,7 +4665,7 @@ void process_subsystem_cargo_hidden_packet( ubyte *data, header *hinfo )
 	// call to get the pointer to the subsystem we should be working on
 	subsysp = ship_get_indexed_subsys( shipp, (int)uindex );
 	if (subsysp == NULL) {
-		nprintf(("Network", "Could not find subsys for ship %s for cargo hidden\n", Ships[objp->instance].ship_name ));
+	 core::nprintf("Network", "Could not find subsys for ship %s for cargo hidden\n", Ships[objp->instance].ship_name );
 		return;
 	}
 
@@ -4707,7 +4707,7 @@ void process_netplayer_load_packet(ubyte *data, header *hinfo)
 
 		// MWA 2/3/98 -- ingame join changes!!!
 		// everyone can go through the same mission loading path here!!!!
-		nprintf(("Network","Loading mission..."));
+	 core::nprintf("Network","Loading mission...");
 
 		// notify everyone that I'm loading the mission
 		Net_player->state = NETPLAYER_STATE_MISSION_LOADING;
@@ -4727,7 +4727,7 @@ void process_netplayer_load_packet(ubyte *data, header *hinfo)
 		send_netplayer_update_packet();
 
 		Multi_mission_loaded = 1;
-		nprintf(("Network","Finished loading mission\n"));		
+	 core::nprintf("Network","Finished loading mission\n");		
 	}	
 }
 
@@ -4854,7 +4854,7 @@ void send_repair_info_packet(object *repaired_objp, object *repair_objp, int cod
 	
 	multi_io_send_to_all_reliable(data, packet_size);
 
-	nprintf(("Network", "Repair: %s sent to all players (%s/%s)\n", repair_text[cd], Ships[repaired_objp->instance].ship_name, (repair_objp==NULL)?"<none>":Ships[repair_objp->instance].ship_name));
+ core::nprintf("Network", "Repair: %s sent to all players (%s/%s)\n", repair_text[cd], Ships[repaired_objp->instance].ship_name, (repair_objp==NULL)?"<none>":Ships[repair_objp->instance].ship_name);
 }
 
 void process_repair_info_packet(ubyte *data, header *hinfo)
@@ -4872,7 +4872,7 @@ void process_repair_info_packet(ubyte *data, header *hinfo)
 	repaired_objp = multi_get_network_object( repaired_signature );
 	repair_objp = multi_get_network_object( repair_signature );
 
-	nprintf(("Network", "Repair: %s received (%s/%s)\n", repair_text[code], (repaired_objp==NULL)?"<None>":Ships[repaired_objp->instance].ship_name, (repair_objp==NULL)?"<None>":Ships[repair_objp->instance].ship_name));
+ core::nprintf("Network", "Repair: %s received (%s/%s)\n", repair_text[code], (repaired_objp==NULL)?"<None>":Ships[repaired_objp->instance].ship_name, (repair_objp==NULL)?"<None>":Ships[repair_objp->instance].ship_name);
 
 	if ( Net_player->flags & NETINFO_FLAG_WARPING_OUT ){
 		return;
@@ -5054,7 +5054,7 @@ void process_ai_info_update_packet( ubyte *data, header *hinfo)
 	GET_DATA( code );					// code of what we are doing.
 	objp = multi_get_network_object( net_signature );
 	if ( !objp )
-		nprintf(("Network", "Couldn't find object for ai update\n"));
+	 core::nprintf("Network", "Couldn't find object for ai update\n");
 
 	switch( code ) {
 	case AI_UPDATE_DOCK:
@@ -5063,7 +5063,7 @@ void process_ai_info_update_packet( ubyte *data, header *hinfo)
 		GET_DATA( dockee_index );
 		other_objp = multi_get_network_object( other_net_signature );
 		if ( !other_objp )
-			nprintf(("Network", "Couldn't find other object for ai update on dock\n"));
+		 core::nprintf("Network", "Couldn't find other object for ai update on dock\n");
 		
 		// if we don't have an object to work with, break out of loop
 		if ( !objp || !other_objp || (objp->type != OBJ_SHIP) || (other_objp->type != OBJ_SHIP)){
@@ -5132,7 +5132,7 @@ void process_ai_info_update_packet( ubyte *data, header *hinfo)
 
 	default:
 		Int3();		// this Int3() should be temporary
-		nprintf(("Network", "Invalid code for ai update: %d\n", code));
+	 core::nprintf("Network", "Invalid code for ai update: %d\n", code);
 		break;
 	}
 	PACKET_SET_SIZE();
@@ -5264,7 +5264,7 @@ void process_store_stats_packet(ubyte *data, header *hinfo)
 	// if I'm the standalone, rebroadcast. Otherwise, if I'm a client, merge my mission stats with my alltime stats
 	if(Game_mode & GM_STANDALONE_SERVER){
 		// rebroadcast the packet to all others in the game
-		nprintf(("Network","Standalone received store stats packet - rebroadcasting..\n"));				
+	 core::nprintf("Network","Standalone received store stats packet - rebroadcasting..\n");				
 		multi_io_send_to_all_reliable(data, offset);
 	} else {			
 		if(accept){
@@ -5538,7 +5538,7 @@ core::Assert( Net_player->flags & NETINFO_FLAG_AM_MASTER );
 
 	player_num = find_player_id(hinfo->id);
 	if(player_num < 0){
-		nprintf(("Network","Received firing info packet from unknown player, ignoring\n"));
+	 core::nprintf("Network","Received firing info packet from unknown player, ignoring\n");
 		return;
 	}
 
@@ -5996,7 +5996,7 @@ void process_post_sync_data_packet(ubyte *data, header *hinfo)
 			ship_wing_cleanup(objp->instance,&Wings[Ships[objp->instance].wingnum]);
 		} else {
 			Multi_ts_num_deleted--;
-			nprintf(("Network","Couldn't find object by net signature for ship delete in post sync data packet\n"));
+		 core::nprintf("Network","Couldn't find object by net signature for ship delete in post sync data packet\n");
 		}
 	}
 
@@ -6519,13 +6519,13 @@ void process_player_stats_block_packet(ubyte *data, header *hinfo)
 	ushort u_tmp, num_medals;
 	int i_tmp;
 
-	// nprintf(("Network","----------++++++++++********RECEIVED STATS***********+++++++++----------\n"));
+	// core::nprintf("Network","----------++++++++++********RECEIVED STATS***********+++++++++----------\n");
 
 	// get the player who these stats are for
 	GET_SHORT(player_id);	
 	player_num = find_player_id(player_id);
 	if (player_num == -1) {
-		nprintf(("Network", "Couldn't find player for stats update!\n"));
+	 core::nprintf("Network", "Couldn't find player for stats update!\n");
 		ml_string("Couldn't find player for stats update!\n");
 
 		sc = &bogus;
@@ -6741,7 +6741,7 @@ void process_asteroid_info( ubyte *data, header *hinfo )
 		if ( parent_objp ) {
 			asteroid_sub_create( parent_objp, atype, &relvec );
 		} else {
-			nprintf(("Network", "Couldn't create asteroid because parent wasn't found!!!\n"));
+		 core::nprintf("Network", "Couldn't create asteroid because parent wasn't found!!!\n");
 		}
 
 
@@ -6759,7 +6759,7 @@ void process_asteroid_info( ubyte *data, header *hinfo )
 		GET_VECTOR( vel );
 		objp = multi_get_network_object( signature );
 		if ( !objp ) {
-			nprintf(("Network", "Couldn't throw asteroid because couldn't find it\n"));
+		 core::nprintf("Network", "Couldn't throw asteroid because couldn't find it\n");
 			break;
 		}
 		objp->pos = pos;
@@ -6786,7 +6786,7 @@ void process_asteroid_info( ubyte *data, header *hinfo )
 			other_objp = multi_get_network_object( osignature );
 		}
 		if ( !objp ) {
-			nprintf(("Network", "Cannot hit asteroid because signature isn't found\n"));
+		 core::nprintf("Network", "Cannot hit asteroid because signature isn't found\n");
 			break;
 		}
 
@@ -6928,7 +6928,7 @@ void send_countermeasure_success_packet( int objnum )
 
 	pnum = multi_find_player_by_object( &Objects[objnum] );
 	if ( pnum == -1 ) {
-		nprintf(("Network", "Coulnd't find player for countermeasure success packet\n"));
+	 core::nprintf("Network", "Coulnd't find player for countermeasure success packet\n");
 		return;
 	}
 
@@ -7355,7 +7355,7 @@ void process_homing_weapon_info( ubyte *data, header *hinfo )
 	// deal with changing this weapons homing information
 	weapon_objp = multi_get_network_object( weapon_signature );
 	if ( weapon_objp == NULL ) {
-		nprintf(("Network", "Couldn't find weapon object for homing update -- skipping update\n"));
+	 core::nprintf("Network", "Couldn't find weapon object for homing update -- skipping update\n");
 		return;
 	}
 core::Assert( weapon_objp->type == OBJ_WEAPON );
@@ -7364,7 +7364,7 @@ core::Assert( weapon_objp->type == OBJ_WEAPON );
 	// be sure that we can find these weapons and 
 	homing_object = multi_get_network_object( homing_signature );
 	if ( homing_object == NULL ) {
-		nprintf(("Network", "Couldn't find homing object for homing update\n"));
+	 core::nprintf("Network", "Couldn't find homing object for homing update\n");
 		return;
 	}
 
@@ -7374,7 +7374,7 @@ core::Assert( weapon_objp->type == OBJ_WEAPON );
 	//core::Assert( (flags & WIF_BOMB) || (flags & WIF_CMEASURE) );
 
 		if ( !((flags[Weapon::Info_Flags::Bomb, Weapon::Info_Flags::Cmeasure])) ) {
-			nprintf(("Network", "Homing object is invalid for homing update\n"));
+		 core::nprintf("Network", "Homing object is invalid for homing update\n");
 			return;
 		}
 	}
@@ -7389,7 +7389,7 @@ core::Assert( weapon_objp->type == OBJ_WEAPON );
 	}
 
 	if ( homing_object->type == OBJ_SHIP ) {
-		nprintf(("Network", "Updating homing information for weapon -- homing on %s\n", Ships[homing_object->instance].ship_name));
+	 core::nprintf("Network", "Updating homing information for weapon -- homing on %s\n", Ships[homing_object->instance].ship_name);
 	}
 }
 
@@ -7541,7 +7541,7 @@ void process_NEW_primary_fired_packet(ubyte *data, header *hinfo)
 	// find the object this fired packet is operating on
 	objp = multi_get_network_object( shooter_sig );
 	if ( objp == NULL ) {
-		nprintf(("Network", "Could not find ship for fire primary packet NEW!"));
+	 core::nprintf("Network", "Could not find ship for fire primary packet NEW!");
 		return;
 	}
 	// if this object is not actually a valid ship, don't do anything
@@ -7615,7 +7615,7 @@ core::Assert ( cmeasure_count < UCHAR_MAX );
 	ADD_USHORT( objp->net_signature );
 	ADD_INT( rand_val );
 
-	nprintf(("Network","Sending NEW countermeasure packet!\n"));
+ core::nprintf("Network","Sending NEW countermeasure packet!\n");
 
 	// determine if its a player
 	if(MULTIPLAYER_MASTER){
@@ -7649,7 +7649,7 @@ void process_NEW_countermeasure_fired_packet(ubyte *data, header *hinfo)
 
 	objp = multi_get_network_object( signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "Could find object whose countermeasures are being launched!!!\n"));
+	 core::nprintf("network", "Could find object whose countermeasures are being launched!!!\n");
 		return;
 	}
 	if(objp->type != OBJ_SHIP){
@@ -7668,7 +7668,7 @@ void process_NEW_countermeasure_fired_packet(ubyte *data, header *hinfo)
 	// make it so ship can fire right away!
 	Ships[objp->instance].cmeasure_fire_stamp = timestamp(0);
 	if ( objp == Player_obj ){		
-		nprintf(("network", "firing countermeasure from my ship\n"));
+	 core::nprintf("network", "firing countermeasure from my ship\n");
 	}
 	ship_launch_countermeasure( objp, rand_val );			
 }
@@ -7799,7 +7799,7 @@ core::Assert(MULTIPLAYER_CLIENT);
 	fire_info.accuracy = 1.0f;
 
 	if((fire_info.shooter == NULL) || (fire_info.shooter->type != OBJ_SHIP) || (fire_info.shooter->instance < 0) || (fire_info.shooter->instance >= MAX_SHIPS)){
-		nprintf(("Network", "Couldn't get shooter info for BEAM weapon!\n"));
+	 core::nprintf("Network", "Couldn't get shooter info for BEAM weapon!\n");
 		return;
 	}
 
@@ -7816,7 +7816,7 @@ core::Assert(MULTIPLAYER_CLIENT);
 	}
 
 	if ( !(fire_info.bfi_flags & BFIF_IS_FIGHTER_BEAM) && (fire_info.target == NULL) ) {
-		nprintf(("Network", "Couldn't get target info for BEAM weapon!\n"));
+	 core::nprintf("Network", "Couldn't get target info for BEAM weapon!\n");
 		return;
 	}
 
@@ -7850,7 +7850,7 @@ core::Assert(MULTIPLAYER_CLIENT);
 		fire_info.turret = ship_get_indexed_subsys(shipp, (int)subsys_index);
 
 		if (fire_info.turret == NULL) {
-			nprintf(("Network", "Couldn't get turret for BEAM weapon!\n"));
+		 core::nprintf("Network", "Couldn't get turret for BEAM weapon!\n");
 			return;
 		}
 	}
@@ -8097,7 +8097,7 @@ void process_flak_fired_packet(ubyte *data, header *hinfo)
 	// find the object
 	objp = multi_get_network_object( pnet_signature );
 	if ( objp == NULL ) {
-		nprintf(("network", "could find parent object with net signature %d for flak firing\n", pnet_signature));
+	 core::nprintf("network", "could find parent object with net signature %d for flak firing\n", pnet_signature);
 		return;
 	}
 

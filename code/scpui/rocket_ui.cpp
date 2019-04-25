@@ -20,10 +20,10 @@
 #include "scpui/SoundPlugin.h"
 #include "scpui/elements/AnimationElement.h"
 #include "scripting/scripting.h"
-
+#include <SDL_version.h>
 // Ourcore::Assert conflicts with the definitions inside libRocket
-#pragma push_macro(core::Assert")
-#undefcore::Assert
+#pragma push_macro("Assert")
+#undef Assert
 
 #include <Rocket/Controls.h>
 #include <Rocket/Core.h>
@@ -33,7 +33,7 @@
 #include <Rocket/Controls/Lua/Controls.h>
 #include <Rocket/Core/Lua/Interpreter.h>
 
-#pragma pop_macro(core::Assert")
+#pragma pop_macro("Assert")
 
 #include <codecvt>
 #include <locale>

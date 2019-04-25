@@ -146,8 +146,8 @@ core::Assertion ((idx < (int)ship_list.size()), "Campaign file contains an incor
 			if (ship_list[idx].index >= 0) {
 				Campaign.ships_allowed[ship_list[idx].index] = 1;
 			} else {
-				mprintf(
-				    ("Found invalid ship \"%s\" in campaign save file. Skipping...\n", ship_list[idx].name.c_str()));
+				core::mprintf(
+				    "Found invalid ship \"%s\" in campaign save file. Skipping...\n", ship_list[idx].name.c_str());
 			}
 		}
 	}
@@ -161,8 +161,8 @@ core::Assertion ((idx < (int)ship_list.size()), "Campaign file contains an incor
 			if (weapon_list[idx].index >= 0) {
 				Campaign.weapons_allowed[weapon_list[idx].index] = 1;
 			} else {
-				mprintf(("Found invalid weapon \"%s\" in campaign save file. Skipping...\n",
-				         weapon_list[idx].name.c_str()));
+			 core::mprintf("Found invalid weapon \"%s\" in campaign save file. Skipping...\n",
+				         weapon_list[idx].name.c_str());
 			}
 		}
 	}
@@ -436,9 +436,9 @@ void pilotfile::csg_read_techroom()
 			if (ship_list[idx].index >= 0) {
 				Ship_info[ship_list[idx].index].flags.set(Ship::Info_Flags::In_tech_database);
 			} else {
-				mprintf(("Found invalid ship \"%s\" in campaign save file. "
+			 core::mprintf("Found invalid ship \"%s\" in campaign save file. "
 				         "Skipping...\n",
-				         ship_list[idx].name.c_str()));
+				         ship_list[idx].name.c_str());
 			}
 		}
 	}
@@ -452,8 +452,8 @@ void pilotfile::csg_read_techroom()
 			if (weapon_list[idx].index >= 0) {
                 Weapon_info[weapon_list[idx].index].wi_flags.set(Weapon::Info_Flags::In_tech_database);
 			} else {
-				mprintf(("Found invalid weapon \"%s\" in campaign save file. Skipping...\n",
-				         weapon_list[idx].name.c_str()));
+			 core::mprintf("Found invalid weapon \"%s\" in campaign save file. Skipping...\n",
+				         weapon_list[idx].name.c_str());
 			}
 		}
 	}
@@ -467,8 +467,8 @@ void pilotfile::csg_read_techroom()
 			if (intel_list[idx].index >= 0) {
 				Intel_info[intel_list[idx].index].flags |= IIF_IN_TECH_DATABASE;
 			} else {
-				mprintf(("Found invalid intel entry \"%s\" in campaign save file. Skipping...\n",
-				         intel_list[idx].name.c_str()));
+			 core::mprintf("Found invalid intel entry \"%s\" in campaign save file. Skipping...\n",
+				         intel_list[idx].name.c_str());
 			}
 		}
 	}

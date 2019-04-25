@@ -781,7 +781,7 @@ void HudGaugeShield::showShields(object *objp, int mode)
 						break;
 					//Whoops?
 					default:
-						nprintf(("HUD", "Invalid shield quadrant %d specified!\n", i));
+					 core::nprintf("HUD", "Invalid shield quadrant %d specified!\n", i);
 						break;
 				}
 			}

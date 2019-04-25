@@ -1159,7 +1159,7 @@ void CFREDView::OnSetFocus(CWnd* pOldWnd)
 		return;
 
 	flag = 1;
-	nprintf(("Fred routing", "OnSetFocus() called\n"));
+ core::nprintf("Fred routing", "OnSetFocus() called\n");
 	if (Update_ship) {
 		Ship_editor_dialog.initialize_data(1);
 		Update_ship = 0;
@@ -1177,7 +1177,7 @@ void CFREDView::OnSetFocus(CWnd* pOldWnd)
 		return;  // abort*/
 
 	if (update_dialog_boxes()) {
-		nprintf(("Fred routing", "OnSetFocus() returned (error occured)\n"));
+	 core::nprintf("Fred routing", "OnSetFocus() returned (error occured)\n");
 		flag = 0;
 		Ship_editor_dialog.bypass_errors = 0;
 		Wing_editor_dialog.bypass_errors = 0;
@@ -1191,7 +1191,7 @@ void CFREDView::OnSetFocus(CWnd* pOldWnd)
 
 	Fred_active = true;
 	CView::OnSetFocus(pOldWnd);
-	nprintf(("Fred routing", "Main window focus accepted\n"));
+ core::nprintf("Fred routing", "Main window focus accepted\n");
 	key_got_focus();
 
 	Cursor_over = -1;
@@ -1201,7 +1201,7 @@ void CFREDView::OnSetFocus(CWnd* pOldWnd)
 	core::Assert(Fred_main_wnd);
 
 		Fred_main_wnd->SetWindowPos(&wndTop, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-		nprintf(("Fred routing", "OnSetFocus() had to put main window back on top\n"));
+	 core::nprintf("Fred routing", "OnSetFocus() had to put main window back on top\n");
 	}
 
 	flag = 0;
@@ -1209,7 +1209,7 @@ void CFREDView::OnSetFocus(CWnd* pOldWnd)
 
 void CFREDView::OnKillFocus(CWnd* pNewWnd) 
 {
-	nprintf(("Fred routing", "OnKillFocus() called\n"));
+ core::nprintf("Fred routing", "OnKillFocus() called\n");
 	Fred_active = false;
 	Local_modified = 0;
 	CView::OnKillFocus(pNewWnd);

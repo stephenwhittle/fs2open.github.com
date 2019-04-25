@@ -221,7 +221,7 @@ bool WaveFile::Open(const char* pszFilename, bool keep_ext) {
 			throw FFmpegException("Invalid audio format.");
 		}
 
-		nprintf(("SOUND", "SOUND => %s => Using codec %s (%s)\n", filename, audio_codec->long_name, audio_codec->name));
+	 core::nprintf("SOUND", "SOUND => %s => Using codec %s (%s)\n", filename, audio_codec->long_name, audio_codec->name);
 	} catch (const FFmpegException& e) {
 	 core::mprintf("SOUND ==> Could not open wave file %s for streaming. Reason: %s\n", filename, e.what());
 		return false;
@@ -231,7 +231,7 @@ bool WaveFile::Open(const char* pszFilename, bool keep_ext) {
 	Cue();
 	m_frameReader.reset(new FFmpegAudioReader(m_ctx->ctx(), m_audioCodecCtx, m_audioStreamIndex));
 
-	nprintf(("SOUND", "SOUND => Successfully opened: %s\n", filename));
+ core::nprintf("SOUND", "SOUND => Successfully opened: %s\n", filename);
 
 	// If we are here it means that everything went fine
 	return true;

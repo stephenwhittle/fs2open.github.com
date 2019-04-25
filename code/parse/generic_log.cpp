@@ -62,7 +62,7 @@ bool logfile_init(int logfile_type)
 	logfiles[logfile_type].log_file = cfopen(logfiles[logfile_type].filename, "wt", CFILE_NORMAL, CF_TYPE_DATA);
 
 	if(logfiles[logfile_type].log_file == NULL){
-		nprintf(("Network","Error opening %s for writing!!\n",logfiles[logfile_type].filename));
+	 core::nprintf("Network","Error opening %s for writing!!\n",logfiles[logfile_type].filename);
 		return false;
 	}
 

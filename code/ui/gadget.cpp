@@ -378,7 +378,7 @@ int UI_GADGET::is_mouse_on()
 	if (linked_to_hotspot) {
 		mask_data = (ubyte*)my_wnd->get_mask_data(&mask_w, &mask_h);
 		if ( mask_data == NULL ) {
-			nprintf(("Warning", "No mask defined, but control is linked to hotspot\n"));
+		 core::nprintf("Warning", "No mask defined, but control is linked to hotspot\n");
 			Int3();
 			return 0;
 		}
@@ -527,7 +527,7 @@ int UI_GADGET::check_move()
 				return 0;
 		} else {
 			drag_with_children(ui_mouse.x - base_drag_x,ui_mouse.y - base_drag_y);
-			nprintf(( "UI", "UI: X=%d, Y=%d, Delta=(%d,%d)\n", x, y, (ui_mouse.x - base_drag_x), (ui_mouse.y - base_drag_y) ));
+		 core::nprintf( "UI", "UI: X=%d, Y=%d, Delta=(%d,%d)\n", x, y, (ui_mouse.x - base_drag_x), (ui_mouse.y - base_drag_y) );
 			if (B2_RELEASED)	{
 				stop_drag_with_children();
 			}

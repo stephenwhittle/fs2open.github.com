@@ -135,7 +135,7 @@ int snd_init()
 		return 0;
 
 	if (ds_initialized)	{
-		nprintf(( "Sound", "SOUND => Audio is already initialized!\n" ));
+	 core::nprintf( "Sound", "SOUND => Audio is already initialized!\n" );
 		return 1;
 	}
 
@@ -144,7 +144,7 @@ int snd_init()
 	rval = ds_init();
 
 	if ( rval != 0 ) {
-		nprintf(( "Sound", "SOUND ==> Fatal error initializing audio device, turn sound off.\n" ));
+	 core::nprintf( "Sound", "SOUND ==> Fatal error initializing audio device, turn sound off.\n" );
 		Cmdline_freespace_no_sound = Cmdline_freespace_no_music = 1;
 		goto Failure;
 	}
@@ -160,7 +160,7 @@ int snd_init()
 
 Failure:
 //	core::Warning(LOCATION, "Sound system was unable to be initialized.  If you continue, sound will be disabled.\n");
-	nprintf(( "Sound", "SOUND => Audio init unsuccessful, continuing without sound.\n" ));
+ core::nprintf( "Sound", "SOUND => Audio init unsuccessful, continuing without sound.\n" );
 	return 0;
 }
 
@@ -263,7 +263,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 	if ( !ds_initialized )
 		return sound_load_id::invalid();
 
-	if ( !VALID_FNAME(entry->filename) )
+	if ( !core::fs::VALID_FNAME(entry->filename) )
 		return sound_load_id::invalid();
 
 	for (n = 0; n < Sounds.size(); n++) {
@@ -297,7 +297,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 
 	std::unique_ptr<ffmpeg::WaveFile> audio_file(new ffmpeg::WaveFile());
 
-	nprintf(("Sound", "SOUND ==> Loading '%s'\n", entry->filename));
+ core::nprintf("Sound", "SOUND ==> Loading '%s'\n", entry->filename);
 
 	if (!audio_file->Open(entry->filename, false)) {
 		return sound_load_id::invalid();
@@ -356,7 +356,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 
 	auto rc = ds_load_buffer(&snd->sid, type, audio_file.get());
 	if (rc == -1) {
-		nprintf(("Sound", "SOUND ==> Failed to load '%s'\n", entry->filename));
+	 core::nprintf("Sound", "SOUND ==> Failed to load '%s'\n", entry->filename);
 		return sound_load_id::invalid();
 	}
 
@@ -371,7 +371,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 	entry->id_sig = snd->sig;
 	entry->id     = sound_load_id(static_cast<int>(n));
 
-	nprintf(("Sound", "SOUND ==> Finished loading '%s'\n", entry->filename));
+ core::nprintf("Sound", "SOUND ==> Finished loading '%s'\n", entry->filename);
 
 	return sound_load_id(static_cast<int>(n));
 }
@@ -705,7 +705,7 @@ void snd_update_3d_pos(sound_handle soundnum, game_snd* gs, vec3d* new_pos, floa
 
 		channel = ds_get_channel(soundnum);
 		if (channel == -1) {
-			nprintf(( "Sound", "WARNING: Trying to set position for a non-playing sound.\n" ));
+		 core::nprintf( "Sound", "WARNING: Trying to set position for a non-playing sound.\n" );
 			return;
 		}
 
@@ -905,7 +905,7 @@ void snd_set_volume(sound_handle sig, float volume)
 
 	channel = ds_get_channel(sig);
 	if ( channel == -1 ) {
-		nprintf(( "Sound", "WARNING: Trying to set volume for a non-playing sound.\n" ));
+	 core::nprintf( "Sound", "WARNING: Trying to set volume for a non-playing sound.\n" );
 		return;
 	}
 
@@ -948,7 +948,7 @@ void snd_set_pan(sound_handle sig, float pan)
 	
 	channel = ds_get_channel(sig);
 	if ( channel == -1 ) {
-		nprintf(( "Sound", "WARNING: Trying to set pan for a non-playing sound.\n" ));
+	 core::nprintf( "Sound", "WARNING: Trying to set pan for a non-playing sound.\n" );
 		return;
 	}
 
@@ -976,7 +976,7 @@ float snd_get_pitch(sound_handle sig)
 
 	channel = ds_get_channel(sig);
 	if ( channel == -1 ) {
-		nprintf(( "Sound", "WARNING: Trying to get pitch for a non-playing sound.\n" ));
+	 core::nprintf( "Sound", "WARNING: Trying to get pitch for a non-playing sound.\n" );
 		return -1;
 	}
 
@@ -1001,7 +1001,7 @@ void snd_set_pitch(sound_handle sig, float pitch)
 
 	channel = ds_get_channel(sig);
 	if ( channel == -1 ) {
-		nprintf(( "Sound", "WARNING: Trying to set pitch for a non-playing sound.\n" ));
+	 core::nprintf( "Sound", "WARNING: Trying to set pitch for a non-playing sound.\n" );
 		return;
 	}
 

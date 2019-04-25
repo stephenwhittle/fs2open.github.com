@@ -1224,7 +1224,7 @@ void submodel_get_two_random_points_better(int model_num, int submodel_num, vec3
 
 		// the Shivan Comm Node does not have a collision tree, for one
 		if (pm->submodel[submodel_num].collision_tree_index < 0) {
-			nprintf(("Model", "In submodel_get_two_random_points_better(), model %s does not have a collision tree!  Falling back to submodel_get_two_random_points().\n", pm->filename));
+		 core::nprintf("Model", "In submodel_get_two_random_points_better(), model %s does not have a collision tree!  Falling back to submodel_get_two_random_points().\n", pm->filename);
 
 			submodel_get_two_random_points(model_num, submodel_num, v1, v2);
 			return;
@@ -2066,7 +2066,7 @@ core::Assert( (mn >= 0) && (mn < pm->n_models) );
 
 	int time_elapsed = timer_get_milliseconds() - milliseconds;
 
-	nprintf(("Model", "BSP Parse took %d milliseconds.\n", time_elapsed));
+ core::nprintf("Model", "BSP Parse took %d milliseconds.\n", time_elapsed);
 
 	if (total_verts < 1) {
 		return;
@@ -2617,7 +2617,7 @@ int texture_info::LoadTexture(const char *filename, const char *dbg_name)
 	}
 	this->original_texture = bm_load_either(filename, NULL, NULL, NULL, true, CF_TYPE_MAPS);
 	if(this->original_texture < 0)
-		nprintf(("Maps", "For \"%s\" I couldn't find %s.ani\n", dbg_name, filename));
+	 core::nprintf("Maps", "For \"%s\" I couldn't find %s.ani\n", dbg_name, filename);
 	this->ResetTexture();
 
 	return texture;

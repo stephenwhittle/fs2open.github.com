@@ -367,7 +367,7 @@ core::Assert( light_obj->type == OBJ_SHIP );
 			if (aip->mode == AIM_CHASE)
 				submode_string = Submode_text[aip->submode];
 
-			nprintf(("AI", "Player collided with ship %s, AI mode = %s, submode = %s\n", Ships[collide_obj->instance].ship_name, Mode_text[aip->mode], submode_string));
+		 core::nprintf("AI", "Player collided with ship %s, AI mode = %s, submode = %s\n", Ships[collide_obj->instance].ship_name, Mode_text[aip->mode], submode_string);
 		}
 #endif
 
@@ -664,7 +664,7 @@ core::Assert(lighter->type == OBJ_SHIP || lighter->type == OBJ_ASTEROID || light
 	//	In this case, we know there was a collision, but slight collision and the normal is correct, so reset v_rel_normal_m
 	//	need a normal direction.  We can just take the -v_light normalized.		v_rel_normal_m = -v_rel_normal_m;
 		
-		nprintf(("Physics", "Frame %i reset v_rel_normal_m %f Edge %i\n", Framecount, v_rel_normal_m, ship_ship_hit_info->edge_hit));
+	 core::nprintf("Physics", "Frame %i reset v_rel_normal_m %f Edge %i\n", Framecount, v_rel_normal_m, ship_ship_hit_info->edge_hit);
 		v_rel_normal_m = -v_rel_normal_m;
 	}
 
@@ -766,7 +766,7 @@ core::Assert(lighter->type == OBJ_SHIP || lighter->type == OBJ_ASTEROID || light
 	impulse_mag = -(1.0f + coeff_restitution)*v_rel_normal_m / (heavy_denom + light_denom);
 	ship_ship_hit_info->impulse = impulse_mag;
 	if (impulse_mag < 0) {
-		nprintf(("Physics", "negative impulse mag -- Get Dave A if not Descent Physics\n"));
+	 core::nprintf("Physics", "negative impulse mag -- Get Dave A if not Descent Physics\n");
 		impulse_mag = -impulse_mag;
 	}
 

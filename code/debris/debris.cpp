@@ -125,7 +125,7 @@ void debris_page_in()
 	{
 		species_info *species = &Species_info[i];
 
-		nprintf(( "Paging", "Paging in debris texture '%s'\n", species->debris_texture.filename));
+	 core::nprintf( "Paging", "Paging in debris texture '%s'\n", species->debris_texture.filename);
 
 		species->debris_texture.bitmap_id = bm_load(species->debris_texture.filename);
 		if (species->debris_texture.bitmap_id < 0)
@@ -438,7 +438,7 @@ core::Assert( source_obj->instance >= 0 && source_obj->instance < MAX_SHIPS );
 		if (n >= 0)
 			debris_start_death_roll(&Objects[Debris[n].objnum], &Debris[n]);
 
-		nprintf(("Warning","Frame %i: Could not create debris, no more slots left\n", Framecount));
+	 core::nprintf("Warning","Frame %i: Could not create debris, no more slots left\n", Framecount);
 		return NULL;
 	}
 
@@ -615,7 +615,7 @@ core::Assert( source_obj->instance >= 0 && source_obj->instance < MAX_SHIPS );
 			Num_hull_pieces++;
 			list_append(&Hull_debris_list, db);
 		} else {
-			nprintf(("Alan","A forever chunk of debris was created from ship with radius %f\n",Objects[db->source_objnum].radius));
+		 core::nprintf("Alan","A forever chunk of debris was created from ship with radius %f\n",Objects[db->source_objnum].radius);
 		}
 	}
 	else {

@@ -2020,10 +2020,10 @@ void ai_process_mission_orders( int objnum, ai_info *aip )
 /*	if (!stricmp(Ships[objp->instance].ship_name, "gtt comet")) {
 		for (int i=0; i<MAX_AI_GOALS; i++) {
 			if (aip->goals[i].signature != -1) {
-				nprintf(("AI", "%6.1f: mode=%s, type=%s, ship=%s\n", f2fl(Missiontime), Mode_text[aip->goals[i].ai_mode], Goal_text[aip->goals[i].type], aip->goals[i].ship_name));
+			 core::nprintf("AI", "%6.1f: mode=%s, type=%s, ship=%s\n", f2fl(Missiontime), Mode_text[aip->goals[i].ai_mode], Goal_text[aip->goals[i].type], aip->goals[i].ship_name);
 			}
 		}
-		nprintf(("AI", "\n"));
+	 core::nprintf("AI", "\n");
 	}
 */
 

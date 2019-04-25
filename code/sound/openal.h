@@ -39,7 +39,7 @@ OpenALInformation openal_get_platform_information();
 	x;	\
 	const char *error_text = openal_error_string(0);	\
 	if ( error_text != NULL ) {	\
-		nprintf(("Warning", "SOUND: %s:%d - OpenAL error = '%s'\n", __FILE__, __LINE__, error_text));	\
+	 core::nprintf("Warning", "SOUND: %s:%d - OpenAL error = '%s'\n", __FILE__, __LINE__, error_text);	\
 		y;	\
 	}	\
 } while (false);
@@ -49,7 +49,7 @@ OpenALInformation openal_get_platform_information();
 	x;	\
 	const char *error_text = openal_error_string(0);	\
 	if ( error_text != NULL ) {	\
-		core::nprintf(("Sound", "OpenAL ERROR: \"%s\" in %s, line %i\n", error_text, __FILE__, __LINE__));	\
+		core::nprintf("Sound", "OpenAL ERROR: \"%s\" in %s, line %i\n", error_text, __FILE__, __LINE__);	\
 	}	\
 } while (0);
 
@@ -58,7 +58,7 @@ OpenALInformation openal_get_platform_information();
 	x;	\
 	const char *error_text = openal_error_string(1);	\
 	if ( error_text != NULL ) {	\
-		core::nprintf(("Warning", "SOUND: %s:%d - OpenAL error = '%s'\n", __FILE__, __LINE__, error_text));	\
+		core::nprintf("Warning", "SOUND: %s:%d - OpenAL error = '%s'\n", __FILE__, __LINE__, error_text);	\
 		y;	\
 	}	\
 } while (0);
@@ -68,7 +68,7 @@ OpenALInformation openal_get_platform_information();
 	x;	\
 	const char *error_text = openal_error_string(1);	\
 	if ( error_text != NULL ) {	\
-		nprintf(("Sound", "OpenAL ERROR: \"%s\" in %s, line %i\n", error_text, __FILE__, __LINE__));	\
+	 core::nprintf("Sound", "OpenAL ERROR: \"%s\" in %s, line %i\n", error_text, __FILE__, __LINE__);	\
 	}	\
 } while (0);
 

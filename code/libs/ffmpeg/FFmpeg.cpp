@@ -24,9 +24,9 @@ void log_callback_report(void* ptr, int level, const char* fmt, va_list vl) {
 
 void check_version(const char* libname, uint32_t current, uint32_t compiled)
 {
-	mprintf(("FFmpeg: Using %s with version %d.%d.%d. Compiled with version %d.%d.%d\n", libname,
+ core::mprintf("FFmpeg: Using %s with version %d.%d.%d. Compiled with version %d.%d.%d\n", libname,
 		AV_VERSION_MAJOR(current), AV_VERSION_MINOR(current), AV_VERSION_MICRO(current),
-		AV_VERSION_MAJOR(compiled), AV_VERSION_MINOR(compiled), AV_VERSION_MICRO(compiled)));
+		AV_VERSION_MAJOR(compiled), AV_VERSION_MINOR(compiled), AV_VERSION_MICRO(compiled));
 
 	auto current_major = AV_VERSION_MAJOR(current);
 	auto current_minor = AV_VERSION_MINOR(current);

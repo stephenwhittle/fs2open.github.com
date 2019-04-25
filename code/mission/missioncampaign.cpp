@@ -125,7 +125,7 @@ core::Assert(fname_len < MAX_FILENAME_LEN);
 			required_string("$Name:");
 			stuff_string(name, F_NAME, NAME_LENGTH);
 			if (name == NULL) {
-				nprintf(("Warning", "No name found for campaign file %s\n", filename));
+			 core::nprintf("Warning", "No name found for campaign file %s\n", filename);
 				break;
 			}
 
@@ -918,9 +918,9 @@ void mission_campaign_eval_next_mission()
 	}
 
 	if (Campaign.next_mission == -1) {
-		nprintf(("allender", "No next mission to proceed to.\n"));
+	 core::nprintf("allender", "No next mission to proceed to.\n");
 	} else {
-		nprintf(("allender", "Next mission is number %d [%s]\n", Campaign.next_mission, Campaign.missions[Campaign.next_mission].name));
+	 core::nprintf("allender", "Next mission is number %d [%s]\n", Campaign.next_mission, Campaign.missions[Campaign.next_mission].name);
 	}
 
 }
@@ -986,7 +986,7 @@ void mission_campaign_store_goals_and_events()
 			char event_name[NAME_LENGTH];
 
 			sprintf(event_name, NOX("Event #%d"), i);
-			nprintf(("Warning", "Mission goal in mission %s must have a +Name field! using %s for campaign save file\n", mission_obj->name, name));
+		 core::nprintf("Warning", "Mission goal in mission %s must have a +Name field! using %s for campaign save file\n", mission_obj->name, name);
 			strcpy_s( mission_obj->events[i].name, event_name);
 		} else
 			strcpy_s( mission_obj->events[i].name, Mission_events[i].name );

@@ -19,6 +19,7 @@
 
 /* SCP */
 #include <core/pstypes.h>
+#include <core/error.h>
 #include "globalincs/mspdb_callstack.h"
 
 /* Link the library that we need */
@@ -300,7 +301,7 @@ HRESULT SCP_DumpStack( SCP_IDumpHandler* pIDH )
 	if ( !SCP_mspdbcs_initialised )
 	{
 		LeaveCriticalSection( &SCP_mspdbcs_cs );
-		mprintf( ("Symbols not initialised\n") );
+		core::mprintf( "Symbols not initialised\n");
 		return E_UNEXPECTED;
 	}
 
@@ -326,7 +327,7 @@ void SCP_mspdbcs_Initialise( )
 	HANDLE hPseudoProcess = GetCurrentProcess( );
 	if ( !SymInitialize( hPseudoProcess, NULL, TRUE ) )
 	{
-		mprintf( ("Could not initialise symbols - callstacks will fail: %x\n", HRESULT_FROM_WIN32( GetLastError( ) ) ) );
+		core::mprintf( "Could not initialise symbols - callstacks will fail: %x\n", HRESULT_FROM_WIN32( GetLastError( ) ));
 	}
 	else
 	{

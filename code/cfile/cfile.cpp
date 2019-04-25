@@ -750,7 +750,7 @@ core::Assert( mode != NULL );
 	if ( find_res.found ) {
 
 		// Fount it, now create a cfile out of it
-		nprintf(("CFileDebug", "Requested file %s found at: %s\n", file_path, find_res.full_name.c_str()));
+	 core::nprintf("CFileDebug", "Requested file %s found at: %s\n", file_path, find_res.full_name.c_str());
 
 		if ( type & CFILE_MEMORY_MAPPED ) {
 		
@@ -877,7 +877,7 @@ static int cfget_cfile_block()
 	}
 
 	// If we've reached this point, a free Cfile_block could not be found
-	nprintf(("Warning","A free Cfile_block could not be found.\n"));
+ core::nprintf("Warning","A free Cfile_block could not be found.\n");
 
 	// Dump a list of all opened files
  core::mprintf("Out of cfile blocks! Currently opened files:\n");
@@ -1058,7 +1058,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 #if defined _WIN32
 		cfp->hMapFile = CreateFileMapping(cfp->hInFile, NULL, PAGE_READONLY, 0, 0, NULL);
 		if (cfp->hMapFile == NULL) {
-			nprintf(("Error", "Could not create file-mapping object.\n")); 
+		 core::nprintf("Error", "Could not create file-mapping object.\n"); 
 			return NULL;
 		} 
 	

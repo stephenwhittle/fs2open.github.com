@@ -1281,7 +1281,7 @@ void multi_oo_process_all(net_player *pl)
 	while((idx < MAX_SHIPS) && (OO_ship_index[idx] >= 0)){
 		// if this guy is over his datarate limit, do nothing
 		if(multi_oo_rate_exceeded(pl)){
-			nprintf(("Network","Capping client\n"));
+		 core::nprintf("Network","Capping client\n");
 			idx++;
 
 			continue;
@@ -1490,7 +1490,7 @@ void multi_oo_send_changed_object(object *changedobj)
 	int packet_size = 0;
 	int idx = 0;
 #ifndef NDEBUG
-	nprintf(("Network","Attempting to affect player object.\n"));
+ core::nprintf("Network","Attempting to affect player object.\n");
 #endif
 	for (; idx < MAX_PLAYERS; idx++)
 	{
@@ -1499,7 +1499,7 @@ void multi_oo_send_changed_object(object *changedobj)
 		}
 	}
 #ifndef NDEBUG
-	nprintf(("Network","Index for changed object found: [%d].\n",idx));
+ core::nprintf("Network","Index for changed object found: [%d].\n",idx);
 #endif
 	if( idx >= MAX_PLAYERS ) {
 		return;
@@ -1646,7 +1646,7 @@ void multi_oo_server_process()
 		// update the server datarate
 		multi_oo_update_server_rate();
 
-		// nprintf(("Network","UPDATING SERVER DATARATE\n"));
+		// core::nprintf("Network","UPDATING SERVER DATARATE\n");
 	}	
 }
 

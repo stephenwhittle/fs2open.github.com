@@ -225,7 +225,7 @@ core::Assert(target_objnum != -1);
 	}
 
 	hud_set_iff_color(targetp);
-//	nprintf(("Alan","lockx: %d, locky: %d TargetX: %d, TargetY: %d\n", Players[Player_num].lock_indicator_x, Players[Player_num].lock_indicator_y, Player->current_target_sx, Player->current_target_sy));
+// core::nprintf("Alan","lockx: %d, locky: %d TargetX: %d, TargetY: %d\n", Players[Player_num].lock_indicator_x, Players[Player_num].lock_indicator_y, Player->current_target_sx, Player->current_target_sy);
 
 	// We have the coordinates of the lock indicator relative to the target in our "virtual frame" 
 	// so, we calculate where it should be drawn based on the player's viewpoint.

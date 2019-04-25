@@ -502,7 +502,7 @@ int hud_reticle_list_find_free()
 	}
 
 	if (i == MAX_RETICLE_TARGETS) {
-		//		nprintf(("Warning","Warning ==> Ran out of reticle target elements...\n"));
+		//	 core::nprintf("Warning","Warning ==> Ran out of reticle target elements...\n");
 		return -1;
 	}
 
@@ -703,7 +703,7 @@ void hud_target_hotkey_add_remove(int k, object* ctarget, int how_to_add)
 		return;
 
 	if ((k < 0) || (k >= MAX_KEYED_TARGETS)) {
-		nprintf(("Warning", "Bogus hotkey %d sent to hud_target_hotkey_add_remove\n", k));
+	 core::nprintf("Warning", "Bogus hotkey %d sent to hud_target_hotkey_add_remove\n", k);
 		return;
 	}
 
@@ -743,14 +743,14 @@ void hud_target_hotkey_add_remove(int k, object* ctarget, int how_to_add)
 			return;
 		}
 
-		nprintf(("network", "Hotkey: Adding %s\n", Ships[ctarget->instance].ship_name));
+	 core::nprintf("network", "Hotkey: Adding %s\n", Ships[ctarget->instance].ship_name);
 		hitem = GET_FIRST(&htarget_free_list);
 		list_remove(&htarget_free_list, hitem);
 		list_append(plist, hitem);
 		hitem->objp      = ctarget;
 		hitem->how_added = how_to_add;
 	} else {
-		nprintf(("network", "Hotkey: Removing %s\n", Ships[ctarget->instance].ship_name));
+	 core::nprintf("network", "Hotkey: Removing %s\n", Ships[ctarget->instance].ship_name);
 		list_remove(plist, hitem);
 		list_append(&htarget_free_list, hitem);
 		hitem->objp = NULL; // for safety
@@ -1811,8 +1811,8 @@ void hud_target_live_turret(int next_flag, int auto_advance, int only_player_tar
 
 		// if (live_turret) {
 		// debug info
-		//	mprintf(("name %s, index: %d, type: %d\n", live_turret->system_info->subobj_name, next_index,
-		//ent[next_index].type));
+		// core::mprintf("name %s, index: %d, type: %d\n", live_turret->system_info->subobj_name, next_index,
+		//ent[next_index].type);
 		//}
 	}
 
@@ -3217,7 +3217,7 @@ void hud_prune_hotkeys()
 			// check to see if the ship is departing -- if so, remove it from the list
 			if (remove_item || (objp->flags[Object::Object_Flags::Should_be_dead]) || (sp->is_dying_or_departing())) {
 				if (sp != NULL) {
-					nprintf(("Network", "Hotkey: Pruning %s\n", sp->ship_name));
+				 core::nprintf("Network", "Hotkey: Pruning %s\n", sp->ship_name);
 				}
 
 				htarget_list* temp;

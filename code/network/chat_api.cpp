@@ -11,6 +11,7 @@
 #include "network/chat_api.h"
 #include <core/toolchain.h>
 #include "globalincs/fsmemory.h"
+#include <core/error.h>
 
 #ifdef SCP_UNIX
 #include <sys/time.h>

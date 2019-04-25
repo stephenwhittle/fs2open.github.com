@@ -389,7 +389,7 @@ core::Assert(new_pattern >= 0 && new_pattern < MAX_PATTERNS);
 	audiostream_set_sample_cutoff(Patterns[new_pattern].handle, fl2i(Patterns[new_pattern].num_measures * Patterns[new_pattern].samples_per_measure) );
 	Patterns[Current_pattern].next_pattern = Patterns[Current_pattern].default_next_pattern;
 	Patterns[Current_pattern].force_pattern = FALSE;
-	nprintf(("EVENTMUSIC", "EVENTMUSIC => switching to %s from %s\n", Pattern_info[new_pattern].pattern_name, Pattern_info[Current_pattern].pattern_name));
+ core::nprintf("EVENTMUSIC", "EVENTMUSIC => switching to %s from %s\n", Pattern_info[new_pattern].pattern_name, Pattern_info[Current_pattern].pattern_name);
 
 	// actually switch the pattern
 	Current_pattern = new_pattern;
@@ -870,7 +870,7 @@ int event_music_friendly_arrival()
 		return 0;
 
 	// Goober5000 - to avoid array out-of-bounds
-	/core::Assert(Current_pattern >= 0 && Current_pattern < MAX_PATTERNS);
+	//core::Assert(Current_pattern >= 0 && Current_pattern < MAX_PATTERNS);
 
 	if(Current_pattern < 0 || Current_pattern >= MAX_PATTERNS)
 		return 0;
@@ -1384,12 +1384,12 @@ void event_music_parse_musictbl(const char *filename)
 void event_music_change_pattern(int new_pattern)
 {
 	if ( Event_music_enabled == FALSE ) {
-		nprintf(("EVENTMUSIC", "EVENTMUSIC ==> Requested a song switch when event music is not enabled\n"));
+	 core::nprintf("EVENTMUSIC", "EVENTMUSIC ==> Requested a song switch when event music is not enabled\n");
 		return;
 	}
 
 	if ( Event_music_level_inited == FALSE ) {
-		nprintf(("EVENTMUSIC", "EVENTMUSIC ==> Event music is not enabled\n"));
+	 core::nprintf("EVENTMUSIC", "EVENTMUSIC ==> Event music is not enabled\n");
 		return;
 	}
 

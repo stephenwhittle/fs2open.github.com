@@ -210,7 +210,7 @@ void diag_printf(const char *format, ...)
 	core::vsprintf(buffer, format, args);
 	va_end(args);
 
-	nprintf(("Parse", "%s", buffer.c_str()));
+ core::nprintf("Parse", "%s", buffer.c_str());
 #endif
 }
 
@@ -297,7 +297,7 @@ void error_display(int error_level, const char *format, ...)
 	core::vsprintf(error_text, format, args);
 	va_end(args);
 
-	nprintf((type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str()));
+ core::nprintf(type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str());
 
 	if(error_level == 0 || Cmdline_noparseerrors)
 		core::Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
@@ -451,7 +451,7 @@ int required_string(const char *pstr)
 	}
 
 	if (count == RS_MAX_TRIES) {
-		nprintf(("Error", "Error: Unable to find required token [%s]\n", pstr));
+	 core::nprintf("Error", "Error: Unable to find required token [%s]\n", pstr);
 		core::Warning(LOCATION, "Error: Unable to find required token [%s]\n", pstr);
         throw parse::ParseException("Required string not found");
 	}
@@ -668,7 +668,7 @@ int required_string_either(const char *str1, const char *str2)
 		ignore_white_space();
 	}
 
-	nprintf(("Error", "Error: Unable to find either required token [%s] or [%s]\n", str1, str2));
+ core::nprintf("Error", "Error: Unable to find either required token [%s] or [%s]\n", str1, str2);
 	core::Warning(LOCATION, "Error: Unable to find either required token [%s] or [%s]\n", str1, str2);
 	throw parse::ParseException("Required string not found");
 }
@@ -902,7 +902,7 @@ core::Assert(outstr && instr && endstr);
 	foundstr = stristr(instr, endstr);
 
 	if (foundstr == NULL) {
-        nprintf(("Error", "Error.  Looking for [%s], but never found it.\n", endstr));
+        core::nprintf("Error", "Error.  Looking for [%s], but never found it.\n", endstr);
         throw parse::ParseException("End string not found");
 	}
 
@@ -911,8 +911,8 @@ core::Assert(outstr && instr && endstr);
 		outstr[foundstr - instr] = 0;
 
 	} else {
-		nprintf(("Error", "Error.  Too much text (" SIZE_T_ARG " chars, %i allowed) before %s\n",
-			foundstr - instr - strlen(endstr), max_chars, endstr));
+	 core::nprintf("Error", "Error.  Too much text (" SIZE_T_ARG " chars, %i allowed) before %s\n",
+			foundstr - instr - strlen(endstr), max_chars, endstr);
 
         throw parse::ParseException("Too much text found");
 	}
@@ -929,7 +929,7 @@ core::Assert(instr && endstr);
 	foundstr = stristr(instr, endstr);
 
 	if (foundstr == NULL) {
-        nprintf(("Error", "Error.  Looking for [%s], but never found it.\n", endstr));
+        core::nprintf("Error", "Error.  Looking for [%s], but never found it.\n", endstr);
         throw parse::ParseException("End string not found");
 	}
 
@@ -2160,7 +2160,7 @@ core::Assert(filename);
 	mf = cfopen(filename, "rb", CFILE_NORMAL, mode);
 	if (mf == NULL)
 	{
-        nprintf(("Error", "Wokka!  Error opening file (%s)!\n", filename));
+        core::nprintf("Error", "Wokka!  Error opening file (%s)!\n", filename);
         throw parse::ParseException("Failed to open file");
 	}
 
@@ -2168,7 +2168,7 @@ core::Assert(filename);
 	int file_len = cfilelength(mf);
 
 	if(!file_len) {
-        nprintf(("Error", "Oh noes!!  File is empty! (%s)!\n", filename));
+        core::nprintf("Error", "Oh noes!!  File is empty! (%s)!\n", filename);
         throw parse::ParseException("Failed to open file");
 	}
 
@@ -2781,7 +2781,7 @@ int stuff_string_list(std::vector<std::string>& slp)
 		if(*Mp != '\"') {
 			error_display(0, "Missing quotation marks in string list.");
 		}
-		/core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
+		//core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
 
 		buf = "";
 		get_string( buf );
@@ -2814,7 +2814,7 @@ int stuff_string_list(char slp[][NAME_LENGTH], int max_strings)
 		if(*Mp != '\"') {
 			error_display(0, "Missing quotation marks in string list.");
 		}
-		/core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
+		//core::Assert ( *Mp == '\"' );					// should always be enclosed in quotes
 
 		if (count < max_strings) {
 			get_string( slp[count++] );
@@ -3035,7 +3035,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 		}
 		else if ((lookup_type == MISSION_LOADOUT_WEAPON_LIST) && (!(Weapon_info[index].wi_flags[Weapon::Info_Flags::Player_allowed])) ) {
 			clean_loadout_list_entry();
-			nprintf(("Warning",  "Warning: Weapon type %s found in loadout of mission file. This class is not marked as a player allowed weapon...skipping\n", str));
+		 core::nprintf("Warning",  "Warning: Weapon type %s found in loadout of mission file. This class is not marked as a player allowed weapon...skipping\n", str);
 			if ( !Is_standalone )
 				core::Warning(LOCATION, "Weapon type \"%s\" found in loadout of mission file. This class is not marked as a player allowed weapon...skipping", str);
 			continue;
@@ -3404,8 +3404,8 @@ void reset_parse(char *text)
 // Display number of warnings and errors at the end of a parse.
 void display_parse_diagnostics()
 {
-	nprintf(("Parse", "\nParse complete.\n"));
-	nprintf(("Parse", "%i errors.  %i warnings.\n", Error_count, Warning_count));
+ core::nprintf("Parse", "\nParse complete.\n");
+ core::nprintf("Parse", "%i errors.  %i warnings.\n", Error_count, Warning_count);
 }
 
 // Splits a string into 2 lines if the string is wider than max_pixel_w pixels.  A null

@@ -75,7 +75,7 @@ void multi_options_read_config()
 	
 	// if we failed to open the config file, user default settings
 	if (in == NULL) {
-		nprintf(("Network","Failed to open network config file, using default settings\n"));		
+	 core::nprintf("Network","Failed to open network config file, using default settings\n");		
 	} else {
 		while ( !cfeof(in) ) {
 			// read in the game info
@@ -589,7 +589,7 @@ void multi_options_process_packet(unsigned char *data, header *hinfo)
 	player_index = find_player_id(hinfo->id);
 
 	if (player_index < 0) {
-		nprintf(("Network", "Received packet from unknown player!\n"));
+	 core::nprintf("Network", "Received packet from unknown player!\n");
 		return;
 	}
 

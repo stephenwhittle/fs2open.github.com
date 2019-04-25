@@ -3,6 +3,7 @@
 #include "core/path.h"
 #include "osapi/dialogs.h"
 #include "osapi/osapi.h"
+#include <osapi/outwnd.h>
 #include "parse/parselo.h"
 #include "cmdline/cmdline.h"
 #include "graphics/2d.h"
@@ -499,7 +500,9 @@ namespace os
         {
 	        core::RegisterErrorHandler(static_cast<void (*)(const char*)>(os::dialogs::Error));
 	        core::RegisterWarningHandler(os::dialogs::WarningImpl);
-		    core::RegisterAssertHandler([](const char* msg, const char* file, int line, const char* additional_msg)
+		    
+			core::RegisterConsoleOutputHandler(outwnd_printf);
+			core::RegisterAssertHandler([](const char* msg, const char* file, int line, const char* additional_msg)
 				{
 					os::dialogs::AssertMessage(msg, file, line, additional_msg);
 				});

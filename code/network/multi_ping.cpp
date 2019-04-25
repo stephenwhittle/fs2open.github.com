@@ -16,7 +16,7 @@
 #include "io/timer.h"
 #include <core/toolchain.h>
 #include "math/floating.h"
-
+#include <core/error.h>
 // ------------------------------------------------------------------------------------
 // MULTIPLAYER PING DEFINES/VARS
 //
@@ -61,7 +61,7 @@ void multi_ping_eval_pong(ping_struct *ps, fix pong_time)
 	
 	// if the ping technically hasn't started,
 	if(ps->ping_start < 0L){
-		nprintf(("Network","Processing pong for ping which hasn't started yet!\n"));
+	 core::nprintf("Network","Processing pong for ping which hasn't started yet!\n");
 		return;
 	}
 	

@@ -2622,7 +2622,7 @@ core::Assert(shipp->objnum >= 0);
 				// if huge, give default engine wash
 				if ((wash_sip->is_huge_ship()) && !Engine_wash_info.empty()) {
 					bank->wash_info_pointer = &Engine_wash_info[0];
-					nprintf(("wash", "Adding default engine wash to ship %s", wash_sip->name));
+				 core::nprintf("wash", "Adding default engine wash to ship %s", wash_sip->name);
 				} else {
 					continue;
 				}
@@ -2725,7 +2725,7 @@ core::Assert(shipp->objnum >= 0);
 	if (shipp->wash_intensity > 0) {
 	core::Assert(max_ship_intensity_objp != NULL);
 
-		nprintf(("wash", "Wash intensity %.2f\n", shipp->wash_intensity));
+	 core::nprintf("wash", "Wash intensity %.2f\n", shipp->wash_intensity);
 
 		float damage;
 		if (!do_damage) {
@@ -3559,7 +3559,7 @@ int WE_Default::warpFrame(float frametime)
 			if ( timed_out )	{
 				int	delta_ms = timestamp_until(total_time_end);
 				if (delta_ms > 1000.0f * frametime ) {
-					nprintf(("AI", "Frame %i: Ship %s missed departue cue by %7.3f seconds.\n", Framecount, shipp->ship_name, - (float) delta_ms/1000.0f));
+				 core::nprintf("AI", "Frame %i: Ship %s missed departue cue by %7.3f seconds.\n", Framecount, shipp->ship_name, - (float) delta_ms/1000.0f);
 				}
 			}
 

@@ -250,7 +250,7 @@ void credits_start_music()
 			audiostream_play(Credits_music_handle, Master_event_music_volume, 1);
 		}
 	} else {
-		nprintf(("Warning", "Cannot play credits music\n"));
+	 core::nprintf("Warning", "Cannot play credits music\n");
 	}
 }
 

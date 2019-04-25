@@ -43,8 +43,8 @@ namespace effects {
 			case ConeDirection::Normal: {
 				vec3d normal;
 				if (!source->getOrientation()->getNormal(&normal)) {
-					mprintf(
-					    ("Effect '%s' tried to use normal direction for source without a normal!\n", m_name.c_str()));
+					core::mprintf(
+					    "Effect '%s' tried to use normal direction for source without a normal!\n", m_name.c_str());
 					return source->getOrientation()->getDirectionVector(source->getOrigin());
 				}
 
@@ -54,8 +54,8 @@ namespace effects {
 				vec3d out = source->getOrientation()->getDirectionVector(source->getOrigin());
 				vec3d normal;
 				if (!source->getOrientation()->getNormal(&normal)) {
-					mprintf(
-					    ("Effect '%s' tried to use normal direction for source without a normal!\n", m_name.c_str()));
+					core::mprintf(
+					    "Effect '%s' tried to use normal direction for source without a normal!\n", m_name.c_str());
 					return out;
 				}
 

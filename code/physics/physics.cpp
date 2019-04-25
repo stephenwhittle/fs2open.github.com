@@ -743,7 +743,7 @@ void physics_apply_whack(vec3d *impulse, vec3d *pos, physics_info *pi, matrix *o
 	vm_vec_scale_add2( &pi->vel, impulse, 1.0f / mass );
 	if (!(pi->flags & PF_USE_VEL) && (vm_vec_mag_squared(&pi->vel) > MAX_SHIP_SPEED*MAX_SHIP_SPEED)) {
 		// Get DaveA
-		nprintf(("Physics", "speed reset in physics_apply_whack [speed: %f]\n", vm_vec_mag(&pi->vel)));
+	 core::nprintf("Physics", "speed reset in physics_apply_whack [speed: %f]\n", vm_vec_mag(&pi->vel));
 		vm_vec_normalize(&pi->vel);
 		vm_vec_scale(&pi->vel, (float)RESET_SHIP_SPEED);
 	}
@@ -921,7 +921,7 @@ void physics_apply_shock(vec3d *direction_vec, float pressure, physics_info *pi,
 		vm_vec_copy_normalize(&delta_rotvel, &local_torque);
 		
 		vm_vec_scale(&delta_rotvel, (float)(MAX_ROTVEL*(pressure/STD_PRESSURE)*scale));
-		// nprintf(("Physics", "rotvel scale %f\n", (MAX_ROTVEL*(pressure/STD_PRESSURE)*scale)));
+		// core::nprintf("Physics", "rotvel scale %f\n", (MAX_ROTVEL*(pressure/STD_PRESSURE)*scale));
 		vm_vec_add2(&pi->rotvel, &delta_rotvel);
 	}
 
@@ -935,7 +935,7 @@ void physics_apply_shock(vec3d *direction_vec, float pressure, physics_info *pi,
 	// check that kick from shockwave is not too large
 	if (!(pi->flags & PF_USE_VEL) && (vm_vec_mag_squared(&pi->vel) > MAX_SHIP_SPEED*MAX_SHIP_SPEED)) {
 		// Get DaveA
-		nprintf(("Physics", "speed reset in physics_apply_shock [speed: %f]\n", vm_vec_mag(&pi->vel)));
+	 core::nprintf("Physics", "speed reset in physics_apply_shock [speed: %f]\n", vm_vec_mag(&pi->vel));
 		vm_vec_normalize(&pi->vel);
 		vm_vec_scale(&pi->vel, (float)RESET_SHIP_SPEED);
 	}
@@ -983,7 +983,7 @@ void physics_collide_whack( vec3d *impulse, vec3d *world_delta_rotvel, physics_i
 	// reset if too high
 	if (!(pi->flags & PF_USE_VEL) && (vm_vec_mag_squared(&pi->vel) > MAX_SHIP_SPEED*MAX_SHIP_SPEED)) {
 		// Get DaveA
-		nprintf(("Physics", "speed reset in physics_collide_whack [speed: %f]\n", vm_vec_mag(&pi->vel)));
+	 core::nprintf("Physics", "speed reset in physics_collide_whack [speed: %f]\n", vm_vec_mag(&pi->vel));
 		vm_vec_normalize(&pi->vel);
 		vm_vec_scale(&pi->vel, (float)RESET_SHIP_SPEED);
 	}

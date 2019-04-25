@@ -1248,7 +1248,7 @@ void stars_draw_sun_glow(int sun_n)
 
 	// sanity
 	//WMC - Dunno why this is getting hit...
-	/core::Assert( sun_n < (int)Suns.size() );
+	//core::Assert( sun_n < (int)Suns.size() );
 
 	if ( (sun_n >= (int)Suns.size()) || (sun_n < 0) ) {
 		return;
@@ -1864,7 +1864,7 @@ void stars_page_in()
 		
 		pm = model_get(Subspace_model_inner);
 		
-		nprintf(( "Paging", "Paging in textures for subspace effect.\n" ));
+	 core::nprintf( "Paging", "Paging in textures for subspace effect.\n" );
 
 		for (idx = 0; idx < pm->n_textures; idx++) {
 			pm->maps[idx].PageIn();
@@ -1872,7 +1872,7 @@ void stars_page_in()
 
 		pm = model_get(Subspace_model_outer);
 		
-		nprintf(( "Paging", "Paging in textures for subspace effect.\n" ));
+	 core::nprintf( "Paging", "Paging in textures for subspace effect.\n" );
 
 		for (idx = 0; idx < pm->n_textures; idx++) {
 			pm->maps[idx].PageIn();
@@ -2387,7 +2387,7 @@ starfield_bitmap *stars_get_bitmap_entry(int index, bool is_a_sun)
 	int max_index = (is_a_sun) ? (int)Suns.size() : (int)Starfield_bitmap_instances.size();
 
 	//WMC - Commented out because it keeps happening, and I don't know what this means.
-	/core::Assert( (index >= 0) && (index < max_index) );
+	//core::Assert( (index >= 0) && (index < max_index) );
 
 	if ( (index < 0) || (index >= max_index) )
 		return NULL;
@@ -2605,8 +2605,8 @@ int stars_get_first_valid_background()
 		{
 			if (stars_find_sun(background->suns[j].filename) < 0)
 			{
-				mprintf(("Failed to load sun %s for background %d, falling back to background %d\n",
-					background->suns[j].filename, i + 1, i + 2));
+			 core::mprintf("Failed to load sun %s for background %d, falling back to background %d\n",
+					background->suns[j].filename, i + 1, i + 2);
 				valid = false;
 				break;
 			}
@@ -2618,8 +2618,8 @@ int stars_get_first_valid_background()
 			{
 				if (stars_find_bitmap(background->bitmaps[j].filename) < 0)
 				{
-					mprintf(("Failed to load bitmap %s for background %d, falling back to background %d\n",
-						background->suns[j].filename, i + 1, i + 2));
+				 core::mprintf("Failed to load bitmap %s for background %d, falling back to background %d\n",
+						background->suns[j].filename, i + 1, i + 2);
 					valid = false;
 					break;
 				}
@@ -2651,7 +2651,7 @@ void stars_load_background(int background_idx)
 		{
 			if ((stars_add_sun_entry(&background->suns[j]) < 0) && !Fred_running)
 			{
-				nprintf(("General", "Failed to add sun '%s' to the mission!", background->suns[j].filename));
+			 core::nprintf("General", "Failed to add sun '%s' to the mission!", background->suns[j].filename);
 				failed_suns++;
 			}
 		}
@@ -2663,7 +2663,7 @@ void stars_load_background(int background_idx)
 		{
 			if ((stars_add_bitmap_entry(&background->bitmaps[j]) < 0) && !Fred_running)
 			{
-				nprintf(("General", "Failed to add starfield bitmap '%s' to the mission!", background->bitmaps[j].filename));
+			 core::nprintf("General", "Failed to add starfield bitmap '%s' to the mission!", background->bitmaps[j].filename);
 				failed_stars++;
 			}
 		}

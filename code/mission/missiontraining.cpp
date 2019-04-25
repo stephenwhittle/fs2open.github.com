@@ -753,7 +753,7 @@ int message_play_training_voice(int index)
 				if (strnicmp(Message_waves[index].name, NOX("none.wav"), 4) != 0) {
 					Training_voice_soundstream = audiostream_open(Message_waves[index].name, ASF_VOICE);
 					if (Training_voice_soundstream < 0) {
-						nprintf(("Warning", "Unable to load voice file %s\n", Message_waves[index].name));
+					 core::nprintf("Warning", "Unable to load voice file %s\n", Message_waves[index].name);
 					}
 				}
 			}  // Training_voice should be valid and loaded now
@@ -770,7 +770,7 @@ int message_play_training_voice(int index)
 			strcpy_s(tmp_gs.filename, Message_waves[index].name);
 			Message_waves[index].num = snd_load(&tmp_gs, 0, 0);
 			if (!Message_waves[index].num.isValid()) {
-				nprintf(("Warning", "Cannot load message wave: %s.  Will not play\n", Message_waves[index].name));
+			 core::nprintf("Warning", "Cannot load message wave: %s.  Will not play\n", Message_waves[index].name);
 				return -1;
 			}
 		}

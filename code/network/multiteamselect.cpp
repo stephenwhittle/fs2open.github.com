@@ -677,7 +677,7 @@ void multi_ts_close()
 	
 	// unload any bitmaps
 	if(!bm_unload(Multi_ts_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_ts_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_ts_bitmap_fname[gr_screen.res]);
 	}		
 	for(idx=0;idx<MULTI_TS_NUM_LOCKED_BITMAPS;idx++){
 		if(Multi_ts_locked_bitmaps[idx] != -1){
@@ -2215,27 +2215,27 @@ void multi_ts_apply(int from_type,int from_index,int to_type,int to_index,int sh
 	interface_snd_id sound;
 	switch(type){
 	case TS_SWAP_SLOT_SLOT :
-		nprintf(("Network","Apply swap slot slot %d %d\n",from_index,to_index));
+	 core::nprintf("Network","Apply swap slot slot %d %d\n",from_index,to_index);
 		update = ss_swap_slot_slot(from_index,to_index,&sound);
 		break;
 	case TS_DUMP_TO_LIST	:
-		nprintf(("Network","Apply dump to list %d %d\n",from_index,to_index));
+	 core::nprintf("Network","Apply dump to list %d %d\n",from_index,to_index);
 		update = ss_dump_to_list(from_index,ship_class,&sound);
 		break;
 	case TS_SWAP_LIST_SLOT :
-		nprintf(("Network","Apply swap list slot %d %d\n",from_index,to_index));
+	 core::nprintf("Network","Apply swap list slot %d %d\n",from_index,to_index);
 		update = ss_swap_list_slot(ship_class,to_index,&sound);
 		break;
 	case TS_GRAB_FROM_LIST :
-		nprintf(("Network","Apply grab from list %d %d\n",from_index,to_index));		
+	 core::nprintf("Network","Apply grab from list %d %d\n",from_index,to_index);		
 		update = ss_grab_from_list(ship_class,to_index,&sound);
 		break;
 	case TS_SWAP_PLAYER_PLAYER :
-		nprintf(("Network","Apply swap player player %d %d\n",from_index,to_index));
+	 core::nprintf("Network","Apply swap player player %d %d\n",from_index,to_index);
 		update = multi_ts_swap_player_player(from_index,to_index,&sound,player_index);
 		break;
 	case TS_MOVE_PLAYER :
-		nprintf(("Network","Apply move player %d %d\n",from_index,to_index));
+	 core::nprintf("Network","Apply move player %d %d\n",from_index,to_index);
 		update = multi_ts_move_player(from_index,to_index,&sound,player_index);
 		break;
 	default :
@@ -2284,7 +2284,7 @@ void multi_ts_drop(int from_type,int from_index,int to_type,int to_index,int shi
 		if(multi_ts_can_perform(from_type,from_index,to_type,to_index,ship_class,player_index)){
 			multi_ts_apply(from_type,from_index,to_type,to_index,ship_class,player_index);
 		} else {
-			nprintf(("Network","Could not apply operation!\n"));
+		 core::nprintf("Network","Could not apply operation!\n");
 		}
 	} 
 	// otherwise send a request to the host
@@ -2974,7 +2974,7 @@ void process_pslot_update_packet(ubyte *data, header *hinfo)
 			
 				// if we couldn't find him
 				if(player_index == -1){
-					nprintf(("Network","Couldn't find player for pslot update!\n"));
+				 core::nprintf("Network","Couldn't find player for pslot update!\n");
 					Multi_ts_team[team].multi_ts_player[slot_num] = NULL;
 				} 
 				// if we found him, assign him to this ship

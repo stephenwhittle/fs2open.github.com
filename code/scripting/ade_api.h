@@ -6,7 +6,7 @@
 
 #include "scripting/ade.h"
 #include "scripting/ade_args.h"
-
+#include <globalincs/scp_defines.h>
 namespace scripting {
 
 const size_t INVALID_ID = (size_t) -1; // Use -1 to get highest possible unsigned number

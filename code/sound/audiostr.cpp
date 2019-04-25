@@ -21,8 +21,9 @@
 #include "libs/ffmpeg/FFmpegContext.h"
 
 #include "globalincs/fsmemory.h"
-
-
+#include <SDL_mutex.h>
+#include <SDL_timer.h>
+#include <SDL.h>
 #define MAX_STREAM_BUFFERS 4
 
 // status
@@ -270,7 +271,7 @@ core::Assert(pszFilename);
 				// if the requested buffer size is too big then cap it
 				m_cbBufSize = (m_cbBufSize > BIGBUF_SIZE) ? BIGBUF_SIZE : m_cbBufSize;
 
-//				nprintf(("SOUND", "SOUND => Stream buffer created using %d bytes\n", m_cbBufSize));
+//			 core::nprintf("SOUND", "SOUND => Stream buffer created using %d bytes\n", m_cbBufSize);
 
 				OpenAL_ErrorCheck( alGenSources(1, &m_source_id), { fRtn = false; goto ErrorExit; } );
 
@@ -297,13 +298,13 @@ core::Assert(pszFilename);
 			}
 			else {
 				// Error opening file
-				nprintf(("SOUND", "SOUND => Failed to open wave file: %s\n\r", pszFilename));
+			 core::nprintf("SOUND", "SOUND => Failed to open wave file: %s\n\r", pszFilename);
 				fRtn = false;
 			}
 		}
 		else {
 			// Error, unable to create WaveFile object
-			nprintf(("Sound", "SOUND => Failed to create WaveFile object %s\n\r", pszFilename));
+		 core::nprintf("Sound", "SOUND => Failed to create WaveFile object %s\n\r", pszFilename);
 			fRtn = false;
 		}
 	}
@@ -453,7 +454,7 @@ uint AudioStream::GetMaxWriteSize (void)
 	if (!n && (q >= MAX_STREAM_BUFFERS)) //all buffers queued
 		dwMaxSize = 0;
 
-	//	nprintf(("Alan","Max write size: %d\n", dwMaxSize));
+	// core::nprintf("Alan","Max write size: %d\n", dwMaxSize);
 	return (dwMaxSize);
 }
 
@@ -479,16 +480,16 @@ bool AudioStream::ServiceBuffer (void)
 	if ( m_bFade == true ) {
 		if ( m_lCutoffVolume == 0.0f ) {
 			vol = Get_Volume();
-//			nprintf(("Alan","Volume is: %d\n",vol));
+//		 core::nprintf("Alan","Volume is: %d\n",vol);
 			m_lCutoffVolume = vol * VOLUME_ATTENUATION_BEFORE_CUTOFF;
 		}
 
 		vol = Get_Volume() * VOLUME_ATTENUATION;
-//		nprintf(("Alan","Volume is now: %d\n",vol));
+//	 core::nprintf("Alan","Volume is now: %d\n",vol);
 		Set_Volume(vol);
 
-//		nprintf(("Sound","SOUND => Volume for stream sound is %d\n",vol));
-//		nprintf(("Alan","Cuttoff Volume is: %d\n",m_lCutoffVolume));
+//	 core::nprintf("Sound","SOUND => Volume for stream sound is %d\n",vol);
+//	 core::nprintf("Alan","Cuttoff Volume is: %d\n",m_lCutoffVolume);
 		if ( vol < m_lCutoffVolume ) {
 			m_bFade = false;
 			m_lCutoffVolume = 0.0f;
@@ -521,7 +522,7 @@ bool AudioStream::ServiceBuffer (void)
 		uint num_bytes_written;
 
 		if (WriteWaveData (dwFreeSpace, &num_bytes_written) == true) {
-//			nprintf(("Alan","Num bytes written: %d\n", num_bytes_written));
+//		 core::nprintf("Alan","Num bytes written: %d\n", num_bytes_written);
 
 			if ( m_total_uncompressed_bytes_read >= m_max_uncompressed_bytes_to_read ) {
 				m_fade_timer_id = timer_get_milliseconds() + 1700;		// start fading 1.7 seconds from now
@@ -890,7 +891,7 @@ int audiostream_open( const char *filename, int type )
 	}
 
 	if (i == MAX_AUDIO_STREAMS) {
-		nprintf(("Sound", "SOUND => No more audio streams available!\n"));
+	 core::nprintf("Sound", "SOUND => No more audio streams available!\n");
 		return -1;
 	}
 

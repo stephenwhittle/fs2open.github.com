@@ -21,7 +21,7 @@
 #include "NanoVGRenderer.h"
 #include "tracing/tracing.h"
 #include "core/format.h"
-
+#include <osapi/outwnd.h>
 
 #ifndef NDEBUG
 // That is a wrapper function for log prints to be availiable for nanovg components. For now it is stb_truetype.h

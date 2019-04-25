@@ -1887,11 +1887,11 @@ int multi_pxo_autojoin_do()
 			// join the channel
 			multi_pxo_join_channel(&last_channel);
 
-			nprintf(("Network","PXO : using last channel\n"));
+		 core::nprintf("Network","PXO : using last channel\n");
 		} else {
 			multi_pxo_autojoin();
 
-			nprintf(("Network","PXO : using autojoin channel\n"));
+		 core::nprintf("Network","PXO : using autojoin channel\n");
 		}
 
 		multi_pxo_get_channels();
@@ -2167,7 +2167,7 @@ void multi_pxo_channel_count_update(char *name, int count)
 	if (lookup != NULL) {
 		lookup->num_servers = (ushort)count;
 
-		nprintf(("Network","PXO : updated channel %s server count to %d\n",name,count));
+	 core::nprintf("Network","PXO : updated channel %s server count to %d\n",name,count);
 		ml_printf("PXO : updated channel %s server count to %d", name, count);
 	} else {
 		ml_printf("PXO : unable to locate channel when trying to update count for %s", name);
@@ -2262,7 +2262,7 @@ void multi_pxo_make_channels(char *chan_str)
 	pxo_channel *lookup;
 	int num_users;
 	
-	nprintf(("Network","Making some channels!\n"));
+ core::nprintf("Network","Making some channels!\n");
 
 	// set the last get time
 	Multi_pxo_channel_last_refresh = f2fl(timer_get_fixed_seconds());
@@ -2337,7 +2337,7 @@ pxo_channel *multi_pxo_add_channel(char *name,pxo_channel **list)
 	// try and allocate a new pxo_channel struct
 	new_channel = (pxo_channel *)vm_malloc(sizeof(pxo_channel));
 	if ( new_channel == NULL ) {
-		nprintf(("Network", "Cannot allocate space for new pxo_channel structure\n"));
+	 core::nprintf("Network", "Cannot allocate space for new pxo_channel structure\n");
 		return NULL;
 	}	
 	memset(new_channel,0,sizeof(pxo_channel));
@@ -2439,7 +2439,7 @@ void multi_pxo_process_channels()
 		// refresh
 		Multi_pxo_channel_last_refresh = -1.0f;
 
-		nprintf(("Network","Refreshing channels\n"));
+	 core::nprintf("Network","Refreshing channels\n");
 	}
 
 	// if we haven't updated our server channel counts in a while, do so again
@@ -2758,7 +2758,7 @@ player_list *multi_pxo_add_player(char *name)
 	// try and allocate a new player_list struct
 	new_player = (player_list *)vm_malloc(sizeof(player_list));
 	if ( new_player == NULL ) {
-		nprintf(("Network", "Cannot allocate space for new player_list structure\n"));
+	 core::nprintf("Network", "Cannot allocate space for new player_list structure\n");
 		return NULL;
 	}	
 	// try and allocate a string for the channel name

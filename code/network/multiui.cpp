@@ -204,7 +204,7 @@ core::Assert(n_lines != -1);
 	for ( i = 0; i < n_lines; i++ ) {
 		//The E -- This check is unnecessary, and will break when fonts that aren't bank gothic are used
 		//split_str already ensured that everything will fit in the text window for us already.
-		/core::Assert(n_chars[i] < MULTI_COMMON_TEXT_MAX_LINE_LENGTH); 
+		//core::Assert(n_chars[i] < MULTI_COMMON_TEXT_MAX_LINE_LENGTH); 
 		strncpy(Multi_common_text[i], p_str[i], n_chars[i]);
 		Multi_common_text[i][n_chars[i]] = 0;
 		drop_leading_white_space(Multi_common_text[i]);		
@@ -424,7 +424,7 @@ void multi_common_load_palette()
 
 	Multi_common_interface_palette = bm_load(MULTI_COMMON_PALETTE_FNAME);
 	if(Multi_common_interface_palette == -1){
-		nprintf(("Network","Error loading multiplayer common palette!\n"));
+	 core::nprintf("Network","Error loading multiplayer common palette!\n");
 	}
 }
 
@@ -1146,7 +1146,7 @@ void multi_join_game_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Multi_join_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_join_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_join_bitmap_fname[gr_screen.res]);
 	}
 
 	// free up the active game list
@@ -1469,7 +1469,7 @@ void multi_join_load_tcp_addrs()
 	// attempt to open the ip list file
 	file = cfopen(IP_CONFIG_FNAME,"rt",CFILE_NORMAL,CF_TYPE_DATA);	
 	if(file == NULL){
-		nprintf(("Network","Error loading tcp.cfg file!\n"));
+	 core::nprintf("Network","Error loading tcp.cfg file!\n");
 		return;
 	}
 
@@ -1492,7 +1492,7 @@ void multi_join_load_tcp_addrs()
 		}
 
 		if ( !psnet_is_valid_ip_string(line) ) {
-			nprintf(("Network","Invalid ip string (%s)\n",line));
+		 core::nprintf("Network","Invalid ip string (%s)\n",line);
 		} else {			 
 			// copy the server ip address
 			memset(&addr,0,sizeof(net_addr));
@@ -1663,7 +1663,7 @@ active_game *multi_join_get_game(int n)
 				count++;
 			}
 			if(moveup == Active_game_head){
-				nprintf(("Network","Warning, couldn't find game item %d!\n",n));
+			 core::nprintf("Network","Warning, couldn't find game item %d!\n",n);
 				return NULL;
 			} else {
 				return moveup;
@@ -1895,7 +1895,7 @@ void multi_join_send_join_request(int as_observer)
 			return;
 		}
 
-		nprintf(("Network", "Password : %s\n", Multi_join_request.passwd));
+	 core::nprintf("Network", "Password : %s\n", Multi_join_request.passwd);
 	}	
 		
 	// fill out the join request struct	
@@ -2482,7 +2482,7 @@ void multi_start_game_close()
 	
 	// unload any bitmaps
 	if(!bm_unload(Multi_sg_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_sg_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_sg_bitmap_fname[gr_screen.res]);
 	}
 	
 	// destroy the UI_WINDOW
@@ -3906,7 +3906,7 @@ void multi_create_game_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Multi_create_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_create_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_create_bitmap_fname[gr_screen.res]);
 	}		
 	
 	// destroy the chatbox
@@ -4791,10 +4791,10 @@ void multi_create_list_select_item(int n)
 			if (mcip) {
 				if(Netgame.options.respawn <= mcip->respawn){
 					ng->respawn = Netgame.options.respawn;
-					nprintf(("Network", "Using netgame options for respawn count (%d %d)\n", Netgame.options.respawn, mcip->respawn));
+				 core::nprintf("Network", "Using netgame options for respawn count (%d %d)\n", Netgame.options.respawn, mcip->respawn);
 				} else {
 					ng->respawn = mcip->respawn;
-					nprintf(("Network", "Using mission settings for respawn count (%d %d)\n", Netgame.options.respawn, mcip->respawn));
+				 core::nprintf("Network", "Using mission settings for respawn count (%d %d)\n", Netgame.options.respawn, mcip->respawn);
 				}
 			}
 			break;
@@ -4814,7 +4814,7 @@ void multi_create_list_select_item(int n)
 					ng->max_players = max_players;					
 				}
 
-				nprintf(("Network","MC MAX PLAYERS : %d\n",ng->max_players));
+			 core::nprintf("Network","MC MAX PLAYERS : %d\n",ng->max_players);
 
 				// set the information area text
 				// multi_common_set_text(ng->title);
@@ -6011,7 +6011,7 @@ void multi_host_options_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Multi_ho_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_ho_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_ho_bitmap_fname[gr_screen.res]);
 	}	
 	
 	// destroy the UI_WINDOW
@@ -6847,7 +6847,7 @@ void multi_game_client_setup_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Multi_jw_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_jw_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_jw_bitmap_fname[gr_screen.res]);
 	}		
 
 	// destroy the chatbox
@@ -7627,7 +7627,7 @@ void multi_sync_common_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Multi_sync_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_sync_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_sync_bitmap_fname[gr_screen.res]);
 	}	
 	
 	// destroy the UI_WINDOW
@@ -7788,7 +7788,7 @@ void multi_sync_blit_screen_all()
 				multi_sync_display_status(txt,count);
 				break;
 			default :
-				nprintf(("Network","Unhandled player state : %d !\n",Net_players[idx].state));
+			 core::nprintf("Network","Unhandled player state : %d !\n",Net_players[idx].state);
 				break;
 			}
 			count++;
@@ -8021,7 +8021,7 @@ void multi_sync_pre_do()
 
 			// load the mission myself, as soon as possible
 			if(!Multi_mission_loaded){
-				nprintf(("Network","Server loading mission..."));
+			 core::nprintf("Network","Server loading mission...");
 	
 				// update everyone about my status
 				Net_player->state = NETPLAYER_STATE_MISSION_LOADING;
@@ -8029,7 +8029,7 @@ void multi_sync_pre_do()
 
 				game_start_mission();
 				psnet_flush();
-				nprintf(("Network","Done\n"));
+			 core::nprintf("Network","Done\n");
 				Multi_mission_loaded = 1;				
 
 				// update everyone about my status
@@ -8116,7 +8116,7 @@ void multi_sync_pre_close()
 {
 	// at this point, we should shut down any file xfers...
 	if(Net_player->s_info.xfer_handle != -1){
-		nprintf(("Network","WARNING - killing file xfer while leaving mission sync state!!!\n"));
+	 core::nprintf("Network","WARNING - killing file xfer while leaving mission sync state!!!\n");
 
 		multi_xfer_abort(Net_player->s_info.xfer_handle);
 		Net_player->s_info.xfer_handle = -1;
@@ -8156,7 +8156,7 @@ void multi_sync_post_init()
 		Multi_sync_countdown_anim.ani.bg_type = bm_get_type(Multi_sync_bitmap);
 		generic_anim_stream(&Multi_sync_countdown_anim);
 		if(Multi_sync_countdown_anim.num_frames < 1){
-			nprintf(("General","WARNING!, Could not load countdown animation %s!\n",Multi_sync_countdown_fname[gr_screen.res]));
+		 core::nprintf("General","WARNING!, Could not load countdown animation %s!\n",Multi_sync_countdown_fname[gr_screen.res]);
 		}
 	}
 
@@ -8498,7 +8498,7 @@ void multi_sync_launch()
 
 	// set the # of players at the start of the mission
 	Multi_num_players_at_start = multi_num_players();
-	nprintf(("Network","# of players at start of mission : %d\n", Multi_num_players_at_start));
+ core::nprintf("Network","# of players at start of mission : %d\n", Multi_num_players_at_start);
 	
 	// initialize datarate limiting for all clients
 	multi_oo_rate_init_all();	

@@ -776,8 +776,8 @@ void do_new_subsystem( int n_subsystems, model_subsystem *slist, int subobj_num,
 		// Goober5000 - notify if there's a mismatch
 		if ( stricmp(subobj_name, subsystemp->subobj_name) != 0 && !subsystem_stricmp(subobj_name, subsystemp->subobj_name) )
 		{
-			nprintf(("Model", "NOTE: Subsystem \"%s\" in model \"%s\" is represented as \"%s\" in ships.tbl.  This works fine in FSO v3.6 and up, "
-				"but is not compatible with FS2 retail.\n", subobj_name, model_get(model_num)->filename, subsystemp->subobj_name));
+		 core::nprintf("Model", "NOTE: Subsystem \"%s\" in model \"%s\" is represented as \"%s\" in ships.tbl.  This works fine in FSO v3.6 and up, "
+				"but is not compatible with FS2 retail.\n", subobj_name, model_get(model_num)->filename, subsystemp->subobj_name);
 
 		}
 #endif
@@ -1160,7 +1160,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 
 				pm->submodel = new bsp_info[pm->n_models];
 
-				/core::Assert(pm->n_models <= MAX_SUBMODELS);
+				//core::Assert(pm->n_models <= MAX_SUBMODELS);
 
 				cfread_vector(&pm->mins,fp);
 				cfread_vector(&pm->maxs,fp);
@@ -1683,7 +1683,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 				}
 
 				if ( !rotating_submodel_has_subsystem ) {
-					nprintf(("Model", "Model %s: Rotating Submodel without subsystem: %s\n", pm->filename, pm->submodel[n].name));
+				 core::nprintf("Model", "Model %s: Rotating Submodel without subsystem: %s\n", pm->filename, pm->submodel[n].name);
 
 					// mark those submodels which should not rotate - ie, those with no subsystem
 					pm->submodel[n].movement_type = MOVEMENT_TYPE_NONE;
@@ -1854,14 +1854,14 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 
 							auto length = strlen(bay->name);
 							if ((length > 0) && is_white_space(bay->name[length-1])) {
-								nprintf(("Model", "model '%s' has trailing whitespace on bay name '%s'; this will be trimmed\n", pm->filename, bay->name));
+							 core::nprintf("Model", "model '%s' has trailing whitespace on bay name '%s'; this will be trimmed\n", pm->filename, bay->name);
 								drop_trailing_white_space(bay->name);
 							}
 							if (strlen(bay->name) == 0) {
-								nprintf(("Model", "model '%s' has an empty name specified for docking point %d\n", pm->filename, i));
+							 core::nprintf("Model", "model '%s' has an empty name specified for docking point %d\n", pm->filename, i);
 							}
 						} else {
-							nprintf(("Model", "model '%s' has no name specified for docking point %d\n", pm->filename, i));
+						 core::nprintf("Model", "model '%s' has no name specified for docking point %d\n", pm->filename, i);
 							sprintf(bay->name, "<unnamed bay %c>", 'A' + i);
 						}
 
@@ -1981,7 +1981,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 							}
 							else
 							{
-								nprintf(( "Model", "Glow point bank %i texture num is %d for '%s'\n", gpb, bank->glow_bitmap, pm->filename));
+							 core::nprintf( "Model", "Glow point bank %i texture num is %d for '%s'\n", gpb, bank->glow_bitmap, pm->filename);
 							}
 
 							strcat(glow_texture_name, "-neb");
@@ -1990,12 +1990,12 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 							if (bank->glow_neb_bitmap < 0)
 							{
 								bank->glow_neb_bitmap = bank->glow_bitmap;
-								nprintf(( "Model", "Glow point bank nebula texture not found for '%s', using normal glowpoint texture instead\n", pm->filename));
+							 core::nprintf( "Model", "Glow point bank nebula texture not found for '%s', using normal glowpoint texture instead\n", pm->filename);
 							//	Error( LOCATION, "Couldn't open texture '%s'\nreferenced by model '%s'\n", glow_texture_name, pm->filename );
 							}
 							else
 							{
-								nprintf(( "Model", "Glow point bank %i nebula texture num is %d for '%s'\n", gpb, bank->glow_neb_bitmap, pm->filename));
+							 core::nprintf( "Model", "Glow point bank %i nebula texture num is %d for '%s'\n", gpb, bank->glow_neb_bitmap, pm->filename);
 							}
 						} else {
 							core::Warning( LOCATION, "No glow point texture for bank '%d' referenced by model '%s'\n", gpb, pm->filename);
@@ -2057,7 +2057,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 										engine_subsys_name++;
 									}
 
-									nprintf(("wash", "Ship %s with engine wash associated with subsys %s\n", filename, engine_subsys_name));
+								 core::nprintf("wash", "Ship %s with engine wash associated with subsys %s\n", filename, engine_subsys_name);
 
 									// start off assuming the subsys is invalid
 									int table_error = 1;
@@ -2160,7 +2160,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 					if ( (n_subsystems == 0) || (snum == n_subsystems) ) {
 						vec3d bogus;
 
-						nprintf(("Warning", "Turret submodel %i not found for turret %i in model %s\n", parent, i, pm->filename));
+					 core::nprintf("Warning", "Turret submodel %i not found for turret %i in model %s\n", parent, i, pm->filename);
 						cfread_vector( &bogus, fp );
 						n_slots = cfread_int( fp );
 						for (j = 0; j < n_slots; j++ )
@@ -2205,7 +2205,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 					} else if ( strstr(name, "$enginelarge") || strstr(name, "$enginehuge") ){
 						do_new_subsystem( n_subsystems, subsystems, -1, radius, &pnt, props_spcl, &name[1], pm->id );		// skip the first '$' character of the name
 					} else {
-						nprintf(("Warning", "Unknown special object type %s while reading model %s\n", name, pm->filename));
+					 core::nprintf("Warning", "Unknown special object type %s while reading model %s\n", name, pm->filename);
 					}					
 				}
 				break;
@@ -3458,7 +3458,7 @@ core::Assert(psub->flags[Model::Subsystem_Flags::Stepped_rotate]);
 	} else {
 		rotation_time = 0.001f * (end_stamp - sii->step_zero_timestamp);
 	}
-	/core::Assert(rotation_time >= 0);
+	//core::Assert(rotation_time >= 0);
 
 	// save last angles
 	sii->prev_angs = sii->angs;
@@ -3567,7 +3567,7 @@ void submodel_look_at(polymodel *pm, int mn)
 		for (int i = 0; i < pm->n_models; i++) {
 			if (!strcmp(sm->look_at, pm->submodel[i].name))  {
 				sm->look_at_num = i; // Found it
-				nprintf(("Model", "NOTE: Matched $look_at: target <%s> with subobject id %d\n", sm->look_at, i));
+			 core::nprintf("Model", "NOTE: Matched $look_at: target <%s> with subobject id %d\n", sm->look_at, i);
 				break; 
 			}
 		}
@@ -5553,7 +5553,7 @@ void parse_glowpoint_table(const char *filename)
 					}
 					else
 					{
-						nprintf(("Model", "Glowpoint preset %s texture num is %d\n", gpo.name, gpo.glow_bitmap));
+					 core::nprintf("Model", "Glowpoint preset %s texture num is %d\n", gpo.name, gpo.glow_bitmap);
 					}
 
 					char glow_texture_neb_name[256];
@@ -5564,11 +5564,11 @@ void parse_glowpoint_table(const char *filename)
 					if (gpo.glow_neb_bitmap < 0)
 					{
 						gpo.glow_neb_bitmap = gpo.glow_bitmap;
-						nprintf(("Model", "Glowpoint preset nebula texture not found for '%s', using normal glowpoint texture instead\n", gpo.name));
+					 core::nprintf("Model", "Glowpoint preset nebula texture not found for '%s', using normal glowpoint texture instead\n", gpo.name);
 					}
 					else
 					{
-						nprintf(("Model", "Glowpoint preset %s nebula texture num is %d\n", gpo.name, gpo.glow_neb_bitmap));
+					 core::nprintf("Model", "Glowpoint preset %s nebula texture num is %d\n", gpo.name, gpo.glow_neb_bitmap);
 					}
 				}
 				else {

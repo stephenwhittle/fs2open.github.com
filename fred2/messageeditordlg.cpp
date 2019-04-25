@@ -109,7 +109,7 @@ BOOL CMessageEditorDlg::OnInitDialog()
 	list = (CListBox *) GetDlgItem(IDC_MESSAGE_LIST);
 	list->ResetContent();
 	for (i=0; i<Num_messages; i++) {
-		/core::Assert(list->FindStringExact(-1, Messages[i].name) == CB_ERR);
+		//core::Assert(list->FindStringExact(-1, Messages[i].name) == CB_ERR);
 		// mwa we should probably not include builtin messages into this list!
 		list->AddString(Messages[i].name);
 	}

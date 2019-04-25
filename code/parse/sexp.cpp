@@ -1054,8 +1054,8 @@ void sexp_nodes_init()
 	if (Num_sexp_nodes == 0 || Sexp_nodes == NULL)
 		return;
 
-	nprintf(("SEXP", "Reinitializing sexp nodes...\n"));
-	nprintf(("SEXP", "Entered function with %d nodes.\n", Num_sexp_nodes));
+ core::nprintf("SEXP", "Reinitializing sexp nodes...\n");
+ core::nprintf("SEXP", "Entered function with %d nodes.\n", Num_sexp_nodes);
 
 	// usually, the persistent nodes are grouped at the beginning of the array;
 	// so we ought to be able to free all the subsequent nodes
@@ -1069,7 +1069,7 @@ void sexp_nodes_init()
 			Sexp_nodes[i].type = SEXP_NOT_USED;			// it's not needed
 	}
 
-	nprintf(("SEXP", "Last persistent node index is %d.\n", last_persistent_node));
+ core::nprintf("SEXP", "Last persistent node index is %d.\n", last_persistent_node);
 
 	// if all the persistent nodes are gone, free all the nodes
 	if (last_persistent_node == -1)
@@ -1089,7 +1089,7 @@ void sexp_nodes_init()
 		core::Verify(Sexp_nodes != NULL);
 	}
 
-	nprintf(("SEXP", "Exited function with %d nodes.\n", Num_sexp_nodes));
+ core::nprintf("SEXP", "Exited function with %d nodes.\n", Num_sexp_nodes);
 }
 
 static void sexp_nodes_close()
@@ -1160,7 +1160,7 @@ int alloc_sexp(const char *text, int type, int subtype, int first, int rest)
 		Sexp_nodes = (sexp_node *) vm_realloc(Sexp_nodes, sizeof(sexp_node) * Num_sexp_nodes);
 
 		core::Verify(Sexp_nodes != NULL);
-		nprintf(("SEXP", "Bumping dynamic sexp node limit from %d to %d...\n", old_size, Num_sexp_nodes));
+	 core::nprintf("SEXP", "Bumping dynamic sexp node limit from %d to %d...\n", old_size, Num_sexp_nodes);
 
 		// clear all the new sexp nodes we just allocated
 		memset(&Sexp_nodes[old_size], 0, sizeof(sexp_node) * SEXP_NODE_INCREMENT); //-V512
@@ -1202,7 +1202,7 @@ int count_free_sexp_nodes()
 
 	if (Num_sexp_nodes - f > Sexp_hwm)
 	{
-		nprintf(("Sexp", "Sexp nodes: Free=%d, Used=%d, Persistent=%d\n", f, Num_sexp_nodes - f, p));
+	 core::nprintf("Sexp", "Sexp nodes: Free=%d, Used=%d, Persistent=%d\n", f, Num_sexp_nodes - f, p);
 		Sexp_hwm = Num_sexp_nodes - f;
 	}
 
@@ -4270,12 +4270,12 @@ int pow_sexp(int node)
 
 	if (pow_result > static_cast<double>(INT_MAX))
 	{
-		nprintf(("SEXP", "Power function pow(%d, %d) is greater than INT_MAX!  Returning INT_MAX.", num_1, num_2));
+	 core::nprintf("SEXP", "Power function pow(%d, %d) is greater than INT_MAX!  Returning INT_MAX.", num_1, num_2);
 		return INT_MAX;
 	}
 	else if (pow_result < static_cast<double>(INT_MIN))
 	{
-		nprintf(("SEXP", "Power function pow(%d, %d) is less than INT_MIN!  Returning INT_MIN.", num_1, num_2));
+	 core::nprintf("SEXP", "Power function pow(%d, %d) is less than INT_MIN!  Returning INT_MIN.", num_1, num_2);
 		return INT_MIN;
 	}
 
@@ -5052,8 +5052,8 @@ core::Assert ( n != -1 );
 #ifndef NDEBUG
 				static bool wing_zero_warning_shown = false;
 				if (!wing_zero_warning_shown) {
-					mprintf(("SEXP: is-destroyed-delay was used multiple times in a directive event! This might have "
-					         "unintended effects and should be replaced by a single use of is-destroyed-delay.\n"));
+				 core::mprintf("SEXP: is-destroyed-delay was used multiple times in a directive event! This might have "
+					         "unintended effects and should be replaced by a single use of is-destroyed-delay.\n");
 					wing_zero_warning_shown = true;
 				}
 #endif
@@ -10379,7 +10379,7 @@ void sexp_start_music(int loop)
 			audiostream_play(Sexp_music_handle, (Master_event_music_volume * aav_music_volume), loop);
 	}
 	else {
-		nprintf(("Warning", "Can not play music. sexp_start_music called when no music file is set for Sexp_music_handle!\n"));
+	 core::nprintf("Warning", "Can not play music. sexp_start_music called when no music file is set for Sexp_music_handle!\n");
 	}
 }
 
@@ -11508,14 +11508,14 @@ void sexp_sabotage_subsystem(int n)
 			do_loop = false;
 			index = ship_get_subsys_index(shipp, subsystem);
 			if ( index == -1 ) {
-				nprintf(("Warning", "Couldn't find subsystem %s on ship %s for sabotage subsystem\n", subsystem, shipp->ship_name));
+			 core::nprintf("Warning", "Couldn't find subsystem %s on ship %s for sabotage subsystem\n", subsystem, shipp->ship_name);
 				return;
 			}
 			// get the pointer to the subsystem.  Check it's current hits against it's max hits, and
 			// set the strength to the given percentage if current strength is > given percentage
 			ss = ship_get_indexed_subsys( shipp, index );
 			if (ss == NULL) {
-				nprintf(("Warning", "Nonexistent subsystem for index %d on ship %s for sabotage subsystem\n", index, shipp->ship_name));
+			 core::nprintf("Warning", "Nonexistent subsystem for index %d on ship %s for sabotage subsystem\n", index, shipp->ship_name);
 				return;
 			}
 		}
@@ -11621,14 +11621,14 @@ void sexp_repair_subsystem(int n)
 			do_loop = false;
 			index = ship_get_subsys_index(shipp, subsystem);
 			if ( index == -1 ) {
-				nprintf(("Warning", "Couldn't find subsystem %s on ship %s for repair subsystem\n", subsystem, shipp->ship_name));
+			 core::nprintf("Warning", "Couldn't find subsystem %s on ship %s for repair subsystem\n", subsystem, shipp->ship_name);
 				return;
 			}
 			// get the pointer to the subsystem.  Check it's current hits against it's max hits, and
 			// set the strength to the given percentage if current strength is < given percentage
 			ss = ship_get_indexed_subsys( shipp, index );
 			if (ss == NULL) {
-				nprintf(("Warning", "Nonexistent subsystem for index %d on ship %s for repair subsystem\n", index, shipp->ship_name));
+			 core::nprintf("Warning", "Nonexistent subsystem for index %d on ship %s for repair subsystem\n", index, shipp->ship_name);
 				return;
 			}
 		}
@@ -11740,7 +11740,7 @@ void sexp_set_subsystem_strength(int n)
 			do_loop = false;
 			index = ship_get_subsys_index(shipp, subsystem);
 			if ( index == -1 ) {
-				nprintf(("Warning", "Couldn't find subsystem %s on ship %s for set subsystem strength\n", subsystem, shipp->ship_name));
+			 core::nprintf("Warning", "Couldn't find subsystem %s on ship %s for set subsystem strength\n", subsystem, shipp->ship_name);
 				return;
 			}
 
@@ -11748,7 +11748,7 @@ void sexp_set_subsystem_strength(int n)
 			// set the strength to the given percentage
 			ss = ship_get_indexed_subsys( shipp, index );
 			if (ss == NULL) {
-				nprintf(("Warning", "Nonexistent subsystem for index %d on ship %s for set subsystem strength\n", index, shipp->ship_name));
+			 core::nprintf("Warning", "Nonexistent subsystem for index %d on ship %s for set subsystem strength\n", index, shipp->ship_name);
 				return;
 			}
 		}
@@ -11831,7 +11831,7 @@ void sexp_destroy_subsys_instantly(int n)
 			ss = ship_get_subsys(shipp, subsystem);
 			if (ss == nullptr)
 			{
-				nprintf(("Warning", "Nonexistent subsystem '%s' on ship %s for destroy-subsys-instantly\n", subsystem, shipp->ship_name));
+			 core::nprintf("Warning", "Nonexistent subsystem '%s' on ship %s for destroy-subsys-instantly\n", subsystem, shipp->ship_name);
 				continue;
 			}
 
@@ -13565,7 +13565,7 @@ void sexp_good_secondary_time(int n)
 
 	weapon_index = weapon_info_lookup(weapon_name);
 	if ( weapon_index == -1 ) {
-		nprintf(("Warning", "couldn't find weapon %s for good-secondary-time\n", weapon_name));
+	 core::nprintf("Warning", "couldn't find weapon %s for good-secondary-time\n", weapon_name);
 		return;
 	}
 
@@ -13860,7 +13860,7 @@ int sexp_previous_goal_status( int n, int status )
 
 		if ( i == -1 ) {
 			// if mission not found, assume that goal was false (so previous-goal-false returns true)
-			nprintf(("General", "Couldn't find mission name \"%s\" in current campaign's list of missions.\nReturning %s for goal-status function.", mission_name, (status==GOAL_COMPLETE)?"false":"true"));
+		 core::nprintf("General", "Couldn't find mission name \"%s\" in current campaign's list of missions.\nReturning %s for goal-status function.", mission_name, (status==GOAL_COMPLETE)?"false":"true");
 			if ( status == GOAL_COMPLETE )
 				rval = SEXP_KNOWN_FALSE;
 			else
@@ -13940,7 +13940,7 @@ int sexp_previous_event_status( int n, int status )
 
 		// if the mission name wasn't found -- make this return FALSE for the event status.
 		if ( i == -1 ) {
-			nprintf(("General", "Couldn't find mission name \"%s\" in current campaign's list of missions.\nReturning %s for event-status function.", mission_name, (status==EVENT_SATISFIED)?"false":"true"));
+		 core::nprintf("General", "Couldn't find mission name \"%s\" in current campaign's list of missions.\nReturning %s for event-status function.", mission_name, (status==EVENT_SATISFIED)?"false":"true");
 			if ( status == EVENT_SATISFIED ) {
 				rval = SEXP_KNOWN_FALSE;
 			} else {
@@ -16673,7 +16673,7 @@ void ship_copy_damage(ship *target_shipp, ship *source_shipp)
 
 	if (target_shipp->ship_info_index != source_shipp->ship_info_index)
 	{
-		nprintf(("SEXP", "Copying damage of ship %s to ship %s which has a different ship class.  Strange results might occur.\n", source_shipp->ship_name, target_shipp->ship_name));
+	 core::nprintf("SEXP", "Copying damage of ship %s to ship %s which has a different ship class.  Strange results might occur.\n", source_shipp->ship_name, target_shipp->ship_name);
 	}
 
 
@@ -16715,7 +16715,7 @@ void parse_copy_damage(p_object *target_pobjp, ship *source_shipp)
 
 	if (target_pobjp->ship_class != source_shipp->ship_info_index)
 	{
-		nprintf(("SEXP", "Copying damage of ship %s to ship %s which has a different ship class.  Strange results might occur.\n", source_shipp->ship_name, target_pobjp->name));
+	 core::nprintf("SEXP", "Copying damage of ship %s to ship %s which has a different ship class.  Strange results might occur.\n", source_shipp->ship_name, target_pobjp->name);
 	}
 
 	// copy hull...
@@ -20217,7 +20217,7 @@ void sexp_subsys_set_random(int node)
 			// get non excluded subsystem
 			subsys = ship_get_indexed_subsys(shipp, idx, NULL);
 			if (subsys == NULL) {
-				nprintf(("Warning", "Nonexistent subsystem for index %d on ship %s for sabotage subsystem\n", idx, shipp->ship_name));
+			 core::nprintf("Warning", "Nonexistent subsystem for index %d on ship %s for sabotage subsystem\n", idx, shipp->ship_name);
 				continue;
 			}
 
@@ -20370,14 +20370,14 @@ int process_special_sexps(int index)
 			hud_shield_quadrant_hit(Player_obj, FRONT_QUAD);
 			return SEXP_TRUE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
 
 	case 4:	//	Player ship suffering much damage.
 		if (!(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Model_point_shields])) {
-			nprintf(("AI", "Frame %i\n", Framecount));
+		 core::nprintf("AI", "Frame %i\n", Framecount);
 			shield_apply_damage(Player_obj, FRONT_QUAD, 10.0f);
 			hud_shield_quadrant_hit(Player_obj, FRONT_QUAD);
 			if (Player_obj->shield_quadrant[FRONT_QUAD] < 2.0f)
@@ -20385,14 +20385,14 @@ int process_special_sexps(int index)
 			else
 				return SEXP_FALSE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
 
 	case 5:	//	Player's shield is quick repaired
 		if (!(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Model_point_shields])) {
-			nprintf(("AI", "Frame %i, recharged to %7.3f\n", Framecount, Player_obj->shield_quadrant[FRONT_QUAD]));
+		 core::nprintf("AI", "Frame %i, recharged to %7.3f\n", Framecount, Player_obj->shield_quadrant[FRONT_QUAD]);
 
 			shield_apply_damage(Player_obj, FRONT_QUAD, -flFrametime*200.0f);
 
@@ -20404,7 +20404,7 @@ int process_special_sexps(int index)
 			else
 				return SEXP_FALSE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
@@ -20416,7 +20416,7 @@ int process_special_sexps(int index)
 			Player_obj->shield_quadrant[3] = 1.0f;
 			hud_shield_quadrant_hit(Player_obj, FRONT_QUAD);
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		return SEXP_TRUE;
@@ -20425,7 +20425,7 @@ int process_special_sexps(int index)
 		if (!(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Model_point_shields])) {
 			if (shield_quad_near_max(FRONT_QUAD)) return SEXP_TRUE; else return SEXP_FALSE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
@@ -20434,7 +20434,7 @@ int process_special_sexps(int index)
 		if (!(Ship_info[Player_ship->ship_info_index].flags[Ship::Info_Flags::Model_point_shields])) {
 			if (shield_quad_near_max(REAR_QUAD)) return SEXP_TRUE; else return SEXP_FALSE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
@@ -20446,7 +20446,7 @@ int process_special_sexps(int index)
 			hud_shield_quadrant_hit(Player_obj, LEFT_QUAD);
 			return SEXP_TRUE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
@@ -20478,7 +20478,7 @@ int process_special_sexps(int index)
 			hud_shield_quadrant_hit(Player_obj, FRONT_QUAD);
 			return SEXP_TRUE;
 		} else {
-			nprintf(("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name));
+		 core::nprintf("Warning", "Shield-related Special-check SEXPs do not work on ship %s because it uses model point shields.\n", Player_ship->ship_name);
 			return SEXP_FALSE;
 		}
 		break;
@@ -23150,7 +23150,7 @@ core::Assertion ((Current_event_log_buffer != NULL) &&
 				(Current_event_log_argument_buffer != NULL), "Attempting to write to a non-existent log buffer");
 
 	if (op_num == -1) {
-		nprintf(("SEXP", "ERROR: op_num function returned %i, this should not happen. Contact a coder.\n", op_num));
+	 core::nprintf("SEXP", "ERROR: op_num function returned %i, this should not happen. Contact a coder.\n", op_num);
 		return; //How does this happen?
 	}
 

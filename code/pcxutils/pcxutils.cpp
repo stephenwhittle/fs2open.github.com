@@ -13,8 +13,8 @@
 #include "pcxutils/pcxutils.h"
 #include "bmpman/bmpman.h"
 #include <core/toolchain.h>
-
-
+#include <SDL_endian.h>
+#include <core/error.h>
 
 /* PCX Header data type */
 typedef struct	{

@@ -808,7 +808,7 @@ static void shiphit_record_player_killer(object *killer_objp, player *p)
 			if ( pnum != -1 ) {
 				strcpy_s(p->killer_parent_name, Net_players[pnum].m_player->callsign);
 			} else {
-				nprintf(("Network", "Couldn't find player object of weapon for killer of %s\n", p->callsign));
+			 core::nprintf("Network", "Couldn't find player object of weapon for killer of %s\n", p->callsign);
 			}
 		} else {
 			strcpy_s(p->killer_parent_name, Ships[Objects[killer_objp->parent].instance].ship_name);
@@ -832,7 +832,7 @@ static void shiphit_record_player_killer(object *killer_objp, player *p)
 			if ( pnum != -1 ) {
 				strcpy_s(p->killer_parent_name, Net_players[pnum].m_player->callsign);
 			} else {
-				nprintf(("Network", "Couldn't find player object of shockwave for killer of %s\n", p->callsign));
+			 core::nprintf("Network", "Couldn't find player object of shockwave for killer of %s\n", p->callsign);
 			}
 		} else {
 			strcpy_s(p->killer_parent_name, Ships[Objects[killer_objp->parent].instance].ship_name);
@@ -861,7 +861,7 @@ static void shiphit_record_player_killer(object *killer_objp, player *p)
 			if ( pnum != -1 ) {
 				strcpy_s(p->killer_parent_name, Net_players[pnum].m_player->callsign);
 			} else {
-				nprintf(("Network", "Couldn't find player object for killer of %s\n", p->callsign));
+			 core::nprintf("Network", "Couldn't find player object for killer of %s\n", p->callsign);
 			}
 		} else {
 			strcpy_s(p->killer_parent_name, Ships[killer_objp->instance].ship_name);
@@ -1272,7 +1272,7 @@ static void ship_hit_create_sparks(object *ship_objp, vec3d *hitpos, int submode
 //	Called from ship_hit_kill() when we detect the player has been killed.
 static void player_died_start(object *killer_objp)
 {
-	nprintf(("Network", "starting my player death\n"));
+ core::nprintf("Network", "starting my player death\n");
 	gameseq_post_event(GS_EVENT_DEATH_DIED);	
 	
 /*	vm_vec_scale_add(&Dead_camera_pos, &Player_obj->pos, &Player_obj->orient.fvec, -10.0f);
@@ -1509,7 +1509,7 @@ core::Assert(objp->instance >= 0 && objp->instance < MAX_SHIPS );
 			sp->deathroll_rotvel.xyz.z *= (2.0f * largest_mag / fl_abs(sp->deathroll_rotvel.xyz.z));
 		}
 		saturate_fabs(&sp->deathroll_rotvel.xyz.z, 0.75f*DEATHROLL_ROTVEL_CAP);
-		// nprintf(("Physics", "Frame: %i rotvel_mag: %5.2f, rotvel: (%4.2f, %4.2f, %4.2f)\n", Framecount, rotvel_mag, sp->deathroll_rotvel.x, sp->deathroll_rotvel.y, sp->deathroll_rotvel.z));
+		// core::nprintf("Physics", "Frame: %i rotvel_mag: %5.2f, rotvel: (%4.2f, %4.2f, %4.2f)\n", Framecount, rotvel_mag, sp->deathroll_rotvel.x, sp->deathroll_rotvel.y, sp->deathroll_rotvel.z);
 	}
 
 	
@@ -1740,7 +1740,7 @@ extern int Homing_hits, Homing_misses;
 void ship_apply_whack(vec3d *force, vec3d *hit_pos, object *objp)
 {
 	if (objp == Player_obj) {
-		nprintf(("Sandeep", "Playing stupid joystick effect\n"));
+	 core::nprintf("Sandeep", "Playing stupid joystick effect\n");
 		vec3d test;
 		vm_vec_unrotate(&test, force, &objp->orient);
 
@@ -1820,7 +1820,7 @@ static void shiphit_hit_after_death(object *ship_objp, float damage)
 		if (time_remaining < MIN_PLAYER_DEATHROLL_TIME)
 			return;
 
-	// nprintf(("AI", "Subtracting off %7.3f seconds from deathroll, reducing to %7.3f\n", (float) delta_time/1000.0f, (float) (time_remaining - delta_time)/1000.0f));
+	// core::nprintf("AI", "Subtracting off %7.3f seconds from deathroll, reducing to %7.3f\n", (float) delta_time/1000.0f, (float) (time_remaining - delta_time)/1000.0f);
 
 	delta_time = time_remaining - delta_time;
 	if (ship_objp->flags[Object::Object_Flags::Player_ship])
@@ -2453,7 +2453,7 @@ core::Assert(other_obj);	// Goober5000
 		weapon_info	*wip = &Weapon_info[Weapons[other_obj->instance].weapon_info_index];
 		if (wip->is_homing()) {
 			Homing_hits++;
-			// nprintf(("AI", " Hit!  Hits = %i/%i\n", Homing_hits, (Homing_hits + Homing_misses)));
+			// core::nprintf("AI", " Hit!  Hits = %i/%i\n", Homing_hits, (Homing_hits + Homing_misses));
 		}
 	}
 #endif

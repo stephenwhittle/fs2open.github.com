@@ -14,6 +14,8 @@
 #include <windowsx.h>
 #endif
 
+#include <SDL_version.h>
+#include <SDL_mutex.h>
 #include "io/mouse.h"
 #include "graphics/2d.h"
 #include "scripting/scripting.h"

@@ -670,11 +670,11 @@ void ship_select_init()
 		common_buttons_maybe_reload(&Ship_select_ui_window);	// AL 11-21-97: this is necessary since we may returning from the hotkey
 																				// screen, which can release common button bitmaps.
 		common_reset_buttons();
-		nprintf(("Alan","ship_select_init() returning without doing anything\n"));
+	 core::nprintf("Alan","ship_select_init() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan","entering ship_select_init()\n"));
+ core::nprintf("Alan","entering ship_select_init()\n");
 	common_select_init();
 
 	ShipSelectMaskBitmap = bm_load(Ship_select_background_mask_fname[gr_screen.res]);
@@ -1577,11 +1577,11 @@ void ship_select_close()
 	ship_select_common_close();
 
 	if ( !Ship_select_open ) {
-		nprintf(("Alan","ship_select_close() returning without doing anything\n"));
+	 core::nprintf("Alan","ship_select_close() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan", "Entering ship_select_close()\n"));
+ core::nprintf("Alan", "Entering ship_select_close()\n");
 
 	// done with the bitmaps, so unlock it
 	bm_unlock(ShipSelectMaskBitmap);

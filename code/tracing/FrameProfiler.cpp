@@ -7,6 +7,7 @@
 #include "utils/strings.h"
 #include <core/toolchain.h>
 #include "math/floating.h"
+#include <core/error.h>
 using namespace tracing;
 
 namespace {

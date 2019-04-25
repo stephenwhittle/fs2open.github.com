@@ -189,7 +189,7 @@ void mht_close()
 {
 	// unload any bitmaps
 	if(!bm_unload(Mht_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n", Mht_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n", Mht_bitmap_fname[gr_screen.res]);
 	}	
 	
 	// destroy the UI_WINDOW

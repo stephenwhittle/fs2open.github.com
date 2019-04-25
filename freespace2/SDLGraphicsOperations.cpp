@@ -3,7 +3,7 @@
 
 #include "SDLGraphicsOperations.h"
 #include "core/error.h"
-
+#include <SDL.h>
 namespace {
 void setOGLProperties(const os::ViewPortProperties& props) {
 	SDL_GL_ResetAttributes();
@@ -18,9 +18,9 @@ void setOGLProperties(const os::ViewPortProperties& props) {
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
 
-	mprintf(("  Requested SDL Pixel values = R: %d, G: %d, B: %d, depth: %d, stencil: %d, double-buffer: %d, FSAA: %d\n",
+ core::mprintf("  Requested SDL Pixel values = R: %d, G: %d, B: %d, depth: %d, stencil: %d, double-buffer: %d, FSAA: %d\n",
 		props.pixel_format.red_size, props.pixel_format.green_size, props.pixel_format.blue_size,
-		props.pixel_format.depth_size, props.pixel_format.stencil_size, 1, props.pixel_format.multi_samples));
+		props.pixel_format.depth_size, props.pixel_format.stencil_size, 1, props.pixel_format.multi_samples);
 
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, props.gl_attributes.major_version);
@@ -232,8 +232,8 @@ std::unique_ptr<os::OpenGLContext> SDLGraphicsOperations::createOpenGLContext(os
 	SDL_GL_GetAttribute(SDL_GL_STENCIL_SIZE, &stencil);
 	SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &fsaa_samples);
 
-	mprintf(("  Actual SDL Video values    = R: %d, G: %d, B: %d, depth: %d, stencil: %d, double-buffer: %d, FSAA: %d\n",
-		r, g, b, depth, stencil, db, fsaa_samples));
+ core::mprintf("  Actual SDL Video values    = R: %d, G: %d, B: %d, depth: %d, stencil: %d, double-buffer: %d, FSAA: %d\n",
+		r, g, b, depth, stencil, db, fsaa_samples);
 
 
 	return std::unique_ptr<os::OpenGLContext>(new SDLOpenGLContext(ctx));

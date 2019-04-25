@@ -937,7 +937,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 	if ( optional_string("$Model file:") ) {
 		stuff_string(wip->pofbitmap_name, F_NAME, MAX_FILENAME_LEN);
 
-		if ( VALID_FNAME(wip->pofbitmap_name) )
+		if ( core::fs::VALID_FNAME(wip->pofbitmap_name) )
 			wip->render_type = WRT_POF;
 
 		diag_printf("Model pof file -- %s\n", wip->pofbitmap_name );
@@ -1402,7 +1402,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 	if(optional_string("$Free Flight Speed:")) {
 		float temp;
 		stuff_float(&temp);
-		nprintf(("Warning", "Ignoring free flight speed for weapon '%s'\n", wip->name));
+	 core::nprintf("Warning", "Ignoring free flight speed for weapon '%s'\n", wip->name);
 	}
 	//Optional one-shot sound to play at the beginning of firing
 	parse_game_sound("$PreLaunchSnd:", &wip->pre_launch_snd);
@@ -1614,7 +1614,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 		if (optional_string("$Impact Explosion:")) {
 			stuff_string(fname, F_NAME, NAME_LENGTH);
 
-			if (VALID_FNAME(fname))
+			if (core::fs::VALID_FNAME(fname))
 			{
 				bitmapIndex = bm_load_animation(fname);
 				
@@ -1677,7 +1677,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 			int bitmapID = -1;
 			float size = 1.0f;
 
-			if (VALID_FNAME(fname))
+			if (core::fs::VALID_FNAME(fname))
 			{
 				bitmapID = bm_load_animation(fname);
 
@@ -2154,7 +2154,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 			if (optional_string("+Beam Flash Effect:")) {
 				stuff_string(fname, F_NAME, NAME_LENGTH);
 
-				if (VALID_FNAME(fname))
+				if (core::fs::VALID_FNAME(fname))
 				{
 					bitmapIndex = bm_load_animation(fname);
 
@@ -2213,7 +2213,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 			{
 				stuff_string(fname, F_NAME, NAME_LENGTH);
 
-				if (VALID_FNAME(fname))
+				if (core::fs::VALID_FNAME(fname))
 				{
 					bitmapIndex = bm_load_animation(fname);
 
@@ -2646,14 +2646,14 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 	if (optional_string("$Thruster Flame Effect:")) {
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
-		if (VALID_FNAME(fname))
+		if (core::fs::VALID_FNAME(fname))
 			generic_anim_init( &wip->thruster_flame, fname );
 	}
 
 	if (optional_string("$Thruster Glow Effect:")) {
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
-		if (VALID_FNAME(fname))
+		if (core::fs::VALID_FNAME(fname))
 			generic_anim_init( &wip->thruster_glow, fname );
 	}
 
@@ -3372,7 +3372,7 @@ void weapon_generate_indexes_for_substitution() {
 		}
 
 		if (wip->failure_rate > 0.0f) {
-			if (VALID_FNAME(wip->failure_sub_name)) {
+			if (core::fs::VALID_FNAME(wip->failure_sub_name)) {
 				wip->failure_sub = weapon_info_lookup(wip->failure_sub_name.c_str());
 
 				if (wip->failure_sub == -1) { // invalid sub weapon
@@ -3677,9 +3677,9 @@ void detonate_nearby_missiles(object* killer_objp, object* missile_objp)
 	if (killer_infop->cm_kill_single) {
 		weapon* wp = &Weapons[missile_objp->instance];
 		if (wp->lifeleft > 0.2f) {
-			nprintf(("Countermeasures", "Countermeasure (%s-%i) detonated missile (%s-%i) Frame: %i\n",
+		 core::nprintf("Countermeasures", "Countermeasure (%s-%i) detonated missile (%s-%i) Frame: %i\n",
 						killer_infop->name, killer_objp->signature,
-						Weapon_info[Weapons[missile_objp->instance].weapon_info_index].name, missile_objp->signature, Framecount));
+						Weapon_info[Weapons[missile_objp->instance].weapon_info_index].name, missile_objp->signature, Framecount);
 			wp->lifeleft = 0.2f;
 		}
 		return;
@@ -3695,9 +3695,9 @@ void detonate_nearby_missiles(object* killer_objp, object* missile_objp)
 			if ( Missiontime - wp->creation_time > F1_0/2) {
 				if (vm_vec_dist_quick(&killer_objp->pos, &objp->pos) < killer_infop->cm_detonation_rad) {
 					if (wp->lifeleft > 0.2f) { 
-						nprintf(("Countermeasures", "Countermeasure (%s-%i) detonated missile (%s-%i) Frame: %i\n",
+					 core::nprintf("Countermeasures", "Countermeasure (%s-%i) detonated missile (%s-%i) Frame: %i\n",
 									killer_infop->name, killer_objp->signature,
-									Weapon_info[Weapons[objp->instance].weapon_info_index].name, objp->signature, Framecount));
+									Weapon_info[Weapons[objp->instance].weapon_info_index].name, objp->signature, Framecount);
 						wp->lifeleft = 0.2f;
 					}
 				}
@@ -3876,8 +3876,8 @@ void find_homing_object_cmeasures(const std::vector<object*> &cmeasure_list)
 							bool found = false;
 							for (auto ii = wp->cmeasure_ignore_list->cbegin(); ii != wp->cmeasure_ignore_list->cend(); ++ii) {
 								if ((*cit)->signature == *ii) {
-									nprintf(("CounterMeasures", "Weapon (%s-%04i) already seen CounterMeasure (%s-%04i) Frame: %i\n",
-												wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount));
+								 core::nprintf("CounterMeasures", "Weapon (%s-%04i) already seen CounterMeasure (%s-%04i) Frame: %i\n",
+												wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount);
 									found = true;
 									break;
 								}
@@ -3900,8 +3900,8 @@ void find_homing_object_cmeasures(const std::vector<object*> &cmeasure_list)
 
 						if (frand() >= chance) {
 							// failed to decoy
-							nprintf(("CounterMeasures", "Weapon (%s-%04i) ignoring CounterMeasure (%s-%04i) Frame: %i\n",
-										wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount));
+						 core::nprintf("CounterMeasures", "Weapon (%s-%04i) ignoring CounterMeasure (%s-%04i) Frame: %i\n",
+										wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount);
 						}
 						else {
 							// successful decoy, maybe chase the new cm
@@ -3912,8 +3912,8 @@ void find_homing_object_cmeasures(const std::vector<object*> &cmeasure_list)
 								best_dot = dot;
 								wp->homing_object = (*cit);
 								cmeasure_maybe_alert_success((*cit));
-								nprintf(("CounterMeasures", "Weapon (%s-%04i) chasing CounterMeasure (%s-%04i) Frame: %i\n",
-											wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount));
+							 core::nprintf("CounterMeasures", "Weapon (%s-%04i) chasing CounterMeasure (%s-%04i) Frame: %i\n",
+											wip->name, weapon_objp->instance, cm_wip->name, (*cit)->signature, Framecount);
 							}
 						}
 					}
@@ -5139,7 +5139,7 @@ core::Assert(weapon_type >= 0 && weapon_type < Num_weapon_types);
 
 		num_deleted = collide_remove_weapons();
 
-		nprintf(("WARNING", "Deleted %d weapons because of lack of slots\n", num_deleted));
+	 core::nprintf("WARNING", "Deleted %d weapons because of lack of slots\n", num_deleted);
 		if (num_deleted == 0){
 			return -1;
 		}
@@ -5755,7 +5755,7 @@ void weapon_hit_do_sound(object *hit_obj, weapon_info *wip, vec3d *hitpos, bool 
 					}
 					break;
 				default:	
-					nprintf(("Warning","WARNING ==> Cannot determine sound to play for weapon impact\n"));
+				 core::nprintf("Warning","WARNING ==> Cannot determine sound to play for weapon impact\n");
 					break;
 			} // end switch
 		}
@@ -6393,7 +6393,7 @@ core::Assert( used_weapons != NULL );
 	for (i = 0; i < Num_weapon_types; i++) {
 		if ( !Cmdline_load_all_weapons ) {
 			if ( !used_weapons[i] ) {
-				nprintf(("Weapons", "Not loading weapon id %d (%s)\n", i, Weapon_info[i].name));
+			 core::nprintf("Weapons", "Not loading weapon id %d (%s)\n", i, Weapon_info[i].name);
 				continue;
 			}
 		}
@@ -7484,12 +7484,12 @@ void validate_SSM_entries()
 		wi = weapon_info_lookup(it->c_str());
 	core::Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
 		wip = &Weapon_info[wi];
-		nprintf(("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index));
+	 core::nprintf("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index);
 		wip->SSM_index = ssm_info_lookup(dat->ssm_entry.c_str());
 		if (wip->SSM_index < 0) {
 			core::Warning(LOCATION, "Unknown SSM entry '%s' in specification for %s (%s:line %d).\n", dat->ssm_entry.c_str(), it->c_str(), dat->filename.c_str(), dat->linenum);
 		}
-		nprintf(("parse", "Validation complete, SSM_index is %d.\n", wip->SSM_index));
+	 core::nprintf("parse", "Validation complete, SSM_index is %d.\n", wip->SSM_index);
 	}
 
 	// This information is no longer relevant, so might as well clear it out.
@@ -7501,12 +7501,12 @@ void validate_SSM_entries()
 		wi = weapon_info_lookup(it->c_str());
 	core::Assertion(wi >= 0, "Trying to validate non-existant weapon '%s'; get a coder!\n", it->c_str());
 		wip = &Weapon_info[wi];
-		nprintf(("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index));
+	 core::nprintf("parse", "Starting validation of '%s' [wip->name is '%s'], currently has an SSM_index of %d.\n", it->c_str(), wip->name, wip->SSM_index);
 		if (wip->SSM_index < -1 || wip->SSM_index >= static_cast<int>(Ssm_info.size())) {
 			core::Warning(LOCATION, "Invalid SSM index '%d' (should be 0-" SIZE_T_ARG ") in specification for %s (%s:line %d).\n", wip->SSM_index, Ssm_info.size() - 1, it->c_str(), dat->filename.c_str(), dat->linenum);
 			wip->SSM_index = -1;
 		}
-		nprintf(("parse", "Validation complete, SSM-index is %d.\n", wip->SSM_index));
+	 core::nprintf("parse", "Validation complete, SSM-index is %d.\n", wip->SSM_index);
 	}
 }
 

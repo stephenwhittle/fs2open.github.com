@@ -11,7 +11,7 @@
 #include "sound/fsspeech.h"
 #include "sound/speech.h"
 #include <core/toolchain.h>
-
+#include <core/error.h>
 extern int Cmdline_freespace_no_sound;
 
 const size_t MAX_SPEECH_BUFFER_LEN = 4096;
@@ -49,7 +49,7 @@ bool fsspeech_init()
 	for(int i = 0; i < FSSPEECH_FROM_MAX; i++) {
 		FSSpeech_play_from[i] =
 			os_config_read_uint(NULL, FSSpeech_play_id[i], 0) ? true : false;
-		nprintf(("Speech", "Play %s: %s\n", FSSpeech_play_id[i], FSSpeech_play_from[i] ? "true" : "false"));
+	 core::nprintf("Speech", "Play %s: %s\n", FSSpeech_play_id[i], FSSpeech_play_from[i] ? "true" : "false");
 	}
 
 	int volume = os_config_read_uint(NULL, "SpeechVolume", 100);
@@ -76,17 +76,17 @@ void fsspeech_deinit()
 void fsspeech_play(int type, const char *text)
 {
 	if (!speech_inited) {
-		nprintf(("Speech", "Aborting fsspech_play because speech_inited is false.\n"));
+	 core::nprintf("Speech", "Aborting fsspech_play because speech_inited is false.\n");
 		return;
 	}
 
 	if (type >= FSSPEECH_FROM_MAX) {
-		nprintf(("Speech", "Aborting fsspeech_play because speech type is out of range.\n"));
+	 core::nprintf("Speech", "Aborting fsspeech_play because speech type is out of range.\n");
 		return;
 	}
 
 	if (type >= 0 && FSSpeech_play_from[type] == false) {
-		nprintf(("Speech", "Aborting fsspeech_play because we aren't supposed to play from type %s.\n", FSSpeech_play_id[type]));
+	 core::nprintf("Speech", "Aborting fsspeech_play because we aren't supposed to play from type %s.\n", FSSpeech_play_id[type]);
 		return;
 	}
 

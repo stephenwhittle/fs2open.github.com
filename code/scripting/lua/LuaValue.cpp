@@ -1,6 +1,7 @@
 #include "LuaValue.h"
 #include "LuaException.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 namespace {
 using namespace luacpp;
 

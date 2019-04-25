@@ -371,7 +371,7 @@ void multi_check_listen()
 
 		// if we didn't find a player, close the socket
 		if ( i == MAX_PLAYERS ) {
-			nprintf(("Network", "Got accept on my listen socket, but unknown player.  Closing socket.\n"));
+		 core::nprintf("Network", "Got accept on my listen socket, but unknown player.  Closing socket.\n");
 			psnet_rel_close_socket(&sock);
 		}
 	}
@@ -908,7 +908,7 @@ void process_packet_normal(ubyte* data, header *header_info)
 			break; 
 
 		default:
-			nprintf(("Network", "Received packet with unknown type %d\n", data[0] ));
+		 core::nprintf("Network", "Received packet with unknown type %d\n", data[0] );
 			header_info->bytes_processed = 10000;
 			break;
 
@@ -961,7 +961,7 @@ void multi_process_bigdata(ubyte *data, int len, net_addr *from_addr, int reliab
 		}		
 
 		if ( (type<0) || (type > MAX_TYPE_ID )) {
-			nprintf( ("Network", "multi_process_bigdata: Invalid packet type %d!\n", type ));
+			core::nprintf("Network", "multi_process_bigdata: Invalid packet type %d!\n", type );
 			return;
 		}		
 
@@ -1058,7 +1058,7 @@ core::Assert( Multi_read_count < NUM_REENTRANT_LEVELS );
 	while( (size = psnet_get(data, &from_addr))>0 )	{
 		// ingame joiners will ignore UDP packets until they are have picked a ship and are in the mission
 		if( (Net_player->flags & NETINFO_FLAG_INGAME_JOIN) && (Net_player->state != NETPLAYER_STATE_INGAME_SHIP_SELECT) ){
-			nprintf(("Network","Tossing UDP like a good little ingame joiner...\n"));
+		 core::nprintf("Network","Tossing UDP like a good little ingame joiner...\n");
 		} 
 		// otherwise process incoming data normally
 		else {
@@ -1521,16 +1521,16 @@ void standalone_main_init()
 	Net_player->p_info.options.obj_update_level = Multi_options_g.std_datarate;
 	switch(Net_player->p_info.options.obj_update_level){
 	case OBJ_UPDATE_LOW:
-		nprintf(("Network","STANDALONE USING LOW UPDATES\n"));
+	 core::nprintf("Network","STANDALONE USING LOW UPDATES\n");
 		break;
 	case OBJ_UPDATE_MEDIUM:
-		nprintf(("Network","STANDALONE USING MEDIUM UPDATES\n"));
+	 core::nprintf("Network","STANDALONE USING MEDIUM UPDATES\n");
 		break;
 	case OBJ_UPDATE_HIGH:
-		nprintf(("Network","STANDALONE USING HIGH UPDATE\n"));
+	 core::nprintf("Network","STANDALONE USING HIGH UPDATE\n");
 		break;
 	case OBJ_UPDATE_LAN:
-		nprintf(("Network","STANDALONE USING LAN UPDATE\n"));
+	 core::nprintf("Network","STANDALONE USING LAN UPDATE\n");
 		break;
 	}
 

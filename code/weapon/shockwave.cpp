@@ -425,7 +425,7 @@ int shockwave_load(const char *s_name, bool shock_3D)
 core::Assert( s_name );
 
 	// make sure that this is, or should be, valid
-	if ( !VALID_FNAME(s_name) )
+	if ( !core::fs::VALID_FNAME(s_name) )
 		return -1;
 
 	for (auto it = Shockwave_info.cbegin(); it != Shockwave_info.cend(); ++it) {

@@ -140,6 +140,7 @@
 #include "object/waypoint.h"
 #include "observer/observer.h"
 #include "osapi/osapi.h"
+#include "osapi/outwnd.h"
 #include "osapi/osregistry.h"
 #include "parse/encrypt.h"
 #include "parse/generic_log.h"
@@ -1872,14 +1873,14 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	// pxo login and password
 	ptr = os_config_read_string(NOX("PXO"),NOX("Login"),NULL);
 	if(ptr == NULL){
-		nprintf(("Network","Error reading in PXO login data\n"));
+	 core::nprintf("Network","Error reading in PXO login data\n");
 		strcpy_s(Multi_tracker_login,"");
 	} else {		
 		strcpy_s(Multi_tracker_login,ptr);
 	}
 	ptr = os_config_read_string(NOX("PXO"),NOX("Password"),NULL);
 	if(ptr == NULL){		
-		nprintf(("Network","Error reading PXO password\n"));
+	 core::nprintf("Network","Error reading PXO password\n");
 		strcpy_s(Multi_tracker_passwd,"");
 	} else {		
 		strcpy_s(Multi_tracker_passwd,ptr);
@@ -1888,7 +1889,7 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	// pxo squad name and password
 	ptr = os_config_read_string(NOX("PXO"),NOX("SquadName"),NULL);
 	if(ptr == NULL){
-		nprintf(("Network","Error reading in PXO squad name\n"));
+	 core::nprintf("Network","Error reading in PXO squad name\n");
 		strcpy_s(Multi_tracker_squad_name, "");
 	} else {		
 		strcpy_s(Multi_tracker_squad_name, ptr);
@@ -2031,8 +2032,8 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 
 	libs::discord::init();
 
-	nprintf(("General", "Ships.tbl is : %s\n", Game_ships_tbl_valid ? "VALID" : "INVALID!!!!"));
-	nprintf(("General", "Weapons.tbl is : %s\n", Game_weapons_tbl_valid ? "VALID" : "INVALID!!!!"));
+ core::nprintf("General", "Ships.tbl is : %s\n", Game_ships_tbl_valid ? "VALID" : "INVALID!!!!");
+ core::nprintf("General", "Weapons.tbl is : %s\n", Game_weapons_tbl_valid ? "VALID" : "INVALID!!!!");
 
  core::mprintf("cfile_init() took %d\n", e1 - s1);
 
@@ -2539,7 +2540,7 @@ void show_debug_stuff()
 		}
 	}
 
-	nprintf(("Mike", "Frame: %i Lasers: %4i, Missiles: %4i\n", Framecount, laser_count, missile_count));
+ core::nprintf("Mike", "Frame: %i Lasers: %4i, Missiles: %4i\n", Framecount, laser_count, missile_count);
 }
 
 extern int Tool_enabled;
@@ -2767,7 +2768,7 @@ void do_timing_test(float frame_time)
 		test_time += frame_time;
 		if ( framecount >= NUM_FRAMES_TEST ) {
 			test_running = 0;
-			nprintf(("General", "%d frames took %.3f seconds\n", NUM_FRAMES_TEST, test_time));
+		 core::nprintf("General", "%d frames took %.3f seconds\n", NUM_FRAMES_TEST, test_time);
 			for ( i = 0; i < NUM_MIXED_SOUNDS; i++ )
 				snd_stop(snds[i]);
 		}
@@ -4423,7 +4424,7 @@ void game_set_frametime(int state)
 		fix frame_speed = F1_0 / Debug_dump_frames;
 
 		if (Frametime > frame_speed ){
-			nprintf(("warning","slow frame: %x\n",(int)Frametime));
+		 core::nprintf("warning","slow frame: %x\n",(int)Frametime);
 		} else {			
 			do {
 				thistime = timer_get_fixed_seconds();
@@ -4671,7 +4672,7 @@ int game_poll()
 		}
 	}
 
-//	if ( k ) nprintf(( "General", "Key = %x\n", k ));
+//	if ( k ) core::nprintf( "General", "Key = %x\n", k );
 
 	switch (k) {
 		case KEY_F1:
@@ -6748,7 +6749,7 @@ int game_main(int argc, char *argv[])
 
 
 	if (Is_standalone){
-		nprintf(("Network", "Standalone running\n"));
+	 core::nprintf("Network", "Standalone running\n");
 	}
 
 	game_init();

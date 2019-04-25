@@ -96,7 +96,7 @@ void triggered_rotation::start(queued_animation *q)
 {
 	instance = q->instance;
 
-	nprintf(("ModelAnim", "Starting animation type %i at %i ...\n", q->type, timestamp()));
+ core::nprintf("ModelAnim", "Starting animation type %i at %i ...\n", q->type, timestamp());
 
 	current_snd = gamesnd_id();
 	current_snd_index = start_sound = q->start_sound;
@@ -123,9 +123,9 @@ void triggered_rotation::start(queued_animation *q)
 			slow_angle.a1d[axis] = end_angle.a1d[axis] + (((q->vel.a1d[axis] * q->vel.a1d[axis]) / (2.0f * q->accel.a1d[axis])) * direction.a1d[axis]);
 	}
 
-	nprintf(("ModelAnim", "Dir=[%f, %f, %f], End=[%f, %f, %f], Vel=[%f, %f, %f], Accel=[%f, %f, %f], Slow=[%f, %f, %f]\n", direction.a1d[0], direction.a1d[1], direction.a1d[2],
+ core::nprintf("ModelAnim", "Dir=[%f, %f, %f], End=[%f, %f, %f], Vel=[%f, %f, %f], Accel=[%f, %f, %f], Slow=[%f, %f, %f]\n", direction.a1d[0], direction.a1d[1], direction.a1d[2],
 				end_angle.a1d[0], end_angle.a1d[1], end_angle.a1d[2], rot_vel.a1d[0], rot_vel.a1d[1], rot_vel.a1d[2], rot_accel.a1d[0], rot_accel.a1d[1], rot_accel.a1d[2],
-				slow_angle.a1d[0], slow_angle.a1d[1], slow_angle.a1d[2]));
+				slow_angle.a1d[0], slow_angle.a1d[1], slow_angle.a1d[2]);
 
 	has_started = true;
 	end_time = q->end_time;

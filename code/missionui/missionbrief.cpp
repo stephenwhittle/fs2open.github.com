@@ -877,7 +877,7 @@ void brief_init()
 		common_buttons_maybe_reload(&Brief_ui_window);	// AL 11-21-97: this is necessary since we may returning from the hotkey
 																		// screen, which can release common button bitmaps.
 		common_reset_buttons();
-		nprintf(("Alan","brief_init() returning without doing anything\n"));
+	 core::nprintf("Alan","brief_init() returning without doing anything\n");
 		return;
 	}
 
@@ -895,7 +895,7 @@ void brief_init()
 	hud_anim_init(&Fade_anim, Brief_static_coords[gr_screen.res][0], Brief_static_coords[gr_screen.res][1], Brief_static_name[gr_screen.res]);
 	hud_anim_load(&Fade_anim);
 
-	nprintf(("Alan","Entering brief_init()\n"));
+ core::nprintf("Alan","Entering brief_init()\n");
 	common_select_init();
 
 	// Set up the mask regions
@@ -1611,8 +1611,8 @@ void brief_do_frame(float frametime)
 
 #ifndef NDEBUG
 	if ( cam_change ) {
-		nprintf(("General","Camera pos: %.2f, %.2f %.2f // ", Closeup_cam_pos.xyz.x, Closeup_cam_pos.xyz.y, Closeup_cam_pos.xyz.z));
-		nprintf(("General","Camera zoom: %.2f\n", Closeup_zoom));
+	 core::nprintf("General","Camera pos: %.2f, %.2f %.2f // ", Closeup_cam_pos.xyz.x, Closeup_cam_pos.xyz.y, Closeup_cam_pos.xyz.z);
+	 core::nprintf("General","Camera zoom: %.2f\n", Closeup_zoom);
 	}
 #endif
 
@@ -1813,11 +1813,11 @@ void brief_unload_bitmaps()
 void brief_close()
 {
 	if ( Brief_inited == FALSE ) {
-		nprintf(("Warning","brief_close() returning without doing anything\n"));
+	 core::nprintf("Warning","brief_close() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan", "Entering brief_close()\n"));
+ core::nprintf("Alan", "Entering brief_close()\n");
 
 	ML_objectives_close();
 	fsspeech_stop();
@@ -1869,7 +1869,7 @@ void briefing_start_music()
 			audiostream_play(Briefing_music_handle, Master_event_music_volume, 1);
 	}
 	else {
-		nprintf(("Warning", "No music file exists to play music at this briefing!\n"));
+	 core::nprintf("Warning", "No music file exists to play music at this briefing!\n");
 	}
 }
 

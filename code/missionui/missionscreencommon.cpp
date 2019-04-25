@@ -327,7 +327,7 @@ void common_music_init(int score_index)
 	if ( Mission_music[score_index] < 0 ) {
 		if ( Num_music_files > 0 ) {
 			Mission_music[score_index] = 0;
-			nprintf(("Sound","No briefing music is selected, so play first briefing track: %s\n",Spooled_music[Mission_music[score_index]].name));
+		 core::nprintf("Sound","No briefing music is selected, so play first briefing track: %s\n",Spooled_music[Mission_music[score_index]].name);
 		} else {
 			return;
 		}
@@ -500,11 +500,11 @@ void common_reset_team_pointers()
 void common_select_init()
 {
 	if ( Common_select_inited ) {
-		nprintf(("Alan","common_select_init() returning without doing anything\n"));
+	 core::nprintf("Alan","common_select_init() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan","entering common_select_init()\n"));
+ core::nprintf("Alan","entering common_select_init()\n");
 
 	// No anims are playing
 	Background_playing = 0;
@@ -944,11 +944,11 @@ void common_check_keys(int k)
 void common_select_close()
 {
 	if ( !Common_select_inited ) {
-		nprintf(("Alan","common_select_close() returning without doing anything\n"));
+	 core::nprintf("Alan","common_select_close() returning without doing anything\n");
 		return;
 	}
 
-	nprintf(("Alan","entering common_select_close()\n"));
+ core::nprintf("Alan","entering common_select_close()\n");
 
 	// catch open anims that weapon_select_init_team() opened when not in weapon_select - taylor
 	// *** not the same as weapon_select_close() ***

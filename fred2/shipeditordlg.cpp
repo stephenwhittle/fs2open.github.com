@@ -394,7 +394,7 @@ void CShipEditorDlg::initialize_data(int full_update)
 	CComboBox *box;
 	CSingleLock sync(&CS_update);
 
-	nprintf(("Fred routing", "Ship dialog load\n"));
+ core::nprintf("Fred routing", "Ship dialog load\n");
 	if (!GetSafeHwnd() || bypass_all)
 		return;
 
@@ -1022,7 +1022,7 @@ int CShipEditorDlg::update_data(int redraw)
 	int i, z, wing;
 	CSingleLock sync(&CS_cur_object_index), sync2(&CS_update);
 
-	nprintf(("Fred routing", "Ship dialog save\n"));
+ core::nprintf("Fred routing", "Ship dialog save\n");
 	if (!GetSafeHwnd() || !initialized || bypass_all)
 		return 0;
 
@@ -1521,7 +1521,7 @@ void CShipEditorDlg::OnEndlabeleditDepartureTree(NMHDR* pNMHDR, LRESULT* pResult
 
 int CShipEditorDlg::verify()
 {
-	nprintf(("Fred routing", "Ship dialog verify\n"));
+ core::nprintf("Fred routing", "Ship dialog verify\n");
 	if (!GetSafeHwnd() || !modified)
 		return 0;
 

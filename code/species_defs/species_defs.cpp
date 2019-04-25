@@ -58,7 +58,7 @@ void parse_thrust_anims(species_info *species, bool no_create)
 	}
 
 	// if no primary thruster anim is wanted then clear it
-	if ( !VALID_FNAME(species->thruster_info.flames.normal.filename) )
+	if ( !core::fs::VALID_FNAME(species->thruster_info.flames.normal.filename) )
 		generic_anim_init(&species->thruster_info.flames.normal, NULL);
 
 	// and again
@@ -76,7 +76,7 @@ void parse_thrust_anims(species_info *species, bool no_create)
 	}
 
 	// if no primary thruster anim is wanted then clear it
-	if ( !VALID_FNAME(species->thruster_info.flames.afterburn.filename) )
+	if ( !core::fs::VALID_FNAME(species->thruster_info.flames.afterburn.filename) )
 		generic_anim_init(&species->thruster_info.flames.afterburn, NULL);
 
 	// extra thruster stuff, bah
@@ -130,7 +130,7 @@ void parse_thrust_glows(species_info *species, bool no_create)
 	}
 
 	// if no glow is wanted then clear it
-	if ( !VALID_FNAME(species->thruster_info.glow.normal.filename) )
+	if ( !core::fs::VALID_FNAME(species->thruster_info.glow.normal.filename) )
 		generic_anim_init(&species->thruster_info.glow.normal, NULL);
 
 	if (no_create)
@@ -145,7 +145,7 @@ void parse_thrust_glows(species_info *species, bool no_create)
 	}
 
 	// if no glow is wanted then clear it
-	if ( !VALID_FNAME(species->thruster_info.glow.afterburn.filename) )
+	if ( !core::fs::VALID_FNAME(species->thruster_info.glow.afterburn.filename) )
 		generic_anim_init(&species->thruster_info.glow.afterburn, NULL);
 }
 

@@ -1562,8 +1562,8 @@ void debrief_stats_render()
 						gr_printf_menu(0, y, "%s", XSTR( "All-time Kills by Ship Type", 448));
 
 				} else if (i > 1) {
-					/core::Assert: Was debrief_setup_ship_kill_stats called?
-				core::Assert(Debrief_stats_kills != NULL);
+					//core::Assert: Was debrief_setup_ship_kill_stats called?
+					core::Assert(Debrief_stats_kills != NULL);
 
 					gr_printf_menu(0, y, "%s", Debrief_stats_kills[i - 2].text);
 					gr_printf_menu(Debrief_text_x2[gr_screen.res], y, "%d", Debrief_stats_kills[i - 2].num);

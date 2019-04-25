@@ -45,6 +45,8 @@
 #include "scripting/scripting.h"
 #include "tracing/tracing.h"
 #include "utils/boost/hash_combine.h"
+#include <SDL_version.h>
+#include <SDL.h>
 
 #if ( SDL_VERSION_ATLEAST(1, 2, 7) )
 #include "SDL_cpuinfo.h"

@@ -574,23 +574,23 @@ void options_multi_load_bmaps()
 	// load both background bitmaps
 	Om_background_0 = bm_load(Om_background_0_fname[gr_screen.res]);
 	if(Om_background_0 == -1){
-		nprintf(("Network","Error loading options background %s\n",Om_background_0_fname[gr_screen.res]));
+	 core::nprintf("Network","Error loading options background %s\n",Om_background_0_fname[gr_screen.res]);
 	}
 
 	Om_background_1 = bm_load(Om_background_1_fname[gr_screen.res]);
 	if(Om_background_1 == -1){
-		nprintf(("Network","Error loading options background %s\n",Om_background_1_fname[gr_screen.res]));
+	 core::nprintf("Network","Error loading options background %s\n",Om_background_1_fname[gr_screen.res]);
 	}
 
 	// load in both mask bitmaps
 	Om_mask_0 = bm_load(Om_background_0_mask_fname[gr_screen.res]);
 	if(Om_mask_0 == -1){
-		nprintf(("Network","Error loading options background mask %s\n",Om_background_0_mask_fname[gr_screen.res]));
+	 core::nprintf("Network","Error loading options background mask %s\n",Om_background_0_mask_fname[gr_screen.res]);
 	}
 
 	Om_mask_1 = bm_load(Om_background_1_mask_fname[gr_screen.res]);
 	if(Om_mask_1 == -1){
-		nprintf(("Network","Error loading options background mask %s\n",Om_background_1_mask_fname[gr_screen.res]));
+	 core::nprintf("Network","Error loading options background mask %s\n",Om_background_1_mask_fname[gr_screen.res]);
 	}
 }
 
@@ -1130,7 +1130,7 @@ void options_multi_protocol_load_ip_file()
 	// attempt to open the ip list file
 	file = cfopen(IP_CONFIG_FNAME,"rt",CFILE_NORMAL,CF_TYPE_DATA);	
 	if(file == NULL){
-		nprintf(("Network","Error loading tcp.cfg file!\n"));
+	 core::nprintf("Network","Error loading tcp.cfg file!\n");
 		return;
 	}
 
@@ -1149,7 +1149,7 @@ void options_multi_protocol_load_ip_file()
 			continue;
 
 		if ( !psnet_is_valid_ip_string(line) ) {
-			nprintf(("Network","Invalid ip string (%s)\n",line));
+		 core::nprintf("Network","Invalid ip string (%s)\n",line);
 		} else {
 			if(Om_num_ips < MAX_IP_ADDRS-1){
 				strcpy_s(Om_ip_addrs[Om_num_ips++],line);
@@ -1169,7 +1169,7 @@ void options_multi_protocol_save_ip_file()
 	// attempt to open the ip list file for writing
 	file = cfopen(IP_CONFIG_FNAME,"wt",CFILE_NORMAL,CF_TYPE_DATA );
 	if(file == NULL){
-		nprintf(("Network","Error loading tcp.cfg file\n"));
+	 core::nprintf("Network","Error loading tcp.cfg file\n");
 		return;
 	}
 
@@ -1178,7 +1178,7 @@ void options_multi_protocol_save_ip_file()
 		// make _absolutely_ sure its a valid address
 		// MWA -- commented out next line because name resolution might fail when
 		// it was added.  We'll only grab games that we can actually get to.
-		/core::Assert(psnet_is_valid_ip_string(Multi_ip_addrs[idx]));
+		//core::Assert(psnet_is_valid_ip_string(Multi_ip_addrs[idx]));
 
 		cfputs(Om_ip_addrs[idx],file);
 				
@@ -2061,7 +2061,7 @@ void options_multi_vox_process_player_list()
 		if(Om_vox_players[selected_index] != NULL){
 			Om_vox_player_select = Om_vox_players[selected_index];
 
-			nprintf(("Network","Selecting player %s\n",Om_vox_player_select->m_player->callsign));
+		 core::nprintf("Network","Selecting player %s\n",Om_vox_player_select->m_player->callsign);
 		}
 	}
 

@@ -1011,7 +1011,7 @@ core::Assertion(index >= 0, "Invalid index passed!");
 	Message_waves[index].num = snd_load( &tmp_gs, 0, 0 );
 
 	if (!Message_waves[index].num.isValid())
-		nprintf(("messaging", "Cannot load message wave: %s.  Will not play\n", Message_waves[index].name));
+	 core::nprintf("messaging", "Cannot load message wave: %s.  Will not play\n", Message_waves[index].name);
 }
 
 // Goober5000
@@ -1236,7 +1236,7 @@ void message_play_anim( message_q *q )
 			sprintf_safe(ani_name, "%s%c", temp, 'a'+rand_index);
 		 core::mprintf("message '%s' with invalid head.  Fix by assigning persona to the message.\n", m->name);
 		}
-		nprintf(("Messaging", "playing head %s for %s\n", ani_name, q->who_from));
+	 core::nprintf("Messaging", "playing head %s for %s\n", ani_name, q->who_from);
 	}
 
 	// check to see if the avi has been loaded.  If not, then load the AVI.  On an error loading
@@ -1244,8 +1244,8 @@ void message_play_anim( message_q *q )
 
 	// if there is something already here that's not this same file then go ahead a let go of it - taylor
 	if ( !strstr(anim_info->anim_data.filename, ani_name) ) {
-		nprintf(("Messaging", "clearing headani data due to name mismatch: (%s) (%s)\n",
-					anim_info->anim_data.filename, ani_name));
+	 core::nprintf("Messaging", "clearing headani data due to name mismatch: (%s) (%s)\n",
+					anim_info->anim_data.filename, ani_name);
 		message_mission_free_avi( m->avi_info.index );
 	}
 
@@ -1254,7 +1254,7 @@ void message_play_anim( message_q *q )
 			anim_info->anim_data.use_hud_color = true;
 
 	if ( generic_anim_stream(&anim_info->anim_data, false) < 0 ) {
-		nprintf (("messaging", "Cannot load message avi %s.  Will not play.\n", ani_name));
+		core::nprintf ("messaging", "Cannot load message avi %s.  Will not play.\n", ani_name);
 		m->avi_info.index = -1;			// if cannot load the avi -- set this index to -1 to avoid trying to load multiple times
 	}
 
@@ -1263,7 +1263,7 @@ void message_play_anim( message_q *q )
 		// if any messages are already playing, kill off any head anims that are currently playing.  We will
 		// only play a head anim of the newest messages being played
 		if ( Num_messages_playing > 0 ) {
-			nprintf(("messaging", "killing off any currently playing head animations\n"));
+		 core::nprintf("messaging", "killing off any currently playing head animations\n");
 			message_kill_all( 0 );
 		}
 
@@ -1362,14 +1362,14 @@ void message_queue_process()
 			if (wave_done && ani_done &&
 			    (timestamp_elapsed(Message_expire) || (Playing_messages[i].wave.isValid()) ||
 			     (Playing_messages[i].shipnum == -1))) {
-				nprintf(("messaging", "Message %d is done playing\n", i));
+			 core::nprintf("messaging", "Message %d is done playing\n", i);
 				Message_shipnum = -1;
 				Num_messages_playing--;
 				if ( Num_messages_playing == 0 )
 					break;
 
 				// there is still another message playing.  Collapse the playing_message array
-				nprintf(("messaging", "Collapsing playing message stack\n"));
+			 core::nprintf("messaging", "Collapsing playing message stack\n");
 				for ( j = i+1; j < Num_messages_playing + 1; j++ ) {
 					Playing_messages[j-1] = Playing_messages[j];
 				}
@@ -1386,7 +1386,7 @@ void message_queue_process()
 		q = &MessageQ[0];		
 		if ( timestamp_valid(q->window_timestamp) && timestamp_elapsed(q->window_timestamp) && !q->group) {
 			// remove message from queue and see if more to remove
-			nprintf(("messaging", "Message %s didn't play because it didn't fit into time window.\n", Messages[q->message_num].name));
+		 core::nprintf("messaging", "Message %s didn't play because it didn't fit into time window.\n", Messages[q->message_num].name);
 			if ( q->message_num < Num_builtin_messages ){			// we should only ever remove builtin messages this way
 				message_remove_from_queue(q);
 			} else {
@@ -1459,7 +1459,7 @@ core::Assert ( q->time_added != -1 );
 			// so unique can play uninterrupted.  Only unique messages higher than low priority will interrupt
 			// other messages.
 			message_kill_all(1);
-			nprintf(("messaging", "Killing all currently playing messages to play unique message\n"));
+		 core::nprintf("messaging", "Killing all currently playing messages to play unique message\n");
 		} else if ( message_playing_builtin() && (q->message_num < Num_builtin_messages) ) {
 			// when a builtin message is queued, we might either overlap or interrupt the currently
 			// playing message.
@@ -1470,14 +1470,14 @@ core::Assert ( q->time_added != -1 );
 				if ( message_get_priority(MESSAGE_GET_HIGHEST) < q->priority ) {
 					// lower priority message playing -- kill it.
 					message_kill_all(1);
-					nprintf(("messaging", "Killing all currently playing messages to play high priority builtin\n"));
+				 core::nprintf("messaging", "Killing all currently playing messages to play high priority builtin\n");
 				} else if ( message_get_priority(MESSAGE_GET_LOWEST) > q->priority ) {
 					// queued message is a lower priority, so wait it out
 					return;
 				} else {
 					// if we get here, then queued messages is a builtin message with the same priority
 					// as the currently playing messages.  This state will cause messages to overlap.
-					nprintf(("messaging", "playing builtin message (overlap) because priorities match\n"));
+				 core::nprintf("messaging", "playing builtin message (overlap) because priorities match\n");
 				}
 			}
 		} else if ( message_playing_unique() && (q->message_num < Num_builtin_messages) ) {
@@ -1485,7 +1485,7 @@ core::Assert ( q->time_added != -1 );
 			if ( Num_messages_playing ) {
 				if ( message_get_priority(MESSAGE_GET_HIGHEST) == MESSAGE_PRIORITY_LOW ) {
 					message_kill_all(1);
-					nprintf(("messaging", "Killing low priority unique messages to play code message\n"));
+				 core::nprintf("messaging", "Killing low priority unique messages to play code message\n");
 				} else {
 					return;			// do nothing.
 				}
@@ -1910,7 +1910,7 @@ void message_send_unique_to_player( char *id, void *data, int m_source, int prio
 			return;		// all done with displaying		
 		}
 	}
-	nprintf (("messaging", "Couldn't find message id %s to send to player!\n", id ));
+	core::nprintf("messaging", "Couldn't find message id %s to send to player!\n", id );
 }
 
 #define BUILTIN_MATCHES_TYPE					0
@@ -1978,7 +1978,7 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 		persona_index = shipp->persona_index;
 
 		if ( persona_index == -1 )
-			nprintf(("messaging", "Couldn't find persona for %s\n", shipp->ship_name ));	
+		 core::nprintf("messaging", "Couldn't find persona for %s\n", shipp->ship_name );	
 
 		// be sure that this ship can actually send a message!!! (i.e. not-not-flyable -- get it!)
 	core::Assert( Ship_info[shipp->ship_info_index].is_flyable() );		// get allender or alan
@@ -2049,31 +2049,31 @@ void message_send_builtin_to_player( int type, ship *shipp, int priority, int ti
 
 	switch (best_match) {
 		case BUILTIN_MATCHES_PERSONA_EXCLUDED:
-			nprintf(("MESSAGING", "Couldn't find builtin message %s for persona %d with a none excluded mood\n", Builtin_messages[type].name, persona_index));
+		 core::nprintf("MESSAGING", "Couldn't find builtin message %s for persona %d with a none excluded mood\n", Builtin_messages[type].name, persona_index);
 			if (!Personas[persona_index].substitute_missing_messages) {
-				nprintf(("MESSAGING", "Persona does not allow substitution, skipping message."));
+			 core::nprintf("MESSAGING", "Persona does not allow substitution, skipping message.");
 				return;
 			}
 			else
-				nprintf(("MESSAGING", "using an excluded message for this persona\n"));
+			 core::nprintf("MESSAGING", "using an excluded message for this persona\n");
 			break;
 		case BUILTIN_MATCHES_SPECIES:
-			nprintf(("MESSAGING", "Couldn't find builtin message %s for persona %d\n", Builtin_messages[type].name, persona_index));
+		 core::nprintf("MESSAGING", "Couldn't find builtin message %s for persona %d\n", Builtin_messages[type].name, persona_index);
 			if (!Personas[persona_index].substitute_missing_messages) {
-				nprintf(("MESSAGING", "Persona does not allow substitution, skipping message."));
+			 core::nprintf("MESSAGING", "Persona does not allow substitution, skipping message.");
 				return;
 			}
 			else
-				nprintf(("MESSAGING", "using a message for any persona of that species\n"));
+			 core::nprintf("MESSAGING", "using a message for any persona of that species\n");
 			break;
 		case BUILTIN_MATCHES_TYPE:
-			nprintf(("MESSAGING", "Couldn't find builtin message %s for persona %d\n", Builtin_messages[type].name, persona_index));
+		 core::nprintf("MESSAGING", "Couldn't find builtin message %s for persona %d\n", Builtin_messages[type].name, persona_index);
 			if (!Personas[persona_index].substitute_missing_messages) {
-				nprintf(("MESSAGING", "Persona does not allow substitution, skipping message."));
+			 core::nprintf("MESSAGING", "Persona does not allow substitution, skipping message.");
 				return;
 			}
 			else
-				nprintf(("MESSAGING", "looking for message for any persona of any species\n"));
+			 core::nprintf("MESSAGING", "looking for message for any persona of any species\n");
 			break;
 		case -1:
 			core::Error(LOCATION, "Couldn't find any builtin message of type %d\n", type);

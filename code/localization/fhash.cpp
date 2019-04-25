@@ -15,6 +15,7 @@
 #include <core/pstypes.h>
 #include "localization/fhash.h"
 #include <core/toolchain.h>
+#include <core/error.h>
 #include "globalincs/fsmemory.h"
 
 // -----------------------------------------------------------------------------------------------

@@ -67,6 +67,7 @@
 #include "mod_table/mod_table.h"
 #include "libs/ffmpeg/FFmpeg.h"
 #include "scripting/scripting.h"
+#include <osapi/outwnd.h>
 
 #include <direct.h>
 #include "cmdline/cmdline.h"
@@ -1172,12 +1173,12 @@ int update_dialog_boxes()
 {
 	int z;
 
-	nprintf(("Fred routing", "updating dialog boxes\n"));
+ core::nprintf("Fred routing", "updating dialog boxes\n");
 
 	// check wing first, since ships are dependent on wings, but not the reverse
 	z = Wing_editor_dialog.update_data(0);
 	if (z) {
-		nprintf(("Fred routing", "wing dialog save failed\n"));
+	 core::nprintf("Fred routing", "wing dialog save failed\n");
 		Wing_editor_dialog.SetWindowPos(&Fred_main_wnd->wndTop, 0, 0, 0, 0,
 			SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 
@@ -1186,7 +1187,7 @@ int update_dialog_boxes()
 
 	z = Ship_editor_dialog.update_data(0);
 	if (z) {
-		nprintf(("Fred routing", "ship dialog save failed\n"));
+	 core::nprintf("Fred routing", "ship dialog save failed\n");
 		Ship_editor_dialog.SetWindowPos(&Fred_main_wnd->wndTop, 0, 0, 0, 0,
 			SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 
@@ -1195,7 +1196,7 @@ int update_dialog_boxes()
 
 	z = Waypoint_editor_dialog.update_data(0);
 	if (z) {
-		nprintf(("Fred routing", "waypoint dialog save failed\n"));
+	 core::nprintf("Fred routing", "waypoint dialog save failed\n");
 		Waypoint_editor_dialog.SetWindowPos(&Fred_main_wnd->wndTop, 0, 0, 0, 0,
 			SWP_SHOWWINDOW | SWP_NOMOVE | SWP_NOSIZE);
 

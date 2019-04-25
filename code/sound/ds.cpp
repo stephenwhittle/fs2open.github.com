@@ -254,7 +254,7 @@ core::Assert(file != NULL);
 	// All sounds are required to have a software buffer
 	*sid = ds_get_sid();
 	if (*sid == -1) {
-		nprintf(("Sound", "SOUND ==> No more sound buffers available\n"));
+	 core::nprintf("Sound", "SOUND ==> No more sound buffers available\n");
 		return -1;
 	}
 
@@ -400,8 +400,8 @@ int ds_init()
 	ds_sound_context = alcCreateContext(ds_sound_device, attrList);
 
 	if (ds_sound_context == NULL) {
-		mprintf(("  Failed to create context for playback_device (%s) with attrList = { 0x%x, %d, %d } returning error (%s)\n",
-			playback_device.c_str(), attrList[0], attrList[1], attrList[2], openal_error_string(1)));
+	 core::mprintf("  Failed to create context for playback_device (%s) with attrList = { 0x%x, %d, %d } returning error (%s)\n",
+			playback_device.c_str(), attrList[0], attrList[1], attrList[2], openal_error_string(1));
 		goto AL_InitError;
 	}
 
@@ -973,7 +973,7 @@ int ds_create_buffer(int frequency, int bits_per_sample, int nchannels, int nsec
 
 	sid = ds_get_sid();
 	if ( sid == -1 ) {
-		nprintf(("Sound","SOUND ==> No more OpenAL buffers available\n"));
+	 core::nprintf("Sound","SOUND ==> No more OpenAL buffers available\n");
 		return -1;
 	}
 

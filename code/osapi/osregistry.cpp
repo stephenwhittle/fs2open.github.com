@@ -861,8 +861,8 @@ const char *os_config_read_string(const char *section, const char *name, const c
 		return registry_read_string(section, name, default_value);
 	}
 #endif
-	nprintf(("Registry", "os_config_read_string(): section = \"%s\", name = \"%s\", default value: \"%s\"\n",
-		(section) ? section : DEFAULT_SECTION, name, (default_value) ? default_value : NOX("NULL")));
+ core::nprintf("Registry", "os_config_read_string(): section = \"%s\", name = \"%s\", default value: \"%s\"\n",
+		(section) ? section : DEFAULT_SECTION, name, (default_value) ? default_value : NOX("NULL"));
 
 	if (section == NULL)
 		section = DEFAULT_SECTION;

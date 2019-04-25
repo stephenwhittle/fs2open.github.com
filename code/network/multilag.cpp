@@ -12,7 +12,7 @@
 #ifndef SCP_UNIX
 
 #include <winsock.h>
-
+#include <core/error.h>
 #include "network/multilag.h"
 #include "io/timer.h"
 #include "globalincs/linklist.h"
@@ -352,7 +352,7 @@ lag_buf *multi_lag_get_free()
 
 	// if we're out of buffers
 	if(Lag_buf_count >= MAX_LAG_BUFFERS){
-		nprintf(("Network", "Out of lag buffers!\n"));
+	 core::nprintf("Network", "Out of lag buffers!\n");
 		return NULL;
 	}
 

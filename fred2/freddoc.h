@@ -133,7 +133,7 @@ public:
 	 *
 	 * @details Currently just calls the CDocument'score::AssertValid()
 	 */
-	virtual voidcore::AssertValid() const;
+	virtual void AssertValid() const;
 
 	/**
 	 * @brief Dumps debug info(?) to the given dump context

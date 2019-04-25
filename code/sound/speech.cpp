@@ -80,7 +80,7 @@ bool speech_init()
 	Speech_init = true;
 #endif
 
-	nprintf(("Speech", "Speech init %s\n", Speech_init ? "succeeded!" : "failed!"));
+ core::nprintf("Speech", "Speech init %s\n", Speech_init ? "succeeded!" : "failed!");
 	return Speech_init;
 }
 
@@ -98,11 +98,11 @@ void speech_deinit()
 
 bool speech_play(const char *text)
 {
-	nprintf(("Speech", "Attempting to play speech string %s...\n", text));
+ core::nprintf("Speech", "Attempting to play speech string %s...\n", text);
 
 	if(Speech_init == false) return true;
 	if (text == NULL) {
-		nprintf(("Speech", "Not playing speech because passed text is null.\n"));
+	 core::nprintf("Speech", "Not playing speech because passed text is null.\n");
 		return false;
 	}
 

@@ -493,7 +493,7 @@ core::Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; 
 	// load the background bitmap
 	Main_hall_bitmap = bm_load(Main_hall->bitmap);
 	if (Main_hall_bitmap < 0) {
-		nprintf(("General","WARNING! Couldn't load main hall background bitmap %s\n", Main_hall->bitmap.c_str()));
+	 core::nprintf("General","WARNING! Couldn't load main hall background bitmap %s\n", Main_hall->bitmap.c_str());
 	} else {
 		bm_get_info(Main_hall_bitmap, &Main_hall_bitmap_w, &Main_hall_bitmap_h);
 	}
@@ -505,7 +505,7 @@ core::Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; 
 	// load the mask
 	Main_hall_mask = bm_load(Main_hall->mask);
 	if (Main_hall_mask < 0) {
-		nprintf(("General","WARNING! Couldn't load main hall background mask %s\n", Main_hall->mask.c_str()));
+	 core::nprintf("General","WARNING! Couldn't load main hall background mask %s\n", Main_hall->mask.c_str());
 		if (gr_screen.res == 0) {
 			core::Error(LOCATION,"Could not load in main hall mask '%s'!\n\n(This error most likely means that you are missing required 640x480 interface art.)", Main_hall->mask.c_str());
 		} else {
@@ -541,7 +541,7 @@ core::Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; 
 		Main_hall_misc_anim.push_back(temp_anim);
 		Main_hall_misc_anim.at(idx).ani.bg_type = bg_type;
 		if (generic_anim_stream(&Main_hall_misc_anim.at(idx)) == -1) {
-			nprintf(("General","WARNING!, Could not load misc %s anim in main hall\n",Main_hall->misc_anim_name.at(idx).c_str()));
+		 core::nprintf("General","WARNING!, Could not load misc %s anim in main hall\n",Main_hall->misc_anim_name.at(idx).c_str());
 		} else {
 			// start paused
 			if (Main_hall->misc_anim_modes.at(idx) == MISC_ANIM_MODE_HOLD)
@@ -565,7 +565,7 @@ core::Assertion(Main_hall != NULL, "Failed to obtain pointer to main hall '%s'; 
 		Main_hall_door_anim.push_back(temp_anim);
 		Main_hall_door_anim.at(idx).ani.bg_type = bg_type;
 		if (generic_anim_stream(&Main_hall_door_anim.at(idx)) == -1) {
-			nprintf(("General","WARNING!, Could not load door anim %s in main hall\n",Main_hall->door_anim_name.at(idx).c_str()));
+		 core::nprintf("General","WARNING!, Could not load door anim %s in main hall\n",Main_hall->door_anim_name.at(idx).c_str());
 		} else {
 			Main_hall_door_anim.at(idx).direction = GENERIC_ANIM_DIRECTION_BACKWARDS | GENERIC_ANIM_DIRECTION_NOLOOP;
 		}
@@ -711,7 +711,7 @@ void main_hall_do(float frametime)
 						generic_anim_init(&Main_hall_misc_anim.at(idx), Main_hall->misc_anim_name.at(idx));
 
 						if (generic_anim_stream(&Main_hall_misc_anim.at(idx)) == -1) {
-							nprintf(("General","WARNING! Could not load misc %s anim in main hall\n", Main_hall->misc_anim_name.at(idx).c_str()));
+						 core::nprintf("General","WARNING! Could not load misc %s anim in main hall\n", Main_hall->misc_anim_name.at(idx).c_str());
 						} else {
 							// start paused
 							if (Main_hall->misc_anim_modes.at(idx) == MISC_ANIM_MODE_HOLD)
@@ -741,7 +741,7 @@ void main_hall_do(float frametime)
 							generic_anim_init(&Main_hall_door_anim.at(idx), Main_hall->door_anim_name.at(idx));
 
 							if (generic_anim_stream(&Main_hall_door_anim.at(idx)) == -1) {
-								nprintf(("General","WARNING! Could not load door anim %s in main hall\n", Main_hall->door_anim_name.at(idx).c_str()));
+							 core::nprintf("General","WARNING! Could not load door anim %s in main hall\n", Main_hall->door_anim_name.at(idx).c_str());
 							} else {
 								Main_hall_door_anim.at(idx).direction = GENERIC_ANIM_DIRECTION_BACKWARDS | GENERIC_ANIM_DIRECTION_NOLOOP;
 							}
@@ -757,7 +757,7 @@ void main_hall_do(float frametime)
 
 				if (!cheat_anim_found) {
 					// Note: This can also happen if the cheat triggers a second time since the animations are already switched at that point.
-					nprintf(("General", "Could not find animation '%s' for cheat '%s'!", Main_hall->cheat_anim_from.at(c_idx).c_str(), Main_hall->cheat.at(c_idx).c_str()));
+				 core::nprintf("General", "Could not find animation '%s' for cheat '%s'!", Main_hall->cheat_anim_from.at(c_idx).c_str(), Main_hall->cheat.at(c_idx).c_str());
 				}
 			}
 		}
@@ -1139,7 +1139,7 @@ void main_hall_start_music()
 	// get music
 	Main_hall_music_index = main_hall_get_music_index(main_hall_id());
 	if (Main_hall_music_index < 0) {
-		nprintf(("Warning", "No music file exists to play music at the main menu!\n"));
+	 core::nprintf("Warning", "No music file exists to play music at the main menu!\n");
 		return;
 	}
 
@@ -1149,7 +1149,7 @@ core::Assert(filename != NULL);
 	// get handle
 	Main_hall_music_handle = audiostream_open(filename, ASF_MENUMUSIC);
 	if (Main_hall_music_handle < 0) {
-		nprintf(("Warning", "No music file exists to play music at the main menu!\n"));
+	 core::nprintf("Warning", "No music file exists to play music at the main menu!\n");
 		return;
 	}
 

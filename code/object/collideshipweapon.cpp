@@ -460,7 +460,7 @@ core::Assert( shipp->objnum == OBJ_INDEX(ship_objp));
 				if (!(shipp->flags[Ship::Ship_Flags::Dont_collide_invis])) {
 					wp->lifeleft = 0.001f;
 					if (ship_objp == Player_obj)
-						nprintf(("Jim", "Frame %i: Weapon %d set to detonate, dist = %7.3f.\n", Framecount, OBJ_INDEX(weapon_objp), dist));
+					 core::nprintf("Jim", "Frame %i: Weapon %d set to detonate, dist = %7.3f.\n", Framecount, OBJ_INDEX(weapon_objp), dist);
 					valid_hit_occurred = 1;
 				}
 			}

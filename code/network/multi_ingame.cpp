@@ -621,7 +621,7 @@ void multi_ingame_select_init()
 	Player_start_pobject->ai_goals = goals_save;
 
 	if ( objnum == -1 ) {
-		nprintf(("Network", "Bailing ingame join because unable to create parse object player ship\n"));
+	 core::nprintf("Network", "Bailing ingame join because unable to create parse object player ship\n");
 		multi_quit_game(PROMPT_NONE, MULTI_END_NOTIFY_NONE, MULTI_END_ERROR_INGAME_SHIP);
 		return;
 	}
@@ -826,7 +826,7 @@ void multi_ingame_select_close()
 {	
 	// unload any bitmaps
 	if(!bm_unload(Multi_ingame_bitmap)){
-		nprintf(("General","WARNING : could not unload background bitmap %s\n",Multi_ingame_join_bitmap_fname[gr_screen.res]));
+	 core::nprintf("General","WARNING : could not unload background bitmap %s\n",Multi_ingame_join_bitmap_fname[gr_screen.res]);
 	}	
 
 	// unload all the ship class icons
@@ -1027,7 +1027,7 @@ void process_ingame_ships_packet( ubyte *data, header *hinfo )
 		}
 		if(p_objp == NULL){
 			Int3();
-			nprintf(("Network", "Couldn't find ship %s in either arrival list or in mission", ship_name));
+		 core::nprintf("Network", "Couldn't find ship %s in either arrival list or in mission", ship_name);
 			multi_quit_game(PROMPT_NONE, MULTI_END_NOTIFY_NONE, MULTI_END_ERROR_INGAME_BOGUS);
 			return;
 		}
@@ -1208,7 +1208,7 @@ void process_ingame_wings_packet( ubyte *data, header *hinfo )
 			// don't delete them all first, and have a > 0 threshold, and are on something other
 			// than the first wave.  Only do this for non-player wings.
 
-			nprintf(("Network", "Clearing %s -- %d ships\n", wingp->name, wingp->current_count));
+		 core::nprintf("Network", "Clearing %s -- %d ships\n", wingp->name, wingp->current_count);
 			for ( i = 0; i < wingp->current_count; i++ ) {
 				int index, objnum;
 
@@ -1221,7 +1221,7 @@ void process_ingame_wings_packet( ubyte *data, header *hinfo )
 				obj_delete( objnum );
 				Objects[objnum].net_signature = 0;				// makes this object "invalid" until dead.
 				if ( Objects[objnum].type == OBJ_GHOST ) {
-					nprintf(("Network", "Marking ghost objnum %d as dead\n", objnum));
+				 core::nprintf("Network", "Marking ghost objnum %d as dead\n", objnum);
 					Objects[objnum].flags |= OF_SHOULD_BE_DEAD;
 				}
 				Ingame_ships_to_delete[index] = 0;		// be sure that this guy doesn't get deleted, since we already deleted it
@@ -1260,7 +1260,7 @@ void process_ingame_wings_packet( ubyte *data, header *hinfo )
 				// the parse_wing_create_ships call.
 				shipp = &Ships[shipnum];
 				wing_bash_ship_name(shipp->ship_name, wingp->name, which_one + 1);
-				nprintf(("Network", "Created %s\n", shipp->ship_name));
+			 core::nprintf("Network", "Created %s\n", shipp->ship_name);
 
 				objp = &Objects[shipp->objnum];
 				objp->net_signature = (ushort)(wingp->net_signature + which_one);
@@ -1284,7 +1284,7 @@ void process_ingame_wings_packet( ubyte *data, header *hinfo )
 				for( j = 0; j < MAX_PLAYERS; j++){
 					if(MULTI_CONNECTED(Net_players[j]) && (Net_players[j].player->objnum == signature)) {
 					core::Assert( team != -1 );		// to help trap errors!!!
-						nprintf(("Network", "Making %s ship for %s\n", Ships[shipnum].ship_name, Net_players[j].player->callsign));
+					 core::nprintf("Network", "Making %s ship for %s\n", Ships[shipnum].ship_name, Net_players[j].player->callsign);
 						multi_assign_player_ship( j, objp, Ships[shipnum].ship_info_index );
 						objp->flags .set(Object::Object_Flags::Player_ship);
 						objp->flags &= ~OF_COULD_BE_PLAYER;
@@ -1570,7 +1570,7 @@ void process_ingame_ship_request_packet(ubyte *data, header *hinfo)
 			
 		player_num = find_player_id(hinfo->id);	
 		if(player_num == -1){
-			nprintf(("Network","Received ingame ship request packet from unknown player!!\n"));		
+		 core::nprintf("Network","Received ingame ship request packet from unknown player!!\n");		
 			break;
 		}
 		
@@ -1757,7 +1757,7 @@ void process_ingame_ship_request_packet(ubyte *data, header *hinfo)
 		objp = multi_get_network_object(net_signature);
 		if ( objp == NULL ) {
 			// bogus!!!  couldn't find the object -- we cannot connect his -- this is really bad!!!
-			nprintf(("Network", "Couldn't find ship for ingame joiner %s\n", Net_players[player_num].m_player->callsign));
+		 core::nprintf("Network", "Couldn't find ship for ingame joiner %s\n", Net_players[player_num].m_player->callsign);
 			break;
 		}
 		objp->flags.set(Object::Object_Flags::Player_ship);
@@ -1843,7 +1843,7 @@ void process_ingame_ship_update_packet(ubyte *data, header *hinfo)
 	lookup = multi_get_network_object(net_sig);
 	if(lookup == NULL){
 		// read in garbage values if we can't find the ship
-		nprintf(("Network","Got ingame ship update for unknown object\n"));
+	 core::nprintf("Network","Got ingame ship update for unknown object\n");
 		GET_FLOAT(garbage);
 		for(idx=0;idx<n_quadrants;idx++){
 			GET_FLOAT(garbage);

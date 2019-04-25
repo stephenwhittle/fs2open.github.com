@@ -5268,7 +5268,7 @@ core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cas
 			if (swp->primary_bank_weapons[i] > -1) {
 				if (!(Weapon_info[swp->primary_bank_weapons[i]].wi_flags[Weapon::Info_Flags::Puncture])) {
 					swp->current_primary_bank = i;
-					nprintf(("AI", "%i: Ship %s selecting weapon %s\n", Framecount, Ships[objp->instance].ship_name, Weapon_info[swp->primary_bank_weapons[i]].name));
+				 core::nprintf("AI", "%i: Ship %s selecting weapon %s\n", Framecount, Ships[objp->instance].ship_name, Weapon_info[swp->primary_bank_weapons[i]].name);
 					return i;
 				}
 			}
@@ -5358,7 +5358,7 @@ core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cas
 				if (Weapon_info[swp->primary_bank_weapons[i]].wi_flags[Weapon::Info_Flags::Capital_plus])
 				{
 					swp->current_primary_bank = i;
-					nprintf(("AI", "%i: Ship %s selecting weapon %s\n", Framecount, Ships[objp->instance].ship_name, Weapon_info[swp->primary_bank_weapons[i]].name));
+				 core::nprintf("AI", "%i: Ship %s selecting weapon %s\n", Framecount, Ships[objp->instance].ship_name, Weapon_info[swp->primary_bank_weapons[i]].name);
 					return i;
 				}
 			}
@@ -5523,7 +5523,7 @@ void set_primary_weapon_linkage(object *objp)
 
 	if (Num_weapons > (int) (MAX_WEAPONS * 0.75f) || sip->flags[Ship::Info_Flags::No_primary_linking]) {
 		if (shipp->flags[Ship::Ship_Flags::Primary_linked])
-			nprintf(("AI", "Frame %i, ship %s: Unlinking primaries.\n", Framecount, shipp->ship_name));
+		 core::nprintf("AI", "Frame %i, ship %s: Unlinking primaries.\n", Framecount, shipp->ship_name);
         shipp->flags.remove(Ship::Ship_Flags::Primary_linked);
 		return;		//	If low on slots or primary linking disallowed, don't link.
 	}
@@ -5636,7 +5636,7 @@ core::Assert( shipp->ship_info_index >= 0 && shipp->ship_info_index < static_cas
 	//	If low on slots, fire a little less often.
 	if (Num_weapons > (int) (0.9f * MAX_WEAPONS)) {
 		if (frand() > 0.5f) {
-			nprintf(("AI", "Frame %i, %s not fire.\n", Framecount, shipp->ship_name));
+		 core::nprintf("AI", "Frame %i, %s not fire.\n", Framecount, shipp->ship_name);
 			return 0;
 		}
 	}
@@ -10677,8 +10677,8 @@ void ai_dock()
 			char *goal_ship_class_name = goal_sip->name;
 			char *goal_dock_path_name = model_get(goal_sip->model_num)->paths[aip->mp_index].name;
 
-			mprintf(("Ship class %s has only %i points on dock path \"%s\".  Recommended minimum number of points is 4.  "\
-				"Docking along that path will look strange.  You may wish to edit the model.", goal_ship_class_name, aip->path_length, goal_dock_path_name));
+		 core::mprintf("Ship class %s has only %i points on dock path \"%s\".  Recommended minimum number of points is 4.  "\
+				"Docking along that path will look strange.  You may wish to edit the model.", goal_ship_class_name, aip->path_length, goal_dock_path_name);
 		}
 
 		aip->submode = AIS_DOCK_1;
@@ -10698,7 +10698,7 @@ void ai_dock()
 		if ((r = maybe_dock_obstructed(Pl_objp, goal_objp, 1)) != -1) {
 			int	r1;
 			if ((r1 = maybe_avoid_big_ship(Pl_objp, goal_objp, aip, &goal_objp->pos, 7.0f)) != 0) {
-				nprintf(("AI", "Support ship %s avoiding large ship %s\n", Ships[Pl_objp->instance].ship_name, Ships[Objects[r1].instance].ship_name));
+			 core::nprintf("AI", "Support ship %s avoiding large ship %s\n", Ships[Pl_objp->instance].ship_name, Ships[Objects[r1].instance].ship_name);
 				break;
 			}
 		} //else {
@@ -10735,7 +10735,7 @@ void ai_dock()
 		int	r;
 
 		if ((r = maybe_dock_obstructed(Pl_objp, goal_objp, 0)) != -1) {
-			nprintf(("AI", "Dock 2: Obstructed by %s\n", Ships[Objects[r].instance].ship_name));
+		 core::nprintf("AI", "Dock 2: Obstructed by %s\n", Ships[Objects[r].instance].ship_name);
 			accelerate_ship(aip, 0.0f);
 
 			aip->submode = AIS_DOCK_1;
@@ -10770,7 +10770,7 @@ void ai_dock()
 		int	r;
 
 		if ((r = maybe_dock_obstructed(Pl_objp, goal_objp,0)) != -1) {
-			nprintf(("AI", "Dock 1: Obstructed by %s\n", Ships[Objects[r].instance].ship_name));
+		 core::nprintf("AI", "Dock 1: Obstructed by %s\n", Ships[Objects[r].instance].ship_name);
 			accelerate_ship(aip, 0.0f);
 
 			aip->submode = AIS_DOCK_2;
@@ -14610,7 +14610,7 @@ void maybe_process_friendly_hit(object *objp_hitter, object *objp_hit, object *o
 		pp->damage_this_burst += accredited_damage;
 
 		// Done with adjustments to damage.  Evaluate based on current friendly_damage
-		nprintf(("AI", "Friendly damage: %.1f, threshold: %.1f, inc damage: %.1f, max burst: %d\n", pp->friendly_damage, FRIENDLY_DAMAGE_THRESHOLD * (1.0f + (float) (NUM_SKILL_LEVELS + 1 - Game_skill_level)/3.0f), pp->damage_this_burst, MAX_BURST_DAMAGE ));
+	 core::nprintf("AI", "Friendly damage: %.1f, threshold: %.1f, inc damage: %.1f, max burst: %d\n", pp->friendly_damage, FRIENDLY_DAMAGE_THRESHOLD * (1.0f + (float) (NUM_SKILL_LEVELS + 1 - Game_skill_level)/3.0f), pp->damage_this_burst, MAX_BURST_DAMAGE );
 		
 		if (is_instructor(objp_hit)) {
 			// it's not nice to hit your instructor
@@ -15260,7 +15260,7 @@ core::Assert((requester_shipp->ai_index >= 0) && (requester_shipp->ai_index < MA
 						ai_cleanup_dock_mode_subjective(repair_objp);
 					}
 				} else {
-					nprintf(("AI", "Not aborting rearm since already undocking\n"));
+				 core::nprintf("AI", "Not aborting rearm since already undocking\n");
 				}
 			}
 		} else {
@@ -15433,7 +15433,7 @@ static void cheat_fire_synaptic(object *objp, ship *shipp)
 	ai_select_secondary_weapon(objp, swp, &flags, NULL);
 	if (timestamp_elapsed(swp->next_secondary_fire_stamp[current_bank])) {
 		if (ship_fire_secondary(objp)) {
-			nprintf(("AI", "ship %s cheat fired synaptic!\n", shipp->ship_name));
+		 core::nprintf("AI", "ship %s cheat fired synaptic!\n", shipp->ship_name);
 			swp->next_secondary_fire_stamp[current_bank] = timestamp(2500);
 		}
 	}

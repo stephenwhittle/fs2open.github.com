@@ -100,7 +100,7 @@ GLuint compile_shader_object(const std::vector<std::string>& shader_source, GLen
 
 	// we succeeded, maybe output warnings too
 	if (info_log.size() > 5) {
-		nprintf(("SHADER-DEBUG", "%s shader compiled with warnings:\n%s\n", (shader_type == GL_VERTEX_SHADER) ? "Vertex" : ((shader_type == GL_GEOMETRY_SHADER) ? "Geometry" : "Fragment"), info_log.c_str()));
+	 core::nprintf("SHADER-DEBUG", "%s shader compiled with warnings:\n%s\n", (shader_type == GL_VERTEX_SHADER) ? "Vertex" : ((shader_type == GL_GEOMETRY_SHADER) ? "Geometry" : "Fragment"), info_log.c_str());
 	}
 
 	return shader_object;
@@ -124,7 +124,7 @@ void link_program(GLuint program) {
 
 	// we succeeded, maybe output warnings too
 	if (log.size() > 5) {
-		nprintf(("SHADER-DEBUG", "Shader linked with warnings:\n%s\n", log.c_str()));
+	 core::nprintf("SHADER-DEBUG", "Shader linked with warnings:\n%s\n", log.c_str());
 	}
 }
 

@@ -1765,7 +1765,7 @@ void parse_dock_one_docked_object(p_object *pobjp, p_object *parent_pobjp)
 	}
 
 	// dock them
-	nprintf(("AI", "Initially docked: %s to parent %s\n", Ships[objp->instance].ship_name, Ships[parent_objp->instance].ship_name));
+ core::nprintf("AI", "Initially docked: %s to parent %s\n", Ships[objp->instance].ship_name, Ships[parent_objp->instance].ship_name);
 	ai_dock_with_object(objp, dockpoint, parent_objp, parent_dockpoint, AIDO_DOCK_NOW);
 }
 
@@ -3204,7 +3204,7 @@ core::Assert(pm != NULL);
 		}
 
 		if (period_detected) {
-			nprintf(("Warning", "Special explosion attributes have been returned to integer format"));
+		 core::nprintf("Warning", "Special explosion attributes have been returned to integer format");
 		}
 	}
 
@@ -6483,13 +6483,13 @@ int mission_parse_is_multi(const char *filename, char *mission_name)
 			reset_parse();
 
 			if (skip_to_string("$Name:") != 1) {
-				nprintf(("Network", "Unable to process %s because we couldn't find $Name:", filename));
+			 core::nprintf("Network", "Unable to process %s because we couldn't find $Name:", filename);
 				break;
 			}
 			stuff_string(mission_name, F_NAME, NAME_LENGTH);
 
 			if (skip_to_string("+Game Type Flags:") != 1) {
-				nprintf(("Network", "Unable to process %s because we couldn't find +Game Type Flags:\n", filename));
+			 core::nprintf("Network", "Unable to process %s because we couldn't find +Game Type Flags:\n", filename);
 				break;
 			}
 			stuff_int(&game_type);
@@ -6615,7 +6615,7 @@ core::Assert(anchor >= 0);
 	if (shipnum < 0)
 	{
 	core::Assert ( location != ARRIVE_FROM_DOCK_BAY );		// bogus data somewhere!!!  get mwa
-		nprintf (("allender", "couldn't find ship for arrival anchor -- using location ship created at"));
+		core::nprintf("allender", "couldn't find ship for arrival anchor -- using location ship created at");
 		return -1;
 	}
 

@@ -333,9 +333,9 @@ static void mc_check_sphereline_face( int nv, vec3d ** verts, vec3d * plane_pnt,
 
 				Mc->num_hits++;
 
-			//	nprintf(("Physics", "edge sphere time: %f, normal: (%f, %f, %f) hit_point: (%f, %f, %f)\n", sphere_time,
+			// core::nprintf("Physics", "edge sphere time: %f, normal: (%f, %f, %f) hit_point: (%f, %f, %f)\n", sphere_time,
 			//		Mc->hit_normal.xyz.x, Mc->hit_normal.xyz.y, Mc->hit_normal.xyz.z,
-			//		hit_point.xyz.x, hit_point.xyz.y, hit_point.xyz.z));
+			//		hit_point.xyz.x, hit_point.xyz.y, hit_point.xyz.z);
 			} else  {	// Not best so far
 			core::Assert(Mc->num_hits>0);
 				Mc->num_hits++;
@@ -1140,8 +1140,8 @@ core::Assert( mn < Mc_pm->n_models );
 					if (sm->details[i] != -1) {
 						lod_sm = &Mc_pm->submodel[sm->details[i]];
 
-						// mprintf(("Checking %s collision for %s using %s instead\n", Mc_pm->filename, sm->name,
-						// lod_sm->name));
+						// core::mprintf("Checking %s collision for %s using %s instead\n", Mc_pm->filename, sm->name,
+						// lod_sm->name);
 						break;
 					}
 				}

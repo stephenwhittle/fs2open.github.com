@@ -145,7 +145,7 @@ int swarm_create()
 	}
 
 	if ( i >= MAX_SWARM_MISSILES ) {
-		nprintf(("Warning","No more swarm missiles are available\n"));
+	 core::nprintf("Warning","No more swarm missiles are available\n");
 		return -1;
 	}
 
@@ -390,7 +390,7 @@ int turret_swarm_create()
 	}
 
 	if ( i >= MAX_TURRET_SWARM_INFO ) {
-		nprintf(("Warning","No more turret swarm info slots are available\n"));
+	 core::nprintf("Warning","No more turret swarm info slots are available\n");
 		return -1;
 	}
 
