@@ -272,7 +272,7 @@ void nebl_init()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "lightning.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "lightning.tbl", e.what());
 		return;
 	}
 }

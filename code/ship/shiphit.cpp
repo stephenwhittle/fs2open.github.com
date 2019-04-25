@@ -507,7 +507,7 @@ core::Assert(hitpos);		// Goober5000
 #ifndef NDEBUG
 	float hitpos_dist = vm_vec_dist( hitpos, &ship_objp->pos );
 	if ( hitpos_dist > ship_objp->radius * 2.0f )	{
-		mprintf(( "BOGUS HITPOS PASSED TO DO_SUBOBJ_HIT_STUFF (%.1f > %.1f)!\nInvestigate ship %s (%s), a hit was registered on this ship outside this ship's radius.\n", hitpos_dist, ship_objp->radius * 2.0f, ship_p->ship_name, Ship_info[ship_p->ship_info_index].name ));
+	 core::mprintf( "BOGUS HITPOS PASSED TO DO_SUBOBJ_HIT_STUFF (%.1f > %.1f)!\nInvestigate ship %s (%s), a hit was registered on this ship outside this ship's radius.\n", hitpos_dist, ship_objp->radius * 2.0f, ship_p->ship_name, Ship_info[ship_p->ship_info_index].name );
 		// Get John ASAP!!!!  Someone passed a local coordinate instead of world for hitpos probably.
 	}
 #endif
@@ -1953,7 +1953,7 @@ core::Assert(ship_objp->type == OBJ_SHIP);
 void ai_update_lethality(object *ship_objp, object *weapon_obj, float damage);
 static void ship_do_damage(object *ship_objp, object *other_obj, vec3d *hitpos, float damage, int quadrant, int submodel_num, int wash_damage=0)
 {
-//	mprintf(("doing damage\n"));
+// core::mprintf("doing damage\n");
 
 	ship *shipp;	
 	float subsystem_damage = damage;			// damage to be applied to subsystems
@@ -2070,7 +2070,7 @@ core::Assert(ship_objp->type == OBJ_SHIP);
 	//	If we hit the shield, reduce it's strength and found
 	// out how much damage is left over.
 	if ( quadrant >= 0 && !(ship_objp->flags[Object::Object_Flags::No_shields]) )	{
-//		mprintf(("applying damage ge to shield\n"));
+//	 core::mprintf("applying damage ge to shield\n");
 		float shield_factor = -1.0f;
 		int	weapon_info_index;
 
@@ -2367,13 +2367,13 @@ void ship_apply_tag(int ship_num, int tag_level, float tag_time, object *target,
 	// do tag effect
 	if (tag_level == 1)
 	{
-//		mprintf(("TAGGED %s for %f seconds\n", Ships[ship_num].ship_name, tag_time));
+//	 core::mprintf("TAGGED %s for %f seconds\n", Ships[ship_num].ship_name, tag_time);
 		Ships[ship_num].tag_left = tag_time;
 		Ships[ship_num].tag_total = tag_time;
 	}
 	else if (tag_level == 2)
 	{
-//		mprintf(("Level 2 TAGGED %s for %f seconds\n", Ships[ship_num].ship_name, tag_time));
+//	 core::mprintf("Level 2 TAGGED %s for %f seconds\n", Ships[ship_num].ship_name, tag_time);
 		Ships[ship_num].level2_tag_left = tag_time;
 		Ships[ship_num].level2_tag_total = tag_time;
 	}

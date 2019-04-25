@@ -1567,7 +1567,7 @@ void process_accept_packet(ubyte* data, header* hinfo)
 	if (code & ACCEPT_INGAME) {
 		// the game filename
 		GET_STRING(Game_current_mission_filename);
-		mprintf(("Got mission filename %s\n", Game_current_mission_filename));
+	 core::mprintf("Got mission filename %s\n", Game_current_mission_filename);
 		Select_default_ship = 0;
 
 		// determine if I'm being placed on a team
@@ -2633,7 +2633,7 @@ void process_ship_kill_packet( ubyte *data, header *hinfo )
 		Game_mode |= GM_DEAD_DIED;
 	}
 
-	mprintf(("Network Killing off %s\n", Ships[sobjp->instance].ship_name));
+ core::mprintf("Network Killing off %s\n", Ships[sobjp->instance].ship_name);
 
 	// do the normal thing when not ingame joining.  When ingame joining, simply kill off the ship.
 	if ( !(Net_player->flags & NETINFO_FLAG_INGAME_JOIN) ) {
@@ -3446,7 +3446,7 @@ core::Assert( !(Net_player->flags & NETINFO_FLAG_AM_MASTER) );
 
 	// filter out some builtin ones in TvT
 	if((builtin_type >= 0) && (Netgame.type_flags & NG_TYPE_TEAM) && (Net_player != NULL) && (Net_player->p_info.team != multi_team_filter)) {
-		mprintf(("Builtin message of type %d filtered out in process_mission_message_packet()\n", id));
+	 core::mprintf("Builtin message of type %d filtered out in process_mission_message_packet()\n", id);
 		return;
 	}
 
@@ -8205,7 +8205,7 @@ void process_player_pain_packet(ubyte *data, header *hinfo)
 	GET_INT(quadrant_num);
 	PACKET_SET_SIZE();
 
-	// mprintf(("PAIN!\n"));
+	// core::mprintf("PAIN!\n");
 
 	// get weapon info pointer
 core::Assert((windex < Num_weapon_types) && (Weapon_info[windex].subtype == WP_LASER));

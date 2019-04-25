@@ -131,7 +131,7 @@ core::Assertion(!_in_array, "nextSection() may not be called in an array!");
 		// There was a previous section
 		auto current = (size_t)cftell(_cfp);
 		if (current != _section_end_pos) {
-			mprintf(("PLR => WARNING: Advancing to the next section. " SIZE_T_ARG " bytes were skipped!\n", _section_end_pos - current));
+		 core::mprintf("PLR => WARNING: Advancing to the next section. " SIZE_T_ARG " bytes were skipped!\n", _section_end_pos - current);
 			cfseek(_cfp, (int)_section_end_pos, CF_SEEK_SET);
 		}
 

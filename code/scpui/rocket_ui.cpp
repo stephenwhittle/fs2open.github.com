@@ -178,7 +178,7 @@ bool mouse_button_handler(const SDL_Event& evt)
 		break;
 	default:
 		// Unknown SDL button value
-		mprintf(("Unknown SDL button value %d in libRocket mouse handler!", evt.button.button));
+	 core::mprintf("Unknown SDL button value %d in libRocket mouse handler!", evt.button.button);
 		return false;
 	}
 
@@ -505,7 +505,7 @@ namespace scpui {
 void initialize()
 {
 	if (!Unicode_text_mode) {
-		mprintf(("NOTE: libRocket is disabled since unicode text mode is not enabled!\n"));
+	 core::mprintf("NOTE: libRocket is disabled since unicode text mode is not enabled!\n");
 		return;
 	}
 
@@ -572,7 +572,7 @@ void shutdown()
 
 	if (input_context != nullptr) {
 		// If this is still here then the user forgot to disable input
-		mprintf(("Warning: The input context is still active! Disabling input...\n"));
+	 core::mprintf("Warning: The input context is still active! Disabling input...\n");
 		disableInput();
 	}
 

@@ -377,7 +377,7 @@ int obj_allocate(void)
 	object *objp;
 
 	if (!Object_inited) {
-		mprintf(("Why hasn't obj_init() been called yet?\n"));
+	 core::mprintf("Why hasn't obj_init() been called yet?\n");
 		obj_init();
 	}
 
@@ -390,7 +390,7 @@ int obj_allocate(void)
 
 	if (Num_objects >= MAX_OBJECTS) {
 		#ifndef NDEBUG
-		mprintf(("Object creation failed - too many objects!\n" ));
+	 core::mprintf("Object creation failed - too many objects!\n" );
 		#endif
 		return -1;
 	}
@@ -435,7 +435,7 @@ void obj_free(int objnum)
 	object *objp;
 
 	if (!Object_inited) {
-		mprintf(("Why hasn't obj_init() been called yet?\n"));
+	 core::mprintf("Why hasn't obj_init() been called yet?\n");
 		obj_init();
 	}
 
@@ -532,7 +532,7 @@ void obj_delete_all()
 		obj_delete(i);
 	}
 
-	mprintf(("Cleanup: Deleted %i objects\n", counter));
+ core::mprintf("Cleanup: Deleted %i objects\n", counter);
 }
 
 /**
@@ -548,7 +548,7 @@ void obj_delete(int objnum)
 core::Assert(objnum >= 0 && objnum < MAX_OBJECTS);
 	objp = &Objects[objnum];
 	if (objp->type == OBJ_NONE) {
-		mprintf(("obj_delete() called for already deleted object %d.\n", objnum));
+	 core::mprintf("obj_delete() called for already deleted object %d.\n", objnum);
 		return;
 	};	
 
@@ -603,7 +603,7 @@ core::Assert(objnum >= 0 && objnum < MAX_OBJECTS);
 		break;*/
 	case OBJ_GHOST:
 		if(!(Game_mode & GM_MULTIPLAYER)){
-			mprintf(("Warning: Tried to delete a ghost!\n"));
+		 core::mprintf("Warning: Tried to delete a ghost!\n");
 			objp->flags.remove(Object::Object_Flags::Should_be_dead);
 			return;
 		} else {
@@ -643,7 +643,7 @@ void obj_delete_all_that_should_be_dead()
 	object *objp, *temp;
 
 	if (!Object_inited) {
-		mprintf(("Why hasn't obj_init() been called yet?\n"));
+	 core::mprintf("Why hasn't obj_init() been called yet?\n");
 		obj_init();
 	}
 
@@ -979,24 +979,24 @@ void obj_check_object( object *obj )
 			// ok.
 			CheckObjects[objnum].type = OBJ_SHIP;
 		} else {
-			mprintf(( "Object type changed! Old: %i, Current: %i\n", CheckObjects[objnum].type, obj->type ));
+		 core::mprintf( "Object type changed! Old: %i, Current: %i\n", CheckObjects[objnum].type, obj->type );
 			Int3();
 		}
 	}
 	if ( CheckObjects[objnum].signature != obj->signature ) {
-		mprintf(( "Object signature changed!\n" ));
+	 core::mprintf( "Object signature changed!\n" );
 		Int3();
 	}
 	if ( (CheckObjects[objnum].flags[Object::Object_Flags::Collides]) != (obj->flags[Object::Object_Flags::Collides]) ) {
-		mprintf(( "Object flags changed!\n" ));
+	 core::mprintf( "Object flags changed!\n" );
 		Int3();
 	}
 	if ( CheckObjects[objnum].parent_sig != obj->parent_sig ) {
-		mprintf(( "Object parent sig changed!\n" ));
+	 core::mprintf( "Object parent sig changed!\n" );
 		Int3();
 	}
 	if ( CheckObjects[objnum].parent_type != obj->parent_type ) {
-		mprintf(( "Object's parent type changed!\n" ));
+	 core::mprintf( "Object's parent type changed!\n" );
 		Int3();
 	}
 }
@@ -1036,7 +1036,7 @@ void obj_set_flags( object *obj, const flagset<Object::Object_Flags>& new_flags 
 		// observers can't collide or be hit, and they therefore have no hit or collide functions
 		// So, don't allow this bit to be set
 		if(obj->type == OBJ_OBSERVER){
-			mprintf(("Illegal to set collision bit for OBJ_OBSERVER!!\n"));
+		 core::mprintf("Illegal to set collision bit for OBJ_OBSERVER!!\n");
 			Int3();
 		}
 
@@ -1092,8 +1092,8 @@ void obj_set_flags( object *obj, const flagset<Object::Object_Flags>& new_flags 
 
 	// Check for unhandled flag changing
 	if ( (new_flags[Object::Object_Flags::Collides]) != (obj->flags[Object::Object_Flags::Collides]) ) {
-		mprintf(( "Unhandled flag changing in obj_set_flags!!\n" ));
-		mprintf(( "Add code to support it, see John for questions!!\n" ));
+	 core::mprintf( "Unhandled flag changing in obj_set_flags!!\n" );
+	 core::mprintf( "Add code to support it, see John for questions!!\n" );
 		Int3();
 	} else {
 		// Since it wasn't an important flag, just bash it.
@@ -1568,7 +1568,7 @@ core::Assertion(Cmeasures_homing_check >= 0, "Cmeasures_homing_check is %d in ob
 	// update artillery locking info now
 	ship_update_artillery_lock();
 
-//	mprintf(("moved all objects\n"));
+// core::mprintf("moved all objects\n");
 }
 
 
@@ -1622,7 +1622,7 @@ void obj_queue_render(object* obj, model_draw_list* scene)
 	switch ( obj->type ) {
 	case OBJ_NONE:
 #ifndef NDEBUG
-		mprintf(( "ERROR!!!! Bogus obj " PTRDIFF_T_ARG " is rendering!\n", obj-Objects ));
+	 core::mprintf( "ERROR!!!! Bogus obj " PTRDIFF_T_ARG " is rendering!\n", obj-Objects );
 		Int3();
 #endif
 		break;

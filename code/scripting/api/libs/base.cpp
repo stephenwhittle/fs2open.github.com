@@ -28,7 +28,7 @@ ADE_LIB(l_Base, "Base", "ba", "Base FreeSpace 2 functions");
 
 ADE_FUNC(print, l_Base, "string Message", "Prints a string", NULL, NULL)
 {
-	mprintf(("%s", lua_tostring(L, -1)));
+ core::mprintf("%s", lua_tostring(L, -1));
 
 	return ADE_RETURN_NIL;
 }

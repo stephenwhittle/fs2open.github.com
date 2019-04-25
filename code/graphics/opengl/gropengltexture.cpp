@@ -127,7 +127,7 @@ void opengl_tcache_init()
 
 	// if we can't do at least 128x128 then just disable FBOs
 	if (GL_max_renderbuffer_size < 128) {
-		mprintf(("WARNING: Max dimensions of FBO, %ix%i, is less the required minimum!!  Extension will be disabled!\n", GL_max_renderbuffer_size, GL_max_renderbuffer_size));
+	 core::mprintf("WARNING: Max dimensions of FBO, %ix%i, is less the required minimum!!  Extension will be disabled!\n", GL_max_renderbuffer_size, GL_max_renderbuffer_size);
 		Cmdline_no_fbo = 1;
 	}
 
@@ -871,7 +871,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 	}
 
 	if ( (width < 1) || (height< 1) )       {
-		mprintf(("Bitmap %s is too small at %dx%d.\n", bm_get_filename(bitmap_handle), width, height));
+	 core::mprintf("Bitmap %s is too small at %dx%d.\n", bm_get_filename(bitmap_handle), width, height);
 		return 0;
 	}
 
@@ -893,7 +893,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 	}
 
 	if (tslot->texture_id == 0) {
-		mprintf(("!!OpenGL DEBUG!! t->texture_id == 0\n"));
+	 core::mprintf("!!OpenGL DEBUG!! t->texture_id == 0\n");
 		tslot->reset();
 		return 0;
 	}
@@ -958,7 +958,7 @@ int opengl_create_texture(int bitmap_handle, int bitmap_type, tcache_slot_opengl
 		auto bmp = bm_lock(frame, bits_per_pixel, bitmap_flags);
 
 		if ( bmp == NULL ) {
-			mprintf(("Couldn't lock bitmap %d (%s).\n", frame, bm_get_filename(frame) ));
+		 core::mprintf("Couldn't lock bitmap %d (%s).\n", frame, bm_get_filename(frame) );
 			continue;
 		}
 
@@ -1048,7 +1048,7 @@ int gr_opengl_tcache_set_internal(int bitmap_handle, int bitmap_type, float *u_s
 	}
 	// gah
 	else {
-		mprintf(("Texturing disabled for bitmap %d (%s) due to internal error.\n", bitmap_handle, bm_get_filename(bitmap_handle)));
+	 core::mprintf("Texturing disabled for bitmap %d (%s) due to internal error.\n", bitmap_handle, bm_get_filename(bitmap_handle));
 
 		return 0;
 	}
@@ -1110,7 +1110,7 @@ core::Assert( gr_screen.mode == GR_OPENGL );
 	retval = gr_opengl_tcache_set(bitmap_num, (is_aabitmap) ? TCACHE_TYPE_AABITMAP : TCACHE_TYPE_NORMAL, &u_scale, &v_scale, &array_index);
 
 	if ( !retval ) {
-		mprintf(("Texture upload failed!\n"));
+	 core::mprintf("Texture upload failed!\n");
 	}
 
 	return retval;
@@ -1326,27 +1326,27 @@ size_t opengl_export_render_target( int slot, int width, int height, int alpha, 
 	GL_CHECK_FOR_ERRORS("start of export_image()");
 
 	if (!image_data) {
-		mprintf(("OpenGL ERROR: Tried to export a texture without a valid export location!\n"));
+	 core::mprintf("OpenGL ERROR: Tried to export a texture without a valid export location!\n");
 		return 0;
 	}
 
 	if (!ts->texture_target) {
-		mprintf(("OpenGL ERROR: Tried to export a texture for which I don't know the texture target!\n"));
+	 core::mprintf("OpenGL ERROR: Tried to export a texture for which I don't know the texture target!\n");
 		return 0;
 	}
 
 	if (ts->mipmap_levels != num_mipmaps) {
-		mprintf(("OpenGL ERROR: Number of mipmap levels requested is different from number available!\n"));
+	 core::mprintf("OpenGL ERROR: Number of mipmap levels requested is different from number available!\n");
 		return 0;
 	}
 
 	if ( (ts->texture_target != GL_TEXTURE_2D) && (ts->texture_target != GL_TEXTURE_CUBE_MAP) ) {
-		mprintf(("OpenGL ERROR: Only 2D textures and cube maps can be exported!\n"));
+	 core::mprintf("OpenGL ERROR: Only 2D textures and cube maps can be exported!\n");
 		return 0;
 	}
 
 	if ( (ts->w != width) && (ts->h != height) ) {
-		mprintf(("OpenGL ERROR: Passed width and height do not match values for texture!\n"));
+	 core::mprintf("OpenGL ERROR: Passed width and height do not match values for texture!\n");
 		return 0;
 	}
 
@@ -1546,7 +1546,7 @@ int opengl_check_framebuffer()
 				break;
 		}
 
-		mprintf(("Framebuffer ERROR: %s\n", err_txt));
+	 core::mprintf("Framebuffer ERROR: %s\n", err_txt);
 
 		return (int)status;
 	}
@@ -1645,7 +1645,7 @@ core::Assert( ts != NULL );
 	fbo = opengl_get_fbo(ts->fbo_id);
 
 	if (fbo == NULL) {
-		mprintf(("Tried to get an OpenGL FBO that didn't exist!\n"));
+	 core::mprintf("Tried to get an OpenGL FBO that didn't exist!\n");
 		return 0;
 	}
 
@@ -1772,7 +1772,7 @@ core::Assert( !GL_rendering_to_texture );
 
 	if ( opengl_check_framebuffer() ) {
 		// Oops!!  reset everything and then bail
-		mprintf(("OpenGL: Unable to create FBO!\n"));
+	 core::mprintf("OpenGL: Unable to create FBO!\n");
 		auto fbo_id = ts->fbo_id;
 
 		GL_state.BindFrameBuffer(0);
@@ -1821,7 +1821,7 @@ core::Assert( !GL_rendering_to_texture );
 
 	opengl_set_texture_target();
 
-	mprintf(("OpenGL: Created %ix%i FBO!\n", ts->w, ts->h));
+ core::mprintf("OpenGL: Created %ix%i FBO!\n", ts->w, ts->h);
 
 	return 1;
 }

@@ -185,7 +185,7 @@ void gr_opengl_flip()
 	int ic = opengl_check_for_errors();
 
 	if (ic) {
-		mprintf(("!!DEBUG!! OpenGL Errors this frame: %i\n", ic));
+	 core::mprintf("!!DEBUG!! OpenGL Errors this frame: %i\n", ic);
 	}
 #endif
 }
@@ -659,7 +659,7 @@ int gr_opengl_save_screen()
 	GL_saved_screen = (ubyte*)vm_malloc( gr_screen.max_w * gr_screen.max_h * 4, memory::quiet_alloc);
 
 	if (!GL_saved_screen) {
-		mprintf(( "Couldn't get memory for saved screen!\n" ));
+	 core::mprintf( "Couldn't get memory for saved screen!\n" );
  		return -1;
 	}
 
@@ -714,7 +714,7 @@ int gr_opengl_save_screen()
 				GL_saved_screen = NULL;
 			}
 
-			mprintf(( "Couldn't get memory for temporary saved screen!\n" ));
+		 core::mprintf( "Couldn't get memory for temporary saved screen!\n" );
 			GL_state.DepthTest(save_state);
 	 		return -1;
 	 	}
@@ -990,7 +990,7 @@ core::Assertion((bpp == 16) || (bpp == 32), "Invalid bits-per-pixel value %d!", 
 		GL_original_gamma_ramp = (ushort*) vm_malloc( 3 * 256 * sizeof(ushort), memory::quiet_alloc);
 
 		if (GL_original_gamma_ramp == NULL) {
-			mprintf(("  Unable to allocate memory for gamma ramp!  Disabling...\n"));
+		 core::mprintf("  Unable to allocate memory for gamma ramp!  Disabling...\n");
 			Cmdline_no_set_gamma = 1;
 		} else {
 			// assume identity ramp by default, to be overwritten by true ramp later
@@ -1357,10 +1357,10 @@ static void init_extensions() {
 	// we need enough texture slots for this stuff to work
 
 	if (max_texture_units < 6) {
-		mprintf(( "Not enough texture units for height map support. We need at least 6, we found %d.\n", max_texture_units ));
+	 core::mprintf( "Not enough texture units for height map support. We need at least 6, we found %d.\n", max_texture_units );
 		Cmdline_height = 0;
 	} else if (max_texture_units < 5) {
-		mprintf(( "Not enough texture units for height and normal map support. We need at least 5, we found %d.\n", max_texture_units ));
+	 core::mprintf( "Not enough texture units for height and normal map support. We need at least 5, we found %d.\n", max_texture_units );
 		Cmdline_normal = 0;
 		Cmdline_height = 0;
 	} else if (max_texture_units < 4) {
@@ -1434,10 +1434,10 @@ bool gr_opengl_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps)
 	// opengl_* function calls!!
 	opengl_setup_function_pointers();
 
-	mprintf(( "  OpenGL Vendor    : %s\n", glGetString(GL_VENDOR) ));
-	mprintf(( "  OpenGL Renderer  : %s\n", glGetString(GL_RENDERER) ));
-	mprintf(( "  OpenGL Version   : %s\n", glGetString(GL_VERSION) ));
-	mprintf(( "\n" ));
+ core::mprintf( "  OpenGL Vendor    : %s\n", glGetString(GL_VENDOR) );
+ core::mprintf( "  OpenGL Renderer  : %s\n", glGetString(GL_RENDERER) );
+ core::mprintf( "  OpenGL Version   : %s\n", glGetString(GL_VERSION) );
+ core::mprintf( "\n" );
 
 	// Build a string identifier for this OpenGL implementation
 	GL_implementation_id.clear();
@@ -1529,31 +1529,31 @@ bool gr_opengl_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps)
 	glGetIntegerv(GL_MAX_ELEMENTS_VERTICES, &GL_max_elements_vertices);
 	glGetIntegerv(GL_MAX_ELEMENTS_INDICES, &GL_max_elements_indices);
 
-	mprintf(( "  Max texture units: %i (%i)\n", GL_supported_texture_units, max_texture_units ));
-	mprintf(( "  Max client texture states: %i (%i)\n", GL_supported_texture_units, max_texture_coords ));
-	mprintf(( "  Max elements vertices: %i\n", GL_max_elements_vertices ));
-	mprintf(( "  Max elements indices: %i\n", GL_max_elements_indices ));
-	mprintf(( "  Max texture size: %ix%i\n", GL_max_texture_width, GL_max_texture_height ));
+ core::mprintf( "  Max texture units: %i (%i)\n", GL_supported_texture_units, max_texture_units );
+ core::mprintf( "  Max client texture states: %i (%i)\n", GL_supported_texture_units, max_texture_coords );
+ core::mprintf( "  Max elements vertices: %i\n", GL_max_elements_vertices );
+ core::mprintf( "  Max elements indices: %i\n", GL_max_elements_indices );
+ core::mprintf( "  Max texture size: %ix%i\n", GL_max_texture_width, GL_max_texture_height );
 
 	mprintf(( "  Max render buffer size: %ix%i\n",
 		  GL_max_renderbuffer_size,
 		  GL_max_renderbuffer_size ));
 
-	mprintf(( "  Can use compressed textures: %s\n", Use_compressed_textures ? NOX("YES") : NOX("NO") ));
-	mprintf(( "  Texture compression available: %s\n", Texture_compression_available ? NOX("YES") : NOX("NO") ));
-	mprintf(( "  Post-processing enabled: %s\n", (Cmdline_postprocess) ? "YES" : "NO"));
-	mprintf(( "  Using %s texture filter.\n", (GL_mipmap_filter) ? NOX("trilinear") : NOX("bilinear") ));
+ core::mprintf( "  Can use compressed textures: %s\n", Use_compressed_textures ? NOX("YES") : NOX("NO") );
+ core::mprintf( "  Texture compression available: %s\n", Texture_compression_available ? NOX("YES") : NOX("NO") );
+ core::mprintf( "  Post-processing enabled: %s\n", (Cmdline_postprocess) ? "YES" : "NO");
+ core::mprintf( "  Using %s texture filter.\n", (GL_mipmap_filter) ? NOX("trilinear") : NOX("bilinear") );
 
-	mprintf(( "  OpenGL Shader Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION) ));
+ core::mprintf( "  OpenGL Shader Version: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION) );
 
-	mprintf(("  Max uniform block size: %d\n", GL_state.Constants.GetMaxUniformBlockSize()));
-	mprintf(("  Max uniform buffer bindings: %d\n", GL_state.Constants.GetMaxUniformBlockBindings()));
-	mprintf(("  Uniform buffer byte offset alignment: %d\n", GL_state.Constants.GetUniformBufferOffsetAlignment()));
+ core::mprintf("  Max uniform block size: %d\n", GL_state.Constants.GetMaxUniformBlockSize());
+ core::mprintf("  Max uniform buffer bindings: %d\n", GL_state.Constants.GetMaxUniformBlockBindings());
+ core::mprintf("  Uniform buffer byte offset alignment: %d\n", GL_state.Constants.GetUniformBufferOffsetAlignment());
 
 	// This stops fred crashing if no textures are set
 	gr_screen.current_bitmap = -1;
 
-	mprintf(("... OpenGL init is complete!\n"));
+ core::mprintf("... OpenGL init is complete!\n");
 
 	if (Cmdline_ati_color_swap)
 		GL_read_format = GL_RGBA;

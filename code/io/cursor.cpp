@@ -168,7 +168,7 @@ namespace io
 
 			if (handle < 0)
 			{
-				mprintf(("Failed to load cursor bitmap %s!", fileName));
+			 core::mprintf("Failed to load cursor bitmap %s!", fileName);
 				return nullptr;
 			}
 

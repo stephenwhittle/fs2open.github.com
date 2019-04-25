@@ -491,7 +491,7 @@ void iff_init()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "iff_defs.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "iff_defs.tbl", e.what());
 		return;
 	}
 }

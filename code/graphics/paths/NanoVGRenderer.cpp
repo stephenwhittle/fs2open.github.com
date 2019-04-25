@@ -290,7 +290,7 @@ void NanoVGRenderer::renderFill(NVGpaint* paint,
 								int npaths) {
 	if (npaths <= 0) {
 		// Ignore irrelevant render calls
-		mprintf(("NanoVG asked us to render filled triangles but no paths were supplied!\n"));
+	 core::mprintf("NanoVG asked us to render filled triangles but no paths were supplied!\n");
 		return;
 	}
 
@@ -357,7 +357,7 @@ void NanoVGRenderer::renderFill(NVGpaint* paint,
 void NanoVGRenderer::renderTriangles(NVGpaint* paint, NVGscissor* scissor, const NVGvertex* verts, int nverts) {
 	if (nverts <= 0) {
 		// Ignore irrelevant render calls
-		mprintf(("NanoVG asked us to render triangles but no vertices were supplied!\n"));
+	 core::mprintf("NanoVG asked us to render triangles but no vertices were supplied!\n");
 		return;
 	}
 
@@ -386,7 +386,7 @@ void NanoVGRenderer::renderStroke(NVGpaint* paint,
 								  int npaths) {
 	if (npaths <= 0) {
 		// Ignore irrelevant render calls
-		mprintf(("NanoVG asked us to render stroke triangles but no paths were supplied!\n"));
+	 core::mprintf("NanoVG asked us to render stroke triangles but no paths were supplied!\n");
 		return;
 	}
 

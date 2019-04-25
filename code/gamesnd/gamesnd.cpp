@@ -508,7 +508,7 @@ void parse_iface_sound_list(const char* tag, std::vector<interface_snd_id>& dest
 		//if we're using the old format, double check the size)
 		if (!scp_list && (destination.size() != (unsigned)check))
 		{
-			mprintf(("%s in '%s' has " SIZE_T_ARG " entries. This does not match entered size of %i.", tag, object_name, destination.size(), check));
+		 core::mprintf("%s in '%s' has " SIZE_T_ARG " entries. This does not match entered size of %i.", tag, object_name, destination.size(), check);
 		}
 	}
 }
@@ -667,7 +667,7 @@ void parse_gamesnd_old(game_snd* gs)
 				ignore_gray_space();
 				if (stuff_int_optional(&temp_max, true) == 2)
 				{
-					mprintf(("Dutifully converting retail sound %s, '%s' to a 3D sound...\n", gs->name.c_str(), entry.filename));
+				 core::mprintf("Dutifully converting retail sound %s, '%s' to a 3D sound...\n", gs->name.c_str(), entry.filename);
 					is_3d = 1;
 
 					gs->flags |= GAME_SND_USE_DS3D;
@@ -1244,7 +1244,7 @@ void parse_sound_table(const char* filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 

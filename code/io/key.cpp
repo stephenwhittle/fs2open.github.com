@@ -409,9 +409,9 @@ uint key_get_shift_status()
 		shift_status |= KEY_DEBUGGED;
 #else
 	if (keyd_pressed[KEY_DEBUG_KEY]) {
-		mprintf(("Cheats_enabled = %i, Key_normal_game = %i\n", Cheats_enabled, Key_normal_game));
+	 core::mprintf("Cheats_enabled = %i, Key_normal_game = %i\n", Cheats_enabled, Key_normal_game);
 		if ((Cheats_enabled) && Key_normal_game) {
-			mprintf(("Debug key\n"));
+		 core::mprintf("Debug key\n");
 			shift_status |= KEY_DEBUGGED1;
 		}
 	}
@@ -600,7 +600,7 @@ core::Assert( code < NUM_KEYS );
 			}
 #else
 			if ( keyd_pressed[KEY_DEBUG_KEY] ) {
-				mprintf(("Cheats_enabled = %i, Key_normal_game = %i\n", Cheats_enabled, Key_normal_game));
+			 core::mprintf("Cheats_enabled = %i, Key_normal_game = %i\n", Cheats_enabled, Key_normal_game);
 				if (Cheats_enabled && Key_normal_game) {
 					keycode |= KEY_DEBUGGED1;
 				}

@@ -1949,7 +1949,7 @@ static void parse_ship_particle_effect(ship_info* sip, particle_effect* pe, cons
 			pe->n_high = temp;
 			if (pe->n_high == 0) {
 				// notification for disabling the particles
-				mprintf(("Particle effect for %s disabled on ship '%s'.\n", id_string, sip->name));
+			 core::mprintf("Particle effect for %s disabled on ship '%s'.\n", id_string, sip->name);
 			}
 		}
 	}
@@ -2564,12 +2564,12 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 			// get rid of extensions
 			p = strchr(tr.old_texture, '.');
 			if (p) {
-				mprintf(("Extraneous extension found on replacement texture %s!\n", tr.old_texture));
+			 core::mprintf("Extraneous extension found on replacement texture %s!\n", tr.old_texture);
 				*p = 0;
 			}
 			p = strchr(tr.new_texture, '.');
 			if (p) {
-				mprintf(("Extraneous extension found on replacement texture %s!\n", tr.new_texture));
+			 core::mprintf("Extraneous extension found on replacement texture %s!\n", tr.new_texture);
 				*p = 0;
 			}
 
@@ -2577,7 +2577,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 			if (sip->replacement_textures.size() < MAX_MODEL_TEXTURES)
 				sip->replacement_textures.push_back(tr);
 			else
-				mprintf(("Too many replacement textures specified for ship '%s'!\n", sip->name));
+			 core::mprintf("Too many replacement textures specified for ship '%s'!\n", sip->name);
 		}
 	}
 
@@ -3818,7 +3818,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 		int bogus;
 		stuff_int(&bogus);
 		core::WarningEx(LOCATION, "The decal system has been deactivated in FSO builds. Entries will be discarded.\n");
-		mprintf(("WARNING: The decal system has been deactivated in FSO builds. Entries will be discarded.\n"));
+	 core::mprintf("WARNING: The decal system has been deactivated in FSO builds. Entries will be discarded.\n");
 		// Do nothing, left in for compatibility.
 	}
 
@@ -4612,7 +4612,7 @@ static int parse_ship_values(ship_info* sip, const bool is_template, const bool 
 					// than the angle
 					queued_animation_correct(current_trigger);
 				} else if (!stricmp(name_tmp, "linked")) {
-					mprintf(("TODO: set up linked animation\n"));
+				 core::mprintf("TODO: set up linked animation\n");
 				}
 			}
 
@@ -4929,7 +4929,7 @@ static void parse_shiptype_tbl(const char* filename)
 		// add tbl/tbm to multiplayer validation list
 		fs2netd_add_table_validation(filename);
 	} catch (const parse::ParseException& e) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -5028,7 +5028,7 @@ static void parse_shiptbl(const char* filename)
 		// add tbl/tbm to multiplayer validation list
 		fs2netd_add_table_validation(filename);
 	} catch (const parse::ParseException& e) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -5294,7 +5294,7 @@ static int ship_allocate_subsystems(int num_so, bool page_in = false)
 	if (Num_ship_subsystems < Num_ship_subsystems_allocated)
 		return 1;
 
-	mprintf(("Allocating space for at least %i new ship subsystems ... ", num_so));
+ core::mprintf("Allocating space for at least %i new ship subsystems ... ", num_so);
 
 	// we might need more than one set worth of new subsystems, so make as many as required
 	do {
@@ -5311,7 +5311,7 @@ static int ship_allocate_subsystems(int num_so, bool page_in = false)
 	if (page_in)
 		Num_ship_subsystems = num_subsystems_save;
 
-	mprintf((" a total of %i is now available (%i in-use).\n", Num_ship_subsystems_allocated, Num_ship_subsystems));
+ core::mprintf(" a total of %i is now available (%i in-use).\n", Num_ship_subsystems_allocated, Num_ship_subsystems);
 	return 1;
 }
 
@@ -8819,7 +8819,7 @@ core::Assert(Ships[num].objnum == OBJ_INDEX(obj));
 		if (shipp->tag_left <= 0.000001f) {
 			shipp->tag_left = -1.0f;
 
-			mprintf(("Killing TAG for %s\n", shipp->ship_name));
+		 core::mprintf("Killing TAG for %s\n", shipp->ship_name);
 		}
 	}
 
@@ -8829,7 +8829,7 @@ core::Assert(Ships[num].objnum == OBJ_INDEX(obj));
 		if (shipp->level2_tag_left <= 0.000001f) {
 			shipp->level2_tag_left = -1.0f;
 
-			mprintf(("Killing level 2 TAG for %s\n", shipp->ship_name));
+		 core::mprintf("Killing level 2 TAG for %s\n", shipp->ship_name);
 		}
 	}
 
@@ -16135,7 +16135,7 @@ void ship_page_in()
 		      Num_ship_subsystems_allocated, Num_ship_subsystems);
 	}
 
-	mprintf(("About to page in ships!\n"));
+ core::mprintf("About to page in ships!\n");
 
 	// Page in all the ship classes that are used on this level
 	int num_ship_types_used = 0;
@@ -18052,7 +18052,7 @@ void armor_parse_table(const char* filename)
 		// add tbl/tbm to multiplayer validation list
 		fs2netd_add_table_validation(filename);
 	} catch (const parse::ParseException& e) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }

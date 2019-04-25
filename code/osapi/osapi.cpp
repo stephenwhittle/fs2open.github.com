@@ -42,7 +42,7 @@ namespace
 		if (!preferencesPath) {
 			preferencesPath = SDL_GetPrefPath(ORGANIZATION_NAME, APPLICATION_NAME);
 			if (!preferencesPath) {
-				mprintf(("Failed to get preferences path from SDL: %s\n", SDL_GetError()));
+			 core::mprintf("Failed to get preferences path from SDL: %s\n", SDL_GetError());
 			}
 		}
 
@@ -262,7 +262,7 @@ void os_init(const char * wclass, const char * title, const char * app_name)
 	if (SDL_Init(SDL_INIT_EVENTS) < 0)
 	{
 		fprintf(stderr, "Couldn't init SDL: %s", SDL_GetError());
-		mprintf(("Couldn't init SDL: %s", SDL_GetError()));
+	 core::mprintf("Couldn't init SDL: %s", SDL_GetError());
 
 		exit(1);
 		return;
@@ -475,11 +475,11 @@ void os_deinit()
 
 void debug_int3(const char *file, int line)
 {
-	mprintf(("Int3(): From %s at line %d\n", file, line));
+ core::mprintf("Int3(): From %s at line %d\n", file, line);
 
 	gr_activate(0);
 
-	mprintf(("%s\n", dump_stacktrace().c_str()));
+ core::mprintf("%s\n", dump_stacktrace().c_str());
 
 #ifndef NDEBUG
 	SDL_TriggerBreakpoint();

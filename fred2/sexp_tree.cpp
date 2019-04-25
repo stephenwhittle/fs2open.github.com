@@ -94,7 +94,7 @@ sexp_tree::sexp_tree()
 // clears out the tree, so all the nodes are unused.
 void sexp_tree::clear_tree(const char *op)
 {
-	mprintf(("Resetting dynamic tree node limit from %d to %d...\n", tree_nodes.size(), 0));
+ core::mprintf("Resetting dynamic tree node limit from %d to %d...\n", tree_nodes.size(), 0);
 
 	total_nodes = flag = 0;
 	tree_nodes.clear();
@@ -332,7 +332,7 @@ int sexp_tree::allocate_node()
 		// allocate in blocks of TREE_NODE_INCREMENT
 		tree_nodes.resize(tree_nodes.size() + TREE_NODE_INCREMENT);
 
-		mprintf(("Bumping dynamic tree node limit from %d to %d...\n", old_size, tree_nodes.size()));
+	 core::mprintf("Bumping dynamic tree node limit from %d to %d...\n", old_size, tree_nodes.size());
 
 #ifndef NDEBUG
 		for (int i = old_size; i < (int)tree_nodes.size(); i++)
@@ -3922,7 +3922,7 @@ void sexp_tree::update_help(HTREEITEM h)
 		for (j=0; j<(int)op_menu.size(); j++) {
 			if (get_category(Operators[i].value) == op_menu[j].id) {
 				if (!help(Operators[i].value)) {
-					mprintf(("Allender!  If you add new sexp operators, add help for them too! :)\n"));
+				 core::mprintf("Allender!  If you add new sexp operators, add help for them too! :)\n");
 				}
 			}
 		}

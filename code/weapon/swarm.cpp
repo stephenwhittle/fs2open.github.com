@@ -474,7 +474,7 @@ core::Assert(((wip->wi_flags[Weapon::Info_Flags::Swarm]) && (wip->swarm_count > 
 
 	if (turret->turret_swarm_num == MAX_TFP)
 	{
-		mprintf(("Overlapping turret swarm firing intervals\n"));
+	 core::mprintf("Overlapping turret swarm firing intervals\n");
 		turret_swarm_delete(turret->turret_swarm_info_index[0]);
 		int old_s;
 		for (old_s = 0; old_s < (MAX_TFP - 1); old_s++)

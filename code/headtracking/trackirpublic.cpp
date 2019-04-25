@@ -63,7 +63,7 @@ int TrackIRDLL::Init(SDL_Window* window)
 		else
 		{
 			// call failed
-			mprintf(("Couldn't get window information: %s\n", SDL_GetError()));
+		 core::mprintf("Couldn't get window information: %s\n", SDL_GetError());
 			return 0;
 		}
 	}

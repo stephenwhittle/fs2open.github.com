@@ -841,7 +841,7 @@ core::Assert( Wss_slots != NULL );
 		
 		if (wl_ship->model_num < 0)
 		{
-			mprintf(("Couldn't load model file '%s' in missionweaponchoice.cpp\n", sip->pof_file));
+		 core::mprintf("Couldn't load model file '%s' in missionweaponchoice.cpp\n", sip->pof_file);
 		}
 		else
 		{

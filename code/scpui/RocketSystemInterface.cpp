@@ -45,7 +45,7 @@ bool RocketSystemInterface::LogMessage(Rocket::Core::Log::Type type, const Rocke
 	case Log::LT_INFO:
 	case Log::LT_DEBUG:
 		// These always go into the standard log
-		mprintf(("libRocket message: %s\n", message.CString()));
+	 core::mprintf("libRocket message: %s\n", message.CString());
 		break;
 	default:
 		break;

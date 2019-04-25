@@ -319,7 +319,7 @@ void CShipTexturesDlg::OnSelchangeOldTextureList()
 		p = strchr( new_texture_name[active_texture_index], '.' );
 		if ( p )
 		{
-			mprintf(( "ignoring extension on file '%s'\n", new_texture_name[active_texture_index] ));
+		 core::mprintf( "ignoring extension on file '%s'\n", new_texture_name[active_texture_index] );
 			*p = 0;
 		}
 

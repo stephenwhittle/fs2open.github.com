@@ -67,9 +67,9 @@ static void png_error_fn(png_structp png_ptr, png_const_charp message)
 	png_status* status = reinterpret_cast<png_status*>(png_get_error_ptr(png_ptr));
 
 	if (status->writing) {
-		mprintf(("PNG error while writing %s: %s\n", status->filename, message));
+	 core::mprintf("PNG error while writing %s: %s\n", status->filename, message);
 	} else {
-		mprintf(("PNG error while reading %s of %s: %s\n", status->reading_header ? "header" : "pixel data", status->filename, message));
+	 core::mprintf("PNG error while reading %s of %s: %s\n", status->reading_header ? "header" : "pixel data", status->filename, message);
 	}
 
 	longjmp(png_jmpbuf(png_ptr), 1);
@@ -80,9 +80,9 @@ static void png_warning_fn(png_structp png_ptr, png_const_charp message)
 	png_status* status = reinterpret_cast<png_status*>(png_get_error_ptr(png_ptr));
 
 	if (status->writing) {
-		mprintf(("PNG warning while writing %s: %s\n", status->filename, message));
+	 core::mprintf("PNG warning while writing %s: %s\n", status->filename, message);
 	} else {
-		mprintf(("PNG warning while reading %s of %s: %s\n", status->reading_header ? "header" : "pixel data", status->filename, message));
+	 core::mprintf("PNG warning while reading %s of %s: %s\n", status->reading_header ? "header" : "pixel data", status->filename, message);
 	}
 }
 
@@ -140,7 +140,7 @@ core::Assert( status.cfp != NULL );
 
 	if (png_ptr == NULL)
 	{
-		mprintf(("png_read_header: error creating read struct\n"));
+	 core::mprintf("png_read_header: error creating read struct\n");
 		cfclose(status.cfp);
 		return PNG_ERROR_READING;
 	}
@@ -149,7 +149,7 @@ core::Assert( status.cfp != NULL );
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL)
 	{
-		mprintf(("png_read_header: error creating info struct\n"));
+	 core::mprintf("png_read_header: error creating info struct\n");
 		cfclose(status.cfp);
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
 		return PNG_ERROR_READING;
@@ -157,7 +157,7 @@ core::Assert( status.cfp != NULL );
 
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
-		mprintf(("png_read_header: something went wrong\n"));
+	 core::mprintf("png_read_header: something went wrong\n");
 		/* Free all of the memory associated with the png_ptr and info_ptr */
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		cfclose(status.cfp);
@@ -231,7 +231,7 @@ int png_read_bitmap(const char *real_filename, ubyte *image_data, int *bpp, int 
 
 	if (png_ptr == NULL)
 	{
-		mprintf(("png_read_bitmap: png_ptr went wrong\n"));
+	 core::mprintf("png_read_bitmap: png_ptr went wrong\n");
 		cfclose(status.cfp);
 		return PNG_ERROR_READING;
 	}
@@ -240,7 +240,7 @@ int png_read_bitmap(const char *real_filename, ubyte *image_data, int *bpp, int 
 	info_ptr = png_create_info_struct(png_ptr);
 	if (info_ptr == NULL)
 	{
-		mprintf(("png_read_bitmap: info_ptr went wrong\n"));
+	 core::mprintf("png_read_bitmap: info_ptr went wrong\n");
 		cfclose(status.cfp);
 		png_destroy_read_struct(&png_ptr, NULL, NULL);
 		return PNG_ERROR_READING;
@@ -248,7 +248,7 @@ int png_read_bitmap(const char *real_filename, ubyte *image_data, int *bpp, int 
 
 	if (setjmp(png_jmpbuf(png_ptr)))
 	{
-		mprintf(("png_read_bitmap: something went wrong\n"));
+	 core::mprintf("png_read_bitmap: something went wrong\n");
 		/* Free all of the memory associated with the png_ptr and info_ptr */
 		png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 		cfclose(status.cfp);

@@ -33,7 +33,7 @@ protected:
 #ifndef NDEBUG
 		if (m_library == NULL)
 		{
-			mprintf(("Failed to load library '%s': '%s'\n", externlib, SDL_GetError()));
+		 core::mprintf("Failed to load library '%s': '%s'\n", externlib, SDL_GetError());
 		}
 #endif
 
@@ -49,7 +49,7 @@ protected:
 #ifndef NDEBUG
 			if (func == NULL)
 			{
-				mprintf(("Failed to load function '%s': '%s'\n", functionname, SDL_GetError()));
+			 core::mprintf("Failed to load function '%s': '%s'\n", functionname, SDL_GetError());
 			}
 #endif
 

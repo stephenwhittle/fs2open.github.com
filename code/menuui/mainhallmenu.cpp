@@ -2478,7 +2478,7 @@ void parse_main_hall_table(const char* filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }

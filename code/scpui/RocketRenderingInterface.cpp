@@ -204,7 +204,7 @@ float RocketRenderingInterface::GetPixelsPerInch()
 	auto display = os_config_read_uint("Video", "Display", 0);
 	float ddpi;
 	if (SDL_GetDisplayDPI(display, &ddpi, nullptr, nullptr) != 0) {
-		mprintf(("Failed to determine display DPI: %s\n", SDL_GetError()));
+	 core::mprintf("Failed to determine display DPI: %s\n", SDL_GetError());
 		return 96.f;
 	}
 

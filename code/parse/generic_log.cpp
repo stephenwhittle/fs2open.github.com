@@ -138,6 +138,6 @@ void log_string(int logfile_type, const char *string, int add_time)
 	cflush(logfiles[logfile_type].log_file);
 
 #if defined(LOGFILE_ECHO_TO_DEBUG)
-	mprintf(("Log file type %d %s",logfile_type, tmp));
+ core::mprintf("Log file type %d %s",logfile_type, tmp);
 #endif
 }

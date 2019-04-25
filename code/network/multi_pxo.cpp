@@ -3661,7 +3661,7 @@ core::Assert(multi_pxo_is_motd_text(text));
 	if((cur_len + new_len + 1) < MAX_PXO_MOTD_LEN){
 		strcat_s(Pxo_motd, text + motd_prefix_len + 1);
 		strcat_s(Pxo_motd, "\n");
-		mprintf(("MOTD ADD : %s\n", Pxo_motd));
+	 core::mprintf("MOTD ADD : %s\n", Pxo_motd);
 	}
 }
 
@@ -3673,7 +3673,7 @@ void multi_pxo_set_end_of_motd()
 	int blink = 1;
 
 	Pxo_motd_end = 1;
-	mprintf(("MOTD ALL : %s\n", Pxo_motd));
+ core::mprintf("MOTD ALL : %s\n", Pxo_motd);
 	
 	Pxo_motd_read = 0;
 

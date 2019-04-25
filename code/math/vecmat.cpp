@@ -1408,7 +1408,7 @@ int vm_matrix_cmp(const matrix * a, const matrix * b)
 	tmp1 = fl_abs(vm_vec_dot( &a->vec.uvec, &b->vec.uvec ) - 1.0f);
 	tmp2 = fl_abs(vm_vec_dot( &a->vec.fvec, &b->vec.fvec ) - 1.0f);
 	tmp3 = fl_abs(vm_vec_dot( &a->vec.rvec, &b->vec.rvec ) - 1.0f);
-//	mprintf(( "Mat=%.16f, %.16f, %.16f\n", tmp1, tmp2, tmp3 ));
+// core::mprintf( "Mat=%.16f, %.16f, %.16f\n", tmp1, tmp2, tmp3 );
 	 
 	if ( tmp1 > 0.0000005f ) return 1;
 	if ( tmp2 > 0.0000005f ) return 1;

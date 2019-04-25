@@ -228,7 +228,7 @@ void parse_medal_tbl()
 	lcl_ext_open();
 
 	if ((rval = setjmp(parse_abort)) != 0) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error code = %i.\n", "medals.tbl", rval));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error code = %i.\n", "medals.tbl", rval);
 		lcl_ext_close();
 		return;
 	} 
@@ -316,9 +316,9 @@ core::Assert(strlen(Fred_base_dir) > 0); //-V805
 
 #ifndef NDEBUG
 	#if FS_VERSION_REVIS == 0
-		mprintf(("Fred2 Open version: %i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD));
+	 core::mprintf("Fred2 Open version: %i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD);
 	#else
-		mprintf(("Fred2 Open version: %i.%i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD, FS_VERSION_REVIS));
+	 core::mprintf("Fred2 Open version: %i.%i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD, FS_VERSION_REVIS);
 	#endif
 
 	extern void cmdline_debug_print_cmdline();
@@ -2512,12 +2512,12 @@ char *reg_read_string( char *section, char *name, char *default_value )
 											 &hKey );								// Location to store key
 
 	if ( lResult != ERROR_SUCCESS )	{
-		mprintf(( "Error opening registry key '%s'\n", keyname ));
+	 core::mprintf( "Error opening registry key '%s'\n", keyname );
 		goto Cleanup;
 	}
 
 	if ( !name )	 {
-		mprintf(( "No variable name passed\n" ));
+	 core::mprintf( "No variable name passed\n" );
 		goto Cleanup;
 	}
 
@@ -2530,7 +2530,7 @@ char *reg_read_string( char *section, char *name, char *default_value )
 									 &dwLen );								// How many bytes to set
 																				
 	if ( lResult != ERROR_SUCCESS )	{
-		mprintf(( "Error reading registry key '%s'\n", name ));
+	 core::mprintf( "Error reading registry key '%s'\n", name );
 		goto Cleanup;
 	}
 

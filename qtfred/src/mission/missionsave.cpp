@@ -2394,7 +2394,7 @@ void CFred_mission_save::save_mission_internal(const char* pathname) {
 
 	cfclose(fp);
 	if (err)
-		mprintf(("Mission saving error code #%d\n", err));
+	 core::mprintf("Mission saving error code #%d\n", err);
 }
 
 int CFred_mission_save::save_music() {

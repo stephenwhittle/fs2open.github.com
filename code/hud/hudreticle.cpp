@@ -237,7 +237,7 @@ void HudGaugeReticle::initBitmaps(char *fname)
 {
 	crosshair.first_frame = bm_load_animation(fname, &crosshair.num_frames);
 	if (crosshair.first_frame < 0) {
-		mprintf(("Cannot load hud ani: %s\n", fname));
+	 core::mprintf("Cannot load hud ani: %s\n", fname);
 	}
 }
 
@@ -325,7 +325,7 @@ core::Assert(Objects[Player->objnum].type == OBJ_SHIP);
 		pm = model_get(sip->model_num);
 
 		if (pm->n_view_positions == 0) {
-			mprintf(("Model %s does not have a defined eyepoint. Firepoint display could not be generated\n", pm->filename));
+		 core::mprintf("Model %s does not have a defined eyepoint. Firepoint display could not be generated\n", pm->filename);
 		} else  {
 			if (pm->n_guns > 0) {
 				eye eyepoint = pm->view_positions[shipp->current_viewpoint];
@@ -496,7 +496,7 @@ void HudGaugeThrottle::initBitmaps(char *fname)
 	throttle_frames.first_frame = bm_load_animation(fname, &throttle_frames.num_frames);
 
 	if (throttle_frames.first_frame < 0) {
-		mprintf(("Cannot load hud ani: %s\n", fname));
+	 core::mprintf("Cannot load hud ani: %s\n", fname);
 	}
 }
 
@@ -749,17 +749,17 @@ void HudGaugeThreatIndicator::initBitmaps(char *fname_arc, char *fname_laser, ch
 {
 	threat_arc.first_frame = bm_load_animation(fname_arc, &threat_arc.num_frames);
 	if (threat_arc.first_frame < 0) {
-		mprintf(("Cannot load hud ani: %s\n", fname_arc));
+	 core::mprintf("Cannot load hud ani: %s\n", fname_arc);
 	}
 	
 	laser_warn.first_frame = bm_load_animation(fname_laser, &laser_warn.num_frames);
 	if (laser_warn.first_frame < 0) {
-		mprintf(("Cannot load hud ani: %s\n", fname_laser));
+	 core::mprintf("Cannot load hud ani: %s\n", fname_laser);
 	}
 
 	lock_warn.first_frame = bm_load_animation(fname_lock, &lock_warn.num_frames);
 	if (lock_warn.first_frame < 0) {
-		mprintf(("Cannot load hud ani: %s\n", fname_lock));
+	 core::mprintf("Cannot load hud ani: %s\n", fname_lock);
 	}
 }
 

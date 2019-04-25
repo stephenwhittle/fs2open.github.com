@@ -149,7 +149,7 @@ void timestamp_inc(fix frametime)
 	}
 
 	if (timestamp_ticker < 2 ) {
-		mprintf(("Whoa!!!  timestamp_ticker < 2 -- resetting to 2!!!\n"));
+	 core::mprintf("Whoa!!!  timestamp_ticker < 2 -- resetting to 2!!!\n");
 		timestamp_ticker = 2;
 	}
 }

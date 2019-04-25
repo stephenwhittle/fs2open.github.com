@@ -80,7 +80,7 @@ MFCOpenGLContext::~MFCOpenGLContext()
 {
 	if (!wglDeleteContext(_render_context))
 	{
-		mprintf(("Failed to delete render context!"));
+	 core::mprintf("Failed to delete render context!");
 	}
 
 	--_oglDllReferenceCount;
@@ -134,7 +134,7 @@ std::unique_ptr<os::Viewport> MFCGraphicsOperations::createViewport(const os::Vi
 	PIXELFORMATDESCRIPTOR pfd_test;
 	PIXELFORMATDESCRIPTOR GL_pfd;
 
-	mprintf(("  Initializing WGL...\n"));
+ core::mprintf("  Initializing WGL...\n");
 
 	memset(&GL_pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
 	memset(&pfd_test, 0, sizeof(PIXELFORMATDESCRIPTOR));
@@ -162,7 +162,7 @@ core::Assert(_windowHandle != NULL);
 
 	if (!device_context)
 	{
-		mprintf(("Unable to get device context for OpenGL W32!\n"));
+	 core::mprintf("Unable to get device context for OpenGL W32!\n");
 		return nullptr;
 	}
 
@@ -170,7 +170,7 @@ core::Assert(_windowHandle != NULL);
 
 	if (!PixelFormat)
 	{
-		mprintf(("Unable to choose pixel format for OpenGL W32!\n"));
+	 core::mprintf("Unable to choose pixel format for OpenGL W32!\n");
 		ReleaseDC(_windowHandle, device_context);
 		return nullptr;
 	}
@@ -181,7 +181,7 @@ core::Assert(_windowHandle != NULL);
 
 	if (!SetPixelFormat(device_context, PixelFormat, &GL_pfd))
 	{
-		mprintf(("Unable to set pixel format for OpenGL W32!\n"));
+	 core::mprintf("Unable to set pixel format for OpenGL W32!\n");
 		ReleaseDC(_windowHandle, device_context);
 		return nullptr;
 	}
@@ -205,27 +205,27 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 	auto temp_ctx = wglCreateContext(mfcView->getHDC());
 	if (!temp_ctx)
 	{
-		mprintf(("Unable to create fake context for OpenGL W32!\n"));
+	 core::mprintf("Unable to create fake context for OpenGL W32!\n");
 		return nullptr;
 	}
 
 	if (!wglMakeCurrent(mfcView->getHDC(), temp_ctx))
 	{
-		mprintf(("Unable to make current thread for OpenGL W32!\n"));
+	 core::mprintf("Unable to make current thread for OpenGL W32!\n");
 		if (!wglDeleteContext(temp_ctx))
 		{
-			mprintf(("Failed to delete render context!"));
+		 core::mprintf("Failed to delete render context!");
 		}
 		return nullptr;
 	}
 
 	if (!gladLoadWGLLoader(gladWGLLoader, mfcView->getHDC()))
 	{
-		mprintf(("Failed to load WGL functions!\n"));
+	 core::mprintf("Failed to load WGL functions!\n");
 		wglMakeCurrent(nullptr, nullptr);
 		if (!wglDeleteContext(temp_ctx))
 		{
-			mprintf(("Failed to delete render context!"));
+		 core::mprintf("Failed to delete render context!");
 		}
 		return nullptr;
 	}
@@ -235,11 +235,11 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 		// No support for 3.x
 		if (ctx.major_version >= 3)
 		{
-			mprintf(("Can't create requested OpenGL context!\n"));
+		 core::mprintf("Can't create requested OpenGL context!\n");
 			wglMakeCurrent(nullptr, nullptr);
 			if (!wglDeleteContext(temp_ctx))
 			{
-				mprintf(("Failed to delete fake context!"));
+			 core::mprintf("Failed to delete fake context!");
 			}
 			return nullptr;
 		}
@@ -284,31 +284,31 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 	wglMakeCurrent(nullptr, nullptr);
 	if (!wglDeleteContext(temp_ctx))
 	{
-		mprintf(("Failed to delete fakse context!"));
+	 core::mprintf("Failed to delete fakse context!");
 	}
 	
 	if (attrib_ctx == nullptr)
 	{
-		mprintf(("Failed to create OpenGL context!\n"));
+	 core::mprintf("Failed to create OpenGL context!\n");
 		return nullptr;
 	}
 	if (!wglMakeCurrent(mfcView->getHDC(), attrib_ctx))
 	{
-		mprintf(("Unable to make current thread for OpenGL W32!\n"));
+	 core::mprintf("Unable to make current thread for OpenGL W32!\n");
 		if (!wglDeleteContext(attrib_ctx))
 		{
-			mprintf(("Failed to delete render context!"));
+		 core::mprintf("Failed to delete render context!");
 		}
 		return nullptr;
 	}
 
 	if (!gladLoadWGLLoader(gladWGLLoader, mfcView->getHDC()))
 	{
-		mprintf(("Failed to load WGL functions!\n"));
+	 core::mprintf("Failed to load WGL functions!\n");
 		wglMakeCurrent(nullptr, nullptr);
 		if (!wglDeleteContext(temp_ctx))
 		{
-			mprintf(("Failed to delete render context!"));
+		 core::mprintf("Failed to delete render context!");
 		}
 		return nullptr;
 	}
@@ -322,7 +322,7 @@ void MFCGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::Ope
 	{
 		if (!wglMakeCurrent(nullptr, nullptr))
 		{
-			mprintf(("Failed to make OpenGL context current!\n"));
+		 core::mprintf("Failed to make OpenGL context current!\n");
 		}
 		return;
 	}
@@ -335,6 +335,6 @@ core::Assertion(ctx != nullptr, "Both viewport of context must be valid at this 
 
 	if (!wglMakeCurrent(mfcView->getHDC(), mfcCtx->getHandle()))
 	{
-		mprintf(("Failed to make OpenGL context current!\n"));
+	 core::mprintf("Failed to make OpenGL context current!\n");
 	}
 }

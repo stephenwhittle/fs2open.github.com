@@ -876,14 +876,14 @@ void red_alert_bash_wingman_status()
 						if (ras->ship_class >= 0 && ras->ship_class < static_cast<int>(Ship_info.size()))
 							change_ship_type(SHIP_INDEX(shipp), ras->ship_class);
 						else
-							mprintf(("Invalid ship class specified in red alert data for ship %s. Using mission defaults.\n", shipp->ship_name));
+						 core::mprintf("Invalid ship class specified in red alert data for ship %s. Using mission defaults.\n", shipp->ship_name);
 					}
 
 					// restore hull (but not shields)
 					if (ras->hull >= 0.0f && ras->hull <= ship_objp->hull_strength)
 						ship_objp->hull_strength = ras->hull;
 					else
-						mprintf(("Invalid health in red alert data for ship %s. Using mission defaults.\n", shipp->ship_name));
+					 core::mprintf("Invalid health in red alert data for ship %s. Using mission defaults.\n", shipp->ship_name);
 
 					// restore weapons and subsys
 					red_alert_bash_weapons(ras, &shipp->weapons);
@@ -966,7 +966,7 @@ void red_alert_bash_wingman_status()
 							swap_parse_object(pobjp, ras->ship_class);
 						else
 						{
-							mprintf(("Invalid ship class specified in red alert data for ship %s. Using mission defaults.\n", pobjp->name));
+						 core::mprintf("Invalid ship class specified in red alert data for ship %s. Using mission defaults.\n", pobjp->name);
 							
 							// We will break anyway to this should work
 							break;
@@ -977,7 +977,7 @@ void red_alert_bash_wingman_status()
 					if (ras->hull >= 0.0f && ras->hull <= (pobjp->initial_hull * pobjp->ship_max_hull_strength / 100.0f))
 						pobjp->initial_hull = (int) (ras->hull * 100.0f / pobjp->ship_max_hull_strength);
 					else
-						mprintf(("Invalid health in red alert data for ship %s. Using mission defaults.\n", pobjp->name));
+					 core::mprintf("Invalid health in red alert data for ship %s. Using mission defaults.\n", pobjp->name);
 
 					// restore weapons and subsys
 					red_alert_bash_weapons(ras, pobjp);

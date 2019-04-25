@@ -112,14 +112,14 @@ namespace font
 		CFILE* fp = cfopen(typeface.c_str(), "rb", CFILE_NORMAL, CF_TYPE_ANY, localize);
 		if (fp == NULL)
 		{
-			mprintf(("Unable to find font file \"%s\".", typeface.c_str()));
+		 core::mprintf("Unable to find font file \"%s\".", typeface.c_str());
 			return NULL;
 		}
 
 		std::unique_ptr<font> fnt(new font());
 		if (!fnt)
 		{
-			mprintf(("Unable to allocate memory for \"%s\"", typeface.c_str()));
+		 core::mprintf("Unable to allocate memory for \"%s\"", typeface.c_str());
 			return NULL;
 		}
 
@@ -275,7 +275,7 @@ namespace font
 
 			if (fontFile == NULL)
 			{
-				mprintf(("Couldn't open font file \"%s\"", fileName.c_str()));
+			 core::mprintf("Couldn't open font file \"%s\"", fileName.c_str());
 				return NULL;
 			}
 
@@ -285,14 +285,14 @@ namespace font
 
 			if (!fontData)
 			{
-				mprintf(("Couldn't allocate " SIZE_T_ARG " bytes for reading font file \"%s\"!", size, fileName.c_str()));
+			 core::mprintf("Couldn't allocate " SIZE_T_ARG " bytes for reading font file \"%s\"!", size, fileName.c_str());
 				cfclose(fontFile);
 				return NULL;
 			}
 
 			if (!cfread(fontData.get(), (int)size, 1, fontFile))
 			{
-				mprintf(("Error while reading font data from \"%s\"", fileName.c_str()));
+			 core::mprintf("Error while reading font data from \"%s\"", fileName.c_str());
 				cfclose(fontFile);
 				return NULL;
 			}
@@ -315,7 +315,7 @@ namespace font
 		
 		if (handle < 0)
 		{
-			mprintf(("Couldn't couldn't create font for file \"%s\"", fileName.c_str()));
+		 core::mprintf("Couldn't couldn't create font for file \"%s\"", fileName.c_str());
 			return NULL;
 		}
 

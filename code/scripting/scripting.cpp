@@ -171,7 +171,7 @@ void script_parse_table(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -180,20 +180,20 @@ void script_parse_table(const char *filename)
 //script_close is handled by destructors
 void script_init()
 {
-	mprintf(("SCRIPTING: Beginning initialization sequence...\n"));
+ core::mprintf("SCRIPTING: Beginning initialization sequence...\n");
 
-	mprintf(("SCRIPTING: Beginning Lua initialization...\n"));
+ core::mprintf("SCRIPTING: Beginning Lua initialization...\n");
 	Script_system.CreateLuaState();
 
 	if(Output_scripting_meta)
 	{
-		mprintf(("SCRIPTING: Outputting scripting metadata...\n"));
+	 core::mprintf("SCRIPTING: Outputting scripting metadata...\n");
 		Script_system.OutputMeta("scripting.html");
 	}
-	mprintf(("SCRIPTING: Beginning main hook parse sequence....\n"));
+ core::mprintf("SCRIPTING: Beginning main hook parse sequence....\n");
 	script_parse_table("scripting.tbl");
 	parse_modular_table(NOX("*-sct.tbm"), script_parse_table);
-	mprintf(("SCRIPTING: Inititialization complete.\n"));
+ core::mprintf("SCRIPTING: Inititialization complete.\n");
 }
 /*
 //WMC - Doesn't work as debug console interferes with any non-alphabetic chars.

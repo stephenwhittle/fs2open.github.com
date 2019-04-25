@@ -23,7 +23,7 @@ namespace headtracking
 			int trackIrInitResult = _trackIRDll.Init(window);
 			if (trackIrInitResult != SCP_INITRESULT_SUCCESS)
 			{
-				mprintf(("TrackIR Init Failed - %d\n", trackIrInitResult));
+			 core::mprintf("TrackIR Init Failed - %d\n", trackIrInitResult);
 				throw internal::HeadTrackingException("Failed to initialize TrackIR");
 			}
 		}

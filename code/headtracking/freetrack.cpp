@@ -150,7 +150,7 @@ namespace headtracking
 			// I have no idea what a correct value for this function is so I used this random value
 			library.ReportID(7919);
 
-			mprintf(("Found FreeTrack provider '%s' with version %s.\n", library.Provider(), library.GetDllVersion()));
+		 core::mprintf("Found FreeTrack provider '%s' with version %s.\n", library.Provider(), library.GetDllVersion());
 		}
 
 		FreeTrackProvider::~FreeTrackProvider()

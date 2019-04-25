@@ -2298,8 +2298,8 @@ void ai_attack_object(object *attacker, object *attacked, ship_subsys *ssp, int 
 
 	//	Only set to chase if a fighter or bomber, otherwise just return.
 	if (!(Ship_info[Ships[attacker->instance].ship_info_index].is_small_ship()) && (attacked != NULL)) {
-		core::nprintf(("AI", "AI ship %s is large ship ordered to attack %s\n", Ships[attacker->instance].ship_name,
-		               Ships[attacked->instance].ship_name));
+		core::nprintf("AI", "AI ship %s is large ship ordered to attack %s\n", Ships[attacker->instance].ship_name,
+		               Ships[attacked->instance].ship_name);
 	}
 
 	//	This is how "engage enemy" gets processed
@@ -3331,7 +3331,7 @@ void ai_form_on_wing(object *objp, object *goal_objp)
 	//	Only fighters or bombers allowed to form on wing.
 	if (!(sip->is_fighter_bomber())) {
 		core::nprintf(
-		    ("AI", "Warning: Ship %s tried to form on player's wing, but not fighter or bomber.\n", shipp->ship_name));
+		    "AI", "Warning: Ship %s tried to form on player's wing, but not fighter or bomber.\n", shipp->ship_name);
 		return;
 	}
 
@@ -4652,9 +4652,9 @@ core::Assert( aip->goals[aip->active_goal].target_name != NULL );
 		{
 			if (aip->mode == AIM_FLY_TO_SHIP || aip->goals[i].ai_mode == AI_GOAL_FLY_TO_SHIP)
 			{
-				mprintf(("Ship '%s' told to fly to target ship '%s'",
+				core::mprintf("Ship '%s' told to fly to target ship '%s'",
 					Ships[Pl_objp->instance].ship_name,
-					aip->goals[i].target_name));
+					aip->goals[i].target_name);
 			}
 		}
 		#endif
@@ -5305,7 +5305,7 @@ int ai_select_primary_weapon(object *objp, object *other_objp, Weapon::Info_Flag
 	{
 		// this can be NULL in the case of a target death and attacker weapon
 		// change.  using notification message instead of a fault
-		mprintf(("'other_objpp == NULL' in ai_select_primary_weapon()\n"));
+	 core::mprintf("'other_objpp == NULL' in ai_select_primary_weapon()\n");
 		return -1;
 	}
 
@@ -6467,7 +6467,7 @@ core::Assert( enemy_vel != NULL );
 	if (shipp->emp_intensity > 0.0f) {
 		// never go lower than 1/2 of the EMP effect max, otherwise things aren't noticeable
 		scale += (MAX_EMP_INACCURACY * (shipp->emp_intensity < 0.5f ? 0.5f : shipp->emp_intensity));
-		mprintf(("AI miss scale factor (EMP) %f\n",scale));
+	 core::mprintf("AI miss scale factor (EMP) %f\n",scale);
 	}
 
 	// if stealthy ship, throw his aim off, more when farther away and when dot is small
@@ -8145,7 +8145,7 @@ void ai_chase()
 			// if there was no class type then assume we can go after it ...
 			go_after_it = true;
 			// ... but also log this in debug so it doesn't go unchecked (NOTE that this can completely flood a debug log!)
-			mprintf(("AI-WARNING: No class_type specified for '%s', assuming that it's ok to chase!\n", esip->name));
+		 core::mprintf("AI-WARNING: No class_type specified for '%s', assuming that it's ok to chase!\n", esip->name);
 		}
 	}
 
@@ -12866,7 +12866,7 @@ void ai_bay_depart()
 	anchor_shipnum = ship_name_lookup(Parse_names[Ships[Pl_objp->instance].departure_anchor]);
 	if (anchor_shipnum < 0 || !ship_useful_for_departure(anchor_shipnum, Ships[Pl_objp->instance].departure_path_mask))
 	{
-		mprintf(("Aborting bay departure!\n"));
+	 core::mprintf("Aborting bay departure!\n");
 		aip->mode = AIM_NONE;
 		
         Ships[Pl_objp->instance].flags.remove(Ship::Ship_Flags::Depart_dockbay);
@@ -13995,7 +13995,7 @@ core::Assert(objnum != target_objnum);
 	}
 
 	if ((En_objp != NULL) && (En_objp->pos.xyz.x == Pl_objp->pos.xyz.x) && (En_objp->pos.xyz.y == Pl_objp->pos.xyz.y) && (En_objp->pos.xyz.z == Pl_objp->pos.xyz.z)) {
-		mprintf(("Warning: Object and its enemy have same position.  Object #%d\n", OBJ_INDEX(Pl_objp)));
+	 core::mprintf("Warning: Object and its enemy have same position.  Object #%d\n", OBJ_INDEX(Pl_objp));
 		En_objp = NULL;
 	}
 

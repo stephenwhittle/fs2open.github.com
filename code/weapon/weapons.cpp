@@ -448,7 +448,7 @@ void parse_weapon_expl_tbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -968,7 +968,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
 		if (wip->render_type == WRT_POF) {
-			mprintf(("WARNING:  Weapon '%s' has both LASER and POF render types!  Will only use POF type!\n", wip->name));
+		 core::mprintf("WARNING:  Weapon '%s' has both LASER and POF render types!  Will only use POF type!\n", wip->name);
 			generic_anim_init(&wip->laser_bitmap, NULL);
 		} else {
 			generic_anim_init(&wip->laser_bitmap, fname);
@@ -981,7 +981,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
 		if (wip->render_type != WRT_LASER) {
-			mprintf(("WARNING:  Laser glow specified on non-LASER type weapon (%s)!\n", wip->name));
+		 core::mprintf("WARNING:  Laser glow specified on non-LASER type weapon (%s)!\n", wip->name);
 			Int3();
 		} else {
 			generic_anim_init(&wip->laser_glow_bitmap, fname);
@@ -2343,7 +2343,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 				stuff_float(&bsip->flicker); 
 				//Sanity
 				if (bsip->flicker < 0.0f || bsip->flicker > 1.0f) {
-					mprintf(("WARNING: Invalid value found for +Flicker on section %d of beam %s. Valid range is 0.0 to 1.0, values will be adjusted.\n", wip->b_info.beam_num_sections, wip->name));
+				 core::mprintf("WARNING: Invalid value found for +Flicker on section %d of beam %s. Valid range is 0.0 to 1.0, values will be adjusted.\n", wip->b_info.beam_num_sections, wip->name);
 					CLAMP(bsip->flicker, 0.0f, 1.0f);
 				}
 			}
@@ -2557,7 +2557,7 @@ int parse_weapon(int subtype, bool replace, const char *filename)
 
 	//Left in for compatibility
 	if ( optional_string("$decal:") ) {
-		mprintf(("WARNING: The decal system has been deactivated in FSO builds. Entries for weapon %s will be discarded.\n", wip->name));
+	 core::mprintf("WARNING: The decal system has been deactivated in FSO builds. Entries for weapon %s will be discarded.\n", wip->name);
 		required_string("+texture:");
 		stuff_string(fname, F_NAME, NAME_LENGTH);
 
@@ -2885,7 +2885,7 @@ void parse_weaponstbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -3089,7 +3089,7 @@ void weapon_clean_entries()
 			}
 
 			if (removed) {
-				mprintf(("NOTE: weapon-cleanup is removing %i stale beam sections, out of %i original, from '%s'.\n", removed, wip->b_info.beam_num_sections, wip->name));
+			 core::mprintf("NOTE: weapon-cleanup is removing %i stale beam sections, out of %i original, from '%s'.\n", removed, wip->b_info.beam_num_sections, wip->name);
 				wip->b_info.beam_num_sections -= removed;
 			}
 
@@ -3222,7 +3222,7 @@ void weapon_load_bitmaps(int weapon_index)
 		}
 		// fall back to an animated type
 		else if ( generic_anim_load(&wip->laser_bitmap) ) {
-			mprintf(("Could not find a usable bitmap for '%s'!\n", wip->name));
+		 core::mprintf("Could not find a usable bitmap for '%s'!\n", wip->name);
 			core::Warning(LOCATION, "Could not find a usable bitmap (%s) for weapon '%s'!\n", wip->laser_bitmap.filename, wip->name);
 		}
 
@@ -3236,7 +3236,7 @@ void weapon_load_bitmaps(int weapon_index)
 			}
 			// fall back to an animated type
 			else if ( generic_anim_load(&wip->laser_glow_bitmap) ) {
-				mprintf(("Could not find a usable glow bitmap for '%s'!\n", wip->name));
+			 core::mprintf("Could not find a usable glow bitmap for '%s'!\n", wip->name);
 				core::Warning(LOCATION, "Could not find a usable glow bitmap (%s) for weapon '%s'!\n", wip->laser_glow_bitmap.filename, wip->name);
 			}
 		}
@@ -3257,7 +3257,7 @@ void weapon_load_bitmaps(int weapon_index)
 					wip->b_info.beam_glow.num_frames = 1;
 					wip->b_info.beam_glow.total_time = 1;
 				} else {
-					mprintf(("Could not find a usable muzzle glow bitmap for '%s'!\n", wip->name));
+				 core::mprintf("Could not find a usable muzzle glow bitmap for '%s'!\n", wip->name);
 					core::Warning(LOCATION, "Could not find a usable muzzle glow bitmap (%s) for weapon '%s'!\n", wip->b_info.beam_glow.filename, wip->name);
 				}
 			}
@@ -3276,7 +3276,7 @@ void weapon_load_bitmaps(int weapon_index)
 						bsi->texture.num_frames = 1;
 						bsi->texture.total_time = 1;
 					} else {
-						mprintf(("Could not find a usable beam section (%i) bitmap for '%s'!\n", i, wip->name));
+					 core::mprintf("Could not find a usable beam section (%i) bitmap for '%s'!\n", i, wip->name);
 						core::Warning(LOCATION, "Could not find a usable beam section (%i) bitmap (%s) for weapon '%s'!\n", i, bsi->texture.filename, wip->name);
 					}
 				}
@@ -3303,7 +3303,7 @@ void weapon_load_bitmaps(int weapon_index)
 					}
 					// fall back to an animated type
 					else if ( generic_anim_load(&wip->particle_spewers[s].particle_spew_anim) ) {
-						mprintf(("Could not find a usable particle spew bitmap for '%s'!\n", wip->name));
+					 core::mprintf("Could not find a usable particle spew bitmap for '%s'!\n", wip->name);
 						core::Warning(LOCATION, "Could not find a usable particle spew bitmap (%s) for weapon '%s'!\n", wip->particle_spewers[s].particle_spew_anim.filename, wip->name);
 					}
 				}
@@ -4793,7 +4793,7 @@ core::Assert( Weapons[num].objnum == objnum );
 			wp->lssm_warp_idx = fireball_create(&warpout, FIREBALL_WARP, FIREBALL_WARP_EFFECT, -1, obj->radius*1.5f, true, &vmd_zero_vector, wp->lssm_warp_time, 0, &obj->orient);
 
 			if (wp->lssm_warp_idx < 0) {
-				mprintf(("LSSM: Failed to create warp effect! Please report if this happens frequently.\n"));
+			 core::mprintf("LSSM: Failed to create warp effect! Please report if this happens frequently.\n");
 				// Abort warping
 				wp->lssm_stage = 0;
 			} else {
@@ -4846,7 +4846,7 @@ core::Assert( Weapons[num].objnum == objnum );
 			wp->lssm_warp_idx = fireball_create(&warpin, FIREBALL_WARP, FIREBALL_WARP_EFFECT, -1, obj->radius*1.5f, false, &vmd_zero_vector, wp->lssm_warp_time, 0, &orient);
 			
 			if (wp->lssm_warp_idx < 0) {
-				mprintf(("LSSM: Failed to create warp effect! Please report if this happens frequently.\n"));
+			 core::mprintf("LSSM: Failed to create warp effect! Please report if this happens frequently.\n");
 			}
 
 			obj->orient=orient;
@@ -5553,7 +5553,7 @@ core::Assertion(!(objp->type == OBJ_BEAM) || (objp->instance < MAX_BEAMS), "spaw
 
 	if (parent_num >= 0) {
 		if ((Objects[parent_num].type != objp->parent_type) || (Objects[parent_num].signature != objp->parent_sig)) {
-			mprintf(("Warning: Parent of spawn weapon does not exist.  Not spawning.\n"));
+		 core::mprintf("Warning: Parent of spawn weapon does not exist.  Not spawning.\n");
 			return;
 		}
 	}

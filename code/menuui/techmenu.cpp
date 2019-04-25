@@ -326,7 +326,7 @@ core::Assert( Cur_entry_index >= 0 );
 				if ( (i < Cur_entry + 5) && (i > Cur_entry - 5) )
 					continue;
 
-				mprintf(("TECH ROOM: Dumping excess ship textures...\n"));
+			 core::mprintf("TECH ROOM: Dumping excess ship textures...\n");
 
 				model_page_out_textures(Current_list[i].model_num);
 
@@ -1070,7 +1070,7 @@ void techroom_intel_init()
 		while (optional_string("$Entry:")) {
 		core::Assert(Intel_info_size < MAX_INTEL_ENTRIES);
 			if (Intel_info_size >= MAX_INTEL_ENTRIES) {
-				mprintf(("TECHMENU: Too many intel entries!\n"));
+			 core::mprintf("TECHMENU: Too many intel entries!\n");
 				break;
 			}
 
@@ -1100,7 +1100,7 @@ void techroom_intel_init()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "species.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "species.tbl", e.what());
 		return;
 	}
 }
@@ -1208,7 +1208,7 @@ void techroom_init()
 		Intel_list[idx].bitmap = -1;
 	}
 
-	mprintf(("Techroom successfully initialized, now changing tab...\n"));
+ core::mprintf("Techroom successfully initialized, now changing tab...\n");
 	techroom_change_tab(Tab);
 }
 

@@ -73,9 +73,9 @@ initialize(const std::string& cfilepath, int argc, char* argv[], Editor* editor,
 
 #ifndef NDEBUG
 #if FS_VERSION_REVIS == 0
-	mprintf(("qtFred Open version: %i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD));
+ core::mprintf("qtFred Open version: %i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD);
 #else
-	mprintf(("qtFred Open version: %i.%i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD, FS_VERSION_REVIS));
+ core::mprintf("qtFred Open version: %i.%i.%i.%i\n", FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_BUILD, FS_VERSION_REVIS);
 #endif
 
 	cmdline_debug_print_cmdline();

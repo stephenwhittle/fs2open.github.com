@@ -290,7 +290,7 @@ void fiction_viewer_init()
 	{
 		Fiction_viewer_bitmap = bm_load(Fiction_viewer_stages[Fiction_viewer_active_stage].background[gr_screen.res]);
 		if (Fiction_viewer_bitmap < 0)
-			mprintf(("Failed to load custom background bitmap %s!\n", Fiction_viewer_stages[Fiction_viewer_active_stage].background[gr_screen.res]));
+		 core::mprintf("Failed to load custom background bitmap %s!\n", Fiction_viewer_stages[Fiction_viewer_active_stage].background[gr_screen.res]);
 		else if (Fiction_viewer_ui < 0)
 			Fiction_viewer_ui = 0;
 	}

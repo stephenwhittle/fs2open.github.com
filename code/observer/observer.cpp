@@ -41,7 +41,7 @@ int observer_create(matrix *orient, vec3d *pos)
 	}
 	// if we couldn't find an open slot
 	if(idx == MAX_OBSERVER_OBS){
-		mprintf(("Ran out of observer slots!\n"));
+	 core::mprintf("Ran out of observer slots!\n");
 		return -1;
 	}
 	

@@ -542,7 +542,7 @@ core::Assert( source_obj->instance >= 0 && source_obj->instance < MAX_SHIPS );
 
     objnum = obj_create( OBJ_DEBRIS, parent_objnum, n, &source_obj->orient, pos, radius, default_flags);
 	if ( objnum == -1 ) {
-		mprintf(("Couldn't create debris object -- out of object slots\n"));
+	 core::mprintf("Couldn't create debris object -- out of object slots\n");
 		return NULL;
 	}
 

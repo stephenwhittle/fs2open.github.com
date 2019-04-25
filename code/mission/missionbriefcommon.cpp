@@ -344,7 +344,7 @@ core::Assert(!Species_info.empty());
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "icons.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "icons.tbl", e.what());
 	}
 }
 
@@ -560,14 +560,14 @@ briefing_icon_info *brief_get_icon_info(brief_icon *bi)
 				if (sip->bii_index_wing_with_cargo >= 0)
 					return &Briefing_icon_info[sip->bii_index_wing_with_cargo];
 				else
-					mprintf(("Ship '%s' is missing the wing-with-cargo briefing icon!", sip->name));
+				 core::mprintf("Ship '%s' is missing the wing-with-cargo briefing icon!", sip->name);
 			}
 			else
 			{
 				if (sip->bii_index_wing >= 0)
 					return &Briefing_icon_info[sip->bii_index_wing];
 				else
-					mprintf(("Ship '%s' is missing the wing briefing icon!", sip->name));
+				 core::mprintf("Ship '%s' is missing the wing briefing icon!", sip->name);
 			}
 		}
 		else
@@ -577,7 +577,7 @@ briefing_icon_info *brief_get_icon_info(brief_icon *bi)
 				if (sip->bii_index_ship_with_cargo >= 0)
 					return &Briefing_icon_info[sip->bii_index_ship_with_cargo];
 				else
-					mprintf(("Ship '%s' is missing the ship-with-cargo briefing icon!", sip->name));
+				 core::mprintf("Ship '%s' is missing the ship-with-cargo briefing icon!", sip->name);
 			}
 		}
 

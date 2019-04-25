@@ -267,7 +267,7 @@ void UI_WINDOW::draw()
 	if(Cmdline_mouse_coords){
 		int mx, my;
 		mouse_get_pos(&mx, &my);
-		// mprintf(("MOUSE (%d, %d)\n", mx, my));					
+		// core::mprintf("MOUSE (%d, %d)\n", mx, my);					
 		gr_set_color_fast(&Color_normal);
 		gr_printf_no_resize(mx, my - 12, "%d %d", mx, my);
 	}	
@@ -312,7 +312,7 @@ void UI_WINDOW::draw_tooltip()
 	// ptr = &Tooltip_groups[tt_group];
 	hotspot = get_current_hotspot();
 
-//	mprintf(("HOTSPOT: %d [%d]\n",hotspot, Framecount));
+// core::mprintf("HOTSPOT: %d [%d]\n",hotspot, Framecount);
 
 	/*
 	if (hotspot != last_tooltip_hotspot) {
@@ -671,8 +671,8 @@ void UI_WINDOW::do_dump_check()
 
 		last_keypress = keypress = 0;
 
-		mprintf(( "\n========== WINDOW GADGETS =========\n" ));
-		mprintf(( "(Also dumped to ui.out)\n" ));
+	 core::mprintf( "\n========== WINDOW GADGETS =========\n" );
+	 core::mprintf( "(Also dumped to ui.out)\n" );
 
 		fp = fopen( "ui.out", "wt" );
 		tmp = first_gadget;
@@ -680,42 +680,42 @@ void UI_WINDOW::do_dump_check()
 			if ( tmp->parent == NULL ) {	
 				switch ( tmp->kind ) {
 				case UI_KIND_BUTTON:
-					mprintf(( "UI: Button at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Button at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Button at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_KEYTRAP:
-					mprintf(( "UI: Keytrap at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Keytrap at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Keytrap at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_CHECKBOX:
-					mprintf(( "UI: Checkbox at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Checkbox at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Checkbox at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_RADIO:
-					mprintf(( "UI: Radiobutton at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Radiobutton at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Radiobutton at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_SCROLLBAR:
-					mprintf(( "UI: Scrollbar at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Scrollbar at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Scrollbar at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_LISTBOX:
-					mprintf(( "UI: Listbox at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Listbox at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Listbox at %d,%d\n", tmp->x, tmp->y );
 					break;
 				case UI_KIND_INPUTBOX:
-					mprintf(( "UI: Inputbox at %d,%d\n", tmp->x, tmp->y ));
+				 core::mprintf( "UI: Inputbox at %d,%d\n", tmp->x, tmp->y );
 					fprintf( fp, "UI: Inputbox at %d,%d\n", tmp->x, tmp->y );
 					break;
 				default:
-					mprintf(( "UI: Unknown type %d at %d,%d\n", tmp->kind, tmp->x, tmp->y ));
+				 core::mprintf( "UI: Unknown type %d at %d,%d\n", tmp->kind, tmp->x, tmp->y );
 					fprintf( fp, "UI: Unknown type %d at %d,%d\n", tmp->kind, tmp->x, tmp->y );
 				}
 			}
 			tmp = tmp->next;
 		} while( tmp != first_gadget );
 		fclose(fp);
-		mprintf(( "===================================\n" ));
+	 core::mprintf( "===================================\n" );
 	}
 #endif
 }
@@ -767,7 +767,7 @@ void parse_tooltips()
 	lcl_ext_open();
 
 	if ((rval = setjmp(parse_abort)) != 0) {
-		mprintf(("TABLES: Unable to parse '%s'!  Error code = %i.\n", "tooltips.tbl", rval));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error code = %i.\n", "tooltips.tbl", rval);
 		lcl_ext_close();
 		return;
 	}
@@ -814,10 +814,10 @@ void init_tooltips()
 
 void ok_clicked()
 {
-	mprintf(( "OK Clicked!\n" ));
+ core::mprintf( "OK Clicked!\n" );
 }
 
 void do_help()
 {
-	mprintf(( "Help!\n" ));
+ core::mprintf( "Help!\n" );
 }

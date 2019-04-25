@@ -347,7 +347,7 @@ void parse_species_tbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", (filename) ? filename : NOX("<default species_defs.tbl>"), e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", (filename) ? filename : NOX("<default species_defs.tbl>"), e.what());
 		return;
 	}
 }

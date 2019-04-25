@@ -1303,7 +1303,7 @@ core::Assert((Campaign.type >= 0) && (Campaign.type < MAX_CAMPAIGN_TYPES));
 
 	cfclose(fp);
 	if (err)
-		mprintf(("Campaign saving error code #%d\n", err));
+	 core::mprintf("Campaign saving error code #%d\n", err);
 	else
 		Campaign_wnd->error_checker();
 
@@ -2548,7 +2548,7 @@ void CFred_mission_save::save_mission_internal(const char *pathname) {
 
 	cfclose(fp);
 	if (err)
-		mprintf(("Mission saving error code #%d\n", err));
+	 core::mprintf("Mission saving error code #%d\n", err);
 }
 
 int CFred_mission_save::save_music() {

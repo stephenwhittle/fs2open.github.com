@@ -69,6 +69,6 @@ void level_page_in()
 		bm_page_in_stop();
 	}
 
-	mprintf(( "Ending level bitmap paging...\n" ));
+ core::mprintf( "Ending level bitmap paging...\n" );
 
 }

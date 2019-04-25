@@ -11674,10 +11674,10 @@ void sexp_set_subsystem_strength(int n)
 	shipp = &Ships[shipnum];
 
 	if ( percentage > 100 ) {
-		mprintf(("Percentage for set_subsystem_strength > 100 on ship %s for subsystem '%s'-- setting to 100\n", shipname, subsystem));
+	 core::mprintf("Percentage for set_subsystem_strength > 100 on ship %s for subsystem '%s'-- setting to 100\n", shipname, subsystem);
 		percentage = 100;
 	} else if ( percentage < 0 ) {
-		mprintf(("Percantage for set_subsystem_strength < 0 on ship %s for subsystem '%s' -- setting to 0\n", shipname, subsystem));
+	 core::mprintf("Percantage for set_subsystem_strength < 0 on ship %s for subsystem '%s' -- setting to 0\n", shipname, subsystem);
 		percentage = 0;
 	}
 
@@ -19937,7 +19937,7 @@ void sexp_remove_weapons(int node)
 		weapon_info_index = weapon_info_lookup(CTEXT(node));
 		if (weapon_info_index == -1) {
 			char *buf = CTEXT(node); 
-			mprintf(("Remove-weapons attempted to remove %s. Weapon not found. Remove-weapons will remove all weapons currently in the mission\n", buf)); 
+		 core::mprintf("Remove-weapons attempted to remove %s. Weapon not found. Remove-weapons will remove all weapons currently in the mission\n", buf); 
 		}
 	}
 
@@ -22834,7 +22834,7 @@ core::Assert ( n != -1 );
 				sp->shader_effect_start_time = timer_get_milliseconds();
 			}
 			else
-				mprintf(("Invalid Shipname in SEXP ship-effect\n"));
+			 core::mprintf("Invalid Shipname in SEXP ship-effect\n");
 		}
 
 		// move to next ship/wing in list
@@ -29496,7 +29496,7 @@ void multi_sexp_modify_variable()
 	if ( (variable_index >= 0) && (variable_index < MAX_SEXP_VARIABLES) ) {
 		// maybe create it first
 		if (!(Sexp_variables[variable_index].type & SEXP_VARIABLE_SET)) {
-			mprintf(("Warning; received multi packet for variable index which is not set!  Assuming this should be an array block variable...\n"));
+		 core::mprintf("Warning; received multi packet for variable index which is not set!  Assuming this should be an array block variable...\n");
 			sexp_add_array_block_variable(variable_index, can_construe_as_integer(value));
 		}
 
@@ -29637,16 +29637,16 @@ core::Assert(node >= 0);
 
 	if (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_NOT_USED)
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not in use!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not in use!\n");
 	}
 	else if (!(Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_SET))
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not set!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not set!\n");
 	}
 
 	if (Sexp_variables[sexp_variable_index].type & SEXP_VARIABLE_STRING)
 	{
-		mprintf(("warning: variable %d is a string but it is not possible to return a string value through a sexp!\n", sexp_variable_index));
+	 core::mprintf("warning: variable %d is a string but it is not possible to return a string value through a sexp!\n", sexp_variable_index);
 		return SEXP_NAN_FOREVER;
 	}
 
@@ -29678,11 +29678,11 @@ core::Assert(node >= 0);
 
 	if (Sexp_variables[from_index].type & SEXP_VARIABLE_NOT_USED)
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not in use!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not in use!\n");
 	}
 	else if (!(Sexp_variables[from_index].type & SEXP_VARIABLE_SET))
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not set!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not set!\n");
 	}
 
 	// now get the variable we are modifying
@@ -29735,11 +29735,11 @@ core::Assert(node >= 0);
 
 	if (Sexp_variables[from_index].type & SEXP_VARIABLE_NOT_USED)
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not in use!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not in use!\n");
 	}
 	else if (!(Sexp_variables[from_index].type & SEXP_VARIABLE_SET))
 	{
-		mprintf(("warning: retrieving a value from a sexp variable which is not set!\n"));
+	 core::mprintf("warning: retrieving a value from a sexp variable which is not set!\n");
 	}
 
 	if (!(Sexp_variables[to_index].type & SEXP_VARIABLE_SET))

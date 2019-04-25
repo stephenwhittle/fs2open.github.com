@@ -1176,12 +1176,12 @@ core::Assert( csg == NULL );
 	filename.append(fname);
 	filename.append(".cs2");
 
-	mprintf(("    CS2 => Converting '%s'...\n", filename.c_str()));
+ core::mprintf("    CS2 => Converting '%s'...\n", filename.c_str());
 
 	cfp = cfopen(filename.c_str(), "rb", CFILE_NORMAL);
 
 	if ( !cfp ) {
-		mprintf(("    CS2 => Unable to open '%s' for import!\n", fname));
+	 core::mprintf("    CS2 => Unable to open '%s' for import!\n", fname);
 		delete csg;
 		csg = NULL;
 
@@ -1191,7 +1191,7 @@ core::Assert( csg == NULL );
 	try {
 		csg_import(inferno);
 	} catch (const std::exception& err) {
-		mprintf(("    CS2 => Import ERROR: %s\n", err.what()));
+	 core::mprintf("    CS2 => Import ERROR: %s\n", err.what());
 		rval = false;
 	}
 
@@ -1212,14 +1212,14 @@ core::Assert( csg == NULL );
 	             CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 
 	if ( !cfp ) {
-		mprintf(("    CSG => Unable to open '%s' for export!\n", fname));
+	 core::mprintf("    CSG => Unable to open '%s' for export!\n", fname);
 		return false;
 	}
 
 	try {
 		csg_export();
 	} catch (const char *err) {
-		mprintf(("    CSG => Export ERROR: %s\n", err));
+	 core::mprintf("    CSG => Export ERROR: %s\n", err);
 		rval = false;
 	}
 
@@ -1230,7 +1230,7 @@ core::Assert( csg == NULL );
 	csg = NULL;
 
 	if (rval) {
-		mprintf(("    CSG => Conversion complete!\n"));
+	 core::mprintf("    CSG => Conversion complete!\n");
 	}
 
 	return rval;

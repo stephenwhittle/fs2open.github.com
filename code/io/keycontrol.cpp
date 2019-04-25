@@ -1319,7 +1319,7 @@ void ppsk_hotkeys(int k)
 		case KEY_F11 + KEY_SHIFTED:
 		case KEY_F12 + KEY_SHIFTED:
 			hotkey_set = mission_hotkey_get_set_num(k&(~KEY_SHIFTED));
-			mprintf(("Adding to set %d\n", hotkey_set+1));
+		 core::mprintf("Adding to set %d\n", hotkey_set+1);
 			if ( Player_ai->target_objnum == -1)
 				HUD_sourced_printf(HUD_SOURCE_HIDDEN, XSTR( "No target to add/remove from set %d.", 26), hotkey_set+1);
 			else  {
@@ -2816,7 +2816,7 @@ core::Assert(n >= 0);
 	/**
 	 * All keys should have been handled above, if not panic
 	 */
-	mprintf(("Unknown key %d at %s:%u\n", n, __FILE__, __LINE__));
+ core::mprintf("Unknown key %d at %s:%u\n", n, __FILE__, __LINE__);
 	Int3();
 
 	return 1;

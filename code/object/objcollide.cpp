@@ -565,7 +565,7 @@ core::Assert( obj_weapon->type == OBJ_WEAPON );
 	weapon *wp = &Weapons[obj_weapon->instance];
 	weapon_info *wip = &Weapon_info[wp->weapon_info_index];
 
-//	mprintf(( "Frame: %d,  Weapon=%d, Other=%d, pair=$%08x\n", G3_frame_count, OBJ_INDEX(weapon), OBJ_INDEX(other), current_pair ));
+// core::mprintf( "Frame: %d,  Weapon=%d, Other=%d, pair=$%08x\n", G3_frame_count, OBJ_INDEX(weapon), OBJ_INDEX(other), current_pair );
 	
 
 	// Do some checks for weapons that don't turn

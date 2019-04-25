@@ -656,7 +656,7 @@ void parse_msgtbl()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONCAMPAIGN: Unable to parse 'messages.tbl'!  Error message = %s.\n", e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse 'messages.tbl'!  Error message = %s.\n", e.what());
 		return;
 	}
 }
@@ -677,7 +677,7 @@ void messages_init()
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "messages.tbl", e.what()));
+		 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "messages.tbl", e.what());
 			return;
 		}
 	}
@@ -757,7 +757,7 @@ void message_mission_shutdown()
 {
 	int i;
 
-	mprintf(("Unloading in mission messages\n"));
+ core::mprintf("Unloading in mission messages\n");
 
 	training_mission_shutdown();
 
@@ -1070,7 +1070,7 @@ bool message_play_wave( message_q *q )
 			// convert to TC_*
 			p = strchr(filename, '_' );
 			if ( p == NULL ) {
-				mprintf(("Cannot convert %s to terran command wave -- find Sandeep or Allender\n", Message_waves[index].name));
+			 core::mprintf("Cannot convert %s to terran command wave -- find Sandeep or Allender\n", Message_waves[index].name);
 				return false;
 			}
 
@@ -1215,7 +1215,7 @@ void message_play_anim( message_q *q )
 				// Goober5000 - *sigh*... if mission designers assign a command persona
 				// to a wingman head, they risk having the death ani play
 				if ( !strnicmp(ani_name, "Head-TP", 7) || !strnicmp(ani_name, "Head-VP", 7) ) {
-					mprintf(("message '%s' incorrectly assigns a command/largeship persona to a wingman animation!\n", m->name));
+				 core::mprintf("message '%s' incorrectly assigns a command/largeship persona to a wingman animation!\n", m->name);
 					rand_index = ((int) Missiontime % MAX_WINGMAN_HEADS);
 				} else {
 					rand_index = ((int) Missiontime % MAX_COMMAND_HEADS);
@@ -1225,7 +1225,7 @@ void message_play_anim( message_q *q )
 				sprintf_safe(ani_name, "%s%c", temp, 'a'+rand_index);
 				subhead_selected = TRUE;
 			} else {
-				mprintf(("message '%s' uses an unrecognized persona type\n", m->name));
+			 core::mprintf("message '%s' uses an unrecognized persona type\n", m->name);
 			}
 		}
 
@@ -1234,7 +1234,7 @@ void message_play_anim( message_q *q )
 			rand_index = ((int) Missiontime % MAX_WINGMAN_HEADS);
 			strcpy_s(temp, ani_name);
 			sprintf_safe(ani_name, "%s%c", temp, 'a'+rand_index);
-			mprintf(("message '%s' with invalid head.  Fix by assigning persona to the message.\n", m->name));
+		 core::mprintf("message '%s' with invalid head.  Fix by assigning persona to the message.\n", m->name);
 		}
 		nprintf(("Messaging", "playing head %s for %s\n", ani_name, q->who_from));
 	}
@@ -1644,7 +1644,7 @@ void message_queue_message( int message_num, int priority, int timing, const cha
 
 	// check to be sure that we haven't reached our max limit on these messages yet.
 	if ( MessageQ_num == MAX_MESSAGE_Q ) {
-		mprintf(("Message queue already full. Message will not be added!\n"));										
+	 core::mprintf("Message queue already full. Message will not be added!\n");										
 		return;
 	}
 
@@ -1810,7 +1810,7 @@ int message_filter_multi(int id)
 
 	// bogus
 	if((id < 0) || (id >= Num_messages)){
-		mprintf(("Filtering bogus mission message!\n"));
+	 core::mprintf("Filtering bogus mission message!\n");
 		return 1;
 	}
 
@@ -1831,7 +1831,7 @@ int message_filter_multi(int id)
 
 		// is this for my team?
 		if((Net_player != NULL) && (Net_player->p_info.team != Messages[id].multi_team)){
-			mprintf(("Filtering team-based mission message!\n"));
+		 core::mprintf("Filtering team-based mission message!\n");
 			return 1;
 		}
 	}		
@@ -1868,7 +1868,7 @@ void message_send_unique_to_player( char *id, void *data, int m_source, int prio
 				// exist, we will use Terran command
 				m_persona = Messages[i].persona_index;
 				if ( m_persona == -1 ) {
-					mprintf(("Warning:  Message %s has no persona assigned.\n", Messages[i].name));
+				 core::mprintf("Warning:  Message %s has no persona assigned.\n", Messages[i].name);
 				}
 
 				// get a ship. we allow silenced ships since this is a unique messange and therefore the mission designer 
@@ -2310,7 +2310,7 @@ void message_pagein_mission_messages()
 {
 	int i;
 	
-	mprintf(("Paging in mission messages\n"));
+ core::mprintf("Paging in mission messages\n");
 
 	if (Num_messages <= Num_builtin_messages) {
 		return;

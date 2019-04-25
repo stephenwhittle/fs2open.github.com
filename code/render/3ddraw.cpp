@@ -290,7 +290,7 @@ core::Assert( G3_count == 1 );
 	}
 
 	if ( cpnt != 2 )	{
-		mprintf(( "HORZ: Wrong number of points (%d)\n", cpnt ));
+	 core::mprintf( "HORZ: Wrong number of points (%d)\n", cpnt );
 		return;
 	}
 

@@ -21,13 +21,13 @@ namespace headtracking
 		try
 		{
 			provider.reset(new Provider());
-			mprintf(("    Successfully initialized '%s'\n", Provider::getName().c_str() ));
+		 core::mprintf("    Successfully initialized '%s'\n", Provider::getName().c_str() );
 
 			return provider;
 		}
 		catch(const internal::HeadTrackingException& e)
 		{
-			mprintf(("    Failed to initialize '%s': %s.\n", Provider::getName().c_str(), e.what() ));
+		 core::mprintf("    Failed to initialize '%s': %s.\n", Provider::getName().c_str(), e.what() );
 
 			return nullptr;
 		}
@@ -35,7 +35,7 @@ namespace headtracking
 
 	bool init()
 	{
-		mprintf(("Initializing head tracking...\n"));
+	 core::mprintf("Initializing head tracking...\n");
 
 #ifdef WIN32
 		auto tir = initProvider<trackir::TrackIRProvider>();
@@ -53,7 +53,7 @@ namespace headtracking
 		}
 #endif
 
-		mprintf(("  No supported provider found, headtracking will be disabled...\n"));
+	 core::mprintf("  No supported provider found, headtracking will be disabled...\n");
 		return false;
 	}
 

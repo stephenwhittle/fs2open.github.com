@@ -314,7 +314,7 @@ core::Assert(pszFilename);
 
 ErrorExit:
 	if ( (fRtn == false) && (m_pwavefile) ) {
-		mprintf(("AUDIOSTR => ErrorExit for ::Create() on wave file: %s\n", pszFilename));
+	 core::mprintf("AUDIOSTR => ErrorExit for ::Create() on wave file: %s\n", pszFilename);
 
 		if (m_source_id)
 			OpenAL_ErrorPrint( alDeleteSources(1, &m_source_id) );

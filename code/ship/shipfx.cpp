@@ -549,7 +549,7 @@ void shipfx_warpin_start( object *objp )
 
 	if (shipp->is_arriving())
 	{
-		mprintf(( "Ship '%s' is already arriving!\n", shipp->ship_name ));
+	 core::mprintf( "Ship '%s' is already arriving!\n", shipp->ship_name );
 		Int3();
 		return;
 	}
@@ -629,7 +629,7 @@ void WE_Default::compute_warpout_stuff(float *warp_time, vec3d *warp_pos)
 		dist_to_plane -= half_length;
 
 		if (dist_to_plane < 0.0f) {
-			mprintf(("special warpout started too late\n"));
+		 core::mprintf("special warpout started too late\n");
 			dist_to_plane = 0.0f;
 		}
 
@@ -640,7 +640,7 @@ void WE_Default::compute_warpout_stuff(float *warp_time, vec3d *warp_pos)
 		}
 
 		if (-vm_vec_dot(&objp->orient.vec.fvec, &facing_normal) < max_warpout_angle) {	// within allowed angle
-			mprintf(("special warpout angle exceeded\n"));
+		 core::mprintf("special warpout angle exceeded\n");
 		}
 
 		ship_move_dist = dist_to_plane;
@@ -686,7 +686,7 @@ void shipfx_warpout_start( object *objp )
 	shipp = &Ships[objp->instance];
 
 	if ( 	shipp->flags[Ship::Ship_Flags::Depart_warp] )	{
-		mprintf(( "Ship is already departing!\n" ));
+	 core::mprintf( "Ship is already departing!\n" );
 		return;
 	}
 
@@ -2365,7 +2365,7 @@ core::Assert(shipp->objnum >= 0);
 		return;
 	}
 
-	mprintf(("SHIP BOLT\n"));
+ core::mprintf("SHIP BOLT\n");
 
 	// restamp him first
 	shipp->lightning_stamp = timestamp(stamp);
@@ -3339,7 +3339,7 @@ int WE_Default::warpStart()
 	// knossos warpout only valid in single player
 	if (portal_objp != nullptr && Game_mode & GM_MULTIPLAYER)
 	{
-		mprintf(("special warpout only for single player\n"));
+	 core::mprintf("special warpout only for single player\n");
 		portal_objp = nullptr;
 	}
 
@@ -3546,7 +3546,7 @@ int WE_Default::warpFrame(float frametime)
 
 				// Something went wrong... oh well, warp him out anyway.
 				if ( Player->control_mode != PCM_WARPOUT_STAGE3 )	{
-					mprintf(( "Hmmm... player ship warpout time elapsed, but he wasn't in warp stage 3.\n" ));
+				 core::mprintf( "Hmmm... player ship warpout time elapsed, but he wasn't in warp stage 3.\n" );
 				}
 
 				this->warpEnd();

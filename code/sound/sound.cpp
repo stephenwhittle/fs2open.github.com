@@ -338,7 +338,7 @@ sound_load_id snd_load(game_snd_entry* entry, int flags, int /*allow_hardware_lo
 					// 3.8.0.
 					core::Warning(LOCATION, "Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.", entry->filename);
 				} else {
-					mprintf(("Warning: Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.\n", entry->filename));
+				 core::mprintf("Warning: Sound '%s' has more than one channel but is used as a 3D sound! 3D sounds may only have one channel.\n", entry->filename);
 				}
 			}
 #endif
@@ -1276,7 +1276,7 @@ core::Assert( bits_per_sample >= 8 );
 		time_remaining = (int)std::lround(1000.0f * samples_remaining/frequency);
 	}
 
-//	mprintf(("time_remaining: %d\n", time_remaining));	
+// core::mprintf("time_remaining: %d\n", time_remaining);	
 	return time_remaining;
 }
 sound_load_id snd_get_sound_id(sound_handle snd_handle)

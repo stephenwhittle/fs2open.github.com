@@ -1368,7 +1368,7 @@ void process_movement_keys(int key, vec3d *mvec, angles *angs) {
 }
 
 void process_system_keys(int key) {
-	//	mprintf(("Key = %d\n", key));
+	// core::mprintf("Key = %d\n", key);
 	switch (key) {
 
 	case KEY_LAPOSTRO:

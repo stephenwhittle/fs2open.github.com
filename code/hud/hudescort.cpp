@@ -475,7 +475,7 @@ void hud_create_complete_escort_list(escort_info *escorts, int *num_escorts)
 		for(idx=0; idx<MAX_PLAYERS; idx++){
 			// break out of the loop when we have reached our max
 			if ( *num_escorts == MAX_COMPLETE_ESCORT_LIST ) {
-				mprintf(("exceeded max ships in big escort list\n"));
+			 core::mprintf("exceeded max ships in big escort list\n");
 				break;
 			}		
 
@@ -508,7 +508,7 @@ void hud_create_complete_escort_list(escort_info *escorts, int *num_escorts)
 
 			// break out of the loop when we have reached our max
 			if ( *num_escorts == MAX_COMPLETE_ESCORT_LIST ) {
-				mprintf(("exceeded max ships in big escort list\n"));
+			 core::mprintf("exceeded max ships in big escort list\n");
 				break;
 			}		
 			

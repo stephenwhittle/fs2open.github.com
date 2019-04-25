@@ -1000,7 +1000,7 @@ void game_level_init()
 
 	if ( !(Game_mode & GM_STANDALONE_SERVER) ) {
 		model_page_in_start();		// mark any existing models as unused but don't unload them yet
-		mprintf(( "Beginning level bitmap paging...\n" ));
+	 core::mprintf( "Beginning level bitmap paging...\n" );
 		bm_page_in_start();
 	} else {
 		model_free_all();			// Free all existing models if standalone server
@@ -1246,9 +1246,9 @@ core::Assert( Game_loading_callback_inited==1 );
 	Game_loading_callback_inited = 0;
 	
 #ifndef NDEBUG
-	mprintf(( "=================== ENDING LOAD ================\n" ));
-	mprintf(( "Real count = %d,  Estimated count = %d\n", real_count, COUNT_ESTIMATE ));
-	mprintf(( "================================================\n" ));
+ core::mprintf( "=================== ENDING LOAD ================\n" );
+ core::mprintf( "Real count = %d,  Estimated count = %d\n", real_count, COUNT_ESTIMATE );
+ core::mprintf( "================================================\n" );
 #else
 	// to remove warnings in release build
 	real_count = 0;
@@ -1296,7 +1296,7 @@ void freespace_mission_load_stuff()
 	// IE : we _don't_ want to load any sounds or bitmap/texture info on this machine.
 	if(!(Game_mode & GM_STANDALONE_SERVER)){	
 	
-		mprintf(( "=================== STARTING LEVEL DATA LOAD ==================\n" ));
+	 core::mprintf( "=================== STARTING LEVEL DATA LOAD ==================\n" );
 
 		game_busy( NOX("** setting up event music **") );
 		event_music_level_init(-1);	// preloads the first 2 seconds for each event music track
@@ -1406,7 +1406,7 @@ void game_post_level_init()
  */
 bool game_start_mission()
 {
-	mprintf(( "=================== STARTING LEVEL LOAD ==================\n" ));
+ core::mprintf( "=================== STARTING LEVEL LOAD ==================\n" );
 
 	int s1 __UNUSED = timer_get_milliseconds();
 
@@ -1467,7 +1467,7 @@ bool game_start_mission()
 
 	int e1 __UNUSED = timer_get_milliseconds();
 
-	mprintf(("Level load took %f seconds.\n", (e1 - s1) / 1000.0f ));
+ core::mprintf("Level load took %f seconds.\n", (e1 - s1) / 1000.0f );
 	return true;
 }
 
@@ -1723,7 +1723,7 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	}
 
 #ifndef NDEBUG
-	mprintf(("FreeSpace 2 Open version: %s\n", FS_VERSION_FULL));
+ core::mprintf("FreeSpace 2 Open version: %s\n", FS_VERSION_FULL);
 
 	extern void cmdline_debug_print_cmdline();
 	cmdline_debug_print_cmdline();
@@ -1797,7 +1797,7 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	}
 
 	if(!fsspeech_init()) {
-		mprintf(("Failed to init speech\n"));
+	 core::mprintf("Failed to init speech\n");
 	}
 
 /////////////////////////////
@@ -1837,7 +1837,7 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 			voiceRectOn = VOICEREC_init(info.info.win.window, WM_RECOEVENT, GRAMMARID1, IDR_CMD_CFG);
 		} else {
 			// call failed
-			mprintf(( "Couldn't get window information: %s\n", SDL_GetError() ));
+		 core::mprintf( "Couldn't get window information: %s\n", SDL_GetError() );
 		}
 	
 		if(voiceRectOn == false)
@@ -1900,10 +1900,10 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 		(FreeSpace_total_ram < 48*1024*1024) ||
 #endif
 		Use_low_mem )	{
-		mprintf(( "Using normal memory settings...\n" ));
+	 core::mprintf( "Using normal memory settings...\n" );
 		bm_set_low_mem(1);		// Use every other frame of bitmaps
 	} else {
-		mprintf(( "Using high memory settings...\n" ));
+	 core::mprintf( "Using high memory settings...\n" );
 		bm_set_low_mem(0);		// Use all frames of bitmaps
 	}
 
@@ -2034,7 +2034,7 @@ core::Assert(RAND_MAX == 0x7fff || RAND_MAX >= 0x7ffffffd);
 	nprintf(("General", "Ships.tbl is : %s\n", Game_ships_tbl_valid ? "VALID" : "INVALID!!!!"));
 	nprintf(("General", "Weapons.tbl is : %s\n", Game_weapons_tbl_valid ? "VALID" : "INVALID!!!!"));
 
-	mprintf(("cfile_init() took %d\n", e1 - s1));
+ core::mprintf("cfile_init() took %d\n", e1 - s1);
 
 	// if we are done initializing, start showing the cursor
 	io::mouse::CursorManager::get()->showCursor(true);
@@ -2099,7 +2099,7 @@ void game_show_framerate()
 
 	cur_time = f2fl(timer_get_approx_seconds());
 	if (cur_time - Start_time > 30.0f) {
-		mprintf(("%i frames executed in %7.3f seconds, %7.3f frames per second.\n", Framecount, cur_time - Start_time, Framecount/(cur_time - Start_time)));
+	 core::mprintf("%i frames executed in %7.3f seconds, %7.3f frames per second.\n", Framecount, cur_time - Start_time, Framecount/(cur_time - Start_time));
 		Start_time += 1000.0f;
 	}
 
@@ -2606,25 +2606,25 @@ void game_tst_frame()
 		case 0:			
 			tst_bitmap = bm_load("ig_jim");
 			left = 1;
-			mprintf(("TST 0\n"));
+		 core::mprintf("TST 0\n");
 			break;
 
 		case 1:
 			tst_bitmap = bm_load("ig_kan");
 			left = 0;
-			mprintf(("TST 1\n"));
+		 core::mprintf("TST 1\n");
 			break;
 
 		case 2:
 			tst_bitmap = bm_load("ig_jim");
 			left = 1;
-			mprintf(("TST 2\n"));
+		 core::mprintf("TST 2\n");
 			break;
 			
 		default:			
 			tst_bitmap = bm_load("ig_kan");
 			left = 0;
-			mprintf(("TST 3\n"));
+		 core::mprintf("TST 3\n");
 			break;
 		}
 
@@ -2968,7 +2968,7 @@ void game_whack_apply( float x, float y )
 	Game_hit_x += x;
 	Game_hit_y += y;
 
-//	mprintf(( "WHACK = %.1f, %.1f\n", Game_hit_x, Game_hit_y ));
+// core::mprintf( "WHACK = %.1f, %.1f\n", Game_hit_x, Game_hit_y );
 }
 
 // call to apply a "shudder"
@@ -3371,7 +3371,7 @@ camid game_render_frame_setup()
 					observer_get_eye( &eye_pos, &eye_orient, Viewer_obj );					
 					break;
 				default :
-					mprintf(("Invalid Value for Viewer_obj->type. Expected values are OBJ_SHIP (1) and OBJ_OBSERVER (12), we encountered %d. Please tell a coder.\n", Viewer_obj->type));
+				 core::mprintf("Invalid Value for Viewer_obj->type. Expected values are OBJ_SHIP (1) and OBJ_OBSERVER (12), we encountered %d. Please tell a coder.\n", Viewer_obj->type);
 					Int3();
 				}
 
@@ -4444,7 +4444,7 @@ core::Assertion( Framerate_cap > 0, "Framerate cap %d is too low. Needs to be a 
 		cap = F1_0/Framerate_cap;
 		if (Frametime < cap) {
 			thistime = cap - Frametime;
-//  			mprintf(("Sleeping for %6.3f seconds.\n", f2fl(thistime)));
+//  		 core::mprintf("Sleeping for %6.3f seconds.\n", f2fl(thistime));
 			os_sleep(static_cast<int>(f2fl(thistime) * 1000.0f));
 			Frametime = cap;
 			thistime = timer_get_fixed_seconds();
@@ -4465,7 +4465,7 @@ core::Assertion( Framerate_cap > 0, "Framerate cap %d is too low. Needs to be a 
 	// If framerate is too low, cap it.
 	if (Frametime > MAX_FRAMETIME)	{
 #ifndef NDEBUG
-		mprintf(("Frame %2i too long!!: frametime = %.3f (%.3f)\n", Framecount, f2fl(Frametime), f2fl(debug_frametime)));
+	 core::mprintf("Frame %2i too long!!: frametime = %.3f (%.3f)\n", Framecount, f2fl(Frametime), f2fl(debug_frametime));
 #endif
 		Frametime = MAX_FRAMETIME;
 	}
@@ -4507,7 +4507,7 @@ core::Assertion( Framerate_cap > 0, "Framerate cap %d is too low. Needs to be a 
 	FrametimeOverall += Frametime;
 
 /*	if ((Framecount > 0) && (Framecount < 10)) {
-		mprintf(("Frame %2i: frametime = %.3f (%.3f)\n", Framecount, f2fl(Frametime), f2fl(debug_frametime)));
+	 core::mprintf("Frame %2i: frametime = %.3f (%.3f)\n", Framecount, f2fl(Frametime), f2fl(debug_frametime));
 	}
 */
 }
@@ -4766,7 +4766,7 @@ int game_poll()
 					counter = 0;
 				}
 
-				mprintf(( "Dumping screen to '%s'\n", tmp_name ));
+			 core::mprintf( "Dumping screen to '%s'\n", tmp_name );
 				gr_print_screen(tmp_name);
 
 				game_start_time();
@@ -4814,7 +4814,7 @@ void os_close()
 // that you should change the state of the game.
 void game_process_event( int current_state, int event )
 {
-	mprintf(("Got event %s (%d) in state %s (%d)\n", GS_event_text[event], event, GS_state_text[current_state], current_state));
+ core::mprintf("Got event %s (%d) in state %s (%d)\n", GS_event_text[event], event, GS_state_text[current_state], current_state);
 
 	switch (event) {
 		case GS_EVENT_SIMULATOR_ROOM:
@@ -4911,7 +4911,7 @@ void game_process_event( int current_state, int event )
 
 			Start_time = f2fl(timer_get_approx_seconds());
 			//Framecount = 0;
-			mprintf(("Entering game at time = %7.3f\n", Start_time));
+		 core::mprintf("Entering game at time = %7.3f\n", Start_time);
 			break;
 
 		case GS_EVENT_END_GAME:
@@ -4975,7 +4975,7 @@ void game_process_event( int current_state, int event )
 				gameseq_set_state( GS_STATE_DEATH_BLEW_UP );
 				event_music_player_death();	
 			} else {
-				mprintf(( "Ignoring GS_EVENT_DEATH_BLEW_UP because we're in state %d\n", current_state ));
+			 core::mprintf( "Ignoring GS_EVENT_DEATH_BLEW_UP because we're in state %d\n", current_state );
 			}
 			break;
 
@@ -5070,7 +5070,7 @@ void game_process_event( int current_state, int event )
 
 		case GS_EVENT_PLAYER_WARPOUT_START:
 			if ( Player->control_mode != PCM_NORMAL )	{
-				mprintf(( "Player isn't in normal mode; cannot warp out.\n" ));
+			 core::mprintf( "Player isn't in normal mode; cannot warp out.\n" );
 			} else {
 				Player->saved_viewer_mode = Viewer_mode;
 				Player->control_mode = PCM_WARPOUT_STAGE1;
@@ -5086,7 +5086,7 @@ void game_process_event( int current_state, int event )
 					Player->control_mode = PCM_NORMAL;
 					Viewer_mode = Player->saved_viewer_mode;
 					hud_subspace_notify_abort();
-					mprintf(( "Player put back to normal mode.\n" ));
+				 core::mprintf( "Player put back to normal mode.\n" );
 				    if (Warpout_sound.isValid()) {
 					    snd_stop( Warpout_sound );
 					    Warpout_sound = sound_handle::invalid();
@@ -5098,9 +5098,9 @@ void game_process_event( int current_state, int event )
 		case GS_EVENT_PLAYER_WARPOUT_DONE_STAGE1:		// player ship got up to speed
 			if ( Player->control_mode != PCM_WARPOUT_STAGE1 )	{
 				gameseq_post_event( GS_EVENT_PLAYER_WARPOUT_STOP );
-				mprintf(( "Player put back to normal mode, because of invalid sequence in stage1.\n" ));
+			 core::mprintf( "Player put back to normal mode, because of invalid sequence in stage1.\n" );
 			} else {
-				mprintf(( "Hit target speed.  Starting warp effect and moving to stage 2!\n" ));
+			 core::mprintf( "Hit target speed.  Starting warp effect and moving to stage 2!\n" );
 				shipfx_warpout_start( Player_obj );
 				Player->control_mode = PCM_WARPOUT_STAGE2;
 
@@ -5115,15 +5115,15 @@ void game_process_event( int current_state, int event )
 		case GS_EVENT_PLAYER_WARPOUT_DONE_STAGE2:		// player ship got into the warp effect
 			if ( Player->control_mode != PCM_WARPOUT_STAGE2 )	{
 				gameseq_post_event( GS_EVENT_PLAYER_WARPOUT_STOP );
-				mprintf(( "Player put back to normal mode, because of invalid sequence in stage2.\n" ));
+			 core::mprintf( "Player put back to normal mode, because of invalid sequence in stage2.\n" );
 			} else {
-				mprintf(( "Hit warp effect.  Moving to stage 3!\n" ));
+			 core::mprintf( "Hit warp effect.  Moving to stage 3!\n" );
 				Player->control_mode = PCM_WARPOUT_STAGE3;
 			}
 			break;
 
 		case GS_EVENT_PLAYER_WARPOUT_DONE:	// player ship got through the warp effect
-			mprintf(( "Player warped out.  Going to debriefing!\n" ));
+		 core::mprintf( "Player warped out.  Going to debriefing!\n" );
 			Player->control_mode = PCM_NORMAL;
 			Viewer_mode = Player->saved_viewer_mode;
 		    Warpout_sound        = sound_handle::invalid();
@@ -5694,7 +5694,7 @@ void game_enter_state( int old_state, int new_state )
 
 			if(Cmdline_start_mission) {
 				strcpy_s(Game_current_mission_filename, Cmdline_start_mission);
-				mprintf(( "Straight to mission '%s'\n", Game_current_mission_filename ));
+			 core::mprintf( "Straight to mission '%s'\n", Game_current_mission_filename );
 				gameseq_post_event(GS_EVENT_START_GAME);
 				// This stops the mission from loading again when you go back to the hall
 				Cmdline_start_mission = NULL;
@@ -6755,7 +6755,7 @@ int game_main(int argc, char *argv[])
 
 	if (!headtracking::init())
 	{
-		mprintf(("Headtracking is not enabled...\n"));
+	 core::mprintf("Headtracking is not enabled...\n");
 	}
 
 	game_stop_time();
@@ -7231,7 +7231,7 @@ int Num_models_needing_splitting = 0;
 
 void Time_model( int modelnum )
 {
-//	mprintf(( "Timing ship '%s'\n", si->name ));
+// core::mprintf( "Timing ship '%s'\n", si->name );
 
 	vec3d eye_pos, model_pos;
 	matrix eye_orient, model_orient;
@@ -7348,7 +7348,7 @@ void Time_model( int modelnum )
 	Tmap_npixels /=framecount;
 
 
-	mprintf(( "'%s' is %.2f FPS\n", pof_file, i2fl(framecount)/f2fl(t2-t1) ));
+ core::mprintf( "'%s' is %.2f FPS\n", pof_file, i2fl(framecount)/f2fl(t2-t1) );
 	fprintf( Time_fp, "\"%s\"\t%.0f\t%d\t%d\t%d\t%d\n", pof_file, i2fl(framecount)/f2fl(t2-t1), bitmaps_used_this_frame, modelstats_num_polys, modelstats_num_verts, Tmap_npixels );
 }
 
@@ -7361,7 +7361,7 @@ void Do_model_timings_test()
 
 	if ( !Time_models ) return;
 
-	mprintf(( "Timing models!\n" ));
+ core::mprintf( "Timing models!\n" );
 
 	int i;
 
@@ -7529,14 +7529,14 @@ int detect_lang()
 	// now compare the checksum/filesize against known #'s
 	for (idx=0; idx < NUM_BUILTIN_LANGUAGES; idx++) {
 		if (Lcl_builtin_languages[idx].checksum == (int)file_checksum) {
-			mprintf(( "AutoLang: Language auto-detection successful...\n" ));
+		 core::mprintf( "AutoLang: Language auto-detection successful...\n" );
 			return idx;
 		}
 	}
 
 	// notify if a match was not found, include detected checksum
-	mprintf(( "ERROR: Unknown Language Checksum: %i\n", (int)file_checksum ));
-	mprintf(( "Using default language settings...\n" ));
+ core::mprintf( "ERROR: Unknown Language Checksum: %i\n", (int)file_checksum );
+ core::mprintf( "Using default language settings...\n" );
 
 	return -1;
 }
@@ -7754,7 +7754,7 @@ void game_title_screen_display()
 	*/
 
 	bool condhook_override = Script_system.IsConditionOverride(CHA_SPLASHSCREEN);
-	mprintf(("SCRIPTING: Splash screen overrides checked\n"));
+ core::mprintf("SCRIPTING: Splash screen overrides checked\n");
 	if(!condhook_override)
 	{
 		Game_title_logo = bm_load(Game_logo_screen_fname[gr_screen.res]);
@@ -7789,7 +7789,7 @@ void game_title_screen_display()
 
 	Script_system.RunCondition(CHA_SPLASHSCREEN);
 
-	mprintf(("SCRIPTING: Splash screen conditional hook has been run\n"));
+ core::mprintf("SCRIPTING: Splash screen conditional hook has been run\n");
 
 	// flip
 	gr_flip();

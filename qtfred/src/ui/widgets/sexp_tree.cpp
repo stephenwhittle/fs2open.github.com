@@ -2446,7 +2446,7 @@ void sexp_tree::update_help(QTreeWidgetItem* h) {
 		for (j = 0; j < (int) op_menu.size(); j++) {
 			if (get_category(Operators[i].value) == op_menu[j].id) {
 				if (!help(Operators[i].value)) {
-					mprintf(("Allender!  If you add new sexp operators, add help for them too! :)\n"));
+				 core::mprintf("Allender!  If you add new sexp operators, add help for them too! :)\n");
 				}
 			}
 		}

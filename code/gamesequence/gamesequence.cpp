@@ -294,7 +294,7 @@ void gameseq_push_state( int new_state )
 // I commented out because I'm not sure if we should throw out events when pushing or not.
 //	int event;
 //	while( (event = gameseq_get_event()) != -1 )	{
-//		mprintf(( "Throwing out event %d because of state push from %d to %d\n", event, old_state, new_state ));
+//	 core::mprintf( "Throwing out event %d because of state push from %d to %d\n", event, old_state, new_state );
 //	}
 
 	core::Assert(state_reentry == 1);      // Get John! (Invalid state sequencing!)

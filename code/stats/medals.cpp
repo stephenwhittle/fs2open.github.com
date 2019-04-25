@@ -408,7 +408,7 @@ void parse_medal_tbl()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "medals.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "medals.tbl", e.what());
 		return;
 	}
 }

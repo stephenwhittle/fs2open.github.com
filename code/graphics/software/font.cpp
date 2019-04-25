@@ -368,7 +368,7 @@ namespace
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", fileName, e.what()));
+		 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", fileName, e.what());
 		}
 	}
 

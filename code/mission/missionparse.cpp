@@ -428,11 +428,11 @@ void parse_custom_bitmap(const char *expected_string_640, const char *expected_s
 	// error testing
 	if (Fred_running && (found640) && !(found1024))
 	{
-		mprintf(("Mission: found an entry for %s but not a corresponding entry for %s!", expected_string_640, expected_string_1024));
+	 core::mprintf("Mission: found an entry for %s but not a corresponding entry for %s!", expected_string_640, expected_string_1024);
 	}
 	if (Fred_running && !(found640) && (found1024))
 	{
-		mprintf(("Mission: found an entry for %s but not a corresponding entry for %s!", expected_string_1024, expected_string_640));
+	 core::mprintf("Mission: found an entry for %s but not a corresponding entry for %s!", expected_string_1024, expected_string_640);
 	}
 }
 
@@ -448,7 +448,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 	required_string("$Version:");
 	stuff_float(&pm->version);
 	if (pm->version != MISSION_VERSION)
-		mprintf(("Older mission, should update it (%.2f<-->%.2f)\n", pm->version, MISSION_VERSION));
+	 core::mprintf("Older mission, should update it (%.2f<-->%.2f)\n", pm->version, MISSION_VERSION);
 
 	required_string("$Name:");
 	stuff_string(pm->name, F_NAME, NAME_LENGTH);
@@ -683,7 +683,7 @@ void parse_mission_info(mission *pm, bool basic = false)
 	// reassign the player
 	else {		
 		if(!Fred_running && (Player != NULL) && (pm->squad_name[0] != '\0') && (Game_mode & GM_CAMPAIGN_MODE)){
-			mprintf(("Reassigning player to squadron %s\n", pm->squad_name));
+		 core::mprintf("Reassigning player to squadron %s\n", pm->squad_name);
 			player_set_squad(Player, pm->squad_name);
 			player_set_squad_bitmap(Player, pm->squad_filename, false);
 		}
@@ -2812,7 +2812,7 @@ core::Assert(pm != NULL);
 			core::Warning(LOCATION, "Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name);
 		} 
 		else {
-			mprintf(("MISSIONS: Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name));
+		 core::mprintf("MISSIONS: Ship \"%s\" has an invalid ship type (ships.tbl probably changed).  Making it type 0\n", p_objp->name);
 		}
 
 		p_objp->ship_class = 0;
@@ -2889,7 +2889,7 @@ core::Assert(pm != NULL);
 		if(p_objp->alt_type_index < 0)
 			core::WarningEx(LOCATION, "Mission %s\nError looking up alternate ship type name %s!\n", pm->name, name);
 		else
-			mprintf(("Using alternate ship type name: %s\n", name));
+		 core::mprintf("Using alternate ship type name: %s\n", name);
 	}
 
 	// optional callsign
@@ -2904,7 +2904,7 @@ core::Assert(pm != NULL);
 		if(p_objp->callsign_index < 0)
 			core::WarningEx(LOCATION, "Mission %s\nError looking up callsign %s!\n", pm->name, name);
 		else
-			mprintf(("Using callsign: %s\n", name));
+		 core::mprintf("Using callsign: %s\n", name);
 	}
 
 	// static alias stuff - stupid, but it seems to be necessary
@@ -2920,7 +2920,7 @@ core::Assert(pm != NULL);
 		p_objp->team_color_setting = temp;
 
 		if (Team_Colors.find(p_objp->team_color_setting) == Team_Colors.end()) {
-			mprintf(("Invalid team color specified in mission file for ship %s, resetting to default\n", p_objp->name));
+		 core::mprintf("Invalid team color specified in mission file for ship %s, resetting to default\n", p_objp->name);
 			p_objp->team_color_setting = sip->default_team_name;
 		}
 	}
@@ -3284,7 +3284,7 @@ core::Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check 
 		// make sure we don't overflow the limit
 		if (Total_initially_docked >= MAX_SHIPS)
 		{
-			mprintf(("Too many initially docked instances; skipping...\n"));
+		 core::mprintf("Too many initially docked instances; skipping...\n");
 			continue;
 		}
 
@@ -3384,13 +3384,13 @@ core::Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check 
 			p = strchr(tr.old_texture, '.');
 			if (p)
 			{
-				mprintf(("Extraneous extension found on replacement texture %s!\n", tr.old_texture));
+			 core::mprintf("Extraneous extension found on replacement texture %s!\n", tr.old_texture);
 				*p = 0;
 			}
 			p = strchr(tr.new_texture, '.');
 			if (p)
 			{
-				mprintf(("Extraneous extension found on replacement texture %s!\n", tr.new_texture));
+			 core::mprintf("Extraneous extension found on replacement texture %s!\n", tr.new_texture);
 				*p = 0;
 			}
 
@@ -3398,7 +3398,7 @@ core::Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check 
 			if (p_objp->replacement_textures.size() < MAX_MODEL_TEXTURES)
 				p_objp->replacement_textures.push_back(tr);
 			else
-				mprintf(("Too many replacement textures specified for ship '%s'!\n", p_objp->name));
+			 core::mprintf("Too many replacement textures specified for ship '%s'!\n", p_objp->name);
 		}
 	}
 
@@ -3420,7 +3420,7 @@ core::Assert(p_objp->ship_max_hull_strength > 0.0f);	// Goober5000: div-0 check 
 		// not found?
 		if (tr->new_texture_id < 0)
 		{
-			mprintf(("Could not load replacement texture %s for ship %s\n", tr->new_texture, p_objp->name));
+		 core::mprintf("Could not load replacement texture %s for ship %s\n", tr->new_texture, p_objp->name);
 		}
 
 		// account for FRED
@@ -5130,7 +5130,7 @@ void parse_messages(mission *pm, int flags)
 	// end of command stuff ----------------------------------------------
 
 
-	mprintf(("Starting mission message count : %d\n", (int)Message_waves.size()));
+ core::mprintf("Starting mission message count : %d\n", (int)Message_waves.size());
 
 	// the message_parse function can be found in MissionMessage.h.  The format in the
 	// mission file takes the same format as the messages in messages,tbl.  Make parsing
@@ -5139,7 +5139,7 @@ void parse_messages(mission *pm, int flags)
 		message_parse((flags & MPF_IMPORT_FSM) != 0);		// call the message parsing system
 	}
 
-	mprintf(("Ending mission message count : %d\n", (int)Message_waves.size()));
+ core::mprintf("Ending mission message count : %d\n", (int)Message_waves.size());
 }
 
 void parse_reinforcement(mission *pm)
@@ -5666,7 +5666,7 @@ bool parse_mission(mission *pm, int flags)
 	if ((Num_unknown_ship_classes > 0) || ( Num_unknown_loadout_classes > 0 )) {
 		// if running on standalone server, just print to the log
 		if (Game_mode & GM_STANDALONE_SERVER) {
-			mprintf(("Warning!  Could not load %d ship classes!", Num_unknown_ship_classes));
+		 core::mprintf("Warning!  Could not load %d ship classes!", Num_unknown_ship_classes);
 			return false;
 		}
 		// don't do this in FRED; we will display a separate popup
@@ -6001,7 +6001,7 @@ int get_mission_info(const char *filename, mission *mission_p, bool basic)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", real_fname, e.what()));
+	 core::mprintf("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", real_fname, e.what());
 		return -1;
 	}
 
@@ -6086,7 +6086,7 @@ core::Assert(Ship_info.size() <= MAX_SHIP_CLASSES);
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", mission_name, e.what()));
+		 core::mprintf("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", mission_name, e.what());
 			rval = false;
 			break;
 		}
@@ -6241,14 +6241,14 @@ void set_cue_to_false(int *cue)
 void reset_arrival_to_false(p_object *pobjp, bool reset_wing)
 {
 	// falsify the ship cue
-	mprintf(("Setting arrival cue of ship %s to false for initial docking purposes.\n", pobjp->name));
+ core::mprintf("Setting arrival cue of ship %s to false for initial docking purposes.\n", pobjp->name);
 	set_cue_to_false(&pobjp->arrival_cue);
 
 	// falsify the wing cue and all ships in that wing
 	if (reset_wing && pobjp->wingnum >= 0)
 	{
 		wing *wingp = &Wings[pobjp->wingnum];
-		mprintf(("Setting arrival cue of wing %s to false for initial docking purposes.\n", wingp->name));
+	 core::mprintf("Setting arrival cue of wing %s to false for initial docking purposes.\n", wingp->name);
 		set_cue_to_false(&wingp->arrival_cue);
 
 		for (std::vector<p_object>::iterator ii = Parse_objects.begin(); ii != Parse_objects.end(); ++ii)
@@ -6496,7 +6496,7 @@ int mission_parse_is_multi(const char *filename, char *mission_name)
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+		 core::mprintf("MISSIONS: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 			break;
 		}
 	} while (0);
@@ -7129,7 +7129,7 @@ core::Assert(objp->type == OBJ_SHIP);
 	ship *shipp = &Ships[objp->instance];
 	ai_info *aip = &Ai_info[shipp->ai_index];
 
-	mprintf(("Entered mission_do_departure() for %s\n", shipp->ship_name));
+ core::mprintf("Entered mission_do_departure() for %s\n", shipp->ship_name);
 
 	// abort rearm, because if we entered this function we're either going to depart via hyperspace, depart via bay,
 	// or revert to our default behavior
@@ -7142,12 +7142,12 @@ core::Assert(objp->type == OBJ_SHIP);
 		// aha, but not if we were ORDERED to depart, because the comms menu ALSO uses the goal code, and yet the comms menu means any departure method!
 		if ((shipp->flags[Ship::Ship_Flags::Departure_ordered]) || ((shipp->wingnum >= 0) && (Wings[shipp->wingnum].flags[Ship::Wing_Flags::Departure_ordered])))
 		{
-			mprintf(("Looks like we were ordered to depart; initiating the standard departure logic\n"));
+		 core::mprintf("Looks like we were ordered to depart; initiating the standard departure logic\n");
 		}
 		// since our goal is to warp, then if we can warp, jump directly to the warping part
 		else if (ship_can_use_warp_drive(shipp))
 		{
-			mprintf(("Our current goal is to warp!  Trying to warp...\n"));
+		 core::mprintf("Our current goal is to warp!  Trying to warp...\n");
 			goto try_to_warp;
 		}
 		// otherwise, since we can't warp, we'll do the standard bay departure check, etc.
@@ -7182,7 +7182,7 @@ core::Assert(objp->type == OBJ_SHIP);
 		// see if ship is yet to arrive.  If so, then warp.
 		if (mission_parse_get_arrival_ship(name))
 		{
-			mprintf(("Anchor ship %s hasn't arrived yet!  Trying to warp...\n", name));
+		 core::mprintf("Anchor ship %s hasn't arrived yet!  Trying to warp...\n", name);
 			goto try_to_warp;
 		}
 
@@ -7191,14 +7191,14 @@ core::Assert(objp->type == OBJ_SHIP);
 		anchor_shipnum = ship_name_lookup(name);
 		if (anchor_shipnum < 0)
 		{
-			mprintf(("Anchor ship %s not found!  Trying to warp...\n", name));
+		 core::mprintf("Anchor ship %s not found!  Trying to warp...\n", name);
 			goto try_to_warp;
 		}
 
 		// see if we can actually depart to the ship
 		if (!ship_useful_for_departure(anchor_shipnum, shipp->departure_path_mask))
 		{
-			mprintf(("Anchor ship %s not suitable for departure (dying, departing, bays destroyed, etc.).  Trying to warp...\n", name));
+		 core::mprintf("Anchor ship %s not suitable for departure (dying, departing, bays destroyed, etc.).  Trying to warp...\n", name);
 			goto try_to_warp;
 		}
 
@@ -7207,7 +7207,7 @@ core::Assert(objp->type == OBJ_SHIP);
 		{
 			MONITOR_INC(NumShipDepartures,1);
 
-			mprintf(("Acquired departure path\n"));
+		 core::mprintf("Acquired departure path\n");
 			return 1;
 		}
 	}
@@ -7217,7 +7217,7 @@ try_to_warp:
 	// make sure we can actually warp
 	if (ship_can_use_warp_drive(shipp))
 	{
-		mprintf(("Setting mode to warpout\n"));
+	 core::mprintf("Setting mode to warpout\n");
 
 		ai_set_mode_warp_out(objp, aip);
 		MONITOR_INC(NumShipDepartures,1);
@@ -7234,7 +7234,7 @@ try_to_warp:
 		// 2) A support ship has had its hull fall to 25% when it has no repair targets
 		// 3) A fighter or bomber with an IFF that doesn't allow support ships has its warp_out_timestamp elapse (but this seems to not be a possibility anymore)
 		// 4) An instructor in a training mission has been fired upon
-		mprintf(("Can't warp!  Doing something else instead.\n"));
+	 core::mprintf("Can't warp!  Doing something else instead.\n");
 
         shipp->flags.remove(Ship::Ship_Flags::Depart_dockbay);
         shipp->flags.remove(Ship::Ship_Flags::Depart_warp);
@@ -7593,7 +7593,7 @@ void mission_add_to_arriving_support( object *requester_objp )
 core::Assert ( Arriving_support_ship );
 
 	if ( Num_arriving_repair_targets == MAX_AI_GOALS ) {
-		mprintf(("Reached MAX_AI_GOALS trying to add repair request!\n"));
+	 core::mprintf("Reached MAX_AI_GOALS trying to add repair request!\n");
 		return;
 	}
 

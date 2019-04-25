@@ -618,7 +618,7 @@ void gr_opengl_render_shield_impact(shield_material *material_info, primitive_ty
 		float u_scale, v_scale;
 
 		if ( !gr_opengl_tcache_set(material_info->get_texture_map(TM_BASE_TYPE), material_info->get_texture_type(), &u_scale, &v_scale, &array_index) ) {
-			mprintf(("WARNING: Error setting bitmap texture (%i)!\n", material_info->get_texture_map(TM_BASE_TYPE)));
+		 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", material_info->get_texture_map(TM_BASE_TYPE));
 		}
 	}
 

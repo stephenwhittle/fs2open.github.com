@@ -292,7 +292,7 @@ void EditorViewport::move_mouse(int btn, int mdx, int mdy) {
 
 ///////////////////////////////////////////////////
 void EditorViewport::process_system_keys(int key) {
-	//	mprintf(("Key = %d\n", key));
+	// core::mprintf("Key = %d\n", key);
 	switch (key) {
 	case KEY_LAPOSTRO:
 		///! \todo cycle through axis-constraints for rotations.

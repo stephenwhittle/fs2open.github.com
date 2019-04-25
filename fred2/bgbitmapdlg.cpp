@@ -1310,7 +1310,7 @@ void bg_bitmap_dlg::OnImportBackground()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("BGBITMAPDLG: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("BGBITMAPDLG: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		sprintf(error_str, "Could not parse file: %s\n\nError message: %s", filename, e.what());
 
 		MessageBox((LPCTSTR)error_str, (LPCTSTR) "Unable to import mission background!", MB_ICONERROR | MB_OK);

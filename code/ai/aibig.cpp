@@ -1019,7 +1019,7 @@ void ai_big_chase()
 
 //		float time_to_enemy = dist_normal_to_enemy / Pl_objp->phys_info.speed * fl_abs(vm_vec_dot(&Pl_objp->phys_info.vel, &aip->big_attack_surface_normal));
 //		if (Framecount % 30 == 1) {
-//			mprintf(("normal dist; %.1f, time: %.1f\n", dist_normal_to_enemy, time_to_enemy));
+//		 core::mprintf("normal dist; %.1f, time: %.1f\n", dist_normal_to_enemy, time_to_enemy);
 //		}
 		
 		// since we're not in strafe and we may get a bad normal, cap dist_normal_to_enemy as MIN(0.3*dist_to_enemy, self)

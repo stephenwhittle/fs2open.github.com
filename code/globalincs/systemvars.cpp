@@ -189,7 +189,7 @@ void game_busy(const char *filename)
 
 	cb_counter++;
 
-//	mprintf(( "CB_COUNTER=%d\n", cb_counter ));
+// core::mprintf( "CB_COUNTER=%d\n", cb_counter );
 
 #ifndef NDEBUG
 	if (filename != NULL) 

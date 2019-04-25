@@ -118,7 +118,7 @@ static void convert_retail_pilot_files()
 		return;
 	}
 
-	mprintf(("PILOT: Beginning pilot file conversion...\n"));
+ core::mprintf("PILOT: Beginning pilot file conversion...\n");
 
 	// now proceed to convert all of the old files
 	count = old_files.size();
@@ -158,7 +158,7 @@ static void convert_retail_pilot_files()
 		}
 	}
 
-	mprintf(("PILOT: Pilot file conversion complete!\n"));
+ core::mprintf("PILOT: Pilot file conversion complete!\n");
 }
 
 /**
@@ -201,15 +201,15 @@ static void convert_binary_pilot_files() {
 		plr.reset();
 
 		if (!file.load_player(callsign.c_str(), &plr, true)) {
-			mprintf(("Failed to load binary pilot '%s'!\n", callsign.c_str()));
+		 core::mprintf("Failed to load binary pilot '%s'!\n", callsign.c_str());
 			continue;
 		}
 
 		if (!file.save_player(&plr)) {
-			mprintf(("Failed to save JSON pilot '%s'!\n", callsign.c_str()));
+		 core::mprintf("Failed to save JSON pilot '%s'!\n", callsign.c_str());
 			continue;
 		}
-		mprintf(("Pilot '%s' was successfully converted to JSON.\n", callsign.c_str()));
+	 core::mprintf("Pilot '%s' was successfully converted to JSON.\n", callsign.c_str());
 	}
 }
 

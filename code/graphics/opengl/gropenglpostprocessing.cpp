@@ -228,7 +228,7 @@ void gr_opengl_post_process_begin()
 
 void recompile_fxaa_shader() {
 
-	mprintf(("Recompiling FXAA shader with preset %d\n", Cmdline_fxaa_preset));
+ core::mprintf("Recompiling FXAA shader with preset %d\n", Cmdline_fxaa_preset);
 
 	// start recompile by grabbing deleting the current shader we have, assuming it's already created
 	opengl_delete_shader( gr_opengl_maybe_create_shader(SDR_TYPE_POST_PROCESS_FXAA, 0) );
@@ -637,7 +637,7 @@ static bool opengl_post_init_table()
 					Post_effects.push_back(eff);
 				}
 				else if (!warned) {
-					mprintf(("WARNING: post_processing.tbl can only have a max of 32 effects! Ignoring extra...\n"));
+				 core::mprintf("WARNING: post_processing.tbl can only have a max of 32 effects! Ignoring extra...\n");
 					warned = true;
 				}
 			}
@@ -699,7 +699,7 @@ static bool opengl_post_init_table()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("Unable to parse 'post_processing.tbl'!  Error message = %s.\n", e.what()));
+	 core::mprintf("Unable to parse 'post_processing.tbl'!  Error message = %s.\n", e.what());
 		return false;
 	}
 }
@@ -823,7 +823,7 @@ bool opengl_post_init_shaders()
 		gr_opengl_maybe_create_shader(SDR_TYPE_POST_PROCESS_FXAA_PREPASS, 0) < 0 ) {
 		Cmdline_fxaa = false;
 		fxaa_unavailable = true;
-		mprintf(("Error while compiling FXAA shaders. FXAA will be unavailable.\n"));
+	 core::mprintf("Error while compiling FXAA shaders. FXAA will be unavailable.\n");
 	}
 
 	return true;
@@ -917,7 +917,7 @@ void opengl_post_process_init()
 
 	//We need to read the tbl first. This is mostly for FRED's benefit, as otherwise the list of post effects for the sexp doesn't get updated.
 	if ( !opengl_post_init_table() ) {
-		mprintf(("  Unable to read post-processing table! Disabling post-processing...\n\n"));
+	 core::mprintf("  Unable to read post-processing table! Disabling post-processing...\n\n");
 		Cmdline_postprocess = 0;
 		return;
 	}
@@ -936,13 +936,13 @@ void opengl_post_process_init()
 	}
 
 	if ( !opengl_post_init_shaders() ) {
-		mprintf(("  Unable to initialize post-processing shaders! Disabling post-processing...\n\n"));
+	 core::mprintf("  Unable to initialize post-processing shaders! Disabling post-processing...\n\n");
 		Cmdline_postprocess = 0;
 		return;
 	}
 
 	if ( !opengl_post_init_framebuffer() ) {
-		mprintf(("  Unable to initialize post-processing framebuffer! Disabling post-processing...\n\n"));
+	 core::mprintf("  Unable to initialize post-processing framebuffer! Disabling post-processing...\n\n");
 		Cmdline_postprocess = 0;
 		return;
 	}

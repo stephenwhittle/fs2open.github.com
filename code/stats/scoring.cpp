@@ -112,7 +112,7 @@ void parse_rank_tbl()
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "rank.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "rank.tbl", e.what());
 		return;
 	}
 }
@@ -793,7 +793,7 @@ int scoring_eval_kill(object *ship_objp)
 						send_game_chat_packet(Net_player, kill_score_text, MULTI_MSG_ALL);
 					}
 					HUD_printf(kill_score_text);
-					mprintf((kill_score_text));
+				 core::mprintf(kill_score_text);
 #endif
 
 					// multiplayer
@@ -815,7 +815,7 @@ int scoring_eval_kill(object *ship_objp)
 									sprintf(score_text, "SCORING : All team mates get %d pts for helping kill the capship\n", assist_score);
 									send_game_chat_packet(Net_player, score_text, MULTI_MSG_ALL);
 									HUD_printf(score_text);
-									mprintf((score_text));
+								 core::mprintf(score_text);
 #endif
 								}
 							}
@@ -981,7 +981,7 @@ int scoring_eval_kill_on_weapon(object *weapon_obj, object *other_obj) {
 						send_game_chat_packet(Net_player, kill_score_text, MULTI_MSG_ALL);
 					}
 					HUD_printf(kill_score_text);
-					mprintf((kill_score_text));
+				 core::mprintf(kill_score_text);
 #endif
 
 					// multiplayer

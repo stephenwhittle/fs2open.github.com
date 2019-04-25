@@ -176,7 +176,7 @@ static void mc_check_face(int nv, vec3d **verts, vec3d *plane_pnt, vec3d *plane_
 
 		Mc->bsp_leaf = bsp_leaf;
 
-//		mprintf(( "Bing!\n" ));
+//	 core::mprintf( "Bing!\n" );
 
 		Mc->num_hits++;
 	}
@@ -542,7 +542,7 @@ int model_collide_sub(void *model_ptr )
 
 	while (chunk_type != OP_EOF)	{
 
-//		mprintf(( "Processing chunk type %d, len=%d\n", chunk_type, chunk_size ));
+//	 core::mprintf( "Processing chunk type %d, len=%d\n", chunk_type, chunk_size );
 
 		switch (chunk_type) {
 		case OP_DEFPOINTS:	model_collide_defpoints(p); break;
@@ -560,7 +560,7 @@ int model_collide_sub(void *model_ptr )
 			}
 			break;
 		default:
-			mprintf(( "Bad chunk type %d, len=%d in model_collide_sub\n", chunk_type, chunk_size ));
+		 core::mprintf( "Bad chunk type %d, len=%d in model_collide_sub\n", chunk_type, chunk_size );
 			Int3();		// Bad chunk type!
 			return 0;
 		}

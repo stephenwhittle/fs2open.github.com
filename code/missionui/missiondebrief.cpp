@@ -1099,7 +1099,7 @@ void debrief_traitor_init()
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "traitor.tbl", e.what()));
+		 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "traitor.tbl", e.what());
 			return;
 		}
 	}
@@ -1291,7 +1291,7 @@ core::Assert(buffer != NULL);
 
 	if (mission_loop_desc == NULL) {
 		strcpy(buffer, XSTR("<No Mission Loop Description Available>", 1490));
-		mprintf(("No mission loop description available\n"));
+	 core::mprintf("No mission loop description available\n");
 	} else {
 		strcpy(buffer, mission_loop_desc);
 	}

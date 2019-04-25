@@ -131,7 +131,7 @@ static void *vm_lua_alloc(void*, void *ptr, size_t, size_t nsize) {
 //element
 int script_state::CreateLuaState()
 {
-	mprintf(("LUA: Opening LUA state...\n"));
+ core::mprintf("LUA: Opening LUA state...\n");
 	lua_State *L = lua_newstate(vm_lua_alloc, nullptr);
 
 	if(L == NULL)
@@ -141,7 +141,7 @@ int script_state::CreateLuaState()
 	}
 
 	//*****INITIALIZE AUXILIARY LIBRARIES
-	mprintf(("LUA: Initializing base Lua libraries...\n"));
+ core::mprintf("LUA: Initializing base Lua libraries...\n");
 	luaL_openlibs(L);
 
 	//*****DISABLE DANGEROUS COMMANDS
@@ -169,7 +169,7 @@ int script_state::CreateLuaState()
 
 	//*****INITIALIZE ADE
 	uint i;
-	mprintf(("LUA: Beginning ADE initialization\n"));
+ core::mprintf("LUA: Beginning ADE initialization\n");
 	for(i = 0; i < ade_manager::getInstance()->getNumEntries(); i++)
 	{
 		//WMC - Do only toplevel table entries, doi
@@ -184,7 +184,7 @@ int script_state::CreateLuaState()
 	lua_setglobal(L, "ade_return_hack");
 
 	//*****INITIALIZE ENUMERATION CONSTANTS
-	mprintf(("ADE: Initializing enumeration constants...\n"));
+ core::mprintf("ADE: Initializing enumeration constants...\n");
 	enum_h eh;
 	for(i = 0; i < Num_enumerations; i++)
 	{
@@ -196,11 +196,11 @@ int script_state::CreateLuaState()
 	}
 
 	//*****ASSIGN LUA SESSION
-	mprintf(("ADE: Assigning Lua session...\n"));
+ core::mprintf("ADE: Assigning Lua session...\n");
 	SetLuaSession(L);
 
 	//***** LOAD DEFAULT SCRIPTS
-	mprintf(("ADE: Loading default scripts...\n"));
+ core::mprintf("ADE: Loading default scripts...\n");
 	load_default_script(L, "cfile_require.lua");
 
 	return 1;

@@ -88,7 +88,7 @@ GLuint compile_shader_object(const std::vector<std::string>& shader_source, GLen
 	// we failed, bail out now...
 	if (status == 0) {
 		// basic error check
-		mprintf(("%s shader failed to compile:\n%s\n", (shader_type == GL_VERTEX_SHADER) ? "Vertex" : ((shader_type == GL_GEOMETRY_SHADER) ? "Geometry" : "Fragment"), info_log.c_str()));
+	 core::mprintf("%s shader failed to compile:\n%s\n", (shader_type == GL_VERTEX_SHADER) ? "Vertex" : ((shader_type == GL_GEOMETRY_SHADER) ? "Geometry" : "Fragment"), info_log.c_str());
 
 		// this really shouldn't exist, but just in case
 		if (shader_object) {
@@ -117,7 +117,7 @@ void link_program(GLuint program) {
 
 	// we failed, bail out now...
 	if (status == GL_FALSE) {
-		mprintf(("Shader failed to link:\n%s\n", log.c_str()));
+	 core::mprintf("Shader failed to link:\n%s\n", log.c_str());
 
 		throw std::runtime_error("Failed to compile shader!");
 	}
@@ -806,7 +806,7 @@ GLint opengl::ShaderUniforms::findUniformLocation(const std::string& name) {
 		if (location == -1)
 		{
 			// This can happen if the uniform has been optimized out by the driver
-			mprintf(("WARNING: Failed to find uniform '%s'.\n", name.c_str()));
+		 core::mprintf("WARNING: Failed to find uniform '%s'.\n", name.c_str());
 		}
 
 		_uniform_locations.insert(std::make_pair(name, location));

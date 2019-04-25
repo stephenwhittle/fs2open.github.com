@@ -122,7 +122,7 @@ void enumerateJoysticks(std::vector<JoystickPtr>& outVec)
 	outVec.clear();
 	outVec.reserve(static_cast<size_t>(num));
 
-	mprintf(("Printing joystick info:\n"));
+ core::mprintf("Printing joystick info:\n");
 
 	for (auto i = 0; i < num; ++i)
 	{
@@ -166,16 +166,16 @@ void setCurrentJoystick(Joystick *stick)
 
 	if (currentJoystick != nullptr)
 	{
-		mprintf(("  Using '%s' as the primary joystick\n", currentJoystick->getName().c_str()));
-		mprintf(("\n"));
-		mprintf(("  Number of axes: %d\n", currentJoystick->numAxes()));
-		mprintf(("  Number of buttons: %d\n", currentJoystick->numButtons()));
-		mprintf(("  Number of hats: %d\n", currentJoystick->numHats()));
-		mprintf(("  Number of trackballs: %d\n", currentJoystick->numBalls()));
+	 core::mprintf("  Using '%s' as the primary joystick\n", currentJoystick->getName().c_str());
+	 core::mprintf("\n");
+	 core::mprintf("  Number of axes: %d\n", currentJoystick->numAxes());
+	 core::mprintf("  Number of buttons: %d\n", currentJoystick->numButtons());
+	 core::mprintf("  Number of hats: %d\n", currentJoystick->numHats());
+	 core::mprintf("  Number of trackballs: %d\n", currentJoystick->numBalls());
 	}
 	else
 	{
-		mprintf((" Using no joystick.\n"));
+	 core::mprintf(" Using no joystick.\n");
 	}
 }
 
@@ -255,7 +255,7 @@ bool device_event_handler(const SDL_Event &evt)
 
 			if (device == nullptr)
 			{
-				mprintf(("Failed to open connecting joystick: %s\n", SDL_GetError()));
+			 core::mprintf("Failed to open connecting joystick: %s\n", SDL_GetError());
 				return true;
 			}
 
@@ -274,7 +274,7 @@ bool device_event_handler(const SDL_Event &evt)
 
 			addedStick = added.get();
 			// This is a new stick so we can output it's information
-			mprintf(("A new joystick has been connected:\n"));
+		 core::mprintf("A new joystick has been connected:\n");
 			addedStick->printInfo();
 
 			joysticks.push_back(std::move(added));
@@ -518,7 +518,7 @@ namespace joystick
 			coord2d coord;
 			if (SDL_JoystickGetBall(_joystick, i, &coord.x, &coord.y))
 			{
-				mprintf(("Failed to get ball %d value for joystick %s: %s", i, _name.c_str(), SDL_GetError()));
+			 core::mprintf("Failed to get ball %d value for joystick %s: %s", i, _name.c_str(), SDL_GetError());
 			}
 		}
 
@@ -691,10 +691,10 @@ namespace joystick
 	}
 
 	void Joystick::printInfo() {
-		mprintf(("  Joystick name: %s\n", getName().c_str()));
-		mprintf(("  Joystick GUID: %s\n", getGUID().c_str()));
-		mprintf(("  Joystick ID: %d\n", getID()));
-		mprintf(("  Joystick device ID: %d\n", _device_id));
+	 core::mprintf("  Joystick name: %s\n", getName().c_str());
+	 core::mprintf("  Joystick GUID: %s\n", getGUID().c_str());
+	 core::mprintf("  Joystick ID: %d\n", getID());
+	 core::mprintf("  Joystick device ID: %d\n", _device_id);
 	}
 	int Joystick::getDeviceId() const {
 		return _device_id;
@@ -709,25 +709,25 @@ namespace joystick
 			return true;
 		}
 
-		mprintf(("Initializing Joystick...\n"));
+	 core::mprintf("Initializing Joystick...\n");
 
 		if (SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0)
 		{
-			mprintf(("  Could not initialize joystick: %s\n", SDL_GetError()));
+		 core::mprintf("  Could not initialize joystick: %s\n", SDL_GetError());
 			return false;
 		}
 
 		// enable event processing of the joystick
 		if ((SDL_JoystickEventState(SDL_ENABLE)) != SDL_ENABLE)
 		{
-			mprintf(("  ERROR: Unable to initialize joystick event processing!\n"));
+		 core::mprintf("  ERROR: Unable to initialize joystick event processing!\n");
 			SDL_QuitSubSystem(SDL_INIT_JOYSTICK);
 			return false;
 		}
 
 		if (SDL_NumJoysticks() < 1)
 		{
-			mprintf(("  No joysticks found\n"));
+		 core::mprintf("  No joysticks found\n");
 		}
 
 		// Get the initial list of connected joysticks
@@ -755,7 +755,7 @@ namespace joystick
 		}
 
 		if (currentJoystick == nullptr) {
-			mprintf(("  No joystick is being used.\n"));
+		 core::mprintf("  No joystick is being used.\n");
 		}
 
 		initialized = true;

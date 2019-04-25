@@ -872,19 +872,19 @@ core::Assert( fname != NULL );
 	filename.append(fname);
 	filename.append(".pl2");
 
-	mprintf(("  PL2 => Converting '%s'...\n", filename.c_str()));
+ core::mprintf("  PL2 => Converting '%s'...\n", filename.c_str());
 
 	cfp = cfopen(filename.c_str(), "rb", CFILE_NORMAL);
 
 	if ( !cfp ) {
-		mprintf(("  PL2 => Unable to open '%s' for import!\n", fname));
+	 core::mprintf("  PL2 => Unable to open '%s' for import!\n", fname);
 		return false;
 	}
 
 	try {
 		plr_import();
 	} catch (const char *err) {
-		mprintf((  "  PL2 => Import ERROR: %s\n", err));
+	 core::mprintf(  "  PL2 => Import ERROR: %s\n", err);
 		rval = false;
 	}
 
@@ -902,14 +902,14 @@ core::Assert( fname != NULL );
 	             CF_LOCATION_ROOT_USER | CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT);
 
 	if ( !cfp ) {
-		mprintf(("  PLR => Unable to open '%s' for export!\n", fname));
+	 core::mprintf("  PLR => Unable to open '%s' for export!\n", fname);
 		return false;
 	}
 
 	try {
 		plr_export();
 	} catch (const char *err) {
-		mprintf(("  PLR => Export ERROR: %s\n", err));
+	 core::mprintf("  PLR => Export ERROR: %s\n", err);
 		rval = false;
 	}
 
@@ -917,7 +917,7 @@ core::Assert( fname != NULL );
 	cfp = NULL;
 
 	if (rval) {
-		mprintf(("  PLR => Conversion complete!\n"));
+	 core::mprintf("  PLR => Conversion complete!\n");
 	}
 
 	return rval;

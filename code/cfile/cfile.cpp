@@ -128,14 +128,14 @@ static void dump_opened_files()
 	for (int i = 0; i < MAX_CFILE_BLOCKS; i++) {
 		auto cb = &Cfile_block_list[i];
 		if (cb->type != CFILE_BLOCK_UNUSED) {
-			mprintf(("    %s:%d\n", cb->source_file, cb->line_num));
+		 core::mprintf("    %s:%d\n", cb->source_file, cb->line_num);
 		}
 	}
 }
 
 void cfile_close()
 {
-	mprintf(("Still opened files:\n"));
+ core::mprintf("Still opened files:\n");
 	dump_opened_files();
 
 	cf_free_secondary_filelist();
@@ -626,7 +626,7 @@ core::Assertion( CF_TYPE_SPECIFIED(dir_type), "Invalid dir_type passed to cf_cre
 	for (i=num_dirs-1; i>=0; i-- )	{
 		cf_create_default_path_string(longname, sizeof(longname) - 1, dir_tree[i], nullptr, false, location_flags);
 		if (stat(longname, &statbuf) != 0) {
-			mprintf(( "CFILE: Creating new directory '%s'\n", longname ));
+		 core::mprintf( "CFILE: Creating new directory '%s'\n", longname );
 			mkdir_recursive(longname);
 		}
 	}
@@ -880,7 +880,7 @@ static int cfget_cfile_block()
 	nprintf(("Warning","A free Cfile_block could not be found.\n"));
 
 	// Dump a list of all opened files
-	mprintf(("Out of cfile blocks! Currently opened files:\n"));
+ core::mprintf("Out of cfile blocks! Currently opened files:\n");
 	dump_opened_files();
 
 	UNREACHABLE("There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"

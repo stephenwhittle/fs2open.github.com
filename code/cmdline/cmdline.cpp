@@ -2152,7 +2152,7 @@ bool SetCmdlineParams()
 
 int parse_cmdline(int argc, char *argv[])
 {
-//	mprintf(("I got to parse_cmdline()!!\n"));
+// core::mprintf("I got to parse_cmdline()!!\n");
 
 	os_init_cmdline(argc, argv);
 

@@ -79,7 +79,7 @@ bool SoundPropertyParser::ParseValue(Property& property, const String& value, co
 	try {
 		parse_sound_value(value);
 	} catch (const std::exception& e) {
-		mprintf(("libRocket: Failure to parse sound CSS property '%s': %s\n", value.CString(), e.what()));
+	 core::mprintf("libRocket: Failure to parse sound CSS property '%s': %s\n", value.CString(), e.what());
 		return false;
 	}
 
@@ -162,7 +162,7 @@ bool SoundPlugin::PlayElementSound(Element* element, const String& event, const 
 
 		return true;
 	} catch (const std::exception& e) {
-		mprintf(("libRocket: Failure to parse sound CSS property '%s': %s\n", sound.CString(), e.what()));
+	 core::mprintf("libRocket: Failure to parse sound CSS property '%s': %s\n", sound.CString(), e.what());
 		return false;
 	}
 }

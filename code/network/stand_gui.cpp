@@ -2353,7 +2353,7 @@ DWORD standalone_process(WORD /*lparam*/)
 	while (1)	{	
 #if 0
 	   if(PropSheet_GetCurrentPageHwnd(Psht)==NULL){
-			mprintf(("prop sheet is destroyed -- exiting\n"));
+		 core::mprintf("prop sheet is destroyed -- exiting\n");
 			DestroyWindow(Psht);
 			PostQuitMessage(0);
 			os_close();

@@ -486,28 +486,28 @@ void shockwave_level_init()
 		// 	to use the static name instead, and added a check to override the command line if a 2d default filename is not found
 		//  Note - The 3d shockwave flag is forced on by TBP's flag as of rev 4983
 		if ( Cmdline_enable_3d_shockwave && cf_exists_full(Default_shockwave_3D_filename, CF_TYPE_MODELS) ) {
-			mprintf(("SHOCKWAVE =>  Loading default shockwave model... \n"));
+		 core::mprintf("SHOCKWAVE =>  Loading default shockwave model... \n");
 
 			i = shockwave_load( Default_shockwave_3D_filename, true );
 
 			if (i >= 0)
-				mprintf(("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n"));
+			 core::mprintf("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n");
 			else
-				mprintf(("SHOCKWAVE =>  Default model load: FAILED!!  Falling back to 2D effect...\n"));
+			 core::mprintf("SHOCKWAVE =>  Default model load: FAILED!!  Falling back to 2D effect...\n");
 		core::Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 		}
 
 		// next, try the 2d shockwave effect, unless the 3d effect was loaded
 		// chief1983 - added some messages similar to those for the 3d shockwave
 		if (i < 0 || Cmdline_fb_explosions) {
-			mprintf(("SHOCKWAVE =>  Loading default shockwave animation... \n"));
+		 core::mprintf("SHOCKWAVE =>  Loading default shockwave animation... \n");
 
 			i = shockwave_load( Default_shockwave_2D_filename );
 
 			if (i >= 0)
-				mprintf(("SHOCKWAVE =>  Default animation load: SUCCEEDED!!\n"));
+			 core::mprintf("SHOCKWAVE =>  Default animation load: SUCCEEDED!!\n");
 			else
-				mprintf(("SHOCKWAVE =>  Default animation load: FAILED!!  Checking if 3d effect was already tried...\n"));
+			 core::mprintf("SHOCKWAVE =>  Default animation load: FAILED!!  Checking if 3d effect was already tried...\n");
 		core::Assertion(i <= 1, "Default 2D shockwave should be either the first or second shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 			Default_2D_shockwave_index = i;
 		}
@@ -516,14 +516,14 @@ void shockwave_level_init()
 		// The next patch involved a direct copy of the attempt above, with an i < 0 check in place of the command line check.  I've taken that and modified it to 
 		// spit out a more meaningful message.  Might as well not bother trying again if the command line option was checked as it should have tried the first time through
 		if ( i < 0 && !Cmdline_enable_3d_shockwave && cf_exists_full(Default_shockwave_3D_filename, CF_TYPE_MODELS) ) {
-			mprintf(("SHOCKWAVE =>  Loading default shockwave model as last resort... \n"));
+		 core::mprintf("SHOCKWAVE =>  Loading default shockwave model as last resort... \n");
 
 			i = shockwave_load( Default_shockwave_3D_filename, true );
 
 			if (i >= 0)
-				mprintf(("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n"));
+			 core::mprintf("SHOCKWAVE =>  Default model load: SUCCEEDED!!\n");
 			else
-				mprintf(("SHOCKWAVE =>  Default model load: FAILED!!  No effect loaded...\n"));
+			 core::mprintf("SHOCKWAVE =>  Default model load: FAILED!!  No effect loaded...\n");
 		core::Assertion(i <= 0, "Default 3D shockwave should be the first shockwave loaded, but instead got loaded into index %d; get a coder!\n", i);
 		}
 

@@ -595,7 +595,7 @@ void parse_startbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -624,7 +624,7 @@ void stars_load_all_bitmaps()
 				sb->bitmap_id = bm_load_animation(sb->filename, &sb->n_frames, &sb->fps, nullptr, nullptr, true);
 
 				if (sb->bitmap_id < 0) {
-					mprintf(("Unable to load starfield bitmap: '%s'!\n", sb->filename));
+				 core::mprintf("Unable to load starfield bitmap: '%s'!\n", sb->filename);
 					mprintf_count++;
 				}
 			}
@@ -878,9 +878,9 @@ void stars_post_level_init()
 	// if we have no sun instances, create one
 	if ( !Suns.size() ) {
 		if ( !strlen(Sun_bitmaps[0].filename) ) {
-			mprintf(("Trying to add default sun but no default exists!!\n"));
+		 core::mprintf("Trying to add default sun but no default exists!!\n");
 		} else {
-			mprintf(("Adding default sun.\n"));
+		 core::mprintf("Adding default sun.\n");
 
 			starfield_bitmap_instance def_sun;
 
@@ -1797,7 +1797,7 @@ void stars_draw(int show_stars, int show_suns, int  /*show_nebulas*/, int show_s
 
 #ifdef TIME_STAR_CODE
 	xt2 = timer_get_fixed_seconds();
-	mprintf(( "Stars: %d\n", xt2-xt1 ));
+ core::mprintf( "Stars: %d\n", xt2-xt1 );
 #endif
 
 	if ( !Rendering_to_env && (Game_detail_flags & DETAIL_FLAG_MOTION) && (!Fred_running) && (supernova_active() < 3) && (!Cmdline_nomotiondebris) && in_mission)	{

@@ -133,7 +133,7 @@ class SDLWindowViewPort: public os::Viewport {
 };
 
 SDLGraphicsOperations::SDLGraphicsOperations() {
-	mprintf(("  Initializing SDL video...\n"));
+ core::mprintf("  Initializing SDL video...\n");
 
 #ifdef SCP_UNIX
 	// Slight hack to make Mesa advertise S3TC support without libtxc_dxtn
@@ -166,7 +166,7 @@ std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::Vi
 
 	SDL_Rect bounds;
 	if (SDL_GetDisplayBounds(props.display, &bounds) != 0) {
-		mprintf(("Failed to get display bounds: %s\n", SDL_GetError()));
+	 core::mprintf("Failed to get display bounds: %s\n", SDL_GetError());
 		return nullptr;
 	}
 
@@ -175,7 +175,7 @@ std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::Vi
 
 	if (bounds.w == (int)props.width && bounds.h == (int)props.height) {
 		// If we have the same size as the desktop we explicitly specify 0,0 to make sure that the window borders aren't hidden
-		mprintf(("SDL: Creating window at %d,%d because window has same size as desktop.\n", bounds.x, bounds.y));
+	 core::mprintf("SDL: Creating window at %d,%d because window has same size as desktop.\n", bounds.x, bounds.y);
 		x = bounds.x;
 		y = bounds.y;
 	} else {
@@ -190,7 +190,7 @@ std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::Vi
 										  props.height,
 										  windowflags);
 	if (window == nullptr) {
-		mprintf(("Failed to create SDL Window: %s\n", SDL_GetError()));
+	 core::mprintf("Failed to create SDL Window: %s\n", SDL_GetError());
 		return nullptr;
 	}
 
@@ -219,7 +219,7 @@ std::unique_ptr<os::OpenGLContext> SDLGraphicsOperations::createOpenGLContext(os
 	auto ctx = SDL_GL_CreateContext(viewport->toSDLWindow());
 
 	if (ctx == nullptr) {
-		mprintf(("Could not create OpenGL Context: %s\n", SDL_GetError()));
+	 core::mprintf("Could not create OpenGL Context: %s\n", SDL_GetError());
 		return nullptr;
 	}
 

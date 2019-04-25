@@ -221,7 +221,7 @@ int generic_anim_stream(generic_anim *ga, const bool cache)
 				ga->png.anim = new apng::apng_ani(ga->filename, cache);
 			}
 			catch (const apng::ApngException& e) {
-				mprintf(("Failed to load apng: %s\n", e.what() ));
+			 core::mprintf("Failed to load apng: %s\n", e.what() );
 				delete ga->png.anim;
 				ga->png.anim = nullptr;
 				ga->type = BM_TYPE_NONE;
@@ -255,7 +255,7 @@ int generic_anim_stream(generic_anim *ga, const bool cache)
 		}
 		ga->bitmap_id = bm_load(frame_name);
 		if(ga->bitmap_id < 0) {
-			mprintf(("Cannot find first frame for eff streaming. eff Filename: %s", ga->filename));
+		 core::mprintf("Cannot find first frame for eff streaming. eff Filename: %s", ga->filename);
 			return -1;
 		}
 		if (snprintf(frame_name, MAX_FILENAME_LEN, "%s_0001", ga->filename) >= MAX_FILENAME_LEN) {
@@ -369,8 +369,8 @@ void generic_render_eff_stream(generic_anim *ga)
 	#endif
 
 	#ifdef TIMER
-		mprintf(("=========================\n"));
-		mprintf(("frame: %d\n", ga->current_frame));
+	 core::mprintf("=========================\n");
+	 core::mprintf("frame: %d\n", ga->current_frame);
 	#endif
 		char frame_name[MAX_FILENAME_LEN];
 		if (snprintf(frame_name, MAX_FILENAME_LEN, "%s_%.4d", ga->filename, ga->current_frame) >= MAX_FILENAME_LEN) {
@@ -394,8 +394,8 @@ void generic_render_eff_stream(generic_anim *ga)
 			}
 		}
 	#ifdef TIMER
-		mprintf(("end: %d\n", timer_get_fixed_seconds() - start_time));
-		mprintf(("=========================\n"));
+	 core::mprintf("end: %d\n", timer_get_fixed_seconds() - start_time);
+	 core::mprintf("=========================\n");
 	#endif
 }
 
@@ -413,8 +413,8 @@ void generic_render_ani_stream(generic_anim *ga)
 		return;
 
 	#ifdef TIMER
-		mprintf(("=========================\n"));
-		mprintf(("frame: %d\n", ga->current_frame));
+	 core::mprintf("=========================\n");
+	 core::mprintf("frame: %d\n", ga->current_frame);
 	#endif
 
 	anim_check_for_palette_change(ga->ani.instance);
@@ -454,8 +454,8 @@ void generic_render_ani_stream(generic_anim *ga)
 			}
 		}
 		#ifdef TIMER
-				mprintf(("proc: %d\n", timer_get_fixed_seconds() - start_time));
-				mprintf(("previous frame: %d\n", ga->previous_frame));
+			 core::mprintf("proc: %d\n", timer_get_fixed_seconds() - start_time);
+			 core::mprintf("previous frame: %d\n", ga->previous_frame);
 		#endif
 		for(i = ga->previous_frame + 1; i <= ga->current_frame; i++) {
 			if(ga->ani.animation->flags & ANF_STREAMED) {
@@ -477,8 +477,8 @@ void generic_render_ani_stream(generic_anim *ga)
 	ga->ani.instance->last_bitmap = ga->bitmap_id;
 
 	#ifdef TIMER
-		mprintf(("end: %d\n", timer_get_fixed_seconds() - start_time));
-		mprintf(("=========================\n"));
+	 core::mprintf("end: %d\n", timer_get_fixed_seconds() - start_time);
+	 core::mprintf("=========================\n");
 	#endif
 }
 

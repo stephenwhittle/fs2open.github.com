@@ -54,19 +54,19 @@ int model_anim_match_type(const char* p)
 
 	// Goober5000 - deprecation
 	if ( !strnicmp(p, "docking", 7) || !strnicmp(p, "\"docking\"", 9) ) {
-		mprintf(("The \"docking\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_DOCKING_STAGE_2]));
+	 core::mprintf("The \"docking\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_DOCKING_STAGE_2]);
 		return TRIGGER_TYPE_DOCKING_STAGE_2;
 	} else if ( !strnicmp(p, "primary_bank", 12) || !strnicmp(p, "\"primary_bank\"", 14) ) {
-		mprintf(( "The \"primary_bank\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_PRIMARY_BANK]));
+	 core::mprintf( "The \"primary_bank\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_PRIMARY_BANK]);
 		return TRIGGER_TYPE_PRIMARY_BANK;
 	} else if ( !strnicmp(p, "secondary_bank", 14) || !strnicmp(p, "\"secondary_bank\"", 16) ) {
-		mprintf(("The \"secondary_bank\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_SECONDARY_BANK]));
+	 core::mprintf("The \"secondary_bank\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_SECONDARY_BANK]);
 		return TRIGGER_TYPE_SECONDARY_BANK;
 	} else if ( !strnicmp(p, "door", 4) || !strnicmp(p, "\"door\"", 6) ) {
-		mprintf(("The \"door\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_DOCK_BAY_DOOR]));
+	 core::mprintf("The \"door\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_DOCK_BAY_DOOR]);
 		return TRIGGER_TYPE_DOCK_BAY_DOOR;
 	} else if ( !strnicmp(p, "turret firing", 13) || !strnicmp(p, "\"turret firing\"", 15) ) {
-		mprintf(("The \"turret firing\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_TURRET_FIRING]));
+	 core::mprintf("The \"turret firing\" animation type name is deprecated.  Specify \"%s\" instead.\n", Animation_type_names[TRIGGER_TYPE_TURRET_FIRING]);
 		return TRIGGER_TYPE_TURRET_FIRING;
 	}
 
@@ -78,7 +78,7 @@ int model_anim_match_type(const char* p)
 		strcat(quoted_name, "\"");
 
 		if ( !strnicmp(p, quoted_name, strlen(quoted_name)) ) {
-			mprintf(( "Old usage warning: Please remove quotes from animation type %s.\n", quoted_name));
+		 core::mprintf( "Old usage warning: Please remove quotes from animation type %s.\n", quoted_name);
 			return i;
 		}
 	}
@@ -408,7 +408,7 @@ core::Assert( ss != NULL );
 core::Assert( psub->flags[Model::Subsystem_Flags::Triggered] );
 	
 	if (ss->triggered_rotation_index < 0) {
-		mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[ss->parent_objnum].instance].ship_info_index].model_num)->filename));
+	 core::mprintf("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[ss->parent_objnum].instance].ship_info_index].model_num)->filename);
 		return;
 	}
 
@@ -581,7 +581,7 @@ core::Assert( pss != NULL );
 	if ( !(psub->flags[Model::Subsystem_Flags::Triggered]) )
 		return false;
 	if (pss->triggered_rotation_index < 0) {
-		mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[pss->parent_objnum].instance].ship_info_index].model_num)->filename));
+	 core::mprintf("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[pss->parent_objnum].instance].ship_info_index].model_num)->filename);
 		return false;
 	}
 	triggered_rotation *trigger = &Triggered_rotations[pss->triggered_rotation_index];
@@ -731,7 +731,7 @@ void model_anim_fix_reverse_times(ship_info *sip)
 						psub->triggers[j].reverse_start = ani_time - model_anim_instance_get_actual_time(&psub->triggers[j]);
 
 					if (psub->triggers[j].reverse_start < 0) {
-						mprintf(("WARNING:  Animation trigger #%i on subsystem '%s', for ship '%s', has a negative reverse_start value!  Capping it at 0!\n", j, psub->subobj_name, sip->name));
+					 core::mprintf("WARNING:  Animation trigger #%i on subsystem '%s', for ship '%s', has a negative reverse_start value!  Capping it at 0!\n", j, psub->subobj_name, sip->name);
 						psub->triggers[j].reverse_start = 0;
 					}
 
@@ -758,7 +758,7 @@ core::Assert( pss != NULL );
 	if ( !(psub->flags[Model::Subsystem_Flags::Triggered]) )
 		return timestamp();
 	if (pss->triggered_rotation_index < 0) {
-		mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[pss->parent_objnum].instance].ship_info_index].model_num)->filename));
+	 core::mprintf("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[Ships[Objects[pss->parent_objnum].instance].ship_info_index].model_num)->filename);
 		return timestamp();
 	}
 	triggered_rotation *tr = &Triggered_rotations[pss->triggered_rotation_index];
@@ -858,7 +858,7 @@ void model_anim_set_initial_states(ship *shipp)
 					pss->submodel_info_1.angs.h = psub->triggers[i].angle.xyz.y;
 				} else {
 					if (pss->triggered_rotation_index < 0) {
-						mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[shipp->ship_info_index].model_num)->filename));
+					 core::mprintf("Invalid rotation index for triggered rotation in subsystem %s in model %s!", psub->name, model_get(Ship_info[shipp->ship_info_index].model_num)->filename);
 						continue;
 					}
 					triggered_rotation *tr = &Triggered_rotations[pss->triggered_rotation_index];
@@ -901,7 +901,7 @@ core::Assert( shipp != NULL );
 			continue;
 
 		if (pss->triggered_rotation_index < 0) {
-			mprintf(("Invalid rotation index for triggered rotation in subsystem %s in model %s!", pss->system_info->name, model_get(Ship_info[shipp->ship_info_index].model_num)->filename));
+		 core::mprintf("Invalid rotation index for triggered rotation in subsystem %s in model %s!", pss->system_info->name, model_get(Ship_info[shipp->ship_info_index].model_num)->filename);
 			continue;
 		}
 		

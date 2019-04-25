@@ -18,7 +18,7 @@ void log_callback_report(void* ptr, int level, const char* fmt, va_list vl) {
 	int print_prefix = 1;
 	av_log_format_line(ptr, level, fmt, vl, buffer, sizeof(buffer), &print_prefix);
 
-	mprintf(("FFMPEG Log: %s", buffer)); // no \n, ffmpeg handles that
+ core::mprintf("FFMPEG Log: %s", buffer); // no \n, ffmpeg handles that
 }
 #endif
 
@@ -75,8 +75,8 @@ void initialize() {
 	av_log_set_level(AV_LOG_QUIET);
 #endif
 
-	mprintf(("FFmpeg library initialized!\n"));
-	mprintf(("FFmpeg: License: %s\n", avformat_license()));
+ core::mprintf("FFmpeg library initialized!\n");
+ core::mprintf("FFmpeg: License: %s\n", avformat_license());
 
 	initialized = true;
 }

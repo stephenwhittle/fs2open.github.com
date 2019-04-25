@@ -232,11 +232,11 @@ core::Assertion(!initialized, "Discord integration can only be initialized once!
 		update_presence();
 	};
 	handlers.errored = [](int errcode, const char* message) {
-		mprintf(("Discord: error (%d: %s)\n", errcode, message));
+	 core::mprintf("Discord: error (%d: %s)\n", errcode, message);
 		discord_ready = false;
 	};
 	handlers.disconnected = [](int errcode, const char* message) {
-		mprintf(("Discord: disconnected (%d: %s)\n", errcode, message));
+	 core::mprintf("Discord: disconnected (%d: %s)\n", errcode, message);
 		discord_ready = false;
 	};
 

@@ -572,7 +572,7 @@ core::Assert(seg);
 void message_log_add_segs(const char *source_string, int msg_color, int flags = 0)
 {
 	if (!source_string) {
-		mprintf(("Why are you passing a NULL pointer to message_log_add_segs?\n"));
+	 core::mprintf("Why are you passing a NULL pointer to message_log_add_segs?\n");
 		return;
 	}
 	if (!*source_string) {

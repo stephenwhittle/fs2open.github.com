@@ -325,7 +325,7 @@ core::Assert( targetp->type == OBJ_SHIP );
 		draw_coords[2] = x2;
 		draw_coords[3] = y2;
 	}
-	// mprintf(("Drawing subobject brackets at %4i, %4i\n", sx, sy));
+	// core::mprintf("Drawing subobject brackets at %4i, %4i\n", sx, sy);
 	
 	return in_sight;
 }
@@ -773,7 +773,7 @@ void HudGaugeBrackets::renderBoundingBracketsSubobject()
 			} else {
 				draw_brackets_diamond_quick(&line_draw_list, x1, y1, x2, y2);
 			}
-			// mprintf(("Drawing subobject brackets at %4i, %4i\n", sx, sy));
+			// core::mprintf("Drawing subobject brackets at %4i, %4i\n", sx, sy);
 
 			// reset the scale to normal
 			gr_reset_screen_scale();

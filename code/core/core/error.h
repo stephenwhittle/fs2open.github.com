@@ -11,7 +11,7 @@ void Error(const char* msg);
 
 
 // To debug printf do this:
-// mprintf(( "Error opening %s\n", filename ));
+// core::mprintf( "Error opening %s\n", filename );
 void mprintf(const char* format, ...);
 void nprintf(const char* id, const char* format, ...);
 inline void noop() { void(0); };

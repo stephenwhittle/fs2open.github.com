@@ -165,7 +165,7 @@ core::Assert(fname_len < MAX_FILENAME_LEN);
 		}
 		catch (const parse::ParseException& e)
 		{
-			mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", fname, e.what()));
+		 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", fname, e.what());
 			break;
 		}
 	} while (0);
@@ -202,7 +202,7 @@ int mission_campaign_get_mission_list(const char *filename, char **list, int max
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 
 		// since we can't return count of allocated elements, free them instead
 		for (i = 0; i<num; i++)
@@ -543,7 +543,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 				if (mhd != NULL) {
 					cm->main_hall = temp;
 				} else {
-					mprintf(("Substitute main hall '%s' not found\n", temp));
+				 core::mprintf("Substitute main hall '%s' not found\n", temp);
 				}
 			}
 
@@ -650,7 +650,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("Error parsing '%s'\r\nError message = %s.\r\n", filename, e.what()));
+	 core::mprintf("Error parsing '%s'\r\nError message = %s.\r\n", filename, e.what());
 
 		Campaign.filename[0] = 0;
 		Campaign.num_missions = 0;
@@ -1302,7 +1302,7 @@ int mission_campaign_get_filenames(char *filename, char dest[][NAME_LENGTH], int
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return 1;
 	}
 
@@ -1328,7 +1328,7 @@ std::string mission_campaign_get_name(const char* filename)
 
 		return res;
 	} catch (const parse::ParseException& e) {
-		mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename_str.c_str(), e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename_str.c_str(), e.what());
 		return std::string();
 	}
 }
@@ -1447,7 +1447,7 @@ void read_mission_goal_list(int num)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -1552,7 +1552,7 @@ int mission_campaign_parse_is_multi(char *filename, char *name)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("MISSIONCAMPAIGN: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return -1;
 	}
 }

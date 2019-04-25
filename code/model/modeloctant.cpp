@@ -272,7 +272,7 @@ int model_octant_find_faces_sub(polymodel * pm, model_octant * oct, void *model_
 			break;
 		case OP_BOUNDBOX:		break;
 		default:
-			mprintf(( "Bad chunk type %d, len=%d in model_octant_find_faces_sub\n", chunk_type, chunk_size ));
+		 core::mprintf( "Bad chunk type %d, len=%d in model_octant_find_faces_sub\n", chunk_type, chunk_size );
 			Int3();		// Bad chunk type!
 			return 0;
 		}
@@ -306,7 +306,7 @@ core::Assert(oct->verts!=NULL);
 	oct->nverts = 0;
 	model_octant_find_faces_sub(pm, oct, p, 0 );
 
-//	mprintf(( "Octant has %d faces\n", oct->nfaces ));
+// core::mprintf( "Octant has %d faces\n", oct->nfaces );
 }
 
 

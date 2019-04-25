@@ -1372,7 +1372,7 @@ void event_music_parse_musictbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 	}
 }
 
@@ -1643,7 +1643,7 @@ void event_music_set_soundtrack(char *name)
 	Current_soundtrack_num = event_music_get_soundtrack_index(name);
 
 	if ( Current_soundtrack_num == -1 ) {
-		mprintf(("Current soundtrack set to -1 in event_music_set_soundtrack\n"));
+	 core::mprintf("Current soundtrack set to -1 in event_music_set_soundtrack\n");
 	}
 }
 
@@ -1689,7 +1689,7 @@ core::Assert(score_index < NUM_SCORES);
 void event_music_reset_choices()
 {
 	Current_soundtrack_num = -1;
-	mprintf(("Current soundtrack set to -1 in event_music_reset_choices\n"));
+ core::mprintf("Current soundtrack set to -1 in event_music_reset_choices\n");
 	Mission_music[SCORE_BRIEFING] = -1;
 	Mission_music[SCORE_FICTION_VIEWER] = -1;
 	event_music_set_score(SCORE_DEBRIEF_SUCCESS, "Success");

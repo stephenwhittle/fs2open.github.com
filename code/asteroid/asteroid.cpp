@@ -327,7 +327,7 @@ object *asteroid_create(asteroid_field *asfieldp, int asteroid_type, int asteroi
     objnum = obj_create(OBJ_ASTEROID, -1, n, &orient, &pos, radius, asteroid_default_flagset);
 	
 	if ( (objnum == -1) || (objnum >= MAX_OBJECTS) ) {
-		mprintf(("Couldn't create asteroid -- out of object slots\n"));
+	 core::mprintf("Couldn't create asteroid -- out of object slots\n");
 		return NULL;
 	}
 
@@ -1942,8 +1942,8 @@ core::Assertion(!Species_info.empty(),
 			for (std::vector<std::string>::iterator iter = parsed_asteroids.begin();
 				iter != parsed_asteroids.end(); ++iter)
 			{
-				mprintf(("Asteroid.tbl as parsed:\n"));
-				mprintf(("%s", iter->c_str()));
+			 core::mprintf("Asteroid.tbl as parsed:\n");
+			 core::mprintf("%s", iter->c_str());
 			}
 #endif
 			core::Error(LOCATION,
@@ -1996,7 +1996,7 @@ core::Assertion(!Species_info.empty(),
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "asteroid.tbl", e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", "asteroid.tbl", e.what());
 		return;
 	}
 }

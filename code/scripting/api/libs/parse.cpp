@@ -35,7 +35,7 @@ ADE_FUNC(readFileText, l_Parsing, "string file, string directory = <any>",
 		read_file_text(file, type);
 		reset_parse();
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_FALSE;
 	}
 
@@ -48,7 +48,7 @@ ADE_FUNC(stop, l_Parsing, nullptr, "Stops parsing and frees any allocated resour
 	try {
 		stop_parse();
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_FALSE;
 	}
 
@@ -74,7 +74,7 @@ ADE_FUNC(displayMessage, l_Parsing, "string message, boolean error = false",
 	try {
 		error_display(error ? 1 : 0, "%s", message);
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_FALSE;
 	}
 
@@ -97,7 +97,7 @@ ADE_FUNC(requiredString, l_Parsing, "string token", "Require that a string appea
 	try {
 		required_string(str);
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_FALSE;
 	}
 
@@ -124,7 +124,7 @@ ADE_FUNC(optionalString, l_Parsing, "string token", "Check if the string appears
 			return ADE_RETURN_FALSE;
 		}
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_FALSE;
 	}
 }
@@ -142,7 +142,7 @@ ADE_FUNC(getString, l_Parsing, nullptr, "Gets a single line of text from the fil
 
 		return ade_set_args(L, "s", str.c_str());
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_NIL;
 	}
 }
@@ -160,7 +160,7 @@ ADE_FUNC(getFloat, l_Parsing, nullptr, "Gets a floating point number from the fi
 
 		return ade_set_args(L, "f", f);
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_NIL;
 	}
 }
@@ -178,7 +178,7 @@ ADE_FUNC(getInt, l_Parsing, nullptr, "Gets an integer number from the file", "st
 
 		return ade_set_args(L, "i", i);
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_NIL;
 	}
 }
@@ -196,7 +196,7 @@ ADE_FUNC(getBoolean, l_Parsing, nullptr, "Gets a boolean value from the file", "
 
 		return ade_set_args(L, "b", b);
 	} catch (const parse::ParseException& e) {
-		mprintf(("PARSE: Error while parsing: %s\n", e.what()));
+	 core::mprintf("PARSE: Error while parsing: %s\n", e.what());
 		return ADE_RETURN_NIL;
 	}
 }

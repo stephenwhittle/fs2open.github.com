@@ -1513,8 +1513,8 @@ void brief_do_frame(float frametime)
 					if (sip->model_num < 0)
 						sip->model_num = model_load(sip->pof_file, 0, NULL);
 
-					mprintf(("Shiptype = %d (%s)\n", Closeup_icon->ship_class, sip->name));
-					mprintf(("Modelnum = %d (%s)\n", sip->model_num, sip->pof_file));
+				 core::mprintf("Shiptype = %d (%s)\n", Closeup_icon->ship_class, sip->name);
+				 core::mprintf("Modelnum = %d (%s)\n", sip->model_num, sip->pof_file);
 					brief_setup_closeup(Closeup_icon);
 				}
 
@@ -1529,8 +1529,8 @@ void brief_do_frame(float frametime)
 					if (sip->model_num < 0)
 						sip->model_num = model_load(sip->pof_file, 0, NULL);
 
-					mprintf(("Shiptype = %d (%s)\n", Closeup_icon->ship_class, sip->name));
-					mprintf(("Modelnum = %d (%s)\n", sip->model_num, sip->pof_file));
+				 core::mprintf("Shiptype = %d (%s)\n", Closeup_icon->ship_class, sip->name);
+				 core::mprintf("Modelnum = %d (%s)\n", sip->model_num, sip->pof_file);
 					brief_setup_closeup(Closeup_icon);
 				}
 

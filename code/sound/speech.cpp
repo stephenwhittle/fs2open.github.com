@@ -73,7 +73,7 @@ bool speech_init()
 
 	if (speech_dev == -1) {
 //	if (speech_dev == NULL) {
-		mprintf(("Couldn't open '/dev/speech', turning text-to-speech off...\n"));
+	 core::mprintf("Couldn't open '/dev/speech', turning text-to-speech off...\n");
 		return false;
 	}
 

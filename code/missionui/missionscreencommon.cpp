@@ -292,7 +292,7 @@ int mission_ui_background_load(const char *custom_background, const char *single
 	{
 		background_bitmap = bm_load(custom_background);
 		if (background_bitmap < 0)
-			mprintf(("Failed to load custom background bitmap %s!\n", custom_background));
+		 core::mprintf("Failed to load custom background bitmap %s!\n", custom_background);
 	}
 
 	// if special background failed to load, or if no special background was supplied, load the standard bitmap

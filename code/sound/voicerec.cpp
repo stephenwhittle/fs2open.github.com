@@ -325,9 +325,9 @@ void VOICEREC_execute_command(ISpPhrase *pPhrase, HWND hWnd)
 				szText[i+1] = 0;
 			}
 
-			mprintf(( "recognized speech : %s \n", szText ));
-			mprintf(( "speech Rule.ulId : %d \n", pElements->Rule.ulId ));
-			mprintf(( "confidence: %f \n", pElements->pProperties->SREngineConfidence));
+		 core::mprintf( "recognized speech : %s \n", szText );
+		 core::mprintf( "speech Rule.ulId : %d \n", pElements->Rule.ulId );
+		 core::mprintf( "confidence: %f \n", pElements->pProperties->SREngineConfidence);
 
 			::CoTaskMemFree(pwszText);
 		}

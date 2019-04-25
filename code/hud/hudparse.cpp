@@ -288,7 +288,7 @@ void parse_hud_gauges_tbl(const char *filename)
 			ship_classes.clear();
 			switch (optional_string_either("$Ship:", "$Ships:")) {
 			case 0:
-				mprintf(("$Ship in hud_gauges.tbl and -hdg.tbms is deprecated. Use \"$Ships: (\"Some ship class\") instead.\n"));
+			 core::mprintf("$Ship in hud_gauges.tbl and -hdg.tbms is deprecated. Use \"$Ships: (\"Some ship class\") instead.\n");
 
 				if (!ships_inited) {
 					// just in case ship info has not been initialized.
@@ -500,7 +500,7 @@ void parse_hud_gauges_tbl(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -3647,7 +3647,7 @@ void load_gauge_talking_head(gauge_settings* settings)
 		stuff_int_list(Anim_offsets, 2);
 	}
 	if(optional_string("Animation Background Size:")) {
-		mprintf(("Animation Background Size in hud_gauges.tbl and -hdg.tbms is deprecated. Use \"Animation Size\" instead.\n"));
+	 core::mprintf("Animation Background Size in hud_gauges.tbl and -hdg.tbms is deprecated. Use \"Animation Size\" instead.\n");
 		stuff_int_list(Anim_size, 2);
 	}
 	if(optional_string("Animation Size:")) {

@@ -338,7 +338,7 @@ bool ds_check_for_openal_soft()
 	const ALchar * renderer = alGetString(AL_RENDERER);
 	if (renderer == NULL)
 	{
-		mprintf(("ds_check_for_openal_soft: renderer is null!"));
+	 core::mprintf("ds_check_for_openal_soft: renderer is null!");
 		return false;
 	}
 	else if (!stricmp((const char *)renderer, "OpenAL Soft"))
@@ -361,7 +361,7 @@ int ds_init()
 	ALCint attrList[] = { ALC_FREQUENCY, 22050, 0 };
 	unsigned int sample_rate = 22050;
 
-	mprintf(("Initializing OpenAL...\n"));
+ core::mprintf("Initializing OpenAL...\n");
 
 	Ds_sound_quality = os_config_read_uint("Sound", "Quality", DS_SQ_MEDIUM);
 	CLAMP(Ds_sound_quality, DS_SQ_LOW, DS_SQ_HIGH);
@@ -386,14 +386,14 @@ int ds_init()
 	std::string capture_device;
 
 	if ( openal_init_device(&playback_device, &capture_device) == false ) {
-		mprintf(("\n  ERROR: Unable to find suitable playback device!\n\n"));
+	 core::mprintf("\n  ERROR: Unable to find suitable playback device!\n\n");
 		goto AL_InitError;
 	}
 
 	ds_sound_device = alcOpenDevice( (const ALCchar*) playback_device.c_str() );
 
 	if (ds_sound_device == NULL) {
-		mprintf(("  Failed to open playback_device (%s) returning error (%s)\n", playback_device.c_str(), openal_error_string(1)));
+	 core::mprintf("  Failed to open playback_device (%s) returning error (%s)\n", playback_device.c_str(), openal_error_string(1));
 		goto AL_InitError;
 	}
 
@@ -409,10 +409,10 @@ int ds_init()
 
 	alcGetError(ds_sound_device);
 
-	mprintf(("  OpenAL Vendor     : %s\n", alGetString(AL_VENDOR)));
-	mprintf(("  OpenAL Renderer   : %s\n", alGetString(AL_RENDERER)));
-	mprintf(("  OpenAL Version    : %s\n", alGetString(AL_VERSION)));
-	mprintf(("\n"));
+ core::mprintf("  OpenAL Vendor     : %s\n", alGetString(AL_VENDOR));
+ core::mprintf("  OpenAL Renderer   : %s\n", alGetString(AL_RENDERER));
+ core::mprintf("  OpenAL Version    : %s\n", alGetString(AL_VERSION));
+ core::mprintf("\n");
 
 	// we need to clear out all errors before moving on
 	alcGetError(NULL);
@@ -423,19 +423,19 @@ int ds_init()
 
 	// make sure we can actually use AL_BYTE_LOKI (Mac/Win OpenAL doesn't have it)
 	if ( alIsExtensionPresent( (const ALchar*)"AL_LOKI_play_position" ) == AL_TRUE ) {
-		mprintf(("  Found extension \"AL_LOKI_play_position\".\n"));
+	 core::mprintf("  Found extension \"AL_LOKI_play_position\".\n");
 		AL_play_position = 1;
 	}
 
 	if ( alIsExtensionPresent( (const ALchar*)"AL_EXT_float32" ) == AL_TRUE ) {
-		mprintf(("  Found extension \"AL_EXT_float32\".\n"));
+	 core::mprintf("  Found extension \"AL_EXT_float32\".\n");
 		Ds_float_supported = 1;
 	}
 
 	Ds_use_eax = 0;
 
 	if ( alcIsExtensionPresent(ds_sound_device, (const ALchar*)"ALC_EXT_EFX") == AL_TRUE ) {
-		mprintf(("  Found extension \"ALC_EXT_EFX\".\n"));
+	 core::mprintf("  Found extension \"ALC_EXT_EFX\".\n");
 		Ds_use_eax = os_config_read_uint("Sound", "EnableEFX", Fred_running);
 	}
 
@@ -458,17 +458,17 @@ int ds_init()
 	{
 		if (!ds_check_for_openal_soft())
 		{
-			mprintf(("You are not using OpenAL Soft. Disabling enhanced sound.\n"));
+		 core::mprintf("You are not using OpenAL Soft. Disabling enhanced sound.\n");
 			Cmdline_no_enhanced_sound = 1;
 		}
 		else
 		{
-			mprintf(("Enhanced sound is enabled.\n"));
+		 core::mprintf("Enhanced sound is enabled.\n");
 		}
 	}
 	else
 	{
-		mprintf(("Enhanced sound is manually disabled.\n"));
+	 core::mprintf("Enhanced sound is manually disabled.\n");
 	}
 
 	// setup default listener position/orientation
@@ -482,13 +482,13 @@ int ds_init()
 	ds_init_channels();
 	ds_init_buffers();
 
-	mprintf(("\n"));
+ core::mprintf("\n");
 
 	{
 	ALCint freq = 0;
 	OpenAL_ErrorPrint( alcGetIntegerv(ds_sound_device, ALC_FREQUENCY, sizeof(ALCint), &freq) );
 
-	mprintf(("  Sample rate: %d (%d)\n", freq, sample_rate));
+ core::mprintf("  Sample rate: %d (%d)\n", freq, sample_rate);
 	}
 
 	if (Ds_use_eax) {
@@ -498,16 +498,16 @@ int ds_init()
 		alcGetIntegerv(ds_sound_device, ALC_EFX_MINOR_VERSION, 1, &minor);
 		alcGetIntegerv(ds_sound_device, ALC_MAX_AUXILIARY_SENDS, 1, &max_sends);
 
-		mprintf(("  EFX version: %d.%d\n", (int)major, (int)minor));
-		mprintf(("  Max auxiliary sends: %d\n", max_sends));
+	 core::mprintf("  EFX version: %d.%d\n", (int)major, (int)minor);
+	 core::mprintf("  Max auxiliary sends: %d\n", max_sends);
 	} else {
-		mprintf(("  EFX enabled: NO\n"));
+	 core::mprintf("  EFX enabled: NO\n");
 	}
 
-	mprintf(("  Playback device: %s\n", playback_device.c_str()));
-	mprintf(("  Capture device: %s\n", (capture_device.empty()) ? "<not available>" : capture_device.c_str()));
+ core::mprintf("  Playback device: %s\n", playback_device.c_str());
+ core::mprintf("  Capture device: %s\n", (capture_device.empty() ? "<not available>" : capture_device.c_str()));
 
-	mprintf(("... OpenAL successfully initialized!\n"));
+ core::mprintf("... OpenAL successfully initialized!\n");
 
 	// we need to clear out any errors before moving on
 	alcGetError(NULL);
@@ -528,7 +528,7 @@ AL_InitError:
 		ds_sound_device = NULL;
 	}
 
-	mprintf(("... OpenAL failed to initialize!\n"));
+ core::mprintf("... OpenAL failed to initialize!\n");
 
 	return -1;
 }
@@ -1745,7 +1745,7 @@ int ds_eax_init()
 		v_alAuxiliaryEffectSlotf = (ALAUXILIARYEFFECTSLOTF) al_load_function("alAuxiliaryEffectSlotf");
 		v_alAuxiliaryEffectSlotfv = (ALAUXILIARYEFFECTSLOTFV) al_load_function("alAuxiliaryEffectSlotfv");
 	} catch (const std::exception& err) {
-		mprintf(("\n  EFX:  Unable to load function: %s()\n", err.what()));
+	 core::mprintf("\n  EFX:  Unable to load function: %s()\n", err.what());
 
 		Ds_eax_inited = 0;
 		return -1;
@@ -1754,28 +1754,28 @@ int ds_eax_init()
 	v_alGenAuxiliaryEffectSlots(1, &AL_EFX_aux_id);
 
 	if (alGetError() != AL_NO_ERROR) {
-		mprintf(("\n  EFX:  Unable to create Aux effect!\n"));
+	 core::mprintf("\n  EFX:  Unable to create Aux effect!\n");
 		return -1;
 	}
 
 	v_alGenEffecs(1, &AL_EFX_effect_id);
 
 	if (alGetError() != AL_NO_ERROR) {
-		mprintf(("\n  EFX:  Unable to create effect!\n"));
+	 core::mprintf("\n  EFX:  Unable to create effect!\n");
 		return -1;
 	}
 
 	v_alEffecti(AL_EFX_effect_id, AL_EFFECT_TYPE, AL_EFFECT_EAXREVERB);
 
 	if (alGetError() != AL_NO_ERROR) {
-		mprintf(("\n  EFX:  EAXReverb not supported!\n"));
+	 core::mprintf("\n  EFX:  EAXReverb not supported!\n");
 		return -1;
 	}
 
 	v_alAuxiliaryEffectSloti(AL_EFX_aux_id, AL_EFFECTSLOT_EFFECT, AL_EFX_effect_id);
 
 	if (alGetError() != AL_NO_ERROR) {
-		mprintf(("\n  EFX:  Couldn't load effect!\n"));
+	 core::mprintf("\n  EFX:  Couldn't load effect!\n");
 		return -1;
 	}
 

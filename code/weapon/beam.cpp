@@ -447,7 +447,7 @@ core::Assert( new_item != &Beam_free_list );		// shouldn't have the dummy elemen
 	// check to see if its legal to fire at this guy
 	if (beam_ok_to_fire(new_item) != 1) {
 		beam_delete(new_item);
-		mprintf(("Killing beam at initial fire because of illegal targeting!!!\n"));
+	 core::mprintf("Killing beam at initial fire because of illegal targeting!!!\n");
 		return -1;
 	}
 
@@ -1858,7 +1858,7 @@ core::Assert(objp->instance >= 0);
 
 	default:
 		// this shouldn't happen too often
-		mprintf(("Beam couldn't find a good object model/type!! (%d)\n", objp->type));
+	 core::mprintf("Beam couldn't find a good object model/type!! (%d)\n", objp->type);
 		return -1;
 	}
 }
@@ -3398,13 +3398,13 @@ int beam_ok_to_fire(beam *b)
 	}
 	// if my own object is invalid, stop firing
 	if (b->objp->signature != b->sig) {
-		mprintf(("BEAM : killing beam because of invalid parent object SIGNATURE!\n"));
+	 core::mprintf("BEAM : killing beam because of invalid parent object SIGNATURE!\n");
 		return -1;
 	}
 
 	// if my own object is a ghost
 	if (b->objp->type != OBJ_SHIP) {
-		mprintf(("BEAM : killing beam because of invalid parent object TYPE!\n"));
+	 core::mprintf("BEAM : killing beam because of invalid parent object TYPE!\n");
 		return -1;
 	}	
 
@@ -3432,7 +3432,7 @@ int beam_ok_to_fire(beam *b)
 	if (!(b->flags & BF_FORCE_FIRING)) {
 		// if the shooting turret is destroyed	
 		if (b->subsys->current_hits <= 0.0f) {
-			mprintf(("BEAM : killing beam because turret has been destroyed!\n"));
+		 core::mprintf("BEAM : killing beam because turret has been destroyed!\n");
 			return -1;
 		}
 		

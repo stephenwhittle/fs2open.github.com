@@ -187,7 +187,7 @@ core::Assert( pm->used_this_mission >= 0 );
 	if (!force && (--pm->used_this_mission > 0))
 		return;
 
-	mprintf(("Unloading model '%s' from slot '%i'\n", pm->filename, num));
+ core::mprintf("Unloading model '%s' from slot '%i'\n", pm->filename, num);
 
 	// so that the textures can be released
 	pm->used_this_mission = 0;
@@ -375,7 +375,7 @@ void model_free_all()
 		return;
 	}
 
-	mprintf(( "Freeing all existing models...\n" ));
+ core::mprintf( "Freeing all existing models...\n" );
 	model_instance_free_all();
 
 	for (i=0;i<MAX_POLYGON_MODELS;i++) {
@@ -411,7 +411,7 @@ void model_page_in_start()
 		return;
 	}
 
-	mprintf(( "Starting model page in...\n" ));
+ core::mprintf( "Starting model page in...\n" );
 
 	for (i=0; i<MAX_POLYGON_MODELS; i++) {
 		if (Polygon_models[i] != NULL)
@@ -425,7 +425,7 @@ void model_page_in_stop()
 
 core::Assert( model_initted );
 
-	mprintf(( "Stopping model page in...\n" ));
+ core::mprintf( "Stopping model page in...\n" );
 
 	for (i=0; i<MAX_POLYGON_MODELS; i++) {
 		if (Polygon_models[i] == NULL)
@@ -632,7 +632,7 @@ static void set_subsystem_info(int model_num, model_subsystem *subsystemp, char 
 		subsystemp->type = SUBSYSTEM_ACTIVATION;
 	}  else { // If unrecognized type, set to unknown so artist can continue working...
 		subsystemp->type = SUBSYSTEM_UNKNOWN;
-		mprintf(("Subsystem '%s' on ship %s is not recognized as a common subsystem type\n", dname, model_get(model_num)->filename));
+	 core::mprintf("Subsystem '%s' on ship %s is not recognized as a common subsystem type\n", dname, model_get(model_num)->filename);
 	}
 
 	if ( (strstr(props, "$triggered")) != NULL ) {
@@ -759,7 +759,7 @@ void do_new_subsystem( int n_subsystems, model_subsystem *slist, int subobj_num,
 	if ( slist==NULL ) {
 #ifndef NDEBUG
 		if (!ss_warning_shown) {
-			mprintf(("No subsystems found for model \"%s\".\n", model_get(model_num)->filename));
+		 core::mprintf("No subsystems found for model \"%s\".\n", model_get(model_num)->filename);
 			ss_warning_shown = 1;
 		}
 #endif
@@ -804,16 +804,16 @@ void do_new_subsystem( int n_subsystems, model_subsystem *slist, int subobj_num,
 		_splitpath(model_filename, NULL, NULL, bname, NULL);
 		// Lets still give a comment about it and not just erase it
 		core::Warning(LOCATION,"Not all subsystems in model \"%s\" have a record in ships.tbl.\nThis can cause game to crash.\n\nList of subsystems not found from table is in log file.\n", model_get(model_num)->filename );
-		mprintf(("Subsystem %s in model %s was not found in ships.tbl!\n", subobj_name, model_get(model_num)->filename));
+	 core::mprintf("Subsystem %s in model %s was not found in ships.tbl!\n", subobj_name, model_get(model_num)->filename);
 		ss_warning_shown = 1;
 	} else
 #endif
-		mprintf(("Subsystem %s in model %s was not found in ships.tbl!\n", subobj_name, model_get(model_num)->filename));
+	 core::mprintf("Subsystem %s in model %s was not found in ships.tbl!\n", subobj_name, model_get(model_num)->filename);
 
 #ifndef NDEBUG
 	if ( ss_fp )	{
 		_splitpath(model_filename, NULL, NULL, bname, NULL);
-		mprintf(("A subsystem was found in model %s that does not have a record in ships.tbl.\nA list of subsystems for this ship will be dumped to:\n\ndata%stables%s%s.subsystems for inclusion\ninto ships.tbl.\n", model_filename, core::fs::preferred_separator_string, core::fs::preferred_separator_string, bname));
+	 core::mprintf("A subsystem was found in model %s that does not have a record in ships.tbl.\nA list of subsystems for this ship will be dumped to:\n\ndata%stables%s%s.subsystems for inclusion\ninto ships.tbl.\n", model_filename, core::fs::preferred_separator_string, core::fs::preferred_separator_string, bname);
 		char tmp_buffer[128];
 		sprintf(tmp_buffer, "$Subsystem:\t\t\t%s,1,0.0\n", subobj_name);
 		cfputs(tmp_buffer, ss_fp);
@@ -830,17 +830,17 @@ void print_family_tree( polymodel *obj, int modelnum, const char * ident, int is
 	if (obj==NULL) return;
 
 	if (ident[0] == '\0')	{
-		mprintf(( " %s", obj->submodel[modelnum].name ));
+	 core::mprintf( " %s", obj->submodel[modelnum].name );
 		sprintf( temp, " " );
 	} else if ( islast ) 	{
-		mprintf(( "%s:%s", ident, obj->submodel[modelnum].name ));
+	 core::mprintf( "%s:%s", ident, obj->submodel[modelnum].name );
 		sprintf( temp, "%s  ", ident );
 	} else {
-		mprintf(( "%s:%s", ident, obj->submodel[modelnum].name ));
+	 core::mprintf( "%s:%s", ident, obj->submodel[modelnum].name );
 		sprintf( temp, "%s ", ident );
 	}
 
-	mprintf(( "\n" ));
+ core::mprintf( "\n" );
 
 	int child = obj->submodel[modelnum].first_child;
 	while( child > -1 )	{
@@ -1082,7 +1082,7 @@ int read_model_file(polymodel * pm, const char *filename, int n_subsystems, mode
 		sprintf(debug_name, "%s.subsystems", bname);
 		ss_fp = cfopen(debug_name, "wb", CFILE_NORMAL, CF_TYPE_TABLES );
 		if ( !ss_fp )	{
-			mprintf(( "Can't open debug file for writing subsystems for %s\n", filename));
+		 core::mprintf( "Can't open debug file for writing subsystems for %s\n", filename);
 		} else {
 			strcpy_s(model_filename, filename);
 			ss_warning_shown = 0;
@@ -1129,7 +1129,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 
 	while (!cfeof(fp)) {
 
-//		mprintf(("Processing chunk <%c%c%c%c>, len = %d\n",id,id>>8,id>>16,id>>24,len));
+//	 core::mprintf("Processing chunk <%c%c%c%c>, len = %d\n",id,id>>8,id>>16,id>>24,len);
 //		key_getch();
 
 		switch (id) {
@@ -1141,14 +1141,14 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 
 #if defined( FREESPACE1_FORMAT )
 				pm->n_models = cfread_int(fp);
-//				mprintf(( "Num models = %d\n", pm->n_models ));
+//			 core::mprintf( "Num models = %d\n", pm->n_models );
 				pm->rad = cfread_float(fp);
 				pm->flags = cfread_int(fp);	// 1=Allow tiling
 #elif defined( FREESPACE2_FORMAT )
 				pm->rad = cfread_float(fp);
 				pm->flags = cfread_int(fp);	// 1=Allow tiling
 				pm->n_models = cfread_int(fp);
-//				mprintf(( "Num models = %d\n", pm->n_models ));
+//			 core::mprintf( "Num models = %d\n", pm->n_models );
 #endif
                core::Assertion(pm->n_models >= 1, "Models without any submodels are not supported!");
 
@@ -1172,11 +1172,11 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 				model_calc_bound_box(pm->bounding_box, &pm->mins, &pm->maxs);
 				
 				pm->n_detail_levels = cfread_int(fp);
-			//	mprintf(( "There are %d detail levels\n", pm->n_detail_levels ));
+			// core::mprintf( "There are %d detail levels\n", pm->n_detail_levels );
 				for (i=0; i<pm->n_detail_levels;i++ )	{
 					pm->detail[i] = cfread_int(fp);
 					pm->detail_depth[i] = 0.0f;
-			///		mprintf(( "Detail level %d is model %d.\n", i, pm->detail[i] ));
+			///	 core::mprintf( "Detail level %d is model %d.\n", i, pm->detail[i] );
 				}
 
 				pm->num_debris_objects = cfread_int(fp);
@@ -1186,10 +1186,10 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 				          "engine.",
 				          filename, pm->num_debris_objects, MAX_DEBRIS_OBJECTS);
 			    }
-				// mprintf(( "There are %d debris objects\n", pm->num_debris_objects ));
+				// core::mprintf( "There are %d debris objects\n", pm->num_debris_objects );
 				for (i=0; i<pm->num_debris_objects;i++ )	{
 					pm->debris_objects[i] = cfread_int(fp);
-					// mprintf(( "Debris object %d is model %d.\n", i, pm->debris_objects[i] ));
+					// core::mprintf( "Debris object %d is model %d.\n", i, pm->debris_objects[i] );
 				}
 
 				if ( pm->version >= 1903 )	{
@@ -1238,7 +1238,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 						&& IS_VEC_NULL(&pm->moment_of_inertia.vec.uvec)
 						&& IS_VEC_NULL(&pm->moment_of_inertia.vec.fvec) )
 					{
-						mprintf(("Model %s has a null moment of inertia!  (This is only a problem if the model is a ship.)\n", filename));
+					 core::mprintf("Model %s has a null moment of inertia!  (This is only a problem if the model is a ship.)\n", filename);
 					}
 
 				} else {
@@ -1308,7 +1308,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 //				cfread_vector(&pm->submodel[n].pnt,fp);
 				cfread_vector(&pm->submodel[n].offset,fp);
 
-//			mprintf(( "Subobj %d, offs = %.1f, %.1f, %.1f\n", n, pm->submodel[n].offset.xyz.x, pm->submodel[n].offset.xyz.y, pm->submodel[n].offset.xyz.z ));
+//		 core::mprintf( "Subobj %d, offs = %.1f, %.1f, %.1f\n", n, pm->submodel[n].offset.xyz.x, pm->submodel[n].offset.xyz.y, pm->submodel[n].offset.xyz.z );
 	
 #if defined ( FREESPACE1_FORMAT )
 				pm->submodel[n].rad = cfread_float(fp);		//radius
@@ -2395,7 +2395,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 						vm_vec_normalize_safe(&tempv);
 
 						pm->ins[idx].norm[idx2] = tempv;
-//						mprintf(("insignorm %.2f %.2f %.2f\n",pm->ins[idx].norm[idx2].xyz.x, pm->ins[idx].norm[idx2].xyz.y, pm->ins[idx].norm[idx2].xyz.z));
+//					 core::mprintf("insignorm %.2f %.2f %.2f\n",pm->ins[idx].norm[idx2].xyz.x, pm->ins[idx].norm[idx2].xyz.y, pm->ins[idx].norm[idx2].xyz.z);
 
 					}
 				}					
@@ -2408,7 +2408,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 				break;
 
 			default:
-				mprintf(("Unknown chunk <%c%c%c%c>, len = %d\n",id,id>>8,id>>16,id>>24,len));
+			 core::mprintf("Unknown chunk <%c%c%c%c>, len = %d\n",id,id>>8,id>>16,id>>24,len);
 				cfseek(fp,len,SEEK_CUR);
 				break;
 
@@ -2439,7 +2439,7 @@ core::Assert( strlen(filename) < FILESPEC_LENGTH );
 
 	cfclose(fp);
 
-	// mprintf(("Done processing chunks\n"));
+	// core::mprintf("Done processing chunks\n");
 	return 1;
 }
 
@@ -2656,7 +2656,7 @@ int model_load(const  char *filename, int n_subsystems, model_subsystem *subsyst
 
 	TRACE_SCOPE(tracing::LoadModelFile);
 
-	mprintf(( "Loading model '%s' into slot '%i'\n", filename, num ));
+ core::mprintf( "Loading model '%s' into slot '%i'\n", filename, num );
 
 	pm = new polymodel;	
 	Polygon_models[num] = pm;
@@ -2744,7 +2744,7 @@ core::Assert( (pm->id % MAX_POLYGON_MODELS) == num );
 		for (j=0; j<pm->n_models; j++ ) {
 			// check if current model name is substring of destroyed
 			if ( strstr( pm->submodel[j].name, live_debris_name ))	{
-				mprintf(( "Found live debris model for '%s'\n", pm->submodel[i].name ));
+			 core::mprintf( "Found live debris model for '%s'\n", pm->submodel[i].name );
 			core::Assert(pm->submodel[i].num_live_debris < MAX_LIVE_DEBRIS);
 				pm->submodel[i].live_debris[pm->submodel[i].num_live_debris++] = j;
 				pm->submodel[j].is_live_debris = 1;
@@ -2846,7 +2846,7 @@ core::Assert( (pm->id % MAX_POLYGON_MODELS) == num );
 					dl2--;	// Start from 1 up...
 					if (dl2 >= sm1->num_details ) sm1->num_details = dl2+1;
 					sm1->details[dl2] = j;
-  				    mprintf(( "Submodel '%s' is detail level %d of '%s'\n", sm2->name, dl2 + 1, sm1->name ));
+  				    core::mprintf( "Submodel '%s' is detail level %d of '%s'\n", sm2->name, dl2 + 1, sm1->name );
 				}
 			}
 		}
@@ -3497,7 +3497,7 @@ core::Assert(psub->flags[Model::Subsystem_Flags::Stepped_rotate]);
 	float step_offset_time = (float)fmod(rotation_time, step_time);
 	// subtract off fractional step part, round up  (ie, 1.999999 -> 2)
 	int cur_step = (int)std::lround((rotation_time - step_offset_time) / step_time);
-	// mprintf(("cur step %d\n", cur_step));
+	// core::mprintf("cur step %d\n", cur_step);
 	//core::Assert(step_offset_time >= 0);
 
 	if (cur_step >= psub->stepped_rotation->num_steps) {
@@ -3945,7 +3945,7 @@ core::Assert( turret->flags[Model::Subsystem_Flags::Turret_matrix]);
 	if (turret->flags[Model::Subsystem_Flags::Turret_alt_math])
 		limited_base_rotation = true;
 
-	//	mprintf(( "Z = %.1f, atan= %.1f\n", of_dst.xyz.z, desired_angles.p ));
+	// core::mprintf( "Z = %.1f, atan= %.1f\n", of_dst.xyz.z, desired_angles.p );
 
 	//------------	
 	// Gradually turn the turret towards the desired angles
@@ -5380,7 +5380,7 @@ void swap_bsp_data( polymodel *  /*pm*/, void * /*model_ptr*/ )
 				max->xyz.z = INTEL_FLOAT( &max->xyz.z );
 				break;
 			default:
-				mprintf(( "Bad chunk type %d, len=%d in modelread:swap_bsp_data\n", chunk_type, chunk_size ));
+			 core::mprintf( "Bad chunk type %d, len=%d in modelread:swap_bsp_data\n", chunk_type, chunk_size );
 				Int3();		// Bad chunk type!
 			return;
 		}
@@ -5515,7 +5515,7 @@ void parse_glowpoint_table(const char *filename)
 					replace = true;
 				}
 				else {
-					mprintf(("+nocreate specified in non-modular glowpoint table.\n"));
+				 core::mprintf("+nocreate specified in non-modular glowpoint table.\n");
 				}
 			}
 
@@ -5699,7 +5699,7 @@ void parse_glowpoint_table(const char *filename)
 		}
 		required_string("#End");
 	} catch (const parse::ParseException& e) {
-		mprintf(("Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }

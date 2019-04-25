@@ -268,7 +268,7 @@ void alpha_colors_init()
 	}
 
 	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
-		mprintf(("TABLES => Starting parse of 'colors.tbl' (skipping '#Start Colors' section)...\n"));
+		core::mprintf("TABLES => Starting parse of 'colors.tbl' (skipping '#Start Colors' section)...\n");
 		parse_everything_else("colors.tbl");
 	}
 	parse_modular_table(NOX("*-clr.tbm"), parse_everything_else);
@@ -322,7 +322,7 @@ core::Assertion(filename != NULL, "parse_colors() called on NULL; get a coder!\n
 			for (i = 0; i < TOTAL_COLORS; i++) {
 				if (optional_string(color_names[i])) {
 					// if so, get its rgba values and initialise it using them
-					mprintf(("'%s' has been redefined.\n", color_names[i]));
+				 core::mprintf("'%s' has been redefined.\n", color_names[i]);
 					//if (check_for_string("(")) {
 					stuff_int_list(rgba, 4, RAW_INTEGER_TYPE);
 					for (j = 0; j < 4; j++) {
@@ -346,7 +346,7 @@ core::Assertion(filename != NULL, "parse_colors() called on NULL; get a coder!\n
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -442,7 +442,7 @@ core::Assertion(filename != NULL, "parse_everything_else() called on NULL; get a
 			for (i = 0; i < INTERFACE_COLORS; i++) {
 				if (optional_string(color_names[i])) {
 					// if so, get its rgba values and initialise it using them
-					mprintf(("'%s' has been redefined.\n", color_names[i]));
+				 core::mprintf("'%s' has been redefined.\n", color_names[i]);
 					if (check_for_string("(")) {
 						// If we have a list of integers, use them.
 						stuff_int_list(rgba, 4, RAW_INTEGER_TYPE);
@@ -632,7 +632,7 @@ core::Assertion(filename != NULL, "parse_everything_else() called on NULL; get a
 					}
 					if (Tagged_Colors.find(*color_value[i]) == Tagged_Colors.end()) {
 						// Just mprintf() this information instead of complaining with a Warning(); the tag might be defined in a later-loading TBM, and if it isn't, nothing too terrible will happen.
-						mprintf(("%s - default text color '%s' set to non-existant tag '$%c'.\n", filename, color_names[i], *color_value[i]));
+					 core::mprintf("%s - default text color '%s' set to non-existant tag '$%c'.\n", filename, color_names[i], *color_value[i]);
 					}
 				}
 			}
@@ -641,7 +641,7 @@ core::Assertion(filename != NULL, "parse_everything_else() called on NULL; get a
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }

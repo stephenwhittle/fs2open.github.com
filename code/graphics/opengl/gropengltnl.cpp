@@ -414,7 +414,7 @@ void opengl_destroy_all_buffers()
 
 static bool opengl_init_shadow_framebuffer(int size, GLenum color_format)
 {
-	mprintf(("Trying to create %dx%d %d-bit shadow framebuffer\n", size, size, color_format == GL_RGBA32F ? 32 : 16));
+ core::mprintf("Trying to create %dx%d %d-bit shadow framebuffer\n", size, size, color_format == GL_RGBA32F ? 32 : 16);
 
 	glGenFramebuffers(1, &shadow_fbo);
 	GL_state.BindFrameBuffer(shadow_fbo);
@@ -454,7 +454,7 @@ static bool opengl_init_shadow_framebuffer(int size, GLenum color_format)
 
 	if (status == GL_FRAMEBUFFER_COMPLETE) {
 		// Everything is fine
-		mprintf(("Shadow framebuffer created successfully.\n"));
+	 core::mprintf("Shadow framebuffer created successfully.\n");
 		return true;
 	}
 
@@ -483,7 +483,7 @@ static bool opengl_init_shadow_framebuffer(int size, GLenum color_format)
 		break;
 	}
 
-	mprintf(("Failed to create framebuffer: %s\n", error));
+ core::mprintf("Failed to create framebuffer: %s\n", error);
 	return false;
 }
 
@@ -496,7 +496,7 @@ void opengl_tnl_init()
 
 		if (!opengl_init_shadow_framebuffer(size, GL_RGBA32F)) {
 			if (!opengl_init_shadow_framebuffer(size, GL_RGBA16F)) {
-				mprintf(("Failed to create either 32 or 16-bit color shadow framebuffer. Disabling shadow support.\n"));
+			 core::mprintf("Failed to create either 32 or 16-bit color shadow framebuffer. Disabling shadow support.\n");
 				Cmdline_shadow_quality = 0;
 			}
 		}
@@ -751,7 +751,7 @@ core::Assert(shader_handle >= 0);
 		float u_scale, v_scale;
 
 		if ( !gr_opengl_tcache_set(base_map, material_info->get_texture_type(), &u_scale, &v_scale, &array_index) ) {
-			mprintf(("WARNING: Error setting bitmap texture (%i)!\n", base_map));
+		 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", base_map);
 		}
 	}
 
@@ -984,13 +984,13 @@ void opengl_tnl_set_material_movie(movie_material* material_info) {
 	float u_scale, v_scale;
 	uint32_t index;
 	if ( !gr_opengl_tcache_set(material_info->getYtex(), material_info->get_texture_type(), &u_scale, &v_scale, &index, 0) ) {
-		mprintf(("WARNING: Error setting bitmap texture (%i)!\n", material_info->getYtex()));
+	 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", material_info->getYtex());
 	}
 	if ( !gr_opengl_tcache_set(material_info->getUtex(), material_info->get_texture_type(), &u_scale, &v_scale, &index, 1) ) {
-		mprintf(("WARNING: Error setting bitmap texture (%i)!\n", material_info->getUtex()));
+	 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", material_info->getUtex());
 	}
 	if ( !gr_opengl_tcache_set(material_info->getVtex(), material_info->get_texture_type(), &u_scale, &v_scale, &index, 2) ) {
-		mprintf(("WARNING: Error setting bitmap texture (%i)!\n", material_info->getVtex()));
+	 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", material_info->getVtex());
 	}
 }
 void opengl_tnl_set_material_nanovg(nanovg_material* material_info) {
@@ -1063,7 +1063,7 @@ void opengl_tnl_set_rocketui_material(interface_material* material_info)
 		uint32_t array_index;
 		if (!gr_opengl_tcache_set(material_info->get_texture_map(TM_BASE_TYPE), material_info->get_texture_type(),
 		                          &u_scale, &v_scale, &array_index)) {
-			mprintf(("WARNING: Error setting bitmap texture (%i)!\n", material_info->get_texture_map(TM_BASE_TYPE)));
+		 core::mprintf("WARNING: Error setting bitmap texture (%i)!\n", material_info->get_texture_map(TM_BASE_TYPE));
 		}
 		Current_shader->program->Uniforms.setUniformi("baseMapIndex", array_index);
 	}

@@ -75,7 +75,7 @@ void parse_ssm(const char *filename)
 			stuff_string(s.name, F_NAME, NAME_LENGTH);
 			if (*s.name == 0) {
 				sprintf(s.name, "SSM " SIZE_T_ARG, Ssm_info.size());
-				mprintf(("Found an SSM entry without a name.  Assigning \"%s\".\n", s.name));
+			 core::mprintf("Found an SSM entry without a name.  Assigning \"%s\".\n", s.name);
 			}
 
 			// stuff data
@@ -213,7 +213,7 @@ void parse_ssm(const char *filename)
 	}
 	catch (const parse::ParseException& e)
 	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
+	 core::mprintf("TABLES: Unable to parse '%s'!  Error message = %s.\n", filename, e.what());
 		return;
 	}
 }
@@ -222,7 +222,7 @@ void parse_ssm(const char *filename)
 void ssm_init()
 {
 	if (cf_exists_full("ssm.tbl", CF_TYPE_TABLES)) {
-		mprintf(("TABLES => Starting parse of 'ssm.tbl'...\n"));
+	 core::mprintf("TABLES => Starting parse of 'ssm.tbl'...\n");
 		parse_ssm("ssm.tbl");
 	}
 	parse_modular_table(NOX("*-ssm.tbm"), parse_ssm);

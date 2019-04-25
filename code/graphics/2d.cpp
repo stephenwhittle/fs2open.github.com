@@ -1120,7 +1120,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 
 	io::mouse::CursorManager::init();
 
-	mprintf(("Initializing path renderer...\n"));
+ core::mprintf("Initializing path renderer...\n");
 	graphics::paths::PathRenderer::init();
 
 	// Initialize uniform buffer managers
@@ -1151,7 +1151,7 @@ bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode, 
 			"Number 1 can be fixed by simply moving the FreeSpace Open executable file to the FreeSpace 2 folder.  Numbers 2 and 3 can be fixed by installing or reinstalling FreeSpace 2.\n");
 	}
 
-	mprintf(("GRAPHICS: Initializing default colors...\n"));
+ core::mprintf("GRAPHICS: Initializing default colors...\n");
 
 	gr_set_color(0,0,0);
 	gr_set_clear_color(0, 0, 0);
@@ -1754,7 +1754,7 @@ int poly_list::find_first_vertex_fast(int idx)
 
 	if ( first_idx == sorted_indices + n_verts ) {
 		// if this happens then idx was never in the index list to begin with which is not good
-		mprintf(("Sorted index list missing index %d!", idx));
+	 core::mprintf("Sorted index list missing index %d!", idx);
 		Int3();
 		return idx;
 	}

@@ -1151,7 +1151,7 @@ static int submodel_get_points_internal(int model_num, int submodel_num)
 		case OP_SORTNORM:		break;
 		case OP_BOUNDBOX:		break;
 		default:
-			mprintf(( "Bad chunk type %d, len=%d in submodel_get_points\n", chunk_type, chunk_size ));
+		 core::mprintf( "Bad chunk type %d, len=%d in submodel_get_points\n", chunk_type, chunk_size );
 			Int3();		// Bad chunk type!
 			return 0;
 		}
@@ -1309,7 +1309,7 @@ int submodel_get_num_polys_sub( ubyte *p )
 			break;
 		case OP_BOUNDBOX:	break;
 		default:
-			mprintf(( "Bad chunk type %d, len=%d in submodel_get_num_polys\n", chunk_type, chunk_size ));
+		 core::mprintf( "Bad chunk type %d, len=%d in submodel_get_num_polys\n", chunk_type, chunk_size );
 			Int3();		// Bad chunk type!
 			return 0;
 		}
@@ -2612,7 +2612,7 @@ int texture_info::LoadTexture(const char *filename, const char *dbg_name)
 {
 	if (strlen(filename) + 4 >= NAME_LENGTH) //Filenames are passed in without extension
 	{
-		mprintf(("Generated texture name %s is too long. Skipping...\n", filename));
+	 core::mprintf("Generated texture name %s is too long. Skipping...\n", filename);
 		return -1;
 	}
 	this->original_texture = bm_load_either(filename, NULL, NULL, NULL, true, CF_TYPE_MAPS);

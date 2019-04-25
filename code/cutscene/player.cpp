@@ -360,15 +360,15 @@ void Player::decoderThread() {
 	try {
 		m_decoder->startDecoding();
 	} catch (const std::exception& e) {
-		mprintf(("Video: An exception was thrown while decoding the video: %s\n", e.what()));
+	 core::mprintf("Video: An exception was thrown while decoding the video: %s\n", e.what());
 	} catch (...) {
-		mprintf(("Video: An exception was thrown while decoding the video!\n"));
+	 core::mprintf("Video: An exception was thrown while decoding the video!\n");
 	}
 }
 
 std::unique_ptr<Player> Player::newPlayer(const std::string& name, const PlaybackProperties& properties)
 {
-	mprintf(("Creating player for movie '%s'.\n", name.c_str()));
+ core::mprintf("Creating player for movie '%s'.\n", name.c_str());
 
 	auto decoder = findDecoder(name, properties);
 

@@ -4287,7 +4287,7 @@ int parse_modular_table(const char *name_check, void (*parse_callback)(const cha
 
 	for (i = 0; i < num_files; i++){
 		tbl_file_names[i] += ".tbm";
-		mprintf(("TBM  =>  Starting parse of '%s' ...\n", tbl_file_names[i].c_str()));
+	 core::mprintf("TBM  =>  Starting parse of '%s' ...\n", tbl_file_names[i].c_str());
 		(*parse_callback)(tbl_file_names[i].c_str());
 	}
 
