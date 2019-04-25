@@ -500,8 +500,9 @@ namespace os
         {
 	        core::RegisterErrorHandler(static_cast<void (*)(const char*)>(os::dialogs::Error));
 	        core::RegisterWarningHandler(os::dialogs::WarningImpl);
-		    
+		    #ifndef NDEBUG
 			core::RegisterConsoleOutputHandler(outwnd_printf);
+			#endif
 			core::RegisterAssertHandler([](const char* msg, const char* file, int line, const char* additional_msg)
 				{
 					os::dialogs::AssertMessage(msg, file, line, additional_msg);

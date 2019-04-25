@@ -17,6 +17,7 @@
 //#include "windows_stub/config.h"
 //#include "globalincs/scp_defines.h"
 
+#include <platformChecks.h>
 
 #include <cstdio>    // For NULL, etc
 #include <cstdlib>
@@ -281,7 +282,9 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 #define MAX_PATH_LEN		256		// Length for pathnames, ie "c:\bitmaps\title.pcx"
 
 // contants and defined for byteswapping routines (useful for mac)
-
+#ifndef BYTE_ORDER
+#error "Byte order not defined, check platformChecks.h"
+#endif
 #ifdef SCP_SOLARIS // Solaris
 #define INTEL_INT(x)	x
 #define INTEL_LONG(x)   x

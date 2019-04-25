@@ -10,7 +10,7 @@
 
 
 #include <cstdlib>
-#include <cstring>
+#include <globalincs/safe_strings.h>
 #include <cstdio>
 #include <cerrno>
 #include <sstream>

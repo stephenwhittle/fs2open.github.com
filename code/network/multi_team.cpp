@@ -22,9 +22,9 @@
 #include "iff_defs/iff_defs.h"
 #include "stats/scoring.h"
 
-#ifndef NDEBUG
+//#ifndef NDEBUG
 #include "playerman/player.h"
-#endif
+//#endif
 
 
 // ------------------------------------------------------------------------------------

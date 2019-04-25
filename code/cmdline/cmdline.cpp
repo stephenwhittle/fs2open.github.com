@@ -39,7 +39,8 @@
 #include <dirent.h>
 #endif
 
-#include <cstring>
+#include "globalincs/safe_strings.h"
+//#include <cstring>
 #include <cstdlib>
 #include <cstdio>
 
