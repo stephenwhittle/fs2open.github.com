@@ -10,17 +10,22 @@
 
 
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
 #include <cmath>
 
 #include "ai/ai_profiles.h"  // for the damping issue
-#include "freespace.h"
 #include "io/timer.h"
 #include "mission/missionparse.h"
 #include "mod_table/mod_table.h"
 #include "physics/physics.h"
 #include "ship/ship.h"
+#include "ai/ai_flags.h"           // for Profile_Flags, Profile_Flags::Glide_decay_requires_thrust
+#include "core/error.h"            // for noop, nprintf, Assert
+#include "globalincs/flagset.h"    // for flagset
+#include "math/floating.h"         // for fl_abs, fl_sqrt
+#include "math/vecmat.h"           // for vm_vec_rotate, vm_vec_scale_add2, vm_vec_mag, vm_vec_add2, vm_vec_copy_scale, vm_vec_scale, vm_vec_dot, vm_matrix_x_matrix, vm_vec_cross, vm_vec_unrotate, vm_angles_2_matrix, vm_vec_mag_squared, vm_vec_normalize, vm_vec_make, vm_orthogonalize_matrix, vm_copy_transpose, vm_vec_copy_normalize, vm_vec_mag_quick, vm_vec_normalize_safe, IS_VEC_NULL_SQ_SAFE, vm_vec_zero
+#include "object/object.h"         // for Player_obj, object, OBJ_SHIP
+#include "vcruntime_string.h"      // for memset
+#include "xtgmath.h"               // for exp
 
 
 

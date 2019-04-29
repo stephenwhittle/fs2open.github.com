@@ -13,9 +13,10 @@
 #define _PARTICLE_H
 
 #include <core/pstypes.h>
-#include "object/object.h"
-
+#include <math/vecmat.h>
 #include <memory>
+#include <stddef.h>        // for NULL
+class object;
 
 namespace particle
 {

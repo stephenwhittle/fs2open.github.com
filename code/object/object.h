@@ -14,13 +14,15 @@
 
 #include "globalincs/globals.h"
 #include <core/pstypes.h>
-#include "math/vecmat.h"
 #include "object/object_flags.h"
-#include "physics/physics.h"
+
+//move this into core?
 #include "utils/event.h"
 
 #include <functional>
 #include <vector>
+#include "globalincs/flagset.h"   // for flagset
+#include <stddef.h>               // for NULL
 /*
  *		CONSTANTS
  */

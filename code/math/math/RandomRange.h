@@ -1,7 +1,7 @@
 #pragma once
 
 #include <core/pstypes.h>
-
+#include <core/error.h>
 #include <random>
 #include <type_traits>
 #include <limits>
