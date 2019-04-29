@@ -17,9 +17,10 @@ target_sources(core PUBLIC
 	${CMAKE_CURRENT_LIST_DIR}/core/format.h
 	${CMAKE_CURRENT_LIST_DIR}/core/error.h
 	${CMAKE_CURRENT_LIST_DIR}/core/path.h
-    ${CMAKE_CURRENT_LIST_DIR}/core/platform.h
-    ${CMAKE_CURRENT_LIST_DIR}/core/pstypes.h
-    ${CMAKE_CURRENT_LIST_DIR}/core/toolchain.h
+	${CMAKE_CURRENT_LIST_DIR}/core/flagset.h
+	${CMAKE_CURRENT_LIST_DIR}/core/platform.h
+        ${CMAKE_CURRENT_LIST_DIR}/core/pstypes.h
+        ${CMAKE_CURRENT_LIST_DIR}/core/toolchain.h
 	)
 target_include_directories(core PUBLIC
 	${CMAKE_CURRENT_LIST_DIR})

@@ -1,7 +1,7 @@
 #ifndef WEAPON_FLAGS_H
 #define WEAPON_FLAGS_H
 
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 namespace Weapon {
 

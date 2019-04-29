@@ -9,7 +9,7 @@
 #include "object/deadobjectdock.h"
 #include "object/object.h"
 #include "globalincs/fsmemory.h"
-
+#include <core/toolchain.h>
 
 
 // management prototypes

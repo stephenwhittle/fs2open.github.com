@@ -14,22 +14,14 @@
 #include "globalincs/linklist.h"
 #include <core/pstypes.h>
 #include "globalincs/systemvars.h"
-#include "globalincs/version.h"
-#include "hud/hudconfig.h"
 #include "network/multi.h"
 #include "scripting/scripting.h"
-#include "parse/sexp.h"
-#include "globalincs/version.h"
-#include <core/pstypes.h>
 #include "osapi/osapi.h"
-#include "cfile/cfilesystem.h"
 #include "sound/speech.h"
 #include "sound/openal.h"
 #include "io/joy.h"
 
 #ifdef _WIN32
-#include <io.h>
-#include <direct.h>
 #elif defined(APPLE_APP)
 #include <CoreFoundation/CoreFoundation.h>
 #endif
@@ -44,6 +36,19 @@
 #include <cstdio>
 
 #include <jansson.h>
+#include "graphics/2d.h"              // for DisplayData, VideoModeData, gr_enumerate_displays, Default_min_draw_distance, Min_draw_distance
+#include "osapi/dialogs.h"            // for Message, MessageType::MESSAGEBOX_ERROR, MessageType::MESSAGEBOX_INFORMATION
+#include "project.h"                  // for FS_VERSION_FULL, FS_VERSION_BUILD, FS_VERSION_HAS_REVIS, FS_VERSION_MAJOR, FS_VERSION_MINOR, FS_VERSION_REVIS, FS_VERSION_REVIS_STR
+#include "utility"                    // for pair
+#include "vcruntime_new.h"            // for operator delete[], operator new[]
+#include "vcruntime_string.h"         // for memset, memmove
+#include "xstring"                    // for string, operator==, basic_string
+#include <corecrt_io.h>               // for filelength
+#include <corecrt_math.h>             // for atof
+#include <corecrt_wstdio.h>           // for stdout
+#include <ctype.h>                    // for isspace
+#include <process.h>                  // for exit
+#include <string.h>                   // for strlen, stricmp, strcmp, strncmp, strrchr, strstr
 
 // Stupid windows workaround...
 #ifdef MessageBox

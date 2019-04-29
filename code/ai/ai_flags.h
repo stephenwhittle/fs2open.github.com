@@ -1,7 +1,7 @@
 #ifndef AI_FLAGS_H
 #define AI_FLAGS_H
 
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 namespace AI {
 	FLAG_LIST(AI_Flags) {

@@ -1,7 +1,7 @@
 #ifndef SHIP_FLAGS_H
 #define SHIP_FLAGS_H
 
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 namespace Ship {
 

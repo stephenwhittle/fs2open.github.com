@@ -20,14 +20,14 @@
 #define _OSAPI_H
 
 #include <core/pstypes.h>
-#include "osapi/osregistry.h"
-#include "osapi/dialogs.h"
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 #include <functional>
 #include <memory>
-
 #include <SDL_events.h>
+#include "SDL_config.h"    // for uint32_t
+#include "SDL_video.h"     // for SDL_Window
+#include <stddef.h>        // for size_t
 
 // --------------------------------------------------------------------------------------------------
 // OSAPI DEFINES/VARS
@@ -100,7 +100,7 @@ namespace os
 	 * @brief Flags for OpenGL context creation
 	 * @ingroup os_graphics_api
 	 */
-	FLAG_LIST(OpenGLContextFlags)
+	enum class OpenGLContextFlags : size_t
 	{
 		Debug = 0,
 		ForwardCompatible,
@@ -178,7 +178,7 @@ namespace os
 	 * @brief Flags for viewport creation
 	 * @ingroup os_graphics_api
 	 */
-	FLAG_LIST(ViewPortFlags)
+	enum class ViewPortFlags : size_t
 	{
 		Fullscreen = 0,
 		Borderless,

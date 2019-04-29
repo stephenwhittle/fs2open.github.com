@@ -317,7 +317,6 @@ add_file_folder("GlobalIncs"
 	globalincs/version.cpp
 	globalincs/version.h
 	globalincs/scp_defines.h
-	globalincs/flagset.h
 )
 
 IF (WIN32)

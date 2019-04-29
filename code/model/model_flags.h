@@ -1,7 +1,7 @@
 #ifndef MODEL_FLAGS_H
 #define MODEL_FLAGS_H
 
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 namespace Model {
 

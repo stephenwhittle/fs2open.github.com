@@ -1,7 +1,7 @@
 #ifndef MISSION_FLAGS_H
 #define MISSION_FLAGS_H
 
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 
 namespace Mission {
 

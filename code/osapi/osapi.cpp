@@ -10,21 +10,32 @@
 #include <fcntl.h>
 
 #include <core/pstypes.h>
-#include "gamesequence/gamesequence.h"
-#include "freespace.h"
-#include "parse/parselo.h"
 #include <core/path.h>
+#include <core/error.h>
+//we should be able to remove this
+#include "gamesequence/gamesequence.h"
+//#include "freespace.h"
 #include <SDL_filesystem.h>
 #include <SDL_version.h>
 #include <SDL.h>
-#include <SDL_assert.h>
-#include <osapi/outwnd.h>
 #ifdef SCP_UNIX
 #include <sys/stat.h>
 #elif defined(WIN32)
-#include <sys/types.h>
 #include <sys/stat.h>
 #endif
+
+#include "SDL_config.h" // for uint32_t
+#include "SDL_error.h"  // for SDL_GetError
+#include "SDL_events.h" // for SDL_Event, SDL_PollEvent, SDL_EventState, ::SDL_WINDOWEVENT, SDL_WindowEvent, ::SDL_KEYDOWN, ::SDL_KEYUP, ::SDL_MOUSEBUTTONDOWN, ::SDL_MOUSEBUTTONUP, ::SDL_MOUSEMOTION, ::SDL_MOUSEWHEEL, ::SDL_QUIT, ::SDL_SYSWMEVENT, ::SDL_TEXTEDITING, ::SDL_TEXTINPUT, SDL_ENABLE, SDL_EventType, SDL_KeyboardEvent, SDL_MouseButtonEvent, SDL_MouseMotionEvent, SDL_MouseWheelEvent, SDL_TextEditingEvent, SDL_TextInputEvent
+#include "SDL_stdinc.h" // for SDL_free
+#include "SDL_timer.h"  // for SDL_Delay
+#include "SDL_video.h" // for SDL_GetWindowID, SDL_SetWindowTitle, SDL_Window, ::SDL_WINDOWEVENT_CLOSE, ::SDL_WINDOWEVENT_FOCUS_GAINED, ::SDL_WINDOWEVENT_FOCUS_LOST, ::SDL_WINDOWEVENT_MAXIMIZED, ::SDL_WINDOWEVENT_MINIMIZED, ::SDL_WINDOWEVENT_RESTORED
+#include "osapi.h"     // for Listener, ListenerIdentifier, DEFAULT_LISTENER_WEIGHT, Os_debugger_running, Viewport
+#include "osregistry.h" // for os_init_registry_stuff, os_config_read_uint, os_registry_get_last_modification_time, Osreg_company_name
+
+#include "cmdline/cmdline.h" // for Cmdline_no_unfocus_pause, Cmdline_portable_mode, Cmdline_set_cpu_affinity
+#include "graphics/2d.h"     // for gr_activate
+#include <memory> // for allocator
 
 namespace
 {
@@ -121,6 +132,7 @@ namespace
 // Windows specific includes
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+
 
 // go through all windows and try and find the one that matches the search string
 BOOL __stdcall os_enum_windows( HWND hwnd, LPARAM param )

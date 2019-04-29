@@ -13,9 +13,10 @@
 #include "cfile/cfile.h"
 #include "globalincs/globals.h"
 #include <core/pstypes.h>
-#include "globalincs/flagset.h"
+#include <core/flagset.h>
 #include "def_files/def_files.h"
 #include "utils/unicode.h"
+#include <core/toolchain.h>
 
 #include <cinttypes>
 #include <exception>

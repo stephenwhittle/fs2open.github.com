@@ -21,7 +21,7 @@
 
 #include <functional>
 #include <vector>
-#include "globalincs/flagset.h"   // for flagset
+#include <core/flagset.h>   // for flagset
 #include <stddef.h>               // for NULL
 /*
  *		CONSTANTS

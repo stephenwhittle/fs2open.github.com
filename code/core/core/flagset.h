@@ -4,7 +4,6 @@
 #include <bitset>
 #include <cstdint>
 #include <core/error.h>
-#include "osapi/dialogs.h"
 
 template<typename TEnum, size_t SIZE>
 struct flag_combinator;
