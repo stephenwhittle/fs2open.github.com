@@ -58,6 +58,7 @@
 #include "nebula/neblightning.h"
 #include "species_defs/species_defs.h"
 #include "osapi/osapi.h"
+#include "osapi/outwnd.h"
 #include "graphics/font.h"
 #include "object/objectdock.h"
 #include "gamesnd/gamesnd.h"

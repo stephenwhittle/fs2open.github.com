@@ -26,6 +26,10 @@
 #include <algorithm>
 #include <cstdint>
 
+#include "core_interface/FSOutputDeviceBase.h"
+
+
+
 // value to represent an uninitialized state in any int or uint
 #define UNINITIALIZED 0x7f8e6d9c
 
@@ -227,8 +231,6 @@ typedef struct coord2d {
 extern int Global_warning_count;
 extern int Global_error_count;
 
-#include "osapi/outwnd.h"
-
 // To debug printf do this:
 // mprintf(( "Error opening %s\n", filename ));
 #ifndef NDEBUG
@@ -241,8 +243,8 @@ constexpr bool LoggingEnabled = false;
 #endif
 #endif
 
-#define mprintf(args) do { if (LoggingEnabled) { outwnd_printf2 args; } } while (false)
-#define nprintf(args) do { if (LoggingEnabled) { outwnd_printf args; } } while (false)
+#define mprintf(args) do { if (LoggingEnabled) { GOutputDevice->PrintGeneral args; } } while (false)
+#define nprintf(args) do { if (LoggingEnabled) { GOutputDevice->Print args; } } while (false)
 
 #define LOCATION __FILE__,__LINE__
 
@@ -262,7 +264,7 @@ constexpr bool LoggingEnabled = false;
 #else
 #	define Assert(expr) do {\
 		if (!(expr)) {\
-			os::dialogs::AssertMessage(#expr,__FILE__,__LINE__);\
+			GOutputDevice->AssertMessage(#expr,__FILE__,__LINE__);\
 		}\
 		ASSUME( expr );\
 	} while (false)

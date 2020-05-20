@@ -2262,7 +2262,7 @@ BOOL std_create_standalone_window()
 
 	// initialize the debug outwindow
 	if (LoggingEnabled) {
-		outwnd_init();
+		GOutputDevice->Init();
 	}
 
 	Standalone_minimized = FALSE;

@@ -85,6 +85,11 @@ add_file_folder("ControlConfig"
 	controlconfig/controlsconfigcommon.cpp
 )
 
+add_file_folder("Core"
+	core/FSOutwndOutputDevice.h
+	core/FSOutwndOutputDevice.cpp
+)
+
 # Cutscene files
 add_file_folder("Cutscene"
 	cutscene/Decoder.cpp

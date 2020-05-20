@@ -329,7 +329,7 @@ void os_cleanup()
 	os_deinit_registry_stuff();
 
 	if (LoggingEnabled) {
-		outwnd_close();
+		GOutputDevice->Close();
 	}
 
 	os_deinit();

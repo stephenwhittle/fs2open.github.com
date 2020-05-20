@@ -10,6 +10,7 @@
 #include <mod_table/mod_table.h>
 #include <osapi/outwnd.h>
 #include <ship/ship.h>
+#include <core_interface/FSOutputDeviceBase.h>
 
 test::FSTestFixture::FSTestFixture(uint64_t init_flags) : testing::Test(), _initFlags(init_flags) {
 	addCommandlineArg("-parse_cmdline_only");
@@ -25,7 +26,9 @@ void test::FSTestFixture::SetUp() {
 	timer_init();
 
 	if (LoggingEnabled) {
-		outwnd_init();
+		
+		GOutputDevice->Init();
+
 		mprintf(("TEST: Setting up test '%s.%s'\n", currentTest->test_case_name(), currentTest->name()));
 	}
 
@@ -99,7 +102,7 @@ void test::FSTestFixture::TearDown() {
 	os_cleanup();
 
 	if (LoggingEnabled) {
-		outwnd_close();
+		GOutputDevice->Close();
 	}
 
 	// although the comment in cmdline.cpp said this isn't needed,

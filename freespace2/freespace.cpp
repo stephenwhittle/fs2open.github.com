@@ -141,6 +141,7 @@
 #include "options/Option.h"
 #include "options/OptionsManager.h"
 #include "osapi/osapi.h"
+#include "osapi/outwnd.h"
 #include "osapi/osregistry.h"
 #include "parse/encrypt.h"
 #include "parse/generic_log.h"
@@ -1604,7 +1605,7 @@ void game_init()
 	timer_init();
 
 	if (LoggingEnabled) {
-		outwnd_init();
+		GOutputDevice->Init();
 	}
 
 	// init os stuff next
@@ -1708,9 +1709,6 @@ void game_init()
 		return;
 	}
 
-	if (LoggingEnabled && Cmdline_debug_window) {
-		outwnd_debug_window_init();
-	}
 
 	// This needs to happen after graphics initialization
 	tracing::init();
@@ -6540,7 +6538,7 @@ void game_shutdown(void)
 	tracing::shutdown();
 
 	if (LoggingEnabled) {
-		outwnd_debug_window_deinit();
+		GOutputDevice->Close();
 	}
 
 	gr_close();

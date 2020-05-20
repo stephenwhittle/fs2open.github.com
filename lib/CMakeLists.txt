@@ -25,7 +25,7 @@ add_subdirectory(md5)
 
 add_subdirectory(utfcpp)
 
-include(freetype.cmake)
+include(freetype.cmake) 
 
 if (FSO_BUILD_WITH_FFMPEG)
 	include(FFmpeg.cmake)
@@ -36,5 +36,7 @@ add_subdirectory(discord)
 include(libRocket.cmake)
 
 add_subdirectory(libpcp)
+
+add_subdirectory(fmt)
 
 add_subdirectory(vulkan-hpp)

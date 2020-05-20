@@ -39,7 +39,7 @@ static SCP_vector<outwnd_filter_struct>& filter_vector()
 // used for file logging
 bool Log_debug_output_to_file = true;
 
-void outwnd_print(const char* id = nullptr, const char* temp = nullptr);
+
 
 // 0 = .cfg file found, 1 = not found and warning not printed yet, 2 = not found and warning printed
 static ubyte Outwnd_no_filter_file = 0;

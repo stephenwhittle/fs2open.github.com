@@ -45,6 +45,10 @@ target_link_libraries(code PUBLIC libRocket)
 
 target_link_libraries(code PUBLIC pcp)
 
+add_subdirectory(core_interface)
+
+target_link_libraries(code PUBLIC core)
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)

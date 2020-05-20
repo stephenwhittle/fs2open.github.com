@@ -27,12 +27,10 @@
 extern "C" {
 	void nvgOldCPrintf(SCP_FORMAT_STRING const char *message, ...) {
 		if (LoggingEnabled) {
-			SCP_string buf;
 			va_list args;
 			va_start(args, message);
-			vsprintf(buf, message, args);
+			GOutputDevice->PrintGeneral(message, args);
 			va_end(args);
-			outwnd_printf2("%s", message);
 		}
 	}
 }

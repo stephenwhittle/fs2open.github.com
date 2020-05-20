@@ -176,7 +176,7 @@ CFREDApp::CFREDApp() {
 	SCP_mspdbcs_Initialise();
 
 	if (LoggingEnabled) {
-		outwnd_init();
+		GOutputDevice->Init();
 	}
 }
 
