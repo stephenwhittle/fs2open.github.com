@@ -3,6 +3,7 @@
 
 
 #include <util/FSTestFixture.h>
+#include <osapi/dialogs.h>
 #include <mod_table/mod_table.h>
 
 class ModTableTest : public test::FSTestFixture {

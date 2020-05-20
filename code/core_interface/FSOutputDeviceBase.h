@@ -7,7 +7,8 @@ class FSOutputDeviceBase
 protected:
 	virtual void PrintImpl(const char* ID, const char* Message) = 0;
 	virtual void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) = 0;
-
+	virtual void WarningImpl(const char* File, int Line, const char* Message) = 0;
+	virtual void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) = 0;
 public:
 
 	virtual void Init() = 0;
@@ -41,6 +42,27 @@ public:
 		}
 	}
 
+	template<typename... Args>
+	void Warning(const char* File, int Line, const char* Format, const Args& ... args)
+	{
+		std::string Message = fmt::sprintf(Format, args...);
+		WarningImpl(File, Line, Message.c_str());
+	}
+
+	template<typename... Args>
+	void Error(const char* FileOrMessage, int Line = -1, const char* Format = nullptr, const Args& ... args)
+	{
+		if (Format == nullptr)
+		{
+			ErrorImpl(FileOrMessage);
+		}
+		else
+		{
+
+			std::string Message = fmt::sprintf(Format, args...);
+			ErrorImpl(FileOrMessage, Line, Message.c_str());
+		}
+	}
 };
 
 extern FSOutputDeviceBase* GOutputDevice;

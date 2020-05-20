@@ -11,7 +11,8 @@
 #include "math/floating.h"
 #include "math/fvi.h"
 #include "math/vecmat.h"
-
+#include "FSMathTypes.h"
+#include "FSAssert.h"
 
 #define	SMALL_NUM	1E-6
 

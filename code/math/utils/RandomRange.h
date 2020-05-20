@@ -1,11 +1,11 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
-#include "parse/parselo.h"
 
 #include <random>
 #include <type_traits>
 #include <limits>
+
+#include "FSIntegerTypes.h"
 
 namespace util {
 

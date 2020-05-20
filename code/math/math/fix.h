@@ -12,6 +12,8 @@
 #ifndef _FIX_H
 #define _FIX_H
 
+#include "FSIntegerTypes.h"
+
 #define F1_0 65536
 #define f1_0 65536
 

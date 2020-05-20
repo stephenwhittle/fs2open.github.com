@@ -631,21 +631,21 @@ add_file_folder("Localization"
 )
 
 # Math files
-add_file_folder("Math"
-	math/bitarray.h
-	math/fix.cpp
-	math/fix.h
-	math/floating.cpp
-	math/floating.h
-	math/fvi.cpp
-	math/fvi.h
-	math/spline.cpp
-	math/spline.h
-	math/staticrand.cpp
-	math/staticrand.h
-	math/vecmat.cpp
-	math/vecmat.h
-)
+#add_file_folder("Math"
+#	math/bitarray.h
+#	math/fix.cpp
+#	math/fix.h
+#	math/floating.cpp
+#	math/floating.h
+#	math/fvi.cpp
+#	math/fvi.h
+#	math/spline.cpp
+#	math/spline.h
+#	math/staticrand.cpp
+#	math/staticrand.h
+#	math/vecmat.cpp
+#	math/vecmat.h
+#)
 
 # MenuUI files
 add_file_folder("MenuUI"
@@ -1356,7 +1356,6 @@ add_file_folder("Utils"
 	utils/HeapAllocator.cpp
 	utils/HeapAllocator.h
 	utils/id.h
-	utils/RandomRange.h
 	utils/string_utils.cpp
 	utils/string_utils.h
 	utils/strings.h

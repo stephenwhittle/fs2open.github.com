@@ -27,8 +27,9 @@
 #include <cstdint>
 
 #include "core_interface/FSOutputDeviceBase.h"
-
-
+#include "core_interface/FSMathTypes.h"
+#include "core_interface/FSIntegerTypes.h"
+#include "core_interface/FSAssert.h"
 
 // value to represent an uninitialized state in any int or uint
 #define UNINITIALIZED 0x7f8e6d9c
@@ -55,19 +56,7 @@ constexpr bool FSO_DEBUG = true;
 constexpr bool FSO_DEBUG = false;
 #endif
 
-typedef std::int32_t _fs_time_t;  // time_t here is 64-bit and we need 32-bit
-typedef std::int32_t fix;
 
-// PTR compatible sizes
-typedef ptrdiff_t ptr_s;
-typedef size_t ptr_u;
-
-typedef std::int64_t longlong;
-typedef std::uint64_t ulonglong;
-typedef std::uint8_t ubyte;
-typedef std::uint16_t ushort;
-typedef std::uint32_t uint;
-typedef unsigned long ulong;
 
 //Stucture to store clipping codes in a word
 typedef struct ccodes {
@@ -76,74 +65,7 @@ typedef struct ccodes {
 
 struct vertex;
 
-typedef struct vec4 {
-	union {
-		struct {
-			float x,y,z,w;
-		} xyzw;
-		float a1d[4];
-	};
-} vec4;
 
-struct bvec4 {
-	bool x;
-	bool y;
-	bool z;
-	bool w;
-};
-
-// sometimes, you just need some integers
-typedef struct ivec3 {
-	int x, y, z;
-} ivec3;
-
-struct ivec2 {
-	int x, y;
-};
-
-/** Represents a point in 3d space.
-
-Note: this is a struct, not a class, so no member functions. */
-typedef struct vec3d {
-	union {
-		struct {
-			float x,y,z;
-		} xyz;
-		float a1d[3];
-	};
-} vec3d;
-
-typedef struct vec2d {
-	float x, y;
-} vec2d;
-
-typedef struct angles {
-	float	p, b, h;
-} angles_t;
-
-typedef struct matrix {
-	union {
-		struct {
-			vec3d	rvec, uvec, fvec;
-		} vec;
-		float a2d[3][3];
-		float a1d[9];
-	};
-} matrix;
-
-typedef struct matrix4 {
-	union {
-		struct {
-			vec4 rvec, uvec, fvec, pos;
-		} vec;
-		float a2d[4][4];
-		float a1d[16];
-	};
-} matrix4;
-
-typedef struct uv_pair {
-	float u,v;
-} uv_pair;
 
 /** Compares two uv_pairs */
 inline bool operator==(const uv_pair &left, const uv_pair &right)
@@ -226,86 +148,9 @@ typedef struct coord2d {
 	int x,y;
 } coord2d;
 
-#include "osapi/dialogs.h"
-
-extern int Global_warning_count;
-extern int Global_error_count;
-
-// To debug printf do this:
-// mprintf(( "Error opening %s\n", filename ));
-#ifndef NDEBUG
-constexpr bool LoggingEnabled = true;
-#else
-#ifdef SCP_RELEASE_LOGGING
-constexpr bool LoggingEnabled = true;
-#else
-constexpr bool LoggingEnabled = false;
-#endif
-#endif
-
-#define mprintf(args) do { if (LoggingEnabled) { GOutputDevice->PrintGeneral args; } } while (false)
-#define nprintf(args) do { if (LoggingEnabled) { GOutputDevice->Print args; } } while (false)
-
-#define LOCATION __FILE__,__LINE__
-
-// To flag an error, you can do this:
-// Error( __FILE__, __LINE__, "Error opening %s", filename );
-// or,
-// Error( LOCATION, "Error opening %s", filename );
-
-/*******************NEVER COMMENT Assert ************************************************/
-// Please never comment the functionality of Assert in debug
-// The code, as with all development like this is littered with Asserts which are designed to throw
-// up an error message if variables are out of range.
-// Disabling this functionality is dangerous, crazy values can run rampant unchecked, and the longer it's disabled
-// the more likely you are to have problems getting it working again.
-#if defined(NDEBUG)
-#	define Assert(expr) do { ASSUME(expr); } while (false)
-#else
-#	define Assert(expr) do {\
-		if (!(expr)) {\
-			GOutputDevice->AssertMessage(#expr,__FILE__,__LINE__);\
-		}\
-		ASSUME( expr );\
-	} while (false)
-#endif
-/*******************NEVER COMMENT Assert ************************************************/
-
-// Goober5000 - define Verify for use in both release and debug mode
-#define Verify(x) do { if (!(x)){ Error(LOCATION, "Verify failure: %s\n", #x); } ASSUME(x); } while(false)
-
-// Verification (like Assertion)
-#ifndef _MSC_VER   // non MS compilers
-#	define Verification(x, y, ...) do { if (!(x)) { Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, ##__VA_ARGS__); } ASSUME(x); } while(false)
-#else
-#	define Verification(x, y, ...) do { if (!(x)) { Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, __VA_ARGS__); } ASSUME(x); } while(false)
-#endif
-
-#if defined(NDEBUG)
-	// No debug version of Int3
-	#define Int3() do { } while (false)
-#else
-	void debug_int3(const char *file, int line);
-
-	// Debug version of Int3
-	#define Int3() debug_int3(__FILE__, __LINE__)
-#endif	// NDEBUG
-
-#ifndef MIN
-#define MIN(a,b) (((a) < (b)) ? (a) : (b))
-#endif
-#ifndef MAX
-#define MAX(a,b) (((a) > (b)) ? (a) : (b))
-#endif
+//#include "osapi/dialogs.h"
 
 
-#define PI				3.141592654f
-// twice values
-const float PI2			= (PI*2.0f);
-// half values
-const float PI_2		= (PI/2.0f);
-const int RAND_MAX_2	= (RAND_MAX/2);
-const float RAND_MAX_1f	= (1.0f / RAND_MAX);
 
 
 extern int Fred_running;  // Is Fred running, or FreeSpace?
@@ -348,11 +193,8 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 #define INTEL_FLOAT(x)	(*x)
 #endif // BYTE_ORDER
 
-#define TRUE	1
-#define FALSE	0
 
-int myrand();
-int rand32(); // returns a random number between 0 and 0x7fffffff
+
 
 
 // lod checker for (modular) table parsing
@@ -387,18 +229,7 @@ extern void game_busy(const char *filename = NULL);
 
 const char *XSTR(const char *str, int index);
 
-// Caps V between MN and MX.
-template <class T> void CAP( T& v, T mn, T mx )
-{
-	if ( v < mn ) {
-		v = mn;
-	} else if ( v > mx ) {
-		v = mx;
-	}
-}
 
-// faster version of CAP()
-#define CLAMP(x, min, max) do { if ( (x) < (min) ) (x) = (min); else if ((x) > (max)) (x) = (max); } while(false)
 
 //=========================================================
 // Memory management functions

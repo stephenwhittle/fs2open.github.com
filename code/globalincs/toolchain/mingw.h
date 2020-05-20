@@ -18,7 +18,7 @@
  */
 
 #include <stdio.h>
-
+#include <core_interface/FSOutputDeviceBase.h>
 #define SCP_FORMAT_STRING
 #define SCP_FORMAT_STRING_ARGS(x,y)  __attribute__((format(__MINGW_PRINTF_FORMAT, x, y)))
 
@@ -43,7 +43,7 @@
 #	define Assertion(expr, msg, ...)                                      \
 		do {                                                              \
 			if (!(expr)) {                                                \
-				os::dialogs::AssertMessage(#expr, __FILE__, __LINE__, msg, ##__VA_ARGS__); \
+				GOutputDevice->AssertMessage(#expr, __FILE__, __LINE__, msg, ##__VA_ARGS__); \
 			}                                                             \
 		} while (false)
 #endif
@@ -73,7 +73,7 @@
 #ifndef NDEBUG
 #define UNREACHABLE(msg, ...)                                                                                          \
 	do {                                                                                                               \
-		os::dialogs::Error(__FILE__, __LINE__, msg, ##__VA_ARGS__);                                                    \
+		GOutputDevice->Error(__FILE__, __LINE__, msg, ##__VA_ARGS__);                                                    \
 	} while (false)
 #else
 #define UNREACHABLE(msg, ...) __builtin_unreachable()

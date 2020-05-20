@@ -120,7 +120,7 @@ octet_iterator encode(codepoint_t cp, octet_iterator buffer) {
 		try {
 			return utf8::append(cp, buffer);
 		} catch(const std::exception& e) {
-			Error(LOCATION, "Exception while encoding Unicode code point %" PRIu32 ": %s", (uint32_t)cp, e.what());
+			GOutputDevice->Error(LOCATION, "Exception while encoding Unicode code point %" PRIu32 ": %s", (uint32_t)cp, e.what());
 			return buffer;
 		}
 	} else {

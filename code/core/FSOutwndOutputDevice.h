@@ -10,6 +10,8 @@ public:
 protected:
 	void PrintImpl(const char* ID, const char* Message) override;
 	void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) override;
+	void WarningImpl(const char* File, int Line, const char* Message) override;
+	void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) override;
 
 };
  

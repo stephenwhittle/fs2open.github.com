@@ -12,7 +12,7 @@
 #ifndef _STATIC_RAND_H
 #define _STATIC_RAND_H
 
-#include "globalincs/pstypes.h"
+#include "FSMathTypes.h"
 
 constexpr unsigned int SEMIRAND_MAX_LOG = 4;
 constexpr unsigned int SEMIRAND_MAX = (2u << SEMIRAND_MAX_LOG); //Do not change this!  Change SEMIRAND_MAX_LOG!

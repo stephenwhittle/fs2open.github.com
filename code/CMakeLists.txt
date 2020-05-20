@@ -49,6 +49,10 @@ add_subdirectory(core_interface)
 
 target_link_libraries(code PUBLIC core)
 
+add_subdirectory(math)
+
+target_link_libraries(code PUBLIC math)
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)

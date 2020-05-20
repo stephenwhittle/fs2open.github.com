@@ -14,10 +14,8 @@
 #include <windows.h>
 #endif
 
-#include "globalincs/pstypes.h"
+
 #include "math/fix.h"
-
-
 
 fix fixmul(fix a, fix b)
 {

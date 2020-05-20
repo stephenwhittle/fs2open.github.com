@@ -17,6 +17,7 @@
 #include "math/vecmat.h"
 #include "utils/RandomRange.h"
 
+#include "FSAssert.h"
 
 #define	SMALL_NUM	1e-7
 #define	SMALLER_NUM	1e-20

@@ -16,6 +16,7 @@
 #undef MessageBox
 #endif
 
+#include "osapi/dialogs.h"
 
 static SCP_string Playback_device;
 static SCP_string Capture_device;

@@ -73,7 +73,7 @@ int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_of
 	if (Unicode_text_mode) {
 		if (encoding != util::Encoding::UTF8) {
 			//This is probably fatal, so let's abort right here and now.
-			Error(LOCATION,
+			GOutputDevice->Error(LOCATION,
 				  "%s is in an Unicode/UTF format that cannot be read by FreeSpace Open. Please convert it to UTF-8\n",
 				  filename);
 		}
@@ -90,7 +90,7 @@ int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_of
 	} else {
 		if (encoding != util::Encoding::ASCII) {
 			//This is probably fatal, so let's abort right here and now.
-			Error(LOCATION,
+			GOutputDevice->Error(LOCATION,
 				  "%s is in Unicode/UTF format and cannot be read by FreeSpace Open without turning on Unicode mode. Please convert it to ASCII/ANSI\n",
 				  filename);
 		}

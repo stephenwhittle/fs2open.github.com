@@ -10,6 +10,9 @@
 #include "math/staticrand.h"
 #include "math/vecmat.h"
 
+#include "math/random.h"
+#include "math/floating.h"
+#include "FSMathOps.h"
 bool Semirand_inited = false;
 unsigned int Semirand[SEMIRAND_MAX];
 

@@ -9,9 +9,8 @@
 
 #include <cstdlib>
 
-#include "io/timer.h"
 #include "math/floating.h"
-
+#include "math/random.h"
 
 /**
  * @brief Rounds off a floating point number to a multiple of some number

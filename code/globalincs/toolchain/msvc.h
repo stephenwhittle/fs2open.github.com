@@ -18,7 +18,7 @@
  */
 
 #include <sal.h>
-
+#include <core_interface/FSOutputDeviceBase.h>
 #define SCP_FORMAT_STRING            _Printf_format_string_
 #define SCP_FORMAT_STRING_ARGS(x,y)
 
@@ -37,12 +37,12 @@
 #define ASSUME(x)
 
 #if defined(NDEBUG)
-#	define Assertion(expr, msg, ...)  do { ASSUME(expr); } while (false)
+#	define Assertion(expr, msg, ...)  do { } while (false)
 #else
 #	define Assertion(expr, msg, ...)                                    \
 		do {                                                            \
 			if (!(expr)) {                                              \
-				os::dialogs::AssertMessage(#expr, __FILE__, __LINE__, msg, __VA_ARGS__); \
+				GOutputDevice->AssertMessage(#expr, __FILE__, __LINE__, msg, __VA_ARGS__); \
 			}                                                           \
 		} while (false)
 #endif
@@ -55,8 +55,8 @@
 #	endif
 #endif
 
-#define SIZE_T_ARG    "%Iu"
-#define PTRDIFF_T_ARG "%Id"
+#define SIZE_T_ARG    "%zu"
+#define PTRDIFF_T_ARG "%zd"
 
 #define likely(x) (x)
 #define unlikely(x) (x)
@@ -71,7 +71,7 @@
 #ifndef NDEBUG
 #define UNREACHABLE(msg, ...)                                                                                          \
 	do {                                                                                                               \
-		os::dialogs::Error(__FILE__, __LINE__, msg, ##__VA_ARGS__);                                                    \
+		GOutputDevice->Error(__FILE__, __LINE__, msg, ##__VA_ARGS__);                                                    \
 	} while (false)
 #else
 #define UNREACHABLE(msg, ...) __assume(false)

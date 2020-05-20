@@ -9,10 +9,11 @@
 
 
 
-#include "globalincs/alphacolors.h"
-#include "graphics/2d.h"
+//#include "globalincs/alphacolors.h"
+#include "FSColorTypes.h"
+#include "FSMathTypes.h"
+#include "FSAssert.h"
 #include "math/spline.h"
-#include "render/3d.h"
 
 
 
@@ -123,7 +124,8 @@ void bez_spline::bez_get_point(vec3d *out, float u)
 	}
 }	
 
-// render a bezier
+// render a bezier -- currently unused
+/*
 void bez_spline::bez_render(int divs, color *c)
 {
 	float inc;
@@ -161,6 +163,7 @@ void bez_spline::bez_render(int divs, color *c)
 		g3_draw_sphere_ez(&pts[idx], 0.75f);
 	}
 }
+*/
 
 
 // --------------------------------------------------------------------------
@@ -254,7 +257,8 @@ void herm_spline::herm_get_deriv(vec3d *deriv, float u, int k)
 	vm_vec_add2(deriv, &vd);
 }
 
-// render a bezier
+// render a bezier -- currently unused
+/*
 void herm_spline::herm_render(int divs, color *clc)
 {
 	int idx;
@@ -306,3 +310,4 @@ void herm_spline::herm_render(int divs, color *clc)
 		g3_draw_sphere_ez(&pts[idx], 0.75f);
 	}
 }
+*/

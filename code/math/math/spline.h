@@ -44,8 +44,8 @@ public :
 	// get a point on the bez curve. u goes from 0.0 to 1.0
 	void bez_get_point(vec3d *out, float u);
 
-	// render a bezier
-	void bez_render(int divs, color *c);
+	// render a bezier -- currently unused
+	//void bez_render(int divs, color *c);
 };
 
 // hermite splines. cool cubic stuff
@@ -69,8 +69,8 @@ public :
 	// the derivative of a point on the hermite curve
 	void herm_get_deriv(vec3d *deriv, float u, int k);
 
-	// render a bezier
-	void herm_render(int divs, color *c);
+	// render a bezier -- currently unused
+	//void herm_render(int divs, color *c);
 };
 
 

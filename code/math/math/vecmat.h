@@ -12,7 +12,7 @@
 #ifndef _VECMAT_H
 #define _VECMAT_H
 
-#include "globalincs/pstypes.h"
+#include "FSMathTypes.h"
 #include "math/floating.h"
 
 
