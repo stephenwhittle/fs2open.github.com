@@ -14,7 +14,7 @@
 #include "mod_table/mod_table.h"
 #include "options/Option.h"
 #include "osapi/osapi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 
 #include "SDL_haptic.h"
 

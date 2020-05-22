@@ -91,10 +91,7 @@ extern const char *inet_ntop(int af, const void *src, char *dst, int size);
 
 #define SOCKLEN_T socklen_t
 
-// file related items
-#define _MAX_FNAME					255
-#define _MAX_PATH					255
-#define MAX_PATH					255
+
 #define _unlink(s)					unlink(s)
 
 int filelength(int fd);

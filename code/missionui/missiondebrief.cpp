@@ -48,7 +48,7 @@
 #include "stats/medals.h"
 #include "stats/stats.h"
 #include "ui/uidefs.h"
-
+#include "NOX.h"
 
 #define MAX_TOTAL_DEBRIEF_LINES	200
 

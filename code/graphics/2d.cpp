@@ -42,6 +42,10 @@
 #include "tracing/tracing.h"
 #include "utils/boost/hash_combine.h"
 
+#include "memory/memory.h"
+#include "config/osregistry.h"
+#include "NOX.h"
+
 #include <SDL_surface.h>
 
 #include <algorithm>

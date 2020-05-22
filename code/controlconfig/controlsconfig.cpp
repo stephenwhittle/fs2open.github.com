@@ -30,7 +30,7 @@
 #include "popup/popup.h"
 #include "ui/ui.h"
 #include "ui/uidefs.h"
-
+#include "NOX.h"
 
 #ifndef NDEBUG
 #include "hud/hud.h"

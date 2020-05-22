@@ -14,6 +14,7 @@
 #include "localization/localize.h"
 #include "parse/parselo.h"
 #include "species_defs/species_defs.h"
+#include "NOX.h"
 
 
 SCP_vector<species_info> Species_info;

@@ -31,6 +31,7 @@
 #include "starfield/starfield.h"
 #include "starfield/supernova.h"
 #include "tracing/tracing.h"
+#include "NOX.h"
 
 #define MAX_DEBRIS_VCLIPS			4
 #define DEBRIS_ROT_MIN				10000

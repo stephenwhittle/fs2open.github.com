@@ -38,6 +38,8 @@
 #include "weapon/beam.h"
 #include "weapon/weapon.h"
 #include <utility>
+#include "filesystem/SCPPath.h"
+#include "NOX.h"
 
 // flags
 #define LAB_FLAG_NORMAL (0)                    // default

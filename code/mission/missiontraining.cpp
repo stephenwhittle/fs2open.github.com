@@ -30,7 +30,7 @@
 #include "sound/sound.h"
 #include "weapon/emp.h"
 
-
+#define TRAINING_MESSAGE_LENGTH	512
 
 #define MAX_TRAINING_MESSAGE_LINES		10
 #define TRAINING_MESSAGE_WINDOW_WIDTH	266

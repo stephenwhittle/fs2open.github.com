@@ -26,7 +26,7 @@
 #include "mission/missioncampaign.h"
 #include "mod_table/mod_table.h"
 #include "network/multi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/parselo.h"
 #include "pilotfile/pilotfile.h"
 #include "playerman/managepilot.h"

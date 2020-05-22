@@ -35,12 +35,12 @@
 #include "network/multi.h"
 #include "network/multiutil.h"
 #include "network/multilag.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "io/timer.h"
 #include "network/multi_log.h"
 #include "network/multi_rate.h"
 #include "cmdline/cmdline.h"
-
+#include "NOX.h"
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS
 //

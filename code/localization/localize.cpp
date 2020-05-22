@@ -13,13 +13,13 @@
 #include <cctype>
 #include "cfile/cfile.h"
 #include "localization/localize.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/encrypt.h"
 #include "parse/parselo.h"
 #include "playerman/player.h"
 #include "mod_table/mod_table.h"
-
-
+#include "filesystem/SCPPath.h"
+#include "NOX.h"
 // ------------------------------------------------------------------------------------------------------------
 // LOCALIZE DEFINES/VARS
 //

@@ -8,7 +8,7 @@
 #include "localization/localize.h"
 #include "menuui/techmenu.h"
 #include "network/multi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "pilotfile/pilotfile.h"
 #include "pilotfile/BinaryFileHandler.h"
 #include "pilotfile/JSONFileHandler.h"
@@ -18,6 +18,8 @@
 #include "sound/audiostr.h"
 #include "stats/medals.h"
 #include "weapon/weapon.h"
+#include "mod_table/mod_table.h"
+#include "NOX.h"
 
 namespace {
 void read_multi_stats(pilot::FileHandler* handler, scoring_special_t* scoring) {

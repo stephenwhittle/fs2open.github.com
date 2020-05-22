@@ -39,4 +39,6 @@ add_subdirectory(libpcp)
 
 add_subdirectory(fmt)
 
+add_subdirectory(filesystem)
+
 add_subdirectory(vulkan-hpp)

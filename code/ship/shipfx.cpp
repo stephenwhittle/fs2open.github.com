@@ -42,6 +42,7 @@
 #include "weapon/muzzleflash.h"
 #include "weapon/shockwave.h"
 #include "weapon/weapon.h"
+#include "NOX.h"
 
 #ifndef NDEBUG
 extern float flFrametime;

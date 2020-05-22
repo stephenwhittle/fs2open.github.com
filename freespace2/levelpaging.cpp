@@ -13,7 +13,7 @@
 #include "levelpaging.h"
 
 #include "tracing/tracing.h"
-
+#include "NOX.h"
 
 // All the page in functions
 extern void ship_page_in();

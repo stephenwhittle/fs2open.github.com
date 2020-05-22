@@ -27,7 +27,7 @@
 #include "playerman/player.h"
 #include "sound/audiostr.h"
 #include "ui/ui.h"
-
+#include "NOX.h"
 #include <lua.h>
 
 

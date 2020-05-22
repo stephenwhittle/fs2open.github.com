@@ -24,7 +24,7 @@
 #include "menuui/barracks.h"
 #include "menuui/playermenu.h"
 #include "mission/missioncampaign.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/parselo.h"
 #include "pilotfile/pilotfile.h"
 #include "playerman/managepilot.h"

@@ -4,7 +4,7 @@
 #include "OptionsManager.h"
 #include "Option.h"
 #include "mod_table/mod_table.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 
 namespace {
 std::pair<SCP_string, SCP_string> parse_key(const SCP_string& key)

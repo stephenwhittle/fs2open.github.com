@@ -13,7 +13,7 @@
 #include "bmpman/bmpman.h"
 #include "ui/ui.h"
 #include "ui/uidefs.h"
-
+#include "NOX.h"
 
 // constructor
 UI_GADGET::UI_GADGET()

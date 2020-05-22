@@ -8,6 +8,7 @@
 #include "parse/parselo.h"
 #include "tracing/tracing.h"
 #include "ship/ship.h"
+#include "NOX.h"
 
 namespace {
 

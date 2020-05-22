@@ -17,6 +17,7 @@
 #include "graphics/material.h"
 #include "render/3d.h"
 #include "starfield/nebula.h"
+#include "NOX.h"
 
 #define MAX_TRIS 200
 #define MAX_POINTS 300

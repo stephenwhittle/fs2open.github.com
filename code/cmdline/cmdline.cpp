@@ -26,6 +26,10 @@
 #include "sound/openal.h"
 #include "sound/speech.h"
 #include "starfield/starfield.h"
+#include "parse/parselo.h"
+#include "filesystem/SCPPath.h"
+
+#include "NOX.h"
 
 #ifdef _WIN32
 #include <io.h>

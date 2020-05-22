@@ -27,7 +27,7 @@
 #include "object/object.h"
 #include "parse/parselo.h"
 #include "sound/fsspeech.h"
-
+#include "NOX.h"
 
 
 // ----------------------------------------------------------------------------------

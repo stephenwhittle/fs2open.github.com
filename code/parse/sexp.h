@@ -11,11 +11,13 @@
 #define _SEXP_H
 
 #include "globalincs/globals.h"
-#include "globalincs/pstypes.h"	// for NULL
+
+#include "FSStdTypes.h"
 
 class ship_subsys;
 class ship;
 class waypoint_list;
+
 
 // bumped to 30 by Goober5000
 #define	OPERATOR_LENGTH	30  // if this ever exceeds TOKEN_LENGTH, let JasonH know!

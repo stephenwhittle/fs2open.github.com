@@ -19,7 +19,7 @@
 #include "playerman/player.h"
 #include "io/timer.h"
 #include "debugconsole/console.h"
-
+#include "NOX.h"
 
 // ----------------------------------------------------------------------------------
 // KICK DEFINES/VARS

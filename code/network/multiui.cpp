@@ -60,7 +60,7 @@
 #include "network/multi_dogfight.h"
 #include "missionui/missionpause.h"
 #include "ship/ship.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "mission/missionbriefcommon.h"
 #include "parse/parselo.h"
 #include "cfile/cfile.h"
@@ -68,6 +68,7 @@
 #include "network/multi_sw.h"
 #include "menuui/mainhallmenu.h"
 #include "debugconsole/console.h"
+#include "NOX.h"
 
 #include <algorithm>
 

@@ -23,6 +23,9 @@
 #include "playerman/managepilot.h"
 #include "ui/ui.h"
 #include "tracing/tracing.h"
+#include "NOX.h"
+
+#include "filesystem/SCPPath.h"
 
 
 extern mission The_mission;  // need to send this info to the briefing
@@ -54,12 +57,7 @@ void ml_update_recent_missions(const char* filename)
 	}
 
 	// get a pointer to just the basename of the filename (including extension)
-	const char* p = strrchr(filename, DIR_SEPARATOR_CHAR);
-	if ( p == NULL ) {
-		p = filename;
-	} else {
-		p++;
-	}
+	const char* p = SCPPath::GetFilename(filename);
 
 	Assert(strlen(p) < MAX_FILENAME_LEN);
 	strcpy_s( Recent_missions[0], p );

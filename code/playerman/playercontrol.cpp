@@ -37,6 +37,7 @@
 #include "ship/ship.h"
 #include "ship/shipfx.h"
 #include "weapon/weapon.h"
+#include "NOX.h"
 
 #ifndef NDEBUG
 #include "io/key.h"

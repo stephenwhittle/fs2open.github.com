@@ -16,6 +16,8 @@
 #include "sound/audiostr.h"
 #include "stats/medals.h"
 #include "weapon/weapon.h"
+#include "mod_table/mod_table.h"
+#include "NOX.h"
 
 #define REDALERT_INTERNAL
 #include "missionui/redalert.h"

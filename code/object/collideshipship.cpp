@@ -28,7 +28,7 @@
 #include "render/3d.h"			// needed for View_position, which is used when playing 3d sound
 #include "ship/ship.h"
 #include "ship/shiphit.h"
-
+#include "NOX.h"
 
 #define COLLIDE_DEBUG
 #undef  COLLIDE_DEBUG

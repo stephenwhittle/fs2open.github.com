@@ -20,7 +20,7 @@
 #include "ship/ship.h"
 #include "ship/shiphit.h"
 #include "weapon/weapon.h"
-
+#include "mod_table/mod_table.h"
 // -----------------------------------------------------------
 // Module-wide globals
 // -----------------------------------------------------------

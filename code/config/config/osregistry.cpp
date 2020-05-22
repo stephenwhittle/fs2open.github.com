@@ -7,12 +7,18 @@
 *
 */
 
-#include "globalincs/pstypes.h"
-#include "osapi/osregistry.h"
-#include "osapi/osapi.h"
-#include "cmdline/cmdline.h"
-#include "osregistry.h"
+#include "config/osregistry.h"
+#include "config/SCPConfig.h"
+#include "FSStdTypes.h"
+#include "FSAssert.h"
+#include "SCPCmdOptions.h"
+#include "FSIntegerTypes.h"
+#include "memory/memory.h"
+#include "memory/utils.h"
+#include "SCPLimits.h"
+#include "NOX.h"
 
+#include <algorithm>
 
 #ifdef WIN32
 #include <windows.h>
@@ -21,6 +27,8 @@
 #pragma warning(disable: 4091) // ignored on left of '' when no variable is declared
 #pragma warning(pop)
 #include <sddl.h>
+#undef min
+#undef max
 #endif
 
 namespace
@@ -574,7 +582,7 @@ static Profile *profile_read(const char *file)
 	FILE *fp = NULL;
 	char *str;
 
-	if (os_is_legacy_mode()) {
+	if (GConfig->IsLegacyMode()) {
 #ifdef WIN32
 		return nullptr; // No config file in legacy mode
 #else
@@ -586,7 +594,7 @@ static Profile *profile_read(const char *file)
 #endif
 	}
 	else {
-		fp = fopen(os_get_config_path(file).c_str(), "rt");
+		fp = fopen(GConfig->GetConfigPath(file).c_str(), "rt");
 	}
 
 	if (fp == NULL)
@@ -802,7 +810,7 @@ static void profile_save(Profile *profile, const char *file)
 	if (profile == NULL)
 		return;
 
-	fp = fopen(os_get_config_path(file).c_str(), "wt");
+	fp = fopen(GConfig->GetConfigPath(file).c_str(), "wt");
 
 	if (fp == NULL)
 		return;

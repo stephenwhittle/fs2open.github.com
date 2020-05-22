@@ -74,6 +74,7 @@
 #include <map>
 #include <climits>
 
+#include "NOX.h"
 
 #ifdef _MSC_VER
 #pragma optimize("", off)

@@ -11,18 +11,18 @@
 
 
 // from parselo.h
-#define	PATHNAME_LENGTH			192
+//#define	PATHNAME_LENGTH			192
 #define	NAME_LENGTH				32
-#define	SEXP_LENGTH				128
-#define	DATE_LENGTH				32
-#define	TIME_LENGTH				16
+//#define	SEXP_LENGTH				128
+//#define	DATE_LENGTH				32
+//#define	TIME_LENGTH				16
 #define	DATE_TIME_LENGTH		48
 #define	NOTES_LENGTH			1024
 #define	MULTITEXT_LENGTH		4096
 #define	FILESPEC_LENGTH			64
 #define	MESSAGE_LENGTH			512
-#define TRAINING_MESSAGE_LENGTH	512
-#define CONDITION_LENGTH		64
+
+//#define CONDITION_LENGTH		64
 
 // from missionparse.h
 #define MISSION_DESC_LENGTH		512
@@ -35,15 +35,11 @@
 
 // from ship.h
 #define MAX_SHIPS					400			// max number of ship instances there can be.DTP; bumped from 200 to 400
-#define SHIPS_LIMIT					400			// what MAX_SHIPS will be at release time (for error checking in debug mode); dtp Bumped from 200 to 400
+
 
 // from missionparse.h and then redefined to the same value in sexp.h
 #define TOKEN_LENGTH	32
-// ****************************************************************
-// DO NOT CHANGE THIS - IT WILL LIKELY BREAK FREESPACE2 PXO SUPPORT
-// TALK TO DAVE B FIRST
-// ****************************************************************
-#define MAX_SHIP_CLASSES_MULTI	130
+
 
 #define MAX_SHIP_CLASSES		500
 

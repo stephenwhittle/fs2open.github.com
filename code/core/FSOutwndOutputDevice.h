@@ -12,6 +12,7 @@ protected:
 	void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) override;
 	void WarningImpl(const char* File, int Line, const char* Message) override;
 	void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) override;
+	void MessageImpl(const char* Message) override;
 
 };
  

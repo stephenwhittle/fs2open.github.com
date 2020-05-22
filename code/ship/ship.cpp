@@ -88,6 +88,7 @@
 #include "tracing/Monitor.h"
 #include "tracing/tracing.h"
 
+#define SHIPS_LIMIT					400			// what MAX_SHIPS will be at release time (for error checking in debug mode); dtp Bumped from 200 to 400
 
 using namespace Ship;
 

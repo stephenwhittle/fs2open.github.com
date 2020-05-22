@@ -1,7 +1,7 @@
 
 #include "particle/util/ParticleProperties.h"
 #include "particle/ParticleManager.h"
-
+#include "parse/parselo.h"
 #include "bmpman/bmpman.h"
 
 namespace particle {

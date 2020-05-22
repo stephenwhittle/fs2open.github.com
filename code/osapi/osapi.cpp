@@ -12,6 +12,9 @@
 #include "gamesequence/gamesequence.h"
 #include "globalincs/pstypes.h"
 #include "parse/parselo.h"
+#include "osapi.h"
+#include "FSStdTypes.h"
+#include "filesystem/SCPPath.h"
 
 #include <fcntl.h>
 #include <utf8.h>
@@ -685,9 +688,8 @@ void os_poll()
 SCP_string os_get_config_path(const SCP_string& subpath)
 {
 	// Make path platform compatible
-	SCP_string compatiblePath(subpath);
-	std::replace(compatiblePath.begin(), compatiblePath.end(), '/', DIR_SEPARATOR_CHAR);
-
+	SCP_string compatiblePath = SCPPath::GetCompatiblePath(subpath);
+	
 	SCP_stringstream ss;
 
 	if (Cmdline_portable_mode) {

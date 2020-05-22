@@ -13,6 +13,7 @@
 #include "mission/missionparse.h"
 #include "parse/parselo.h"
 #include "ship/ship.h"
+#include "NOX.h"
 
 extern int radar_target_id_flags;
 

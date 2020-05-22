@@ -53,6 +53,8 @@
 #include "weapon/weapon.h"
 #include "tracing/Monitor.h"
 
+#include "NOX.h"
+
 //#pragma optimize("", off)
 //#pragma auto_inline(off)
 

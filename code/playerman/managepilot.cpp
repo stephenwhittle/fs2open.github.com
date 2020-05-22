@@ -26,7 +26,7 @@
 #include "missionui/redalert.h"
 #include "mod_table/mod_table.h"
 #include "network/multi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "pilotfile/pilotfile.h"
 #include "playerman/managepilot.h"
 #include "playerman/player.h"
@@ -35,7 +35,7 @@
 #include "sound/audiostr.h"
 #include "sound/sound.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 
 // pilot pic image list stuff ( call pilot_load_pic_list() to make these valid )
 char Pilot_images_arr[MAX_PILOT_IMAGES][MAX_FILENAME_LEN];

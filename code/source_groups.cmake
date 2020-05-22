@@ -336,11 +336,6 @@ IF (WIN32)
 	)
 ENDIF(WIN32)
 
-add_file_folder("GlobalIncs\\\\Memory"
-	globalincs/memory/memory.h
-	globalincs/memory/memory.cpp
-	globalincs/memory/utils.h
-)
 
 add_file_folder("GlobalIncs\\\\Toolchain"
 	globalincs/toolchain/clang.h
@@ -892,8 +887,6 @@ add_file_folder("OsApi"
 	osapi/osapi.cpp
 	osapi/dialogs.h
 	osapi/dialogs.cpp
-	osapi/osregistry.h
-	osapi/osregistry.cpp
 	osapi/outwnd.h
 	osapi/outwnd.cpp
 )

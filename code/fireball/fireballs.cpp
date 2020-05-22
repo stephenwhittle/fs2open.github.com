@@ -21,6 +21,7 @@
 #include "render/batching.h"
 #include "ship/ship.h"
 #include "tracing/Monitor.h"
+#include "NOX.h"
 
 #include <cstdlib>
 

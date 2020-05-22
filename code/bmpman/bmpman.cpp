@@ -32,6 +32,7 @@
 #include "tgautils/tgautils.h"
 #include "tracing/Monitor.h"
 #include "tracing/tracing.h"
+#include "NOX.h"
 
 #include <cctype>
 #include <climits>

@@ -27,7 +27,7 @@
 #include "ship/ship.h"
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 
 
 

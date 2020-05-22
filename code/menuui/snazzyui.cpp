@@ -19,7 +19,7 @@
 #include "io/mouse.h"
 #include "localization/localize.h"
 #include "menuui/snazzyui.h"
-
+#include "NOX.h"
 
 extern int ascii_table[];
 extern int shifted_ascii_table[];

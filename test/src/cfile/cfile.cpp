@@ -2,6 +2,7 @@
 #include <cfile/cfilesystem.h>
 #include <graphics/font.h>
 #include <gtest/gtest.h>
+#include "filesystem/SCPPath.h"
 
 #include "util/FSTestFixture.h"
 

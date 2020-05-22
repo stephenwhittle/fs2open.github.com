@@ -101,7 +101,7 @@
 #include "weapon/emp.h"
 #include "weapon/shockwave.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 #include "parse/sexp/sexp_lookup.h"
 
 #ifndef NDEBUG

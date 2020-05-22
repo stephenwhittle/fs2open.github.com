@@ -22,7 +22,8 @@
 #include "graphics/grinternal.h"
 #include "math/vecmat.h"
 #include "options/Option.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
+#include "parse/parselo.h"
 
 matrix4 GL_texture_matrix;
 

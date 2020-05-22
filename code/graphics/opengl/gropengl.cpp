@@ -25,8 +25,10 @@
 #include "model/model.h"
 #include "options/Option.h"
 #include "osapi/osapi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "pngutils/pngutils.h"
+#include "mod_table/mod_table.h"
+#include "NOX.h"
 
 #if defined(_WIN32)
 #include <windows.h>

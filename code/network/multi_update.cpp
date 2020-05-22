@@ -13,7 +13,7 @@
 #include "network/multi_update.h"
 #include "popup/popup.h"
 #include "gamesequence/gamesequence.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "globalincs/version.h"
 #include "inetfile/inetgetfile.h"
 #include "cfile/cfile.h"

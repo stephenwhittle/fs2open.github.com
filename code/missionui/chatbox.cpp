@@ -23,7 +23,7 @@
 #include "parse/parselo.h"
 #include "playerman/player.h"
 #include "ui/ui.h"
-
+#include "NOX.h"
 
 
 ///////////////////////////////////////////////////////////

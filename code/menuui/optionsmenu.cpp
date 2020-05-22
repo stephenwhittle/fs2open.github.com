@@ -28,7 +28,7 @@
 #include "missionui/missionscreencommon.h"
 #include "nebula/neb.h"
 #include "network/multi.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "pilotfile/pilotfile.h"
 #include "popup/popup.h"
 #include "popup/popupdead.h"

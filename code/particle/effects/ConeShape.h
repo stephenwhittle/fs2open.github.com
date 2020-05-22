@@ -4,6 +4,7 @@
 
 #include "globalincs/pstypes.h"
 #include "utils/RandomRange.h"
+#include "parse/parselo.h"
 
 namespace particle {
 namespace effects {

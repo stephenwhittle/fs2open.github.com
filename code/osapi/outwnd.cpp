@@ -24,7 +24,7 @@
 #include "globalincs/systemvars.h"
 #include "cfile/cfilesystem.h"
 #include "parse/parselo.h"
-
+#include "NOX.h"
 struct outwnd_filter_struct {
 	char name[NAME_LENGTH];
 	bool enabled;

@@ -16,6 +16,7 @@
 #include "sound/ds.h"
 #include "species_defs/species_defs.h"
 #include "tracing/tracing.h"
+#include "NOX.h"
 
 SCP_vector<game_snd>	Snds;
 SCP_vector<game_snd>	Snds_iface;

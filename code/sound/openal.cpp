@@ -1,7 +1,7 @@
 
 #include "globalincs/pstypes.h"
 #include "sound/openal.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 
 #include <string>
 #include <algorithm>

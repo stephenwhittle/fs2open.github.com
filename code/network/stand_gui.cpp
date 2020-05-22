@@ -31,7 +31,7 @@
 #include "network/multi_endgame.h"
 #include "gamesequence/gamesequence.h"
 #include "playerman/player.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "io/timer.h"
 #include "globalincs/version.h"
 #include "ship/ship.h"

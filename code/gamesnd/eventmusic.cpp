@@ -22,6 +22,7 @@
 #include "ship/ship.h"
 #include "sound/audiostr.h"
 #include "sound/sound.h"
+#include "NOX.h"
 
 #ifdef _MSC_VER
 #pragma optimize("", off)

@@ -25,6 +25,7 @@
 #include "ship/ship.h"
 #include "weapon/weapon.h"
 #include "mod_table/mod_table.h"
+#include "NOX.h"
 
 #include "utils/encoding.h"
 #include "utils/unicode.h"

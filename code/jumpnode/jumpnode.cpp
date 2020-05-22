@@ -12,6 +12,7 @@
 #include "jumpnode/jumpnode.h"
 #include "model/model.h"
 #include "model/modelrender.h"
+#include "NOX.h"
 
 SCP_list<CJumpNode> Jump_nodes;
 

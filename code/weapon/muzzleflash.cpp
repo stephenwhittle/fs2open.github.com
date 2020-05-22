@@ -14,7 +14,7 @@
 #include "parse/parselo.h"
 #include "particle/particle.h"
 #include "weapon/muzzleflash.h"
-
+#include "NOX.h"
 
 // ---------------------------------------------------------------------------------------------------------------------
 // MUZZLE FLASH DEFINES/VARS

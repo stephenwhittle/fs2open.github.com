@@ -20,13 +20,13 @@
 #include "menuui/optionsmenumulti.h"
 #include "network/multi.h"
 #include "network/multi_voice.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/parselo.h"
 #include "playerman/player.h"
 #include "popup/popup.h"
 #include "sound/ds.h"
 #include "sound/rtvoice.h"
-
+#include "NOX.h"
 
 
 // general data section ------------------------------------------------

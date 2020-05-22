@@ -7,7 +7,7 @@
 */ 
 
 #include "globalincs/pstypes.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "sound/fsspeech.h"
 #include "sound/speech.h"
 

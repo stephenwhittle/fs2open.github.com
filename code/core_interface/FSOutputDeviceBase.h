@@ -9,6 +9,7 @@ protected:
 	virtual void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) = 0;
 	virtual void WarningImpl(const char* File, int Line, const char* Message) = 0;
 	virtual void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) = 0;
+	virtual void MessageImpl(const char* Message) = 0;
 public:
 
 	virtual void Init() = 0;
@@ -62,6 +63,13 @@ public:
 			std::string Message = fmt::sprintf(Format, args...);
 			ErrorImpl(FileOrMessage, Line, Message.c_str());
 		}
+	}
+
+	template<typename... Args>
+	void Message(const char* Format, const Args& ... args)
+	{
+		std::string Message = fmt::sprintf(Format, args...);
+		MessageImpl(Message.c_str());
 	}
 };
 

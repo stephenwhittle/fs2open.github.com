@@ -45,13 +45,13 @@ constexpr bool LoggingEnabled = false;
 /*******************NEVER COMMENT Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode
-#define Verify(x) do { if (!(x)){ Error(LOCATION, "Verify failure: %s\n", #x); } ASSUME(x); } while(false)
+#define Verify(x) do { if (!(x)){ GOutputDevice->Error(LOCATION, "Verify failure: %s\n", #x); } } while(false)
 
 // Verification (like Assertion)
 #ifndef _MSC_VER   // non MS compilers
-#	define Verification(x, y, ...) do { if (!(x)) { Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, ##__VA_ARGS__); } ASSUME(x); } while(false)
+#	define Verification(x, y, ...) do { if (!(x)) { GOutputDevice->Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, ##__VA_ARGS__); } ASSUME(x); } while(false)
 #else
-#	define Verification(x, y, ...) do { if (!(x)) { Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, __VA_ARGS__); } ASSUME(x); } while(false)
+#	define Verification(x, y, ...) do { if (!(x)) { GOutputDevice->Error(LOCATION, "Verify failure: %s with help text " #y "\n", #x, __VA_ARGS__); } ASSUME(x); } while(false)
 #endif
 
 #if defined(NDEBUG)

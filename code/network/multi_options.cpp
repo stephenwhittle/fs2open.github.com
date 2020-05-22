@@ -11,7 +11,7 @@
 
 
 #include "cmdline/cmdline.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "network/multi.h"
 #include "network/multimsgs.h"
 #include "network/multi_obj.h"
@@ -27,7 +27,7 @@
 #include "playerman/player.h"
 #include "cfile/cfile.h"
 #include "network/multi_fstracker.h"
-
+#include "NOX.h"
 #include <climits>
 
 

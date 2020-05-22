@@ -11,6 +11,7 @@
 #include "network/psnet2.h"
 #include "pilotfile/pilotfile_convert.h"
 
+#include "filesystem/SCPPath.h"
 
 // this struct isn't well packed, and is written whole to the pilot file, so
 // we can't easily just get the RGBA that we need and instead must retain this

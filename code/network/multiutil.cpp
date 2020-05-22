@@ -52,7 +52,7 @@
 #include "mission/missiongoals.h"
 #include "ship/afterburner.h"
 #include "missionui/chatbox.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "hud/hudescort.h"
 #include "network/multi.h"
 #include "cmdline/cmdline.h"
@@ -78,6 +78,7 @@
 #include "network/multi_fstracker.h"
 #include "parse/parselo.h"
 #include "debugconsole/console.h"
+#include "NOX.h"
 
 extern int ascii_table[];
 extern int shifted_ascii_table[];

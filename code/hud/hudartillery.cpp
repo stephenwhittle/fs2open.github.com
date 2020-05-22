@@ -25,7 +25,7 @@
 #include "sound/sound.h"
 #include "weapon/beam.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 // -----------------------------------------------------------------------------------------------------------------------
 // ARTILLERY DEFINES/VARS
 //

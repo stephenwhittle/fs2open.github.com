@@ -41,6 +41,7 @@
 #include "localization/localize.h"
 #include "osapi/osapi.h"
 #include "parse/parselo.h"
+#include "filesystem/SCPPath.h"
 
 enum CfileRootType {
 	CF_ROOTTYPE_PATH = 0,

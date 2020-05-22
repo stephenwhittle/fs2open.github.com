@@ -5,6 +5,7 @@
 #include "cmdline/cmdline.h"
 #include "graphics/2d.h"
 #include "scripting/ade.h"
+#include "filesystem/SCPPath.h"
 
 #include <SDL_messagebox.h>
 #include <SDL_clipboard.h>

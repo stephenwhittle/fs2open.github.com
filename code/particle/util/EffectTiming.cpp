@@ -1,4 +1,5 @@
 #include "EffectTiming.h"
+#include "parse/parselo.h"
 
 namespace particle {
 namespace util {

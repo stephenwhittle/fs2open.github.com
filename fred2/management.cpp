@@ -51,7 +51,7 @@
 #include "jumpnode/jumpnode.h"
 #include "stats/medals.h"
 #include "localization/localize.h" 
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "localization/fhash.h"
 #include "io/timer.h"
 #include "nebula/neb.h"

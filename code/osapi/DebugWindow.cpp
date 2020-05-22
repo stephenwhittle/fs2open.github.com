@@ -4,7 +4,7 @@
 #include "DebugWindow.h"
 
 #include "globalincs/alphacolors.h"
-
+#include "graphics/2d.h"
 namespace {
 uint32_t get_debug_display() {
 	// If there are two or more monitors then we would like to display the window on the second monitor but it shouldn't

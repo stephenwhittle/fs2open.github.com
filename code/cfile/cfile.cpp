@@ -31,10 +31,11 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "cfile/cfilesystem.h"
-#include "osapi/osapi.h"
+#include "core_interface/FSOutputDeviceBase.h"
+#include "globalincs/safe_strings.h"
 #include "parse/encrypt.h"
 #include "cfilesystem.h"
-
+#include "filesystem/SCPPath.h"
 
 #include <limits>
 
@@ -203,7 +204,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 
 	// are we in a root directory?		
 	if(cfile_in_root_dir(buf)){
-		os::dialogs::Message(os::dialogs::MESSAGEBOX_ERROR, "FreeSpace2/Fred2 cannot be run from a drive root directory!");
+		GOutputDevice->Message("FreeSpace2/Fred2 cannot be run from a drive root directory!");
 		return 1;
 	}		
 
@@ -1353,13 +1354,13 @@ int cfwrite(const void *buf, int elsize, int nelem, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write to a VP file (unsupported)");
+		GOutputDevice->Error(LOCATION, "Attempt to write to a VP file (unsupported)");
 		return 0;
 	}
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		GOutputDevice->Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 
@@ -1394,13 +1395,13 @@ int cfputc(int c, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
+		GOutputDevice->Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
 		return EOF;
 	}
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		GOutputDevice->Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 
@@ -1438,13 +1439,13 @@ int cfputs(const char *str, CFILE *cfile)
 
 	if(cfile->lib_offset != 0)
 	{
-		Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
+		GOutputDevice->Error(LOCATION, "Attempt to write character to a VP file (unsupported)");
 		return EOF;
 	}
 
 	if(cfile->data != nullptr)
 	{
-		Warning(LOCATION, "Writing is not supported for mem-mapped files");
+		GOutputDevice->Warning(LOCATION, "Writing is not supported for mem-mapped files");
 		return EOF;
 	}
 

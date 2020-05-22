@@ -30,6 +30,7 @@
 #include "core_interface/FSMathTypes.h"
 #include "core_interface/FSIntegerTypes.h"
 #include "core_interface/FSAssert.h"
+#include "core_interface/SCPLimits.h"
 
 // value to represent an uninitialized state in any int or uint
 #define UNINITIALIZED 0x7f8e6d9c
@@ -42,13 +43,7 @@
 
 #define LOCAL static			// make module local varilable static.
 
-#ifdef _WIN32
-#define DIR_SEPARATOR_CHAR '\\'
-#define DIR_SEPARATOR_STR  "\\"
-#else
-#define DIR_SEPARATOR_CHAR '/'
-#define DIR_SEPARATOR_STR  "/"
-#endif
+
 
 #ifndef NDEBUG
 constexpr bool FSO_DEBUG = true;
@@ -166,9 +161,7 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 #include "math/fix.h"
 #include "math/floating.h"
 
-// Some constants for stuff
-#define MAX_FILENAME_LEN	32		// Length for filenames, ie "title.pcx"
-#define MAX_PATH_LEN		256		// Length for pathnames, ie "c:\bitmaps\title.pcx"
+
 
 // contants and defined for byteswapping routines (useful for mac)
 
@@ -225,7 +218,6 @@ extern int game_busy_callback( void (*callback)(int count), int delta_step = -1 
 // Call whenever loading to display cursor
 extern void game_busy(const char *filename = NULL);
 
-#define NOX(s) s
 
 const char *XSTR(const char *str, int index);
 
@@ -235,7 +227,8 @@ const char *XSTR(const char *str, int index);
 // Memory management functions
 //=========================================================
 
-#include "globalincs/fsmemory.h"
+#include "memory/memory.h"
+#include "memory/utils.h"
 
 class camid
 {

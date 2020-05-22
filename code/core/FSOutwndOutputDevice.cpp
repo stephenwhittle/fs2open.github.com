@@ -44,4 +44,9 @@ void FSOutwndOutputDevice::ErrorImpl(const char* FileOrMessage, int Line /*= -1*
 	}
 }
 
+void FSOutwndOutputDevice::MessageImpl(const char* Message)
+{
+	os::dialogs::Message(os::dialogs::MESSAGEBOX_INFORMATION, Message);
+}
+
 FSOutputDeviceBase* GOutputDevice = new FSOutwndOutputDevice();

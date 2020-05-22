@@ -142,7 +142,7 @@
 #include "options/OptionsManager.h"
 #include "osapi/osapi.h"
 #include "osapi/outwnd.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/encrypt.h"
 #include "parse/generic_log.h"
 #include "parse/parselo.h"
@@ -186,6 +186,9 @@
 #include "weapon/muzzleflash.h"
 #include "weapon/shockwave.h"
 #include "weapon/weapon.h"
+#include "filesystem/SCPPath.h"
+#include "NOX.h"
+
 
 #include <SDL.h>
 #include <SDL_main.h>
@@ -206,6 +209,12 @@ extern "C" {
 #error macro FRED is defined when trying to build release FreeSpace.  Please undefine FRED macro in build settings
 #endif
 #endif
+
+// ****************************************************************
+// DO NOT CHANGE THIS - IT WILL LIKELY BREAK FREESPACE2 PXO SUPPORT
+// TALK TO DAVE B FIRST
+// ****************************************************************
+#define MAX_SHIP_CLASSES_MULTI	130
 
 
 //	Revision history.

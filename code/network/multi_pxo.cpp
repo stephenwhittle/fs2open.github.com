@@ -35,7 +35,7 @@
 #include "io/timer.h"
 #include "inetfile/inetgetfile.h"
 #include "cfile/cfilesystem.h"
-#include "osapi/osregistry.h"
+#include "config/osregistry.h"
 #include "parse/parselo.h"
 #include "stats/scoring.h"
 #include "playerman/player.h"

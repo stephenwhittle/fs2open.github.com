@@ -36,7 +36,7 @@
 #include "object/object.h"
 #include "parse/parselo.h"
 #include "mission/missionparse.h"
-
+#include "NOX.h"
 
 // ------------------------------------------------------------------------------------------------------
 // TEAM SELECT DEFINES/VARS

@@ -20,7 +20,7 @@
 
 #include "io/timer.h"
 #include "globalincs/alphacolors.h"
-
+#include "graphics/2d.h"
 
 
 // how many records in the past we'll keep track of

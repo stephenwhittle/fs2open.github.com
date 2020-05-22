@@ -20,6 +20,8 @@
 #include "weapon/beam.h"
 #include "weapon/weapon.h"
 
+#include "NOX.h"
+
 #include <cstdarg>
 #include <cstdio>
 

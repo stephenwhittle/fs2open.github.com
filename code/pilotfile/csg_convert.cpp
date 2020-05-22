@@ -13,6 +13,7 @@
 #include "ship/ship.h"
 #include "stats/medals.h"
 #include "weapon/weapon.h"
+#include "filesystem/SCPPath.h"
 
 #include <iostream>
 #include <sstream>

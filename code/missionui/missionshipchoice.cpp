@@ -50,7 +50,7 @@
 #include "sound/fsspeech.h"
 #include "species_defs/species_defs.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 
 //////////////////////////////////////////////////////
 // Game-wide Globals

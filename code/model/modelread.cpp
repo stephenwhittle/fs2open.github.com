@@ -37,6 +37,8 @@
 #include "ship/ship.h"
 #include "weapon/weapon.h"
 #include "tracing/tracing.h"
+#include "filesystem/SCPPath.h"
+#include "NOX.h"
 
 #include <algorithm>
 

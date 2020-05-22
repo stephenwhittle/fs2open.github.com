@@ -53,6 +53,20 @@ add_subdirectory(math)
 
 target_link_libraries(code PUBLIC math)
 
+add_subdirectory(filesystem)
+
+target_link_libraries(code PUBLIC filesystem)
+
+add_subdirectory(config)
+
+target_link_libraries(code PUBLIC config)
+
+add_subdirectory(memory)
+
+target_link_libraries(code PUBLIC memory)
+
+
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)
