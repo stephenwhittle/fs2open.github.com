@@ -31,20 +31,7 @@
 
 #define ASSUME(x)
 
-#if defined(NDEBUG)
-#	define Assertion(expr, msg, ...)  do { } while (false)
-#else
-/*
- * NOTE: Assertion() can only use its proper functionality in compilers
- * that support variadic macros.
- */
-#	define Assertion(expr, msg, ...)                                      \
-		do {                                                              \
-			if (!(expr)) {                                                \
-				GOutputDevice->AssertMessage(#expr, __FILE__, __LINE__, msg, ##__VA_ARGS__); \
-			}                                                             \
-		} while (false)
-#endif
+
 
 /* C++11 Standard Detection */
 #if !defined(HAVE_CXX11)
@@ -58,8 +45,6 @@
 #	endif
 #endif
 
-#define SIZE_T_ARG    "%zu"
-#define PTRDIFF_T_ARG "%zd"
 
 #define likely(x)    __builtin_expect((long) !!(x), 1L)
 #define unlikely(x)  __builtin_expect((long) !!(x), 0L)

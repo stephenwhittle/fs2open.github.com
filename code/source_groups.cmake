@@ -55,17 +55,6 @@ add_file_folder("Camera"
 	camera/camera.h
 )
 
-# CFile files
-add_file_folder("CFile"
-	cfile/cfile.cpp
-	cfile/cfile.h
-	cfile/cfilearchive.cpp
-	cfile/cfilearchive.h
-	cfile/cfilelist.cpp
-	cfile/cfilesystem.cpp
-	cfile/cfilesystem.h
-)
-
 # Cmdline files
 add_file_folder("Cmdline"
 	cmdline/cmdline.cpp
@@ -323,7 +312,6 @@ add_file_folder("GlobalIncs"
 	globalincs/version.cpp
 	globalincs/version.h
 	globalincs/vmallocator.h
-	globalincs/scp_defines.h
 	globalincs/flagset.h
 )
 
@@ -895,8 +883,6 @@ add_file_folder("OsApi"
 add_file_folder("Parse"
 	parse/encrypt.cpp
 	parse/encrypt.h
-	parse/generic_log.cpp
-	parse/generic_log.h
 	parse/parselo.cpp
 	parse/parselo.h
 	parse/sexp.cpp

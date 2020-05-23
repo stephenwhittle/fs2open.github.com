@@ -21,7 +21,7 @@
 #include "render/3d.h"
 #include "graphics/material.h"
 #include "tracing/Monitor.h"
-
+#include "SCPEndian.h"
 static color Color_xparent;
 
 anim *first_anim = NULL;

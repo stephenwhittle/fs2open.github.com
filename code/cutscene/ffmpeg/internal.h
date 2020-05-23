@@ -1,7 +1,7 @@
 #pragma once
 
 #include <functional>
-
+#include "SCPCompiler.h"
 #include "libs/ffmpeg/FFmpegHeaders.h"
 
 #include "cutscene/Decoder.h"

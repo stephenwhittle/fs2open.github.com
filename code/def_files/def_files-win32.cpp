@@ -2,10 +2,9 @@
  * You may not sell or otherwise commercially exploit the source or things you
  * create based on the source.
  */
-
-#include "globalincs/pstypes.h"
-
 #include "def_files/def_files.h"
+
+#include "FSAssert.h"
 
 #include <iterator>
 

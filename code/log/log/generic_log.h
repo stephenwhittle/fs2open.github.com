@@ -18,7 +18,7 @@
 #define LOGFILE_MULTI_LOG		0
 #define LOGFILE_EVENT_LOG		1
 
-
+#include "fmt/printf.h"
 // ----------------------------------------------------------------------------------------------------
 // MULTI LOGFILE FUNCTIONS
 //
@@ -29,10 +29,24 @@ bool logfile_init(int logfile_type);
 // close down the multi logfile
 void logfile_close(int logfile_type);
 
-// printf function itself called by the log_printf macro
-void log_printf(int logfile_type, SCP_FORMAT_STRING const char *format, ...) SCP_FORMAT_STRING_ARGS(2, 3);
 
-// string print function
-void log_string(int logfile_type, const char *string, int add_time = 0);
+template <typename... Args>
+void log_printf(int LogType, const char* Format, const Args&... args)
+{
+
+	if (format == NULL) {
+		return;
+	}
+
+	// if we don't have a valid logfile do nothing
+	if (logfiles[logfile_type].log_file == NULL) {
+		return;
+	}
+
+
+	log_string(logfile_type, fmt::sprintf(Message, Args).c_str());
+}
+
+void log_string(int LogType, const char* Message, int Time = 0);
 
 #endif

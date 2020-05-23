@@ -7,3 +7,5 @@
 #ifndef WIN32
 #define MAX_PATH	255
 #endif
+
+#define	NAME_LENGTH				32

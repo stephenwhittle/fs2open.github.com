@@ -1,7 +1,9 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
-
+#include "SCPCompiler.h"
+#include "FSIntegerTypes.h"
+#include "FSStdTypes.h"
+#include "FSAssert.h"
 #include <memory>
 
 namespace font {

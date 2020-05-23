@@ -13,7 +13,11 @@
 #define __CFILE_H__
 
 
-#include "globalincs/pstypes.h"
+
+#include "SCPCompiler.h"
+#include "SCPLimits.h"
+#include "FSIntegerTypes.h"
+#include "FSStdTypes.h"
 
 #include <ctime>
 #include <stdexcept>
@@ -313,7 +317,7 @@ ushort cfread_ushort(CFILE* file, ushort deflt = 0);
 int cfread_int(CFILE* file, int deflt = 0);
 uint cfread_uint(CFILE* file, uint deflt = 0);
 float cfread_float(CFILE* file, float deflt = 0.0f);
-void cfread_vector(vec3d* vec, CFILE* file, vec3d* deflt = nullptr);
+void cfread_vector(struct vec3d* vec, CFILE* file, vec3d* deflt = nullptr);
 
 // Reads variable length, null-termined string.   Will only read up
 // to n characters.

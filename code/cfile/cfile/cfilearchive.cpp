@@ -20,12 +20,16 @@
 #include <direct.h>
 #include <windows.h>
 #include <winbase.h>		/* needed for memory mapping of file functions */
+#undef min
+#undef max
 #endif
 
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "luaconf.h"
-
+#include "FSAssert.h"
+#include "SCPCompiler.h"
+#include "FSMathOps.h"
 #include <sstream>
 #include <limits>
 
@@ -147,7 +151,8 @@ int cfseek( CFILE *cfile, int offset, int where )
 	if (cfile->fp) {
 		// If we have a file pointer we can also seek in that file
 		result = fseek(cfile->fp, (long)goal_position, SEEK_SET );
-		Assertion(goal_position >= cfile->lib_offset, "Invalid offset values detected while seeking! Goal was " SIZE_T_ARG ", lib_offset is " SIZE_T_ARG ".", goal_position, cfile->lib_offset);
+		Assertion(goal_position >= cfile->lib_offset, "Invalid offset values detected while seeking! Goal was " SIZE_T_ARG ", lib_offset is " SIZE_T_ARG ".", goal_position, cfile->lib_offset );
+		
 	}
 	// If we only have a data pointer this will do all the work
 	cfile->raw_position = goal_position - cfile->lib_offset;

@@ -15,7 +15,6 @@
 
 
 #include "windows_stub/config.h"
-#include "globalincs/scp_defines.h"
 #include "globalincs/toolchain.h"
 #include "utils/strings.h"
 
@@ -139,9 +138,7 @@ typedef struct wep_t {
 	int count;
 } wep_t;
 
-typedef struct coord2d {
-	int x,y;
-} coord2d;
+
 
 //#include "osapi/dialogs.h"
 
@@ -163,28 +160,6 @@ const size_t INVALID_SIZE = static_cast<size_t>(-1);
 
 
 
-// contants and defined for byteswapping routines (useful for mac)
-
-#ifdef SCP_SOLARIS // Solaris
-#define INTEL_INT(x)	x
-#define INTEL_LONG(x)   x
-#define INTEL_SHORT(x)	x
-#define INTEL_FLOAT(x)	(*x)
-#elif BYTE_ORDER == BIG_ENDIAN
-// turn off inline asm
-#undef USE_INLINE_ASM
-
-#define INTEL_INT(x)	SDL_Swap32(x)
-#define INTEL_LONG(x)   SDL_Swap64(x)
-#define INTEL_SHORT(x)	SDL_Swap16(x)
-#define INTEL_FLOAT(x)	SDL_SwapFloat((*x))
-
-#else // Little Endian -
-#define INTEL_INT(x)	x
-#define INTEL_LONG(x)   x
-#define INTEL_SHORT(x)	x
-#define INTEL_FLOAT(x)	(*x)
-#endif // BYTE_ORDER
 
 
 

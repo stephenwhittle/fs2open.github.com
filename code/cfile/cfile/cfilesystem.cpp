@@ -35,13 +35,15 @@
 
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
-#include "cmdline/cmdline.h"
-#include "globalincs/pstypes.h"
-#include "def_files/def_files.h"
+#include "SCPCmdOptions.h"
+#include "FSAssert.h"
+//#include "def_files/def_files.h"
 #include "localization/localize.h"
-#include "osapi/osapi.h"
-#include "parse/parselo.h"
+#include "config/SCPConfig.h"
 #include "filesystem/SCPPath.h"
+#include "SCPEndian.h"
+#include "memory/memory.h"
+#include "memory/utils.h"
 
 enum CfileRootType {
 	CF_ROOTTYPE_PATH = 0,
@@ -396,7 +398,7 @@ static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 
 			SCP_string rootPath = ss.str();
 			if (rootPath.size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
-				Error(LOCATION, "The length of mod directory path '%s' exceeds the maximum of %d!\n", rootPath.c_str(), CF_MAX_PATHNAME_LENGTH);
+				GOutputDevice->Error(LOCATION, "The length of mod directory path '%s' exceeds the maximum of %d!\n", rootPath.c_str(), CF_MAX_PATHNAME_LENGTH);
 			}
 
 			// normalize the path to the native path format
@@ -426,7 +428,7 @@ void cf_build_root_list(const char *cdrom_dir)
 
 	cf_root	*root = nullptr;
 
-	if (os_is_legacy_mode())
+	if (GConfig->IsLegacyMode())
 	{
 		// =========================================================================
 #ifdef WIN32
@@ -486,7 +488,7 @@ void cf_build_root_list(const char *cdrom_dir)
 	char working_directory[CF_MAX_PATHNAME_LENGTH];
 	
 	if ( !_getcwd(working_directory, CF_MAX_PATHNAME_LENGTH ) ) {
-		Error(LOCATION, "Can't get current working directory -- %d", errno );
+		GOutputDevice->Error(LOCATION, "Can't get current working directory -- %d", errno );
 	}
 
 	cf_add_mod_roots(working_directory, CF_LOCATION_ROOT_GAME);
@@ -632,9 +634,8 @@ void cf_search_root_path(int root_index)
 							file->size = find.size;
 							file->pack_offset = 0;			// Mark as a non-packed file
 
-							SCP_string file_name;
-							sprintf(file_name, "%s%s%s", search_directory.c_str(), DIR_SEPARATOR_STR, find.name);
-
+							SCPPath file_name = SCPPath(search_directory) / find.name;
+							
 							file->real_name = vm_strdup(file_name.c_str());
 
 							num_files++;
@@ -690,8 +691,7 @@ void cf_search_root_path(int root_index)
 							continue;
 						}
 
-						SCP_string fn;
-						sprintf(fn, "%s/%s", directory_name.c_str(), dir->d_name);
+						SCPPath fn = SCPPath(directory_name) / dir->d_name;
 
 						struct stat buf;
 						if (stat(fn.c_str(), &buf) == -1) {
@@ -2414,7 +2414,7 @@ void cfile_spew_pack_file_crcs()
 	uint chksum = 0;
 	time_t my_time;
 	
-	FILE *out = fopen(os_get_config_path("vp_crcs.txt").c_str(), "w");
+	FILE *out = fopen(GConfig->GetConfigPath("vp_crcs.txt").c_str(), "w");
 
 	if (out == NULL) {
 		Int3();

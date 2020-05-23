@@ -71,6 +71,7 @@ public:
 		std::string Message = fmt::sprintf(Format, args...);
 		MessageImpl(Message.c_str());
 	}
+
 };
 
 extern FSOutputDeviceBase* GOutputDevice;

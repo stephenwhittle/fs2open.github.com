@@ -4,7 +4,7 @@
 
 #include "globalincs/pstypes.h"
 #include "utils/boost/syncboundedqueue.h"
-
+#include "SCPCompiler.h"
 namespace cutscene {
 struct FrameSize {
 	size_t width = 0;

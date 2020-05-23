@@ -13,9 +13,9 @@
 #include <cstdarg>
 
 #include "cfile/cfile.h"
-#include "globalincs/globals.h"
 #include "log/generic_log.h"
 #include "FSAssert.h"
+#include "SCPLimits.h"
 
 //#include "parse/parselo.h"
 

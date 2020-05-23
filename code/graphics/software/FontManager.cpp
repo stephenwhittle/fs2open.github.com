@@ -7,7 +7,7 @@
 #include "graphics/software/font_internal.h"
 
 #include "graphics/paths/PathRenderer.h"
-
+#include "SCPEndian.h"
 #include "bmpman/bmpman.h"
 #include "cfile/cfile.h"
 

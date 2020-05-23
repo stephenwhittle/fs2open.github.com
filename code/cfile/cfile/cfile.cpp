@@ -31,13 +31,18 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "cfile/cfilesystem.h"
-#include "core_interface/FSOutputDeviceBase.h"
-#include "globalincs/safe_strings.h"
-#include "parse/encrypt.h"
+#include "FSOutputDeviceBase.h"
+//#include "globalincs/safe_strings.h"
+//#include "parse/encrypt.h"
 #include "cfilesystem.h"
 #include "filesystem/SCPPath.h"
 #include "config/SCPConfig.h"
+#include "FSAssert.h"
+#include "SCPCompiler.h"
+#include "SCPEndian.h"
+#include "FSMathTypes.h"
 #include <limits>
+#include <array>
 
 char Cfile_root_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
 char Cfile_user_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
@@ -191,7 +196,7 @@ static bool cfile_in_root_dir(const char *exe_path)
 int cfile_init(const char *exe_dir, const char *cdrom_dir)
 {
 	// initialize encryption
-	encrypt_init();	
+	//encrypt_init();	
 
 	if (cfile_inited) {
 		return 0;
@@ -278,7 +283,7 @@ int cfile_chdrive( int DriveNum, int flag )
  * @retval 1 Failed to change to new directory's drive (Windows only)
  * @retval 2 Failed to change to new directory
  */
-static int _cfile_chdir(const char *new_dir, const char *cur_dir __UNUSED)
+static int _cfile_chdir(const char *new_dir, const char *cur_dir)
 {
 	int status;
 	const char *path = NULL;

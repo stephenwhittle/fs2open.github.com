@@ -1,6 +1,6 @@
 
 #include "libs/ffmpeg/FFmpeg.h"
-
+#include "FSAssert.h"
 #include "FFmpegHeaders.h"
 
 namespace {

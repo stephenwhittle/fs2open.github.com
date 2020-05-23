@@ -71,6 +71,9 @@ typedef struct uv_pair {
 	float u,v;
 } uv_pair;
 
+typedef struct coord2d {
+	int x,y;
+} coord2d;
 
 #define TRUE	1
 #define FALSE	0

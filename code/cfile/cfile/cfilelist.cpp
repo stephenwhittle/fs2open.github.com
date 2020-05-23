@@ -23,7 +23,8 @@
 #endif
 
 #include "cfile/cfile.h"
-#include "globalincs/pstypes.h"
+#include "FSStdTypes.h"
+#include "FSAssert.h"
 
 
 void cf_sort_filenames( SCP_vector<SCP_string> &list, int sort, SCP_vector<file_list_info> *info )

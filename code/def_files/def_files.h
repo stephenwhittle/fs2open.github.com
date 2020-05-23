@@ -11,7 +11,7 @@
 #ifndef __DEF_FILES_H_
 #define __DEF_FILES_H_
 
-#include "globalincs/pstypes.h"
+#include "FSStdTypes.h"
 
 struct default_file
 {

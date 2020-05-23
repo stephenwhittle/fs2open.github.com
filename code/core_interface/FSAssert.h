@@ -42,6 +42,35 @@ constexpr bool LoggingEnabled = false;
 		}\
 	} while (false)
 #endif
+// Verification (like Assertion)
+#ifndef _MSC_VER   // non MS compilers
+	#if defined(NDEBUG)
+	#	define Assertion(expr, msg, ...)  do { } while (false)
+	#else
+	/*
+	 * NOTE: Assertion() can only use its proper functionality in compilers
+	 * that support variadic macros.
+	 */
+	#	define Assertion(expr, msg, ...)                                      \
+			do {                                                              \
+				if (!(expr)) {                                                \
+					GOutputDevice->AssertMessage(#expr, __FILE__, __LINE__, msg, ##__VA_ARGS__); \
+				}                                                             \
+			} while (false)
+	#endif
+#else
+	#if defined(NDEBUG)
+	#	define Assertion(expr, msg, ...)  do { } while (false)
+	#else
+	#	define Assertion(expr, msg, ...)                                    \
+			do {                                                            \
+				if (!(expr)) {                                              \
+					GOutputDevice->AssertMessage(#expr, __FILE__, __LINE__, msg, __VA_ARGS__); \
+				}                                                           \
+			} while (false)
+	#endif
+#endif
+
 /*******************NEVER COMMENT Assert ************************************************/
 
 // Goober5000 - define Verify for use in both release and debug mode

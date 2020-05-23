@@ -10,9 +10,11 @@
 #ifndef __JOY_H__
 #define __JOY_H__
 
-#include "globalincs/pstypes.h"
-
+#include "FSStdTypes.h"
+#include "FSMathTypes.h"
+#include "SCPCompiler.h"
 #include "SDL_joystick.h"
+#include "SDL_events.h"
 
 // z64: Moved up here for compatibility. Bye bye, organization!
 const int JOY_NUM_BUTTONS = 32;

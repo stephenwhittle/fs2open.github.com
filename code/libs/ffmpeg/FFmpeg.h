@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include "globalincs/pstypes.h"
+#include "SCPCompiler.h"
 
 #include <exception>
 #include <stdexcept>

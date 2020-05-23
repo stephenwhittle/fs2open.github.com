@@ -65,7 +65,13 @@ add_subdirectory(memory)
 
 target_link_libraries(code PUBLIC memory)
 
+add_subdirectory(cfile)
 
+target_link_libraries(code PUBLIC cfile)
+
+add_subdirectory(log)
+
+target_link_libraries(code PUBLIC log)
 
 target_link_libraries(code PUBLIC vulkan-hpp)
 
