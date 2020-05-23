@@ -24,7 +24,7 @@
 #include "object/object.h"
 #include "playerman/player.h"
 #include "debugconsole/console.h"
-
+#include "NOX.h"
 
 // --------------------------------------------------------------------------------------------------
 // MULTI VOICE DEFINES/VARS

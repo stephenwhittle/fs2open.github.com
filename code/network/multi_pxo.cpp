@@ -44,7 +44,7 @@
 #include "network/gtrack.h"
 #include "menuui/mainhallmenu.h"
 #include "debugconsole/console.h"
-
+#include "NOX.h"
 
 
 // ----------------------------------------------------------------------------------------------------

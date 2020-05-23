@@ -25,7 +25,7 @@
 #include "network/multi_portfwd.h"
 #include "hud/hudconfig.h"
 #include "network/multi_fstracker.h"
-
+#include "NOX.h"
 
 // ----------------------------------------------------------------------------------------------------------
 // Put all functions/data related to leaving a netgame, handling players leaving, handling the server leaving,

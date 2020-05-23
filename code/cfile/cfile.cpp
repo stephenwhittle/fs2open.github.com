@@ -36,7 +36,7 @@
 #include "parse/encrypt.h"
 #include "cfilesystem.h"
 #include "filesystem/SCPPath.h"
-
+#include "config/SCPConfig.h"
 #include <limits>
 
 char Cfile_root_dir[CFILE_ROOT_DIRECTORY_LEN] = "";
@@ -226,7 +226,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 
 	// set root directory
 	strcpy_s(Cfile_root_dir, buf);
-	strcpy_s(Cfile_user_dir, os_get_config_path().c_str());
+	strcpy_s(Cfile_user_dir, GConfig->GetConfigPath().c_str());
 
 	// Initialize the block list with proper data
 	Cfile_block_list.fill({});

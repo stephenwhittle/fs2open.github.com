@@ -177,7 +177,7 @@ void dock_dock_docked_objects(p_object *objp)
 
 	p_dock_function_info dfi;
 	
-	// start a tree with that object as the parent... do NOT use the überfunction for this,
+	// start a tree with that object as the parent... do NOT use the Uberfunction for this,
 	// because we must use a tree for the parent ancestry to work correctly
 
 	// we don't need a bit array because P2_ALREADY_HANDLED takes care of it
@@ -210,7 +210,7 @@ void dock_dock_docked_children_tree(p_object *objp, p_object *parent_objp)
 	}
 }
 // ---------------------------------------------------------------------------------------------------------------
-// end of über code block ----------------------------------------------------------------------------------------
+// end of ï¿½ber code block ----------------------------------------------------------------------------------------
 
 // dock management functions -------------------------------------------------------------------------------------
 void dock_dock_objects(p_object *objp1, char *dockpoint1, p_object *objp2, char *dockpoint2)

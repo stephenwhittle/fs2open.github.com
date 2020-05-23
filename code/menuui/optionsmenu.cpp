@@ -34,7 +34,7 @@
 #include "popup/popupdead.h"
 #include "sound/audiostr.h"
 #include "weapon/weapon.h"
-
+#include "NOX.h"
 
 
 // will display a notification warning message

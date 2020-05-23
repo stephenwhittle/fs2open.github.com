@@ -10,6 +10,7 @@
 static const char* ORGANIZATION_NAME = "HardLightProductions";
 static const char* APPLICATION_NAME = "FreeSpaceOpen";
 
+SCP_string SCPConfig::LegacyModeStatus;
 
 SCPPath SCPConfig::GetPrefsPath()
 {
@@ -62,6 +63,9 @@ SCPPath SCPConfig::GetPrefsPath()
 
 SCPPath SCPConfig::GetLegacyUserPath()
 {
+#ifdef WIN32
+	return SCPPath("");
+#else
 	static bool user_dir_initialized = false;
 	static SCP_string Os_user_dir_legacy;
 
@@ -74,7 +78,7 @@ SCPPath SCPConfig::GetLegacyUserPath()
 	user_dir_initialized = true;
 
 	return Os_user_dir_legacy.c_str();
-	
+#endif
 }
 
 const SCP_string SCPConfig::ConfigFileName = "fs2open.ini";

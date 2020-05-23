@@ -1,4 +1,4 @@
-add_library(filesystem STATIC filesystem/SCPPath.h filesystem/SCPPath.cpp filesystem/SCPFile.h filesystem/SCPFile.h)
+add_library(filesystem STATIC filesystem/SCPPath.h filesystem/SCPPath.cpp filesystem/SCPFile.h filesystem/SCPFile.cpp)
 
 target_include_directories(filesystem PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 

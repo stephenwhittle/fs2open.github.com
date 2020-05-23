@@ -20,7 +20,7 @@
 #include "playerman/player.h"
 #include "cfile/cfile.h"
 #include "globalincs/systemvars.h"
-
+#include "NOX.h"
 
 
 // -------------------------------------------------------------------------

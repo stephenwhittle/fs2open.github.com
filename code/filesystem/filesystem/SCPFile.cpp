@@ -14,3 +14,13 @@ std::time_t SCPFile::LastModifiedTime(SCP_string FilePath)
 {
 	return std::chrono::system_clock::to_time_t(ghc::filesystem::last_write_time(FilePath));
 }
+
+bool SCPFile::Exists()
+{
+	return ghc::filesystem::exists(CachedPath);
+}
+
+bool SCPFile::Exists(SCP_string FilePath)
+{
+	return ghc::filesystem::exists(ghc::filesystem::path(FilePath));
+}

@@ -1,3 +1,4 @@
+#include <ghc/fs_impl.hpp>
 #include "SCPPath.h"
 #include <algorithm>
 

@@ -11,7 +11,7 @@
 #include <osapi/outwnd.h>
 #include <ship/ship.h>
 #include <core_interface/FSOutputDeviceBase.h>
-
+#include "filesystem/SCPPath.h"
 test::FSTestFixture::FSTestFixture(uint64_t init_flags) : testing::Test(), _initFlags(init_flags) {
 	addCommandlineArg("-parse_cmdline_only");
 	addCommandlineArg("-standalone");
@@ -35,11 +35,8 @@ void test::FSTestFixture::SetUp() {
 	os_init("Test", "Test");
 
 	if (_initFlags & INIT_CFILE) {
-		SCP_string cfile_dir(TEST_DATA_PATH);
-		cfile_dir += DIR_SEPARATOR_CHAR;
-		cfile_dir += "test"; // Cfile expects something after the path
-
-		if (cfile_init(cfile_dir.c_str())) {
+		SCPPath CFileDir = SCPPath(TEST_DATA_PATH) / "test";
+		if (cfile_init(CFileDir.c_str())) {
 			FAIL() << "Cfile init failed!";
 		}
 

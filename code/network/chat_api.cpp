@@ -9,6 +9,7 @@
 
 #include "globalincs/pstypes.h"
 #include "network/chat_api.h"
+#include "NOX.h"
 
 #ifdef SCP_UNIX
 #include <sys/time.h>

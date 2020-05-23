@@ -28,7 +28,7 @@
 #include "network/stand_gui.h"
 #include "network/multi_pmsg.h"
 #include "playerman/player.h"
-
+#include "NOX.h"
 // -----------------------------------------------------------------------------------
 // FREESPACE MASTER TRACKER DEFINES/VARS
 //
