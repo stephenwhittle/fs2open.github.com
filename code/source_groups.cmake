@@ -135,113 +135,23 @@ add_file_folder("Decals"
 	decals/decals.h
 )
 
-add_file_folder("Default files"
-	def_files/def_files.h
-)
-if(MSVC)
-	add_file_folder("Default files"
-		${file_root_def_files}
-		def_files/def_files-win32.cpp
-	)
-else()
-	add_file_folder("Default files"
-		${file_root_def_files}
-		def_files/def_files-generic.cpp
-	)
-endif()
+# add_file_folder("Default files"
+# 	def_files/def_files.h
+# )
+# if(MSVC)
+# 	add_file_folder("Default files"
+# 		${file_root_def_files}
+# 		def_files/def_files-win32.cpp
+# 	)
+# else()
+# 	add_file_folder("Default files"
+# 		${file_root_def_files}
+# 		def_files/def_files-generic.cpp
+# 	)
+# endif()
 
-add_file_folder("Default files\\\\data"
-)
-
-add_file_folder("Default files\\\\data\\\\effects"
-	def_files/data/effects/batched-f.sdr
-	def_files/data/effects/batched-v.sdr
-	def_files/data/effects/bloom-comp-f.sdr
-	def_files/data/effects/blur-f.sdr
-	def_files/data/effects/brightpass-f.sdr
-	def_files/data/effects/decal-f.sdr
-	def_files/data/effects/decal-v.sdr
-	def_files/data/effects/default-material-f.sdr
-	def_files/data/effects/default-material-v.sdr
-	def_files/data/effects/deferred-clear-f.sdr
-	def_files/data/effects/deferred-clear-v.sdr
-	def_files/data/effects/deferred-f.sdr
-	def_files/data/effects/deferred-v.sdr
-	def_files/data/effects/effect-distort-f.sdr
-	def_files/data/effects/effect-distort-v.sdr
-	def_files/data/effects/effect-f.sdr
-	def_files/data/effects/effect-g.sdr
-	def_files/data/effects/effect-v.sdr
-	def_files/data/effects/fog-f.sdr
-	def_files/data/effects/fxaa-f.sdr
-	def_files/data/effects/fxaa-v.sdr
-	def_files/data/effects/fxaapre-f.sdr
-	def_files/data/effects/gamma.sdr
-	def_files/data/effects/lighting.sdr
-	def_files/data/effects/ls-f.sdr
-	def_files/data/effects/main-f.sdr
-	def_files/data/effects/main-g.sdr
-	def_files/data/effects/main-v.sdr
-	def_files/data/effects/nanovg-f.sdr
-	def_files/data/effects/nanovg-v.sdr
-	def_files/data/effects/normals.sdr
-	def_files/data/effects/passthrough-f.sdr
-	def_files/data/effects/passthrough-v.sdr
-	def_files/data/effects/post-f.sdr
-	def_files/data/effects/post-v.sdr
-	def_files/data/effects/rocketui-f.sdr
-	def_files/data/effects/rocketui-v.sdr
-	def_files/data/effects/shadows.sdr
-	def_files/data/effects/shield-impact-v.sdr
-	def_files/data/effects/shield-impact-f.sdr
-	def_files/data/effects/SMAA.sdr
-	def_files/data/effects/smaa-blend-v.sdr
-	def_files/data/effects/smaa-blend-f.sdr
-	def_files/data/effects/smaa-edge-v.sdr
-	def_files/data/effects/smaa-edge-f.sdr
-	def_files/data/effects/smaa-neighbour-v.sdr
-	def_files/data/effects/smaa-neighbour-f.sdr
-	def_files/data/effects/tonemapping-f.sdr
-	def_files/data/effects/video-f.sdr
-	def_files/data/effects/video-v.sdr
-)
-
-add_file_folder("Default files\\\\data\\\\maps"
-	def_files/data/maps/app_icon.png
-	def_files/data/maps/app_icon_d.png
-	def_files/data/maps/app_icon_sse.png
-	def_files/data/maps/app_icon_sse_d.png
-)
-
-add_file_folder("Default files\\\\data\\\\scripts"
-	def_files/data/scripts/cfile_require.lua
-)
-
-add_file_folder("Default files\\\\data\\\\tables"
-	def_files/data/tables/autopilot.tbl
-	def_files/data/tables/controlconfigdefaults.tbl
-	def_files/data/tables/fonts.tbl
-	def_files/data/tables/game_settings.tbl
-	def_files/data/tables/iff_defs.tbl
-	def_files/data/tables/objecttypes.tbl
-	def_files/data/tables/post_processing.tbl
-	def_files/data/tables/species_defs.tbl
-)
-
-# These files will be included in the executable but not in CFile
-add_file_folder("Default files\\\\builtin"
-	def_files/ai_profiles.tbl
-)
-
-# Variable for all embedded files
-set(default_files_files
-	${files_Default_files_data}
-	${files_Default_files_data_effects}
-	${files_Default_files_data_maps}
-	${files_Default_files_data_scripts}
-	${files_Default_files_data_tables}
-	${files_Default_files_builtin}
-)
+# add_file_folder("Default files\\\\data"
+# )
 
 add_file_folder("Events"
 	events/events.cpp

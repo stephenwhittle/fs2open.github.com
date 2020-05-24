@@ -16,6 +16,7 @@
 #include "config/osregistry.h"
 #include "parse/encrypt.h"
 #include "parse/parselo.h"
+#include "fhash.h"
 #include "playerman/player.h"
 #include "mod_table/mod_table.h"
 #include "filesystem/SCPPath.h"
@@ -23,6 +24,7 @@
 #include "SCPCmdOptions.h"
 #include "memory/memory.h"
 #include "NOX.h"
+#include "SCPModTable.h"
 // ------------------------------------------------------------------------------------------------------------
 // LOCALIZE DEFINES/VARS
 //
@@ -512,6 +514,68 @@ void lcl_set_language(int lang)
 		Lcl_pl = 1;
 	}
 }
+
+void lcl_stuff_string(SCP_string& outstr, int type, const char* terminators) 
+{
+	stuff_string(outstr, type, terminators);
+	SCP_string LocalizedString;
+	// now we want to do any final localization
+	if (type != F_RAW && type != F_LNAME) {
+		int tag_id;
+		lcl_ext_localize(outstr, LocalizedString, &tag_id);
+
+		// if the hash localized text hash table is active and we have a valid external string - hash it
+		if (fhash_active() && (tag_id > -2)) {
+			fhash_add_str(LocalizedString.c_str(), tag_id);
+		}
+	}
+	outstr = LocalizedString;
+}
+
+void lcl_stuff_string(char* outstr, int type, int len, const char* terminators)
+{
+	SCP_string LocalizedString = SCP_string(outstr);
+	lcl_stuff_string(LocalizedString, type, terminators);
+	
+	if (LocalizedString.length > (uint)len)
+		error_display(0,
+						"Token too long: [%s].  Length = " SIZE_T_ARG ".  Max is %i.\n",
+						LocalizedString,
+						LocalizedString.length,
+						len);
+	strncpy(outstr, LocalizedString.c_str(), len);
+
+}
+
+void lcl_stuff_string_line(SCP_string& outstr) 
+{
+	int tag_id;
+	SCP_string LocalizedString;
+	stuff_string_line(outstr);
+	// now we want to do any final localization
+	lcl_ext_localize(outstr, LocalizedString, &tag_id);
+
+	// if the hash localized text hash table is active and we have a valid external string - hash it
+	if (fhash_active() && (tag_id > -2)) {
+		fhash_add_str(outstr.c_str(), tag_id);
+	}
+
+}
+
+void lcl_stuff_string_line(char* outstr, int len) 
+{
+	SCP_string LocalizedString = SCP_string(outstr);
+	lcl_stuff_string_line(LocalizedString);
+	//copy back to outstr
+	if (LocalizedString.length > (uint)len)
+		error_display(0,
+					  "Token too long: [%s].  Length = " SIZE_T_ARG ".  Max is %i.\n",
+					  LocalizedString,
+					  LocalizedString.length,
+					  len);
+	strncpy(outstr, LocalizedString.c_str(), len);
+}
+
 
 ubyte lcl_get_font_index(int font_num)
 {

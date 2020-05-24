@@ -51,12 +51,6 @@ extern SCP_vector<lang_info> Lcl_languages;
 // following is the offset where special characters start in our font
 extern int Lcl_special_chars;
 
-// use these to replace *_BUILD values
-// only 1 will be active at a time
-extern int Lcl_fr;
-extern int Lcl_gr;
-extern int Lcl_pl;
-extern int Lcl_en;
 
 // The currently active language. Index into Lcl_languages.
 extern int Lcl_current_lang;
@@ -86,6 +80,14 @@ void lcl_get_language_name(char *lang_name);
 
 // set our current language
 void lcl_set_language(int lang);
+
+void lcl_stuff_string(SCP_string& outstr, int type, const char* terminators);
+
+void lcl_stuff_string(char* outstr, int type, int len, const char* terminators);
+
+void lcl_stuff_string_line(SCP_string& outstr);
+
+void lcl_stuff_string_line(char* outstr, int len);
 
 // get a fonts special characters index
 ubyte lcl_get_font_index(int font_num);

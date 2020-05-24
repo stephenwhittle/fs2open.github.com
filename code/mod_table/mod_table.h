@@ -9,45 +9,7 @@
 #include "globalincs/pstypes.h"
 #include "globalincs/systemvars.h"
 
-extern int Directive_wait_time;
-extern bool True_loop_argument_sexps;
-extern bool Fixed_turret_collisions;
-extern bool Damage_impacted_subsystem_first;
-extern bool Cutscene_camera_displays_hud;
-extern bool Alternate_chaining_behavior;
-extern int Default_ship_select_effect;
-extern int Default_weapon_select_effect;
-extern int Default_fiction_viewer_ui;
-extern bool Enable_external_shaders;
-extern bool Enable_external_default_scripts;
-extern int Default_detail_level;
-extern bool Full_color_head_anis;
-extern bool Weapons_inherit_parent_collision_group;
-extern bool Flight_controls_follow_eyepoint_orientation;
-extern int FS2NetD_port;
-extern float Briefing_window_FOV;
-extern bool Disable_hc_message_ani;
-extern bool Red_alert_applies_to_delayed_ships;
-extern bool Beams_use_damage_factors;
-extern float Generic_pain_flash_factor;
-extern float Shield_pain_flash_factor;
-extern SCP_string Window_title;
-extern bool Unicode_text_mode;
-extern bool Use_tabled_strings_for_default_language;
-extern SCP_string Movie_subtitle_font;
-extern bool Enable_scripts_in_fred;
-extern SCP_string Window_icon_path;
-extern bool Disable_built_in_translations;
-extern bool Weapon_shockwaves_respect_huge;
-extern bool Using_in_game_options;
-extern float Dinky_shockwave_default_multiplier;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_damage_p1;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_damage_p2;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_damage_s1;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_emp_p1;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_emp_p2;
-extern std::tuple<ubyte, ubyte, ubyte> Arc_color_emp_s1;
-extern bool Use_engine_wash_intensity;
+
 
 void mod_table_init();
 

@@ -28,7 +28,7 @@
 #include "starfield/starfield.h"
 #include "parse/parselo.h"
 #include "filesystem/SCPPath.h"
-
+#include "SCPApplication.h"
 #include "NOX.h"
 
 #ifdef _WIN32

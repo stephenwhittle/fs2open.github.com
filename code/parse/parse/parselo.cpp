@@ -15,26 +15,28 @@
 #include <csetjmp>
 
 #include <cctype>
-#include "globalincs/version.h"
-#include "localization/fhash.h"
-#include "localization/localize.h"
-#include "mission/missionparse.h"
-#include "parse/encrypt.h"
+//#include "globalincs/version.h"
+//#include "mission/missionparse.h"
+//#include "parse/encrypt.h"
 #include "parse/parselo.h"
-#include "parse/sexp.h"
-#include "ship/ship.h"
-#include "weapon/weapon.h"
-#include "mod_table/mod_table.h"
+//#include "parse/sexp.h"
+//#include "ship/ship.h"
+//#include "weapon/weapon.h"
+//#include "mod_table/mod_table.h"
 #include "NOX.h"
 #include "FSAssert.h"
 #include "SCPCompiler.h"
 #include "SCPLimits.h"
 #include "FSStdTypes.h"
 #include "FSMathTypes.h"
+#include "SCPApplication.h"
+#include "SCPBuiltinLanguages.h"
+#include "SCPModTable.h"
 #include "utils/encoding.h"
 #include "utils/unicode.h"
 #include "memory/memory.h"
 #include "memory/utils.h"
+#include "cfile/cfile.h"
 #include <utf8.h>
 
 using namespace parse;
@@ -1073,7 +1075,7 @@ int get_string_or_variable (char *str)
 	else
 	{
 		get_string(str);
-		Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str);
+		GOutputDevice->Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str);
 	}
 
 	return result;
@@ -1210,24 +1212,7 @@ void stuff_string(char *outstr, int type, int len, const char *terminators)
 		}
 	}
 
-	// now we want to do any final localization
-	if(type != F_RAW && type != F_LNAME)
-	{
-		lcl_ext_localize(read_str, outstr, final_len, &tag_id);
-
-		// if the hash localized text hash table is active and we have a valid external string - hash it
-		if(fhash_active() && (tag_id > -2)){
-			fhash_add_str(outstr, tag_id);
-		}
-	}
-	else
-	{
-		if ( strlen(read_str) > (uint)final_len )
-			error_display(0, "Token too long: [%s].  Length = " SIZE_T_ARG ".  Max is %i.\n", read_str, strlen(read_str), final_len);
-
-		strncpy(outstr, read_str, final_len);
-	}
-
+	strncpy(outstr, read_str, strlen(read_str));
 	diag_printf("Stuffed string = [%.30s]\n", outstr);
 }
 
@@ -1291,21 +1276,7 @@ void stuff_string(SCP_string &outstr, int type, const char *terminators)
 			error_display(1, "A file name was expected but no name was supplied!\n");
 		}
 	}
-
-	// now we want to do any final localization
-	if(type != F_RAW && type != F_LNAME)
-	{
-		lcl_ext_localize(read_str, outstr, &tag_id);
-
-		// if the hash localized text hash table is active and we have a valid external string - hash it
-		if(fhash_active() && (tag_id > -2)){
-			fhash_add_str(outstr.c_str(), tag_id);
-		}
-	}
-	else
-	{
-		outstr = read_str;
-	}
+	outstr = read_str;
 
 	diag_printf("Stuffed string = [%.30s]\n", outstr.c_str());
 }
@@ -1326,14 +1297,6 @@ void stuff_string_line(char *outstr, int len)
 	advance_to_eoln("");
 	Mp++;
 
-	// now we want to do any final localization
-	lcl_ext_localize(read_str, outstr, final_len, &tag_id);
-
-	// if the hash localized text hash table is active and we have a valid external string - hash it
-	if(fhash_active() && (tag_id > -2)){
-		fhash_add_str(outstr, tag_id);
-	}
-
 	diag_printf("Stuffed string = [%.30s]\n", outstr);
 }
 
@@ -1348,14 +1311,6 @@ void stuff_string_line(SCP_string &outstr)
 	drop_trailing_white_space(read_str);
 	advance_to_eoln("");
 	Mp++;
-
-	// now we want to do any final localization
-	lcl_ext_localize(read_str, outstr, &tag_id);
-
-	// if the hash localized text hash table is active and we have a valid external string - hash it
-	if(fhash_active() && (tag_id > -2)){
-		fhash_add_str(outstr.c_str(), tag_id);
-	}
 
 	diag_printf("Stuffed string = [%.30s]\n", outstr.c_str());
 }
@@ -2903,7 +2858,7 @@ int stuff_int_list(int *ilp, int max_ints, int lookup_type)
 					break;
 
 				default:
-					Error(LOCATION,"Unknown lookup_type %d in stuff_int_list", lookup_type);
+					GOutputDevice->Error(LOCATION,"Unknown lookup_type %d in stuff_int_list", lookup_type);
 					break;
 			}
 
@@ -2994,7 +2949,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 			sexp_variable_index = get_index_sexp_variable_name(str);
 
 			if(sexp_variable_index<0) {
-				Error(LOCATION, "Invalid SEXP variable name \"%s\" found in stuff_loadout_list.", str);
+				GOutputDevice->Error(LOCATION, "Invalid SEXP variable name \"%s\" found in stuff_loadout_list.", str);
 			}
 
 			strcpy_s (str, Sexp_variables[sexp_variable_index].text);
@@ -3135,12 +3090,12 @@ void mark_int_list(int *ilp, int max_ints, int lookup_type)
 					break;
 
 				default:
-					Error(LOCATION,"Unknown lookup_type %d in mark_int_list", lookup_type);
+					GOutputDevice->Error(LOCATION,"Unknown lookup_type %d in mark_int_list", lookup_type);
 					break;
 			}
 
 			if ( (num < 0) || (num >= max_ints) )
-				Error(LOCATION, "Unable to find string \"%s\" in mark_int_list.\n", str);
+				GOutputDevice->Error(LOCATION, "Unable to find string \"%s\" in mark_int_list.\n", str);
 
 //			ilp[num] = 1;
 

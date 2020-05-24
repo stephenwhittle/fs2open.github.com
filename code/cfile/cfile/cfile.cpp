@@ -40,7 +40,9 @@
 #include "FSAssert.h"
 #include "SCPCompiler.h"
 #include "SCPEndian.h"
+#include "SCPModTable.h"
 #include "FSMathTypes.h"
+#include "utils/encoding.h"
 #include <limits>
 #include <array>
 
@@ -1868,4 +1870,54 @@ int cfile_get_path_type(const SCP_string& dir)
 	}
 
 	return CF_TYPE_INVALID;
+}
+
+
+int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_offset)
+{
+	cfseek(file, 0, CF_SEEK_SET);
+
+	// Read up to 10 bytes from the file to check if there is a BOM
+	SCP_string probe;
+	auto probe_size = (size_t)std::min(10, cfilelength(file));
+	probe.resize(probe_size);
+	cfread(&probe[0], 1, (int)probe_size, file);
+	cfseek(file, 0, CF_SEEK_SET);
+
+	auto filelength = cfilelength(file);
+	if (start_offset) {
+		*start_offset = 0;
+	}
+
+	// Determine encoding. Assume UTF-8 if we are in unicode text mode
+	auto encoding = util::guess_encoding(probe, Unicode_text_mode);
+	if (Unicode_text_mode) {
+		if (encoding != util::Encoding::UTF8) {
+			// This is probably fatal, so let's abort right here and now.
+			GOutputDevice->Error(
+				LOCATION,
+				"%s is in an Unicode/UTF format that cannot be read by FreeSpace Open. Please convert it to UTF-8\n",
+				filename);
+		}
+		if (util::has_bom(probe)) {
+			// The encoding has to be UTF-8 here so we know that the BOM is 3 Bytes long
+			// This makes sure that the first byte we read will be the first actual text byte.
+			cfseek(file, 3, SEEK_SET);
+			filelength -= 3;
+
+			if (start_offset) {
+				*start_offset = 3;
+			}
+		}
+	} else {
+		if (encoding != util::Encoding::ASCII) {
+			// This is probably fatal, so let's abort right here and now.
+			GOutputDevice->Error(LOCATION,
+								 "%s is in Unicode/UTF format and cannot be read by FreeSpace Open without turning on "
+								 "Unicode mode. Please convert it to ASCII/ANSI\n",
+								 filename);
+		}
+	}
+
+	return filelength;
 }

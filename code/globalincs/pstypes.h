@@ -145,7 +145,7 @@ typedef struct wep_t {
 
 
 
-extern int Fred_running;  // Is Fred running, or FreeSpace?
+
 extern bool running_unittests;
 
 

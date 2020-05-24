@@ -23,6 +23,7 @@
 #include "playerman/player.h"
 #include "scripting/scripting.h"
 #include "ship/ship.h"
+#include "SCPApplication.h"
 #include "weapon/weapon.h"
 
 

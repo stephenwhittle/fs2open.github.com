@@ -38,7 +38,7 @@
 #include "SCPCmdOptions.h"
 #include "FSAssert.h"
 #include "FSMathOps.h"
-//#include "def_files/def_files.h"
+#include "def_files/def_files.h"
 //#include "localization/localize.h"
 #include "config/SCPConfig.h"
 #include "filesystem/SCPPath.h"

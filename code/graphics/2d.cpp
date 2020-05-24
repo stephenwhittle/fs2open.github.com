@@ -41,7 +41,7 @@
 #include "scripting/scripting.h"
 #include "tracing/tracing.h"
 #include "utils/boost/hash_combine.h"
-
+#include "SCPApplication.h"
 #include "memory/memory.h"
 #include "config/osregistry.h"
 #include "NOX.h"

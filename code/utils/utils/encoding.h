@@ -32,20 +32,5 @@ bool has_bom(const SCP_string& content);
  */
 bool guessLatin1Encoding(const char* aBuf, size_t aLen);
 
-/**
- * @brief Checks the encoding of the specified file pointer and possibly skips the BOM if present
- *
- * Use this function if you directly read a text file which may be UTF-8 encoded. This will respect the unicode mode of
- * the current mod so it will also make sure that the file looks like it's ASCII encoded if Unicode mode is disabled.
- *
- * @note If there is a BOM at the start of the file then this function will adjust the read offset of the file pointer
- * to point to the first valid text byte. You can retrieve that offset by using @c start_offset.
- *
- * @param file The file pointer to check
- * @param filename The name of the file. Only used for possible error messages.
- * @param[out] start_offset A pointer to an int variable. If this is a valid pointer then this variable will contain the
- * offset of the first text byte from the start of the file.
- * @return The length of the file in bytes. Does not include the BOM if it exists.
- */
-int check_encoding_and_skip_bom(struct CFILE* file, const char* filename, int* start_offset = nullptr);
+
 }

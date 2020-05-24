@@ -13,6 +13,7 @@
 #include "model/model.h"
 #include "model/modelrender.h"
 #include "NOX.h"
+#include "SCPApplication.h"
 
 SCP_list<CJumpNode> Jump_nodes;
 

@@ -29,6 +29,7 @@
 #include "pngutils/pngutils.h"
 #include "mod_table/mod_table.h"
 #include "NOX.h"
+#include "SCPApplication.h"
 
 #if defined(_WIN32)
 #include <windows.h>

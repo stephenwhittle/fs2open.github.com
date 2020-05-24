@@ -7,7 +7,7 @@ ADD_LIBRARY(code STATIC ${source_files} ${VOICE_REC_FILES})
 
 target_compile_features(code PUBLIC ${REQUIRED_CXX_FEATURES})
 
-INCLUDE(default_files.cmake)
+#INCLUDE(default_files.cmake)
 
 if (MSVC)
 	target_compile_definitions(code PUBLIC "PDB_DEBUGGING=1")
@@ -84,6 +84,10 @@ target_link_libraries(code PUBLIC parse)
 add_subdirectory(utils)
 
 target_link_libraries(code PUBLIC utils)
+
+add_subdirectory(def_files)
+
+target_link_libraries(code PUBLIC def_files)
 
 target_link_libraries(code PUBLIC vulkan-hpp)
 

@@ -3,7 +3,7 @@
 
 #include "unicode.h"
 #include "FSAssert.h"
-
+#include "SCPModTable.h"
 namespace unicode {
 
 text_iterator::text_iterator(const char* in_current_byte, const char* in_range_start_byte, const char* in_range_end_byte) :

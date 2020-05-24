@@ -23,6 +23,7 @@
 #include "weapon/emp.h"
 #include "weapon/weapon.h"
 #include "NOX.h"
+#include "SCPApplication.h"
 
 float Energy_levels[NUM_ENERGY_LEVELS] = {0.0f,  0.0833f, 0.167f, 0.25f, 0.333f, 0.417f, 0.5f, 0.583f, 0.667f, 0.75f, 0.833f, 0.9167f, 1.0f};
 int Weapon_energy_cheat = 0;

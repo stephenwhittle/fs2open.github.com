@@ -1,0 +1,10 @@
+add_default_files(
+	def_files/data/tables/autopilot.tbl
+	def_files/data/tables/controlconfigdefaults.tbl
+	def_files/data/tables/fonts.tbl
+	def_files/data/tables/game_settings.tbl
+	def_files/data/tables/iff_defs.tbl
+	def_files/data/tables/objecttypes.tbl
+	def_files/data/tables/post_processing.tbl
+	def_files/data/tables/species_defs.tbl
+)

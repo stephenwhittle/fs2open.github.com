@@ -4,7 +4,7 @@
 #include <bitset>
 #include <cstdint>
 
-#include "osapi/dialogs.h"
+#include "FSAssert.h"
 
 template<typename TEnum, size_t SIZE>
 struct flag_combinator;

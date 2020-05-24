@@ -23,7 +23,7 @@
 #include "sound/audiostr.h"
 #include "sound/sound.h"
 #include "NOX.h"
-
+#include "SCPApplication.h"
 #ifdef _MSC_VER
 #pragma optimize("", off)
 #endif
