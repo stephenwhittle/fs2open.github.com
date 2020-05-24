@@ -605,14 +605,6 @@ add_file_folder("Lighting"
 	lighting/lighting.h
 )
 
-# Localization files
-add_file_folder("Localization"
-	localization/fhash.cpp
-	localization/fhash.h
-	localization/localize.cpp
-	localization/localize.h
-)
-
 # Math files
 #add_file_folder("Math"
 #	math/bitarray.h
@@ -883,8 +875,6 @@ add_file_folder("OsApi"
 add_file_folder("Parse"
 	parse/encrypt.cpp
 	parse/encrypt.h
-	parse/parselo.cpp
-	parse/parselo.h
 	parse/sexp.cpp
 	parse/sexp.h
 )
@@ -1328,26 +1318,6 @@ add_file_folder("Ui"
 	ui/window.cpp
 )
 
-add_file_folder("Utils"
-	utils/encoding.cpp
-    utils/encoding.h
-    utils/event.h
-	utils/HeapAllocator.cpp
-	utils/HeapAllocator.h
-	utils/id.h
-	utils/string_utils.cpp
-	utils/string_utils.h
-	utils/strings.h
-	utils/tuples.h
-	utils/unicode.cpp
-	utils/unicode.h
-)
-
-# Utils files
-add_file_folder("Utils\\\\boost"
-	utils/boost/hash_combine.h
-	utils/boost/syncboundedqueue.h
-)
 
 # Weapon files
 add_file_folder("Weapon"

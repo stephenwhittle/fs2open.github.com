@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cfile/cfile.h"
+#include "FSStdTypes.h"
 
 namespace util {
 
@@ -47,5 +47,5 @@ bool guessLatin1Encoding(const char* aBuf, size_t aLen);
  * offset of the first text byte from the start of the file.
  * @return The length of the file in bytes. Does not include the BOM if it exists.
  */
-int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_offset = nullptr);
+int check_encoding_and_skip_bom(struct CFILE* file, const char* filename, int* start_offset = nullptr);
 }

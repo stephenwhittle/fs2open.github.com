@@ -58,7 +58,7 @@
 #include "object/parseobjectdock.h"
 #include "object/objectshield.h"
 #include "object/waypoint.h"
-#include "parse/generic_log.h"
+#include "log/generic_log.h"
 #include "parse/parselo.h"
 #include "scripting/hook_api.h"
 #include "scripting/scripting.h"

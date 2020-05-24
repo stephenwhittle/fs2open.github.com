@@ -2,6 +2,7 @@
 //
 
 #include "unicode.h"
+#include "FSAssert.h"
 
 namespace unicode {
 

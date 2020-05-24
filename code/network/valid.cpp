@@ -30,7 +30,7 @@
 #include "network/psnet2.h"
 #include "network/multi_fstracker.h"
 #include "io/timer.h"
-
+#include "SCPEndian.h"
 
 // check structs for size compatibility
 SDL_COMPILE_TIME_ASSERT(vmt_validate_mission_req_struct, sizeof(vmt_validate_mission_req_struct) == 104);

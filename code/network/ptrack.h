@@ -11,7 +11,7 @@
 #define _pilot_track_header
 
 #include "stats/scoring.h"					// for medals count
-
+#include "SCPEndian.h"
 //Pilot tracker client header
 #define REGPORT						9243
 

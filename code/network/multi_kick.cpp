@@ -20,7 +20,7 @@
 #include "io/timer.h"
 #include "debugconsole/console.h"
 #include "NOX.h"
-
+#include "SCPEndian.h"
 // ----------------------------------------------------------------------------------
 // KICK DEFINES/VARS
 //

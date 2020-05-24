@@ -1,8 +1,5 @@
 #pragma once
 
-#include "globalincs/pstypes.h"
-
-#include "mod_table/mod_table.h"
 
 #include <iterator>
 #include <cinttypes>

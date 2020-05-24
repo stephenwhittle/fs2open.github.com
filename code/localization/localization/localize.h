@@ -12,9 +12,8 @@
 #ifndef __FREESPACE2_LOCALIZATION_UTILITIES_HEADER_FILE
 #define __FREESPACE2_LOCALIZATION_UTILITIES_HEADER_FILE
 
-#include "globalincs/pstypes.h"
-#include "graphics/font.h"
-
+#include "FSStdTypes.h"
+#include "FSIntegerTypes.h"
 // ------------------------------------------------------------------------------------------------------------
 // LOCALIZE DEFINES/VARS
 //

@@ -26,10 +26,15 @@
 #include "weapon/weapon.h"
 #include "mod_table/mod_table.h"
 #include "NOX.h"
-
+#include "FSAssert.h"
+#include "SCPCompiler.h"
+#include "SCPLimits.h"
+#include "FSStdTypes.h"
+#include "FSMathTypes.h"
 #include "utils/encoding.h"
 #include "utils/unicode.h"
-
+#include "memory/memory.h"
+#include "memory/utils.h"
 #include <utf8.h>
 
 using namespace parse;
@@ -202,14 +207,12 @@ void skip_token()
 void diag_printf(const char *format, ...)
 {
 #ifndef NDEBUG
-	SCP_string buffer;
 	va_list args;
 
 	va_start(args, format);
-	vsprintf(buffer, format, args);
+	nprintf(("Parse", "%s", args));
 	va_end(args);
 
-	nprintf(("Parse", "%s", buffer.c_str()));
 #endif
 }
 
@@ -245,7 +248,7 @@ int get_line_num()
 	while (p < stoploc)
 	{
 		if (*p == '\0')
-			Warning(LOCATION, "Unexpected end-of-file while looking for error line!");
+			GOutputDevice->Warning(LOCATION, "Unexpected end-of-file while looking for error line!");
 
 		if ( !incomment && (*p == COMMENT_CHAR) )
 			incomment = 1;
@@ -299,9 +302,9 @@ void error_display(int error_level, const char *format, ...)
 	nprintf((type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str()));
 
 	if(error_level == 0 || Cmdline_noparseerrors)
-		Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
+		GOutputDevice->Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 	else
-		Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
+		GOutputDevice->Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 }
 
 //	Advance Mp to the next eoln character.
@@ -856,7 +859,7 @@ char* alloc_text_until(const char* instr, const char* endstr)
 
 	if(foundstr == NULL)
 	{
-        Error(LOCATION, "Missing [%s] in file", endstr);
+        GOutputDevice->Error(LOCATION, "Missing [%s] in file", endstr);
         throw parse::ParseException("End string not found");
 	}
 	else
@@ -873,7 +876,7 @@ char* alloc_text_until(const char* instr, const char* endstr)
 			strncpy(rstr, instr, foundstr-instr);
 			rstr[foundstr-instr] = '\0';
 		} else {
-			Error(LOCATION, "Could not allocate enough memory in alloc_text_until");
+			GOutputDevice->Error(LOCATION, "Could not allocate enough memory in alloc_text_until");
 		}
 
 		return rstr;
@@ -1013,7 +1016,7 @@ char* alloc_block(const char* startstr, const char* endstr, int extra_chars)
 	//Check that we left the file
 	if(level > 0)
 	{
-        Error(LOCATION, "Unclosed pair of \"%s\" and \"%s\" on line %d in file", startstr, endstr, get_line_num());
+        GOutputDevice->Error(LOCATION, "Unclosed pair of \"%s\" and \"%s\" on line %d in file", startstr, endstr, get_line_num());
         throw parse::ParseException("End string not found");
 	}
 	else
@@ -1105,7 +1108,7 @@ int get_string_or_variable (SCP_string &str)
 	else
 	{
 		get_string(str);
-		Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str.c_str());
+		GOutputDevice->Error(LOCATION, "Invalid entry \"%s\"  found in get_string_or_variable. Must be a quoted string or a string variable name.", str.c_str());
 	}
 
 	return result;
@@ -1196,7 +1199,7 @@ void stuff_string(char *outstr, int type, int len, const char *terminators)
 			break;
 
 		default:
-			Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
+			GOutputDevice->Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
 	}
 
 	if (type == F_FILESPEC) {
@@ -1278,7 +1281,7 @@ void stuff_string(SCP_string &outstr, int type, const char *terminators)
 			break;
 
 		default:
-			Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
+			GOutputDevice->Error(LOCATION, "Unhandled string type %d in stuff_string!", type);
 	}
 
 	if (type == F_FILESPEC) {
@@ -2031,7 +2034,7 @@ void read_file_text(const char *filename, int mode, char *processed_text, char *
 
 	// if we are paused then processed_text and raw_text must not be NULL!!
 	if ( !Bookmarks.empty() && ((processed_text == NULL) || (raw_text == NULL)) ) {
-		Error(LOCATION, "ERROR: Neither processed_text nor raw_text may be NULL when parsing is paused!!\n");
+		GOutputDevice->Error(LOCATION, "ERROR: Neither processed_text nor raw_text may be NULL when parsing is paused!!\n");
 	}
 
 	// read the raw text
@@ -2055,7 +2058,7 @@ void read_file_text_from_default(const default_file& file, char *processed_text,
 
 	// if we are paused then processed_text and raw_text must not be NULL!!
 	if ( !Bookmarks.empty() && ((processed_text == NULL) || (raw_text == NULL)) ) {
-		Error(LOCATION, "ERROR: Neither \"processed_text\" nor \"raw_text\" may be NULL when parsing is paused!!\n");
+		GOutputDevice->Error(LOCATION, "ERROR: Neither \"processed_text\" nor \"raw_text\" may be NULL when parsing is paused!!\n");
 	}
 
 	// make sure to do this before anything else
@@ -2135,7 +2138,7 @@ void allocate_parse_text(size_t size)
 	Parse_text_raw = (char *) vm_malloc(sizeof(char) * size, memory::quiet_alloc);
 
 	if ( (Parse_text == nullptr) || (Parse_text_raw == nullptr) ) {
-		Error(LOCATION, "Unable to allocate enough memory for Parse_text!  Aborting...\n");
+		GOutputDevice->Error(LOCATION, "Unable to allocate enough memory for Parse_text!  Aborting...\n");
 	}
 
 	memset( Parse_text, 0, sizeof(char) * size );
@@ -2144,7 +2147,9 @@ void allocate_parse_text(size_t size)
 	Parse_text_size = size;
 }
 
-// Goober5000
+
+//TODO: @parselo move to cfile
+// Goober5000 
 void read_raw_file_text(const char *filename, int mode, char *raw_text)
 {
 	CFILE	*mf;
@@ -2214,7 +2219,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 			if (isLatin1 && can_reallocate) {
 				// Latin1 is the encoding of retail data and for legacy reasons we convert that to UTF-8.
 				// We still output a warning though...
-				Warning(LOCATION, "Found Latin-1 encoded file %s. This file will be automatically converted to UTF-8 but "
+				GOutputDevice->Warning(LOCATION, "Found Latin-1 encoded file %s. This file will be automatically converted to UTF-8 but "
 						"it may cause parsing issues with retail FS2 files since those contained invalid data.\n"
 						"To silence this warning you must convert the files to UTF-8, e.g. by using a program like iconv.",
 						filename);
@@ -2250,7 +2255,7 @@ void read_raw_file_text(const char *filename, int mode, char *raw_text)
 					}
 				} while(true);
 			} else {
-				Warning(LOCATION, "Found invalid UTF-8 encoding in file %s at position " PTRDIFF_T_ARG "!\n"
+				GOutputDevice->Warning(LOCATION, "Found invalid UTF-8 encoding in file %s at position " PTRDIFF_T_ARG "!\n"
 					"This may cause parsing errors and should be fixed!", filename, invalid - raw_text);
 			}
 		}
@@ -2505,13 +2510,13 @@ int stuff_int_or_variable (int &i, bool positive_value)
 			}
 			else
 			{
-				Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
+				GOutputDevice->Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
 			}
 		}
 		else
 		{
 
-			Error(LOCATION, "Invalid variable name \"%s\" found.", str);
+			GOutputDevice->Error(LOCATION, "Invalid variable name \"%s\" found.", str);
 		}
 
 		// zero negative values if requested
@@ -2552,13 +2557,13 @@ int stuff_int_or_variable (int *ilp, int count, bool positive_value)
 			}
 			else
 			{
-				Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
+				GOutputDevice->Error(LOCATION, "Invalid variable type \"%s\" found in mission. Variable must be a number variable!", str);
 			}
 		}
 		else
 		{
 
-			Error(LOCATION, "Invalid variable name \"%s\" found.", str);
+			GOutputDevice->Error(LOCATION, "Invalid variable name \"%s\" found.", str);
 		}
 
 		// zero negative values if requested
@@ -2975,7 +2980,7 @@ int stuff_loadout_list (int *ilp, int max_ints, int lookup_type)
 
 	while (*Mp != ')') {
 		if (count >= max_ints) {
-			Error(LOCATION, "Loadout contains too many entries.\n");
+			GOutputDevice->Error(LOCATION, "Loadout contains too many entries.\n");
 		}
 
 		index = -1;
@@ -3400,6 +3405,8 @@ void display_parse_diagnostics()
 	nprintf(("Parse", "%i errors.  %i warnings.\n", Error_count, Warning_count));
 }
 
+
+//TODO: @parselo move this to graphics api
 // Splits a string into 2 lines if the string is wider than max_pixel_w pixels.  A null
 // terminator is placed where required to make the first line <= max_pixel_w.  The remaining
 // text is returned (leading whitespace removed).  If the line doesn't need to be split,

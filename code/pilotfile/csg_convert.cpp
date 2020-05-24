@@ -14,7 +14,7 @@
 #include "stats/medals.h"
 #include "weapon/weapon.h"
 #include "filesystem/SCPPath.h"
-
+#include "SCPEndian.h"
 #include <iostream>
 #include <sstream>
 #include <limits>

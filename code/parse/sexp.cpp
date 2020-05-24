@@ -78,7 +78,7 @@
 #include "object/objectshield.h"
 #include "object/objectsnd.h"
 #include "object/waypoint.h"
-#include "parse/generic_log.h"
+#include "log/generic_log.h"
 #include "parse/parselo.h"
 #include "scripting/scripting.h"
 #include "parse/sexp.h"

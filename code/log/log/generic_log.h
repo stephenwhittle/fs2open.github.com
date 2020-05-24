@@ -29,22 +29,20 @@ bool logfile_init(int logfile_type);
 // close down the multi logfile
 void logfile_close(int logfile_type);
 
+bool logfile_valid(int LogType);
 
 template <typename... Args>
 void log_printf(int LogType, const char* Format, const Args&... args)
 {
-
-	if (format == NULL) {
+	if (Format == NULL) {
+		return;
+	}
+	if (!logfile_valid(LogType))
+	{
 		return;
 	}
 
-	// if we don't have a valid logfile do nothing
-	if (logfiles[logfile_type].log_file == NULL) {
-		return;
-	}
-
-
-	log_string(logfile_type, fmt::sprintf(Message, Args).c_str());
+	log_string(LogType, fmt::sprintf(Message, Args).c_str());
 }
 
 void log_string(int LogType, const char* Message, int Time = 0);

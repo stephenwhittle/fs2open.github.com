@@ -17,7 +17,7 @@
 #include "bmpman/bmpman.h"
 #include "graphics/2d.h"
 #include "cmdline/cmdline.h"
-
+#include "SCPEndian.h"
 // -----------------
 //
 // Defines

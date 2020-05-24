@@ -41,6 +41,7 @@
 #include "network/multi_rate.h"
 #include "cmdline/cmdline.h"
 #include "NOX.h"
+#include "SCPEndian.h"
 // -------------------------------------------------------------------------------------------------------
 // PSNET 2 DEFINES/VARS
 //

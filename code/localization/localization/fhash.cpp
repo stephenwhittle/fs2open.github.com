@@ -12,10 +12,11 @@
 #include <cstdlib>
 #include <memory.h>
 #include <cstring>
-#include "globalincs/pstypes.h"
+#include "FSStdTypes.h"
+#include "FSAssert.h"
 #include "localization/fhash.h"
-
-
+#include "memory/memory.h"
+#include "memory/utils.h"
 
 // -----------------------------------------------------------------------------------------------
 // HASH DEFINES/VARS

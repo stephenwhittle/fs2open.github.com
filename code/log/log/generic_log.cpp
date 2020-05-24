@@ -81,6 +81,19 @@ void logfile_close(int logfile_type)
 	}
 }
 
+bool logfile_valid(int LogType) 
+{
+
+	// if we don't have a valid logfile do nothing
+	if (logfiles[LogType].log_file == NULL) {
+		return false;
+	}
+	else 
+	{
+		return true;
+	}
+}
+
 void log_string(int LogType, const char* Message, int Time /*= 0*/)
 {
 	char tmp[MAX_LOGFILE_LINE_LEN * 4];

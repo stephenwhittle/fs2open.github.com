@@ -11,9 +11,8 @@
 #define _PARSELO_H
 
 #include "cfile/cfile.h"
-#include "globalincs/globals.h"
-#include "globalincs/pstypes.h"
-#include "globalincs/flagset.h"
+#include "FSStdTypes.h"
+#include "SCPFlagset.h"
 #include "def_files/def_files.h"
 #include "utils/unicode.h"
 
@@ -94,8 +93,8 @@ extern void ignore_gray_space();
 // error
 extern int get_line_num();
 extern char *next_tokens();
-extern void diag_printf(SCP_FORMAT_STRING const char *format, ...) SCP_FORMAT_STRING_ARGS(1, 2);
-extern void error_display(int error_level, SCP_FORMAT_STRING const char *format, ...) SCP_FORMAT_STRING_ARGS(2, 3);
+extern void diag_printf(const char *format, ...);
+extern void error_display(int error_level, const char *format, ...);
 
 // skip
 extern int skip_to_string(const char *pstr, const char *end = NULL);

@@ -16,6 +16,7 @@
 #include "network/psnet2.h"
 #include "io/timer.h"
 #include "cfile/cfile.h"
+#include "SCPEndian.h"
 
 #ifndef NDEBUG
 #include "playerman/player.h"

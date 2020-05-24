@@ -13,8 +13,10 @@
 #ifndef MULTI_MSGS_H
 #define MULTI_MSGS_H
 
-#include "globalincs/pstypes.h"
-
+#include "FSAssert.h"
+#include "SCPEndian.h"
+#include "FSMathTypes.h"
+#include "FSIntegerTypes.h"
 #include <cstdint>
 
 struct net_player;

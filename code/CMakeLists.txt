@@ -73,6 +73,18 @@ add_subdirectory(log)
 
 target_link_libraries(code PUBLIC log)
 
+add_subdirectory(localization)
+
+target_link_libraries(code PUBLIC localization)
+
+add_subdirectory(parse)
+
+target_link_libraries(code PUBLIC parse)
+
+add_subdirectory(utils)
+
+target_link_libraries(code PUBLIC utils)
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)

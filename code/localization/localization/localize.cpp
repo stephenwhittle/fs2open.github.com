@@ -11,7 +11,7 @@
 
 
 #include <cctype>
-#include "cfile/cfile.h"
+//#include "cfile/cfile.h"
 #include "localization/localize.h"
 #include "config/osregistry.h"
 #include "parse/encrypt.h"
@@ -19,6 +19,9 @@
 #include "playerman/player.h"
 #include "mod_table/mod_table.h"
 #include "filesystem/SCPPath.h"
+#include "FSAssert.h"
+#include "SCPCmdOptions.h"
+#include "memory/memory.h"
 #include "NOX.h"
 // ------------------------------------------------------------------------------------------------------------
 // LOCALIZE DEFINES/VARS
