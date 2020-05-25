@@ -1238,7 +1238,7 @@ bool bm_load_and_parse_eff(const char *filename, int dir_type, int *nframes, int
 	try
 	{
 		// now start parsing the EFF
-		read_file_text(filename, dir_type, file_text, file_text_raw);
+		read_file_text(filename, dir_type);
 		reset_parse(file_text);
 
 		required_string("$Type:");

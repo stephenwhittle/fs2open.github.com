@@ -1,4 +1,5 @@
-#include "graphics/software/FSFont.h"
+#include "font/FSFont.h"
+#include "FSOutputDeviceBase.h"
 
 namespace font
 {
@@ -57,7 +58,7 @@ namespace font
 	void FSFont::checkFontMetrics() {
 		if (_height <= 1.0f)
 		{
-			Warning(LOCATION, "The height of font %s has an invalid height of %f, must be greater than one!",
+			GOutputDevice->Warning(LOCATION, "The height of font %s has an invalid height of %f, must be greater than one!",
 					getName().c_str(), _height);
 		}
 	}

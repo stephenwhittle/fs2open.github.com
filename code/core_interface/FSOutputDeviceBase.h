@@ -2,6 +2,9 @@
 
 #include "fmt/printf.h"
 
+#define LOCATION __FILE__,__LINE__
+
+
 class FSOutputDeviceBase
 {
 protected:

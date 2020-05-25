@@ -104,32 +104,18 @@ typedef struct vertex {
 	ubyte		pad[2];				// pad structure to be 4 byte aligned.
 } vertex;
 
+//TODO: @pstypes move to graphics library
 typedef struct effect_vertex {
 	vec3d position;
 	uv_pair tex_coord;
 	float radius;
 	ubyte r, g, b, a;
 } effect_vertex;
-
+//TODO: @pstypes move to graphics library
 struct particle_pnt {
 	vec3d position;
 	float size;
 	vec3d up;
-};
-
-//def_list
-struct flag_def_list {
-	const char *name;
-	int def;
-	ubyte var;
-};
-
-template<class T>
-struct flag_def_list_new {
-    const char* name;			// The parseable representation of this flag
-    T def;				// The flag definition for this flag
-    bool in_use;		// Whether or not this flag is currently in use or obsolete
-    bool is_special;	// Whether this flag requires special processing. See parse_string_flag_list<T, T> for details
 };
 
 // weapon count list (mainly for pilot files)

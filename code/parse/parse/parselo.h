@@ -10,11 +10,14 @@
 #ifndef _PARSELO_H
 #define _PARSELO_H
 
-#include "cfile/cfile.h"
+//#include "cfile/cfile.h"
 #include "FSStdTypes.h"
 #include "SCPFlagset.h"
+#include "SCPFlags.h"
+#include "FSMathTypes.h"
 #include "def_files/def_files.h"
 #include "utils/unicode.h"
+#include "SCPLimits.h"
 
 #include <cinttypes>
 #include <exception>
@@ -88,6 +91,7 @@ extern void drop_white_space(SCP_string &str);
 // gray space
 extern int is_gray_space(char ch);
 extern bool is_gray_space(unicode::codepoint_t cp);
+extern int is_parenthesis(char ch);
 extern void ignore_gray_space();
 
 // error
@@ -120,6 +124,15 @@ extern void stuff_string_white(char *outstr, int len = 0);
 extern void stuff_string_until(char *outstr, const char *endstr, int len = 0);
 extern void stuff_string(char *outstr, int type, int len, const char *terminators = NULL);
 extern void stuff_string_line(char *outstr, int len);
+
+
+//	Copy characters from instr to outstr until next white space is found, or until max
+//	characters have been copied (including terminator).
+void copy_to_next_white(char* outstr, const char* instr, int max);
+
+//	Ditto for SCP_string.
+void copy_to_next_white(SCP_string& outstr, const char* instr);
+
 
 // SCP_string stuff
 extern void copy_to_eoln(SCP_string &outstr, const char *more_terminators, const char *instr);
@@ -258,9 +271,9 @@ extern void stop_parse();
 extern void mark_int_list(int *ilp, int max_ints, int lookup_type);
 extern void compact_multitext_string(char *str);
 extern void compact_multitext_string(SCP_string &str);
-extern void read_file_text(const char *filename, int mode = CF_TYPE_ANY, char *processed_text = NULL, char *raw_text = NULL);
+
 extern void read_file_text_from_default(const default_file& file, char *processed_text = NULL, char *raw_text = NULL);
-extern void read_raw_file_text(const char *filename, int mode = CF_TYPE_ANY, char *raw_text = NULL);
+
 extern void process_raw_file_text(char *processed_text = NULL, char *raw_text = NULL);
 extern void debug_show_mission_text();
 extern void convert_sexp_to_string(SCP_string &dest, int cur_node, int mode);
@@ -293,6 +306,7 @@ extern ptrdiff_t replace_one(char *str, const char *oldstr, const char *newstr, 
 extern SCP_string& replace_one(SCP_string& context, const SCP_string& from, const SCP_string& to);
 extern SCP_string& replace_one(SCP_string& context, const char* from, const char* to);
 
+//TODO: @parselo move to string library
 // Goober5000 - returns number of replacements or -1 for exceeded length (SCP_string variants return the result)
 extern ptrdiff_t replace_all(char *str, const char *oldstr, const char *newstr, size_t max_len, ptrdiff_t range = 0);
 extern SCP_string& replace_all(SCP_string& context, const SCP_string& from, const SCP_string& to);
@@ -305,9 +319,10 @@ extern char *stristr(char *str, const char *substr);
 // Goober5000 (ditto)
 extern bool can_construe_as_integer(const char *text);
 
+//TODO: @parselo remove
 // Goober5000 (ditto for C++)
 extern void vsprintf(SCP_string &dest, const char *format, va_list ap);
-extern void sprintf(SCP_string &dest, SCP_FORMAT_STRING const char *format, ...) SCP_FORMAT_STRING_ARGS(2, 3);
+extern void sprintf(SCP_string &dest, const char *format, ...);
 
 // Goober5000
 extern int subsystem_stricmp(const char *str1, const char *str2);

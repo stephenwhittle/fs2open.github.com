@@ -80,6 +80,7 @@ class player
 public:
 	void reset();
 	void assign(const player *pl);
+	void ProcessString(SCP_string& InString);
 	friend bool operator==(const player& lhs, const player& rhs);
 	friend bool operator!=(const player& lhs, const player& rhs);
 

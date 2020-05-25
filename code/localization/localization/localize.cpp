@@ -14,15 +14,17 @@
 //#include "cfile/cfile.h"
 #include "localization/localize.h"
 #include "config/osregistry.h"
-#include "parse/encrypt.h"
 #include "parse/parselo.h"
 #include "fhash.h"
-#include "playerman/player.h"
-#include "mod_table/mod_table.h"
+//#include "playerman/player.h"
+//#include "mod_table/mod_table.h"
 #include "filesystem/SCPPath.h"
 #include "FSAssert.h"
 #include "SCPCmdOptions.h"
+#include "SCPApplication.h"
+#include "font/FSFont.h"
 #include "memory/memory.h"
+#include "memory/utils.h"
 #include "NOX.h"
 #include "SCPModTable.h"
 // ------------------------------------------------------------------------------------------------------------
@@ -113,8 +115,9 @@ void lcl_init(int lang_init)
 	const char *ret;
 	int lang, idx, i;
 
+	//TODO: @localize ensure encryption is initialized later
 	// initialize encryption
-	encrypt_init();
+	//encrypt_init();
 
 	// set up the first language (which should be English)
 	Lcl_languages.push_back(Lcl_builtin_languages[0]);
@@ -283,7 +286,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 				error_display(0, "Invalid tstrings table index specified (%i). The index must be positive.", index);
 				return;
 			} else if (!external && (index < 0 || index >= XSTR_SIZE)) {
-				Error(LOCATION, "Invalid strings table index specified (%i)", index);
+				GOutputDevice->Error(LOCATION, "Invalid strings table index specified (%i)", index);
 			}
 
 			if (!external) {
@@ -367,9 +370,9 @@ void parse_stringstbl_common(const char *filename, const bool external)
 			}
 
 			if (external && (Lcl_ext_str.find(index) != Lcl_ext_str.end())) {
-				Warning(LOCATION, "Tstrings table index %d used more than once", index);
+				GOutputDevice->Warning(LOCATION, "Tstrings table index %d used more than once", index);
 			} else if (!external && (Xstr_table[index].str != NULL)) {
-				Warning(LOCATION, "Strings table index %d used more than once", index);
+				GOutputDevice->Warning(LOCATION, "Strings table index %d used more than once", index);
 			}
 
 			if (external) {
@@ -388,7 +391,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 			if (p_offset != NULL) {
 				if (sscanf(p_offset, "%d%d", &offset_lo, &offset_hi) < num_offsets_on_this_line) {
 					// whatever is in the file ain't a proper offset
-					Error(LOCATION, "%s is corrupt", filename);
+					GOutputDevice->Error(LOCATION, "%s is corrupt", filename);
 				}
 			}
 
@@ -537,11 +540,11 @@ void lcl_stuff_string(char* outstr, int type, int len, const char* terminators)
 	SCP_string LocalizedString = SCP_string(outstr);
 	lcl_stuff_string(LocalizedString, type, terminators);
 	
-	if (LocalizedString.length > (uint)len)
+	if (LocalizedString.length() > (uint)len)
 		error_display(0,
 						"Token too long: [%s].  Length = " SIZE_T_ARG ".  Max is %i.\n",
-						LocalizedString,
-						LocalizedString.length,
+						LocalizedString.c_str(),
+						LocalizedString.length(),
 						len);
 	strncpy(outstr, LocalizedString.c_str(), len);
 
@@ -567,11 +570,11 @@ void lcl_stuff_string_line(char* outstr, int len)
 	SCP_string LocalizedString = SCP_string(outstr);
 	lcl_stuff_string_line(LocalizedString);
 	//copy back to outstr
-	if (LocalizedString.length > (uint)len)
+	if (LocalizedString.length() > (uint)len)
 		error_display(0,
 					  "Token too long: [%s].  Length = " SIZE_T_ARG ".  Max is %i.\n",
-					  LocalizedString,
-					  LocalizedString.length,
+					  LocalizedString.c_str(),
+					  LocalizedString.length(),
 					  len);
 	strncpy(outstr, LocalizedString.c_str(), len);
 }
@@ -655,6 +658,7 @@ void lcl_replace_stuff(char *text, size_t max_len)
 	text[len] = 0;
 }
 
+//TODO @localize not really needed here, should go into string utility perhaps?
 // Goober5000 - replace stuff in the string, e.g. $callsign with player's callsign
 // now will also replace $rank with rank, e.g. "Lieutenant"
 // now will also replace $quote with double quotation marks
@@ -664,12 +668,6 @@ void lcl_replace_stuff(SCP_string &text)
 {
 	if (Fred_running)
 		return;
-
-	if (Player != NULL)
-	{
-		replace_all(text, "$callsign", Player->callsign);
-		replace_all(text, "$rank", Ranks[Player->stats.rank].name);
-	}
 	replace_all(text, "$quote", "\"");
 	replace_all(text, "$semicolon", ";");
 	replace_all(text, "$slash", "/");
@@ -994,9 +992,9 @@ const char *XSTR(const char *str, int index)
 }
 
 // retrieve the offset for a localized string
-int lcl_get_xstr_offset(int index, int res)
+int lcl_get_xstr_offset(int index, bool HighRes)
 {
-	if (res == GR_640) {
+	if (!HighRes) {
 		return Xstr_table[index].offset_x;
 	} else {
 		return Xstr_table[index].offset_x_hi;

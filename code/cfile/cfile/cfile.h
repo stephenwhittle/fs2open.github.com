@@ -468,7 +468,8 @@ namespace cfile
 	};
 
 }
-
+extern SCP_vector<char> read_file_text(const char* filename, int mode = CF_TYPE_ANY);
+extern SCP_vector<char> read_raw_file_text(const char* filename, int mode = CF_TYPE_ANY);
 
 /**
  * @brief Checks the encoding of the specified file pointer and possibly skips the BOM if present

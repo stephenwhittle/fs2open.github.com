@@ -38,7 +38,7 @@ TEST_F(ParseloTest, parse_pausing) {
 
 	pause_parse();
 
-	read_file_text("test2.tbl", CF_TYPE_TABLES, file_text, file_text_raw);
+	read_file_text("test2.tbl", CF_TYPE_TABLES);
 	reset_parse(file_text);
 
 	required_string("#Begin");

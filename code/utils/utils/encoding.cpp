@@ -55,6 +55,69 @@ bool has_bom(const SCP_string& content) {
 }
 
 
+void ConvertFromLatinEncoding(char* raw_text, int file_len, const char* filename)
+{
+	if (Unicode_text_mode) {
+		// Validate the UTF-8 encoding
+		auto invalid = utf8::find_invalid(raw_text, raw_text + file_len);
+		if (invalid != raw_text + file_len) {
+			auto isLatin1 = util::guessLatin1Encoding(raw_text, (size_t)file_len);
+
+			// We do the additional can_reallocate check here since we need control over raw_text to reencode the file
+			if (isLatin1 && can_reallocate) {
+				// Latin1 is the encoding of retail data and for legacy reasons we convert that to UTF-8.
+				// We still output a warning though...
+				GOutputDevice->Warning(
+					LOCATION,
+					"Found Latin-1 encoded file %s. This file will be automatically converted to UTF-8 but "
+					"it may cause parsing issues with retail FS2 files since those contained invalid data.\n"
+					"To silence this warning you must convert the files to UTF-8, e.g. by using a program like iconv.",
+					filename);
+
+				// SDL2 has iconv functionality so we use that to convert from Latin1 to UTF-8
+
+				// We need the raw_text as the output buffer so we first need to copy the current
+				SCP_string input_str = raw_text;
+
+				do {
+					auto in_str   = input_str.c_str();
+					auto in_size  = input_str.size();
+					auto out_str  = Parse_text_raw;
+					auto out_size = Parse_text_size;
+
+					auto iconv = SDL_iconv_open("UTF-8", "ISO-8859-1");
+					auto err   = SDL_iconv(iconv, &in_str, &in_size, &out_str, &out_size);
+					SDL_iconv_close(iconv);
+
+					if (err == 0) {
+						break;
+					} else if (err == SDL_ICONV_E2BIG) {
+						// buffer is not big enough, try again with a bigger buffer. Use a rather conservative size
+						// increment since the additional size required is probably pretty small
+						allocate_parse_text(Parse_text_size + 300);
+					} else {
+						Warning(LOCATION,
+								"File reencoding failed (error code " SIZE_T_ARG ")!\n"
+								"You will probably encounter encoding issues.",
+								err);
+
+						// Copy the original data back to the mission text pointer so that we don't loose any data here
+						strcpy(Parse_text_raw, input_str.c_str());
+						break;
+					}
+				} while (true);
+			} else {
+				GOutputDevice->Warning(LOCATION,
+									   "Found invalid UTF-8 encoding in file %s at position " PTRDIFF_T_ARG "!\n"
+									   "This may cause parsing errors and should be fixed!",
+									   filename,
+									   invalid - raw_text);
+			}
+		}
+	}
+}
+
+
 // The following code is adapted from the uchardet library, the original licence of the file has been kept
 
 /* -*- Mode: C; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*- */

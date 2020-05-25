@@ -24,7 +24,7 @@
 #include "missionui/missionscreencommon.h"
 #include "missionui/missionshipchoice.h"
 #include "missionui/redalert.h"
-#include "mod_table/mod_table.h"
+#include "SCPModTable.h"
 #include "network/multi.h"
 #include "config/osregistry.h"
 #include "pilotfile/pilotfile.h"
@@ -35,6 +35,7 @@
 #include "sound/audiostr.h"
 #include "sound/sound.h"
 #include "weapon/weapon.h"
+#include "parse/parselo.h"
 #include "NOX.h"
 
 // pilot pic image list stuff ( call pilot_load_pic_list() to make these valid )
@@ -539,6 +540,13 @@ void player::reset()
 	player_was_multi = 0;
 	memset(language, 0, sizeof(language));
 }
+
+void player::ProcessString(SCP_string& InString)
+{
+	replace_all(InString, "$callsign", callsign);
+	replace_all(InString, "$rank", Ranks[stats.rank].name);	
+}
+
 
 void player::assign(const player *other)
 {

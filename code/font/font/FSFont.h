@@ -1,13 +1,15 @@
 #pragma once
-
-#include "globalincs/pstypes.h"
-
-#include "graphics/2d.h"
+#include "FSStdTypes.h"
 
 #include <limits>
 
 namespace font
 {
+
+	const int FONT1 = 0;	//<! The first loaded font. Used to be hardcoded to reference font01.vf in retail
+	const int FONT2 = 1;	//<! The second loaded font. Used to be hardcoded to reference font02.vf in retail
+	const int FONT3 = 2;	//<! The third loaded font. Used to be hardcoded to reference font03.vf in retail
+	
 	/**
 	* @brief Enum to specify the type of a font
 	*

@@ -3340,6 +3340,7 @@ void localize_sexp(int text_node, int id_node)
 
 	memset(Sexp_nodes[text_node].text, 0, TOKEN_LENGTH * sizeof(char));
 	lcl_ext_localize(xstr.c_str(), Sexp_nodes[text_node].text, TOKEN_LENGTH - 1);
+	Player->ProcessString(Sexp_nodes[text_node].text);
 }
 
 /**
@@ -16163,7 +16164,7 @@ void sexp_set_death_message(int n)
 
 	// apply localization
 	lcl_replace_stuff(Player->death_message);
-
+	Player->ProcessString(Player->death_message);
 	sexp_replace_variable_names_with_values(Player->death_message);
 }
 

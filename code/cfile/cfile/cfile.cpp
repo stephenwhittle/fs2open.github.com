@@ -32,8 +32,8 @@
 #include "cfile/cfilearchive.h"
 #include "cfile/cfilesystem.h"
 #include "FSOutputDeviceBase.h"
-//#include "globalincs/safe_strings.h"
-//#include "parse/encrypt.h"
+#include "FSMathOps.h"
+#include "cfile/encrypt.h"
 #include "cfilesystem.h"
 #include "filesystem/SCPPath.h"
 #include "config/SCPConfig.h"
@@ -1920,4 +1920,84 @@ int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_of
 	}
 
 	return filelength;
+}
+
+
+// TODO: @parselo move to cfile
+// Goober5000
+SCP_vector<char> read_raw_file_text(const char* filename, int mode)
+{
+	CFILE* mf;
+	int file_is_encrypted;
+
+	Assert(filename);
+
+	mf = cfopen(filename, "rb", CFILE_NORMAL, mode);
+	if (mf == NULL) {
+		nprintf(("Error", "Wokka!  Error opening file (%s)!\n", filename));
+		throw std::runtime_error("Failed to open file");
+	}
+
+	// read the entire file in
+	ulonglong file_len = cfilelength(mf);
+
+	if (!file_len) {
+		nprintf(("Error", "Oh noes!!  File is empty! (%s)!\n", filename));
+		throw std::runtime_error("Failed to open file");
+	}
+	char* raw_text = new char[file_len + 1];
+
+	// read first 10 bytes to determine if file is encrypted
+	cfread(raw_text, MIN(file_len, 10), 1, mf);
+	file_is_encrypted = is_encrypted(raw_text);
+	cfseek(mf, 0, CF_SEEK_SET);
+
+	file_len = check_encoding_and_skip_bom(mf, filename);
+
+	if (file_is_encrypted) {
+		int unscrambled_len;
+		char* scrambled_text;
+		scrambled_text = new char (file_len + 1);
+		Assert(scrambled_text);
+		cfread(scrambled_text, file_len, 1, mf);
+		// unscramble text
+		unencrypt(scrambled_text, file_len, raw_text, &unscrambled_len);
+		file_len = unscrambled_len;
+		delete(scrambled_text);
+	} else {
+		cfread(raw_text, file_len, 1, mf);
+	}
+
+	// WMC - Slap a NULL character on here for the odd error where we forgot a #End
+	raw_text[file_len] = '\0';
+
+	cfclose(mf);
+	SCP_vector<char> text(raw_text, raw_text + (sizeof(char) * (file_len + 1 )));
+	return text;
+}
+
+//TODO: @cfile this function currently is expected to populate the parse buffer
+// need to have it return a shared_ptr instead;
+//	Read mission text, stripping comments.
+//	When a comment is found, it is removed.  If an entire line
+//	consisted of a comment, a blank line is left in the input file.
+// Goober5000 - added ability to read somewhere other than Parse_text
+SCP_vector<char> read_file_text(const char* filename, int mode /*= CF_TYPE_ANY*/)
+{
+	// copy the filename
+	if (!filename)
+		throw std::runtime_error("Invalid filename");
+
+/*
+	strcpy_s(Current_filename_sub, filename);
+
+	// if we are paused then processed_text and raw_text must not be NULL!!
+	if (!Bookmarks.empty() && ((processed_text == NULL) || (raw_text == NULL))) {
+		GOutputDevice->Error(LOCATION,
+							 "ERROR: Neither processed_text nor raw_text may be NULL when parsing is paused!!\n");
+	}
+*/
+
+	// read the raw text
+	return read_raw_file_text(filename, mode);
 }

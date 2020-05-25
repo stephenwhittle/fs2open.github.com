@@ -341,8 +341,6 @@ add_file_folder("Graphics\\\\SoftwareGr\\\\Font"
 	graphics/software/font_internal.h
 	graphics/software/FontManager.h
 	graphics/software/FontManager.cpp
-	graphics/software/FSFont.h
-	graphics/software/FSFont.cpp
 	graphics/software/NVGFont.h
 	graphics/software/NVGFont.cpp
 	graphics/software/VFNTFont.h
@@ -783,8 +781,7 @@ add_file_folder("OsApi"
 
 # Parse files
 add_file_folder("Parse"
-	parse/encrypt.cpp
-	parse/encrypt.h
+
 	parse/sexp.cpp
 	parse/sexp.h
 )

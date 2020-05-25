@@ -15,9 +15,8 @@
 
 #define	ENCRYPT_NEW													// new, better encryption scheme
 
-#include "globalincs/pstypes.h"
-#include "parse/encrypt.h"
-
+#include "cfile/encrypt.h"
+#include "FSIntegerTypes.h"
 
 
 #if BYTE_ORDER == BIG_ENDIAN

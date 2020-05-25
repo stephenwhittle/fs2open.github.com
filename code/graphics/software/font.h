@@ -2,14 +2,12 @@
 
 #include "globalincs/pstypes.h"
 
-#include "graphics/software/FSFont.h"
+#include "font/FSFont.h"
 #include "graphics/software/FontManager.h"
 
 namespace font
 {	
-	const int FONT1 = 0;	//<! The first loaded font. Used to be hardcoded to reference font01.vf in retail
-	const int FONT2 = 1;	//<! The second loaded font. Used to be hardcoded to reference font02.vf in retail
-	const int FONT3 = 2;	//<! The third loaded font. Used to be hardcoded to reference font03.vf in retail
+	
 	
 	struct font;
 

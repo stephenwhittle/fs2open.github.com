@@ -20,7 +20,7 @@ constexpr bool LoggingEnabled = false;
 #define mprintf(args) do { if (LoggingEnabled) { GOutputDevice->PrintGeneral args; } } while (false)
 #define nprintf(args) do { if (LoggingEnabled) { GOutputDevice->Print args; } } while (false)
 
-#define LOCATION __FILE__,__LINE__
+
 
 // To flag an error, you can do this:
 // Error( __FILE__, __LINE__, "Error opening %s", filename );

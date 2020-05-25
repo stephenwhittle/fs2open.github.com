@@ -17,7 +17,7 @@ int RocketSystemInterface::TranslateString(Rocket::Core::String& translated, con
 {
 	SCP_string lcl_translated;
 	lcl_ext_localize(input.CString(), lcl_translated);
-
+	Player->ProcessString(lcl_translated);
 	translated = lcl_translated.c_str();
 
 	return 0; // Everything is translated now

@@ -87,6 +87,16 @@
 #include "weapon/weapon.h"
 #include "tracing/Monitor.h"
 #include "tracing/tracing.h"
+#include "SCPObjectLookup.h"
+
+
+
+template<SHIP_TYPE>
+int ObjectLookup(const char* ObjectName)
+{
+	return 0;
+}
+
 
 #define SHIPS_LIMIT					400			// what MAX_SHIPS will be at release time (for error checking in debug mode); dtp Bumped from 200 to 400
 

@@ -289,7 +289,7 @@ ADE_FUNC(XSTR,
 
 	SCP_string translated;
 	lcl_ext_localize(xstr, translated);
-
+	Player->ProcessString(translated);
 	return ade_set_args(L, "s", translated.c_str());
 }
 
