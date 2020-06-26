@@ -34,6 +34,47 @@ using SCP_queue = std::queue< T, std::deque< T, std::allocator< T > > >;
 template< typename T >
 using SCP_deque = std::deque< T, std::allocator< T > >;
 
+class SCP_buffer
+{
+private:
+	std::unique_ptr<char[]> InternalData;
+public:
+	using iterator = char*;
+	using const_iterator = const char*;
+
+	SCP_buffer(size_t Size)
+		:Size(Size)
+	{
+		InternalData = std::make_unique<char[]>(Size);
+	}
+
+	SCP_buffer(SCP_buffer&& Source) noexcept
+		:Size(Source.Size),
+		InternalData(std::move(Source.InternalData)) {};
+
+	SCP_buffer(const SCP_buffer&) = delete;
+	SCP_buffer& operator=(const SCP_buffer&) = delete;
+	SCP_buffer& operator=(SCP_buffer&& Source) noexcept
+	{
+		if (this != &Source)
+		{
+			InternalData = std::move(Source.InternalData);
+			Size = Source.Size;
+		}
+		return *this;
+	}
+	size_t Size;
+	SCP_buffer Clone() const
+	{
+		SCP_buffer MyClone = SCP_buffer(Size);
+		std::copy(begin(), end(), MyClone.begin());
+		return MyClone;
+	}
+	inline char* const Data() const { return InternalData.get(); }
+	inline char* const begin() const { return InternalData.get(); }
+	inline char* const end() const { return InternalData.get() + Size; }
+	inline char& operator[](size_t Index) const { return InternalData[Index]; }
+};
 
 #if __cplusplus < 201402L
 template <class T, bool>

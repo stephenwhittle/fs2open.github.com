@@ -25,4 +25,9 @@ public:
 		:ghc::filesystem::path(InString) {};
 	SCPPath(const char* InString)
 		:ghc::filesystem::path(InString) {};
+	SCPPath& operator =(const ghc::filesystem::path& InPath)
+	{
+		assign(InPath.c_str());
+		return *this;
+	}
 };

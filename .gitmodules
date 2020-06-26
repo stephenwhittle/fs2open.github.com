@@ -10,3 +10,9 @@
 [submodule "lib/filesystem"]
 	path = lib/filesystem
 	url = https://github.com/gulrak/filesystem.git
+[submodule "lib/cpp-peglib"]
+	path = lib/cpp-peglib
+	url = https://github.com/yhirose/cpp-peglib.git
+[submodule "lib/optional"]
+	path = lib/optional
+	url = https://github.com/TartanLlama/optional.git

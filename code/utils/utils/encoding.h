@@ -32,6 +32,6 @@ bool has_bom(const SCP_string& content);
  */
 bool guessLatin1Encoding(const char* aBuf, size_t aLen);
 
-void ConvertFromLatinEncoding(char* raw_text, int file_len, const char* filename);
+SCP_buffer ConvertFromLatinEncoding(SCP_buffer const& raw_text, SCP_string FileName);
 
 }

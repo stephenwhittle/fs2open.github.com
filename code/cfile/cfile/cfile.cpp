@@ -654,8 +654,8 @@ void cf_create_directory(int dir_type, uint32_t location_flags)
 //					error   ==> NULL
 //
 
-CFILE* _cfopen(const char* source, int line, const char* file_path, const char* mode, int type, int dir_type,
-               bool localize, uint32_t location_flags)
+CFILE* _cfopen(const char* source_file, int line, const char* filename, const char* mode, int type /*= CFILE_NORMAL*/, int dir_type /*= CF_TYPE_ANY*/,
+               bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	/* Bobboau, what is this doing here? 31 is way too short... - Goober5000
 	if( strlen(file_path) > 31 )
@@ -668,7 +668,7 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 
 	//================================================
 	// Check that all the parameters make sense
-	Assert(file_path && strlen(file_path));
+	Assert(filename && strlen(filename));
 	Assert( mode != NULL );
 	
 	// Can only open read-only binary files in memory mapped mode.
@@ -686,12 +686,12 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 
 		// For write-only files, require a full path or a path type
 #ifdef SCP_UNIX
-		if ( strpbrk(file_path, "/") ) {
+		if ( strpbrk(filename, "/") ) {
 #else
-		if ( strpbrk(file_path,"/\\:")  ) {
+		if ( strpbrk(filename,"/\\:")  ) {
 #endif
 			// Full path given?
-			strcpy_s(longname, file_path );
+			strcpy_s(longname, filename );
 		} else {
 			// Path type given?
 			Assert( dir_type != CF_TYPE_ANY );
@@ -699,7 +699,7 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 			// Create the directory if necessary
 			cf_create_directory(dir_type, location_flags);
 
-			cf_create_default_path_string(longname, sizeof(longname) - 1, dir_type, file_path, false, location_flags);
+			cf_create_default_path_string(longname, sizeof(longname) - 1, dir_type, filename, false, location_flags);
 		}
 		Assert( !(type & CFILE_MEMORY_MAPPED) );
 
@@ -740,7 +740,7 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 
 		FILE *fp = fopen(longname, happy_mode);
 		if (fp)	{
-			return cf_open_fill_cfblock(source, line, fp, dir_type);
+			return cf_open_fill_cfblock(source_file, line, fp, dir_type);
  		}
 		return NULL;
 	} 
@@ -750,13 +750,13 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 	// Search for file on disk, on cdrom, or in a packfile
 
 	char copy_file_path[MAX_PATH_LEN];  // FIX change in memory from cf_find_file_location
-	strcpy_s(copy_file_path, file_path);
+	strcpy_s(copy_file_path, filename);
 
-	auto find_res = cf_find_file_location( copy_file_path, dir_type, localize, location_flags );
+	auto find_res = cf_find_file_location( copy_file_path, dir_type, localize, location_flags , LanguagePrefix);
 	if ( find_res.found ) {
 
 		// Fount it, now create a cfile out of it
-		nprintf(("CFileDebug", "Requested file %s found at: %s\n", file_path, find_res.full_name.c_str()));
+		nprintf(("CFileDebug", "Requested file %s found at: %s\n", filename, find_res.full_name.c_str()));
 
 		if ( type & CFILE_MEMORY_MAPPED ) {
 		
@@ -768,19 +768,19 @@ CFILE* _cfopen(const char* source, int line, const char* file_path, const char* 
 				hFile = CreateFile(find_res.full_name.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 				if (hFile != INVALID_HANDLE_VALUE)	{
-					return cf_open_mapped_fill_cfblock(source, line, hFile, dir_type);
+					return cf_open_mapped_fill_cfblock(source_file, line, hFile, dir_type);
 				}
 #elif defined SCP_UNIX
 				FILE* fp = fopen(find_res.full_name.c_str(), "rb");
 				if (fp) {
-					return cf_open_mapped_fill_cfblock(source, line, fp, dir_type);
+					return cf_open_mapped_fill_cfblock(source_file, line, fp, dir_type);
 				}
 #endif
 			} 
 
 		} else {
 			// since cfopen_special already has all the code to handle the opening we can just use that here
-			return _cfopen_special(source, line, find_res.full_name.c_str(), mode, find_res.size, find_res.offset,
+			return _cfopen_special(source_file, line, find_res.full_name.c_str(), mode, find_res.size, find_res.offset,
 			                       find_res.data_ptr, dir_type);
 		}
 
@@ -1925,7 +1925,7 @@ int check_encoding_and_skip_bom(CFILE* file, const char* filename, int* start_of
 
 // TODO: @parselo move to cfile
 // Goober5000
-SCP_vector<char> read_raw_file_text(const char* filename, int mode)
+SCP_buffer read_raw_file_text(const char* filename, int mode /*= CF_TYPE_ANY*/)
 {
 	CFILE* mf;
 	int file_is_encrypted;
@@ -1939,41 +1939,38 @@ SCP_vector<char> read_raw_file_text(const char* filename, int mode)
 	}
 
 	// read the entire file in
-	ulonglong file_len = cfilelength(mf);
+	int file_len = cfilelength(mf);
 
 	if (!file_len) {
 		nprintf(("Error", "Oh noes!!  File is empty! (%s)!\n", filename));
 		throw std::runtime_error("Failed to open file");
 	}
-	char* raw_text = new char[file_len + 1];
-
+	SCP_buffer raw_text = SCP_buffer(file_len + 1);
 	// read first 10 bytes to determine if file is encrypted
-	cfread(raw_text, MIN(file_len, 10), 1, mf);
-	file_is_encrypted = is_encrypted(raw_text);
+	cfread(raw_text.Data(), std::min(file_len, 10), 1, mf);
+	file_is_encrypted = is_encrypted(raw_text.Data());
 	cfseek(mf, 0, CF_SEEK_SET);
 
 	file_len = check_encoding_and_skip_bom(mf, filename);
 
 	if (file_is_encrypted) {
 		int unscrambled_len;
-		char* scrambled_text;
-		scrambled_text = new char (file_len + 1);
-		Assert(scrambled_text);
-		cfread(scrambled_text, file_len, 1, mf);
+		SCP_buffer unscrambled_text = SCP_buffer(file_len + 1);
+
+		cfread(unscrambled_text.Data(), file_len, 1, mf);
 		// unscramble text
-		unencrypt(scrambled_text, file_len, raw_text, &unscrambled_len);
+		unencrypt(unscrambled_text.Data(), file_len, raw_text.Data(), &unscrambled_len);
 		file_len = unscrambled_len;
-		delete(scrambled_text);
 	} else {
-		cfread(raw_text, file_len, 1, mf);
+		cfread(raw_text.Data(), file_len, 1, mf);
 	}
 
 	// WMC - Slap a NULL character on here for the odd error where we forgot a #End
 	raw_text[file_len] = '\0';
 
 	cfclose(mf);
-	SCP_vector<char> text(raw_text, raw_text + (sizeof(char) * (file_len + 1 )));
-	return text;
+	
+	return raw_text;
 }
 
 //TODO: @cfile this function currently is expected to populate the parse buffer
@@ -1982,7 +1979,7 @@ SCP_vector<char> read_raw_file_text(const char* filename, int mode)
 //	When a comment is found, it is removed.  If an entire line
 //	consisted of a comment, a blank line is left in the input file.
 // Goober5000 - added ability to read somewhere other than Parse_text
-SCP_vector<char> read_file_text(const char* filename, int mode /*= CF_TYPE_ANY*/)
+SCP_buffer read_file_text(const char* filename, int mode /*= CF_TYPE_ANY*/)
 {
 	// copy the filename
 	if (!filename)

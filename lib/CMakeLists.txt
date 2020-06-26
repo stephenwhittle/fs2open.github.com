@@ -41,4 +41,8 @@ add_subdirectory(fmt)
 
 add_subdirectory(filesystem)
 
+add_subdirectory(optional)
+
+include(peglib.cmake)
+
 add_subdirectory(vulkan-hpp)

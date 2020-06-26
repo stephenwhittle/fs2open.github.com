@@ -4,20 +4,89 @@
 #include "FSAssert.h"
 #include "parse/parselo.h"
 #include "memory/utils.h"
+#include "utils/encoding.h"
 
 #define ERROR_LENGTH 64
 #define RS_MAX_TRIES 5
 
- SCPParser::SCPParser(char* InRawData) 
-	 : RawData(InRawData), 
-	 Mp(InRawData) 
+SCP_string GetLine(const SCP_buffer& Input, SCP_buffer::iterator& Rest)
+{
+	auto LineBreak = std::find(Input.begin(), Input.end(), '\n');
+	if (LineBreak != Input.end())
+	{
+		LineBreak++; //make sure our newline is included
+	}
+	SCP_string Line = SCP_string(Input.begin(), LineBreak);
+	Rest = LineBreak;
+	return Line;
+}
+
+/*
+
+void SCPParser::PreprocessBuffer() 
+{
+	char* mp;
+	char* mp_raw;
+	bool in_quote = false;
+	int raw_text_len = RawData.Size;
+	SCP_buffer ProcessedText = SCP_buffer(raw_text_len);
+
+	mp = ProcessedText.begin();
+	mp_raw = RawData.begin();
+	SCP_buffer::iterator CurrentPosition = nullptr;
+	SCP_string CurrentLine = GetLine(RawData, CurrentPosition);
+
+	while (CurrentPosition != RawData.end())
+	{
+		if (!strcmp(CurrentLine.c_str(),
+					"1402, \"Sie haben IPX-Protokoll als Protokoll ausgew\xE4hlt, aber dieses Protokoll ist auf Ihrer "
+					"Maschine nicht installiert.\".\"\n")) {
+			CurrentLine[121] = ' ';
+			CurrentLine[122] = ' ';
+		} else if (!strcmp(outbuf,
+						   "1117, \"\\r\\n\"Aucun web browser trouva. Del\xE0 isn't on emm\xE9nagea ou if \\r\\non est "
+						   "emm\xE9nagea, ca isn't set pour soient la default browser.\\r\\n\\r\\n\"\n")) {
+			char* ch = &outbuf[11];
+			do {
+				*ch = *(ch + 1);
+				++ch;
+			} while (*ch);
+		} else if (!strcmp(outbuf, "1337, \"(fr)Loading\"\n")) {
+			outbuf[3] = '6';
+		} else if (!strcmp(outbuf,
+						   "3966, \"Es sieht so aus, als habe Staffel Kappa Zugriff auf die GTVA-Zugangscodes f\xFCr "
+						   "das System gehabt. Das ist ein ernstes Sicherheitsleck. Ihre IFF-Kennung erschien als "
+						   "\"verb\xFCndet\", so da\xDF sie sich dem Konvoi ungehindert n\xE4hern konnten. Zum "
+						   "Gl\xFC\x63k flogen Sie und  Alpha 2 Geleitschutz und lie\xDF\x65n den Schwindel "
+						   "auffliegen, bevor Kappa ihren Befehl ausf\xFChren konnte.\"\n")) {
+			outbuf[171] = '\'';
+			outbuf[181] = '\'';
+		}
+		CurrentLine = GetLine(RawData, CurrentPosition);
+	}
+	
+	if (Unicode_text_mode) {
+		// In unicode mode we simply assume that the text is already properly encoded in UTF-8
+		// Also, since we don't know how big mp actually is since we get the pointer from the outside we can't use one of
+		// the "safe" strcpy variants here...
+		strcpy(mp, outbuf);
+		mp += strlen(outbuf);
+	}
+	else {
+		mp += maybe_convert_foreign_characters(outbuf, mp, false);
+	}
+
+	// Make sure the string is terminated properly
+	*mp = *mp_raw = '\0';
+
+}*/
+
+SCPParser::SCPParser(SCP_buffer InRawData, SCP_string Filename)
+	 : RawData(util::ConvertFromLatinEncoding(InRawData, Filename))
  {
-	 // TODO: @parselo move this to cfile as well, split comment stripping so it can be left here then called by other
-	 // modules
-	 // process it (strip comments)
-	 ConvertFromLatinEncoding(raw_text, file_len, filename);
-	 process_raw_file_text(processed_text, raw_text);
+	
  }
+/*
 
 void SCPParser::advance_to_next_white()
 {
@@ -1632,3 +1701,4 @@ void SCPParser::stuff_boolean_flag(int* i, int flag, bool a_to_eol)
 	else
 		*i &= ~(flag);
 }
+*/

@@ -8,10 +8,13 @@
 //SCPParser takes ownership of the underlying data pointer
 class SCPParser
 {
-    std::unique_ptr<char> RawData;
-	char* Mp;
+    SCP_buffer RawData;
+	const char* Mp;
+
+	/*void PreprocessBuffer();*/
 public:
-    SCPParser(char* InRawData);
+    SCPParser(SCP_buffer InRawData, SCP_string Filename);
+/*
 
 	// Advance Mp to the next white space (ignoring white space inside of " marks)
 	void advance_to_next_white();
@@ -50,9 +53,9 @@ public:
 
 	int check_for_eof();
 
-	/**
+	/ **
 	Returns 1 if it finds a newline character precded by any amount of grayspace.
-	*/
+	* /
 	int check_for_eoln();
 
 	// similar to optional_string, but just checks if next token is a match.
@@ -81,7 +84,7 @@ public:
 	// also pass in an ending token, which marks the point we should stop looking at.
 	int optional_string_fred(const char* pstr, const char* end, const char* end2);
 
-	/**
+	/ **
 	 * @brief Checks for one of two required strings
 	 *
 	 * @retval 0 for str1 match
@@ -90,17 +93,17 @@ public:
 	 *
 	 * @details Advances the Mp until a string is found or exceeds RS_MAX_TRIES. Once a string is found, Mp is located at
 	 * the start of the found string.
-	 */
+	 * /
 	int required_string_either(const char* str1, const char* str2);
 
-	/**
+	/ **
 	 * @brief Checks for one of any of the given required strings.
 	 *
 	 * @returns The index number of the found string, if it was found
 	 * @returns -1 if a string was not found
 	 *
 	 * @details By ngld, with some tweaks by MageKing17.
-	 */
+	 * /
 	int required_string_one_of(int arg_count, ...);
 
 	int required_string_either_fred(const char* str1, const char* str2);
@@ -128,15 +131,15 @@ public:
 	// ditto for SCP_string
 	int get_string_or_variable(SCP_string& str);
 
-	/**
+	/ **
 	 * Stuff a string (" chars ") into *str, return length.
 	 * Accepts an optional max length parameter. If it is omitted or negative, then no max length is enforced.
-	 */
+	 * /
 	int get_string(char* str, int max = -1);
 
-	/**
+	/ **
 	 * Stuff a string (" chars ") into str.
-	 */
+	 * /
 	void get_string(SCP_string& str);
 
 	//	Stuff a string into a string buffer.
@@ -275,6 +278,7 @@ public:
 	void find_and_stuff_or_add(
 		const char* id, int* addr, int f_type, char* strlist[], int* total, int max, const char* description);
 
+*/
 
 	~SCPParser() = default;
 };

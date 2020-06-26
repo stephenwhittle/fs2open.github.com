@@ -50,10 +50,6 @@ using namespace parse;
 // to know that a modular table is currently being parsed
 bool	Parsing_modular_table = false;
 
-char		Current_filename[MAX_PATH_LEN];
-char		Current_filename_sub[MAX_PATH_LEN];	//Last attempted file to load, don't know if ex or not.
-char		Error_str[ERROR_LENGTH];
-int		Warning_count, Error_count;
 int		fred_parse_flag = 0;
 int		Token_found_flag;
 
@@ -61,12 +57,6 @@ char 	*Parse_text = nullptr;
 char	*Parse_text_raw = nullptr;
 char	*Mp = NULL, *Mp_save = NULL;
 const char	*token_found;
-
-SCP_vector<Bookmark> Bookmarks;	// Stack of all our previously paused parsing
-
-// text allocation stuff
-void allocate_parse_text(size_t size);
-static size_t Parse_text_size = 0;
 
 
 //	Return true if this character is white space, else false.
@@ -210,97 +200,6 @@ void diag_printf(const char *format, ...)
 	va_end(args);
 
 #endif
-}
-
-//	Grab and return (a pointer to) a bunch of tokens, terminating at
-// ERROR_LENGTH chars, or end of line.
-char *next_tokens()
-{
-	int	count = 0;
-	char	*pstr = Mp;
-	char	ch;
-
-	while (((ch = *pstr++) != EOLN) && (ch != '\0') && (count < ERROR_LENGTH-1))
-		Error_str[count++] = ch;
-
-	Error_str[count] = 0;
-	return Error_str;
-}
-
-//	Return the line number given by the current mission pointer, ie Mp.
-//	A very slow function (scans all processed text), but who cares how long
-//	an error reporting function takes?
-int get_line_num()
-{
-	int	count = 1;
-	int	incomment = 0;
-	int	multiline = 0;
-	char	*stoploc;
-	char	*p;
-
-	p = Parse_text;
-	stoploc = Mp;
-
-	while (p < stoploc)
-	{
-		if (*p == '\0')
-			GOutputDevice->Warning(LOCATION, "Unexpected end-of-file while looking for error line!");
-
-		if ( !incomment && (*p == COMMENT_CHAR) )
-			incomment = 1;
-
-		if ( !incomment && (*p == '/') && (*(p+1) == '*') ) {
-			multiline = 1;
-			incomment = 1;
-		}
-
-		if ( incomment )
-			stoploc++;
-
-		if ( multiline && (*(p-1) == '*') && (*p == '/') ) {
-			multiline = 0;
-			incomment = 0;
-		}
-
-		if (*p++ == EOLN) {
-			if ( !multiline && incomment )
-				incomment = 0;
-			count++;
-		}
-	}
-
-	return count;
-}
-
-//	Call this function to display an error message.
-//	error_level == 0 means this is just a warning.
-//	!0 means it's an error message.
-//	Prints line number and other useful information.
-extern int Cmdline_noparseerrors;
-void error_display(int error_level, const char *format, ...)
-{
-	char type[8];
-	SCP_string error_text;
-	va_list args;
-
-	if (error_level == 0) {
-		strcpy_s(type, "Warning");
-		Warning_count++;
-	} else {
-		strcpy_s(type, "Error");
-		Error_count++;
-	}
-
-	va_start(args, format);
-	vsprintf(error_text, format, args);
-	va_end(args);
-	//TODO: @parselo fix Current_filename so diagnostics will work right
-	nprintf((type, "%s(line %i): %s: %s\n", Current_filename, get_line_num(), type, error_text.c_str()));
-
-	if(error_level == 0 || Cmdline_noparseerrors)
-		GOutputDevice->Warning(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
-	else
-		GOutputDevice->Error(LOCATION, "%s(line %i):\n%s: %s", Current_filename, get_line_num(), type, error_text.c_str());
 }
 
 
@@ -1291,7 +1190,7 @@ void allocate_parse_text(size_t size)
 
 
 // Goober5000
-void process_raw_file_text(char *processed_text, char *raw_text)
+SCP_buffer process_raw_file_text(SCP_buffer const& raw_text)
 {
 	char	*mp;
 	char	*mp_raw;
@@ -1299,19 +1198,11 @@ void process_raw_file_text(char *processed_text, char *raw_text)
 	bool in_quote = false;
 	bool in_multiline_comment_a = false;
 	bool in_multiline_comment_b = false;
-	int raw_text_len = (int)strlen(raw_text);
+	int raw_text_len = raw_text.Size;
+	SCP_buffer ProcessedText = SCP_buffer(raw_text_len);
 
-	if (processed_text == NULL)
-		processed_text = Parse_text;
-
-	if (raw_text == NULL)
-		raw_text = Parse_text_raw;
-
-	Assert( processed_text != NULL );
-	Assert( raw_text != NULL );
-
-	mp = processed_text;
-	mp_raw = raw_text;
+	mp = ProcessedText.begin();
+	mp_raw = raw_text.begin();
 
 	// strip comments from raw text, reading into file_text
 	int num_chars_read = 0;

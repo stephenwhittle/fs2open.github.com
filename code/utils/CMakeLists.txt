@@ -14,4 +14,4 @@ add_library(utils STATIC utils/unicode.h
                             utils/boost/syncboundedqueue.h
 )
 target_include_directories(utils PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(utils PUBLIC core utfcpp )
+target_link_libraries(utils PUBLIC core utfcpp sdl2 )

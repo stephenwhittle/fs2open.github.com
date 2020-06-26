@@ -1020,7 +1020,7 @@ void cf_free_secondary_filelist()
  *
  * @return A structure which describes the found file
  */
-CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool localize, uint32_t location_flags)
+CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	int i;
     uint ui;
@@ -1091,7 +1091,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
  
 		if (cfs_slow_search) {
 			cf_create_default_path_string(longname, sizeof(longname) - 1, search_order[ui], filespec, localize,
-			                              location_flags);
+			                              location_flags, LanguagePrefix);
 
 #if defined _WIN32
 			_finddata_t findstruct;
@@ -1148,32 +1148,32 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 
 		if (localize) {
 			// create localized filespec
-			strncpy(longname, filespec, MAX_PATH_LEN - 1);
+			SCPPath LocalizedPath = SCPPath(filespec);
+			LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+			
+			
+			if ( !stricmp(LocalizedPath.c_str(), f->name_ext) ) {
+				CFileLocation res(true);
+				res.size = static_cast<size_t>(f->size);
+				res.offset = (size_t)f->pack_offset;
+				res.data_ptr = f->data;
 
-			if ( lcl_add_dir_to_path_with_filename(longname, MAX_PATH_LEN - 1) ) {
-				if ( !stricmp(longname, f->name_ext) ) {
-					CFileLocation res(true);
-					res.size = static_cast<size_t>(f->size);
-					res.offset = (size_t)f->pack_offset;
-					res.data_ptr = f->data;
+				if (f->data != nullptr) {
+					// This is an in-memory file so we just copy the pathtype name + file name
+					res.full_name = Pathtypes[f->pathtype_index].path;
+					res.full_name += DIR_SEPARATOR_STR;
+					res.full_name += f->name_ext;
+				} else if (f->pack_offset < 1) {
+					// This is a real file, return the actual file path
+					res.full_name = f->real_name;
+				} else {
+					// File is in a pack file
+					cf_root *r = cf_get_root(f->root_index);
 
-					if (f->data != nullptr) {
-						// This is an in-memory file so we just copy the pathtype name + file name
-						res.full_name = Pathtypes[f->pathtype_index].path;
-						res.full_name += DIR_SEPARATOR_STR;
-						res.full_name += f->name_ext;
-					} else if (f->pack_offset < 1) {
-						// This is a real file, return the actual file path
-						res.full_name = f->real_name;
-					} else {
-						// File is in a pack file
-						cf_root *r = cf_get_root(f->root_index);
-
-						res.full_name = r->path;
-					}
-
-					return res;
+					res.full_name = r->path;
 				}
+
+				return res;
 			}
 		}
 
@@ -1224,7 +1224,7 @@ extern char *stristr(char *str, const char *substr);
  *
  * @return A structure containing information about the found file
  */
-CFileLocationExt cf_find_file_location_ext( const char *filename, const int ext_num, const char **ext_list, int pathtype, bool localize)
+CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_num, const char** ext_list, int pathtype, bool localize /*= false*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	int cur_ext, i;
     uint ui;
@@ -1299,7 +1299,7 @@ CFileLocationExt cf_find_file_location_ext( const char *filename, const int ext_
 
 			strcat_s( filespec, ext_list[cur_ext] );
  
-			cf_create_default_path_string( longname, sizeof(longname)-1, search_order[ui], filespec, localize );
+			cf_create_default_path_string( longname, sizeof(longname)-1, search_order[ui], filespec, localize, (uint32_t)CF_LOCATION_ALL, LanguagePrefix );
 
 #if defined _WIN32
 			_finddata_t findstruct;
@@ -1412,36 +1412,36 @@ CFileLocationExt cf_find_file_location_ext( const char *filename, const int ext_
 
 			if (localize) {
 				// create localized filespec
-				strncpy(longname, filespec, MAX_PATH_LEN - 1);
+				
+				SCPPath LocalizedPath = SCPPath(filespec);
+				LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
 
-				if ( lcl_add_dir_to_path_with_filename(longname, MAX_PATH_LEN - 1) ) {
-					if ( !stricmp(longname, f->name_ext) ) {
-						CFileLocationExt res(cur_ext);
-						res.found = true;
-						res.size = static_cast<size_t>(f->size);
-						res.offset = (size_t)f->pack_offset;
-						res.data_ptr = f->data;
+				if ( !stricmp(LocalizedPath.c_str(), f->name_ext) ) {
+					CFileLocationExt res(cur_ext);
+					res.found = true;
+					res.size = static_cast<size_t>(f->size);
+					res.offset = (size_t)f->pack_offset;
+					res.data_ptr = f->data;
 
-						if (f->data != nullptr) {
-							// This is an in-memory file so we just copy the pathtype name + file name
-							res.full_name = Pathtypes[f->pathtype_index].path;
-							res.full_name += DIR_SEPARATOR_STR;
-							res.full_name += f->name_ext;
-						} else if (f->pack_offset < 1) {
-							// This is a real file, return the actual file path
-							res.full_name = f->real_name;
-						} else {
-							// File is in a pack file
-							cf_root *r = cf_get_root(f->root_index);
+					if (f->data != nullptr) {
+						// This is an in-memory file so we just copy the pathtype name + file name
+						res.full_name = Pathtypes[f->pathtype_index].path;
+						res.full_name += DIR_SEPARATOR_STR;
+						res.full_name += f->name_ext;
+					} else if (f->pack_offset < 1) {
+						// This is a real file, return the actual file path
+						res.full_name = f->real_name;
+					} else {
+						// File is in a pack file
+						cf_root *r = cf_get_root(f->root_index);
 
-							res.full_name = r->path;
-						}
-
-						// found it, so cleanup and return
-						file_list_index.clear();
-
-						return res;
+						res.full_name = r->path;
 					}
+
+					// found it, so cleanup and return
+					file_list_index.clear();
+
+					return res;
 				}
 			}
 
@@ -2263,7 +2263,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 // Output:  path      - Fully qualified pathname.
 //Returns 0 if the result would be too long (invalid result)
 int cf_create_default_path_string(char* path, uint path_max, int pathtype, const char* filename, bool localize,
-                                  uint32_t location_flags)
+                                  uint32_t location_flags, SCP_string LanguagePrefix)
 {
 #ifdef SCP_UNIX
 	if ( filename && strpbrk(filename,"/")  ) {
@@ -2316,18 +2316,15 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 
 			// localize filename
 			if (localize) {
-				// create copy of path
-				char path_tmp[MAX_PATH_LEN] = { 0 };
-				strncpy( path_tmp, path, MAX_PATH_LEN - 1 );
 
-				// localize the path
-				if(lcl_add_dir_to_path_with_filename(path_tmp, MAX_PATH_LEN - 1)) {
-					// verify localized path
-					FILE *fp = fopen(path, "rb");
-					if (fp) {
-						fclose(fp);
-						return 1;
-					}
+				SCPPath LocalizedPath = SCPPath(path);
+				LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+				strncpy(path, LocalizedPath.c_str(), path_max);
+				// verify localized path
+				FILE *fp = fopen(path, "rb");
+				if (fp) {
+					fclose(fp);
+					return 1;
 				}
 			}
 		}

@@ -185,7 +185,7 @@ int cf_get_dir_type(CFILE *cfile);
 // Opens the file.  If no path is given, use the extension to look into the
 // default path.  If mode is NULL, delete the file.
 CFILE* _cfopen(const char* source_file, int line, const char* filename, const char* mode, int type = CFILE_NORMAL,
-               int dir_type = CF_TYPE_ANY, bool localize = false, uint32_t location_flags = CF_LOCATION_ALL);
+               int dir_type = CF_TYPE_ANY, bool localize = false, uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 #define cfopen(...) _cfopen(LOCATION, __VA_ARGS__) // Pass source location to the function
 
 // like cfopen(), but it accepts a fully qualified path only (ie, the result of a cf_find_file_location() call)
@@ -390,7 +390,7 @@ struct CFileLocation {
 //         offset      - Offset into pack file.  0 if not a packfile.
 // Returns: If not found returns 0.
 CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool localize = false,
-                                    uint32_t location_flags = CF_LOCATION_ALL);
+                                    uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
 struct CFileLocationExt : public CFileLocation {
 	int extension_index = -1;
@@ -414,7 +414,7 @@ struct CFileLocationExt : public CFileLocation {
 // Returns: If not found returns -1, else returns offset into ext_list.
 // (NOTE: This function is exponentially slow, so don't use it unless truely needed!!)
 CFileLocationExt cf_find_file_location_ext(const char* filename, const int ext_num, const char** ext_list, int pathtype,
-                                           bool localize = false);
+                                           bool localize = false, SCP_string LanguagePrefix = "");
 
 // Functions to change directories
 int cfile_chdir(const char *dir);
@@ -468,8 +468,8 @@ namespace cfile
 	};
 
 }
-extern SCP_vector<char> read_file_text(const char* filename, int mode = CF_TYPE_ANY);
-extern SCP_vector<char> read_raw_file_text(const char* filename, int mode = CF_TYPE_ANY);
+extern SCP_buffer read_file_text(const char* filename, int mode = CF_TYPE_ANY);
+extern SCP_buffer read_raw_file_text(const char* filename, int mode = CF_TYPE_ANY);
 
 /**
  * @brief Checks the encoding of the specified file pointer and possibly skips the BOM if present

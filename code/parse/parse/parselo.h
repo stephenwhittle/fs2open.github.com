@@ -274,7 +274,7 @@ extern void compact_multitext_string(SCP_string &str);
 
 extern void read_file_text_from_default(const default_file& file, char *processed_text = NULL, char *raw_text = NULL);
 
-extern void process_raw_file_text(char *processed_text = NULL, char *raw_text = NULL);
+extern SCP_buffer process_raw_file_text(SCP_buffer const& raw_text);
 extern void debug_show_mission_text();
 extern void convert_sexp_to_string(SCP_string &dest, int cur_node, int mode);
 extern size_t maybe_convert_foreign_characters(const char *in, char *out, bool add_null = true);
@@ -347,11 +347,14 @@ extern int scan_fso_version_string(const char *text, int *major, int *minor, int
 extern void truncate_message_lines(SCP_string &text, int num_allowed_lines);
 
 inline void parse_advance(int s){Mp+=s;}
+/*
+//TODO: @parselo move these into table library that depends on parser perhaps
 
 // parse a modular table, returns the number of files matching the "name_check" filter or 0 if it did nothing
 extern int parse_modular_table(const char *name_check, void (*parse_callback)(const char *filename), int path_type = CF_TYPE_TABLES, int sort_type = CF_SORT_REVERSE);
 // to know that we are parsing a modular table
 extern bool Parsing_modular_table;
+*/
 
 //Karajorma - Parses mission and campaign ship loadouts.
 int stuff_loadout_list (int *ilp, int max_ints, int lookup_type);
@@ -366,7 +369,7 @@ namespace parse
 	{
 	public:
 		explicit ParseException(const std::string& msg) : std::runtime_error(msg) {}
-		~ParseException() SCP_NOEXCEPT override {}
+		~ParseException() override {}
 	};
 
 	/**
