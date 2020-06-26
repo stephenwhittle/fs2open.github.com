@@ -19,6 +19,7 @@
 #include "localization/localize.h"
 #include "options/Option.h"
 #include "parse/parselo.h"
+#include "SCPBuiltinLanguages.h"
 
 // z64: These enumerations MUST equal to those in controlsconfig.cpp...
 // z64: Really need a better way than this.

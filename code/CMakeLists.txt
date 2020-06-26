@@ -93,6 +93,10 @@ add_subdirectory(font)
 
 target_link_libraries(code PUBLIC font)
 
+add_subdirectory(color)
+
+target_link_libraries(code PUBLIC color)
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)

@@ -88,6 +88,11 @@ class SCPTableProperty
 	std::vector<T> PropertyValues;
 	//tl::optional<SCPVersionInfo> ValidFromVersion;
 public:
+	SCPTableProperty() {};
+	SCPTableProperty(const T& InitialValue)
+	{
+		PropertyValues.push_back(InitialValue);
+	}
 	operator tl::optional<T>&() 
 	{
 		if (PropertyValues.size() > 0)
@@ -125,6 +130,25 @@ public:
 		return *this;
 	}
 
+	void ReplaceValue(const T& OverrideValue)
+	{
+		if (PropertyValues.size())
+		{
+			PropertyValues.back() = OverrideValue;
+		}
+		else
+		{
+			PropertyValues.push_back(OverrideValue);
+		}
+	}
+
+	void ReplaceValue(const tl::optional<T>& OverrideValue)
+	{
+		if (OverrideValue.has_value())
+		{
+			ReplaceValue(OverrideValue.value());
+		}
+	}
 	//need to override assignment operator
 //need to implement override method?
 };
@@ -135,6 +159,14 @@ template<typename ClassType, typename FieldType>
 auto DeserializeToField(SCPTableProperty<FieldType> ClassType::* Field)
 {
 	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) { ClassInstance->*Field = construct<FieldType>(InData); };
+}
+
+template <typename ClassType, typename FieldType>
+auto ReplaceValue(SCPTableProperty<FieldType> ClassType::*Field)
+{
+	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		ClassInstance->*Field.ReplaceValue(construct<FieldType>(InData));
+	};
 }
 
 

@@ -14,7 +14,7 @@
 
 #include "globalincs/globals.h"
 #include "globalincs/pstypes.h"
-
+#include "SCPFlags.h"
 struct wing;
 struct ai_info;
 struct ai_goal;

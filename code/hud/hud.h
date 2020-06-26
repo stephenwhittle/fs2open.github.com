@@ -15,7 +15,7 @@
 #include "graphics/font.h"
 #include "hud/hudgauges.h"
 #include "hud/hudparse.h"
-
+#include "SCPFlags.h"
 class object;
 struct cockpit_display;
 

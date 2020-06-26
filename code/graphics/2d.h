@@ -352,10 +352,6 @@ typedef struct shader {
 	ubyte	lookup[256];
 } shader;
 
-#define AC_TYPE_NONE		0		// Not an alphacolor
-#define AC_TYPE_HUD		1		// Doesn't change hue depending on background.  Used for HUD stuff.
-#define AC_TYPE_BLEND	2		// Changes hue depending on background.  Used for stars, etc.
-
 
 
 typedef struct tsb_t {

@@ -7,9 +7,11 @@
  *
 */ 
 
-#include "globalincs/alphacolors.h"
-#include "graphics/2d.h"
-#include "parse/parselo.h"
+#include "color/alphacolors.h"
+#include "color/SCPColorTable.h"
+#include "parse/SCPParser.h"
+#include "FSStdTypes.h"
+#include "cfile/cfile.h"
 #include "NOX.h"
 SCP_map<SCP_string, team_color> Team_Colors;
 SCP_vector<SCP_string> Team_Names;
@@ -246,16 +248,26 @@ void parse_everything_else(const char *filename);	// needs a better name
 void alpha_colors_init()
 {
 	// Set our default colors.
-	int i;
-	for (i = 0; i < TOTAL_COLORS; i++) {
-		gr_init_alphacolor(COLOR_LIST[i], rgba_defaults[i][0], rgba_defaults[i][1], rgba_defaults[i][2], rgba_defaults[i][3]);
-	}
-
+	
 	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
 		mprintf(("TABLES => Starting parse of 'colors.tbl' (checking '#Start Colors' section only)...\n"));
 		parse_colors("colors.tbl");
 	}
 	parse_modular_table(NOX("*-clr.tbm"), parse_colors);
+
+	SCP_buffer RootColorTableBuffer = read_file_text("colors.tbl", CF_TYPE_TABLES);
+	// moving the buffer into the function as we don't require it afterwards
+	SCPColorTable ColorTableData;
+	SCPParser::LoadIntoTable(ColorTableData, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");
+	
+	SCP_vector<SCP_string> StringTableFileNames;
+	cf_get_file_list(StringTableFileNames, CF_TYPE_TABLES, "*-lcl.tbm", CF_SORT_REVERSE);
+
+	for (SCP_string FileName : StringTableFileNames) {
+		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
+		SCPParser::LoadIntoTable(ColorTableData, ColorsFile, std::move(StringTableBuffer), FileName);
+	}
+
 
 	// Set defaults for interface colors and color tags (must be done after the above because they're generally just copies of above-defined colors).
 	for (i = 0; i < INTERFACE_COLORS; i++) {

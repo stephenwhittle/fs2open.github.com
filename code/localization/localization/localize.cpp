@@ -454,18 +454,6 @@ void lcl_xstr_init()
 
 	try
 	{
-		parse_stringstbl("strings.tbl");
-	}
-	catch (const parse::ParseException& e)
-	{
-		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "strings.tbl", e.what()));
-	}
-
-	//parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl);
-
-
-	try
-	{
 		parse_tstringstbl("tstrings.tbl");
 	}
 	catch (const parse::ParseException& e)

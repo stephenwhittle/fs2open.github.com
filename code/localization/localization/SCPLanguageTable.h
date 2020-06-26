@@ -60,7 +60,7 @@ tl::optional<SCPLanguageString> construct(const SCPParsedTableData& InData)
 		StringEntry.StringIndex = construct<int>(*InData.nodes[0]);
 		StringEntry.StringValue = construct<std::string>(*InData.nodes[1]);
 		if (NodeCount >= 3) { StringEntry.LowOffset = construct<int>(*InData.nodes[2]); }
-		if (NodeCount >= 4) { StringEntry.LowOffset = construct<int>(*InData.nodes[3]); }
+		if (NodeCount >= 4) { StringEntry.HighOffset = construct<int>(*InData.nodes[3]); }
 		return StringEntry;
 	}
 

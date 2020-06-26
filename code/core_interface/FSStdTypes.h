@@ -9,6 +9,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <vector>
+#include <array>
 
 const size_t INVALID_SIZE = static_cast<size_t>(-1);
 
@@ -33,6 +34,12 @@ using SCP_queue = std::queue< T, std::deque< T, std::allocator< T > > >;
 
 template< typename T >
 using SCP_deque = std::deque< T, std::allocator< T > >;
+
+template <typename T, typename... Args>
+std::array<T, sizeof...(Args)> make_array(Args&&... refs)
+{
+	return {std::forward<T>(refs)...};
+}
 
 class SCP_buffer
 {

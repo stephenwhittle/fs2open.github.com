@@ -19,7 +19,7 @@
 #include "object/object.h"
 #include "ship/ship_flags.h"
 #include "model/model_flags.h"
-
+#include "SCPFlags.h"
 class object;
 class model_render_params;
 
