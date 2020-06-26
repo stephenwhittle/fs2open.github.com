@@ -15,10 +15,14 @@
 #include "localization/localize.h"
 #include "config/osregistry.h"
 #include "parse/parselo.h"
+#include "parse/SCPParser.h"
 #include "fhash.h"
 //#include "playerman/player.h"
 //#include "mod_table/mod_table.h"
 #include "filesystem/SCPPath.h"
+#include "localization/SCPLanguageTable.h"
+#include "localization/SCPLanguageTableDescriptor.h"
+#include "cfile/cfile.h"
 #include "FSAssert.h"
 #include "SCPCmdOptions.h"
 #include "SCPApplication.h"
@@ -122,6 +126,9 @@ void lcl_init(int lang_init)
 	// set up the first language (which should be English)
 	Lcl_languages.push_back(Lcl_builtin_languages[0]);
 
+	SCP_buffer RootStringTableBuffer = read_file_text("strings.tbl", CF_TYPE_TABLES);
+	//moving the buffer into the function as we don't require it afterwards
+	tl::optional<SCPLanguageTable> LanguageTableData = SCPParser::CreateBaseTable<SCPLanguageTable>(LanguagesFile, std::move(RootStringTableBuffer), "strings.tbl");
 	// check string.tbl to see which languages we support
 	try
 	{
@@ -131,8 +138,16 @@ void lcl_init(int lang_init)
 	{
 		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "strings.tbl", e.what()));
 	}
+	SCP_vector<SCP_string> StringTableFileNames;
+	cf_get_file_list(StringTableFileNames, CF_TYPE_TABLES,"*-lcl.tbm", CF_SORT_REVERSE);
+	
+	for (SCP_string FileName : StringTableFileNames)
+	{
+		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
+		SCPParser::LoadIntoTable(*LanguageTableData, LanguagesFile, std::move(StringTableBuffer), FileName);
+	}
 
-	parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl_quick);
+	//parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl_quick);
 
 	// if we only have one language at this point, we need to setup the builtin languages as we might be dealing with an old style strings.tbl
 	// which doesn't support anything beyond the builtin languages. Note, we start at i = 1 because we added the first language above.
@@ -359,7 +374,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 			}
 
 			// write into Xstr_table (for strings.tbl) or Lcl_ext_str (for tstrings.tbl)
-			if (Parsing_modular_table) {
+			/*if (Parsing_modular_table) {
 				if ( external && (Lcl_ext_str.find(index) != Lcl_ext_str.end()) ) {
 					vm_free((void *) Lcl_ext_str[index]);
 					Lcl_ext_str.erase(Lcl_ext_str.find(index));
@@ -367,7 +382,7 @@ void parse_stringstbl_common(const char *filename, const bool external)
 					vm_free((void *) Xstr_table[index].str);
 					Xstr_table[index].str = NULL;
 				}
-			}
+			}*/
 
 			if (external && (Lcl_ext_str.find(index) != Lcl_ext_str.end())) {
 				GOutputDevice->Warning(LOCATION, "Tstrings table index %d used more than once", index);
@@ -446,7 +461,7 @@ void lcl_xstr_init()
 		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "strings.tbl", e.what()));
 	}
 
-	parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl);
+	//parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl);
 
 
 	try
@@ -458,7 +473,7 @@ void lcl_xstr_init()
 		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "tstrings.tbl", e.what()));
 	}
 
-	parse_modular_table(NOX("*-tlc.tbm"), parse_tstringstbl);
+	//parse_modular_table(NOX("*-tlc.tbm"), parse_tstringstbl);
 
 
 	Xstr_inited = 1;

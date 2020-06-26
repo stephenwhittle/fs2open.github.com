@@ -81,11 +81,7 @@ void SCPParser::PreprocessBuffer()
 
 }*/
 
-SCPParser::SCPParser(SCP_buffer InRawData, SCP_string Filename)
-	 : RawData(util::ConvertFromLatinEncoding(InRawData, Filename))
- {
-	
- }
+
 /*
 
 void SCPParser::advance_to_next_white()

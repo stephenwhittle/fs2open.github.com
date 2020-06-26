@@ -3,18 +3,65 @@
 #include "FSStdTypes.h"
 #include "FSMathTypes.h"
 #include <memory>
-
+#include "parse/SCPTableFormatDescriptor.h"
+#include "parse/SCPTable.h"
+#include "memory/utils.h"
+#include "utils/encoding.h"
 //
 //SCPParser takes ownership of the underlying data pointer
 class SCPParser
 {
-    SCP_buffer RawData;
-	const char* Mp;
-
-	/*void PreprocessBuffer();*/
+    
 public:
-    SCPParser(SCP_buffer InRawData, SCP_string Filename);
-/*
+	
+	template<typename TableType>
+	static tl::optional<TableType> CreateBaseTable(SCPTableFormatDescriptor& TableFormat, SCP_buffer InRawData, SCP_string Filename)
+	{
+		std::shared_ptr<SCPParsedTableData> my_ast;
+		
+		SCP_buffer ProcessedData = util::ConvertFromLatinEncoding(InRawData, Filename);
+		
+		TableFormat.UseRuleToParseInput("Root", ProcessedData.Data(), my_ast);
+
+		if (my_ast != nullptr) {
+			return construct<TableType>(*my_ast);
+		}
+		else
+		{
+			return tl::optional<TableType>();
+		}
+	}
+	template<typename TableType>
+	static void LoadIntoTable( SCPTableBase<TableType>& Table, SCPTableFormatDescriptor& TableFormat, SCP_buffer InRawData, SCP_string Filename)
+	{
+		std::shared_ptr<SCPParsedTableData> my_ast;
+
+		SCP_buffer ProcessedData = util::ConvertFromLatinEncoding(InRawData, Filename);
+
+		TableFormat.UseRuleToParseInput("Root", ProcessedData.Data(), my_ast);
+
+		if (my_ast != nullptr) {
+			for (auto Node : my_ast->nodes)
+			{
+				Table.Deserialize(Node->name, *Node);
+			}
+		}
+	}
+	/*template <typename TableType>
+	static tl::optional<TableType> LoadModularTable(const SCPTableFormatDescriptor& TableFormat, SCP_string FileFilter, int PathType, int SortOrder )
+	{
+		tl::optional<TableType> LoadedTable;
+
+		SCP_vector<SCP_string> TableFileNames;
+		cf_get_file_list(TableFileNames, PathType, FileFilter.c_str(), SortOrder);
+
+		for (SCP_string FileName : TableFileNames)
+		{
+			SCP_buffer TableBuffer = read_file_text(FileName, CF_TYPE_TABLES);
+
+		}
+	}*/
+		/*
 
 	// Advance Mp to the next white space (ignoring white space inside of " marks)
 	void advance_to_next_white();

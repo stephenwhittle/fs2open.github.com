@@ -59,6 +59,7 @@ template<typename T>
 using DeserializationHandlers = 
 std::map < std::string, std::function<void(T* TargetObject, const SCPParsedTableData & InData)>> ;
 
+//this will need to support XMT tables later (need a function to find the first valid value going back through the hierarchy)
 
 //possibly replace the CRTP with a virtual template member that can return DeserializationHandlers<T>
 template<class T>
