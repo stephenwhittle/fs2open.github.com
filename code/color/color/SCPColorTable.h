@@ -2,7 +2,9 @@
 #include "parse/SCPTable.h"
 #include "color/alphacolors.h"
 
-class SCPColorSet : SCPTableBase<SCPColorSet>
+
+
+class SCPColorSet : public SCPTableBase<SCPColorSet>
 {
 public:
 	SCPTableProperty<color> Blue;
@@ -28,15 +30,32 @@ public:
 	SCPTableProperty<color> UIGreen;
 	SCPTableProperty<color> UILightPink;
 	SCPTableProperty<color> UIPink;
+	
+	SCPTableProperty<std::map<std::string, team_color>> TeamColors;
+	
+	SCPTableProperty<SCPColorReference> TextNormal;
+	SCPTableProperty<SCPColorReference> TextSubselected;
+	SCPTableProperty<SCPColorReference> TextSelected;
+	SCPTableProperty<SCPColorReference> TextError;
+	SCPTableProperty<SCPColorReference> TextErrorHighlighted;
+	SCPTableProperty<SCPColorReference> TextActive;
+	SCPTableProperty<SCPColorReference> TextActiveHighlighted;
+	SCPTableProperty<SCPColorReference> TextHeading;
+	SCPTableProperty<SCPColorReference> MoreIndicator;
+	SCPTableProperty<SCPColorReference> BrightMoreIndicator;
+	SCPTableProperty<SCPColorReference> Bright;
+	SCPTableProperty<SCPColorReference> Normal;
+	SCPTableProperty<SCPColorReference> BriefingGrid;
+
+	SCPTableProperty<SCPColorReference> FictionViewerTag;
+	SCPTableProperty<SCPColorReference> CommandBriefingTag;
+	SCPTableProperty<SCPColorReference> BriefingTag;
+	SCPTableProperty<SCPColorReference> RedalertBriefingTag;
+	SCPTableProperty<SCPColorReference> DebriefingTag;
+	SCPTableProperty<SCPColorReference> RecommendationTag;
+	SCPTableProperty<SCPColorReference> LoopBriefingTag;
+	SCPTableProperty<std::map<std::string, SCPColorReference>> TaggedColorReferences;
 
 	static SCPColorSet DefaultColors();
-};
-
-class SCPColorTable : public SCPTableBase<SCPColorTable>
-{
-public:
-	SCPTableProperty<SCPColorSet> Colors;
-	SCPColorTable()
-		: Colors(SCPColorSet::DefaultColors()) {}
 };
 

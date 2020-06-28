@@ -38,6 +38,10 @@ public:
 	{
 		return "Section_" + RawName;
 	}
+	static std::string GetLiteralName(const std::string RawName)
+	{
+		return "Literal_" + RawName;
+	}
 	// Matches an optional 'VarName : Value' pair. Silently continues if missing
 	std::shared_ptr<peg::Ope> OptionalVariable(const std::string& VariableName);
 	// Matches a 'VarName : Value' pair. If not present the parsing will fail
@@ -65,6 +69,9 @@ public:
 
 	// Defines a symbol so it can be referred to by name elsewhere in the descriptor
 	std::shared_ptr<peg::Ope> Define(const std::string SymbolName, const std::shared_ptr<peg::Ope>& Definition);
+
+	//Helper function to add a literal string to the symbol table inline
+	std::shared_ptr<peg::Ope> DefinedLiteral(const std::string SymbolName);
 
 	// Retrieves a symbol previously defined by Define
 	std::shared_ptr<peg::Ope> GetDecl(const std::string SymbolName)

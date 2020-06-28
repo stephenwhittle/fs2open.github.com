@@ -43,6 +43,8 @@ add_subdirectory(filesystem)
 
 add_subdirectory(optional)
 
+add_subdirectory(variant)
+
 include(peglib.cmake)
 
 add_subdirectory(vulkan-hpp)

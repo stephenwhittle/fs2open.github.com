@@ -168,6 +168,15 @@ std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::Define(const std::string Sym
 	return g[SymbolName];
 }
 
+std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::DefinedLiteral(const std::string SymbolName) 
+{
+	std::string MangledLiteralName = GetLiteralName(SymbolName);
+
+	g[MangledLiteralName] <= peg::liti(SymbolName.c_str());
+	g[MangledLiteralName].name = MangledLiteralName;
+	return g[MangledLiteralName];
+}
+
 void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const std::string RuleName)
 {
 	auto& rule = g[RuleName];

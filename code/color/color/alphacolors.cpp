@@ -9,6 +9,7 @@
 
 #include "color/alphacolors.h"
 #include "color/SCPColorTable.h"
+#include "color/SCPColorTableDescriptor.h"
 #include "parse/SCPParser.h"
 #include "FSStdTypes.h"
 #include "cfile/cfile.h"
@@ -247,43 +248,22 @@ void parse_everything_else(const char *filename);	// needs a better name
 */
 void alpha_colors_init()
 {
-	// Set our default colors.
-	
+	//initialize the global colors pointer
+	gColors = std::make_unique<SCPColorSet>(SCPColorSet::DefaultColors());
+
 	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
-		mprintf(("TABLES => Starting parse of 'colors.tbl' (checking '#Start Colors' section only)...\n"));
-		parse_colors("colors.tbl");
+		SCP_buffer RootColorTableBuffer = read_file_text("colors.tbl", CF_TYPE_TABLES);
+		// moving the buffer into the function as we don't require it afterwards
+		SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");
 	}
-	parse_modular_table(NOX("*-clr.tbm"), parse_colors);
-
-	SCP_buffer RootColorTableBuffer = read_file_text("colors.tbl", CF_TYPE_TABLES);
-	// moving the buffer into the function as we don't require it afterwards
-	SCPColorTable ColorTableData;
-	SCPParser::LoadIntoTable(ColorTableData, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");
 	
-	SCP_vector<SCP_string> StringTableFileNames;
-	cf_get_file_list(StringTableFileNames, CF_TYPE_TABLES, "*-lcl.tbm", CF_SORT_REVERSE);
+	SCP_vector<SCP_string> ColorTableFileNames;
+	cf_get_file_list(ColorTableFileNames, CF_TYPE_TABLES, "*-lcl.tbm", CF_SORT_REVERSE);
 
-	for (SCP_string FileName : StringTableFileNames) {
+	for (SCP_string FileName : ColorTableFileNames) {
 		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
-		SCPParser::LoadIntoTable(ColorTableData, ColorsFile, std::move(StringTableBuffer), FileName);
+		SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(StringTableBuffer), FileName);
 	}
-
-
-	// Set defaults for interface colors and color tags (must be done after the above because they're generally just copies of above-defined colors).
-	for (i = 0; i < INTERFACE_COLORS; i++) {
-		memcpy(interface_colors[i], COLOR_LIST[interface_defaults[i]], sizeof(color));
-	}
-
-	for (i = 0; i < DEFAULT_TAGS; i++) {
-		Tagged_Colors[DEFAULT_TAG_LIST[i]] = DEFAULT_TAG_COLORS[i];
-		Color_Tags.push_back(DEFAULT_TAG_LIST[i]);
-	}
-
-	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
-		mprintf(("TABLES => Starting parse of 'colors.tbl' (skipping '#Start Colors' section)...\n"));
-		parse_everything_else("colors.tbl");
-	}
-	parse_modular_table(NOX("*-clr.tbm"), parse_everything_else);
 }
 
 void parse_colors(const char *filename)
