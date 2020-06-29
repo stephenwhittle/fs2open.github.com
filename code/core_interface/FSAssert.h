@@ -87,8 +87,9 @@ constexpr bool LoggingEnabled = false;
 	// No debug version of Int3
 	#define Int3() do { } while (false)
 #else
-	void debug_int3(const char *file, int line);
+	//TODO: @FSAssert reimplement int3
+	//void debug_int3(const char *file, int line);
 
 	// Debug version of Int3
-	#define Int3() debug_int3(__FILE__, __LINE__)
+	#define Int3() //debug_int3(__FILE__, __LINE__)
 #endif	// NDEBUG

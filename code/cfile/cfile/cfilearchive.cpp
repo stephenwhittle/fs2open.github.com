@@ -139,7 +139,8 @@ int cfseek( CFILE *cfile, int offset, int where )
 		goal_position = cfile->size+offset+cfile->lib_offset;
 		break;
 	default:
-		Int3();
+		
+		//Int3();
 		return 1;
 	}
 

@@ -12,7 +12,8 @@
 
 #include "def_files/def_files.h"
 #include "FSColorTypes.h"
-#include "mpark/variant.hpp"
+#include "tl/optional.hpp"
+#include "parse/SCPTable.h"
 // -----------------------------------------------------------------------------------
 // ALPHA DEFINES/VARS
 //
@@ -71,15 +72,21 @@ class SCPColorReference
 public:
 	SCPColorReference(std::string Name)
 		:ColorName(Name) {};
+	
 	SCPColorReference(color ColorToUse)
 		: SpecifiedColor(ColorToUse) {};
+	
 	SCPColorReference(char ColorTag)
 		: ColorTag(ColorTag) {};
+	
 	SCPColorReference(const SCPColorReference& Other)
 		:ColorName(Other.ColorName),
 		ColorTag(Other.ColorTag),
 		ResolvedColorReference(Other.ResolvedColorReference),
 		SpecifiedColor(Other.SpecifiedColor) {};
+	
+	SCPColorReference()
+		:SpecifiedColor(color()) {};
 
 	color& operator=(const SCPColorReference& InColorRef)
 	{
@@ -105,10 +112,11 @@ public:
 	}
 };
 
-tl::optional<SCPColorReference> construct(const SCPParsedTableData& InData)
-{
+template<>
+tl::optional<SCPColorReference> construct(const SCPParsedTableData& InData);
 
-}
+template<>
+tl::optional<team_color> construct(const SCPParsedTableData& InData);
 
 extern std::unique_ptr<SCPColorSet> gColors;
 

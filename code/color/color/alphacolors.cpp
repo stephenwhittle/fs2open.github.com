@@ -235,8 +235,31 @@ color *Color_netplayer[NETPLAYER_COLORS] = {
 };
 
 
-void parse_colors(const char *filename);
-void parse_everything_else(const char *filename);	// needs a better name
+std::unique_ptr<SCPColorSet> gColors;
+
+template <>
+tl::optional<SCPColorReference> construct(const SCPParsedTableData& InData)
+{
+	auto ColorString = construct<std::string>(InData);
+	if (ColorString.has_value()) {
+		if ((ColorString->size() == 2) && (*(ColorString->begin()) == '$')) {
+			// Return a color reference to the specified tag
+			return SCPColorReference((*ColorString)[1]);
+		} else {
+			return SCPColorReference(*ColorString);
+		}
+	}
+	return tl::optional<SCPColorReference>();
+}
+
+template <>
+tl::optional<team_color> construct(const SCPParsedTableData& InData)
+{
+	tl::optional<std::string> StripeColor = construct<std::string>(*InData.nodes[1]);
+	tl::optional<std::string> BaseColor = construct<std::string>(*InData.nodes[2]);
+	team_color NewColor;
+	return NewColor;
+}
 
 // -----------------------------------------------------------------------------------
 // ALPHA FUNCTIONS
@@ -258,13 +281,14 @@ void alpha_colors_init()
 	}
 	
 	SCP_vector<SCP_string> ColorTableFileNames;
-	cf_get_file_list(ColorTableFileNames, CF_TYPE_TABLES, "*-lcl.tbm", CF_SORT_REVERSE);
+	cf_get_file_list(ColorTableFileNames, CF_TYPE_TABLES, "*-clr.tbm", CF_SORT_REVERSE);
 
 	for (SCP_string FileName : ColorTableFileNames) {
 		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
 		SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(StringTableBuffer), FileName);
 	}
 }
+/*
 
 void parse_colors(const char *filename)
 {
@@ -342,6 +366,8 @@ void parse_colors(const char *filename)
 		return;
 	}
 }
+*/
+/*
 
 void parse_everything_else(const char *filename)
 {
@@ -637,3 +663,4 @@ void parse_everything_else(const char *filename)
 		return;
 	}
 }
+*/

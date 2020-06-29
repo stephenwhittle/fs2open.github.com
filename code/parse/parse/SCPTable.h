@@ -4,6 +4,7 @@
 #include "tl/optional.hpp"
 #include <map>
 #include <functional>
+#include "FSAssert.h"
 //https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17
 //https://gist.github.com/pyrtsa/2945472
 
@@ -106,14 +107,8 @@ public:
 	}
 	operator T& () 
 	{
-		if (PropertyValues.size() > 0)
-		{
-			return PropertyValues.back();
-		}
-		else
-		{
-			return T();
-		}
+		Assert(PropertyValues.size() > 0);
+		return PropertyValues.back();
 	}
 	SCPTableProperty<T>& operator=(const T& OverrideValue)
 	{
@@ -165,7 +160,7 @@ template <typename ClassType, typename FieldType>
 auto ReplaceValue(SCPTableProperty<FieldType> ClassType::*Field)
 {
 	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
-		ClassInstance->*Field.ReplaceValue(construct<FieldType>(InData));
+		(ClassInstance->*Field).ReplaceValue(construct<FieldType>(InData));
 	};
 }
 

@@ -95,6 +95,10 @@ target_link_libraries(code PUBLIC font)
 
 add_subdirectory(color)
 
+add_subdirectory(cmdline)
+
+target_link_libraries(code PUBLIC cmdline)
+
 target_link_libraries(code PUBLIC color)
 
 target_link_libraries(code PUBLIC vulkan-hpp)
@@ -151,3 +155,6 @@ set_target_properties(code PROPERTIES XCODE_ATTRIBUTE_GCC_GENERATE_DEBUGGING_SYM
 set_target_properties(code PROPERTIES XCODE_ATTRIBUTE_COPY_PHASE_STRIP[variant=Debug] "NO")
 set_target_properties(code PROPERTIES XCODE_ATTRIBUTE_STRIP_INSTALLED_PRODUCT[variant=Debug] "NO")
 set_target_properties(code PROPERTIES XCODE_ATTRIBUTE_GCC_SYMBOLS_PRIVATE_EXTERN[variant=Debug] "NO")
+
+
+add_subdirectory(code_tests)

@@ -1,6 +1,6 @@
 #include "SCPColorTable.h"
 #include "parse/SCPTableFormatDescriptor.h"
-
+#include "parse/SCPTable.h"
 
 SCPColorSet SCPColorSet::DefaultColors()
 {
@@ -51,6 +51,8 @@ SCPColorSet SCPColorSet::DefaultColors()
 	DefaultColorSet.RecommendationTag = SCPColorReference('r');
 	DefaultColorSet.LoopBriefingTag = SCPColorReference('w');
 
+	DefaultColorSet.TeamColors = std::map<std::string, team_color>();
+	DefaultColorSet.TaggedColorReferences = std::map<std::string, SCPColorReference>();
 	return DefaultColorSet;
 }
 
@@ -147,7 +149,7 @@ const DeserializationHandlers<SCPColorSet> SCPTableBase<SCPColorSet>::Deserializ
 	{SCPTableFormatDescriptor::GetSectionName("Start Colors"), DeserializeChildren},
 	{SCPTableFormatDescriptor::GetSectionName("Team Colors"), DeserializeTeamColors},
 	{SCPTableFormatDescriptor::GetSectionName("Interface Colors"), DeserializeChildren},
-	{SCPTableFormatDescriptor::GetSectionName("Color Tags"), DeserializeColorTags}
+	{SCPTableFormatDescriptor::GetSectionName("Color Tags"), DeserializeColorTags},
 	{SCPTableFormatDescriptor::GetSectionName("Default Text Colors"), DeserializeChildren}
 
 
