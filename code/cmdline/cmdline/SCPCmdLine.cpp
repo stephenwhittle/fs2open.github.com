@@ -1,4 +1,5 @@
 #include "SCPCmdLine.h"
+#include <algorithm>
 SCPCmdLineParser::SCPCmdLineParser()
 {
 	CommandLineGrammar["ParamName"] <= peg::seq(peg::chr('-'), peg::tok(peg::oom(peg::ncls("-\r\n\t "))));
@@ -185,3 +186,33 @@ SCPCmdLineParser::SCPCmdLineParser()
 	}
 	return Parameters;
 }
+
+const SCPCmdLineOptions SCPCmdLineParser::GetOptions(int argc, char* const argv[]) 
+{
+	auto ParsedValues = ParseCmdLine(argc, argv);
+	SCPCmdLineOptions Options;
+	for (auto ParsedValue : ParsedValues)
+	{
+		auto Handler = VariableParsers.find(ParsedValue.first);
+		if (Handler != VariableParsers.end()) {
+			(*Handler).second(&Options, *ParsedValue.second);
+		}	
+	}
+	return Options;
+}
+
+template <typename T>
+tl::optional<T> ParseOption(std::string InRawData)
+{
+	return tl::optional<T>();
+}
+
+template <>
+tl::optional<std::string> ParseOption(std::string InRawData)
+{
+	return InRawData;
+}
+
+
+
+

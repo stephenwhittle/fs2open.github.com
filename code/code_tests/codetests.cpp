@@ -6,7 +6,7 @@
 SCPCmdLineParser GCmdLineParser;
 int main(int argc, char* const argv[])
 {
-	GCmdLineParser.ParseCmdLine(argc, argv);
+	auto ParsedOptions = GCmdLineParser.GetOptions(argc, argv);
 	//cfile_init((ghc::filesystem::current_path() / "fs2.exe").c_str());
 	//alpha_colors_init();
 }

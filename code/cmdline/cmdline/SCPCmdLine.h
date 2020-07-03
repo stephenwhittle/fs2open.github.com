@@ -11,9 +11,15 @@ class SCPCmdLineParser
 public:
 	SCPCmdLineParser();
 	std::map<std::string, tl::optional<std::string>> ParseCmdLine(int argc, char* const argv[]);
-	
+	const SCPCmdLineOptions GetOptions(int argc, char* const argv[]);
 	std::map<std::string, std::function<void(SCPCmdLineOptions* ClassInstance, std::string InRawData)>> VariableParsers;
 
+	std::map<std::string, std::function<void(std::string InRawData)>> RegisteredOptionHandlers;
+
+	void RegisterOptionHandler(std::string Option, std::function<void(std::string InRawData)> Handler)
+	{
+		RegisteredOptionHandlers[Option] = Handler;
+	}
 };
 enum class FlagGroup
 {
@@ -54,6 +60,7 @@ public:
 		: tl::optional<T>(),
 		Name(Name),
 		HelpText(HelpText),
+		FSOOnly(FSOOnly),
 		Group(Group),
 		Category(Category){};
 	auto ParseIntoThis()
@@ -69,12 +76,6 @@ public:
 class SCPCmdLineOptions
 {
 public:
-	//this will also need the handler
-	template<typename T>
-	void RegisterExternalOption(std::string FlagString, SCPCmdLineOption<T>& Option)
-	{
-		VariableParsers[FlagString] = Option.ParseIntoThis();
-	}
 	//So long as you want all the options to be universally accessible these will be actual variables stored here rather than 
 	//stored in their respective modules
 	//Retail Options
@@ -212,19 +213,15 @@ public:
 };
 
 template <typename T>
-tl::optional<T> ParseOption(std::string InRawData)
-{
-	return tl::optional<T>();
-}
+tl::optional<T> ParseOption(std::string InRawData);
 
-template<>
-tl::optional<std::string> ParseOption(std::string InRawData)
-{
-	return InRawData;
-}
 
-//replace these so it doesn't actually need to capture this pointer
-template < typename T>
+template <>
+tl::optional<std::string> ParseOption(std::string InRawData);
+
+
+
+template <typename T>
 auto ParseIntoField(SCPCmdLineOption<T> SCPCmdLineOptions::*Field)
 {
 	return [Field](SCPCmdLineOptions* ClassInstance, std::string InRawData) {
@@ -232,9 +229,9 @@ auto ParseIntoField(SCPCmdLineOption<T> SCPCmdLineOptions::*Field)
 	};
 }
 
-auto SetFlag(SCPCmdLineOption<bool> SCPCmdLineOptions::* Field, bool FlagValue)
+auto SetFlag(SCPCmdLineOption<bool> SCPCmdLineOptions::*Field, bool FlagValue)
 {
-	return[Field, FlagValue](SCPCmdLineOptions* ClassInstance, std::string InRawData) {
+	return [Field, FlagValue](SCPCmdLineOptions* ClassInstance, std::string InRawData) {
 		ClassInstance->*Field = FlagValue;
 	};
 }
