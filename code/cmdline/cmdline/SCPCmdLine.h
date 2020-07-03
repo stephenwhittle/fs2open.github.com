@@ -69,8 +69,9 @@ public:
 class SCPCmdLineOptions
 {
 public:
+	//this will also need the handler
 	template<typename T>
-	void RegisterExternalOption(std::string FlagString, SCPCmdLineOption<T> Option)
+	void RegisterExternalOption(std::string FlagString, SCPCmdLineOption<T>& Option)
 	{
 		VariableParsers[FlagString] = Option.ParseIntoThis();
 	}
@@ -192,7 +193,7 @@ public:
 	SCPCmdLineOption<bool> bVerifyVPs= {"Verify VPs", "", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bParseCmdlineOnly = {"Parse cmd line args only", "", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bReparseMainhall = {"Reparse Mainhall", "", true, OptionsCategory::DevTool};
-	SCPCmdLineOption<bool> FrameProfileFilename = {"Frame Profile output filename", "", true, OptionsCategory::DevTool};
+	SCPCmdLineOption<bool> bProfileWriteFile = {"Frame Profile output", "", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bNoUnfocusedPause = {"No Unfocused Pause", "Don't pause the game when it loses focus", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bBenchmarkMode = {"Benchmark Mode", "", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bNonInteractiveMode = {"Non Interactive Mode", "", true, OptionsCategory::DevTool};
@@ -203,7 +204,7 @@ public:
 	SCPCmdLineOption<bool> bEnableGraphicsDebugOutput = {"Enable Graphics debug output", "", true, OptionsCategory::DevTool};
 	SCPCmdLineOption<bool> bLogToStdout = {"Log to stdout", "", true, OptionsCategory::DevTool};
 
-	SCPCmdLineOption<bool> bOutputFlags = {"Output launcher flags", "Save the launcher flags to file", true, OptionsCategory::Misc};
+	SCPCmdLineOption<std::string> FlagsFilePath = {"Output launcher flags", "Save the launcher flags to file", true, OptionsCategory::Misc};
 	SCPCmdLineOption<bool> bOutputSEXPs = { "Output SEXPs", "Saves all SEXPs to sexps.html", true, OptionsCategory::Misc };
 	SCPCmdLineOption<bool> bOutputScripting = {"Output Scripting", "", true, OptionsCategory::Misc};
 	SCPCmdLineOption<bool> bOutputScriptingJSON = {"Output Scripting JSON", "", true, OptionsCategory::Misc};
@@ -222,7 +223,7 @@ tl::optional<std::string> ParseOption(std::string InRawData)
 	return InRawData;
 }
 
-
+//replace these so it doesn't actually need to capture this pointer
 template < typename T>
 auto ParseIntoField(SCPCmdLineOption<T> SCPCmdLineOptions::*Field)
 {
