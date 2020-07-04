@@ -101,6 +101,10 @@ target_link_libraries(code PUBLIC cmdline)
 
 target_link_libraries(code PUBLIC color)
 
+add_subdirectory(module)
+
+target_link_libraries(code PUBLIC module)
+
 target_link_libraries(code PUBLIC vulkan-hpp)
 
 enable_clang_tidy(code)
