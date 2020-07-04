@@ -193,12 +193,21 @@ const SCPCmdLineOptions SCPCmdLineParser::GetOptions(int argc, char* const argv[
 	SCPCmdLineOptions Options;
 	for (auto ParsedValue : ParsedValues)
 	{
+
 		auto Handler = VariableParsers.find(ParsedValue.first);
-		if (Handler != VariableParsers.end()) {
-			(*Handler).second(&Options, *ParsedValue.second);
+		if (Handler != VariableParsers.end()) 
+		{
+			if (ParsedValue.second.has_value()) 
+			{
+				(*Handler).second(&Options, *ParsedValue.second);
+			}
+			else
+			{
+				(*Handler).second(&Options, "");
+			}
 		}	
 	}
-	return Options;
+	return Options;										
 }
 
 template <typename T>

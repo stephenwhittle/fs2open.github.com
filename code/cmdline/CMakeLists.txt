@@ -1,4 +1,4 @@
-add_library(cmdline STATIC cmdline/SCPCmdLine.h cmdline/SCPCmdLine.cpp)
+add_library(cmdline STATIC cmdline/SCPCmdLine.h cmdline/SCPCmdLine.cpp cmdline/SCPCmdLineOption.natvis)
 
 target_include_directories(cmdline PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 

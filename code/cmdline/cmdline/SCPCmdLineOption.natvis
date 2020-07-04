@@ -1,0 +1,7 @@
+<?xml  version="1.0" encoding="utf-8" ?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+<Type Name="SCPCmdLineOption&lt;*&gt;">
+    <DisplayString Condition="m_has_value == true">{{value={m_value}}</DisplayString>
+    <DisplayString Condition="m_has_value == false">{{empty}}</DisplayString>
+</Type>
+</AutoVisualizer>
