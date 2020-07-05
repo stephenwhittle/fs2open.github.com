@@ -45,8 +45,9 @@
 #include "SCPEndian.h"
 #include "memory/memory.h"
 #include "memory/utils.h"
-#include "module/SCPModuleBase.h"
-
+#include "module/SCPModuleManager.h"
+#include "cmdline/SCPCmdlineModule.h"
+#include "cmdline/SCPCmdLine.h"
 enum CfileRootType {
 	CF_ROOTTYPE_PATH = 0,
 	CF_ROOTTYPE_PACK = 1,
@@ -385,7 +386,7 @@ static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 {
 	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
 	
-	if (CmdlineModule->CurrentOptions->Mods.size() > 0)
+	if (CmdlineModule->CurrentOptions->ModList)
 	//if (Cmdline_mod)
 	{
 		bool primary = true;

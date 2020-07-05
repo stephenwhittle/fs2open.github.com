@@ -1,4 +1,5 @@
 #include "SCPCmdLine.h"
+#include "SCPStringUtils.h"
 #include <algorithm>
 SCPCmdLineParser::SCPCmdLineParser()
 {
@@ -187,27 +188,61 @@ SCPCmdLineParser::SCPCmdLineParser()
 	return Parameters;
 }
 
-const SCPCmdLineOptions SCPCmdLineParser::GetOptions(int argc, char* const argv[]) 
-{
-	auto ParsedValues = ParseCmdLine(argc, argv);
-	SCPCmdLineOptions Options;
-	for (auto ParsedValue : ParsedValues)
-	{
 
-		auto Handler = VariableParsers.find(ParsedValue.first);
-		if (Handler != VariableParsers.end()) 
-		{
-			if (ParsedValue.second.has_value()) 
-			{
-				(*Handler).second(&Options, *ParsedValue.second);
-			}
-			else
-			{
-				(*Handler).second(&Options, "");
-			}
-		}	
+
+//common option parser specializations
+
+template <>
+tl::optional<std::string> ParseOption(std::string InRawData)
+{
+	return InRawData;
+}
+
+template<>
+tl::optional<bool> ParseOption(std::string InRawData)
+{
+	std::string SanitizedData = StringUtils::ToLower(StringUtils::TrimWhitespace(InRawData));
+	
+	switch (peg::str2tag(SanitizedData.c_str()))
+	{
+	case peg::str2tag("true"):
+	case peg::str2tag("yes"):
+	case peg::str2tag("on"):
+		return true;
+	case peg::str2tag("false"):
+	case peg::str2tag("no"):
+	case peg::str2tag("off"):
+		return false;
+	default:
+		return {};
 	}
-	return Options;										
+}
+
+template<>
+tl::optional<float> ParseOption(std::string InRawData)
+{
+	size_t Length = 0;
+	float Value = std::stof(InRawData, &Length);
+	if (Length > 0)
+	{
+		return Value;
+	}
+	else
+	{
+		return {};
+	}
+}
+
+template <>
+tl::optional<int> ParseOption(std::string InRawData)
+{
+	size_t Length = 0;
+	int Value   = std::stoi(InRawData, &Length);
+	if (Length > 0) {
+		return Value;
+	} else {
+		return {};
+	}
 }
 
 template <typename T>
@@ -216,12 +251,21 @@ tl::optional<T> ParseOption(std::string InRawData)
 	return tl::optional<T>();
 }
 
-template <>
-tl::optional<std::string> ParseOption(std::string InRawData)
+
+const SCPCmdLineOptions SCPCmdLineParser::GetOptions(int argc, char* const argv[])
 {
-	return InRawData;
+	auto ParsedValues = ParseCmdLine(argc, argv);
+	SCPCmdLineOptions Options;
+	for (auto ParsedValue : ParsedValues) {
+
+		auto Handler = VariableParsers.find(ParsedValue.first);
+		if (Handler != VariableParsers.end()) {
+			if (ParsedValue.second.has_value()) {
+				(*Handler).second(&Options, *ParsedValue.second);
+			} else {
+				(*Handler).second(&Options, "");
+			}
+		}
+	}
+	return Options;
 }
-
-
-
-

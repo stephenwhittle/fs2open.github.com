@@ -1,5 +1,5 @@
 #pragma once
-
+#include<type_traits>
 /// SCP Template utilities
 
 template <typename Base, typename Child>

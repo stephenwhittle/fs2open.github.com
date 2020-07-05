@@ -219,7 +219,14 @@ tl::optional<T> ParseOption(std::string InRawData);
 template <>
 tl::optional<std::string> ParseOption(std::string InRawData);
 
+template <>
+tl::optional<bool> ParseOption(std::string InRawData);
 
+template <>
+tl::optional<float> ParseOption(std::string InRawData);
+
+template <>
+tl::optional<int> ParseOption(std::string InRawData);
 
 template <typename T>
 auto ParseIntoField(SCPCmdLineOption<T> SCPCmdLineOptions::*Field)
