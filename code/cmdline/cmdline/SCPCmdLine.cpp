@@ -166,29 +166,49 @@ SCPCmdLineParser::SCPCmdLineParser()
 		CmdLine.append(argv[ArgIndex]);
 		CmdLine.append(" ");
 	}
-	std::map<std::string, tl::optional<std::string>> Parameters = {};
+
 	if (CmdLine.size() == 0)
 	{
-		return Parameters;
+		return {};
+	}
+	else
+	{
+		return ParseCmdLineInternal(CmdLine);
 	}
 
-	peg::Definition::Result Unused = CommandLineGrammar["Root"].parse_and_get_value(CmdLine.c_str(), ParseResults);
-	for (auto Node : ParseResults->nodes)
+}
+
+std::map<std::string, tl::optional<std::string>> SCPCmdLineParser::ParseCmdLine(std::vector<std::string> Args)
+{
+	if (Args.size() == 0)
 	{
-		
-		if (Node->nodes.size() > 1)
-		{
+		return {};
+	}
+
+	std::string CmdLine;
+	for (auto Arg : Args)
+	{
+		CmdLine.append(Arg);
+		CmdLine.append(" ");
+	}
+	return ParseCmdLineInternal(CmdLine);
+}
+
+std::map<std::string, tl::optional<std::string>>
+SCPCmdLineParser::ParseCmdLineInternal(std::string& CmdLine)
+{
+	std::map<std::string, tl::optional<std::string>> Parameters;
+	peg::Definition::Result Unused = CommandLineGrammar["Root"].parse_and_get_value(CmdLine.c_str(), ParseResults);
+	for (auto Node : ParseResults->nodes) {
+
+		if (Node->nodes.size() > 1) {
 			Parameters[Node->nodes[0]->token] = tl::optional<std::string>(Node->nodes[1]->token);
-		}
-		else
-		{
+		} else {
 			Parameters[Node->nodes[0]->token] = tl::optional<std::string>();
 		}
 	}
 	return Parameters;
 }
-
-
 
 //common option parser specializations
 
@@ -255,6 +275,23 @@ tl::optional<T> ParseOption(std::string InRawData)
 const SCPCmdLineOptions SCPCmdLineParser::GetOptions(int argc, char* const argv[])
 {
 	auto ParsedValues = ParseCmdLine(argc, argv);
+	SCPCmdLineOptions Options;
+	for (auto ParsedValue : ParsedValues) {
+
+		auto Handler = VariableParsers.find(ParsedValue.first);
+		if (Handler != VariableParsers.end()) {
+			if (ParsedValue.second.has_value()) {
+				(*Handler).second(&Options, *ParsedValue.second);
+			} else {
+				(*Handler).second(&Options, "");
+			}
+		}
+	}
+	return Options;
+}
+const SCPCmdLineOptions SCPCmdLineParser::GetOptions(std::vector<std::string> Args)
+{
+	auto ParsedValues = ParseCmdLine(Args);
 	SCPCmdLineOptions Options;
 	for (auto ParsedValue : ParsedValues) {
 

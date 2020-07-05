@@ -10,7 +10,7 @@ class SCPCmdlineModule : public SCPModule<SCPCmdlineModule> {
 
 	virtual void ShutdownModule() override {}
 	std::unique_ptr<SCPCmdLineOptions> CurrentOptions;
-	
+
 	static SCPCmdlineModule ConstructModule() 
 	{ 
 		SCPCmdlineModule ModuleInstance;

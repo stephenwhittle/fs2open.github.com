@@ -4,9 +4,10 @@
 #include "cmdline/SCPCmdLine.h"
 #include "cfile/SCPCFileModule.h"
 #include "module/SCPModuleManager.h"
-
+#include "SCPApplication.h"
 int main(int argc, char* const argv[])
 {
+	SCPApplication::Get().SetCommandLine(argc, argv);
 	//auto ParsedOptions = GCmdLineParser.GetOptions(argc, argv);
 	//cfile_init((ghc::filesystem::current_path() / "fs2.exe").c_str());
 	//alpha_colors_init();

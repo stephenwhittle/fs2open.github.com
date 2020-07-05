@@ -7,11 +7,17 @@ class SCPCmdLineParser
 {
 	peg::Grammar CommandLineGrammar;
 	std::shared_ptr<peg::Ast> ParseResults;
+	std::map<std::string, tl::optional<std::string>> ParseCmdLineInternal(std::string& CmdLine);
 
 public:
 	SCPCmdLineParser();
 	std::map<std::string, tl::optional<std::string>> ParseCmdLine(int argc, char* const argv[]);
+	std::map<std::string, tl::optional<std::string>> ParseCmdLine(class std::vector<std::string> Args);
+
+
 	const SCPCmdLineOptions GetOptions(int argc, char* const argv[]);
+	const SCPCmdLineOptions GetOptions(std::vector<std::string> Args);
+
 	std::map<std::string, std::function<void(SCPCmdLineOptions* ClassInstance, std::string InRawData)>> VariableParsers;
 
 	std::map<std::string, std::function<void(std::string InRawData)>> RegisteredOptionHandlers;
