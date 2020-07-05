@@ -415,7 +415,7 @@ struct CFileLocationExt : public CFileLocation {
 // (NOTE: This function is exponentially slow, so don't use it unless truely needed!!)
 CFileLocationExt cf_find_file_location_ext(const char* filename, const int ext_num, const char** ext_list, int pathtype,
                                            bool localize = false, SCP_string LanguagePrefix = "");
-
+//directory utilities - should be moved into their own header perhaps?
 // Functions to change directories
 int cfile_chdir(const char *dir);
 
