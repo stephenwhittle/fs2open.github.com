@@ -17,8 +17,11 @@ public:
 	{
 		return CmdlineArguments;
 	}
+	std::string ExecutablePath;
+
 	void SetCommandLine(int argc, char* const argv[])
 	{
+		ExecutablePath = std::string(argv[0]);
 		for (int ArgIndex = 1; ArgIndex < argc; ArgIndex++)
 		{
 			CmdlineArguments.push_back(std::string(argv[ArgIndex]));

@@ -2,16 +2,18 @@
 #include "module/SCPModuleBase.h"
 
 #include "cmdline/SCPCmdlineModule.h"
-
+#include "filesystem/SCPFilesystemModule.h"
 #include <tuple>
 
 
 class SCPCFileModule : public SCPModule<SCPCFileModule> {
   public:
-	virtual void StartupModule() override {}
+	virtual bool StartupModule() override;
 	virtual void ShutdownModule() override {}
 	
-	static SCPCFileModule ConstructModule(SCPCmdlineModule& Dependency)
+	class SCPPath UserDirectory;
+
+	static SCPCFileModule ConstructModule(SCPCmdlineModule& Dependency, SCPFilesystemModule& FSDependency)
 	{
 		return SCPCFileModule();
 	}

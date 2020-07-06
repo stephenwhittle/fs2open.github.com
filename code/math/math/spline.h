@@ -18,7 +18,6 @@
 // SPLINE DEFINES/VARS
 //
 
-struct color;
 
 // max bezier degree - note the # of points directly corresponds to the degree (degree == n_points - 1).
 // more points means more expensive!

@@ -2,8 +2,9 @@
 #include "cmdline/SCPCmdLine.h"
 #include "SCPApplication.h"
 
-void SCPCmdlineModule::StartupModule() 
+bool SCPCmdlineModule::StartupModule() 
 {
 	SCPCmdLineParser Parser;
-	CurrentOptions = std::make_unique<SCPCmdLineOptions>(std::move(Parser.GetOptions(SCPApplication::Get().GetCommandLineArgs())));
+	CurrentOptions = std::make_unique<SCPCmdLineOptions>(Parser.GetOptions(SCPApplication::Get().GetCommandLineArgs()));
+	return true;
 }

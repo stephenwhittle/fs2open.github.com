@@ -81,7 +81,7 @@ SCPPath SCPConfig::GetLegacyUserPath()
 #endif
 }
 
-const SCP_string SCPConfig::ConfigFileName = "fs2open.ini";
+const SCP_string SCPConfig::ConfigFileName = "fs2_open.ini";
 
  SCPConfig::SCPConfig()
 {

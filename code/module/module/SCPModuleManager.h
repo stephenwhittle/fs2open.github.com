@@ -5,6 +5,8 @@
 #include <tuple>
 #include "tl/optional.hpp"
 #include "module/SCPModuleBase.h"
+#include "FSAssert.h"
+#include "FSOutputDeviceBase.h"
 
 template <typename... Ts>
 struct ModuleDependencyList {
@@ -93,12 +95,19 @@ class SCPModuleManager
 
 		if (CheckDependencies(Dependencies))
 		{
-			return std::make_unique<T>(std::move(ConstructModuleWithDeps<T>(Dependencies)));
+			auto NewModulePtr = std::make_unique<T>(std::move(ConstructModuleWithDeps<T>(Dependencies)));
+			if (NewModulePtr)
+			{
+				Assert(NewModulePtr->StartupModule());
+				return NewModulePtr;
+			}
 		}
 		else
 		{
-			return {};
+			GOutputDevice->Error("Unable to satisfy dependencies of a module!");
+			
 		}
+		return {};
 	}
 
 public:

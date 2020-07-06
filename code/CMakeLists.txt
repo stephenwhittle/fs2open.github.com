@@ -34,7 +34,6 @@ endif()
 
 TARGET_LINK_LIBRARIES(code PUBLIC utfcpp)
 
-TARGET_LINK_LIBRARIES(code PUBLIC platform)
 TARGET_LINK_LIBRARIES(code PUBLIC compiler)
 
 target_link_libraries(code PUBLIC md5)

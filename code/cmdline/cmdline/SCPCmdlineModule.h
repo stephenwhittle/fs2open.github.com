@@ -6,7 +6,7 @@
 
 class SCPCmdlineModule : public SCPModule<SCPCmdlineModule> {
   public:
-	virtual void StartupModule() override;
+	virtual bool StartupModule() override;
 
 	virtual void ShutdownModule() override {}
 	std::unique_ptr<SCPCmdLineOptions> CurrentOptions;
@@ -14,7 +14,6 @@ class SCPCmdlineModule : public SCPModule<SCPCmdlineModule> {
 	static SCPCmdlineModule ConstructModule() 
 	{ 
 		SCPCmdlineModule ModuleInstance;
-		ModuleInstance.StartupModule();
 		return ModuleInstance;
 	}
 };
