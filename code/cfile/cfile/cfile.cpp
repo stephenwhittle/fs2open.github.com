@@ -31,6 +31,8 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 #include "cfile/cfilesystem.h"
+#include "cfile/SCPCFileModule.h"
+#include "module/SCPModuleManager.h"
 #include "FSOutputDeviceBase.h"
 #include "FSMathOps.h"
 #include "cfile/encrypt.h"
@@ -110,7 +112,7 @@ static int Cfile_stack_pos = 0;
 
 static char Cfile_stack[CFILE_STACK_MAX][CFILE_ROOT_DIRECTORY_LEN];
 
-std::array<CFILE, MAX_CFILE_BLOCKS> Cfile_block_list;
+
 
 static const char *Cfile_cdrom_dir = NULL;
 
@@ -128,27 +130,18 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, HANDLE h
 static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp, int type);
 #endif
 
-static void cf_chksum_long_init();
 
-static void dump_opened_files()
-{
-	for (int i = 0; i < MAX_CFILE_BLOCKS; i++) {
-		auto cb = &Cfile_block_list[i];
-		if (cb->type != CFILE_BLOCK_UNUSED) {
-			mprintf(("    %s:%d\n", cb->source_file, cb->line_num));
-		}
-	}
-}
-
+/*
 void cfile_close()
 {
-	mprintf(("Still opened files:\n"));
+	//mprintf(("Still opened files:\n"));
 	dump_opened_files();
 
 	cf_free_secondary_filelist();
 
 	cfile_inited = 0;
 }
+*/
 
 #ifdef SCP_UNIX
 	#define MIN_NUM_PATH_COMPONENTS 2     /* Directory + file */
@@ -196,6 +189,7 @@ static bool cfile_in_root_dir(const char *exe_path)
  * @return 0 On success
  * @return 1 On error
  */
+/*
 int cfile_init(const char *exe_dir, const char *cdrom_dir)
 {
 	// initialize encryption
@@ -219,11 +213,11 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 	// This needs to be set here because cf_build_secondary_filelist assumes it to be true
 	cfile_inited = 1;
 	
-	/*
+	/ *
 	 * Determine the executable's directory.  Note that DIR_SEPARATOR_CHAR
 	 * is guaranteed to be found in the string else cfile_in_root_dir()
 	 * would have failed.
-	 */
+	 * /
 
 	char *p;
 
@@ -246,7 +240,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 	cf_build_secondary_filelist(Cfile_cdrom_dir);
 
 	return 0;
-}
+}*/
 
 #ifdef _WIN32
 // Changes to a drive if valid.. 1=A, 2=B, etc
@@ -862,39 +856,6 @@ CFILE *ctmpfile()
 
 
 
-// cfget_cfile_block() will try to find an empty Cfile_block structure in the
-//	Cfile_block_list[] array and return the index.
-//
-// returns:   success ==> index in Cfile_block_list[] array
-//            failure ==> -1
-//
-static int cfget_cfile_block()
-{	
-	int i;
-	CFILE* cfile;
-
-	for ( i = 0; i < MAX_CFILE_BLOCKS; i++ ) {
-		cfile = &Cfile_block_list[i];
-		if (cfile->type == CFILE_BLOCK_UNUSED) {
-			cfile->data = nullptr;
-			cfile->fp = nullptr;
-			cfile->type = CFILE_BLOCK_USED;
-			return i;
-		}
-	}
-
-	// If we've reached this point, a free Cfile_block could not be found
-	nprintf(("Warning","A free Cfile_block could not be found.\n"));
-
-	// Dump a list of all opened files
-	mprintf(("Out of cfile blocks! Currently opened files:\n"));
-	dump_opened_files();
-
-	UNREACHABLE("There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"
-		"This is probably caused by a programming or scripting error where a file does not get closed."); // out of free cfile blocks
-	return -1;			
-}
-
 
 // cfclose() closes the file
 //
@@ -964,29 +925,27 @@ int cf_is_valid(CFILE *cfile)
 //
 static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE *fp, int type)
 {
-	int cfile_block_index;
-
-	cfile_block_index = cfget_cfile_block();
-	if ( cfile_block_index == -1 ) {
+	tl::optional<CFILE&> File = GetNextEmptyBlock();
+	if (!File)
+	{
 		fclose(fp);
-		return NULL;
+		return nullptr;
 	} else {
-		CFILE *cfp = &Cfile_block_list[cfile_block_index];
-		cfp->data = nullptr;
-		cfp->mem_mapped = false;
-		cfp->fp = fp;
-		cfp->dir_type = type;
-		cfp->max_read_len = 0;
+		File->data = nullptr;
+		File->mem_mapped = false;
+		File->fp = fp;
+		File->dir_type = type;
+		File->max_read_len = 0;
 
-		cfp->source_file = source;
-		cfp->line_num = line;
+		File->source_file = source;
+		File->line_num = line;
 		
 		int pos = ftell(fp);
 		if(pos == -1L)
 			pos = 0;
-		cf_init_lowlevel_read_code(cfp,0,filelength(fileno(fp)), 0 );
+		cf_init_lowlevel_read_code(&File.value(),0,filelength(fileno(fp)), 0 );
 
-		return cfp;
+		return &File.value();
 	}
 }
 
@@ -999,28 +958,25 @@ static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE *fp, int t
 //
 static CFILE *cf_open_packed_cfblock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size)
 {
-	// Found it in a pack file
-	int cfile_block_index;
-	
-	cfile_block_index = cfget_cfile_block();
-	if ( cfile_block_index == -1 ) {
+	tl::optional<CFILE&> File = GetNextEmptyBlock();
+	if (!File)
+	{
 		fclose(fp);
-		return NULL;
+		return nullptr;
 	} else {
-		CFILE *cfp = &Cfile_block_list[cfile_block_index];
+		
+		File->data = nullptr;
+		File->fp = fp;
+		File->mem_mapped = false;
+		File->dir_type = type;
+		File->max_read_len = 0;
 
-		cfp->data = nullptr;
-		cfp->fp = fp;
-		cfp->mem_mapped = false;
-		cfp->dir_type = type;
-		cfp->max_read_len = 0;
+		File->source_file = source;
+		File->line_num = line;
 
-		cfp->source_file = source;
-		cfp->line_num = line;
+		cf_init_lowlevel_read_code(&File.value(),offset, size, 0 );
 
-		cf_init_lowlevel_read_code(cfp,offset, size, 0 );
-
-		return cfp;
+		return &File.value();
 	}
 
 }
@@ -1040,7 +996,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 {
 	int cfile_block_index;
 
-	cfile_block_index = cfget_cfile_block();
+	cfile_block_index = GetNextEmptyBlockIndex();
 	if ( cfile_block_index == -1 ) {
 #ifdef SCP_UNIX
 		fclose(fp);
@@ -1091,7 +1047,7 @@ static CFILE *cf_open_memory_fill_cfblock(const char* source, int line, const vo
 {
 	int cfile_block_index;
 
-	cfile_block_index = cfget_cfile_block();
+	cfile_block_index = GetNextEmptyBlockIndex();
 	if ( cfile_block_index == -1 ) {
 		return NULL;
 	}
@@ -1539,8 +1495,6 @@ char *cfgets(char *buf, int n, CFILE *cfile)
 
 // CRC code for mission validation.  given to us by Kevin Bentley on 7/20/98.   Some sort of
 // checksumming code that he wrote a while ago.  
-#define CRC32_POLYNOMIAL					0xEDB88320
-static uint CRCTable[256];
 
 #define CF_CHKSUM_SAMPLE_SIZE				512
 
@@ -1562,39 +1516,9 @@ ushort cf_add_chksum_short(ushort seed, ubyte *buffer, int size)
 	return (ushort)((sum1 << 8) + sum2);
 }
 
-// update cur_chksum with the chksum of the new_data of size new_data_size
-uint cf_add_chksum_long(uint seed, ubyte *buffer, size_t size)
-{
-	uint crc;
-	ubyte *p;
 
-	p = buffer;
-	crc = seed;	
 
-	while (size--)
-		crc = (crc >> 8) ^ CRCTable[(crc ^ *p++) & 0xff];
 
-	return crc;
-}
-
-static void cf_chksum_long_init()
-{
-	int i, j;
-	uint crc;	
-
-	for (i = 0; i < 256; i++) {
-		crc = i;
-
-		for (j = 8; j > 0; j--) {
-			if (crc & 1)
-				crc = (crc >> 1) ^ CRC32_POLYNOMIAL;
-			else
-				crc >>= 1;
-		}
-
-		CRCTable[i] = crc;
-	}
-}
 
 // single function convenient to use for both short and long checksums
 // NOTE : only one of chk_short or chk_long must be non-NULL (indicating which checksum to perform)
@@ -1642,7 +1566,7 @@ static int cf_chksum_do(CFILE *cfile, ushort *chk_short, uint *chk_long, int max
 		if(cf_len > 0){
 			// do the proper short or long checksum
 			if(is_long){
-				*chk_long = cf_add_chksum_long(*chk_long, cf_buffer, cf_len);
+				*chk_long = SCPModuleManager::GetModule<SCPCFileModule>()->cf_add_chksum_long(*chk_long, cf_buffer, cf_len);
 			} else {
 				*chk_short = cf_add_chksum_short(*chk_short, cf_buffer, cf_len);
 			}

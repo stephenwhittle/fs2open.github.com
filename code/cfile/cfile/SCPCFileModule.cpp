@@ -5,6 +5,67 @@
 
 #include "module/SCPModuleManager.h"
 #include "filesystem/SCPFilesystemModule.h"
+#include "FSIntegerTypes.h"
+#include <utility>
+#include "cfile/cfilesystem.h"
+
+#include platform_header_cfile_SCPCFile
+
+int SCPCFileModule::GetNextEmptyBlockIndex() 
+{
+	int i;
+	CFILE* cfile;
+
+	for (i = 0; i < SCPCFileModule::MAX_CFILE_BLOCKS; i++) {
+		cfile = &Cfile_block_list[i];
+		if (cfile->type == CFILE_BLOCK_UNUSED) {
+			cfile->data = nullptr;
+			cfile->fp   = nullptr;
+			cfile->type = CFILE_BLOCK_USED;
+			return i;
+		}
+	}
+
+	// If we've reached this point, a free Cfile_block could not be found
+	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
+
+	// Dump a list of all opened files
+	mprintf(("Out of cfile blocks! Currently opened files:\n"));
+	DumpOpenedFileList();
+
+	UNREACHABLE(
+		"There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"
+		"This is probably caused by a programming or scripting error where a file does not get closed."); // out of free
+																										  // cfile
+																										  // blocks
+	return -1;
+}
+
+tl::optional<CFILE&> SCPCFileModule::GetNextEmptyBlock() 
+{
+	for (CFILE& CurrentFile : Cfile_block_list)
+	{
+		if (CurrentFile.type == CFILE_BLOCK_UNUSED)
+		{
+			CurrentFile.data = nullptr;
+			CurrentFile.fp = nullptr;
+			CurrentFile.type = CFILE_BLOCK_UNUSED;
+			return CurrentFile;
+		}
+	}
+	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
+
+	// Dump a list of all opened files
+	mprintf(("Out of cfile blocks! Currently opened files:\n"));
+	DumpOpenedFileList();
+
+	UNREACHABLE(
+		"There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"
+		"This is probably caused by a programming or scripting error where a file does not get closed."); // out of free
+																										  // cfile
+																										  // blocks
+	return {};
+}
 
 bool SCPCFileModule::StartupModule() 
 {
@@ -14,40 +75,31 @@ bool SCPCFileModule::StartupModule()
 		return false;
 	}
 
-	SCPPath ExePath = SCPApplication::Get().ExecutablePath;
-	if (ExePath.has_extension())
-	{
-		ExePath.remove_filename();
-	}
-
-	if (ExePath.root_path() == ExePath)
-	{
-		GOutputDevice->Message("Freespace2/FRED cannot be run from a drive root!");
-	}
-	
-	tl::optional<SCPFilesystemModule&> FSModule = SCPModuleManager::GetModule<SCPFilesystemModule>();
-	if (!FSModule)
-	{
-		return false;
-	}
-	else
-	{
-		FSModule->WorkingDirectory.Set(ExePath);
-	}
-	/*
-	strcpy_s(Cfile_root_dir, buf);
-	strcpy_s(Cfile_user_dir, SCPApplication::Get().GetConfigPath().c_str());
-
-	// Initialize the block list with proper data
 	Cfile_block_list.fill({});
 
-	// 32 bit CRC table init
-	cf_chksum_long_init();
-
-	Cfile_cdrom_dir = cdrom_dir;
-	cf_build_secondary_filelist(Cfile_cdrom_dir);
-	*/
-
+	cf_build_secondary_filelist(nullptr);
+	
 	InitializationGuard = true;
 	return true;
+}
+
+void SCPCFileModule::ShutdownModule() 
+{
+	mprintf(("Still opened files:\n"));
+	DumpOpenedFileList();
+
+	//cf_free_secondary_filelist();
+
+	//cfile_inited = 0;
+}
+
+void SCPCFileModule::DumpOpenedFileList() 
+{
+	for (auto& CFileBlock : Cfile_block_list)
+	{
+		if (CFileBlock.type != CFILE_BLOCK_UNUSED)
+		{
+			mprintf(("    %s:%d\n", CFileBlock.source_file, CFileBlock.line_num));
+		}
+	}
 }

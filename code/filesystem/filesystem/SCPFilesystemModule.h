@@ -4,7 +4,7 @@
 
 class SCPFilesystemModule : public SCPModule<SCPFilesystemModule> {
 public:
-	virtual bool StartupModule() override { return true; }
+	virtual bool StartupModule() override;
 	virtual void ShutdownModule() override {}
 	SCPWorkingDirectory WorkingDirectory;
 
