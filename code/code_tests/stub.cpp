@@ -98,7 +98,7 @@ std::tuple<ubyte, ubyte, ubyte> Arc_color_emp_s1;
 bool Use_engine_wash_intensity;
 bool Cmdline_alternate_registry_path;
 bool Cmdline_portable_mode;
-char* Cmdline_mod = "blueplanetcomplete-1.0.10";
+char* Cmdline_mod = "blueplanetcomplete-1.0.10\0MVPS-4.2.3\0";
 
 
 const char *stristr(const char *str, const char *substr)

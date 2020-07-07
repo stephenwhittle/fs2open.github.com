@@ -16,3 +16,5 @@ if (NOT NSL_LIB)
 else()
     target_link_libraries(platform INTERFACE "${NSL_LIB}")
 endif()
+
+set(PLATFORM_FILENAME_PREFIX solaris CACHE INTERNAL "" FORCE)

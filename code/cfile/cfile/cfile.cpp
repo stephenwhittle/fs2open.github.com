@@ -41,6 +41,7 @@
 #include "SCPCompiler.h"
 #include "SCPEndian.h"
 #include "SCPModTable.h"
+#include "SCPApplication.h"
 #include "FSMathTypes.h"
 #include "utils/encoding.h"
 #include <limits>
@@ -233,7 +234,7 @@ int cfile_init(const char *exe_dir, const char *cdrom_dir)
 
 	// set root directory
 	strcpy_s(Cfile_root_dir, buf);
-	strcpy_s(Cfile_user_dir, GConfig->GetConfigPath().c_str());
+	strcpy_s(Cfile_user_dir, SCPApplication::Get().GetConfigPath().c_str());
 
 	// Initialize the block list with proper data
 	Cfile_block_list.fill({});

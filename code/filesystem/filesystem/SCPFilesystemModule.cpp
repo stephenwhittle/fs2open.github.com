@@ -1,6 +1,1 @@
-#include "SCPFilesystemModule.h"
-
-void SCPFilesystemModule::GetPreferencesPath() 
-{
-
-}
+#include "filesystem/SCPFilesystemModule.h"

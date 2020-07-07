@@ -38,6 +38,7 @@
 #include "SCPCmdOptions.h"
 #include "FSAssert.h"
 #include "FSMathOps.h"
+#include "SCPApplication.h"
 #include "def_files/def_files.h"
 //#include "localization/localize.h"
 #include "config/SCPConfig.h"
@@ -385,12 +386,14 @@ static char normalize_directory_separator(char in)
 static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 {
 	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
-	
-	if (CmdlineModule->CurrentOptions->ModList)
-	//if (Cmdline_mod)
+	auto& ModList = CmdlineModule->CurrentOptions->ModList;
+	if (ModList)
 	{
 		bool primary = true;
-		for (const char* cur_pos=Cmdline_mod; strlen(cur_pos) != 0; cur_pos+= (strlen(cur_pos)+1))
+		std::replace(ModList->begin(), ModList->end(), ',', '\0');
+		ModList->push_back('\0');
+		for (const char* cur_pos = ModList->c_str(); strlen(cur_pos) != 0; cur_pos += (strlen(cur_pos) + 1))
+		//for (const char* cur_pos=Cmdline_mod; strlen(cur_pos) != 0; cur_pos+= (strlen(cur_pos)+1))
 		{
 			SCP_stringstream ss;
 			ss << rootDirectory;
@@ -434,7 +437,7 @@ void cf_build_root_list(const char *cdrom_dir)
 
 	cf_root	*root = nullptr;
 
-	if (GConfig->IsLegacyMode())
+	if (SCPApplication::Get().GetLegacyMode())
 	{
 		// =========================================================================
 #ifdef WIN32

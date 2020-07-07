@@ -23,12 +23,12 @@ class SCPModuleManager
 	}
 
 	template<typename T, typename... Deps>
-	static auto DeduceDependencies(T(*Constructor)(Deps...))
+	static auto DeduceDependencies(T(*)(Deps...))
 	{
 		return ModuleDependencyList<std::remove_reference_t<Deps>...>{};
 	}
 	template<typename T>
-	static auto DeduceDependencies(T(*Constructor)())
+	static auto DeduceDependencies(T(*)())
 	{
 		return ModuleDependencyList<>{};
 	}
@@ -128,7 +128,7 @@ public:
 			if (ModulePtr != nullptr)
 			{
 				Modules[ModuleID] = std::move(ModulePtr);
-				return *ModulePtr;
+				return tl::optional<T&>(*(static_cast<T*>(Modules[ModuleID].get())));
 			}
 			else
 			{

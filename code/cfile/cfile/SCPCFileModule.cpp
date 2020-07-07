@@ -34,7 +34,20 @@ bool SCPCFileModule::StartupModule()
 	{
 		FSModule->WorkingDirectory.Set(ExePath);
 	}
-	
+	/*
+	strcpy_s(Cfile_root_dir, buf);
+	strcpy_s(Cfile_user_dir, SCPApplication::Get().GetConfigPath().c_str());
+
+	// Initialize the block list with proper data
+	Cfile_block_list.fill({});
+
+	// 32 bit CRC table init
+	cf_chksum_long_init();
+
+	Cfile_cdrom_dir = cdrom_dir;
+	cf_build_secondary_filelist(Cfile_cdrom_dir);
+	*/
+
 	InitializationGuard = true;
 	return true;
 }
