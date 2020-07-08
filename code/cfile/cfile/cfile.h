@@ -30,8 +30,6 @@
 #define CF_SEEK_CUR (1)
 #define CF_SEEK_END (2)
 
-// Opaque file handle
-struct CFILE;
 
 // extra info that can be returned when getting a file listing
 typedef struct {

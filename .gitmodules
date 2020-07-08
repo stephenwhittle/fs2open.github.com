@@ -19,3 +19,6 @@
 [submodule "lib/variant"]
 	path = lib/variant
 	url = https://github.com/mpark/variant.git
+[submodule "lib/mio"]
+	path = lib/mio
+	url = https://github.com/mandreyel/mio.git

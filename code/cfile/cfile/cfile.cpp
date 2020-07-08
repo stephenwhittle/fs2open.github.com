@@ -923,32 +923,7 @@ int cf_is_valid(CFILE *cfile)
 // returns:   success ==> ptr to CFILE structure.  
 //            error   ==> NULL
 //
-CFILE *SCPCFileModule::CFOpenFileFillBlock(const char* source, int line, FILE *fp, int type)
-{
-	
-	tl::optional<CFILE&> File = GetNextEmptyBlock();
-	if (!File)
-	{
-		fclose(fp);
-		return nullptr;
-	} else {
-		File->data = nullptr;
-		File->mem_mapped = false;
-		File->fp = fp;
-		File->dir_type = type;
-		File->max_read_len = 0;
 
-		File->source_file = source;
-		File->line_num = line;
-		
-		int pos = ftell(fp);
-		if(pos == -1L)
-			pos = 0;
-		cf_init_lowlevel_read_code(&File.value(),0,filelength(fileno(fp)), 0 );
-
-		return &File.value();
-	}
-}
 
 
 // cf_open_packed_cfblock() will fill up a Cfile_block element in the Cfile_block_list[] array
@@ -1044,31 +1019,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 	}
 }
 
-CFILE* SCPCFileModule::CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type)
-{
-	int cfile_block_index;
 
-	cfile_block_index = GetNextEmptyBlockIndex();
-	if ( cfile_block_index == -1 ) {
-		return NULL;
-	}
-	else {
-		CFILE *cfp = &Cfile_block_list[cfile_block_index];
-
-		cfp->max_read_len = 0;
-		cfp->fp = nullptr;
-		cfp->mem_mapped = false;
-		cfp->dir_type = dir_type;
-
-		cfp->source_file = source;
-		cfp->line_num = line;
-
-		cf_init_lowlevel_read_code(cfp, 0, size, 0 );
-		cfp->data = data;
-
-		return cfp;
-	}
-}
 
 int cf_get_dir_type(CFILE *cfile)
 {
