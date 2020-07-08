@@ -120,7 +120,7 @@ static const char *Cfile_cdrom_dir = NULL;
 // Function prototypes for internally-called functions
 //
 static int cfget_cfile_block();
-static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE * fp, int type);
+//static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE * fp, int type);
 static CFILE *cf_open_packed_cfblock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size);
 static CFILE *cf_open_memory_fill_cfblock(const char* source, int line, const void* data, size_t size, int dir_type);
 
@@ -735,7 +735,7 @@ CFILE* _cfopen(const char* source_file, int line, const char* filename, const ch
 
 		FILE *fp = fopen(longname, happy_mode);
 		if (fp)	{
-			return cf_open_fill_cfblock(source_file, line, fp, dir_type);
+			return CFOpenFileFillBlock(source_file, line, fp, dir_type);
  		}
 		return NULL;
 	} 
@@ -813,7 +813,7 @@ CFILE *_cfopen_special(const char* source, int line, const char *file_path, cons
 
 	// In-Memory files are a bit different from normal files so we need to handle them separately
 	if (data != nullptr) {
-		return cf_open_memory_fill_cfblock(source, line, data, size, dir_type);
+		return CFOpenInMemoryFileFillBlock(source, line, data, size, dir_type);
 	}
 	else {
 		// "file_path" should already be a fully qualified path, so just try to open it
@@ -826,7 +826,7 @@ CFILE *_cfopen_special(const char* source, int line, const char *file_path, cons
 			}
 			else {
 				// Found it in a normal file
-				return cf_open_fill_cfblock(source, line, fp, dir_type);
+				return CFOpenFileFillBlock(source, line, fp, dir_type);
 			}
 		}
 	}
@@ -849,7 +849,7 @@ CFILE *ctmpfile()
 	FILE	*fp;
 	fp = tmpfile();
 	if ( fp )
-		return cf_open_fill_cfblock(LOCATION, fp, 0);
+		return CFOpenFileFillBlock(LOCATION, fp, 0);
 	else
 		return NULL;
 }
@@ -923,8 +923,9 @@ int cf_is_valid(CFILE *cfile)
 // returns:   success ==> ptr to CFILE structure.  
 //            error   ==> NULL
 //
-static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE *fp, int type)
+CFILE *SCPCFileModule::CFOpenFileFillBlock(const char* source, int line, FILE *fp, int type)
 {
+	
 	tl::optional<CFILE&> File = GetNextEmptyBlock();
 	if (!File)
 	{
@@ -1043,7 +1044,7 @@ static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp
 	}
 }
 
-static CFILE *cf_open_memory_fill_cfblock(const char* source, int line, const void* data, size_t size, int dir_type)
+CFILE* SCPCFileModule::CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type)
 {
 	int cfile_block_index;
 

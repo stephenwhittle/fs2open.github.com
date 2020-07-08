@@ -47,6 +47,8 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 
 	tl::optional<CFILE&> GetNextEmptyBlock();
 
+	CFILE* CFOpenFileFillBlock(const char* source, int line, FILE* fp, int type);
+	CFILE* CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type);
 
 public:
 	static constexpr int MAX_CFILE_BLOCKS = 64;
