@@ -105,6 +105,8 @@ void SCPCFileModule::DumpOpenedFileList()
 	}
 }
 
+//font manager is the only thing that ever calls localize - true
+//could probably expose something on the localization service that localizes the file path passed in actually
 
 CFILE* SCPCFileModule::CFOpenFileFillBlock(const char* source, int line, FILE* fp, int type)
 {

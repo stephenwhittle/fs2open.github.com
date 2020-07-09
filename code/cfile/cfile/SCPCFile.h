@@ -1,16 +1,18 @@
 #pragma once
 #include <cstdio>
 #include <mio/mmap.hpp>
+#include "SCPCallPermit.h"
 
-class CFILE {
+class CFILE
+{
     
 private:
 
 	//may use ummap if we want unsigned chars
     mio::mmap_source MemoryMappedFile;
-    
 public:
 	
+
 
 	int dir_type;                  // directory location
 	FILE* fp;                      // File pointer if opening an individual file
@@ -27,9 +29,29 @@ public:
 
 	const char* source_file;
 	int line_num;
-	
+	//restrict the constructor so only CFileModule can create it
+	//then anybody that wants a CFile can do so via CFileModule::OpenCFile(params)
+	//passkey idiom or attorney-client
 	//placeholder default constructor
-	CFILE()
+	_cfopen(const char* source_file,
+			int line,
+			const char* filename,
+			const char* mode,
+			int type /*= CFILE_NORMAL*/,
+			int dir_type /*= CF_TYPE_ANY*/,
+			bool localize /*= false*/,
+			uint32_t location_flags /*= CF_LOCATION_ALL*/,
+			SCP_string LanguagePrefix /*= ""*/) 
+		CFILE* _cfopen_special(const char* source_file,
+																	   int line,
+																	   const char* file_path,
+																	   const char* mode,
+																	   const size_t size,
+																	   const size_t offset,
+																	   const void* data,
+																	   int dir_type = CF_TYPE_ANY);
+	//also cftemp but may be special for that one
+	CFILE(SCPCallPermit<class SCPCFileModule>, )
 		: dir_type(0),
 		fp(nullptr),
 		data(nullptr),

@@ -121,13 +121,13 @@ static const char *Cfile_cdrom_dir = NULL;
 //
 static int cfget_cfile_block();
 //static CFILE *cf_open_fill_cfblock(const char* source, int line, FILE * fp, int type);
-static CFILE *cf_open_packed_cfblock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size);
+static CFILE *CFOpenPackedFileFillBlock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size);
 static CFILE *cf_open_memory_fill_cfblock(const char* source, int line, const void* data, size_t size, int dir_type);
 
 #if defined _WIN32
-static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, HANDLE hFile, int type);
+static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, HANDLE hFile, int type);
 #elif defined SCP_UNIX
-static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp, int type);
+static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, FILE *fp, int type);
 #endif
 
 
@@ -763,12 +763,12 @@ CFILE* _cfopen(const char* source_file, int line, const char* filename, const ch
 				hFile = CreateFile(find_res.full_name.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 				if (hFile != INVALID_HANDLE_VALUE)	{
-					return cf_open_mapped_fill_cfblock(source_file, line, hFile, dir_type);
+					return CFOpenMemoryMappedFileFillBlock(source_file, line, hFile, dir_type);
 				}
 #elif defined SCP_UNIX
 				FILE* fp = fopen(find_res.full_name.c_str(), "rb");
 				if (fp) {
-					return cf_open_mapped_fill_cfblock(source_file, line, fp, dir_type);
+					return CFOpenMemoryMappedFileFillBlock(source_file, line, fp, dir_type);
 				}
 #endif
 			} 
@@ -822,7 +822,7 @@ CFILE *_cfopen_special(const char* source, int line, const char *file_path, cons
 		if (fp) {
 			if (offset) {
 				// Found it in a pack file
-				return cf_open_packed_cfblock(source, line, fp, dir_type, offset, size);
+				return CFOpenPackedFileFillBlock(source, line, fp, dir_type, offset, size);
 			}
 			else {
 				// Found it in a normal file
@@ -932,7 +932,7 @@ int cf_is_valid(CFILE *cfile)
 // returns:   success ==> ptr to CFILE structure.  
 //            error   ==> NULL
 //
-static CFILE *cf_open_packed_cfblock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size)
+static CFILE *CFOpenPackedFileFillBlock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size)
 {
 	tl::optional<CFILE&> File = GetNextEmptyBlock();
 	if (!File)
@@ -965,9 +965,9 @@ static CFILE *cf_open_packed_cfblock(const char* source, int line, FILE *fp, int
 // returns:   ptr CFILE structure.  
 //
 #if defined _WIN32
-static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, HANDLE hFile, int type)
+static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, HANDLE hFile, int type)
 #elif defined SCP_UNIX
-static CFILE *cf_open_mapped_fill_cfblock(const char* source, int line, FILE *fp, int type)
+static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, FILE *fp, int type)
 #endif
 {
 	int cfile_block_index;
