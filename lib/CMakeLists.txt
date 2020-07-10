@@ -47,6 +47,11 @@ add_subdirectory(variant)
 
 add_subdirectory(mio)
 
+include(sqlite.cmake)
+
+include(sqlite_orm.cmake)
+
+
 include(peglib.cmake)
 
 add_subdirectory(vulkan-hpp)

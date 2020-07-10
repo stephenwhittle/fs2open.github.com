@@ -46,4 +46,40 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 int cf_create_default_path_string(SCP_string& path, int pathtype, const char* filename = nullptr, bool localize = false,
                                   uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
+typedef struct SCPCFileInfo {
+	uint32_t uid;
+	char name_ext[32];  // Filename and extension
+	int root_index;     // Where in Roots this is located
+	int pathtype_index; // Where in Paths this is located
+	time_t write_time;  // When it was last written
+	int size;           // How big it is in bytes
+	int pack_offset;    // For pack files, where it is at.   0 if not in a pack file.  This can be used to tell if in a
+						// pack file.
+	char* real_name;    // For real files, the full path
+	const void* data;   // For in-memory files, the data pointer
+} SCPCFileInfo;
+
+class SCPRootInfo {
+	
+public:
+	enum class RootType
+	{
+		Path,
+		PackFile,
+		InMemory
+	};
+	SCPRootInfo(SCPPath RootPath, RootType Type, uint32_t LocationFlags) 
+		:uid(0),
+		Path(RootPath),
+		Type(Type),
+		location_flags(LocationFlags)
+		{};
+	uint32_t uid;
+	SCPPath Path; // Contains something like c:\projects\freespace or
+					// c:\projects\freespace\freespace.vp
+	RootType Type;   // CF_ROOTTYPE_PATH  = Path, CF_ROOTTYPE_PACK =Pack file, CF_ROOTTYPE_MEMORY=In memory
+	uint32_t location_flags;
+};
+
+
 #endif	//_CFILESYSTEM_H

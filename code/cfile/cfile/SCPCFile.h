@@ -2,6 +2,19 @@
 #include <cstdio>
 #include <mio/mmap.hpp>
 #include "SCPCallPermit.h"
+#include "SCPFlags.h"
+#include "FSAssert.h"
+enum class SCPCFileMode
+{
+	Append,
+	Binary,
+	Read,
+	Write,
+	EraseOnOpen,
+	MemoryMapped
+};
+
+using SCPCFileModeFlags = SCPFlags<SCPCFileMode>;
 
 class CFILE
 {
@@ -29,7 +42,7 @@ public:
 
 	const char* source_file;
 	int line_num;
-	//restrict the constructor so only CFileModule can create it
+	/*//restrict the constructor so only CFileModule can create it
 	//then anybody that wants a CFile can do so via CFileModule::OpenCFile(params)
 	//passkey idiom or attorney-client
 	//placeholder default constructor
@@ -37,11 +50,11 @@ public:
 			int line,
 			const char* filename,
 			const char* mode,
-			int type /*= CFILE_NORMAL*/,
-			int dir_type /*= CF_TYPE_ANY*/,
-			bool localize /*= false*/,
-			uint32_t location_flags /*= CF_LOCATION_ALL*/,
-			SCP_string LanguagePrefix /*= ""*/) 
+			int type / *= CFILE_NORMAL* /,
+			int dir_type / *= CF_TYPE_ANY* /,
+			bool localize / *= false* /,
+			uint32_t location_flags / *= CF_LOCATION_ALL* /,
+			SCP_string LanguagePrefix / *= ""* /) 
 		CFILE* _cfopen_special(const char* source_file,
 																	   int line,
 																	   const char* file_path,
@@ -50,18 +63,33 @@ public:
 																	   const size_t offset,
 																	   const void* data,
 																	   int dir_type = CF_TYPE_ANY);
-	//also cftemp but may be special for that one
-	CFILE(SCPCallPermit<class SCPCFileModule>, )
-		: dir_type(0),
-		fp(nullptr),
-		data(nullptr),
-		mem_mapped(false),
-		data_length(0),
-		lib_offset(0),
-		raw_position(0),
-		size(0),
-		max_read_len(0),
-		source_file(nullptr),
-		line_num(0)
-	{}
+	//also cftemp but may be special for that one*/
+	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode )
+	{
+		if (Mode.Is({ SCPCFileMode::Read, SCPCFileMode::Binary }) && !Mode.HasFlag(SCPCFileMode::MemoryMapped))
+		{
+			GOutputDevice->Error("Read-only binary files *must* be opened in Memory-Mapped mode!");
+			return;
+		}
+		if (Mode.HasFlag(SCPCFileMode::Write) && !Mode.HasFlag(SCPCFileMode::MemoryMapped))
+		{
+			//if path is not absolute
+				//make sure the directory type isn't CF_type_any
+				//create directory
+				//create default path string
+			//else use raw path
+			if (Mode.HasFlag(SCPCFileMode::Read))
+			{
+				Mode.SetFlag(SCPCFileMode::Binary);
+			}
+			//open the file using mode settings
+		}
+	}
+	template<typename DestinationType>
+	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount);
+	
+	template <typename DestinationType>
+	int ReadBytes(DestinationType* Destination, size_t Count);
+
+
 };

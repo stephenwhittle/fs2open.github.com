@@ -9,6 +9,9 @@
 #include <utility>
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
+#include "sqlite_orm/sqlite_orm.h"
+
+
 
 int SCPCFileModule::GetNextEmptyBlockIndex() 
 {
@@ -76,7 +79,6 @@ bool SCPCFileModule::StartupModule()
 		return false;
 	}
 
-	Cfile_block_list.fill({});
 
 	cf_build_secondary_filelist(nullptr);
 	

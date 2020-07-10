@@ -60,11 +60,7 @@ enum CfileRootType {
 //    searching for pack files on hard drive		// Found by searching all known paths
 //    specifying cd-rom tree
 //    searching for pack files on CD-rom tree
-typedef struct cf_root {
-	char	path[CF_MAX_PATHNAME_LENGTH];	// Contains something like c:\projects\freespace or c:\projects\freespace\freespace.vp
-	int		roottype;						// CF_ROOTTYPE_PATH  = Path, CF_ROOTTYPE_PACK =Pack file, CF_ROOTTYPE_MEMORY=In memory
-	uint32_t location_flags;
-} cf_root;
+
 
 // convenient type for sorting (see cf_build_pack_list())
 typedef struct cf_root_sort { 
@@ -78,7 +74,7 @@ typedef struct cf_root_sort {
 #define CF_MAX_ROOTS					(CF_NUM_ROOTS_PER_BLOCK * CF_MAX_ROOT_BLOCKS)
 
 typedef struct cf_root_block {
-	cf_root			roots[CF_NUM_ROOTS_PER_BLOCK];
+	SCPRootInfo			roots[CF_NUM_ROOTS_PER_BLOCK];
 } cf_root_block;
 
 static int Num_roots = 0;
@@ -86,30 +82,20 @@ static cf_root_block  *Root_blocks[CF_MAX_ROOT_BLOCKS];
 
 static int Num_path_roots = 0;
 
-// Created by searching all roots in order.   This means Files is then sorted by precedence.
-typedef struct cf_file {
-	char		name_ext[CF_MAX_FILENAME_LENGTH];	// Filename and extension
-	int			root_index;							// Where in Roots this is located
-	int			pathtype_index;						// Where in Paths this is located
-	time_t		write_time;							// When it was last written
-	int			size;								// How big it is in bytes
-	int			pack_offset;						// For pack files, where it is at.   0 if not in a pack file.  This can be used to tell if in a pack file.
-	char*		real_name;							// For real files, the full path
-	const void*	data;								// For in-memory files, the data pointer
-} cf_file;
+
 
 #define CF_NUM_FILES_PER_BLOCK   512
 #define CF_MAX_FILE_BLOCKS			128						// Can store 512*128 = 65536 files
 
 typedef struct cf_file_block {
-	cf_file						files[CF_NUM_FILES_PER_BLOCK];
+	SCPCFileInfo						files[CF_NUM_FILES_PER_BLOCK];
 } cf_file_block;
 
 static uint Num_files = 0;
 static cf_file_block  *File_blocks[CF_MAX_FILE_BLOCKS];
 
 // Return a pointer to to file 'index'.
-cf_file *cf_get_file(int index)
+SCPCFileInfo *cf_get_file(int index)
 {
 	int block = index / CF_NUM_FILES_PER_BLOCK;
 	int offset = index % CF_NUM_FILES_PER_BLOCK;
@@ -118,7 +104,7 @@ cf_file *cf_get_file(int index)
 }
 
 // Create a new file and return a pointer to it.
-cf_file *cf_create_file()
+SCPCFileInfo *cf_create_file()
 {
 	Assertion(Num_files < CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS, "Too many files found. CFile cannot handle more than %d files.\n", CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS);
 
@@ -139,7 +125,7 @@ cf_file *cf_create_file()
 extern int cfile_inited;
 
 // Create a new root and return a pointer to it.  The structure is assumed unitialized.
-cf_root *cf_get_root(int n)
+SCPRootInfo *cf_get_root(int n)
 {
 	int block = n / CF_NUM_ROOTS_PER_BLOCK;
 	int offset = n % CF_NUM_ROOTS_PER_BLOCK;
@@ -152,7 +138,7 @@ cf_root *cf_get_root(int n)
 
 
 // Create a new root and return a pointer to it.  The structure is assumed unitialized.
-cf_root *cf_create_root()
+SCPRootInfo *cf_create_root()
 {
 	int block = Num_roots / CF_NUM_ROOTS_PER_BLOCK;
 	int offset = Num_roots % CF_NUM_ROOTS_PER_BLOCK;
@@ -168,7 +154,7 @@ cf_root *cf_create_root()
 }
 
 // return the # of packfiles which exist
-int cf_get_packfile_count(cf_root *root)
+int cf_get_packfile_count(SCPRootInfo *root)
 {
 	SCP_string filespec;
 	int i;
@@ -244,7 +230,7 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 }
 
 // Go through a root and look for pack files
-void cf_build_pack_list( cf_root *root )
+void cf_build_pack_list( SCPRootInfo *root )
 {
 	char filespec[MAX_PATH_LEN];
 	int i;
@@ -413,7 +399,7 @@ static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 			// normalize the path to the native path format
 			std::transform(rootPath.begin(), rootPath.end(), rootPath.begin(), normalize_directory_separator);
 
-			cf_root* root = cf_create_root();
+			SCPRootInfo* root = cf_create_root();
 
 			strncpy(root->path, rootPath.c_str(),  CF_MAX_PATHNAME_LENGTH-1);
 			if (primary) {
@@ -435,7 +421,7 @@ void cf_build_root_list(const char *cdrom_dir)
 	Num_roots = 0;
 	Num_path_roots = 0;
 
-	cf_root	*root = nullptr;
+	SCPRootInfo	*root = nullptr;
 
 	if (SCPApplication::Get().GetLegacyMode())
 	{
@@ -568,7 +554,7 @@ void cf_search_root_path(int root_index)
 	int i;
 	int num_files = 0;
 
-	cf_root* root = cf_get_root(root_index);
+	SCPRootInfo* root = cf_get_root(root_index);
 
 	mprintf(("Searching root '%s' ... ", root->path));
 
@@ -634,7 +620,7 @@ void cf_search_root_path(int root_index)
 					if ( ext )	{
 						if ( is_ext_in_list( Pathtypes[i].extensions, ext ) )	{
 							// Found a file!!!!
-							cf_file *file = cf_create_file();
+							SCPCFileInfo *file = cf_create_file();
 
 							strcpy_s( file->name_ext, find.name );
 							file->root_index = root_index;
@@ -743,7 +729,7 @@ void cf_search_root_path(int root_index)
 					if ( ext )	{
 						if ( is_ext_in_list( Pathtypes[i].extensions, ext ) )	{
 							// Found a file!!!!
-							cf_file *file = cf_create_file();
+							SCPCFileInfo *file = cf_create_file();
 
 							strcpy_s( file->name_ext, dir->d_name );
 							file->root_index = root_index;
@@ -789,7 +775,7 @@ typedef struct VP_FILE {
 void cf_search_root_pack(int root_index)
 {
 	int num_files = 0;
-	cf_root *root = cf_get_root(root_index);
+	SCPRootInfo *root = cf_get_root(root_index);
 
 	Assert( root != NULL );
 
@@ -870,7 +856,7 @@ void cf_search_root_pack(int root_index)
 					if ( ext )	{
 						if ( is_ext_in_list( Pathtypes[j].extensions, ext ) )	{
 							// Found a file!!!!
-							cf_file *file = cf_create_file();
+							SCPCFileInfo *file = cf_create_file();
 							strcpy_s( file->name_ext, find.filename );
 							file->root_index = root_index;
 							file->pathtype_index = j;
@@ -920,7 +906,7 @@ void cf_search_memory_root(int root_index) {
 				  DIR_SEPARATOR_STR,
 				  default_file.filename);
 
-		cf_file *file = cf_create_file();
+		SCPCFileInfo *file = cf_create_file();
 
 		strcpy_s( file->name_ext, default_file.filename );
 		file->root_index = root_index;
@@ -943,7 +929,7 @@ void cf_build_file_list()
 
 	// For each root, find all files...
 	for (i=0; i<Num_roots; i++ )	{
-		cf_root	*root = cf_get_root(i);
+		SCPRootInfo	*root = cf_get_root(i);
 		if ( root->roottype == CF_ROOTTYPE_PATH )	{
 			cf_search_root_path(i);
 		} else if ( root->roottype == CF_ROOTTYPE_PACK )	{
@@ -1138,7 +1124,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 
 	// Search the pak files and CD-ROM.
 	for (ui = 0; ui < Num_files; ui++ )	{
-		cf_file *f = cf_get_file(ui);
+		SCPCFileInfo *f = cf_get_file(ui);
 
 		// only search paths we're supposed to...
 		if ( (pathtype != CF_TYPE_ANY) && (pathtype != f->pathtype_index) )
@@ -1176,7 +1162,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 					res.full_name = f->real_name;
 				} else {
 					// File is in a pack file
-					cf_root *r = cf_get_root(f->root_index);
+					SCPRootInfo *r = cf_get_root(f->root_index);
 
 					res.full_name = r->path;
 				}
@@ -1202,7 +1188,7 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 				res.full_name = f->real_name;
 			} else {
 				// File is in a pack file
-				cf_root *r = cf_get_root(f->root_index);
+				SCPRootInfo *r = cf_get_root(f->root_index);
 
 				res.full_name = r->path;
 			}
@@ -1361,7 +1347,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 	// (FIXME: this assumes that everything in ext_list[] is the same length!)
 	size_t filespec_len_big = filespec_len + strlen(ext_list[0]);
 
-	SCP_vector< cf_file* > file_list_index;
+	SCP_vector< SCPCFileInfo* > file_list_index;
 	int last_root_index = -1;
 	int last_path_index = -1;
 
@@ -1369,7 +1355,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 
 	// next, run though and pick out base matches
 	for (ui = 0; ui < Num_files; ui++) {
-		cf_file *f = cf_get_file(ui);
+		SCPCFileInfo *f = cf_get_file(ui);
 
 		// ... only search paths that we're supposed to
 		if ( (num_search_dirs == 1) && (pathtype != f->pathtype_index) )
@@ -1413,8 +1399,8 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 
 	// now try and find our preferred match
 	for (cur_ext = 0; cur_ext < ext_num; cur_ext++) {
-		for (SCP_vector<cf_file*>::iterator fli = file_list_index.begin(); fli != file_list_index.end(); ++fli) {
-			cf_file *f = *fli;
+		for (SCP_vector<SCPCFileInfo*>::iterator fli = file_list_index.begin(); fli != file_list_index.end(); ++fli) {
+			SCPCFileInfo *f = *fli;
 	
 			strcat_s( filespec, ext_list[cur_ext] );
 
@@ -1441,7 +1427,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 						res.full_name = f->real_name;
 					} else {
 						// File is in a pack file
-						cf_root *r = cf_get_root(f->root_index);
+						SCPRootInfo *r = cf_get_root(f->root_index);
 
 						res.full_name = r->path;
 					}
@@ -1471,7 +1457,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 					res.full_name = f->real_name;
 				} else {
 					// File is in a pack file
-					cf_root *r = cf_get_root(f->root_index);
+					SCPRootInfo *r = cf_get_root(f->root_index);
 
 					res.full_name = r->path;
 				}
@@ -1728,7 +1714,7 @@ int cf_get_file_list(SCP_vector<SCP_string>& list, int pathtype, const char* fil
 	// Search all the packfiles and CD.
 	if ( !skip_packfiles )	{
 		for (i=0; i<Num_files; i++ )	{
-			cf_file * f = cf_get_file(i);
+			SCPCFileInfo * f = cf_get_file(i);
 
 			// only search paths we're supposed to...
 			if ( (pathtype != CF_TYPE_ANY) && (pathtype != f->pathtype_index)  )	{
@@ -1952,7 +1938,7 @@ int cf_get_file_list(int max, char** list, int pathtype, const char* filter, int
 	// Search all the packfiles and CD.
 	if ( !skip_packfiles)	{
 		for (i=0; i<Num_files; i++ )	{
-			cf_file * f = cf_get_file(i);
+			SCPCFileInfo * f = cf_get_file(i);
 
 			// only search paths we're supposed to...
 			if ( (pathtype != CF_TYPE_ANY) && (pathtype != f->pathtype_index)  )	{
@@ -2187,7 +2173,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 	// Search all the packfiles and CD.
 	if (!skip_packfiles) {
 		for (uint i=0; i<Num_files; i++ )	{
-			cf_file * f = cf_get_file(i);
+			SCPCFileInfo * f = cf_get_file(i);
 
 			// only search paths we're supposed to...
 			if ( (pathtype != CF_TYPE_ANY) && (pathtype != f->pathtype_index)  )	{
@@ -2282,7 +2268,7 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 		strncpy( path, filename, path_max );
 
 	} else {
-		cf_root* root = nullptr;
+		SCPRootInfo* root = nullptr;
 
 		for (auto i = 0; i < Num_roots; ++i) {
 			auto current_root = cf_get_root(i);
@@ -2362,7 +2348,7 @@ int cf_create_default_path_string(SCP_string& path, int pathtype, const char* fi
 		path.assign(filename);
 
 	} else {
-		cf_root* root = nullptr;
+		SCPRootInfo* root = nullptr;
 
 		for (auto i = 0; i < Num_roots; ++i) {
 			auto current_root = cf_get_root(i);
@@ -2438,7 +2424,7 @@ void cfile_spew_pack_file_crcs()
 	fprintf(out, "-------------------------------------------------------------------------------\n");
 
 	for (i = 0; i < Num_roots; i++) {
-		cf_root *cur_root = cf_get_root(i);
+		SCPRootInfo *cur_root = cf_get_root(i);
 
 		if (cur_root->roottype != CF_ROOTTYPE_PACK)
 			continue;

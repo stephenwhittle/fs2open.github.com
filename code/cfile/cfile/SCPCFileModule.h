@@ -4,16 +4,39 @@
 #include "cmdline/SCPCmdlineModule.h"
 #include "filesystem/SCPFilesystemModule.h"
 
-#include platform_header_cfile_SCPCFile
+#include "cfile/SCPCFile.h"
 
 #include "SCPApplication.h"
 #include <array>
 #include "FSIntegerTypes.h"
 
-
 class SCPCFileModule : public SCPModule<SCPCFileModule> 
 {
-	
+	inline auto& CFileDatabase()
+	{
+		using namespace sqlite_orm;
+		static auto& InternalCFileDatabase = make_storage(
+			":memory:",
+			make_table("FileInfo",
+				make_column("ID", &SCPCFileInfo::uid, autoincrement(), primary_key(), unique()),
+				make_column("NameAndExtension", &SCPCFileInfo::name_ext),
+				make_column("RootID", &SCPCFileInfo::root_index),
+				make_column("PathType", &SCPCFileInfo::pathtype_index),
+				make_column("LastModified", &SCPCFileInfo::write_time),
+				make_column("FileSize", &SCPCFileInfo::size),
+				make_column("PackOffset", &SCPCFileInfo::pack_offset),
+				make_column("FullPath", &SCPCFileInfo::real_name),
+				make_column("Data", &SCPCFileInfo::data)),
+			make_table("RootInfo",
+				make_column("ID", &SCPRootInfo::uid, autoincrement(), primary_key(), unique()),
+				make_column("Path", &SCPRootInfo::Path),
+				make_column("Type", &SCPRootInfo::Type),
+				make_column("LocationFlags", &SCPRootInfo::location_flags)
+				));
+		return InternalCFileDatabase;
+	};
+
+
 	template <unsigned int Index>
 	constexpr static unsigned int CalculateCRCTableEntry()
 	{
@@ -79,6 +102,8 @@ public:
 		return ModuleInstance;
 	}
 private:
+
 	//may want to try to put this in a pointer or something so we don't need the full definition in the header
 	std::array<CFILE, MAX_CFILE_BLOCKS> Cfile_block_list;
+	//std::array<std::unique_ptr<class SCPCFileInfo>, 512 * 128>;
 };
