@@ -68,9 +68,9 @@ public:
 
 	constexpr SCPFlags<T>(std::initializer_list<EnumType> Values)
 	{
-		for (EnumType Value : Values)
+		for (EnumType Flag : Values)
 		{
-			SetFlag(Value);
+			SetFlag(Flag);
 		}
 	}
 

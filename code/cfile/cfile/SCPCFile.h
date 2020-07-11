@@ -16,6 +16,33 @@ enum class SCPCFileMode
 
 using SCPCFileModeFlags = SCPFlags<SCPCFileMode>;
 
+enum class SCPCFileLocation
+{
+	GameRootDirectory,
+	UserDirectory,
+	MemoryRoot,
+	TopLevelDirectory,
+	PrimaryMod,
+	SecondaryMods
+};
+
+using SCPCFileLocationFlags = SCPFlags<SCPCFileLocation>;
+
+//Definition for 'all flags set'
+constexpr SCPCFileLocationFlags SCPCFileLocationALL = 
+SCPCFileLocationFlags
+{ 
+	SCPCFileLocation::GameRootDirectory,
+	SCPCFileLocation::UserDirectory,
+	SCPCFileLocation::MemoryRoot,
+	SCPCFileLocation::TopLevelDirectory,
+	SCPCFileLocation::PrimaryMod,
+	SCPCFileLocation::SecondaryMods
+};
+
+
+
+
 class CFILE
 {
     
@@ -93,3 +120,18 @@ public:
 
 
 };
+
+/*
+// This allows to use std::unique_ptr with CFILE
+namespace std {
+template <>
+struct default_delete<CFILE> {
+	void operator()(CFILE* ptr)
+	{
+		if (cf_is_valid(ptr)) {
+			cfclose(ptr);
+		}
+	}
+};
+} // namespace std
+*/

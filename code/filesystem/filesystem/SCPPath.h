@@ -20,7 +20,8 @@ public:
 	static SCP_string GetCompatiblePath(SCP_string InPath);
 	static const char* GetFilename(const char* InPath);
 	static char* GetFilename(char* InPath);
-	
+	SCPPath(const ghc::filesystem::path& InPath)
+		:ghc::filesystem::path(InPath) {};
 	SCPPath(const SCP_string& InString)
 		:ghc::filesystem::path(InString) {};
 	SCPPath(const char* InString)

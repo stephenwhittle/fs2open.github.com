@@ -3,12 +3,14 @@
 
 #include "cmdline/SCPCmdlineModule.h"
 #include "filesystem/SCPFilesystemModule.h"
-
+#include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
 
 #include "SCPApplication.h"
 #include <array>
 #include "FSIntegerTypes.h"
+#include "sqlite_orm/sqlite_orm.h"
+
 
 class SCPCFileModule : public SCPModule<SCPCFileModule> 
 {
@@ -73,6 +75,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	CFILE* CFOpenFileFillBlock(const char* source, int line, FILE* fp, int type);
 	CFILE* CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type);
 
+	void BuildPackListForRoot(uint32_t RootID);
 public:
 	static constexpr int MAX_CFILE_BLOCKS = 64;
 	virtual bool StartupModule() override;
@@ -93,7 +96,9 @@ public:
 	}
 
 	void DumpOpenedFileList();
-	
+	//should be made private at best
+	uint32_t AddRoot(class SCPRootInfo Root);
+	//need to delete the copy constructor too
 	static SCPCFileModule ConstructModule(SCPCmdlineModule& Dependency, SCPFilesystemModule& FSDependency)
 	{
 		SCPCFileModule ModuleInstance;
@@ -104,6 +109,6 @@ public:
 private:
 
 	//may want to try to put this in a pointer or something so we don't need the full definition in the header
-	std::array<CFILE, MAX_CFILE_BLOCKS> Cfile_block_list;
+	//std::array<CFILE, MAX_CFILE_BLOCKS> Cfile_block_list{};
 	//std::array<std::unique_ptr<class SCPCFileInfo>, 512 * 128>;
 };

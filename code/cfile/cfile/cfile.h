@@ -486,17 +486,6 @@ extern SCP_buffer read_raw_file_text(const char* filename, int mode = CF_TYPE_AN
  */
 int check_encoding_and_skip_bom(struct CFILE* file, const char* filename, int* start_offset = nullptr);
 
-// This allows to use std::unique_ptr with CFILE
-namespace std {
-template <>
-struct default_delete<CFILE> {
-	void operator()(CFILE* ptr)
-	{
-		if (cf_is_valid(ptr)) {
-			cfclose(ptr);
-		}
-	}
-};
-} // namespace std
+
 
 #endif	/* __CFILE_H__ */

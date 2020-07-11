@@ -9,7 +9,6 @@
 #include <utility>
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
-#include "sqlite_orm/sqlite_orm.h"
 
 
 
@@ -47,7 +46,7 @@ int SCPCFileModule::GetNextEmptyBlockIndex()
 //destructor can call cfclose if need be
 tl::optional<CFILE&> SCPCFileModule::GetNextEmptyBlock() 
 {
-	for (CFILE& CurrentFile : Cfile_block_list)
+	/*for (CFILE& CurrentFile : Cfile_block_list)
 	{
 		if (CurrentFile.type == CFILE_BLOCK_UNUSED)
 		{
@@ -56,7 +55,7 @@ tl::optional<CFILE&> SCPCFileModule::GetNextEmptyBlock()
 			CurrentFile.type = CFILE_BLOCK_UNUSED;
 			return CurrentFile;
 		}
-	}
+	}*/
 	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
 
 	// Dump a list of all opened files
@@ -106,6 +105,26 @@ void SCPCFileModule::DumpOpenedFileList()
 		}
 	}
 }
+
+uint32_t SCPCFileModule::AddRoot(SCPRootInfo Root) 
+{
+	return CFileDatabase().insert(Root);
+}
+
+///this will have to be exposed as a view on the table?
+/*
+bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
+{
+	// if the 2 directory types are the same, do a string compare
+	if (r1.cf_type == r2.cf_type) {
+		return (stricmp(r1.path, r2.path) < 0);
+	}
+
+	// otherwise return them in order of CF_TYPE_* precedence
+	return (r1.cf_type < r2.cf_type);
+}
+*/
+
 
 //font manager is the only thing that ever calls localize - true
 //could probably expose something on the localization service that localizes the file path passed in actually
@@ -159,5 +178,22 @@ SCPCFileModule::CFOpenInMemoryFileFillBlock(const char* source, int line, const 
 		cfp->data = data;
 
 		return cfp;
+	}
+}
+
+
+void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
+{
+	std::unique_ptr<SCPRootInfo> Root = CFileDatabase().get_pointer<SCPRootInfo>(RootID);
+
+	for (auto Pair : PathTypes) {
+		SCPCFilePathType PathInfo = Pair.second;
+		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->Path / PathInfo.Path)) {
+			if (DirectoryEntry.path().extension() == ".vp") {
+				SCPRootInfo NewRoot =
+					SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, Root->location_flags);
+				CFileDatabase().insert<SCPRootInfo>(NewRoot);
+			}
+		}
 	}
 }

@@ -35,6 +35,8 @@
 
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
+#include "cfile/SCPCFile.h"
+#include "cfile/SCPCFileModule.h"
 #include "SCPCmdOptions.h"
 #include "FSAssert.h"
 #include "FSMathOps.h"
@@ -164,7 +166,7 @@ int cf_get_packfile_count(SCPRootInfo *root)
 	packfile_count = 0;
 	for (i=CF_TYPE_ROOT; i<CF_MAX_PATH_TYPES; i++ )
 	{
-		filespec = root->path;
+		filespec = root->Path;
 		
 		if(strlen(Pathtypes[i].path))
 		{
@@ -230,31 +232,29 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 }
 
 // Go through a root and look for pack files
-void cf_build_pack_list( SCPRootInfo *root )
+void cf_build_pack_list( uint32_t RootID )
 {
-	char filespec[MAX_PATH_LEN];
-	int i;
-	cf_root_sort *temp_roots_sort, *rptr_sort;
-	int temp_root_count, root_index;
-
-	// determine how many packfiles there are
-	temp_root_count = cf_get_packfile_count(root);
-
-	if (temp_root_count <= 0)
-		return;
-
-	// allocate a temporary array of temporary roots so we can easily sort them
-	temp_roots_sort = (cf_root_sort*)vm_malloc(sizeof(cf_root_sort) * temp_root_count);
-
-	if (temp_roots_sort == NULL) {
-		Int3();
-		return;
+	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+	if (!CFileModule)
+	{
+		//throw;
 	}
-
+	
+	for (auto Pair : PathTypes)
+	{
+		SCPCFilePathType PathInfo = Pair.second;
+		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(RootPath / PathInfo.Path))
+		{
+			if (DirectoryEntry.path().extension() == ".vp")
+			{
+				SCPRootInfo Root = SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, RootID->location_flags);
+			}
+		}
+	}
 	// now just setup all the root info
 	root_index = 0;
 	for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++) {
-		strcpy_s( filespec, root->path );
+		strcpy_s( filespec, RootID->path );
 		
 		if ( strlen(Pathtypes[i].path) ) {
 			strcat_s( filespec, Pathtypes[i].path );
@@ -281,7 +281,7 @@ void cf_build_pack_list( SCPRootInfo *root )
 					rptr_sort = &temp_roots_sort[root_index++];
 
 					// fill in all the proper info
-					strcpy_s(rptr_sort->path, root->path);
+					strcpy_s(rptr_sort->path, RootID->path);
 					
 					if(strlen(Pathtypes[i].path)) {
 
@@ -340,8 +340,8 @@ void cf_build_pack_list( SCPRootInfo *root )
 	// now insert them all into the real root list properly
 	for (i = 0; i < temp_root_count; i++) {
 		auto new_root            = cf_create_root();
-		new_root->location_flags = root->location_flags;
-		strcpy_s( new_root->path, root->path );
+		new_root->location_flags = RootID->location_flags;
+		strcpy_s( new_root->path, RootID->path );
 
 #ifndef NDEBUG
 		uint chksum = 0;
@@ -369,7 +369,7 @@ static char normalize_directory_separator(char in)
 	return in;
 }
 
-static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
+static void cf_add_mod_roots(const char* rootDirectory, SCPCFileLocationFlags basic_location)
 {
 	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
 	auto& ModList = CmdlineModule->CurrentOptions->ModList;
@@ -399,17 +399,15 @@ static void cf_add_mod_roots(const char* rootDirectory, uint32_t basic_location)
 			// normalize the path to the native path format
 			std::transform(rootPath.begin(), rootPath.end(), rootPath.begin(), normalize_directory_separator);
 
-			SCPRootInfo* root = cf_create_root();
-
-			strncpy(root->path, rootPath.c_str(),  CF_MAX_PATHNAME_LENGTH-1);
-			if (primary) {
-				root->location_flags = basic_location | CF_LOCATION_TYPE_PRIMARY_MOD;
-			} else {
-				root->location_flags = basic_location | CF_LOCATION_TYPE_SECONDARY_MODS;
+			SCPRootInfo root(SCPPath(rootPath), SCPRootInfo::RootType::Path, basic_location | (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
+			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+			if (!CFileModule.has_value())
+			{
+				//throw 
 			}
-
-			root->roottype = CF_ROOTTYPE_PATH;
-			cf_build_pack_list(root);
+			auto RootID = CFileModule->AddRoot(root);
+			//add the root to the database and then pass the ID to the next function?
+			cf_build_pack_list(RootID);
 
 			primary = false;
 		}
