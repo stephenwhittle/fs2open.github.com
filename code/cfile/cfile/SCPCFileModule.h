@@ -76,6 +76,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	CFILE* CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type);
 
 	void BuildPackListForRoot(uint32_t RootID);
+	void AddModRoots(const char* rootDirectory, SCPCFileLocationFlags basic_location);
 public:
 	static constexpr int MAX_CFILE_BLOCKS = 64;
 	virtual bool StartupModule() override;

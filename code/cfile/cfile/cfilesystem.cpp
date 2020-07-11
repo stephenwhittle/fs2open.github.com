@@ -369,52 +369,9 @@ static char normalize_directory_separator(char in)
 	return in;
 }
 
-static void cf_add_mod_roots(const char* rootDirectory, SCPCFileLocationFlags basic_location)
-{
-	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
-	auto& ModList = CmdlineModule->CurrentOptions->ModList;
-	if (ModList)
-	{
-		bool primary = true;
-		std::replace(ModList->begin(), ModList->end(), ',', '\0');
-		ModList->push_back('\0');
-		for (const char* cur_pos = ModList->c_str(); strlen(cur_pos) != 0; cur_pos += (strlen(cur_pos) + 1))
-		//for (const char* cur_pos=Cmdline_mod; strlen(cur_pos) != 0; cur_pos+= (strlen(cur_pos)+1))
-		{
-			SCP_stringstream ss;
-			ss << rootDirectory;
 
-			if (rootDirectory[strlen(rootDirectory) - 1] != DIR_SEPARATOR_CHAR)
-			{
-				ss << DIR_SEPARATOR_CHAR;
-			}
 
-			ss << cur_pos << DIR_SEPARATOR_STR;
-
-			SCP_string rootPath = ss.str();
-			if (rootPath.size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
-				GOutputDevice->Error(LOCATION, "The length of mod directory path '%s' exceeds the maximum of %d!\n", rootPath.c_str(), CF_MAX_PATHNAME_LENGTH);
-			}
-
-			// normalize the path to the native path format
-			std::transform(rootPath.begin(), rootPath.end(), rootPath.begin(), normalize_directory_separator);
-
-			SCPRootInfo root(SCPPath(rootPath), SCPRootInfo::RootType::Path, basic_location | (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
-			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
-			if (!CFileModule.has_value())
-			{
-				//throw 
-			}
-			auto RootID = CFileModule->AddRoot(root);
-			//add the root to the database and then pass the ID to the next function?
-			cf_build_pack_list(RootID);
-
-			primary = false;
-		}
-	}
-}
-
-void cf_build_root_list(const char *cdrom_dir)
+void BuildRootList(const char *cdrom_dir)
 {
 	Num_roots = 0;
 	Num_path_roots = 0;
@@ -427,7 +384,7 @@ void cf_build_root_list(const char *cdrom_dir)
 #ifdef WIN32
 		// Nothing to do here, Windows uses the current directory as the base
 #else
-		cf_add_mod_roots(os_get_legacy_user_dir(), CF_LOCATION_ROOT_USER);
+		AddModRoots(os_get_legacy_user_dir(), CF_LOCATION_ROOT_USER);
 
 		root = cf_create_root();
 		strncpy(root->path, os_get_legacy_user_dir(), CF_MAX_PATHNAME_LENGTH - 1);
@@ -453,7 +410,7 @@ void cf_build_root_list(const char *cdrom_dir)
 	{
 		// =========================================================================
 		// now look for mods under the users HOME directory to use before system ones
-		cf_add_mod_roots(Cfile_user_dir, CF_LOCATION_ROOT_USER);
+		AddModRoots(Cfile_user_dir, CF_LOCATION_ROOT_USER);
 		// =========================================================================
 
 		// =========================================================================
@@ -484,7 +441,7 @@ void cf_build_root_list(const char *cdrom_dir)
 		GOutputDevice->Error(LOCATION, "Can't get current working directory -- %d", errno );
 	}
 
-	cf_add_mod_roots(working_directory, CF_LOCATION_ROOT_GAME);
+	AddModRoots(working_directory, CF_LOCATION_ROOT_GAME);
 
 	root = cf_create_root();
 
@@ -961,7 +918,7 @@ void cf_build_secondary_filelist(const char *cdrom_dir)
 	mprintf(( "Building file index...\n" ));
 	
 	// build the list of searchable roots
-	cf_build_root_list(cdrom_dir);	
+	BuildRootList(cdrom_dir);	
 
 	// build the list of files themselves
 	cf_build_file_list();

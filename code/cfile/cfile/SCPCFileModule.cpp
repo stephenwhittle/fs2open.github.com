@@ -197,3 +197,41 @@ void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 		}
 	}
 }
+
+void SCPCFileModule::AddModRoots(const char* rootDirectory, SCPCFileLocationFlags basic_location)
+{
+	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
+	auto& ModList      = CmdlineModule->CurrentOptions->ModList;
+	if (ModList) {
+		bool primary = true;
+		std::replace(ModList->begin(), ModList->end(), ',', '\0');
+		ModList->push_back('\0');
+		for (const char* cur_pos = ModList->c_str(); strlen(cur_pos) != 0; cur_pos += (strlen(cur_pos) + 1))
+		// for (const char* cur_pos=Cmdline_mod; strlen(cur_pos) != 0; cur_pos+= (strlen(cur_pos)+1))
+		{
+
+			SCPPath RootPath = SCPPath(rootDirectory) / cur_pos;
+
+			if (RootPath.string().size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
+				GOutputDevice->Error(LOCATION,
+									 "The length of mod directory path '%s' exceeds the maximum of %d!\n",
+									 rootPath.c_str(),
+									 CF_MAX_PATHNAME_LENGTH);
+			}
+
+			SCPRootInfo root(RootPath,
+							 SCPRootInfo::RootType::Path,
+							 basic_location |
+								 (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
+			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+			if (!CFileModule.has_value()) {
+				// throw
+			}
+			auto RootID = CFileModule->AddRoot(root);
+			// add the root to the database and then pass the ID to the next function?
+			CFileModule->BuildPackListForRoot(RootID);
+
+			primary = false;
+		}
+	}
+}
