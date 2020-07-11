@@ -78,6 +78,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void BuildPackListForRoot(uint32_t RootID);
 	//this may be better off taking in an actual root or rootid
 	void AddModRoots(const char* rootDirectory, SCPCFileLocationFlags basic_location);
+	void BuildRootList(const char* cdrom_dir);
 public:
 	static constexpr int MAX_CFILE_BLOCKS = 64;
 	virtual bool StartupModule() override;
