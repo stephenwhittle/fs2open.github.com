@@ -29,25 +29,25 @@ class SCPFlags
 	
 	constexpr SCPFlags<T>() {};
 
-	constexpr SCPFlags<T>(StorageType InitialValue)
-		: Value(InitialValue) {};
+	
 	
 	constexpr static StorageType Convert(const EnumType& EnumValue) { return static_cast<StorageType>(EnumValue); }
 
 public:
-	constexpr SCPFlags<T> operator|(const EnumType& EnumValue) const { return SCPFlags<T>(Value.disjunction(0) | Convert(EnumValue)); }
-	constexpr SCPFlags<T> operator|=(const EnumType& EnumValue) { Value = Value.disjunction(0) | Convert(EnumValue); return *this; }
-	constexpr SCPFlags<T>& SetFlag(const EnumType& EnumValue) { Value = Value.disjunction(0) | Convert(EnumValue); return *this; }
+	constexpr StorageType RawValue() { return Value.disjunction(0).value(); }
+	constexpr SCPFlags<T> operator|(const EnumType& EnumValue) const { return SCPFlags<T>(Value.disjunction(0).value() | Convert(EnumValue)); }
+	constexpr SCPFlags<T> operator|=(const EnumType& EnumValue) { Value = Value.disjunction(0).value() | Convert(EnumValue); return *this; }
+	constexpr SCPFlags<T>& SetFlag(const EnumType& EnumValue) { Value = Value.disjunction(0).value() | Convert(EnumValue); return *this; }
 	
-	constexpr bool operator&(const EnumType& EnumValue) const { return (Value.disjunction(0) & Convert(EnumValue)) == Convert(EnumValue); }
-	constexpr bool HasFlag(const EnumType& EnumValue) const { return (Value.disjunction(0) & Convert(EnumValue)) == Convert(EnumValue); }
+	constexpr bool operator&(const EnumType& EnumValue) const { return (Value.disjunction(0).value() & Convert(EnumValue)) == Convert(EnumValue); }
+	constexpr bool HasFlag(const EnumType& EnumValue) const { return (Value.disjunction(0).value() & Convert(EnumValue)) == Convert(EnumValue); }
 	
-	constexpr bool operator^(const EnumType& EnumValue) const { return SCPFlags<T>(Value.disjunction(0) ^ Convert(EnumValue)); }
-	constexpr bool operator^=(const EnumType& EnumValue) { Value = Value.disjunction(0) ^ Convert(EnumValue); return *this; }
-	constexpr bool ToggleFlag(const EnumType& EnumValue) { Value = Value.disjunction(0) ^ Convert(EnumValue); return *this; }
+	constexpr bool operator^(const EnumType& EnumValue) const { return SCPFlags<T>(Value.disjunction(0).value() ^ Convert(EnumValue)); }
+	constexpr bool operator^=(const EnumType& EnumValue) { Value = Value.disjunction(0).value() ^ Convert(EnumValue); return *this; }
+	constexpr bool ToggleFlag(const EnumType& EnumValue) { Value = Value.disjunction(0).value() ^ Convert(EnumValue); return *this; }
 
-	constexpr SCPFlags<T> operator~() const { return SCPFlags<T>(~Value.disjunction(0)); }
-	constexpr bool ClearFlag(EnumType EnumValue) { Value = Value.disjunction(0) & ~Convert(EnumValue); return *this; }
+	constexpr SCPFlags<T> operator~() const { return SCPFlags<T>(~Value.disjunction(0).value()); }
+	constexpr bool ClearFlag(EnumType EnumValue) { Value = Value.disjunction(0).value() & ~Convert(EnumValue); return *this; }
 
 	//constexpr StorageType GetRawValue() { return Value; }
 	
@@ -79,5 +79,7 @@ public:
 	{
 	}
 	
+	constexpr SCPFlags<T>(StorageType InitialValue) : Value(InitialValue){};
+
 	constexpr static const SCPFlags<T> Empty() { return SCPFlags<T>(); }
 };

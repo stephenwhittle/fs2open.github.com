@@ -15,6 +15,7 @@
 #include "cfile/cfile.h"
 #include "cfile/SCPCFile.h"
 #include "filesystem/SCPPath.h"
+#include "SCPFlags.h"
 #include <map>
 #include <initializer_list>
 // Builds a list of all the files
@@ -203,6 +204,33 @@ public:
 	RootType Type;   // CF_ROOTTYPE_PATH  = Path, CF_ROOTTYPE_PACK =Pack file, CF_ROOTTYPE_MEMORY=In memory
 	SCPCFileLocationFlags location_flags;
 };
+
+
+namespace sqlite_orm
+{
+
+template<typename T>
+using is_class_enum = std::enable_if_t< std::is_enum_v<T> && !std::is_convertible_v<T, int>, T>;
+
+template<typename T>
+struct type_printer<T, is_class_enum<T>> : public integer_printer {};
+
+template <typename T>
+struct type_printer<SCPFlags<T>, void> : public integer_printer {};
+
+
+template <typename T>
+struct field_printer<SCPFlags<T>> {
+	std::string operator()(const SCPFlags<T>& EnumClass) const
+	{
+		std::stringstream stream;
+		stream << EnumClass.RawValue();
+		return stream.str();
+	}
+};
+}
+
+
 
 
 #endif	//_CFILESYSTEM_H
