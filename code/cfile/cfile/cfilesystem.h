@@ -18,7 +18,7 @@
 #include <map>
 #include <initializer_list>
 // Builds a list of all the files
-void cf_build_secondary_filelist( const char *cdrom_path );
+
 void cf_free_secondary_filelist();
 
 enum class SCPCFilePathTypeID
@@ -88,7 +88,7 @@ class SCPCFilePathType
 public:
 	SCPCFilePathTypeID Type;
 	SCPPath Path;
-	SCP_vector<const char*> Extensions;
+	SCP_vector<SCP_string> Extensions;
 	SCPCFilePathTypeID Parent;
 };
 //clang-format off
@@ -156,18 +156,31 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 int cf_create_default_path_string(SCP_string& path, int pathtype, const char* filename = nullptr, bool localize = false,
                                   uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
-typedef struct SCPCFileInfo {
+class SCPCFileInfo {
+public:
 	uint32_t uid;
-	char name_ext[32];  // Filename and extension
-	int root_index;     // Where in Roots this is located
-	int pathtype_index; // Where in Paths this is located
+	SCP_string name_ext;  // Filename and extension
+	uint32_t root_index;     // Where in Roots this is located
+	SCPCFilePathTypeID pathtype_index; // Where in Paths this is located
 	time_t write_time;  // When it was last written
 	int size;           // How big it is in bytes
 	int pack_offset;    // For pack files, where it is at.   0 if not in a pack file.  This can be used to tell if in a
 						// pack file.
-	char* real_name;    // For real files, the full path
+	SCPPath real_name;    // For real files, the full path
 	const void* data;   // For in-memory files, the data pointer
-} SCPCFileInfo;
+
+	SCPCFileInfo(SCPPath FullPath, uint32_t RootUID, SCPCFilePathTypeID PathType) //real file
+		:uid(0),
+		root_index(RootUID),
+		pathtype_index(PathType),
+		pack_offset(0),
+		real_name(FullPath),
+
+	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, size_t PackOffset); //file in pack file
+	
+	template<typename T>
+	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, T* DataPointer); //in-memory file of type T
+};
 
 class SCPRootInfo {
 	

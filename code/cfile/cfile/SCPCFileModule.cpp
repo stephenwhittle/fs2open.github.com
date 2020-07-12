@@ -5,6 +5,7 @@
 
 #include "module/SCPModuleManager.h"
 #include "filesystem/SCPFilesystemModule.h"
+#include "filesystem/SCPDirectoryIterator.h"
 #include "FSIntegerTypes.h"
 #include <utility>
 #include "cfile/cfilesystem.h"
@@ -79,7 +80,7 @@ bool SCPCFileModule::StartupModule()
 	}
 
 
-	cf_build_secondary_filelist(nullptr);
+	BuildCFileDatabase(nullptr);
 	
 	InitializationGuard = true;
 	return true;
@@ -296,9 +297,6 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	{
 		GOutputDevice->Error(LOCATION, "Can't get filesystem module to determine working directory");
 	}
-	
-
-
 
 	//======================================================
 	 // Check the real CD if one...
@@ -316,4 +314,61 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	AddRoot(MemoryRoot);
 
 
+}
+
+
+void SCPCFileModule::BuildCFileDatabase(const char* cdrom_dir)
+{
+
+	mprintf(("Building file index...\n"));
+
+	// build the list of searchable roots
+	BuildRootList(cdrom_dir);
+
+	// build the list of files themselves
+	BuildFileList();
+
+	//query database for all roots and all files
+	mprintf(("Found %d roots and %d files.\n", Num_roots, Num_files));
+}
+
+void SCPCFileModule::BuildFileList()
+{
+	
+	//query database for all roots
+	//then switch on root type
+	for (SCPRootInfo& CurrentRoot : CFileDatabase().iterate<SCPRootInfo>())
+	{
+		switch (CurrentRoot.Type)
+		{
+		case SCPRootInfo::RootType::Path:
+			cf_search_root_path(CurrentRoot.uid);
+			break;
+		case SCPRootInfo::RootType::PackFile:
+			cf_search_root_pack(CurrentRoot.uid);
+			break;
+		case SCPRootInfo::RootType::InMemory:
+			cf_search_memory_root(CurrentRoot.uid);
+			break;
+		}
+	}
+	
+}
+void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
+{
+	for (auto Pair : PathTypes) {
+		if (Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
+		{
+			continue;
+		}
+		SCPPath FullDirectoryPath = Root.Path / Pair.second.Path;
+		SCPDirectoryIterator DirectoryIterator = SCPDirectoryIterator(FullDirectoryPath, Pair.second.Extensions);
+
+		for (SCPPath FilePath : DirectoryIterator)
+		{
+			SCPCFileInfo FileInfo = SCPCFileInfo(FilePath, Root.uid, Pair.first);
+			CFileDatabase().insert<SCPCFileInfo>(FileInfo);
+		}
+	}
+	
 }

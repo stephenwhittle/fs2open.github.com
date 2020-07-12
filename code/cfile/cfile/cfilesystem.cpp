@@ -371,140 +371,6 @@ static char normalize_directory_separator(char in)
 
 
 
-void BuildRootList(const char *cdrom_dir)
-{
-	Num_roots = 0;
-	Num_path_roots = 0;
-
-	SCPRootInfo	*root = nullptr;
-
-	if (SCPApplication::Get().GetLegacyMode())
-	{
-		// =========================================================================
-#ifdef WIN32
-		// Nothing to do here, Windows uses the current directory as the base
-#else
-		AddModRoots(os_get_legacy_user_dir(), SCPCFileLocation::UserDirectory);
-		SCPRootInfo LegacyRoot = SCPRootInfo(os_get_legacy_user_dir(), SCPRootInfo::RootType::Path, SCPCFileLocation::UserDirectory | SCPCFileLocation::TopLevelDirectory);
-		if (Cmdline_mod == nullptr || strlen(Cmdline_mod) <= 0) {
-			LegacyRoot.location_flags.SetFlag(SCPCFileLocation::PrimaryMod);
-		}
-		AddRoot(LegacyRoot);
-		BuildPackListForRoot(LegacyRoot);
-		/*root = cf_create_root();
-		strncpy(root->path, os_get_legacy_user_dir(), CF_MAX_PATHNAME_LENGTH - 1);
-
-		root->location_flags |= CF_LOCATION_ROOT_USER | CF_LOCATION_TYPE_ROOT;
-		if (Cmdline_mod == nullptr || strlen(Cmdline_mod) <= 0) {
-			// If there are no mods then the root is the primary mod
-			root->location_flags |= CF_LOCATION_TYPE_PRIMARY_MOD;
-		}
-
-		// do we already have a slash? as in the case of a root directory install
-		if ((strlen(root->path) < (CF_MAX_PATHNAME_LENGTH - 1)) && (root->path[strlen(root->path) - 1] != DIR_SEPARATOR_CHAR)) {
-			strcat_s(root->path, DIR_SEPARATOR_STR);		// put trailing backslash on for easier path construction
-		}
-		root->roottype = CF_ROOTTYPE_PATH;
-
-		// Next, check any VP files under the current directory.
-		cf_build_pack_list(root);*/
-#endif
-		// =========================================================================
-	}
-	else if (!Cmdline_portable_mode)
-	{
-		// =========================================================================
-		// now look for mods under the users HOME directory to use before system ones
-		AddModRoots(Cfile_user_dir, SCPCFileLocation::UserDirectory);
-		// =========================================================================
-
-		// =========================================================================
-		// set users HOME directory as default for loading and saving files
-		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootInfo::RootType::Path, SCPCFileLocation::UserDirectory | SCPCFileLocation::TopLevelDirectory);
-		//root = cf_create_root();
-		//strcpy_s(root->path, Cfile_user_dir);
-
-		//root->location_flags |= CF_LOCATION_ROOT_USER | CF_LOCATION_TYPE_ROOT;
-		if (Cmdline_mod == nullptr || strlen(Cmdline_mod) <= 0) {
-			// If there are no mods then the root is the primary mod
-			//root->location_flags |= CF_LOCATION_TYPE_PRIMARY_MOD;
-			HomeDirRoot.location_flags.SetFlag(SCPCFileLocation::PrimaryMod);
-		}
-
-		/*// do we already have a slash? as in the case of a root directory install
-		if ((strlen(root->path) < (CF_MAX_PATHNAME_LENGTH - 1)) && (root->path[strlen(root->path) - 1] != DIR_SEPARATOR_CHAR)) {
-			strcat_s(root->path, DIR_SEPARATOR_STR);		// put trailing backslash on for easier path construction
-		}
-		root->roottype = CF_ROOTTYPE_PATH;*/
-
-		// Next, check any VP files under the current directory.
-		AddRoot(HomeDirRoot);
-		BuildPackListForRoot(HomeDirRoot);
-		// =========================================================================
-	}
-
-	auto FSModule = SCPModuleManager::GetModule<SCPFilesystemModule>();
-	if (FSModule)
-	{
-		SCPRootInfo WorkingDirectoryRoot = SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootInfo::RootType::Path, SCPCFileLocation::GameRootDirectory | SCPCFileLocation::TopLevelDirectory);
-		AddRoot(WorkingDirectoryRoot);
-
-		AddModRoots(FSModule->WorkingDirectory.GetCurrent(), SCPCFileLocation::GameRootDirectory);
-		BuildPackListForRoot(WorkingDirectoryRoot);
-
-	}
-	else
-	{
-		GOutputDevice->Error(LOCATION, "Can't get filesystem module to determine working directory" );
-	}
-	/*root = cf_create_root();
-
-	root->location_flags |= CF_LOCATION_ROOT_GAME | CF_LOCATION_TYPE_ROOT;
-	if (Cmdline_mod == nullptr || strlen(Cmdline_mod) <= 0) {
-		// If there are no mods then the root is the primary mod
-		root->location_flags |= CF_LOCATION_TYPE_PRIMARY_MOD;
-	}
-
-	strcpy_s(root->path, working_directory);
-
-	size_t path_len = strlen(root->path);
-
-	// do we already have a slash? as in the case of a root directory install
-	if ( (path_len < (CF_MAX_PATHNAME_LENGTH-1)) && (root->path[path_len-1] != DIR_SEPARATOR_CHAR) ) {
-		strcat_s(root->path, DIR_SEPARATOR_STR);		// put trailing backslash on for easier path construction
-	}
-
-	root->roottype = CF_ROOTTYPE_PATH;*/
-
-   //======================================================
-	// Next, check any VP files under the current directory.
-	
-
-
-   //======================================================
-	// Check the real CD if one...
-	if ( cdrom_dir && (strlen(cdrom_dir) < CF_MAX_PATHNAME_LENGTH) )	{
-		/*root = cf_create_root();
-		strcpy_s( root->path, cdrom_dir );
-		root->roottype = CF_ROOTTYPE_PATH;*/
-
-		//======================================================
-		// Next, check any VP files in the CD-ROM directory.
-		SCPRootInfo CDRoot = SCPRootInfo(cdrom_dir, SCPRootInfo::RootType::Path, SCPCFileLocationFlags::Empty());
-		AddRoot(CDRoot);
-		BuildPackListForRoot(CDRoot);
-
-	}
-	SCPRootInfo MemoryRoot = SCPRootInfo("", SCPRootInfo::RootType::InMemory, SCPCFileLocation::MemoryRoot | SCPCFileLocation::TopLevelDirectory);
-	AddRoot(MemoryRoot);
-	/*// The final root is the in-memory root
-	root = cf_create_root();
-	root->location_flags = CF_LOCATION_ROOT_MEMORY | CF_LOCATION_TYPE_ROOT;
-	memset(root->path, 0, sizeof(root->path));
-	root->roottype = CF_ROOTTYPE_MEMORY;*/
-
-}
-
 // Given a lower case list of file extensions 
 // separated by spaces, return zero if ext is
 // not in the list.
@@ -558,6 +424,18 @@ void cf_search_root_path(int root_index)
 	// This map stores the mapping between a specific path type and the actual path that we use for it
 	SCP_unordered_map<int, SCP_string> pathTypeToRealPath;
 #endif
+
+	for (auto Pair : PathTypes)
+	{
+		SCPPath FullPath = root->Path / Pair.second.Path;
+		//iterate using directory iterator
+		//then check extensions of all files against the Pair.second.Extensions vector
+		//if theres a match
+		//construct SCPCFileInfo
+		//add to database
+	}
+
+
 
 	for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++) {
 
@@ -893,55 +771,10 @@ void cf_search_memory_root(int root_index) {
 	mprintf(( "%i files\n", num_files ));
 }
 
-void cf_build_file_list()
-{
-	int i;
-
-	Num_files = 0;
-
-	// For each root, find all files...
-	for (i=0; i<Num_roots; i++ )	{
-		SCPRootInfo	*root = cf_get_root(i);
-		if ( root->roottype == CF_ROOTTYPE_PATH )	{
-			cf_search_root_path(i);
-		} else if ( root->roottype == CF_ROOTTYPE_PACK )	{
-			cf_search_root_pack(i);
-		} else if (root->roottype == CF_ROOTTYPE_MEMORY) {
-			cf_search_memory_root(i);
-		}
-	}
-
-}
 
 
-void cf_build_secondary_filelist(const char *cdrom_dir)
-{
-	int i;
 
-	// Assume no files
-	Num_roots = 0;
-	Num_files = 0;
 
-	// Init the root blocks
-	for (i=0; i<CF_MAX_ROOT_BLOCKS; i++ )	{
-		Root_blocks[i] = NULL;
-	}
-
-	// Init the file blocks	
-	for (i=0; i<CF_MAX_FILE_BLOCKS; i++ )	{
-		File_blocks[i] = NULL;
-	}
-
-	mprintf(( "Building file index...\n" ));
-	
-	// build the list of searchable roots
-	BuildRootList(cdrom_dir);	
-
-	// build the list of files themselves
-	cf_build_file_list();
-
-	mprintf(( "Found %d roots and %d files.\n", Num_roots, Num_files ));
-}
 
 void cf_free_secondary_filelist()
 {
