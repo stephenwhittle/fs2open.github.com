@@ -24,3 +24,13 @@ bool SCPFile::Exists(SCP_string FilePath)
 {
 	return ghc::filesystem::exists(ghc::filesystem::path(FilePath));
 }
+
+std::uintmax_t SCPFile::FileSize(SCP_string FilePath) 
+{
+	return ghc::filesystem::file_size(ghc::filesystem::path(FilePath));
+}
+
+std::uintmax_t SCPFile::FileSize() 
+{
+	return ghc::filesystem::file_size(CachedPath);
+}

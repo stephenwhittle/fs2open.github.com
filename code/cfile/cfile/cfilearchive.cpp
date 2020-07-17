@@ -27,8 +27,6 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilearchive.h"
 
-#include platform_header_cfile_SCPCFile
-
 #include "luaconf.h"
 #include "FSAssert.h"
 #include "SCPCompiler.h"

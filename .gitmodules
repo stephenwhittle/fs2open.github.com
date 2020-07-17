@@ -22,9 +22,6 @@
 [submodule "lib/mio"]
 	path = lib/mio
 	url = https://github.com/mandreyel/mio.git
-[submodule "lib/sqlite_orm"]
-	path = lib/sqlite_orm
-	url = https://github.com/fnc12/sqlite_orm.git
-[submodule "lib/sqlite-amalgamation"]
-	path = lib/sqlite-amalgamation
-	url = https://github.com/azadkuh/sqlite-amalgamation.git
+[submodule "lib/SQLiteCpp"]
+	path = lib/SQLiteCpp
+	url = https://github.com/SRombauts/SQLiteCpp.git

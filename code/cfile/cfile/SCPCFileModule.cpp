@@ -185,15 +185,16 @@ SCPCFileModule::CFOpenInMemoryFileFillBlock(const char* source, int line, const 
 
 void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 {
-	std::unique_ptr<SCPRootInfo> Root = CFileDatabase().get_pointer<SCPRootInfo>(RootID);
+	tl::optional<SCPRootInfo> Root = CFileDatabase().GetRootByID(RootID);
+	Assert(Root.has_value());
 
 	for (auto Pair : PathTypes) {
 		SCPCFilePathType PathInfo = Pair.second;
-		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->Path / PathInfo.Path)) {
+		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->GetPath() / PathInfo.Path)) {
 			if (DirectoryEntry.path().extension() == ".vp") {
 				SCPRootInfo NewRoot =
-					SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, Root->location_flags);
-				CFileDatabase().insert<SCPRootInfo>(NewRoot);
+					SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, Root->GetLocationFlags());
+				CFileDatabase().AddRoot(NewRoot);
 			}
 		}
 	}
@@ -251,12 +252,16 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 		// Nothing to do here, Windows uses the current directory as the base
 #else
 		AddModRoots(os_get_legacy_user_dir(), SCPCFileLocation::UserDirectory);
-		SCPRootInfo LegacyRoot = SCPRootInfo(os_get_legacy_user_dir(), SCPRootInfo::RootType::Path, SCPCFileLocation::UserDirectory | SCPCFileLocation::TopLevelDirectory);
+
+
+		SCPCFileLocationFlags LegacyDirFlags = SCPCFileLocationFlags({ SCPCFileLocation::UserDirectory , SCPCFileLocation::TopLevelDirectory });
 		if (!(CmdLineModule && CmdLineModule->CurrentOptions->ModList.has_value())) {
-			LegacyRoot.location_flags.SetFlag(SCPCFileLocation::PrimaryMod);
+			LegacyDirFlags.SetFlag(SCPCFileLocation::PrimaryMod);
 		}
-		AddRoot(LegacyRoot);
-		BuildPackListForRoot(LegacyRoot);
+		SCPRootInfo LegacyRoot = SCPRootInfo(os_get_legacy_user_dir(), SCPRootInfo::RootType::Path, LegacyDirFlags);
+		
+		uint32_t LegacyRootID = AddRoot(LegacyRoot);
+		BuildPackListForRoot(LegacyRootID);
 
 #endif
 		// =========================================================================
@@ -270,14 +275,14 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 
 		// =========================================================================
 		// set users HOME directory as default for loading and saving files
-		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootInfo::RootType::Path, SCPCFileLocation::UserDirectory | SCPCFileLocation::TopLevelDirectory);
-		
+		SCPCFileLocationFlags HomeDirFlags = SCPCFileLocationFlags({ SCPCFileLocation::UserDirectory , SCPCFileLocation::TopLevelDirectory });
 		if (!(CmdLineModule && CmdLineModule->CurrentOptions->ModList.has_value())) {
-			HomeDirRoot.location_flags.SetFlag(SCPCFileLocation::PrimaryMod);
+			HomeDirFlags.SetFlag(SCPCFileLocation::PrimaryMod);
 		}
-
-		AddRoot(HomeDirRoot);
-		BuildPackListForRoot(HomeDirRoot.uid);
+		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootInfo::RootType::Path, HomeDirFlags);
+		
+		uint32_t HomeDirRootID = AddRoot(HomeDirRoot);
+		BuildPackListForRoot(HomeDirRootID);
 		// =========================================================================
 	}
 
@@ -287,10 +292,10 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	if (FSModule)
 	{
 		SCPRootInfo WorkingDirectoryRoot = SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootInfo::RootType::Path, SCPCFileLocation::GameRootDirectory | SCPCFileLocation::TopLevelDirectory);
-		AddRoot(WorkingDirectoryRoot);
+		uint32_t WorkingDirectoryRootID = AddRoot(WorkingDirectoryRoot);
 
 		AddModRoots(FSModule->WorkingDirectory.GetCurrent().c_str(), SCPCFileLocation::GameRootDirectory);
-		BuildPackListForRoot(WorkingDirectoryRoot.uid);
+		BuildPackListForRoot(WorkingDirectoryRootID);
 
 	}
 	else
@@ -304,15 +309,14 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 		//======================================================
 		// Next, check any VP files in the CD-ROM directory.
 		SCPRootInfo CDRoot = SCPRootInfo(cdrom_dir, SCPRootInfo::RootType::Path, SCPCFileLocationFlags::Empty());
-		AddRoot(CDRoot);
-		BuildPackListForRoot(CDRoot.uid);
+		uint32_t CDRootID = AddRoot(CDRoot);
+		BuildPackListForRoot(CDRootID);
 
 	}
 
 	// The final root is the in-memory root
 	SCPRootInfo MemoryRoot = SCPRootInfo("", SCPRootInfo::RootType::InMemory, SCPCFileLocation::MemoryRoot | SCPCFileLocation::TopLevelDirectory);
 	AddRoot(MemoryRoot);
-
 
 }
 

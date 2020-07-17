@@ -47,10 +47,7 @@ add_subdirectory(variant)
 
 add_subdirectory(mio)
 
-include(sqlite.cmake)
-
-include(sqlite_orm.cmake)
-
+add_subdirectory(SQLiteCpp)
 
 include(peglib.cmake)
 

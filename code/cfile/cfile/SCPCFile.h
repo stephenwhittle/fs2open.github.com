@@ -18,12 +18,12 @@ using SCPCFileModeFlags = SCPFlags<SCPCFileMode>;
 
 enum class SCPCFileLocation
 {
-	GameRootDirectory,
-	UserDirectory,
-	MemoryRoot,
-	TopLevelDirectory,
-	PrimaryMod,
-	SecondaryMods
+	GameRootDirectory = 1,
+	UserDirectory = 2,
+	MemoryRoot = 4,
+	TopLevelDirectory = 8,
+	PrimaryMod = 16,
+	SecondaryMods = 32
 };
 
 using SCPCFileLocationFlags = SCPFlags<SCPCFileLocation>;

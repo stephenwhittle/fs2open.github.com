@@ -1,64 +1,84 @@
 #pragma once
 #include <memory>
 #include "cfile/cfilesystem.h"
-
-template<typename ElementType>
-class SCPObjectTable
-{
-	uint32_t NextId = 0;
-	std::map<uint32_t, std::unique_ptr<ElementType>> InternalStorage;
-public:
-	tl::optional<ElementType&> GetIfValid(uint32_t ObjectID) 
-	{ 
-		ElementType* Element = InternalStorage[ObjectID].get();
-		if (Element != nullptr)
-		{
-			return *Element;
-		}
-		else
-		{
-			return {};
-		}
-	}
-	
-	void Erase(uint32_t ObjectID)
-	{
-		ElementType* Element = InternalStorage[ObjectID].get();
-		if (Element != nullptr) 
-		{
-			InternalStorage[ObjectID].reset();
-		}
-	}
-
-	const std::map<uint32_t, ElementType&> Filter(std::function<bool(ElementType&)> Predicate)
-	{
-		std::map<uint32_t, ElementType&> FilterResults;
-
-		for (auto Pair : InternalStorage)
-		{
-			auto MaybeElement = GetIfValid(Pair.first);
-			if (MaybeElement.has_value())
-			{
-				if (Predicate(*MaybeElement))
-				{
-					FilterResults[Pair.first] = *MaybeElement;
-				}
-			}
-		}
-		return FilterResults;
-	}
-
-	uint32_t Insert(ElementType&& Element) { NextId++; InternalStorage[NextId] = std::make_unique(std::move(Element)); return NextId; }
-};
-
-
+#include "SQLiteCPP/SQLiteCpp.h"
+#include "SQLiteCPP/VariadicBind.h"
 
 class SCPCFileDatabase
 {
-	SCPObjectTable<SCPRootInfo> Roots;
-	SCPObjectTable<SCPCFileInfo> Files;
+	SQLite::Database InternalDB;
+	SQLite::Statement AddRootStatement;
+	SQLite::Statement AddFileStatement;
+	SQLite::Statement GetRootByIDStatement;
+	SQLite::Statement GetFileByIDStatement;
+
 public:
-	uint32_t AddRoot(SCPRootInfo&& Root) { return Roots.Insert(std::move(Root)); }
-	tl::optional<SCPRootInfo&> GetRoot(uint32_t RootID) { return Roots.GetIfValid(RootID); }
-	uint32_t AddFile(SCPCFileInfo&& File) { return Files.Insert(std::move(File)); }
+	SCPCFileDatabase()
+		:InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE),
+		AddRootStatement(InternalDB, R"(INSERT INTO roots VALUES ?,?,?,?)"),
+		AddFileStatement(InternalDB, R"(INSERT INTO files VALUES ?,?,?,?,?,?,?,?,?)"),
+		GetRootByIDStatement(InternalDB, R"(SELECT * from roots WHERE uid = ?)"),
+		GetFileByIDStatement(InternalDB, R"(SELECT * from files WHERE uid = ?)")
+    {
+		InternalDB.exec( R"(
+		CREATE TABLE roots 
+		(
+			uid INTEGER PRIMARY KEY AUTOINCREMENT,
+			Path TEXT,
+			Type INTEGER,
+			LocationFlags INTEGER
+		)	
+		)");
+
+		InternalDB.exec(R"(
+		CREATE TABLE files 
+		(
+			uid INTEGER PRIMARY KEY AUTOINCREMENT,
+			NameExt TEXT,
+			RootUID INTEGER,
+			PathType INTEGER,
+			WriteTime INTEGER,
+			Size INTEGER,
+			PackOffset INTEGER,
+			FullPath TEXT,
+			DataPtr INTEGER
+		)	
+		)");
+		
+	}
+
+	uint32_t AddRoot(SCPRootInfo NewRoot)
+	{
+		bind(AddRootStatement, NewRoot.uid, NewRoot.Path.string(), static_cast<uint32_t>(NewRoot.Type), NewRoot.location_flags.RawValue());
+		AddRootStatement.exec();
+		AddRootStatement.reset();
+		AddRootStatement.clearBindings();
+		return InternalDB.getLastInsertRowid();
+	}
+	uint32_t AddFile(SCPCFileInfo NewFile)
+	{
+		bind(AddFileStatement, NewFile.uid, NewFile.name_ext, NewFile.root_index, static_cast<uint32_t>(NewFile.pathtype_index), NewFile.write_time, NewFile.size, NewFile.pack_offset, NewFile.real_name.string(), (uintptr_t)NewFile.data);
+		AddFileStatement.exec();
+		AddFileStatement.reset();
+		AddFileStatement.clearBindings();
+		return InternalDB.getLastInsertRowid();
+	}
+	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID)
+	{
+		GetRootByIDStatement.bind(0, RootUID);
+		if (GetRootByIDStatement.executeStep())
+		{
+			return GetRootByIDStatement.getColumns<SCPRootInfo, 4>();
+		}
+		return {};
+	}
+	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID)
+	{
+		GetFileByIDStatement.bind(0, FileUID);
+		if (GetFileByIDStatement.executeStep()) {
+			return GetFileByIDStatement.getColumns<SCPCFileInfo, 9>();
+		}
+		return {};
+	}
 };
+
