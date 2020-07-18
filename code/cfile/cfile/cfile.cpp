@@ -1020,12 +1020,6 @@ static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, FILE
 }
 
 
-
-int cf_get_dir_type(CFILE *cfile)
-{
-	return cfile->dir_type;
-}
-
 // cf_returndata() returns the data pointer for a memory-mapped file that is associated
 // with the CFILE structure passed as a parameter
 //

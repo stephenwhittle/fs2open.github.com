@@ -12,16 +12,8 @@
 #ifndef _CFILESYSTEM_H
 #define _CFILESYSTEM_H
 
-#include "cfile/cfile.h"
-#include "cfile/SCPCFile.h"
-#include "filesystem/SCPFile.h"
 #include "filesystem/SCPPath.h"
-#include "SCPFlags.h"
-#include <map>
-#include <initializer_list>
-// Builds a list of all the files
 
-void cf_free_secondary_filelist();
 
 enum class SCPCFilePathTypeID
 {
@@ -137,6 +129,7 @@ const std::map<SCPCFilePathTypeID, SCPCFilePathType> PathTypes =
 	{SCPCFilePathTypeID::InterfaceMarkup,	{SCPCFilePathTypeID::InterfaceMarkup,	SCPPath("data") / "interface" / "markup",		{".rml"},										SCPCFilePathTypeID::Interface	}},
 	{SCPCFilePathTypeID::InterfaceCSS,		{SCPCFilePathTypeID::InterfaceCSS,		SCPPath("data") / "interface" / "css",			{".rcss"},										SCPCFilePathTypeID::Interface	}}
 };
+/*
 
 // During cfile_init, verify that Pathtypes[n].index == n for each item
 extern cf_pathtype Pathtypes[CF_MAX_PATH_TYPES];
@@ -158,94 +151,8 @@ int cf_create_default_path_string(char* path, uint path_max, int pathtype, const
 int cf_create_default_path_string(SCP_string& path, int pathtype, const char* filename = nullptr, bool localize = false,
                                   uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
-class SCPCFileInfo{
 
-	friend class SCPCFileDatabase;
-
-	uint32_t uid;
-	SCP_string name_ext;  // Filename and extension
-	uint32_t root_index;     // Where in Roots this is located
-	SCPCFilePathTypeID pathtype_index; // Where in Paths this is located
-	time_t write_time;  // When it was last written
-	std::uintmax_t size;           // How big it is in bytes
-	std::uintmax_t pack_offset;    // For pack files, where it is at.   0 if not in a pack file.  This can be used to tell if in a
-						// pack file.
-	SCPPath real_name;    // For real files, the full path
-	const void* data;   // For in-memory files, the data pointer
-
-	//private constructor for database
-	SCPCFileInfo(uint32_t uid, std::string NameExt, uint32_t RootIndex, uint32_t PathType, uint32_t write_time, std::uintmax_t size, std::uintmax_t PackOffset, std::string FullPath, std::uintptr_t DataPtr)
-		:uid(uid),
-		name_ext(NameExt),
-		root_index(RootIndex),
-		pathtype_index(static_cast<SCPCFilePathTypeID>(PathType)),
-		write_time(write_time),
-		size(size),
-		pack_offset(PackOffset),
-		real_name(FullPath),
-		data((void*)DataPtr) {};
-public:
-	SCPCFileInfo(SCPPath FullPath, uint32_t RootUID, SCPCFilePathTypeID PathType) //real file
-		:uid(0),
-		root_index(RootUID),
-		pathtype_index(PathType),
-		pack_offset(0),
-		real_name(FullPath),
-		data(nullptr)
-	{
-		name_ext = real_name.filename();
-		SCPFile F = SCPFile(FullPath);
-		if (F.Exists()) 
-		{
-			size = F.FileSize();
-			write_time = F.LastModifiedTime(FullPath);
-		}
-
-	}
-
-
-	//SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, size_t PackOffset); //file in pack file
-	
-	//template<typename T>
-	//SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, T* DataPointer); //in-memory file of type T
-};
-
-class SCPRootInfo {
-
-	
-public:
-	enum class RootType
-	{
-		Path,
-		PackFile,
-		InMemory
-	};
-
-	SCPRootInfo(SCPPath RootPath, RootType Type, SCPCFileLocationFlags LocationFlags) 
-		:uid(0),
-		Path(RootPath),
-		Type(Type),
-		location_flags(LocationFlags)
-		{};
-	//Temporary getters, may make the class immutable instead
-	SCPPath GetPath() { return Path; }
-	SCPCFileLocationFlags GetLocationFlags() { return location_flags; }
-
-	friend class SCPCFileDatabase;
-private:
-	uint32_t uid;
-	SCPPath Path;  // Contains something like c:\projects\freespace or
-				   // c:\projects\freespace\freespace.vp
-	RootType Type; // CF_ROOTTYPE_PATH  = Path, CF_ROOTTYPE_PACK =Pack file, CF_ROOTTYPE_MEMORY=In memory
-	SCPCFileLocationFlags location_flags;
-
-	//private constructor to allow database to return instances
-	SCPRootInfo(uint32_t uid, std::string Path, uint32_t Type, uint32_t LocationFlags)
-		:uid(uid),
-		Path(Path),
-		Type(static_cast<RootType>(Type)),
-		location_flags(static_cast<SCPCFileLocation>(LocationFlags)){}
-};
+*/
 
 
 

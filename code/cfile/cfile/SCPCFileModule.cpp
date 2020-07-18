@@ -17,6 +17,7 @@ int SCPCFileModule::GetNextEmptyBlockIndex()
 {
 	int i;
 	CFILE* cfile;
+	/*
 
 	for (i = 0; i < SCPCFileModule::MAX_CFILE_BLOCKS; i++) {
 		cfile = &Cfile_block_list[i];
@@ -26,7 +27,7 @@ int SCPCFileModule::GetNextEmptyBlockIndex()
 			cfile->type = CFILE_BLOCK_USED;
 			return i;
 		}
-	}
+	}*/
 
 	// If we've reached this point, a free Cfile_block could not be found
 	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
@@ -98,18 +99,18 @@ void SCPCFileModule::ShutdownModule()
 
 void SCPCFileModule::DumpOpenedFileList() 
 {
-	for (auto& CFileBlock : Cfile_block_list)
+	/*for (auto& CFileBlock : Cfile_block_list)
 	{
 		if (CFileBlock.type != CFILE_BLOCK_UNUSED)
 		{
 			mprintf(("    %s:%d\n", CFileBlock.source_file, CFileBlock.line_num));
 		}
-	}
+	}*/
 }
 
 uint32_t SCPCFileModule::AddRoot(SCPRootInfo Root) 
 {
-	return CFileDatabase().insert(Root);
+	return CFileDatabase().AddRoot(Root);
 }
 
 ///this will have to be exposed as a view on the table?
@@ -191,7 +192,8 @@ void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 	for (auto Pair : PathTypes) {
 		SCPCFilePathType PathInfo = Pair.second;
 		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->GetPath() / PathInfo.Path)) {
-			if (DirectoryEntry.path().extension() == ".vp") {
+			if (SCPPath::Compare(DirectoryEntry.path().extension(), ".vp")) 
+			{
 				SCPRootInfo NewRoot =
 					SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, Root->GetLocationFlags());
 				CFileDatabase().AddRoot(NewRoot);
@@ -291,7 +293,8 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	auto FSModule = SCPModuleManager::GetModule<SCPFilesystemModule>();
 	if (FSModule)
 	{
-		SCPRootInfo WorkingDirectoryRoot = SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootInfo::RootType::Path, SCPCFileLocation::GameRootDirectory | SCPCFileLocation::TopLevelDirectory);
+		SCPRootInfo WorkingDirectoryRoot = 
+			SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootInfo::RootType::Path, { SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory });
 		uint32_t WorkingDirectoryRootID = AddRoot(WorkingDirectoryRoot);
 
 		AddModRoots(FSModule->WorkingDirectory.GetCurrent().c_str(), SCPCFileLocation::GameRootDirectory);
@@ -341,18 +344,18 @@ void SCPCFileModule::BuildFileList()
 	
 	//query database for all roots
 	//then switch on root type
-	for (SCPRootInfo& CurrentRoot : CFileDatabase().iterate<SCPRootInfo>())
+	for (SCPRootInfo& CurrentRoot : CFileDatabase().AllRoots())
 	{
-		switch (CurrentRoot.Type)
+		switch (CurrentRoot.GetType())
 		{
 		case SCPRootInfo::RootType::Path:
-			cf_search_root_path(CurrentRoot.uid);
+			cf_search_root_path(CurrentRoot.GetUID());
 			break;
 		case SCPRootInfo::RootType::PackFile:
-			cf_search_root_pack(CurrentRoot.uid);
+			cf_search_root_pack(CurrentRoot.GetUID());
 			break;
 		case SCPRootInfo::RootType::InMemory:
-			cf_search_memory_root(CurrentRoot.uid);
+			cf_search_memory_root(CurrentRoot.GetUID());
 			break;
 		}
 	}
@@ -365,14 +368,119 @@ void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
 		{
 			continue;
 		}
-		SCPPath FullDirectoryPath = Root.Path / Pair.second.Path;
+		SCPPath FullDirectoryPath = Root.GetPath() / Pair.second.Path;
 		SCPDirectoryIterator DirectoryIterator = SCPDirectoryIterator(FullDirectoryPath, Pair.second.Extensions);
 
 		for (SCPPath FilePath : DirectoryIterator)
 		{
-			SCPCFileInfo FileInfo = SCPCFileInfo(FilePath, Root.uid, Pair.first);
-			CFileDatabase().insert<SCPCFileInfo>(FileInfo);
+			SCPCFileInfo FileInfo = SCPCFileInfo(FilePath, Root.GetUID(), Pair.first);
+			CFileDatabase().AddFile(FileInfo);
 		}
 	}
 	
+}
+
+
+int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename, bool localize,
+	uint32_t location_flags, SCP_string LanguagePrefix)
+{
+	if (SCPPath(filename).has_parent_path())
+	{
+		// Already has full path
+		strncpy(path, filename, path_max);
+
+	}
+	else {
+
+		for (SCPRootInfo Root : CFileDatabase().AllRootsOfType(SCPRootInfo::RootType::Path))
+		{
+			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
+				// We found a valid root
+				Assert(CF_TYPE_SPECIFIED(pathtype));
+				strncpy(path, root->path, path_max);
+				if (filename) {
+					strcat_s(path, path_max, filename);
+
+					// localize filename
+					if (localize) {
+
+						SCPPath LocalizedPath = SCPPath(path);
+						LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+						strncpy(path, LocalizedPath.c_str(), path_max);
+						// verify localized path
+						FILE* fp = fopen(path, "rb");
+						if (fp) {
+							fclose(fp);
+							return 1;
+						}
+					}
+				}
+				break;
+			}
+			auto RootFlags = Root.GetLocationFlags();
+			if (RootFlags.HasFlag())
+			{
+
+			}
+		}
+		/*
+
+		SCPRootInfo* root = nullptr;
+		//Select * from roots where type == CF_ROOTTYPE_PATH
+		for (auto i = 0; i < Num_roots; ++i) {
+			auto current_root = cf_get_root(i);
+
+			if (current_root->roottype != CF_ROOTTYPE_PATH) {
+				// We want a "real" path here so only path roots are valid
+				continue;
+			}
+
+			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
+				// We found a valid root
+				root = current_root;
+				break;
+			}
+		}
+
+		if (!root) {
+			Assert(filename != NULL);
+			strncpy(path, filename, path_max);
+			return 1;
+		}
+
+		Assert(CF_TYPE_SPECIFIED(pathtype));
+
+		strncpy(path, root->path, path_max);
+
+		strcat_s(path, path_max, Pathtypes[pathtype].path);
+
+		// Don't add slash for root directory
+		if (Pathtypes[pathtype].path[0] != '\0') {
+			if (path[strlen(path) - 1] != DIR_SEPARATOR_CHAR) {
+				strcat_s(path, path_max, DIR_SEPARATOR_STR);
+			}
+		}
+
+		// add filename
+		if (filename) {
+			strcat_s(path, path_max, filename);
+
+			// localize filename
+			if (localize) {
+
+				SCPPath LocalizedPath = SCPPath(path);
+				LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+				strncpy(path, LocalizedPath.c_str(), path_max);
+				// verify localized path
+				FILE* fp = fopen(path, "rb");
+				if (fp) {
+					fclose(fp);
+					return 1;
+				}
+			}
+		}
+		*/
+	}
+
+	return 1;
 }

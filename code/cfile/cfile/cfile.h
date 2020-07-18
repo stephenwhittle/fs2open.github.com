@@ -177,9 +177,6 @@ void cfile_close();
 // add an extension to a filename if it doesn't already have it
 char *cf_add_ext(const char *filename, const char *ext);
 
-// return CF_TYPE (directory location type) of a CFILE you called cfopen() successfully on.
-int cf_get_dir_type(CFILE *cfile);
-
 // Opens the file.  If no path is given, use the extension to look into the
 // default path.  If mode is NULL, delete the file.
 CFILE* _cfopen(const char* source_file, int line, const char* filename, const char* mode, int type = CFILE_NORMAL,
@@ -203,8 +200,6 @@ void cf_set_max_read_len(CFILE *cfile, size_t len);
 // Deletes a file. Returns 0 on error, 1 if successful
 int cf_delete(const char *filename, int dir_type, uint32_t location_flags = CF_LOCATION_ALL);
 
-// Same as _access function to read a file's access bits
-int cf_access(const char *filename, int dir_type, int mode);
 
 // Returns 1 if the file exists, 0 if not.
 // Checks only the file system.
@@ -370,10 +365,12 @@ void cf_sort_filenames( SCP_vector<SCP_string> &list, int sort, SCP_vector<file_
 
 struct CFileLocation {
 	bool found = false;
-	SCP_string full_name;
-	size_t size          = 0;
-	size_t offset        = 0;
+	SCPPath full_name;
+	uintmax_t size          = 0;
+	uintmax_t offset        = 0;
 	const void* data_ptr = nullptr;
+
+	CFileLocation(SCPPath FilePath, uintmax_t Size) : found(true), full_name(FilePath), size(Size), offset(0), data_ptr(nullptr) {}
 
 	explicit CFileLocation(bool found_in = false) : found(found_in) {}
 };
@@ -387,7 +384,7 @@ struct CFileLocation {
 //         size        - File size
 //         offset      - Offset into pack file.  0 if not a packfile.
 // Returns: If not found returns 0.
-CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool localize = false,
+CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool localize = false,
                                     uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
 struct CFileLocationExt : public CFileLocation {
@@ -484,7 +481,7 @@ extern SCP_buffer read_raw_file_text(const char* filename, int mode = CF_TYPE_AN
  * offset of the first text byte from the start of the file.
  * @return The length of the file in bytes. Does not include the BOM if it exists.
  */
-int check_encoding_and_skip_bom(struct CFILE* file, const char* filename, int* start_offset = nullptr);
+int check_encoding_and_skip_bom(class CFILE* file, const char* filename, int* start_offset = nullptr);
 
 
 

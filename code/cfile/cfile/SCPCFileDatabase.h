@@ -1,8 +1,84 @@
 #pragma once
 #include <memory>
-#include "cfile/cfilesystem.h"
 #include "SQLiteCPP/SQLiteCpp.h"
 #include "SQLiteCPP/VariadicBind.h"
+#include "cfile/SCPCFileInfo.h"
+#include "cfile/SCPRootInfo.h"
+
+template <typename DataType, uint32_t NumFields>
+class DBResultIterator;
+
+template<typename DataType, uint32_t NumFields>
+class DBQuery
+{
+	SQLite::Statement InternalStatement;
+public:
+	DBQuery(SQLite::Statement&& QueryStatement)
+		: InternalStatement(QueryStatement) {};
+	auto operator*() const
+	{
+		return InternalStatement.getColumns<DataType, NumFields>();
+	}
+	bool operator++()
+	{
+		if (SQLite::OK == InternalStatement.tryExecuteStep()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	auto begin()
+	{
+		return DBResultIterator<DataType, NumFields>(*this);
+	}
+
+	auto end()
+	{
+		return DBResultIterator<DataType, NumFields>();
+	}
+};
+
+template<typename DataType, uint32_t NumFields>
+class DBResultIterator
+{
+	class DBQuery<DataType, NumFields>* Query = nullptr;
+	bool RecordsRemaining = false;
+public:
+	DBResultIterator(DBQuery<DataType, NumFields>& Query)
+		: Query(&Query)
+	{
+		
+	}
+	DBResultIterator()
+	{
+	}
+	bool operator==(DBResultIterator const& Other)
+	{
+		return RecordsRemaining == Other.RecordsRemaining;
+	}
+	bool operator!=(DBResultIterator const& Other)
+	{
+		return RecordsRemaining != Other.RecordsRemaining;
+	}
+	DBResultIterator& operator++()
+	{
+		if (Query == nullptr)
+		{
+			RecordsRemaining = false;
+			return *this;
+		}
+		RecordsRemaining = Query++;
+
+	}
+
+	auto operator*() const
+	{
+		return *Query;
+	}
+};
+
 
 class SCPCFileDatabase
 {
@@ -13,14 +89,16 @@ class SCPCFileDatabase
 	SQLite::Statement GetFileByIDStatement;
 
 public:
+	using StatementType = SQLite::Statement;
+	
 	SCPCFileDatabase()
 		:InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE),
 		AddRootStatement(InternalDB, R"(INSERT INTO roots VALUES ?,?,?,?)"),
 		AddFileStatement(InternalDB, R"(INSERT INTO files VALUES ?,?,?,?,?,?,?,?,?)"),
 		GetRootByIDStatement(InternalDB, R"(SELECT * from roots WHERE uid = ?)"),
 		GetFileByIDStatement(InternalDB, R"(SELECT * from files WHERE uid = ?)")
-    {
-		InternalDB.exec( R"(
+	{
+		InternalDB.exec(R"(
 		CREATE TABLE roots 
 		(
 			uid INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,41 +122,17 @@ public:
 			DataPtr INTEGER
 		)	
 		)");
-		
-	}
 
-	uint32_t AddRoot(SCPRootInfo NewRoot)
-	{
-		bind(AddRootStatement, NewRoot.uid, NewRoot.Path.string(), static_cast<uint32_t>(NewRoot.Type), NewRoot.location_flags.RawValue());
-		AddRootStatement.exec();
-		AddRootStatement.reset();
-		AddRootStatement.clearBindings();
-		return InternalDB.getLastInsertRowid();
-	}
-	uint32_t AddFile(SCPCFileInfo NewFile)
-	{
-		bind(AddFileStatement, NewFile.uid, NewFile.name_ext, NewFile.root_index, static_cast<uint32_t>(NewFile.pathtype_index), NewFile.write_time, NewFile.size, NewFile.pack_offset, NewFile.real_name.string(), (uintptr_t)NewFile.data);
-		AddFileStatement.exec();
-		AddFileStatement.reset();
-		AddFileStatement.clearBindings();
-		return InternalDB.getLastInsertRowid();
-	}
-	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID)
-	{
-		GetRootByIDStatement.bind(0, RootUID);
-		if (GetRootByIDStatement.executeStep())
-		{
-			return GetRootByIDStatement.getColumns<SCPRootInfo, 4>();
-		}
-		return {};
-	}
-	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID)
-	{
-		GetFileByIDStatement.bind(0, FileUID);
-		if (GetFileByIDStatement.executeStep()) {
-			return GetFileByIDStatement.getColumns<SCPCFileInfo, 9>();
-		}
-		return {};
-	}
+	};
+
+	uint32_t AddRoot(SCPRootInfo NewRoot);
+	uint32_t AddFile(SCPCFileInfo NewFile);
+	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID);
+
+	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID);
+	using RootQuery = DBQuery<SCPRootInfo, 4>;
+	RootQuery AllRootsOfType(SCPRootInfo::RootType Type);
+	RootQuery AllRoots();
+
 };
 

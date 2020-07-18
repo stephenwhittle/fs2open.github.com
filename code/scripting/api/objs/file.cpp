@@ -71,7 +71,7 @@ ADE_FUNC(getPath, l_File, NULL, "Determines path of the given file", "string", "
 	if (cfp == nullptr || !cfp->isValid())
 		return ade_set_error(L, "s", "");
 
-	int id = cf_get_dir_type(cfp->get());
+	int id = static_cast<int>(cfp->get()->GetDirectoryType());
 	if (Pathtypes[id].path != NULL)
 		return ade_set_args(L, "s", Pathtypes[id].path);
 	else

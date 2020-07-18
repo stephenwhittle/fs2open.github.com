@@ -2329,7 +2329,7 @@ void multi_file_xfer_notify(int handle)
 	for(idx=0;idx<len;idx++){
 		filename[idx] = (char)tolower(filename[idx]);
 	}		
-
+	SCPFile IncomingFile(filename);
 	// if this is a mission file
 	is_mission = (strstr(filename, FS_MISSION_FILE_EXT) != nullptr);
 	
@@ -2342,7 +2342,7 @@ void multi_file_xfer_notify(int handle)
 
 	// QUICK FIX
 	// check to see if the file is read-only			
-	if((filename[0] != '\0') && !cf_access(filename, cf_type, 00) && (cf_access(filename, cf_type, 02) == -1)){	
+	if((filename[0] != '\0') && IncomingFile.IsReadOnly()){	
 		multi_xfer_xor_flags(handle, MULTI_XFER_FLAG_REJECT);
 
 		Net_player->flags &= ~(NETINFO_FLAG_DO_NETWORKING);

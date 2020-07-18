@@ -155,70 +155,6 @@ SCPRootInfo *cf_create_root()
 	return &Root_blocks[block]->roots[offset];
 }
 
-// return the # of packfiles which exist
-int cf_get_packfile_count(SCPRootInfo *root)
-{
-	SCP_string filespec;
-	int i;
-	int packfile_count;
-
-	// count up how many packfiles we're gonna have
-	packfile_count = 0;
-	for (i=CF_TYPE_ROOT; i<CF_MAX_PATH_TYPES; i++ )
-	{
-		filespec = root->Path;
-		
-		if(strlen(Pathtypes[i].path))
-		{
-			filespec += Pathtypes[ i ].path;
-			if ( filespec[ filespec.length( ) - 1 ] != DIR_SEPARATOR_CHAR )
-			{
-				filespec += DIR_SEPARATOR_STR;
-			}
-		}
-
-#if defined _WIN32
-		filespec += "*.vp";
-
-		intptr_t find_handle;
-		_finddata_t find;
-		
-		find_handle = _findfirst( filespec.c_str( ), &find );
-
- 		if (find_handle != -1) {
-			do {
-				if (!(find.attrib & _A_SUBDIR)) {
-					packfile_count++;
-				}
-
-			} while (!_findnext(find_handle, &find));
-
-			_findclose( find_handle );
-		}	
-#elif defined SCP_UNIX
-		filespec += "*.[vV][pP]";
-
-		glob_t globinfo;
-		memset(&globinfo, 0, sizeof(globinfo));
-		int status = glob(filespec.c_str( ), 0, NULL, &globinfo);
-		if (status == 0) {
-			for (unsigned int j = 0;  j < globinfo.gl_pathc;  j++) {
-				// Determine if this is a regular file
-				struct stat statbuf;
-				memset(&statbuf, 0, sizeof(statbuf));
-				stat(globinfo.gl_pathv[j], &statbuf);
-				if (S_ISREG(statbuf.st_mode)) {
-					packfile_count++;
-				}
-			}
-			globfree(&globinfo);
-		}
-#endif
-	}
-
-	return packfile_count;
-}
-
 // packfile sort function
 bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 {
@@ -230,145 +166,6 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 	// otherwise return them in order of CF_TYPE_* precedence
 	return (r1.cf_type < r2.cf_type);
 }
-
-// Go through a root and look for pack files
-void cf_build_pack_list( uint32_t RootID )
-{
-	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
-	if (!CFileModule)
-	{
-		//throw;
-	}
-	
-	for (auto Pair : PathTypes)
-	{
-		SCPCFilePathType PathInfo = Pair.second;
-		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(RootPath / PathInfo.Path))
-		{
-			if (DirectoryEntry.path().extension() == ".vp")
-			{
-				SCPRootInfo Root = SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, RootID->location_flags);
-			}
-		}
-	}
-	// now just setup all the root info
-	root_index = 0;
-	for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++) {
-		strcpy_s( filespec, RootID->path );
-		
-		if ( strlen(Pathtypes[i].path) ) {
-			strcat_s( filespec, Pathtypes[i].path );
-
-			if ( filespec[strlen(filespec)-1] != DIR_SEPARATOR_CHAR )
-				strcat_s( filespec, DIR_SEPARATOR_STR );
-		}
-
-#if defined _WIN32
-		strcat_s( filespec, "*.vp" );
-
-		intptr_t find_handle;
-		_finddata_t find;
-		
-		find_handle = _findfirst( filespec, &find );
-
- 		if (find_handle != -1) {
-			do {
-				// add the new item
-				if (!(find.attrib & _A_SUBDIR)) {					
-					Assert(root_index < temp_root_count);
-
-					// get a temp pointer
-					rptr_sort = &temp_roots_sort[root_index++];
-
-					// fill in all the proper info
-					strcpy_s(rptr_sort->path, RootID->path);
-					
-					if(strlen(Pathtypes[i].path)) {
-
-						strcat_s(rptr_sort->path, Pathtypes[i].path );
-						strcat_s(rptr_sort->path, DIR_SEPARATOR_STR);
-					}
-					
-					strcat_s(rptr_sort->path, find.name );
-					rptr_sort->roottype = CF_ROOTTYPE_PACK;
-					rptr_sort->cf_type = i;
-				}
-
-			} while (!_findnext(find_handle, &find));
-
-			_findclose( find_handle );
-		}	
-#elif defined SCP_UNIX
-		strcat_s( filespec, "*.[vV][pP]" );
-		glob_t globinfo;
-
-		memset(&globinfo, 0, sizeof(globinfo));
-
-		int status = glob(filespec, 0, NULL, &globinfo);
-
-		if (status == 0) {
-			for (uint j = 0;  j < globinfo.gl_pathc;  j++) {
-				// Determine if this is a regular file
-				struct stat statbuf;
-				memset(&statbuf, 0, sizeof(statbuf));
-				stat(globinfo.gl_pathv[j], &statbuf);
-
-				if ( S_ISREG(statbuf.st_mode) ) {
-					Assert(root_index < temp_root_count);
-
-					// get a temp pointer
-					rptr_sort = &temp_roots_sort[root_index++];
-
-					// fill in all the proper info
-					strcpy_s(rptr_sort->path, globinfo.gl_pathv[j] );
-					rptr_sort->roottype = CF_ROOTTYPE_PACK;
-					rptr_sort->cf_type = i;
-				}
-			}
-
-			globfree(&globinfo);
-		}
-#endif
-	}
-
-	// these should always be the same
-	Assert(root_index == temp_root_count);
-
-	// sort the roots
-	std::sort(temp_roots_sort, temp_roots_sort + temp_root_count, cf_packfile_sort_func);
-
-	// now insert them all into the real root list properly
-	for (i = 0; i < temp_root_count; i++) {
-		auto new_root            = cf_create_root();
-		new_root->location_flags = RootID->location_flags;
-		strcpy_s( new_root->path, RootID->path );
-
-#ifndef NDEBUG
-		uint chksum = 0;
-		cf_chksum_pack(temp_roots_sort[i].path, &chksum);
-		mprintf(("Found root pack '%s' with a checksum of 0x%08x\n", temp_roots_sort[i].path, chksum));
-#endif
-
-		// mwa -- 4/2/98 put in the next 2 lines because the path name needs to be there
-		// to find the files.
-		strcpy_s(new_root->path, temp_roots_sort[i].path);		
-		new_root->roottype = CF_ROOTTYPE_PACK;		
-	}
-
-	// free up the temp list
-	vm_free(temp_roots_sort);
-}
-
-static char normalize_directory_separator(char in)
-{
-	if (in == '/')
-	{
-		return DIR_SEPARATOR_CHAR;
-	}
-
-	return in;
-}
-
 
 
 // Given a lower case list of file extensions 
@@ -819,14 +616,14 @@ void cf_free_secondary_filelist()
  *
  * @return A structure which describes the found file
  */
-CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
+CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	int i;
     uint ui;
 	int cfs_slow_search = 0;
 	char longname[MAX_PATH_LEN];
 
-	Assert( (filespec != NULL) && (strlen(filespec) > 0) ); //-V805
+	Assert(!filespec.empty());
 
 	// see if we have something other than just a filename
 	// our current rules say that any file that specifies a direct
@@ -835,18 +632,12 @@ CFileLocation cf_find_file_location(const char* filespec, int pathtype, bool loc
 	// of the file
 
 	// NOTE: full path should also include localization, if so desired
-#ifdef SCP_UNIX
-	if ( strpbrk(filespec, "/") ) {			// do we have a full path already?
-#else
-	if ( strpbrk(filespec,"/\\:")  ) {		// do we have a full path already?
-#endif
-		FILE *fp = fopen(filespec, "rb" );
-		if (fp)	{
-			CFileLocation res(true);
-			res.size = static_cast<size_t>(filelength(fileno(fp)));
-			res.offset = 0;
-			res.full_name = filespec;
-			fclose(fp);
+	if (filespec.has_parent_path())
+	{
+		SCPFile LocatedFile(filespec);
+		if (LocatedFile.Exists())
+		{	
+			CFileLocation res(filespec, LocatedFile.FileSize());
 			return res;
 		}
 
@@ -2061,76 +1852,9 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 //          filename  - optional, if set, tacks the filename onto end of path.
 // Output:  path      - Fully qualified pathname.
 //Returns 0 if the result would be too long (invalid result)
-int cf_create_default_path_string(char* path, uint path_max, int pathtype, const char* filename, bool localize,
-                                  uint32_t location_flags, SCP_string LanguagePrefix)
-{
-#ifdef SCP_UNIX
-	if ( filename && strpbrk(filename,"/")  ) {
-#else
-	if ( filename && strpbrk(filename,"/\\:")  ) {
-#endif
-		// Already has full path
-		strncpy( path, filename, path_max );
+//int cf_create_default_path_string(char* path, uint path_max, int pathtype, const char* filename, bool localize,
+//                                  uint32_t location_flags, SCP_string LanguagePrefix)
 
-	} else {
-		SCPRootInfo* root = nullptr;
-
-		for (auto i = 0; i < Num_roots; ++i) {
-			auto current_root = cf_get_root(i);
-
-			if (current_root->roottype != CF_ROOTTYPE_PATH) {
-				// We want a "real" path here so only path roots are valid
-				continue;
-			}
-
-			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
-				// We found a valid root
-				root = current_root;
-				break;
-			}
-		}
-
-		if (!root) {
-			Assert( filename != NULL );
-			strncpy(path, filename, path_max);
-			return 1;
-		}
-
-		Assert(CF_TYPE_SPECIFIED(pathtype));
-
-		strncpy(path, root->path, path_max);
-
-		strcat_s(path, path_max, Pathtypes[pathtype].path);
-
-		// Don't add slash for root directory
-		if (Pathtypes[pathtype].path[0] != '\0') {
-			if ( path[strlen(path)-1] != DIR_SEPARATOR_CHAR ) {
-				strcat_s(path, path_max, DIR_SEPARATOR_STR);
-			}
-		}
-
-		// add filename
-		if (filename) {
-			strcat_s(path, path_max, filename);
-
-			// localize filename
-			if (localize) {
-
-				SCPPath LocalizedPath = SCPPath(path);
-				LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
-				strncpy(path, LocalizedPath.c_str(), path_max);
-				// verify localized path
-				FILE *fp = fopen(path, "rb");
-				if (fp) {
-					fclose(fp);
-					return 1;
-				}
-			}
-		}
-	}
-
-	return 1;
-}
 
 // Returns the default storage path for files given a 
 // particular pathtype.   In other words, the path to 

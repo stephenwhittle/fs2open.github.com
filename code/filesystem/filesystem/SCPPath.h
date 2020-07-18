@@ -17,6 +17,7 @@ public:
 	SCPPath()
 		: ghc::filesystem::path() {};
 
+	static bool Compare(const SCPPath& Left, const SCPPath& Right, bool CaseSensitive = false);
 	static SCP_string GetCompatiblePath(SCP_string InPath);
 	static const char* GetFilename(const char* InPath);
 	static char* GetFilename(char* InPath);

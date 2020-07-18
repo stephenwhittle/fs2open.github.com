@@ -25,6 +25,13 @@ bool SCPFile::Exists(SCP_string FilePath)
 	return ghc::filesystem::exists(ghc::filesystem::path(FilePath));
 }
 
+bool SCPFile::IsReadOnly() 
+{ 
+	//return if we have a read bit set but no write bit set
+	return (ghc::filesystem::status(CachedPath).permissions() & ghc::filesystem::perms::owner_read) != ghc::filesystem::perms::none
+		&& (ghc::filesystem::status(CachedPath).permissions() & ghc::filesystem::perms::owner_write) == ghc::filesystem::perms::none; 
+}
+
 std::uintmax_t SCPFile::FileSize(SCP_string FilePath) 
 {
 	return ghc::filesystem::file_size(ghc::filesystem::path(FilePath));

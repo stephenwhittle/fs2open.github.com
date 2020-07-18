@@ -6,12 +6,12 @@
 #include "FSAssert.h"
 enum class SCPCFileMode
 {
-	Append,
-	Binary,
-	Read,
-	Write,
-	EraseOnOpen,
-	MemoryMapped
+	Append = 1,
+	Binary = 2,
+	Read = 4,
+	Write = 8,
+	EraseOnOpen = 16,
+	MemoryMapped = 32
 };
 
 using SCPCFileModeFlags = SCPFlags<SCPCFileMode>;
@@ -45,16 +45,16 @@ SCPCFileLocationFlags
 
 class CFILE
 {
-    
+
 private:
 
 	//may use ummap if we want unsigned chars
-    mio::mmap_source MemoryMappedFile;
+	mio::mmap_source MemoryMappedFile;
 public:
-	
+	std::fstream UnderlyingFile;
 
 
-	int dir_type;                  // directory location
+	SCPCFilePathTypeID dir_type;                  // directory location
 	FILE* fp;                      // File pointer if opening an individual file
 	const void* data;              // Pointer for memory-mapped file access.  NULL if not mem-mapped.
 	bool mem_mapped; // Flag for memory mapped files (if data is not null and this is false it means that it's an
@@ -81,7 +81,7 @@ public:
 			int dir_type / *= CF_TYPE_ANY* /,
 			bool localize / *= false* /,
 			uint32_t location_flags / *= CF_LOCATION_ALL* /,
-			SCP_string LanguagePrefix / *= ""* /) 
+			SCP_string LanguagePrefix / *= ""* /)
 		CFILE* _cfopen_special(const char* source_file,
 																	   int line,
 																	   const char* file_path,
@@ -90,8 +90,12 @@ public:
 																	   const size_t offset,
 																	   const void* data,
 																	   int dir_type = CF_TYPE_ANY);
+
+
+
 	//also cftemp but may be special for that one*/
-	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode )
+
+	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
 	{
 		if (Mode.Is({ SCPCFileMode::Read, SCPCFileMode::Binary }) && !Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
@@ -112,11 +116,32 @@ public:
 			//open the file using mode settings
 		}
 	}
+
+	void Flush() {};
+	//may belong on the SCPFile type
+	void Delete() {};
+
+	SCPCFilePathTypeID GetDirectoryType() { return dir_type; }
+
 	template<typename DestinationType>
-	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount);
-	
+	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount)
+	{
+		return 0;
+	}
+
 	template <typename DestinationType>
-	int ReadBytes(DestinationType* Destination, size_t Count);
+	int ReadBytes(DestinationType* Destination, size_t Count)
+	{
+		return 0;
+	}
+
+	template<typename SourceType>
+	int Write(SourceType* Source, size_t ElementCount) {}
+
+	void Seek() {};
+	void Tell() {};
+	void WriteChar() {};
+	void WriteString() {};
 
 
 };
