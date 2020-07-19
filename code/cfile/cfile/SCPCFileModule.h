@@ -65,9 +65,11 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void BuildRootList(const char* cdrom_dir);
 	void BuildCFileDatabase(const char* cdrom_dir);
 	void BuildFileList();
-	void PopulateFilesInMemoryRoot(int RootID);
 	void AddFilesFromRoot(SCPRootInfo Root);
 	int GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename, bool localize, uint32_t location_flags, SCP_string LanguagePrefix);
+	void PopulateFilesInMemoryRoot(uint32_t RootID); 
+	void PopulateFilesInPackFile(uint32_t RootID);
+	void PopulateLooseFilesInRoot(uint32_t RootID);
 public:
 	static constexpr int MAX_CFILE_BLOCKS = 64;
 	virtual bool StartupModule() override;

@@ -43,11 +43,11 @@ class SCPCFileInfo {
 		}
 	}
 
-	// SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, size_t PackOffset); //file in pack
-	// file
+	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, time_t WriteTime, std::uintmax_t Size, std::uintmax_t PackOffset) //file in pack
+		:uid(0), name_ext(Filename), root_index(RootUID), pathtype_index(PathType), write_time(WriteTime), size(Size), pack_offset(PackOffset), data(nullptr) {};
 
 	template<typename T>
 	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, uintmax_t Size, T* DataPointer) //in-memory file
-		:uid(0), name_ext(Filename.filename()), root_index(RootUID), pathtype_index(PathType), write_time(0), Size(Size), pack_offset(0), data(DataPointer) {};
+		:uid(0), name_ext(Filename.filename()), root_index(RootUID), pathtype_index(PathType), write_time(0), size(Size), pack_offset(0), data(DataPointer) {};
 };
 

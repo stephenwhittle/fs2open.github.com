@@ -5,6 +5,7 @@
 #include <optional>
 #include "filesystem/SCPPath.h"
 #include "SCPFlags.h"
+#include <set>
 
 class SCPDirectoryIterator
 {
@@ -19,7 +20,7 @@ public:
 	constexpr static Options DefaultOptions = { Flags::IncludeFiles };
     
 	SCPDirectoryIterator(SCPPath Directory, SCPDirectoryIterator::Options Opts = DefaultOptions);
-    SCPDirectoryIterator(SCPPath Directory, std::vector<SCP_string> Extensions, SCPDirectoryIterator::Options Opts = DefaultOptions);
+    SCPDirectoryIterator(SCPPath Directory, std::set<SCP_string> Extensions, SCPDirectoryIterator::Options Opts = DefaultOptions);
     SCPDirectoryIterator(SCPPath Directory, std::regex FilterRegex, SCPDirectoryIterator::Options Opts = DefaultOptions);
 	SCPDirectoryIterator(const SCPDirectoryIterator& Iterator);
 	SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator);
@@ -33,7 +34,9 @@ public:
 	//Foreach function?
 private:
 	ghc::filesystem::directory_iterator InternalIterator;
-	std::vector<SCP_string> Extensions;
+	ghc::filesystem::recursive_directory_iterator RecursiveInternalIterator;
+
+	std::set<SCP_string> Extensions;
 	tl::optional<std::regex> FilterRegex;
 	Options CurrentOptions;
 

@@ -14,8 +14,8 @@
 
 #include "filesystem/SCPPath.h"
 #include "SCPCFilePathType.h"
-
-
+#include "def_files/def_files.h"
+#include <set>
 
 
 
@@ -35,13 +35,13 @@ class SCPCFilePathType
 public:
 	SCPCFilePathTypeID Type;
 	SCPPath Path;
-	SCP_vector<SCP_string> Extensions;
+	std::set<SCP_string> Extensions;
 	SCPCFilePathTypeID Parent;
 };
 //clang-format off
 const std::map<SCPCFilePathTypeID, SCPCFilePathType> PathTypes = 
 {
-	{SCPCFilePathTypeID::Invalid,			{SCPCFilePathTypeID::Invalid,			SCPPath(),										{},										SCPCFilePathTypeID::Invalid} },
+	{ SCPCFilePathTypeID::Invalid,			{SCPCFilePathTypeID::Invalid,			SCPPath(),										{},										SCPCFilePathTypeID::Invalid} },
 	{ SCPCFilePathTypeID::Root,				{SCPCFilePathTypeID::Root,				SCPPath(),										{".mve", ".ogg"},						SCPCFilePathTypeID::Root} },
 	{ SCPCFilePathTypeID::Data,				{SCPCFilePathTypeID::Data,				SCPPath("data"),								{".cfg", ".txt"},						SCPCFilePathTypeID::Root} },
 	{ SCPCFilePathTypeID::Maps,				{SCPCFilePathTypeID::Maps,				SCPPath("data") / "maps",						{".pcx", ".ani", ".eff", ".tga", ".jpg", ".png", ".dds"}, SCPCFilePathTypeID::Data} },
@@ -79,8 +79,8 @@ const std::map<SCPCFilePathTypeID, SCPCFilePathType> PathTypes =
 	{ SCPCFilePathTypeID::Scripts,			{SCPCFilePathTypeID::Scripts,			SCPPath("data") / "scripts",					{".lua", ".lc"},								SCPCFilePathTypeID::Data	} },
 	{ SCPCFilePathTypeID::Fiction,			{SCPCFilePathTypeID::Fiction,			SCPPath("data") / "fiction",					{".txt"},										SCPCFilePathTypeID::Data	} },
 	{ SCPCFilePathTypeID::FredDocs,			{SCPCFilePathTypeID::FredDocs,			SCPPath("data") / "freddocs",					{".html"},										SCPCFilePathTypeID::Data	}},
-	{SCPCFilePathTypeID::InterfaceMarkup,	{SCPCFilePathTypeID::InterfaceMarkup,	SCPPath("data") / "interface" / "markup",		{".rml"},										SCPCFilePathTypeID::Interface	}},
-	{SCPCFilePathTypeID::InterfaceCSS,		{SCPCFilePathTypeID::InterfaceCSS,		SCPPath("data") / "interface" / "css",			{".rcss"},										SCPCFilePathTypeID::Interface	}}
+	{ SCPCFilePathTypeID::InterfaceMarkup,	{SCPCFilePathTypeID::InterfaceMarkup,	SCPPath("data") / "interface" / "markup",		{".rml"},										SCPCFilePathTypeID::Interface	}},
+	{ SCPCFilePathTypeID::InterfaceCSS,		{SCPCFilePathTypeID::InterfaceCSS,		SCPPath("data") / "interface" / "css",			{".rcss"},										SCPCFilePathTypeID::Interface	}}
 };
 
 SCPCFilePathTypeID GetPathTypeID(default_file DefaultFile)

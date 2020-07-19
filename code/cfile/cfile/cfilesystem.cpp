@@ -46,6 +46,7 @@
 #include "config/SCPConfig.h"
 #include "filesystem/SCPPath.h"
 #include "filesystem/SCPFile.h"
+#include "filesystem/SCPDirectoryIterator.h"
 #include "SCPEndian.h"
 #include "memory/memory.h"
 #include "memory/utils.h"
@@ -185,14 +186,14 @@ int is_ext_in_list( const char *ext_list, const char *ext )
 	return 0;
 }
 
-void cf_search_root_path(int root_index)
+void PopulateLooseFilesInRoot(int root_index)
 {
 	int i;
 	int num_files = 0;
 
 	SCPRootInfo* root = cf_get_root(root_index);
 
-	mprintf(("Searching root '%s' ... ", root->path));
+	mprintf(("Searching root '%s' ... ", root->GetPath()));
 
 #ifndef WIN32
 	try {
@@ -225,7 +226,17 @@ void cf_search_root_path(int root_index)
 
 	for (auto Pair : PathTypes)
 	{
-		SCPPath FullPath = root->Path / Pair.second.Path;
+		if (Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
+		{
+			continue;
+		}
+		SCPPath FullPath = root->GetPath() / Pair.second.Path;
+		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::Recursive });
+		for (auto File : DirIterator)
+		{
+			SCPCFileInfo FileInfo(File, root_index, Pair.first);
+			CFileDatabase().AddFile(FileInfo);
+		}
 		//iterate using directory iterator
 		//then check extensions of all files against the Pair.second.Extensions vector
 		//if theres a match
@@ -233,298 +244,13 @@ void cf_search_root_path(int root_index)
 		//add to database
 	}
 
-
-
-	for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++) {
-
-		// we don't want to add player files to the cache - taylor
-		if ( (i == CF_TYPE_SINGLE_PLAYERS) || (i == CF_TYPE_MULTI_PLAYERS) ) {
-			continue;
-		}
-
-		strcpy_s( search_path, root->path );
-
-		if(strlen(Pathtypes[i].path)) {
-			strcat_s( search_path, Pathtypes[i].path );
-			if ( search_path[strlen(search_path)-1] != DIR_SEPARATOR_CHAR ) {
-				strcat_s( search_path, DIR_SEPARATOR_STR );
-			}
-		} 
-
-#if defined _WIN32
-		SCP_string search_directory = search_path;
-		strcat_s( search_path, "*.*" );
-
-		intptr_t find_handle;
-		_finddata_t find;
-		
-		find_handle = _findfirst( search_path, &find );
-
- 		if (find_handle != -1) {
-			do {
-				if (!(find.attrib & _A_SUBDIR)) {
-
-					char *ext = strrchr( find.name, '.' );
-					if ( ext )	{
-						if ( is_ext_in_list( Pathtypes[i].extensions, ext ) )	{
-							// Found a file!!!!
-							SCPCFileInfo *file = cf_create_file();
-
-							strcpy_s( file->name_ext, find.name );
-							file->root_index = root_index;
-							file->pathtype_index = i;
-							file->write_time = find.time_write;
-							file->size = find.size;
-							file->pack_offset = 0;			// Mark as a non-packed file
-
-							SCPPath file_name = SCPPath(search_directory) / find.name;
-							
-							file->real_name = vm_strdup(file_name.c_str());
-
-							num_files++;
-							//mprintf(( "Found file '%s'\n", file->name_ext ));
-						}
-					}
-
-				}
-
-			} while (!_findnext(find_handle, &find));
-
-			_findclose( find_handle );
-		}
-#elif defined SCP_UNIX
-		DIR *dirp = nullptr;
-		SCP_string search_dir;
-		{
-			if (i == CF_TYPE_ROOT) {
-				// Don't search for the same name for the root case since we would be searching in other mod directories in that case
-				dirp = opendir (search_path);
-				search_dir.assign(search_path);
-			} else {
-				// On Unix we can have a different case for the search paths so we also need to account for that
-				// We do that by looking at the parent of search_path and enumerating all directories and the check if any of
-				// them are a case-insensitive match
-				SCP_string directory_name;
-
-				auto parentPathIter = pathTypeToRealPath.find(Pathtypes[i].parent_index);
-
-				if (parentPathIter == pathTypeToRealPath.end()) {
-					// No parent known yet, use the standard dirname
-					char dirname_copy[CF_MAX_PATHNAME_LENGTH];
-					memcpy(dirname_copy, search_path, sizeof(search_path));
-					// According to the documentation of directory_name and basename, the return value does not need to be freed
-					directory_name.assign(dirname(dirname_copy));
-				} else {
-					// we have a valid parent path -> use that
-					directory_name = parentPathIter->second;
-				}
-
-				char basename_copy[CF_MAX_PATHNAME_LENGTH];
-				memcpy(basename_copy, search_path, sizeof(search_path));
-				// According to the documentation of dirname and basename, the return value does not need to be freed
-				auto search_name = basename(basename_copy);
-
-				auto parentDirP = opendir(directory_name.c_str());
-
-				if (parentDirP) {
-					struct dirent *dir = nullptr;
-					while ((dir = readdir (parentDirP)) != nullptr) {
-
-						if (stricmp(search_name, dir->d_name) != 0) {
-							continue;
-						}
-
-						SCPPath fn = SCPPath(directory_name) / dir->d_name;
-
-						struct stat buf;
-						if (stat(fn.c_str(), &buf) == -1) {
-							continue;
-						}
-
-						if (S_ISDIR(buf.st_mode)) {
-							// Found a case insensitive match
-							dirp = opendir(fn.c_str());
-							search_dir = fn;
-							// We also need to store this in our mapping since we may need it in the future
-							pathTypeToRealPath.insert(std::make_pair(i, fn));
-							break;
-						}
-					}
-					closedir(parentDirP);
-				}
-			}
-		}
-
-		if ( dirp ) {
-			struct dirent *dir = nullptr;
-			while ((dir = readdir (dirp)) != NULL)
-			{
-				if (!fnmatch ("*.*", dir->d_name, 0))
-				{
-					SCP_string fn;
-					sprintf(fn, "%s/%s", search_dir.c_str(), dir->d_name);
-
-					struct stat buf;
-					if (stat(fn.c_str(), &buf) == -1) {
-						continue;
-					}
-					
-					if (!S_ISREG(buf.st_mode)) {
-						continue;
-					}
-					
-					char *ext = strrchr( dir->d_name, '.' );
-					if ( ext )	{
-						if ( is_ext_in_list( Pathtypes[i].extensions, ext ) )	{
-							// Found a file!!!!
-							SCPCFileInfo *file = cf_create_file();
-
-							strcpy_s( file->name_ext, dir->d_name );
-							file->root_index = root_index;
-							file->pathtype_index = i;
-
-
-							file->write_time = buf.st_mtime;
-							file->size = buf.st_size;
-
-							file->pack_offset = 0;			// Mark as a non-packed file
-
-							file->real_name = vm_strdup(fn.c_str());
-
-							num_files++;
-							//mprintf(( "Found file '%s'\n", file->name_ext ));
-						}
-					}
-				}
-			}
-			closedir(dirp);
-		}
-#endif
-	}
-
 	mprintf(( "%i files\n", num_files ));
 }
 
 
-typedef struct VP_FILE_HEADER {
-	char id[4];
-	int version;
-	int index_offset;
-	int num_files;
-} VP_FILE_HEADER;
 
-typedef struct VP_FILE {
-	int	offset;
-	int	size;
-	char	filename[32];
-	_fs_time_t write_time;
-} VP_FILE;
 
-void cf_search_root_pack(int root_index)
-{
-	int num_files = 0;
-	SCPRootInfo *root = cf_get_root(root_index);
 
-	Assert( root != NULL );
-
-	// Open data		
-	FILE *fp = fopen( root->path, "rb" );
-	// Read the file header
-	if (!fp) {
-		return;
-	}
-
-	if ( filelength(fileno(fp)) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3)) ) {
-		mprintf(( "Skipping VP file ('%s') of invalid size...\n", root->path ));
-		fclose(fp);
-		return;
-	}
-
-	VP_FILE_HEADER VP_header;
-
-	Assert( sizeof(VP_header) == 16 );
-	if (fread(&VP_header, sizeof(VP_header), 1, fp) != 1) {
-		mprintf(("Skipping VP file ('%s') because the header could not be read...\n", root->path));
-		fclose(fp);
-		return;
-	}
-
-	VP_header.version = INTEL_INT( VP_header.version ); //-V570
-	VP_header.index_offset = INTEL_INT( VP_header.index_offset ); //-V570
-	VP_header.num_files = INTEL_INT( VP_header.num_files ); //-V570
-
-	mprintf(( "Searching root pack '%s' ... ", root->path ));
-
-	// Read index info
-	fseek(fp, VP_header.index_offset, SEEK_SET);
-
-	char search_path[CF_MAX_PATHNAME_LENGTH];
-
-	strcpy_s( search_path, "" );
-	
-	// Go through all the files
-	int i;
-	for (i=0; i<VP_header.num_files; i++ )	{
-		VP_FILE find;
-
-		if (fread( &find, sizeof(VP_FILE), 1, fp ) != 1) {
-			mprintf(("Failed to read file entry (currently in directory %s)!\n", search_path));
-			break;
-		}
-
-		find.offset = INTEL_INT( find.offset ); //-V570
-		find.size = INTEL_INT( find.size ); //-V570
-		find.write_time = INTEL_INT( find.write_time ); //-V570
-		find.filename[sizeof(find.filename)-1] = '\0';
-
-		if ( find.size == 0 )	{
-			size_t search_path_len = strlen(search_path);
-			if ( !stricmp( find.filename, ".." ))	{
-				char *p = &search_path[search_path_len-1];
-				while( (p > search_path) && (*p != DIR_SEPARATOR_CHAR) )	{
-					p--;
-				}
-				*p = 0;
-			} else {
-				if ( search_path_len && (search_path[search_path_len-1] != DIR_SEPARATOR_CHAR) ) {
-					strcat_s( search_path, DIR_SEPARATOR_STR );
-				}
-				strcat_s( search_path, find.filename );
-			}
-
-			//mprintf(( "Current dir = '%s'\n", search_path ));
-		} else {
-	
-			int j;			
-							
-			for (j=CF_TYPE_ROOT; j<CF_MAX_PATH_TYPES; j++ )	{
-				
-				if ( !stricmp( search_path, Pathtypes[j].path ))	{
-					char *ext = strrchr( find.filename, '.' );
-					if ( ext )	{
-						if ( is_ext_in_list( Pathtypes[j].extensions, ext ) )	{
-							// Found a file!!!!
-							SCPCFileInfo *file = cf_create_file();
-							strcpy_s( file->name_ext, find.filename );
-							file->root_index = root_index;
-							file->pathtype_index = j;
-							file->write_time = (time_t)find.write_time;
-							file->size = find.size;
-							file->pack_offset = find.offset;			// Mark as a packed file
-
-							num_files++;
-							//mprintf(( "Found pack file '%s'\n", file->name_ext ));
-						}
-					}
-				}
-			}
-		}
-	}
-
-	fclose(fp);
-
-	mprintf(( "%i files\n", num_files ));
-}
 
 
 

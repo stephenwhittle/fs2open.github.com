@@ -1,16 +1,32 @@
 #include "cfile/SCPCFileModule.h"
-#include "SCPApplication.h"
 #include "cfile/cfile.h"
-#include "FSOutputDeviceBase.h"
-
-#include "module/SCPModuleManager.h"
-#include "filesystem/SCPFilesystemModule.h"
-#include "filesystem/SCPDirectoryIterator.h"
-#include "FSIntegerTypes.h"
-#include <utility>
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
 #include "def_files/def_files.h"
+#include "filesystem/SCPFilesystemModule.h"
+#include "filesystem/SCPDirectoryIterator.h"
+#include "module/SCPModuleManager.h"
+#include "SCPEndian.h"
+#include "FSIntegerTypes.h"
+#include "FSAssert.h"
+#include "FSOutputDeviceBase.h"
+#include "SCPApplication.h"
+#include <utility>
+
+
+typedef struct VP_FILE_HEADER {
+	char id[4];
+	int version;
+	int index_offset;
+	int num_files;
+} VP_FILE_HEADER;
+
+typedef struct VP_FILE {
+	int offset;
+	int size;
+	char filename[32];
+	_fs_time_t write_time;
+} VP_FILE;
 
 
 int SCPCFileModule::GetNextEmptyBlockIndex() 
@@ -349,10 +365,10 @@ void SCPCFileModule::BuildFileList()
 		switch (CurrentRoot.GetType())
 		{
 		case SCPRootInfo::RootType::Path:
-			cf_search_root_path(CurrentRoot.GetUID());
+			PopulateLooseFilesInRoot(CurrentRoot.GetUID());
 			break;
 		case SCPRootInfo::RootType::PackFile:
-			cf_search_root_pack(CurrentRoot.GetUID());
+			PopulateFilesInPackFile(CurrentRoot.GetUID());
 			break;
 		case SCPRootInfo::RootType::InMemory:
 			PopulateFilesInMemoryRoot(CurrentRoot.GetUID());
@@ -362,7 +378,7 @@ void SCPCFileModule::BuildFileList()
 	
 }
 
-void SCPCFileModule::PopulateFilesInMemoryRoot(int RootID) {
+void SCPCFileModule::PopulateFilesInMemoryRoot(uint32_t RootID) {
 	int num_files = 0;
 	mprintf(("Searching memory root ... "));
 
@@ -509,4 +525,156 @@ int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, 
 	}
 
 	return 1;
+}
+
+void SCPCFileModule::PopulateFilesInPackFile(uint32_t RootID)
+{
+	int num_files = 0;
+	tl::optional<SCPRootInfo> root = CFileDatabase().GetRootByID(RootID);
+
+	Assert(root);
+
+	// Open data		
+	FILE* fp = fopen(root->GetPath().c_str(), "rb");
+	// Read the file header
+	if (!fp) {
+		return;
+	}
+
+	if (filelength(fileno(fp)) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3))) {
+		mprintf(("Skipping VP file ('%s') of invalid size...\n", root->GetPath()));
+		fclose(fp);
+		return;
+	}
+
+	VP_FILE_HEADER VP_header;
+
+	Assert(sizeof(VP_header) == 16);
+	if (fread(&VP_header, sizeof(VP_header), 1, fp) != 1) {
+		mprintf(("Skipping VP file ('%s') because the header could not be read...\n", root->GetPath()));
+		fclose(fp);
+		return;
+	}
+
+	VP_header.version = INTEL_INT(VP_header.version); //-V570
+	VP_header.index_offset = INTEL_INT(VP_header.index_offset); //-V570
+	VP_header.num_files = INTEL_INT(VP_header.num_files); //-V570
+
+	mprintf(("Searching root pack '%s' ... ", root->GetPath()));
+
+	// Read index info
+	fseek(fp, VP_header.index_offset, SEEK_SET);
+
+	// Go through all the files
+	SCPPath CurrentFolder;
+	int i;
+	for (i = 0; i < VP_header.num_files; i++) {
+		VP_FILE find;
+
+		if (fread(&find, sizeof(VP_FILE), 1, fp) != 1) {
+			mprintf(("Failed to read file entry (currently in directory %s)!\n", CurrentFolder));
+			break;
+		}
+		//if the file size is 0 then we have a directory
+		//each directory pushes onto the stack, can use normalize to go up directories if there's a ..
+		//if its a file, then check the extension
+		//if the extension matches, store it into the database
+
+		find.offset = INTEL_INT(find.offset); //-V570
+		find.size = INTEL_INT(find.size); //-V570
+		find.write_time = INTEL_INT(find.write_time); //-V570
+		find.filename[sizeof(find.filename) - 1] = '\0';
+
+		if (find.size == 0) {
+			//append the next 
+			CurrentFolder /= find.filename;
+			CurrentFolder /= ""; //add empty filename to ensure this is a directory
+			CurrentFolder = CurrentFolder.lexically_normal(); //resolve . and ..
+
+			//mprintf(( "Current dir = '%s'\n", search_path ));
+		}
+		else {
+			for (auto PathTypePair : PathTypes)
+			{
+				SCPCFilePathType& PathTypeInfo = PathTypePair.second;
+
+				if (SCPPath::Compare(CurrentFolder, PathTypeInfo.Path))
+				{
+					if (PathTypeInfo.Extensions.find(SCPPath(find.filename).extension()) != PathTypeInfo.Extensions.end())
+					{
+						SCPCFileInfo PackedFile = SCPCFileInfo(find.filename, RootID, PathTypeInfo.Type, find.write_time, find.size, find.offset);
+						CFileDatabase().AddFile(PackedFile);
+						num_files++;
+					}
+				}
+			}
+		}
+	}
+
+	fclose(fp);
+
+	mprintf(("%i files\n", num_files));
+}
+
+void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
+{
+	int i;
+	int num_files = 0;
+
+	tl::optional<SCPRootInfo> root = CFileDatabase().GetRootByID(RootID);
+	Assert(root);
+	mprintf(("Searching root '%s' ... ", root->GetPath()));
+
+#ifndef WIN32
+	try {
+		auto current = root->path;
+		const auto prefPathEnd = root->path + strlen(root->path);
+		while (current != prefPathEnd) {
+			const auto cp = utf8::next(current, prefPathEnd);
+			if (cp > 127) {
+				// On Windows, we currently do not support Unicode paths so catch this early and let the user
+				// know
+				const auto invalid_end = current;
+				utf8::prior(current, root->path);
+				Error(LOCATION,
+					"Trying to use path \"%s\" as a data root. That path is not supported since it "
+					"contains a Unicode character (%s). If possible, change this path to something that only uses "
+					"ASCII characters.",
+					root->path, std::string(current, invalid_end).c_str());
+			}
+		}
+	}
+	catch (const std::exception& e) {
+		Error(LOCATION, "UTF-8 error while checking the root path \"%s\": %s", root->path, e.what());
+	}
+#endif
+
+	char search_path[CF_MAX_PATHNAME_LENGTH];
+#ifdef SCP_UNIX
+	// This map stores the mapping between a specific path type and the actual path that we use for it
+	SCP_unordered_map<int, SCP_string> pathTypeToRealPath;
+#endif
+
+	for (auto Pair : PathTypes)
+	{
+		if (Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
+		{
+			continue;
+		}
+		SCPPath FullPath = root->GetPath() / Pair.second.Path;
+		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::Recursive });
+		for (auto File : DirIterator)
+		{
+			SCPCFileInfo FileInfo(File, RootID, Pair.first);
+			CFileDatabase().AddFile(FileInfo);
+			num_files++;
+		}
+		//iterate using directory iterator
+		//then check extensions of all files against the Pair.second.Extensions vector
+		//if theres a match
+		//construct SCPCFileInfo
+		//add to database
+	}
+
+	mprintf(("%i files\n", num_files));
 }
