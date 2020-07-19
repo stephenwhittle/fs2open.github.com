@@ -45,6 +45,7 @@
 //#include "localization/localize.h"
 #include "config/SCPConfig.h"
 #include "filesystem/SCPPath.h"
+#include "filesystem/SCPFile.h"
 #include "SCPEndian.h"
 #include "memory/memory.h"
 #include "memory/utils.h"
@@ -525,48 +526,7 @@ void cf_search_root_pack(int root_index)
 	mprintf(( "%i files\n", num_files ));
 }
 
-void cf_search_memory_root(int root_index) {
-	int num_files = 0;
-	mprintf(( "Searching memory root ... " ));
 
-	auto default_files = defaults_get_all();
-	for (auto& default_file : default_files) {
-		// Pure built in files have an empty path_type string
-		if (strlen(default_file.path_type) <= 0) {
-			// Ignore pure builtin files. They should only be accessible with defaults_get_file
-			continue;
-		}
-
-		int pathtype = -1;
-		for (int i = 0; i < CF_MAX_PATH_TYPES; ++i) {
-			if (Pathtypes[i].path == nullptr) {
-				continue;
-			}
-
-			if (!strcmp(Pathtypes[i].path, default_file.path_type)) {
-				pathtype = i;
-				break;
-			}
-		}
-		Assertion(pathtype != -1, "Default file '%s%s%s' does not use a valid path type!",
-				  default_file.path_type,
-				  DIR_SEPARATOR_STR,
-				  default_file.filename);
-
-		SCPCFileInfo *file = cf_create_file();
-
-		strcpy_s( file->name_ext, default_file.filename );
-		file->root_index = root_index;
-		file->pathtype_index = pathtype;
-		file->write_time = time(nullptr); // Just assume that memory files were last written to just now
-		file->size = (int)default_file.size;
-		file->data = default_file.data;
-
-		num_files++;
-	}
-
-	mprintf(( "%i files\n", num_files ));
-}
 
 
 

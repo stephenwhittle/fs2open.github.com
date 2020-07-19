@@ -14,6 +14,8 @@
 
 class SCPCFileModule : public SCPModule<SCPCFileModule> 
 {
+	//cfiles themselves may need a table too
+	//rootID, fileID, uintptr_t to a vector of unique/shared ptrs
 	inline auto& CFileDatabase()
 	{
 		static SCPCFileDatabase Database;
@@ -63,6 +65,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void BuildRootList(const char* cdrom_dir);
 	void BuildCFileDatabase(const char* cdrom_dir);
 	void BuildFileList();
+	void PopulateFilesInMemoryRoot(int RootID);
 	void AddFilesFromRoot(SCPRootInfo Root);
 	int GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename, bool localize, uint32_t location_flags, SCP_string LanguagePrefix);
 public:

@@ -10,7 +10,7 @@
 #include <utility>
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
-
+#include "def_files/def_files.h"
 
 
 int SCPCFileModule::GetNextEmptyBlockIndex() 
@@ -355,12 +355,38 @@ void SCPCFileModule::BuildFileList()
 			cf_search_root_pack(CurrentRoot.GetUID());
 			break;
 		case SCPRootInfo::RootType::InMemory:
-			cf_search_memory_root(CurrentRoot.GetUID());
+			PopulateFilesInMemoryRoot(CurrentRoot.GetUID());
 			break;
 		}
 	}
 	
 }
+
+void SCPCFileModule::PopulateFilesInMemoryRoot(int RootID) {
+	int num_files = 0;
+	mprintf(("Searching memory root ... "));
+
+	auto default_files = defaults_get_all();
+	for (auto& default_file : default_files) {
+		// Pure built in files have an empty path_type string
+		if (strlen(default_file.path_type) <= 0) {
+			// Ignore pure builtin files. They should only be accessible with defaults_get_file
+			continue;
+		}
+
+		SCPCFilePathTypeID pathtype = GetPathTypeID(default_file);
+
+		Assertion(pathtype != SCPCFilePathTypeID::Invalid, "Default file '%s' does not use a valid path type!",
+			default_file.filename);
+
+		SCPCFileInfo NewFile(default_file.filename, RootID, pathtype, default_file.size, default_file.data);
+		CFileDatabase().AddFile(NewFile);
+		num_files++;
+	}
+
+	mprintf(("%i files\n", num_files));
+}
+
 void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
 {
 	for (auto Pair : PathTypes) {
