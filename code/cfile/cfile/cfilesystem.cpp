@@ -107,24 +107,6 @@ SCPCFileInfo *cf_get_file(int index)
 	return &File_blocks[block]->files[offset];
 }
 
-// Create a new file and return a pointer to it.
-SCPCFileInfo *cf_create_file()
-{
-	Assertion(Num_files < CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS, "Too many files found. CFile cannot handle more than %d files.\n", CF_NUM_FILES_PER_BLOCK * CF_MAX_FILE_BLOCKS);
-
-	uint block = Num_files / CF_NUM_FILES_PER_BLOCK;
-	uint offset = Num_files % CF_NUM_FILES_PER_BLOCK;
-	
-	if ( File_blocks[block] == NULL )	{
-		File_blocks[block] = (cf_file_block *)vm_malloc( sizeof(cf_file_block) );
-		Assert( File_blocks[block] != NULL);
-		memset(File_blocks[block], 0, sizeof(cf_file_block));
-	}
-
-	Num_files++;
-
-	return &File_blocks[block]->files[offset];
-}
 
 extern int cfile_inited;
 
@@ -141,22 +123,6 @@ SCPRootInfo *cf_get_root(int n)
 }
 
 
-// Create a new root and return a pointer to it.  The structure is assumed unitialized.
-SCPRootInfo *cf_create_root()
-{
-	int block = Num_roots / CF_NUM_ROOTS_PER_BLOCK;
-	int offset = Num_roots % CF_NUM_ROOTS_PER_BLOCK;
-	
-	if ( Root_blocks[block] == NULL )	{
-		Root_blocks[block] = (cf_root_block *)vm_malloc( sizeof(cf_root_block) );
-		Assert(Root_blocks[block] != NULL);
-	}
-
-	Num_roots++;
-
-	return &Root_blocks[block]->roots[offset];
-}
-
 // packfile sort function
 bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 {
@@ -169,126 +135,6 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 	return (r1.cf_type < r2.cf_type);
 }
 
-
-// Given a lower case list of file extensions 
-// separated by spaces, return zero if ext is
-// not in the list.
-int is_ext_in_list( const char *ext_list, const char *ext )
-{
-	char tmp_ext[128];
-
-	strcpy_s( tmp_ext, ext);
-	strlwr(tmp_ext);
-	if ( strstr(ext_list, tmp_ext ))	{
-		return 1;
-	}	
-
-	return 0;
-}
-
-void PopulateLooseFilesInRoot(int root_index)
-{
-	int i;
-	int num_files = 0;
-
-	SCPRootInfo* root = cf_get_root(root_index);
-
-	mprintf(("Searching root '%s' ... ", root->GetPath()));
-
-#ifndef WIN32
-	try {
-		auto current           = root->path;
-		const auto prefPathEnd = root->path + strlen(root->path);
-		while (current != prefPathEnd) {
-			const auto cp = utf8::next(current, prefPathEnd);
-			if (cp > 127) {
-				// On Windows, we currently do not support Unicode paths so catch this early and let the user
-				// know
-				const auto invalid_end = current;
-				utf8::prior(current, root->path);
-				Error(LOCATION,
-				      "Trying to use path \"%s\" as a data root. That path is not supported since it "
-				      "contains a Unicode character (%s). If possible, change this path to something that only uses "
-				      "ASCII characters.",
-				      root->path, std::string(current, invalid_end).c_str());
-			}
-		}
-	} catch (const std::exception& e) {
-		Error(LOCATION, "UTF-8 error while checking the root path \"%s\": %s", root->path, e.what());
-	}
-#endif
-
-	char search_path[CF_MAX_PATHNAME_LENGTH];
-#ifdef SCP_UNIX
-	// This map stores the mapping between a specific path type and the actual path that we use for it
-	SCP_unordered_map<int, SCP_string> pathTypeToRealPath;
-#endif
-
-	for (auto Pair : PathTypes)
-	{
-		if (Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
-		{
-			continue;
-		}
-		SCPPath FullPath = root->GetPath() / Pair.second.Path;
-		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::Recursive });
-		for (auto File : DirIterator)
-		{
-			SCPCFileInfo FileInfo(File, root_index, Pair.first);
-			CFileDatabase().AddFile(FileInfo);
-		}
-		//iterate using directory iterator
-		//then check extensions of all files against the Pair.second.Extensions vector
-		//if theres a match
-		//construct SCPCFileInfo
-		//add to database
-	}
-
-	mprintf(( "%i files\n", num_files ));
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-void cf_free_secondary_filelist()
-{
-	int i;
-
-	// Free the root blocks
-	for (i=0; i<CF_MAX_ROOT_BLOCKS; i++ )	{
-		if ( Root_blocks[i] )	{
-			vm_free( Root_blocks[i] );
-			Root_blocks[i] = NULL;
-		}
-	}
-	Num_roots = 0;
-
-	// Init the file blocks	
-	for (i=0; i<CF_MAX_FILE_BLOCKS; i++ )	{
-		if ( File_blocks[i] )	{
-			// Free file paths
-			for (auto& f : File_blocks[i]->files) {
-				if (f.real_name) {
-					vm_free(f.real_name);
-					f.real_name = nullptr;
-				}
-			}
-
-			vm_free( File_blocks[i] );
-			File_blocks[i] = NULL;
-		}
-	}
-	Num_files = 0;
-}
 
 /**
  * Searches for a file.
