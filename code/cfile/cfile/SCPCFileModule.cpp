@@ -424,7 +424,7 @@ void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
 
 
 int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename, bool localize,
-	uint32_t location_flags, SCP_string LanguagePrefix)
+	SCPCFileLocationFlags location_flags, SCP_string LanguagePrefix)
 {
 	if (SCPPath(filename).has_parent_path())
 	{

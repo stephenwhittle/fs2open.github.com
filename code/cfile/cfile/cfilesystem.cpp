@@ -212,7 +212,7 @@ CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool l
 		}
  
 		if (cfs_slow_search) {
-			cf_create_default_path_string(longname, sizeof(longname) - 1, search_order[ui], filespec, localize,
+			GetDefaultFilePath(longname, sizeof(longname) - 1, search_order[ui], filespec, localize,
 			                              location_flags, LanguagePrefix);
 
 #if defined _WIN32
@@ -421,7 +421,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 
 			strcat_s( filespec, ext_list[cur_ext] );
  
-			cf_create_default_path_string( longname, sizeof(longname)-1, search_order[ui], filespec, localize, (uint32_t)CF_LOCATION_ALL, LanguagePrefix );
+			GetDefaultFilePath( longname, sizeof(longname)-1, search_order[ui], filespec, localize, (uint32_t)CF_LOCATION_ALL, LanguagePrefix );
 
 #if defined _WIN32
 			_finddata_t findstruct;
@@ -735,7 +735,7 @@ int cf_get_file_list(SCP_vector<SCP_string>& list, int pathtype, const char* fil
 	}
 
 #if defined _WIN32
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
 	                              location_flags);
 	strcat_s(filespec, DIR_SEPARATOR_STR);
 	strcat_s(filespec, filter);
@@ -776,7 +776,7 @@ int cf_get_file_list(SCP_vector<SCP_string>& list, int pathtype, const char* fil
 	}
 
 #elif defined SCP_UNIX
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, (char*)Get_file_list_child, false,
 	                              location_flags);
 
 	DIR *dirp;
@@ -959,7 +959,7 @@ int cf_get_file_list(int max, char** list, int pathtype, const char* filter, int
 	char filespec[MAX_PATH_LEN];
 
 #if defined _WIN32
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, filter, false, location_flags);
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, filter, false, location_flags);
 
 	_finddata_t find;
 	intptr_t find_handle;
@@ -1000,7 +1000,7 @@ int cf_get_file_list(int max, char** list, int pathtype, const char* filter, int
 	}
 
 #elif defined SCP_UNIX
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, nullptr, false, location_flags);
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, nullptr, false, location_flags);
 
 	DIR *dirp;
 	struct dirent *dir;
@@ -1196,7 +1196,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 
 	// Search the default directories
 #if defined _WIN32
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, filter, false, location_flags);
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, filter, false, location_flags);
 
 	intptr_t find_handle;
 	_finddata_t find;
@@ -1237,7 +1237,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 	}
 
 #elif defined SCP_UNIX
-	cf_create_default_path_string(filespec, sizeof(filespec) - 1, pathtype, nullptr, false, location_flags);
+	GetDefaultFilePath(filespec, sizeof(filespec) - 1, pathtype, nullptr, false, location_flags);
 
 	DIR *dirp;
 	struct dirent *dir;
@@ -1397,7 +1397,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 //          filename  - optional, if set, tacks the filename onto end of path.
 // Output:  path      - Fully qualified pathname.
 //Returns 0 if the result would be too long (invalid result)
-int cf_create_default_path_string(SCP_string& path, int pathtype, const char* filename, bool /*localize*/,
+int GetDefaultFilePath(SCP_string& path, int pathtype, const char* filename, bool /*localize*/,
                                   uint32_t location_flags)
 {
 #ifdef SCP_UNIX
@@ -1522,4 +1522,38 @@ bool cf_check_location_flags(uint32_t check_flags, uint32_t desired_flags)
 	}
 
 	return true;
+}
+
+bool CheckLocationFlags(SCPCFileLocationFlags FlagsToCheck, SCPCFileLocationFlags DesiredFlags)
+{
+	bool RootOK = false;
+	if (DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot))
+	{
+		RootOK =
+			(DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::GameRootDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::UserDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot) && FlagsToCheck.HasFlag(SCPCFileLocation::MemoryRoot));
+	}
+	else
+	{
+		RootOK = true;
+	}
+
+	bool ModOK = false;
+	if (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods))
+	{
+		ModOK =
+			(DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::TopLevelDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) && FlagsToCheck.HasFlag(SCPCFileLocation::PrimaryMod)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods) && FlagsToCheck.HasFlag(SCPCFileLocation::SecondaryMods));
+	}
+	else
+	{
+		ModOK = true;
+	}
+	return RootOK && ModOK;
 }

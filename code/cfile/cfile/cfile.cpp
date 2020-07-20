@@ -344,7 +344,7 @@ int cfile_push_chdir(int type)
 
 	strcpy_s(Cfile_stack[Cfile_stack_pos++], OriginalDirectory);
 
-	cf_create_default_path_string(dir, sizeof(dir) - 1, type, NULL);
+	GetDefaultFilePath(dir, sizeof(dir) - 1, type, NULL);
 
 	return _cfile_chdir(dir, OriginalDirectory);
 }
@@ -475,7 +475,7 @@ int cf_delete(const char *filename, int path_type, uint32_t location_flags)
 
 	Assert(CF_TYPE_SPECIFIED(path_type));
 
-	cf_create_default_path_string(longname, sizeof(longname) - 1, path_type, filename, false, location_flags);
+	GetDefaultFilePath(longname, sizeof(longname) - 1, path_type, filename, false, location_flags);
 
 	return (_unlink(longname) != -1);
 }
@@ -488,7 +488,7 @@ int cf_access(const char *filename, int dir_type, int mode)
 
 	Assert( CF_TYPE_SPECIFIED(dir_type) );
 
-	cf_create_default_path_string( longname, sizeof(longname)-1, dir_type, filename );
+	GetDefaultFilePath( longname, sizeof(longname)-1, dir_type, filename );
 
 	return access(longname,mode);
 }
@@ -539,7 +539,7 @@ void cf_attrib(const char *filename, int set, int clear, int dir_type)
 
 	Assert( CF_TYPE_SPECIFIED(dir_type) );
 
-	cf_create_default_path_string( longname, sizeof(longname)-1, dir_type, filename );
+	GetDefaultFilePath( longname, sizeof(longname)-1, dir_type, filename );
 
 	FILE *fp = fopen(longname, "rb");
 	if (fp) {
@@ -560,8 +560,8 @@ int cf_rename(const char *old_name, const char *name, int dir_type)
 	char old_longname[_MAX_PATH];
 	char new_longname[_MAX_PATH];
 	
-	cf_create_default_path_string( old_longname, sizeof(old_longname)-1, dir_type, old_name );
-	cf_create_default_path_string( new_longname, sizeof(old_longname)-1, dir_type, name );
+	GetDefaultFilePath( old_longname, sizeof(old_longname)-1, dir_type, old_name );
+	GetDefaultFilePath( new_longname, sizeof(old_longname)-1, dir_type, name );
 
 	ret_code = rename(old_longname, new_longname );		
 	if(ret_code != 0){
@@ -625,7 +625,7 @@ void cf_create_directory(int dir_type, uint32_t location_flags)
 	int i;
 
 	for (i=num_dirs-1; i>=0; i-- )	{
-		cf_create_default_path_string(longname, sizeof(longname) - 1, dir_tree[i], nullptr, false, location_flags);
+		GetDefaultFilePath(longname, sizeof(longname) - 1, dir_tree[i], nullptr, false, location_flags);
 		if (stat(longname, &statbuf) != 0) {
 			mprintf(( "CFILE: Creating new directory '%s'\n", longname ));
 			mkdir_recursive(longname);
@@ -694,7 +694,7 @@ CFILE* _cfopen(const char* source_file, int line, const char* filename, const ch
 			// Create the directory if necessary
 			cf_create_directory(dir_type, location_flags);
 
-			cf_create_default_path_string(longname, sizeof(longname) - 1, dir_type, filename, false, location_flags);
+			GetDefaultFilePath(longname, sizeof(longname) - 1, dir_type, filename, false, location_flags);
 		}
 		Assert( !(type & CFILE_MEMORY_MAPPED) );
 
