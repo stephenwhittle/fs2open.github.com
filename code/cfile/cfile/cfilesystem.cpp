@@ -262,7 +262,7 @@ CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool l
 			// If a location flag was specified we need to check if the root of this file satisfies the request
 			auto root = cf_get_root(f->root_index);
 
-			if (!cf_check_location_flags(root->location_flags, location_flags)) {
+			if (!SCPCFileModule::CheckLocationFlags(root->GetLocationFlags(), location_flags)) {
 				// Root does not satisfy location flags
 				continue;
 			}
@@ -853,7 +853,7 @@ int cf_get_file_list(SCP_vector<SCP_string>& list, int pathtype, const char* fil
 				// If a location flag was specified we need to check if the root of this file satisfies the request
 				auto root = cf_get_root(f->root_index);
 
-				if (!cf_check_location_flags(root->location_flags, location_flags)) {
+				if (!CheckLocationFlags(root->location_flags, location_flags)) {
 					// Root does not satisfy location flags
 					continue;
 				}
@@ -1077,7 +1077,7 @@ int cf_get_file_list(int max, char** list, int pathtype, const char* filter, int
 				// If a location flag was specified we need to check if the root of this file satisfies the request
 				auto root = cf_get_root(f->root_index);
 
-				if (!cf_check_location_flags(root->location_flags, location_flags)) {
+				if (!CheckLocationFlags(root->location_flags, location_flags)) {
 					// Root does not satisfy location flags
 					continue;
 				}
@@ -1312,7 +1312,7 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 				// If a location flag was specified we need to check if the root of this file satisfies the request
 				auto root = cf_get_root(f->root_index);
 
-				if (!cf_check_location_flags(root->location_flags, location_flags)) {
+				if (!CheckLocationFlags(root->location_flags, location_flags)) {
 					// Root does not satisfy location flags
 					continue;
 				}
@@ -1397,68 +1397,6 @@ int cf_get_file_list_preallocated(int max, char arr[][MAX_FILENAME_LEN], char** 
 //          filename  - optional, if set, tacks the filename onto end of path.
 // Output:  path      - Fully qualified pathname.
 //Returns 0 if the result would be too long (invalid result)
-int GetDefaultFilePath(SCP_string& path, int pathtype, const char* filename, bool /*localize*/,
-                                  uint32_t location_flags)
-{
-#ifdef SCP_UNIX
-	if ( filename && strpbrk(filename,"/")  ) {
-#else
-	if ( filename && strpbrk(filename,"/\\:")  ) {
-#endif
-		// Already has full path
-		path.assign(filename);
-
-	} else {
-		SCPRootInfo* root = nullptr;
-
-		for (auto i = 0; i < Num_roots; ++i) {
-			auto current_root = cf_get_root(i);
-
-			if (current_root->roottype != CF_ROOTTYPE_PATH) {
-				// We want a "real" path here so only path roots are valid
-				continue;
-			}
-
-			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
-				// We found a valid root
-				root = current_root;
-				break;
-			}
-		}
-
-		if (!root) {
-			Assert( filename != NULL );
-			path.assign(filename);
-			return 1;
-		}
-
-		Assert(CF_TYPE_SPECIFIED(pathtype));
-		std::ostringstream s_path;
-
-		s_path << root->path;
-
-		s_path << Pathtypes[pathtype].path;
-
-		// Don't add slash for root directory
-		if (Pathtypes[pathtype].path[0] != '\0') {
-			if ( *(s_path.str().rbegin()) != DIR_SEPARATOR_CHAR ) {
-				s_path << DIR_SEPARATOR_STR;
-			}
-		//	if ( path[strlen(path)-1] != DIR_SEPARATOR_CHAR ) {
-		//		strcat_s(path, path_max, DIR_SEPARATOR_STR);
-		//	}
-		}
-
-		// add filename
-		if (filename) {
-			s_path << filename;
-		}
-
-		path = s_path.str().c_str();
-	}
-
-	return 1;
-}
 
 void cfile_spew_pack_file_crcs()
 {
@@ -1501,59 +1439,4 @@ void cfile_spew_pack_file_crcs()
 	fclose(out);
 }
 
-bool cf_check_location_flags(uint32_t check_flags, uint32_t desired_flags)
-{
-	Assertion((check_flags & CF_LOCATION_ROOT_MASK) != 0, "check_flags must have a valid root value");
-	Assertion((check_flags & CF_LOCATION_TYPE_MASK) != 0, "check_flags must have a valid type value");
 
-	auto check_root         = check_flags & CF_LOCATION_ROOT_MASK;
-	auto desired_root_flags = desired_flags & CF_LOCATION_ROOT_MASK;
-
-	// If the root part is not set then assume that every root matches
-	if (desired_root_flags != 0 && (check_root & desired_root_flags) == 0) {
-		return false;
-	}
-
-	auto check_type         = check_flags & CF_LOCATION_TYPE_MASK;
-	auto desired_type_flags = desired_flags & CF_LOCATION_TYPE_MASK;
-
-	if (desired_type_flags != 0 && (check_type & desired_type_flags) == 0) {
-		return false;
-	}
-
-	return true;
-}
-
-bool CheckLocationFlags(SCPCFileLocationFlags FlagsToCheck, SCPCFileLocationFlags DesiredFlags)
-{
-	bool RootOK = false;
-	if (DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot))
-	{
-		RootOK =
-			(DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::GameRootDirectory)) ||
-			(DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::UserDirectory)) ||
-			(DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot) && FlagsToCheck.HasFlag(SCPCFileLocation::MemoryRoot));
-	}
-	else
-	{
-		RootOK = true;
-	}
-
-	bool ModOK = false;
-	if (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods))
-	{
-		ModOK =
-			(DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::TopLevelDirectory)) ||
-			(DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) && FlagsToCheck.HasFlag(SCPCFileLocation::PrimaryMod)) ||
-			(DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods) && FlagsToCheck.HasFlag(SCPCFileLocation::SecondaryMods));
-	}
-	else
-	{
-		ModOK = true;
-	}
-	return RootOK && ModOK;
-}

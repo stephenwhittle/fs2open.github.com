@@ -18,7 +18,7 @@
 #include "SCPLimits.h"
 #include "FSIntegerTypes.h"
 #include "FSStdTypes.h"
-
+#include "filesystem/SCPPath.h"
 #include <ctime>
 #include <stdexcept>
 #include <memory>

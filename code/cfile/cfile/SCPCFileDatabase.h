@@ -2,8 +2,8 @@
 #include <memory>
 #include "SQLiteCPP/SQLiteCpp.h"
 #include "SQLiteCPP/VariadicBind.h"
-#include "cfile/SCPCFileInfo.h"
-#include "cfile/SCPRootInfo.h"
+#include "tl/optional.hpp"
+enum class SCPRootType;
 
 template <typename DataType, uint32_t NumFields>
 class DBResultIterator;
@@ -125,13 +125,13 @@ public:
 
 	};
 
-	uint32_t AddRoot(SCPRootInfo NewRoot);
-	uint32_t AddFile(SCPCFileInfo NewFile);
+	uint32_t AddRoot(class SCPRootInfo NewRoot);
+	uint32_t AddFile(class SCPCFileInfo NewFile);
 	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID);
 
 	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID);
 	using RootQuery = DBQuery<SCPRootInfo, 4>;
-	RootQuery AllRootsOfType(SCPRootInfo::RootType Type);
+	RootQuery AllRootsOfType(SCPRootType Type);
 	RootQuery AllRoots();
 
 };

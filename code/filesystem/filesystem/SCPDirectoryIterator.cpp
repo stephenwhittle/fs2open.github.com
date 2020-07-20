@@ -110,7 +110,7 @@ SCPDirectoryIterator& SCPDirectoryIterator::operator++()
 	return *this;
 }
 
-SCPPath& SCPDirectoryIterator::operator*() 
+SCPPath SCPDirectoryIterator::operator*() 
 {
 	return SCPPath(CurrentOptions.HasFlag(Flags::Recursive) ? *RecursiveInternalIterator : *InternalIterator);
 }

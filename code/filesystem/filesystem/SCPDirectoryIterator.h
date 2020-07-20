@@ -2,7 +2,7 @@
 #include <ghc/fs_fwd.hpp>
 #include "FSStdTypes.h"
 #include <regex>
-#include <optional>
+#include <tl/optional.hpp>
 #include "filesystem/SCPPath.h"
 #include "SCPFlags.h"
 #include <set>
@@ -25,7 +25,7 @@ public:
 	SCPDirectoryIterator(const SCPDirectoryIterator& Iterator);
 	SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator);
 	SCPDirectoryIterator& operator++();
-	SCPPath& operator*();
+	SCPPath operator*();
 	bool operator!=(const SCPDirectoryIterator& Other);
 	bool operator==(const SCPDirectoryIterator& Other);
 	SCPDirectoryIterator begin();

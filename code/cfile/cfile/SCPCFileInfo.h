@@ -2,6 +2,7 @@
 #include "FSStdTypes.h"
 #include "cfile/SCPCFileDatabase.h"
 #include "cfile/cfilesystem.h"
+#include "filesystem/SCPFile.h"
 
 class SCPCFileInfo {
 

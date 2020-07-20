@@ -1,5 +1,6 @@
 #include "cfile/SCPCFileDatabase.h"
-
+#include "cfile/SCPRootInfo.h"
+#include "cfile/SCPCFileInfo.h"
 #include "cfile/cfilesystem.h"
 #include "tl/optional.hpp"
 
@@ -52,7 +53,7 @@ tl::optional<SCPCFileInfo> SCPCFileDatabase::GetFileByID(uint32_t FileUID)
 	return {};
 }
 
-SCPCFileDatabase::RootQuery SCPCFileDatabase::AllRootsOfType(SCPRootInfo::RootType Type)
+SCPCFileDatabase::RootQuery SCPCFileDatabase::AllRootsOfType(SCPRootType Type)
 {
 	SQLite::Statement QueryRootsByType(InternalDB, R"(SELECT * from roots WHERE Type = ?)");
 	QueryRootsByType.bind(static_cast<uint32_t>(Type));

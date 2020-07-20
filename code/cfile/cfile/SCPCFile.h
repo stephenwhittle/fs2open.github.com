@@ -4,6 +4,7 @@
 #include "SCPCallPermit.h"
 #include "SCPFlags.h"
 #include "FSAssert.h"
+#include "SCPCFilePathType.h"
 enum class SCPCFileMode
 {
 	Append = 1,

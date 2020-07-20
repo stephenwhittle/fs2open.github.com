@@ -2,15 +2,20 @@
 #include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
+#include "cfile/SCPRootInfo.h"
+#include "cfile/SCPCFileInfo.h"
 #include "def_files/def_files.h"
 #include "filesystem/SCPFilesystemModule.h"
 #include "filesystem/SCPDirectoryIterator.h"
+#include "filesystem/SCPFile.h"
 #include "module/SCPModuleManager.h"
+#include "SCPCFilePathType.h"
 #include "SCPEndian.h"
 #include "FSIntegerTypes.h"
 #include "FSAssert.h"
 #include "FSOutputDeviceBase.h"
 #include "SCPApplication.h"
+
 #include <utility>
 
 
@@ -211,7 +216,7 @@ void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 			if (SCPPath::Compare(DirectoryEntry.path().extension(), ".vp")) 
 			{
 				SCPRootInfo NewRoot =
-					SCPRootInfo(DirectoryEntry.path(), SCPRootInfo::RootType::PackFile, Root->GetLocationFlags());
+					SCPRootInfo(DirectoryEntry.path(), SCPRootType::PackFile, Root->GetLocationFlags());
 				CFileDatabase().AddRoot(NewRoot);
 			}
 		}
@@ -240,7 +245,7 @@ void SCPCFileModule::AddModRoots(const char* rootDirectory, SCPCFileLocationFlag
 			}
 
 			SCPRootInfo root(RootPath,
-							 SCPRootInfo::RootType::Path,
+							 SCPRootType::Path,
 							 basic_location |
 								 (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
 			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
@@ -297,7 +302,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 		if (!(CmdLineModule && CmdLineModule->CurrentOptions->ModList.has_value())) {
 			HomeDirFlags.SetFlag(SCPCFileLocation::PrimaryMod);
 		}
-		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootInfo::RootType::Path, HomeDirFlags);
+		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootType::Path, HomeDirFlags);
 		
 		uint32_t HomeDirRootID = AddRoot(HomeDirRoot);
 		BuildPackListForRoot(HomeDirRootID);
@@ -310,7 +315,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	if (FSModule)
 	{
 		SCPRootInfo WorkingDirectoryRoot = 
-			SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootInfo::RootType::Path, { SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory });
+			SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootType::Path, { SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory });
 		uint32_t WorkingDirectoryRootID = AddRoot(WorkingDirectoryRoot);
 
 		AddModRoots(FSModule->WorkingDirectory.GetCurrent().c_str(), SCPCFileLocation::GameRootDirectory);
@@ -327,14 +332,14 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	if (cdrom_dir && (strlen(cdrom_dir) < CF_MAX_PATHNAME_LENGTH)) {
 		//======================================================
 		// Next, check any VP files in the CD-ROM directory.
-		SCPRootInfo CDRoot = SCPRootInfo(cdrom_dir, SCPRootInfo::RootType::Path, SCPCFileLocationFlags::Empty());
+		SCPRootInfo CDRoot = SCPRootInfo(cdrom_dir, SCPRootType::Path, SCPCFileLocationFlags::Empty());
 		uint32_t CDRootID = AddRoot(CDRoot);
 		BuildPackListForRoot(CDRootID);
 
 	}
 
 	// The final root is the in-memory root
-	SCPRootInfo MemoryRoot = SCPRootInfo("", SCPRootInfo::RootType::InMemory, SCPCFileLocation::MemoryRoot | SCPCFileLocation::TopLevelDirectory);
+	SCPRootInfo MemoryRoot = SCPRootInfo("", SCPRootType::InMemory, { SCPCFileLocation::MemoryRoot , SCPCFileLocation::TopLevelDirectory });
 	AddRoot(MemoryRoot);
 
 }
@@ -352,7 +357,7 @@ void SCPCFileModule::BuildCFileDatabase(const char* cdrom_dir)
 	BuildFileList();
 
 	//query database for all roots and all files
-	mprintf(("Found %d roots and %d files.\n", Num_roots, Num_files));
+	
 }
 
 void SCPCFileModule::BuildFileList()
@@ -364,13 +369,13 @@ void SCPCFileModule::BuildFileList()
 	{
 		switch (CurrentRoot.GetType())
 		{
-		case SCPRootInfo::RootType::Path:
+		case SCPRootType::Path:
 			PopulateLooseFilesInRoot(CurrentRoot.GetUID());
 			break;
-		case SCPRootInfo::RootType::PackFile:
+		case SCPRootType::PackFile:
 			PopulateFilesInPackFile(CurrentRoot.GetUID());
 			break;
-		case SCPRootInfo::RootType::InMemory:
+		case SCPRootType::InMemory:
 			PopulateFilesInMemoryRoot(CurrentRoot.GetUID());
 			break;
 		}
@@ -430,23 +435,21 @@ int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, 
 	{
 		// Already has full path
 		strncpy(path, filename, path_max);
-
 	}
 	else {
 
-		for (SCPRootInfo Root : CFileDatabase().AllRootsOfType(SCPRootInfo::RootType::Path))
+		for (SCPRootInfo Root : CFileDatabase().AllRootsOfType(SCPRootType::Path))
 		{
-			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
+			if (CheckLocationFlags(Root.GetLocationFlags(), location_flags)) {
 				// We found a valid root
 				Assert(CF_TYPE_SPECIFIED(pathtype));
-				strncpy(path, root->path, path_max);
+				SCPPath RawPath = Root.GetPath();
 				if (filename) {
-					strcat_s(path, path_max, filename);
-
+					RawPath /= filename;
 					// localize filename
 					if (localize) {
 
-						SCPPath LocalizedPath = SCPPath(path);
+						SCPPath LocalizedPath = RawPath;
 						LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
 						strncpy(path, LocalizedPath.c_str(), path_max);
 						// verify localized path
@@ -459,69 +462,7 @@ int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, 
 				}
 				break;
 			}
-			auto RootFlags = Root.GetLocationFlags();
-			if (RootFlags.HasFlag())
-			{
-
-			}
 		}
-		/*
-
-		SCPRootInfo* root = nullptr;
-		//Select * from roots where type == CF_ROOTTYPE_PATH
-		for (auto i = 0; i < Num_roots; ++i) {
-			auto current_root = cf_get_root(i);
-
-			if (current_root->roottype != CF_ROOTTYPE_PATH) {
-				// We want a "real" path here so only path roots are valid
-				continue;
-			}
-
-			if (cf_check_location_flags(current_root->location_flags, location_flags)) {
-				// We found a valid root
-				root = current_root;
-				break;
-			}
-		}
-
-		if (!root) {
-			Assert(filename != NULL);
-			strncpy(path, filename, path_max);
-			return 1;
-		}
-
-		Assert(CF_TYPE_SPECIFIED(pathtype));
-
-		strncpy(path, root->path, path_max);
-
-		strcat_s(path, path_max, Pathtypes[pathtype].path);
-
-		// Don't add slash for root directory
-		if (Pathtypes[pathtype].path[0] != '\0') {
-			if (path[strlen(path) - 1] != DIR_SEPARATOR_CHAR) {
-				strcat_s(path, path_max, DIR_SEPARATOR_STR);
-			}
-		}
-
-		// add filename
-		if (filename) {
-			strcat_s(path, path_max, filename);
-
-			// localize filename
-			if (localize) {
-
-				SCPPath LocalizedPath = SCPPath(path);
-				LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
-				strncpy(path, LocalizedPath.c_str(), path_max);
-				// verify localized path
-				FILE* fp = fopen(path, "rb");
-				if (fp) {
-					fclose(fp);
-					return 1;
-				}
-			}
-		}
-		*/
 	}
 
 	return 1;
@@ -540,8 +481,9 @@ void SCPCFileModule::PopulateFilesInPackFile(uint32_t RootID)
 	if (!fp) {
 		return;
 	}
+	SCPFile PackFile(root->GetPath());
 
-	if (filelength(fileno(fp)) < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3))) {
+	if (PackFile.FileSize() < (int)(sizeof(VP_FILE_HEADER) + (sizeof(int) * 3))) {
 		mprintf(("Skipping VP file ('%s') of invalid size...\n", root->GetPath()));
 		fclose(fp);
 		return;
@@ -669,12 +611,38 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 			CFileDatabase().AddFile(FileInfo);
 			num_files++;
 		}
-		//iterate using directory iterator
-		//then check extensions of all files against the Pair.second.Extensions vector
-		//if theres a match
-		//construct SCPCFileInfo
-		//add to database
 	}
 
 	mprintf(("%i files\n", num_files));
+}
+
+
+bool SCPCFileModule::CheckLocationFlags(const SCPCFileLocationFlags FlagsToCheck, const SCPCFileLocationFlags DesiredFlags) 
+{
+	bool RootOK = false;
+	if (DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) || DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot)) {
+		RootOK =
+			(DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) &&
+			 FlagsToCheck.HasFlag(SCPCFileLocation::GameRootDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) &&
+			 FlagsToCheck.HasFlag(SCPCFileLocation::UserDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot) && FlagsToCheck.HasFlag(SCPCFileLocation::MemoryRoot));
+	} else {
+		RootOK = true;
+	}
+
+	bool ModOK = false;
+	if (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) ||
+		DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) || DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods)) {
+		ModOK = (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) &&
+				 FlagsToCheck.HasFlag(SCPCFileLocation::TopLevelDirectory)) ||
+				(DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) &&
+				 FlagsToCheck.HasFlag(SCPCFileLocation::PrimaryMod)) ||
+				(DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods) &&
+				 FlagsToCheck.HasFlag(SCPCFileLocation::SecondaryMods));
+	} else {
+		ModOK = true;
+	}
+	return RootOK && ModOK;
 }
