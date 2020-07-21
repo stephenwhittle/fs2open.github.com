@@ -57,20 +57,18 @@ public:
 
 
 	SCPCFilePathTypeID dir_type;                  // directory location
-	FILE* fp;                      // File pointer if opening an individual file
 	const void* data;              // Pointer for memory-mapped file access.  NULL if not mem-mapped.
 	bool mem_mapped = false; // Flag for memory mapped files (if data is not null and this is false it means that it's an
 					 // embedded file)
 	size_t data_length; // length of data for mmap
 
 	std::uintmax_t lib_offset;
-	size_t raw_position;
+	
 	std::uintmax_t size; // for packed files
 
-	size_t max_read_len; // max read offset, for special error handling
+	
 
-	const char* source_file;
-	int line_num;
+	
 	/*//restrict the constructor so only CFileModule can create it
 	//then anybody that wants a CFile can do so via CFileModule::OpenCFile(params)
 	//passkey idiom or attorney-client
@@ -129,6 +127,23 @@ public:
 		UnderlyingFile.open(FilePath.c_str(), DesiredMode);
 
 	}
+
+	CFILE(SCPCallPermit<class SCPCFileModule>, uintmax_t Size, void* DataPointer)
+		:size(Size),
+		data(DataPointer) {};
+
+	~CFILE()
+	{
+		if (mem_mapped)
+		{
+			MemoryMappedFile.unmap();
+		}
+		else
+		{
+			UnderlyingFile.close();
+		}
+	}
+
 
 	void Flush() {};
 	//may belong on the SCPFile type

@@ -689,8 +689,8 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileRoot->GetPath(), FileInfo.pack_offset, FileInfo.size);
 		break;
 	case SCPRootType::InMemory:
-		
-
+		//use in-memory constructor
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.size, FileInfo.data);
 	}
 	return {};
 }
