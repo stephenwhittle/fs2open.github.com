@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdio>
+#include <fstream>
 #include <mio/mmap.hpp>
 #include "SCPCallPermit.h"
 #include "SCPFlags.h"
@@ -58,13 +59,13 @@ public:
 	SCPCFilePathTypeID dir_type;                  // directory location
 	FILE* fp;                      // File pointer if opening an individual file
 	const void* data;              // Pointer for memory-mapped file access.  NULL if not mem-mapped.
-	bool mem_mapped; // Flag for memory mapped files (if data is not null and this is false it means that it's an
+	bool mem_mapped = false; // Flag for memory mapped files (if data is not null and this is false it means that it's an
 					 // embedded file)
 	size_t data_length; // length of data for mmap
 
-	size_t lib_offset;
+	std::uintmax_t lib_offset;
 	size_t raw_position;
-	size_t size; // for packed files
+	std::uintmax_t size; // for packed files
 
 	size_t max_read_len; // max read offset, for special error handling
 
@@ -96,26 +97,37 @@ public:
 
 	//also cftemp but may be special for that one*/
 
-	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
+	//TODO: do we want to pass in the CFileInfo ID for these?
+	//TODO: delete copy constructor, perhaps delete move constructor too
+	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath PackFilePath, std::uintmax_t Offset, std::uintmax_t Size)
+		:lib_offset(Offset),
+		size(Size)
 	{
-		if (Mode.Is({ SCPCFileMode::Read, SCPCFileMode::Binary }) && !Mode.HasFlag(SCPCFileMode::MemoryMapped))
+		UnderlyingFile.open(PackFilePath.c_str(), std::ios::in | std::ios::binary);
+		UnderlyingFile.seekp(Offset);
+	}
+
+	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
+	{		
+		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
-			GOutputDevice->Error("Read-only binary files *must* be opened in Memory-Mapped mode!");
+			mem_mapped = true;
+			MemoryMappedFile = mio::mmap_source(FilePath);
 			return;
 		}
-		if (Mode.HasFlag(SCPCFileMode::Write) && !Mode.HasFlag(SCPCFileMode::MemoryMapped))
+
+		std::fstream::openmode DesiredMode;
+
+		if (Mode.HasFlag(SCPCFileMode::Write))
 		{
-			//if path is not absolute
-				//make sure the directory type isn't CF_type_any
-				//create directory
-				//create default path string
-			//else use raw path
-			if (Mode.HasFlag(SCPCFileMode::Read))
-			{
-				Mode.SetFlag(SCPCFileMode::Binary);
-			}
-			//open the file using mode settings
+			DesiredMode = std::ios::out;
 		}
+
+		DesiredMode |= (std::ios::in | std::ios::binary);
+
+		// open the file using mode settings
+		UnderlyingFile.open(FilePath.c_str(), DesiredMode);
+
 	}
 
 	void Flush() {};
@@ -139,7 +151,9 @@ public:
 	template<typename SourceType>
 	int Write(SourceType* Source, size_t ElementCount) {}
 
-	void Seek() {};
+	void SeekAbsolute() {};
+	void SeekRelative() {};
+	void SeekEnd() {};
 	void Tell() {};
 	void WriteChar() {};
 	void WriteString() {};

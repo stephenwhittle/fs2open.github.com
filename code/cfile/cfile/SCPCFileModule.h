@@ -9,7 +9,7 @@
 #include "SCPApplication.h"
 #include <array>
 #include "FSIntegerTypes.h"
-
+#include <memory>
 
 
 class SCPCFileModule : public SCPModule<SCPCFileModule> 
@@ -102,6 +102,10 @@ public:
 		return ModuleInstance;
 	}
 	static bool CheckLocationFlags(const SCPCFileLocationFlags FlagsToCheck, const SCPCFileLocationFlags DesiredFlags) ;
+
+	//CFILE destructor should be responsible for calling fstream/close things
+	std::unique_ptr<CFILE> CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode);
+	
 private:
 
 	//may want to try to put this in a pointer or something so we don't need the full definition in the header

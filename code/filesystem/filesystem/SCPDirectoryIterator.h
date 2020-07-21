@@ -12,9 +12,9 @@ class SCPDirectoryIterator
 public:
 	enum class Flags
 	{
-		IncludeDirectories,
-		IncludeFiles,
-		Recursive
+		IncludeDirectories = 1,
+		IncludeFiles = 2,
+		Recursive = 4
 	};
 	using Options = SCPFlags<Flags>;
 	constexpr static Options DefaultOptions = { Flags::IncludeFiles };

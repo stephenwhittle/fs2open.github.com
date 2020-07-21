@@ -43,9 +43,12 @@ class SCPCFileInfo {
 			write_time = F.LastModifiedTime(FullPath);
 		}
 	}
-
+	
 	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, time_t WriteTime, std::uintmax_t Size, std::uintmax_t PackOffset) //file in pack
-		:uid(0), name_ext(Filename), root_index(RootUID), pathtype_index(PathType), write_time(WriteTime), size(Size), pack_offset(PackOffset), data(nullptr) {};
+		:uid(0), name_ext(Filename), root_index(RootUID), pathtype_index(PathType), write_time(WriteTime), size(Size), pack_offset(PackOffset), data(nullptr) 
+	{
+		real_name = PathTypes.at(PathType).Path / Filename;
+	};
 
 	template<typename T>
 	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, uintmax_t Size, T* DataPointer) //in-memory file

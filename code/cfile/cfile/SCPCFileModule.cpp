@@ -621,28 +621,76 @@ bool SCPCFileModule::CheckLocationFlags(const SCPCFileLocationFlags FlagsToCheck
 {
 	bool RootOK = false;
 	if (DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) || DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot)) {
+		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) || 
+		DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot)) 
+	{
 		RootOK =
-			(DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) &&
-			 FlagsToCheck.HasFlag(SCPCFileLocation::GameRootDirectory)) ||
-			(DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) &&
-			 FlagsToCheck.HasFlag(SCPCFileLocation::UserDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::GameRootDirectory)) ||
+			(DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::UserDirectory)) ||
 			(DesiredFlags.HasFlag(SCPCFileLocation::MemoryRoot) && FlagsToCheck.HasFlag(SCPCFileLocation::MemoryRoot));
-	} else {
+	} else 
+	{
 		RootOK = true;
 	}
 
 	bool ModOK = false;
 	if (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) ||
-		DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) || DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods)) {
-		ModOK = (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) &&
-				 FlagsToCheck.HasFlag(SCPCFileLocation::TopLevelDirectory)) ||
-				(DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) &&
-				 FlagsToCheck.HasFlag(SCPCFileLocation::PrimaryMod)) ||
-				(DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods) &&
-				 FlagsToCheck.HasFlag(SCPCFileLocation::SecondaryMods));
-	} else {
+		DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) || 
+		DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods)) 
+	{
+		ModOK = (DesiredFlags.HasFlag(SCPCFileLocation::TopLevelDirectory) && FlagsToCheck.HasFlag(SCPCFileLocation::TopLevelDirectory)) ||
+				(DesiredFlags.HasFlag(SCPCFileLocation::PrimaryMod) && FlagsToCheck.HasFlag(SCPCFileLocation::PrimaryMod)) ||
+				(DesiredFlags.HasFlag(SCPCFileLocation::SecondaryMods) && FlagsToCheck.HasFlag(SCPCFileLocation::SecondaryMods));
+	} else 
+	{
 		ModOK = true;
 	}
 	return RootOK && ModOK;
+}
+
+std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode) 
+{
+	if (!Mode.HasFlag(SCPCFileMode::Read))
+	{
+		GOutputDevice->Error("Attempted to open a file in write-only mode");
+		return {};
+	}
+
+	tl::optional<SCPRootInfo> FileRoot = CFileDatabase().GetRootByID(FileInfo.root_index);
+	
+	if (!FileRoot.has_value())
+	{
+		GOutputDevice->Warning(LOCATION, "Open requested for a SCPCFileInfo with an invalid Root ID");
+		return {};
+	}
+	switch (FileRoot->GetType() )
+	{
+	case SCPRootType::Path:
+		
+		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
+		{
+			SCPFile MemMappedFile(FileInfo.real_name);
+			if (!MemMappedFile.Exists())
+			{
+				GOutputDevice->Error("Attempted to open a memory-mapped file that does not exist!");
+				return {};
+			}
+			if (!Mode.Is({ SCPCFileMode::MemoryMapped, SCPCFileMode::Read, SCPCFileMode::Binary }))
+			{
+				GOutputDevice->Error("Memory-mapped IO only supports read-only, binary mode!");
+				return;
+			}
+		}
+		// use the loose file constructor
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.real_name, Mode);
+		break;
+	case SCPRootType::PackFile:
+		//use the file-in-packfile constructor
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileRoot->GetPath(), FileInfo.pack_offset, FileInfo.size);
+		break;
+	case SCPRootType::InMemory:
+		
+
+	}
+	return {};
 }
