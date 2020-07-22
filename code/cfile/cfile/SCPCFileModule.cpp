@@ -656,7 +656,7 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 		return {};
 	}
 
-	tl::optional<SCPRootInfo> FileRoot = CFileDatabase().GetRootByID(FileInfo.root_index);
+	tl::optional<SCPRootInfo> FileRoot = CFileDatabase().GetRootByID(FileInfo.GetAssociatedRootID());
 	
 	if (!FileRoot.has_value())
 	{
@@ -669,7 +669,7 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 		
 		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
-			SCPFile MemMappedFile(FileInfo.real_name);
+			SCPFile MemMappedFile(FileInfo.GetFullPath());
 			if (!MemMappedFile.Exists())
 			{
 				GOutputDevice->Error("Attempted to open a memory-mapped file that does not exist!");
@@ -682,15 +682,15 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 			}
 		}
 		// use the loose file constructor
-		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.real_name, Mode);
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.GetFullPath(), Mode);
 		break;
 	case SCPRootType::PackFile:
 		//use the file-in-packfile constructor
-		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileRoot->GetPath(), FileInfo.pack_offset, FileInfo.size);
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileRoot->GetPath(), FileInfo.GetPackFileOffset(), FileInfo.GetFileSize());
 		break;
 	case SCPRootType::InMemory:
 		//use in-memory constructor
-		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.size, FileInfo.data);
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.GetFileSize(), FileInfo.GetDataPointer());
 	}
 	return {};
 }

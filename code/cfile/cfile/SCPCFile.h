@@ -49,7 +49,15 @@ class CFILE
 {
 
 private:
-
+	enum class EDataSource
+	{
+		NotInitialized,
+		MemoryMapped,
+		LooseFile,
+		PackFile,
+		InMemory
+	};
+	EDataSource CurrentDataSource = EDataSource::NotInitialized;
 	//may use ummap if we want unsigned chars
 	mio::mmap_source MemoryMappedFile;
 public:
@@ -57,6 +65,7 @@ public:
 
 
 	SCPCFilePathTypeID dir_type;                  // directory location
+	//this pointer is read-only also. no write support for memory-mapped files or for in-memory files
 	const void* data;              // Pointer for memory-mapped file access.  NULL if not mem-mapped.
 	bool mem_mapped = false; // Flag for memory mapped files (if data is not null and this is false it means that it's an
 					 // embedded file)
@@ -69,36 +78,14 @@ public:
 	
 
 	
-	/*//restrict the constructor so only CFileModule can create it
-	//then anybody that wants a CFile can do so via CFileModule::OpenCFile(params)
-	//passkey idiom or attorney-client
-	//placeholder default constructor
-	_cfopen(const char* source_file,
-			int line,
-			const char* filename,
-			const char* mode,
-			int type / *= CFILE_NORMAL* /,
-			int dir_type / *= CF_TYPE_ANY* /,
-			bool localize / *= false* /,
-			uint32_t location_flags / *= CF_LOCATION_ALL* /,
-			SCP_string LanguagePrefix / *= ""* /)
-		CFILE* _cfopen_special(const char* source_file,
-																	   int line,
-																	   const char* file_path,
-																	   const char* mode,
-																	   const size_t size,
-																	   const size_t offset,
-																	   const void* data,
-																	   int dir_type = CF_TYPE_ANY);
-
-
-
+	/*
 	//also cftemp but may be special for that one*/
 
 	//TODO: do we want to pass in the CFileInfo ID for these?
 	//TODO: delete copy constructor, perhaps delete move constructor too
 	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath PackFilePath, std::uintmax_t Offset, std::uintmax_t Size)
-		:lib_offset(Offset),
+		:CurrentDataSource(EDataSource::PackFile),
+		lib_offset(Offset),
 		size(Size)
 	{
 		UnderlyingFile.open(PackFilePath.c_str(), std::ios::in | std::ios::binary);
@@ -106,9 +93,11 @@ public:
 	}
 
 	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
+		:CurrentDataSource(EDataSource::LooseFile)
 	{		
 		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
+			CurrentDataSource = EDataSource::MemoryMapped;
 			mem_mapped = true;
 			MemoryMappedFile = mio::mmap_source(FilePath);
 			return;
@@ -129,12 +118,13 @@ public:
 	}
 
 	CFILE(SCPCallPermit<class SCPCFileModule>, uintmax_t Size, void* DataPointer)
-		:size(Size),
+		:CurrentDataSource(EDataSource::InMemory),
+		size(Size),
 		data(DataPointer) {};
 
 	~CFILE()
 	{
-		if (mem_mapped)
+		if (CurrentDataSource == EDataSource::MemoryMapped)
 		{
 			MemoryMappedFile.unmap();
 		}

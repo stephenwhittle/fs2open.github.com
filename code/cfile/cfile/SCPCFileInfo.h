@@ -17,7 +17,7 @@ class SCPCFileInfo {
 	std::uintmax_t pack_offset; // For pack files, where it is at.   0 if not in a pack file.  This can be used to tell
 								// if in a pack file.
 	SCPPath real_name; // For real files, the full path
-	const void* data;  // For in-memory files, the data pointer
+	void* const data;  // For in-memory files, the data pointer
 
 	// private constructor for database
 	SCPCFileInfo(uint32_t uid,
@@ -53,5 +53,11 @@ class SCPCFileInfo {
 	template<typename T>
 	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, uintmax_t Size, T* DataPointer) //in-memory file
 		:uid(0), name_ext(Filename.filename()), root_index(RootUID), pathtype_index(PathType), write_time(0), size(Size), pack_offset(0), data(DataPointer) {};
+
+	uint32_t GetAssociatedRootID() const { return uid; }
+	SCPPath GetFullPath() const { return real_name; }
+	uintmax_t GetFileSize() const { return size; }
+	uintmax_t GetPackFileOffset() const { return pack_offset; }
+	void* const GetDataPointer() const { return data; }
 };
 
