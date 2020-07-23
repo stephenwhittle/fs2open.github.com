@@ -932,92 +932,8 @@ int cf_is_valid(CFILE *cfile)
 // returns:   success ==> ptr to CFILE structure.  
 //            error   ==> NULL
 //
-static CFILE *CFOpenPackedFileFillBlock(const char* source, int line, FILE *fp, int type, size_t offset, size_t size)
-{
-	tl::optional<CFILE&> File = GetNextEmptyBlock();
-	if (!File)
-	{
-		fclose(fp);
-		return nullptr;
-	} else {
-		
-		File->data = nullptr;
-		File->fp = fp;
-		File->mem_mapped = false;
-		File->dir_type = type;
-		File->max_read_len = 0;
-
-		File->source_file = source;
-		File->line_num = line;
-
-		cf_init_lowlevel_read_code(&File.value(),offset, size, 0 );
-
-		return &File.value();
-	}
-
-}
 
 
-
-// cf_open_mapped_fill_cfblock() will fill up a Cfile_block element in the Cfile_block_list[] array
-// for the case of a file being opened by cf_open_mapped();
-//
-// returns:   ptr CFILE structure.  
-//
-#if defined _WIN32
-static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, HANDLE hFile, int type)
-#elif defined SCP_UNIX
-static CFILE *CFOpenMemoryMappedFileFillBlock(const char* source, int line, FILE *fp, int type)
-#endif
-{
-	int cfile_block_index;
-
-	cfile_block_index = GetNextEmptyBlockIndex();
-	if ( cfile_block_index == -1 ) {
-#ifdef SCP_UNIX
-		fclose(fp);
-#endif
-		return NULL;
-	}
-	else {
-		CFILE *cfp = &Cfile_block_list[cfile_block_index];
-
-		cfp->max_read_len = 0;
-		cfp->fp = nullptr;
-		cfp->mem_mapped = true;
-#if defined _WIN32
-		cfp->hInFile = hFile;
-#endif
-		cfp->dir_type = type;
-
-		cfp->source_file = source;
-		cfp->line_num = line;
-
-		cf_init_lowlevel_read_code(cfp, 0, 0, 0 );
-#if defined _WIN32
-		cfp->hMapFile = CreateFileMapping(cfp->hInFile, NULL, PAGE_READONLY, 0, 0, NULL);
-		if (cfp->hMapFile == NULL) {
-			nprintf(("Error", "Could not create file-mapping object.\n")); 
-			return NULL;
-		} 
-	
-		cfp->data = (ubyte*)MapViewOfFile(cfp->hMapFile, FILE_MAP_READ, 0, 0, 0);
-		Assert( cfp->data != NULL );
-#elif defined SCP_UNIX
-		cfp->fp = fp;
-		cfp->data_length = filelength(fileno(fp));
-		cfp->data = mmap(nullptr,                        // start
-		                 cfp->data_length,    // length
-		                 PROT_READ,                // prot
-		                 MAP_SHARED,                // flags
-		                 fileno(fp),                // fd
-		                 0);                        // offset
-		Assert(cfp->data != nullptr);
-#endif
-
-		return cfp;
-	}
-}
 
 
 // cf_returndata() returns the data pointer for a memory-mapped file that is associated
@@ -1032,18 +948,6 @@ const void *cf_returndata(CFILE *cfile)
 	return cfile->data;
 }
 
-// cutoff point where cfread() will throw an error when it hits this limit
-// if 'len' is 0 then this check will be disabled
-void cf_set_max_read_len( CFILE * cfile, size_t len )
-{
-	Assert( cfile != NULL );
-
-	if (len) {
-		cfile->max_read_len = cfile->raw_position + len;
-	} else {
-		cfile->max_read_len = 0;
-	}
-}
 
 // routines to read basic data types from CFILE's.  Put here to
 // simplify mac/pc reading from cfiles.

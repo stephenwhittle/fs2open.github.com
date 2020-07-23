@@ -46,3 +46,13 @@ char* SCPPath::GetFilename(char* InPath)
 	return p;
 
 }
+
+SCPPath SCPPath::AddExtensionIfMissing(SCP_string Filename, SCP_string ExtensionToAdd) 
+{
+	SCPPath TmpFilePath(Filename);
+	if (!TmpFilePath.has_extension())
+	{
+		TmpFilePath.replace_extension(ExtensionToAdd);
+	}
+	return TmpFilePath;
+}

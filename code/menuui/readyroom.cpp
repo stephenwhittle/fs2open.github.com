@@ -595,7 +595,7 @@ void sim_room_build_listing()
 						// determine some extra information
 						int flags = 0;
 						memset(full_filename, 0, 256);
-						strcpy_s(full_filename, cf_add_ext(Mission_filenames[i], FS_MISSION_FILE_EXT));
+						strcpy_s(full_filename, SCPPath::AddExtensionIfMissing(Mission_filenames[i], FS_MISSION_FILE_EXT));
 						fs_builtin_mission *fb = game_find_builtin_mission(full_filename);						
 						if((fb != NULL) && (fb->flags & FSB_FROM_VOLITION)){
 							flags |= READYROOM_FLAG_FROM_VOLITION;
@@ -621,7 +621,7 @@ void sim_room_build_listing()
 					// determine some extra information
 					int flags = 0;
 					memset(full_filename, 0, 256);
-					strcpy_s(full_filename, cf_add_ext(Campaign.missions[i].name, FS_MISSION_FILE_EXT));
+					strcpy_s(full_filename, SCPPath::AddExtensionIfMissing(Campaign.missions[i].name, FS_MISSION_FILE_EXT));
 					fs_builtin_mission *fb = game_find_builtin_mission(full_filename);
 					if((fb != NULL) && (fb->flags & FSB_FROM_VOLITION)){
 						flags |= READYROOM_FLAG_FROM_VOLITION;
@@ -1325,7 +1325,7 @@ void sim_room_do_frame(float  /*frametime*/)
 			// blit the proper icons if necessary
 			char full_name[256];
 			memset(full_name, 0, 256);
-			strcpy_s(full_name, cf_add_ext(Campaign.filename,FS_CAMPAIGN_FILE_EXT));
+			strcpy_s(full_name, SCPPath::AddExtensionIfMissing(Campaign.filename,FS_CAMPAIGN_FILE_EXT));
 			fs_builtin_mission *fb = game_find_builtin_mission(full_name);
 			if(fb != NULL){
 				// sim_room_blit_icons(0, Mission_list_coords[gr_screen.res][1], fb, 0);

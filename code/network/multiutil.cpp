@@ -1305,7 +1305,7 @@ int multi_is_builtin_mission()
 	// get the full filename
 	memset(name,0,512);
 	strcpy_s(name,Game_current_mission_filename);
-	cf_add_ext(name, FS_MISSION_FILE_EXT);
+	SCPPath::AddExtensionIfMissing(name, FS_MISSION_FILE_EXT);
 
 	// if this mission is builtin	
 	if(game_find_builtin_mission(name) != nullptr){
@@ -3266,7 +3266,7 @@ void multi_spew_pxo_checksums(int max_files, char *outfile)
 			// do all the checksums
 			for (idx = 0; idx < count; idx++) {
 				memset(full_name, 0, MAX_FILENAME_LEN+1);
-				SDL_strlcpy(full_name, cf_add_ext(file_names[idx], FS_MISSION_FILE_EXT), SDL_arraysize(full_name));
+				SDL_strlcpy(full_name, SCPPath::AddExtensionIfMissing(file_names[idx], FS_MISSION_FILE_EXT), SDL_arraysize(full_name));
 
 				if (cf_chksum_long(full_name, &checksum)) {
 					fprintf(out, "%s	:	%d\n", full_name, (int)checksum);

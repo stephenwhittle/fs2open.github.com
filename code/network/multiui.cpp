@@ -3653,7 +3653,7 @@ void multi_create_game_do()
 		char mission_name[NAME_LENGTH+1];
 		int flags;
 		char *filename; 
-		filename = cf_add_ext( Cmdline_almission, FS_MISSION_FILE_EXT ); //DTP ADD EXTENSION needed next line
+		filename = SCPPath::AddExtensionIfMissing( Cmdline_almission, FS_MISSION_FILE_EXT ); //DTP ADD EXTENSION needed next line
 		flags = mission_parse_is_multi(filename, mission_name); //DTP flags will set if mission is multi
 
 		if (flags) { //only continue if mission is multiplayer mission
@@ -4458,7 +4458,7 @@ void multi_create_list_load_missions()
 		fname = file_list[idx];
 		
 		// tack on any necessary file extension
-		filename = cf_add_ext( fname, FS_MISSION_FILE_EXT );
+		filename = SCPPath::AddExtensionIfMissing( fname, FS_MISSION_FILE_EXT );
 
 		if (Game_mode & GM_STANDALONE_SERVER) {			
 			std_gen_set_text(filename, 2);
@@ -4549,7 +4549,7 @@ void multi_create_list_load_campaigns()
 		fname = file_list[idx];
 		
 		// tack on any necessary file extension
-		filename = cf_add_ext( fname, FS_CAMPAIGN_FILE_EXT );
+		filename = SCPPath::AddExtensionIfMissing( fname, FS_CAMPAIGN_FILE_EXT );
 
 		if (Game_mode & GM_STANDALONE_SERVER) {			
 			std_gen_set_text(filename, 2);

@@ -1188,7 +1188,7 @@ void hud_config_button_do(int n)
 		// already exists?
 		if(exists){
 			// save the file			
-			out = cf_add_ext(name, ".hcf");
+			out = SCPPath::AddExtensionIfMissing(name, ".hcf");
 			hud_config_color_save(out);
 			break;
 		}
@@ -1204,7 +1204,7 @@ void hud_config_button_do(int n)
 			sprintf(name, "hud_%d.hcf", HC_num_files + 1);
 			out = name;
 		} else {
-			out = cf_add_ext(name, ".hcf");
+			out = SCPPath::AddExtensionIfMissing(name, ".hcf");
 		}
 		HC_filenames[HC_num_files++] = vm_strdup(out);
 		hud_config_color_save(out);		
@@ -1612,7 +1612,7 @@ void hud_config_color_load(const char *name)
 	char str[1024];
 	char *fname;
 
-	fname = cf_add_ext(name, ".hcf");
+	fname = SCPPath::AddExtensionIfMissing(name, ".hcf");
 
 	try
 	{

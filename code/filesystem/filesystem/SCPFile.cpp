@@ -41,3 +41,8 @@ std::uintmax_t SCPFile::FileSize()
 {
 	return ghc::filesystem::file_size(CachedPath);
 }
+
+bool SCPFile::Delete(SCP_string FilePath) 
+{
+	return ghc::filesystem::remove(FilePath);
+}

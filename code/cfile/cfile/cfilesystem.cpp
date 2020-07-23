@@ -33,7 +33,6 @@
 #include <libgen.h>
 #endif
 
-#include "cfile/cfile.h"
 #include "cfile/cfilesystem.h"
 #include "cfile/SCPCFile.h"
 #include "cfile/SCPCFileModule.h"
@@ -64,6 +63,7 @@ enum CfileRootType {
 //    searching for pack files on hard drive		// Found by searching all known paths
 //    specifying cd-rom tree
 //    searching for pack files on CD-rom tree
+/*
 
 
 // convenient type for sorting (see cf_build_pack_list())
@@ -106,9 +106,11 @@ SCPCFileInfo *cf_get_file(int index)
 
 	return &File_blocks[block]->files[offset];
 }
+*/
 
 
 extern int cfile_inited;
+/*
 
 // Create a new root and return a pointer to it.  The structure is assumed unitialized.
 SCPRootInfo *cf_get_root(int n)
@@ -122,7 +124,9 @@ SCPRootInfo *cf_get_root(int n)
 	return &Root_blocks[block]->roots[offset];
 }
 
+*/
 
+/*
 // packfile sort function
 bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 {
@@ -134,6 +138,7 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 	// otherwise return them in order of CF_TYPE_* precedence
 	return (r1.cf_type < r2.cf_type);
 }
+*/
 
 
 /**
@@ -150,11 +155,6 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
  */
 CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
-	int i;
-    uint ui;
-	int cfs_slow_search = 0;
-	char longname[MAX_PATH_LEN];
-
 	Assert(!filespec.empty());
 
 	// see if we have something other than just a filename
@@ -177,154 +177,44 @@ CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool l
 	}
 
 	// Search the hard drive for files first.
-	uint num_search_dirs = 0;
-	int search_order[CF_MAX_PATH_TYPES];
+	//if the user specifies a path, search that first
+	//else search them in order from Root to the end of PathTypes;
+	
+	//return the result with the information
 
-	if ( CF_TYPE_SPECIFIED(pathtype) )	{
-		search_order[num_search_dirs++] = pathtype;
-	} else {
-		for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++) {
-			if (i != pathtype)
-				search_order[num_search_dirs++] = i;
-		}
-	}
-
-	memset( longname, 0, sizeof(longname) );
-
-
-	for (ui=0; ui<num_search_dirs; ui++ )	{
-		switch (search_order[ui])
+	//search for the exact path first
+	if (filespec.has_parent_path())
+	{
+		FileQueryBuilder QueryBuilder;
+		QueryBuilder.FullPath({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
+		for (auto FileResult : CFileDatabase().Files(QueryBuilder))
 		{
-			case CF_TYPE_ROOT:
-			case CF_TYPE_DATA:
-			case CF_TYPE_SINGLE_PLAYERS:
-			case CF_TYPE_MULTI_PLAYERS:
-			case CF_TYPE_MULTI_CACHE:
-			case CF_TYPE_MISSIONS:
-			case CF_TYPE_CACHE:
-				cfs_slow_search = 1;
-				break;
- 
-			default:
-				// always hit the disk if we are looking in only one path
-				cfs_slow_search = (num_search_dirs == 1) ? 1 : 0;
-				break;
-		}
- 
-		if (cfs_slow_search) {
-			GetDefaultFilePath(longname, sizeof(longname) - 1, search_order[ui], filespec, localize,
-			                              location_flags, LanguagePrefix);
-
-#if defined _WIN32
-			_finddata_t findstruct;
-
-			intptr_t findhandle = _findfirst(longname, &findstruct);
-			if (findhandle != -1) {
-				CFileLocation res;
-				res.found = true;
-				res.size = static_cast<size_t>(findstruct.size);
-
-				_findclose(findhandle);
-
-				res.offset = 0;
-				res.full_name = longname;
-
-				return res;
-			}
-#endif
-			{
-				FILE *fp = fopen(longname, "rb" );
-
-				if (fp) {
-					CFileLocation res(true);
-					res.size = static_cast<size_t>(filelength( fileno(fp) ));
-
-					fclose(fp);
-
-					res.offset = 0;
-					res.full_name = longname;
-
-					return res;
-				}
-			}
+			//if we have a result we just want the first one that matches
+			return FileResult;
 		}
 	}
+	// if (localize) {
+	// create localized filespec
+	//SCPPath LocalizedPath = SCPPath(filespec);
+	//LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
 
-	// Search the pak files and CD-ROM.
-	for (ui = 0; ui < Num_files; ui++ )	{
-		SCPCFileInfo *f = cf_get_file(ui);
-
-		// only search paths we're supposed to...
-		if ( (pathtype != CF_TYPE_ANY) && (pathtype != f->pathtype_index) )
-			continue;
-
-		if (location_flags != CF_LOCATION_ALL) {
-			// If a location flag was specified we need to check if the root of this file satisfies the request
-			auto root = cf_get_root(f->root_index);
-
-			if (!SCPCFileModule::CheckLocationFlags(root->GetLocationFlags(), location_flags)) {
-				// Root does not satisfy location flags
-				continue;
-			}
-		}
-
-		if (localize) {
-			// create localized filespec
-			SCPPath LocalizedPath = SCPPath(filespec);
-			LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
-			
-			
-			if ( !stricmp(LocalizedPath.c_str(), f->name_ext) ) {
-				CFileLocation res(true);
-				res.size = static_cast<size_t>(f->size);
-				res.offset = (size_t)f->pack_offset;
-				res.data_ptr = f->data;
-
-				if (f->data != nullptr) {
-					// This is an in-memory file so we just copy the pathtype name + file name
-					res.full_name = Pathtypes[f->pathtype_index].path;
-					res.full_name += DIR_SEPARATOR_STR;
-					res.full_name += f->name_ext;
-				} else if (f->pack_offset < 1) {
-					// This is a real file, return the actual file path
-					res.full_name = f->real_name;
-				} else {
-					// File is in a pack file
-					SCPRootInfo *r = cf_get_root(f->root_index);
-
-					res.full_name = r->path;
-				}
-
-				return res;
-			}
-		}
-
-		// file either not localized or localized version not found
-		if ( !stricmp(filespec, f->name_ext) ) {
-			CFileLocation res(true);
-			res.size = static_cast<size_t>(f->size);
-			res.offset = (size_t)f->pack_offset;
-			res.data_ptr = f->data;
-
-			if (f->data != nullptr) {
-				// This is an in-memory file so we just copy the pathtype name + file name
-				res.full_name = Pathtypes[f->pathtype_index].path;
-				res.full_name += DIR_SEPARATOR_STR;
-				res.full_name += f->name_ext;
-			} else if (f->pack_offset < 1) {
-				// This is a real file, return the actual file path
-				res.full_name = f->real_name;
-			} else {
-				// File is in a pack file
-				SCPRootInfo *r = cf_get_root(f->root_index);
-
-				res.full_name = r->path;
-			}
-
-			return res;
-		}
+	FileQueryBuilder QueryBuilder;
+	QueryBuilder.Filename({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
+	if (PathType != CF_PATHTYPE_ANY)
+	{
+		QueryBUilder.PathType({ FileQueryBuilder::ConditionType::Equal, PathTYpe });
 	}
-		
+	for (auto FileResult : CFileDatabase().Files(QueryBuilder)) 
+	{
+		//check location flags here
+		// if we have a result we just want the first one that matches
+		return FileResult;
+	}
+	//then search for the file name in the specific folder
+	//Filename(filespec.string), PathType(pathtype)
+	//and if a location_flags set was specified then filter those results
+	//then if localized version not found
+	//do the same with the un localized name
 	return CFileLocation();
 }
 

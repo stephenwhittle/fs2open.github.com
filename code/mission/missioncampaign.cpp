@@ -182,7 +182,7 @@ int mission_campaign_get_mission_list(const char *filename, char **list, int max
 	int i, num = 0;
 	char name[MAX_FILENAME_LEN];
 
-	filename = cf_add_ext(filename, FS_CAMPAIGN_FILE_EXT);
+	filename = SCPPath::AddExtensionIfMissing(filename, FS_CAMPAIGN_FILE_EXT);
 
 	// read the campaign file and get the list of mission filenames
 	try
@@ -427,7 +427,7 @@ int mission_campaign_load( char *filename, player *pl, int load_savefile, bool r
 		return CAMPAIGN_ERROR_IGNORED;
 	}
 
-	filename = cf_add_ext(filename, FS_CAMPAIGN_FILE_EXT);
+	filename = SCPPath::AddExtensionIfMissing(filename, FS_CAMPAIGN_FILE_EXT);
 
 	if ( pl == NULL )
 		pl = Player;

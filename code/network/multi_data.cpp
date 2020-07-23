@@ -265,7 +265,7 @@ void multi_data_send_my_junk()
 	}
 
 	if(ok_to_send){
-		with_ext = cf_add_ext(Net_player->m_player->image_filename, NOX(".pcx"));
+		with_ext = SCPPath::AddExtensionIfMissing(Net_player->m_player->image_filename, NOX(".pcx"));
 		if(with_ext != NULL){
 			strcpy_s(Net_player->m_player->image_filename, with_ext);
 		}
@@ -312,7 +312,7 @@ void multi_data_send_my_junk()
 	}
 
 	if(ok_to_send){
-		with_ext = cf_add_ext(Net_player->m_player->m_squad_filename, NOX(".pcx"));
+		with_ext = SCPPath::AddExtensionIfMissing(Net_player->m_player->m_squad_filename, NOX(".pcx"));
 		if(with_ext != NULL){
 			strcpy_s(Net_player->m_player->m_squad_filename,with_ext);
 		}

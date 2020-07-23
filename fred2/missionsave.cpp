@@ -1097,7 +1097,7 @@ int CFred_mission_save::save_campaign_file(char *pathname)
 	reset_parse();
 	fred_parse_flag = 0;
 
-	pathname = cf_add_ext(pathname, FS_CAMPAIGN_FILE_EXT);
+	pathname = SCPPath::AddExtensionIfMissing(pathname, FS_CAMPAIGN_FILE_EXT);
 	fp = cfopen(pathname, "wt", CFILE_NORMAL, CF_TYPE_MISSIONS);
 	if (!fp) {
 		nprintf(("Error", "Can't open campaign file to save.\n"));

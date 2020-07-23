@@ -24,8 +24,7 @@
 #undef max
 #endif
 
-#include "cfile/cfile.h"
-#include "cfile/cfilearchive.h"
+//#include "cfile/cfilearchive.h"
 
 #include "luaconf.h"
 #include "FSAssert.h"
@@ -36,29 +35,6 @@
 
 
 #define CHECK_POSITION
-
-// Called once to setup the low-level reading code.
-
-void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, size_t pos )
-{
-	Assert(cfile != nullptr);
-
-	cfile->lib_offset = lib_offset;
-	cfile->raw_position = pos;
-	cfile->size = size;
-
-	if ( cfile->fp )	{
-		if ( cfile->lib_offset )	{
-			fseek( cfile->fp, (long)cfile->lib_offset, SEEK_SET );
-		}
-
-		#if defined(CHECK_POSITION) && !defined(NDEBUG)
-		auto raw_position = ftell(cfile->fp) - cfile->lib_offset;
-		Assert(raw_position == cfile->raw_position);
-		#endif
-	}
-}
-
 
 
 // cfeof() Tests for end-of-file on a stream

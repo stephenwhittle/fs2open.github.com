@@ -64,3 +64,10 @@ SCPCFileDatabase::RootQuery SCPCFileDatabase::AllRoots()
 {
 	return RootQuery(std::move(SQLite::Statement(InternalDB, R"(SELECT * from roots)")));
 }
+
+SCPCFileDatabase::FileQuery SCPCFileDatabase::AllFilesWhere(std::string WhereClause) 
+{
+	return FileQuery(std::move(SQLite::Statement(InternalDB, "SELECT * from files WHERE" + WhereClause)));
+}
+
+

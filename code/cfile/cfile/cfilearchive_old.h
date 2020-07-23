@@ -24,6 +24,6 @@
 
 
 // Called once to setup the low-level reading code.
-void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, size_t pos );
+//void cf_init_lowlevel_read_code( CFILE * cfile, size_t lib_offset, size_t size, size_t pos );
 
 #endif

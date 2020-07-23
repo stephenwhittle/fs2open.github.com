@@ -22,10 +22,10 @@
 #include <winbase.h>		/* needed for memory mapping of file functions */
 #endif
 
-#include "cfile/cfile.h"
 #include "FSStdTypes.h"
 #include "FSAssert.h"
 
+/*
 
 void cf_sort_filenames( SCP_vector<SCP_string> &list, int sort, SCP_vector<file_list_info> *info )
 {
@@ -105,6 +105,8 @@ void cf_sort_filenames( SCP_vector<SCP_string> &list, int sort, SCP_vector<file_
 
 	nprintf(("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort));
 }
+*/
+/*
 
 // Sorts a list of filenames using the specified sorting method (CF_SORT_*).
 //   n = number of filenames in list to sort
@@ -201,4 +203,4 @@ void cf_sort_filenames( int n, char **list, int sort, file_list_info *info )
 	}
 
 	nprintf(("Error", "Unknown sorting method %d passed to cf_sort_filenames()\n", sort));
-}
+}*/

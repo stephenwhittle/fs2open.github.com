@@ -16,11 +16,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 {
 	//cfiles themselves may need a table too
 	//rootID, fileID, uintptr_t to a vector of unique/shared ptrs
-	inline auto& CFileDatabase()
-	{
-		static SCPCFileDatabase Database;
-		return Database;
-	};
+
 
 
 	template <unsigned int Index>
@@ -89,6 +85,12 @@ public:
 
 		return crc;
 	}
+
+	inline auto& CFileDatabase()
+	{
+		static SCPCFileDatabase Database;
+		return Database;
+	};
 
 	void DumpOpenedFileList();
 	//should be made private at best

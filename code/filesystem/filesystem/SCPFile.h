@@ -16,4 +16,5 @@ public:
 	static std::time_t LastModifiedTime(SCP_string FilePath);
 	static bool Exists(SCP_string FilePath);
 	static std::uintmax_t FileSize(SCP_string FilePath);
+	static bool Delete(SCP_string FilePath);
 };

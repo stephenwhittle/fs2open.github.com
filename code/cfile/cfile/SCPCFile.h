@@ -6,6 +6,8 @@
 #include "SCPFlags.h"
 #include "FSAssert.h"
 #include "SCPCFilePathType.h"
+#include "SCPMembuf.h"
+
 enum class SCPCFileMode
 {
 	Append = 1,
@@ -29,6 +31,7 @@ enum class SCPCFileLocation
 };
 
 using SCPCFileLocationFlags = SCPFlags<SCPCFileLocation>;
+
 
 //Definition for 'all flags set'
 constexpr SCPCFileLocationFlags SCPCFileLocationALL = 
@@ -57,20 +60,22 @@ private:
 		PackFile,
 		InMemory
 	};
+	bool Writeable = false;
 	EDataSource CurrentDataSource = EDataSource::NotInitialized;
 	//may use ummap if we want unsigned chars
 	mio::mmap_source MemoryMappedFile;
+	SCPMembuf MemoryMappedFileBuffer;
+	std::istream MemoryMappedFileView;
 public:
 	std::fstream UnderlyingFile;
-
+	SCPMembuf InMemoryFileBuffer;
+	std::istream InMemoryFileView;
 
 	SCPCFilePathTypeID dir_type;                  // directory location
 	//this pointer is read-only also. no write support for memory-mapped files or for in-memory files
 	const void* data;              // Pointer for memory-mapped file access.  NULL if not mem-mapped.
 	bool mem_mapped = false; // Flag for memory mapped files (if data is not null and this is false it means that it's an
 					 // embedded file)
-	size_t data_length; // length of data for mmap
-
 	std::uintmax_t lib_offset;
 	
 	std::uintmax_t size; // for packed files
@@ -85,6 +90,8 @@ public:
 	//TODO: delete copy constructor, perhaps delete move constructor too
 	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath PackFilePath, std::uintmax_t Offset, std::uintmax_t Size)
 		:CurrentDataSource(EDataSource::PackFile),
+		MemoryMappedFileView(&MemoryMappedFileBuffer),
+		InMemoryFileView(&InMemoryFileBuffer),
 		lib_offset(Offset),
 		size(Size)
 	{
@@ -93,13 +100,16 @@ public:
 	}
 
 	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
-		:CurrentDataSource(EDataSource::LooseFile)
+		:CurrentDataSource(EDataSource::LooseFile),
+		MemoryMappedFileView(&MemoryMappedFileBuffer),
+		InMemoryFileView(&InMemoryFileBuffer)
 	{		
 		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
 			CurrentDataSource = EDataSource::MemoryMapped;
 			mem_mapped = true;
 			MemoryMappedFile = mio::mmap_source(FilePath);
+			MemoryMappedFileBuffer = SCPMembuf(MemoryMappedFile.begin(), MemoryMappedFile.end());
 			return;
 		}
 
@@ -108,6 +118,7 @@ public:
 		if (Mode.HasFlag(SCPCFileMode::Write))
 		{
 			DesiredMode = std::ios::out;
+			Writeable = true;
 		}
 
 		DesiredMode |= (std::ios::in | std::ios::binary);
@@ -119,6 +130,9 @@ public:
 
 	CFILE(SCPCallPermit<class SCPCFileModule>, uintmax_t Size, void* DataPointer)
 		:CurrentDataSource(EDataSource::InMemory),
+		MemoryMappedFileView(&MemoryMappedFileBuffer),
+		InMemoryFileBuffer((const SCPMembuf::byte*) DataPointer, Size),
+		InMemoryFileView(&InMemoryFileBuffer),
 		size(Size),
 		data(DataPointer) {};
 
@@ -128,7 +142,7 @@ public:
 		{
 			MemoryMappedFile.unmap();
 		}
-		else
+		else if (CurrentDataSource == EDataSource::LooseFile || CurrentDataSource == EDataSource::PackFile)
 		{
 			UnderlyingFile.close();
 		}
@@ -144,17 +158,66 @@ public:
 	template<typename DestinationType>
 	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount)
 	{
+		switch (CurrentDataSource) {
+
+		case CFILE::EDataSource::MemoryMapped:
+			MemoryMappedFileView.read((char*)Destination, ElementSize * ElementCount);
+			return MemoryMappedFileView.gcount();
+			break;
+		case CFILE::EDataSource::LooseFile:
+		case CFILE::EDataSource::PackFile:
+			UnderlyingFile.read((char*)Destination, ElementSize * ElementCount);
+			return UnderlyingFile.gcount();
+			break;
+		case CFILE::EDataSource::InMemory:
+			InMemoryFileView.read((char*)Destination, ElementSize * ElementCount);
+			return InMemoryFileView.gcount();
+			break;
+		case CFILE::EDataSource::NotInitialized:
+		default:
+			break;
+		}
 		return 0;
 	}
 
 	template <typename DestinationType>
 	int ReadBytes(DestinationType* Destination, size_t Count)
 	{
+		switch (CurrentDataSource)
+		{
+		
+		case CFILE::EDataSource::MemoryMapped:
+			MemoryMappedFileView.read((char*)Destination, Count);
+			return MemoryMappedFileView.gcount();
+			break;
+		case CFILE::EDataSource::LooseFile:
+		case CFILE::EDataSource::PackFile:
+			UnderlyingFile.read((char*)Destination, Count);
+			return UnderlyingFile.gcount();
+			break;
+		case CFILE::EDataSource::InMemory:
+			InMemoryFileView.read((char*)Destination, Count);
+			return InMemoryFileView.gcount();
+			break;
+		case CFILE::EDataSource::NotInitialized:
+		default:
+			break;
+		}
 		return 0;
 	}
 
 	template<typename SourceType>
-	int Write(SourceType* Source, size_t ElementCount) {}
+	int WriteBytes(SourceType* Source, size_t Count) 
+	{
+		Assert(Writeable);
+	}
+	
+	template<typename SourceType>
+	int Write(SourceType* Source, std::size_t ElementSize, std::size_t ElementCount)
+	{
+		Assert(Writeable);
+
+	}
 
 	void SeekAbsolute() {};
 	void SeekRelative() {};

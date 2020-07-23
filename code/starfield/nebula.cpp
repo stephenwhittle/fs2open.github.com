@@ -147,7 +147,7 @@ void nebula_init( const char *filename, angles * pbh )
 		nebula_close();
 	}
 
-	if ( load_nebula_sub( cf_add_ext(filename, NOX(".neb")) ) ) {
+	if ( load_nebula_sub( SCPPath::AddExtensionIfMissing(filename, NOX(".neb")) ) ) {
 		Nebula_loaded = 1;
 	}
 

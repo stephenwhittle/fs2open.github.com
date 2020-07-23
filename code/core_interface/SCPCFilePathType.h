@@ -1,4 +1,4 @@
-
+#pragma once
 //needs to go into core_interface
 enum class SCPCFilePathTypeID
 {

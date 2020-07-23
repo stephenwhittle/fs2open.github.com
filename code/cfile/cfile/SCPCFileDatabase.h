@@ -133,6 +133,119 @@ public:
 	using RootQuery = DBQuery<SCPRootInfo, 4>;
 	RootQuery AllRootsOfType(SCPRootType Type);
 	RootQuery AllRoots();
+	using FileQuery = DBQuery<SCPCFileInfo, 9>;
+	FileQuery AllFilesWhere(std::string WhereClause);
 
+	FileQuery Files(class FileQueryBuilder QueryBuilder)
+	{
+		return FileQuery(QueryBuilder.GetQuery(InternalDB));
+	}
 };
+//possible filter class for assets, perhaps a little better than a query builder
+class FileQueryBuilder
+{
+public:
+	enum class ConditionType { Equal, GreaterThan, LessThan, NotEqual };
 
+	class Condition
+	{
+		static const std::string ConditionString(FileQueryBuilder::ConditionType Type) 
+		{
+			switch (Type)
+			{
+			case FileQueryBuilder::ConditionType::Equal:
+				return "=";
+				break;
+			case FileQueryBuilder::ConditionType::GreaterThan:
+				return ">";
+				break;
+			case FileQueryBuilder::ConditionType::LessThan:
+				return "<";
+				break;
+			case FileQueryBuilder::ConditionType::NotEqual:
+				return "!=";
+				break;
+			}
+			return "";
+		};
+
+	public:
+
+		ConditionType Type;
+		//replace with variant
+		std::string ValueRepresentation;
+		operator std::string()
+		{
+			return fmt::format("{} {}", ConditionString(Type), ValueRepresentation);
+		}
+	};
+	std::map<std::string, Condition> Conditions;
+	std::map<std::string, bool> SortFields;
+
+	
+	FileQueryBuilder& SortBy(std::map<std::string, bool> Fields)
+	{
+		SortFields = Fields;
+		return *this;
+	}
+
+	FileQueryBuilder& UID(Condition C)
+	{
+		Conditions["uid"] = C;
+		return *this;
+	}
+	FileQueryBuilder& Filename(Condition C)
+	{
+		Conditions["NameExt"] = C;
+		return *this;
+	}
+	FileQueryBuilder& RootUID(Condition C)
+	{
+		Conditions["RootUID"] = C;
+		return *this;
+	}
+	FileQueryBuilder& PathType(Condition C)
+	{
+		Conditions["PathType"] = C;
+		return *this;
+	}
+	FileQueryBuilder& WriteTime(Condition C)
+	{
+		Conditions["WriteTime"] = C;
+		return *this;
+	}
+	FileQueryBuilder& Size(Condition C)
+	{
+		Conditions["Size"] = C;
+		return *this;
+	}
+	FileQueryBuilder& FullPath(Condition C)
+	{
+		Conditions["FullPath"] = C;
+		return *this;
+	}
+	SQLite::Statement GetQuery(SQLite::Database& DB)
+	{
+		std::string WhereStr = "";
+		if (Conditions.size() > 0)
+		{
+			WhereStr = "WHERE ";
+			for (auto CurrentCondition : Conditions)
+			{
+				WhereStr.append(fmt::format("{} {},", CurrentCondition.first, CurrentCondition.second));
+			}
+			WhereStr.pop_back(); //remove last trailing comma
+		}
+		std::string SortStr = "";
+		if (SortFields.size() > 0)
+		{
+			SortStr = "ORDER BY ";
+			for (auto Field : SortFields)
+			{
+				SortStr.append(fmt::format("{} {},", Field.first, Field.second ? "ASC" : "DESC"));
+			}
+			SortStr.pop_back();
+		}
+		return SQLite::Statement(DB, fmt::format("SELECT * from files {} {};", WhereStr, SortStr));
+	}
+};

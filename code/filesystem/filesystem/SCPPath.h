@@ -21,6 +21,7 @@ public:
 	static SCP_string GetCompatiblePath(SCP_string InPath);
 	static const char* GetFilename(const char* InPath);
 	static char* GetFilename(char* InPath);
+	static SCPPath AddExtensionIfMissing(SCP_string Filename, SCP_string ExtensionToAdd);
 	SCPPath(const ghc::filesystem::path& InPath)
 		:ghc::filesystem::path(InPath) {};
 	SCPPath(const SCP_string& InString)

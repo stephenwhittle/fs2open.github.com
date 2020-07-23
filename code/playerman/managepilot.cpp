@@ -7,7 +7,8 @@
  *
 */
 
-#include "cfile/cfile.h"
+#include "module/SCPModuleManager.h"
+#include "cfile/SCPCFileModule.h"
 #include "cutscene/cutscenes.h"
 #include "freespace.h"
 #include "gamesnd/eventmusic.h"
@@ -336,10 +337,13 @@ int pilot_verify_overwrite()
 // load up the list of pilot image filenames (do this at game startup as well as barracks startup)
 void pilot_load_pic_list()
 {
-	Num_pilot_images = 0;
+	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+	CFileModule->CFileDatabase().AllFilesWhere("TYPE = PLAYERIMAGES, FILE ENDS WITH .PCX, SORT BY NAME");
+	
+	//Num_pilot_images = 0;
 	
 	// load pilot images from the player images directory
-	Num_pilot_images = cf_get_file_list_preallocated(MAX_PILOT_IMAGES, Pilot_images_arr, Pilot_image_names, CF_TYPE_PLAYER_IMAGES, NOX("*.pcx"));
+	//Num_pilot_images = cf_get_file_list_preallocated(MAX_PILOT_IMAGES, Pilot_images_arr, Pilot_image_names, CF_TYPE_PLAYER_IMAGES, NOX("*.pcx"));
 
 	// sort all filenames
 	cf_sort_filenames(Num_pilot_images, Pilot_image_names, CF_SORT_NAME);
@@ -348,6 +352,10 @@ void pilot_load_pic_list()
 // load up the list of pilot squad filenames
 void pilot_load_squad_pic_list()
 {
+
+	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+	CFileModule->CFileDatabase().AllFilesWhere("TYPE = squadimages, FILE ENDS WITH .PCX, SORT BY NAME");
+
 	Num_pilot_squad_images = 0;
 	
 	// load pilot images from the player images directory
