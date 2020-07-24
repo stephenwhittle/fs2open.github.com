@@ -41,7 +41,8 @@ enum class SCPCFilePathTypeID
 	Fiction = 36,
 	FredDocs = 37,
 	InterfaceMarkup = 38,
-	InterfaceCSS = 39
+	InterfaceCSS = 39,
+	Any = -1
 
 };
 

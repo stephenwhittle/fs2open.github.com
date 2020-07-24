@@ -47,6 +47,11 @@ add_subdirectory(variant)
 
 add_subdirectory(mio)
 
+
+#set(SQLITECPP_INTERNAL_SQLITE OFF CACHE STRING "" FORCE)
+
+#include(sqlite3.cmake)
+
 add_subdirectory(SQLiteCpp)
 
 include(peglib.cmake)

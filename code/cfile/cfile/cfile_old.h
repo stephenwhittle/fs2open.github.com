@@ -384,7 +384,7 @@ struct CFileLocation {
 //         size        - File size
 //         offset      - Offset into pack file.  0 if not a packfile.
 // Returns: If not found returns 0.
-CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool localize = false,
+SCPCFileInfo cf_find_file_location(const SCPPath filespec, SCPCFilePathTypeID PathType, bool localize = false,
                                     uint32_t location_flags = CF_LOCATION_ALL, SCP_string LanguagePrefix = "");
 
 struct CFileLocationExt : public CFileLocation {

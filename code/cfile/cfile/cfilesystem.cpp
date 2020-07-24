@@ -153,7 +153,7 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
  *
  * @return A structure which describes the found file
  */
-CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
+SCPCFileInfo cf_find_file_location(const SCPPath filespec, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	Assert(!filespec.empty());
 
@@ -200,9 +200,9 @@ CFileLocation cf_find_file_location(const SCPPath filespec, int pathtype, bool l
 
 	FileQueryBuilder QueryBuilder;
 	QueryBuilder.Filename({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
-	if (PathType != CF_PATHTYPE_ANY)
+	if (PathType !=  SCPCFilePathTypeID::Any)
 	{
-		QueryBUilder.PathType({ FileQueryBuilder::ConditionType::Equal, PathTYpe });
+		QueryBuilder.PathType({ FileQueryBuilder::ConditionType::Equal, PathType });
 	}
 	for (auto FileResult : CFileDatabase().Files(QueryBuilder)) 
 	{
