@@ -54,6 +54,8 @@ add_subdirectory(mio)
 
 add_subdirectory(SQLiteCpp)
 
+include(sqlbuilder.cmake)
+
 include(peglib.cmake)
 
 add_subdirectory(vulkan-hpp)

@@ -25,3 +25,6 @@
 [submodule "lib/SQLiteCpp"]
 	path = lib/SQLiteCpp
 	url = https://github.com/SRombauts/SQLiteCpp.git
+[submodule "lib/sql-builder"]
+	path = lib/sql-builder
+	url = https://github.com/JackLilhammers/sql-builder.git
