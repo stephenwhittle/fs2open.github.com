@@ -185,6 +185,11 @@ SCPCFileInfo cf_find_file_location(const SCPPath filespec, SCPCFilePathTypeID Pa
 	//search for the exact path first
 	if (filespec.has_parent_path())
 	{
+		//save these as stored queries ready for binding perhaps
+		FileFinder FindFileWithExactPath();
+		FindFileWithExactPath().where(sql::column("FullPath") == filespec.string());
+
+		//SELECT * FROM files where FullPath = filespec.string()
 		FileQueryBuilder QueryBuilder;
 		QueryBuilder.FullPath({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
 		for (auto FileResult : CFileDatabase().Files(QueryBuilder))
@@ -197,11 +202,14 @@ SCPCFileInfo cf_find_file_location(const SCPPath filespec, SCPCFilePathTypeID Pa
 	// create localized filespec
 	//SCPPath LocalizedPath = SCPPath(filespec);
 	//LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+	//SELECT * FROM files WHERE Filename == filespec.string() and PathType == PathType and DIR_FILTER(LocationFlags, location_flags) == 1
 
 	FileQueryBuilder QueryBuilder;
 	QueryBuilder.Filename({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
 	if (PathType !=  SCPCFilePathTypeID::Any)
 	{
+		FileFinder().FilenameIs(filespec.string()).PathTypeIs(PathType).LocationMatches(location_flags);
+
 		QueryBuilder.PathType({ FileQueryBuilder::ConditionType::Equal, PathType });
 	}
 	for (auto FileResult : CFileDatabase().Files(QueryBuilder)) 

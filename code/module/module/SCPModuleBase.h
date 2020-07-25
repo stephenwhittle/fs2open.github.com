@@ -15,6 +15,7 @@ class SCPModuleBase
 	}
 public:
 	
+	virtual ~SCPModuleBase() = 0;
 
     virtual bool StartupModule() = 0;
     virtual void ShutdownModule() = 0;

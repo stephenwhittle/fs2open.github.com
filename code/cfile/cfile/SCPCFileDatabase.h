@@ -2,7 +2,6 @@
 #include <memory>
 #include "SQLiteCPP/SQLiteCpp.h"
 #include "SQLiteCPP/VariadicBind.h"
-#include "../sqlite3/sqlite3.h"
 #include "sql.h"
 #include "tl/optional.hpp"
 enum class SCPRootType;
@@ -82,130 +81,16 @@ public:
 };
 
 
-class SCPCFileDatabase
-{
-	SQLite::Database InternalDB;
-	SQLite::Statement AddRootStatement;
-	SQLite::Statement AddFileStatement;
-	SQLite::Statement GetRootByIDStatement;
-	SQLite::Statement GetFileByIDStatement;
 
-public:
-	using StatementType = SQLite::Statement;
-	
-	SCPCFileDatabase()
-		:InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE),
-		AddRootStatement(InternalDB, R"(INSERT INTO roots VALUES ?,?,?,?)"),
-		AddFileStatement(InternalDB, R"(INSERT INTO files VALUES ?,?,?,?,?,?,?,?,?)"),
-		GetRootByIDStatement(InternalDB, R"(SELECT * from roots WHERE uid = ?)"),
-		GetFileByIDStatement(InternalDB, R"(SELECT * from files WHERE uid = ?)")
-	{
-		InternalDB.exec(R"(
-		CREATE TABLE roots 
-		(
-			uid INTEGER PRIMARY KEY AUTOINCREMENT,
-			Path TEXT,
-			Type INTEGER,
-			LocationFlags INTEGER
-		)	
-		)");
-
-		InternalDB.exec(R"(
-		CREATE TABLE files 
-		(
-			uid INTEGER PRIMARY KEY AUTOINCREMENT,
-			NameExt TEXT,
-			RootUID INTEGER,
-			PathType INTEGER,
-			WriteTime INTEGER,
-			Size INTEGER,
-			PackOffset INTEGER,
-			FullPath TEXT,
-			DataPtr INTEGER
-		)	
-		)");
-
-		/// CUSTOM SQL FUNCTIONS
-		auto HasFlag = [](sqlite3_context* context, int argc, sqlite3_value** argv)
-		{
-			if (argc == 2)
-			{
-				int Value = sqlite3_value_int(argv[0]);
-				int DesiredFlag = sqlite3_value_int(argv[1]);
-
-				if ((Value & DesiredFlag) == DesiredFlag)
-				{
-					sqlite3_result_int(context, 1);
-				}
-				else
-				{
-					sqlite3_result_int(context, 0);
-				}
-			}
-			sqlite3_result_error(context, "Invalid number of arguments to HAS_FLAG", -1);
-		};
-
-		sqlite3_create_function(InternalDB.getHandle(), "HAS_FLAG", 2, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr, HasFlag, nullptr, nullptr);
-
-
-		auto DirFlagFilter = [](sqlite3_context* context, int argc, sqlite3_value** argv)
-		{
-			if (argc == 2)
-			{
-				SCPCFileLocationFlags Value(static_cast<SCPCFileLocation>(sqlite3_value_int(argv[0])));
-				SCPCFileLocationFlags DesiredFlags(static_cast<SCPCFileLocation>(sqlite3_value_int(argv[1])));
-
-				if (SCPCFileModule::CheckLocationFlags(Value, DesiredFlags))
-				{
-					sqlite3_result_int(context, 1);
-				}
-				else
-				{
-					sqlite3_result_int(context, 0);
-				}
-			}
-			sqlite3_result_error(context, "Invalid number of arguments to DIR_FILTER", -1);
-		};
-
-		sqlite3_create_function(InternalDB.getHandle(), "DIR_FILTER", 2, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr, DirFlagFilter, nullptr, nullptr);
-
-	};
-
-	uint32_t AddRoot(class SCPRootInfo NewRoot);
-	uint32_t AddFile(class SCPCFileInfo NewFile);
-	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID);
-
-	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID);
-	using RootQuery = DBQuery<SCPRootInfo, 4>;
-	RootQuery AllRootsOfType(SCPRootType Type);
-	RootQuery AllRoots();
-	using FileQuery = DBQuery<SCPCFileInfo, 9>;
-	FileQuery AllFilesWhere(std::string WhereClause);
-
-	FileQuery Files(class FileQueryBuilder QueryBuilder)
-	{
-		return FileQuery(QueryBuilder.GetQuery(InternalDB));
-	}
-};
-
-class FileFinder : SelectModel
-{
-
-};
-
-
-//possible filter class for assets, perhaps a little better than a query builder
-class FileQueryBuilder
-{
-public:
+// possible filter class for assets, perhaps a little better than a query builder
+class FileQueryBuilder {
+  public:
 	enum class ConditionType { Equal, GreaterThan, LessThan, NotEqual };
 
-	class Condition
-	{
-		static const std::string ConditionString(FileQueryBuilder::ConditionType Type) 
+	class Condition {
+		static const std::string ConditionString(FileQueryBuilder::ConditionType Type)
 		{
-			switch (Type)
-			{
+			switch (Type) {
 			case FileQueryBuilder::ConditionType::Equal:
 				return "=";
 				break;
@@ -222,20 +107,15 @@ public:
 			return "";
 		};
 
-	public:
-
+	  public:
 		ConditionType Type;
-		//replace with variant
+		// replace with variant
 		std::string ValueRepresentation;
-		operator std::string()
-		{
-			return fmt::format("{} {}", ConditionString(Type), ValueRepresentation);
-		}
+		operator std::string() { return fmt::format("{} {}", ConditionString(Type), ValueRepresentation); }
 	};
 	std::map<std::string, Condition> Conditions;
 	std::map<std::string, bool> SortFields;
 
-	
 	FileQueryBuilder& SortBy(std::map<std::string, bool> Fields)
 	{
 		SortFields = Fields;
@@ -280,21 +160,17 @@ public:
 	SQLite::Statement GetQuery(SQLite::Database& DB)
 	{
 		std::string WhereStr = "";
-		if (Conditions.size() > 0)
-		{
+		if (Conditions.size() > 0) {
 			WhereStr = "WHERE ";
-			for (auto CurrentCondition : Conditions)
-			{
+			for (auto CurrentCondition : Conditions) {
 				WhereStr.append(fmt::format("{} {},", CurrentCondition.first, CurrentCondition.second));
 			}
-			WhereStr.pop_back(); //remove last trailing comma
+			WhereStr.pop_back(); // remove last trailing comma
 		}
 		std::string SortStr = "";
-		if (SortFields.size() > 0)
-		{
+		if (SortFields.size() > 0) {
 			SortStr = "ORDER BY ";
-			for (auto Field : SortFields)
-			{
+			for (auto Field : SortFields) {
 				SortStr.append(fmt::format("{} {},", Field.first, Field.second ? "ASC" : "DESC"));
 			}
 			SortStr.pop_back();
@@ -302,3 +178,74 @@ public:
 		return SQLite::Statement(DB, fmt::format("SELECT * from files {} {};", WhereStr, SortStr));
 	}
 };
+
+
+
+class SCPCFileDatabase
+{
+	SQLite::Database InternalDB;
+	SQLite::Statement AddRootStatement;
+	SQLite::Statement AddFileStatement;
+	SQLite::Statement GetRootByIDStatement;
+	SQLite::Statement GetFileByIDStatement;
+
+public:
+	using StatementType = SQLite::Statement;
+	
+	SCPCFileDatabase();;
+
+	uint32_t AddRoot(class SCPRootInfo NewRoot);
+	uint32_t AddFile(class SCPCFileInfo NewFile);
+	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID);
+
+	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID);
+	using RootQuery = DBQuery<SCPRootInfo, 4>;
+	RootQuery AllRootsOfType(SCPRootType Type);
+	RootQuery AllRoots();
+	using FileQuery = DBQuery<SCPCFileInfo, 9>;
+	FileQuery AllFilesWhere(std::string WhereClause);
+
+	FileQuery Files(class FileQueryBuilder QueryBuilder)
+	{
+		return FileQuery(QueryBuilder.GetQuery(InternalDB));
+	}
+};
+
+class FileFinder : sql::SelectModel
+{
+public:
+	using sql::SelectModel::limit;
+	using sql::SelectModel::where;
+	using sql::SelectModel::select;
+	FileFinder()
+		:sql::SelectModel()
+	{
+		select("*").from("files");
+	}
+	FileFinder& FilenameIs(SCP_string Filename)
+	{
+		where(sql::column("Filename") == Filename);
+		return *this;
+	}
+	FileFinder& FullPathIs(SCP_string FullPath)
+	{
+		where(sql::column("FullPath") == FullPath);
+		return *this;
+	}
+	FileFinder& PathTypeIs(SCPCFilePathTypeID PathType)
+	{
+		where(sql::column("PathType") == static_cast<uint32_t>(PathType));
+		return *this;
+	}
+	FileFinder& InRoot(uint32_t RootUID)
+	{
+		where(sql::column("RootUID") == RootUID);
+		return *this;
+	}
+	FileFinder& LocationMatches(SCPCFileLocationFlags LocationFilter)
+	{
+		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
+		return *this;
+	}
+};
+
