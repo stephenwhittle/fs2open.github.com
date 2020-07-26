@@ -316,7 +316,7 @@ void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
 			continue;
 		}
 		SCPPath FullDirectoryPath = Root.GetPath() / Pair.second.Path;
-		SCPDirectoryIterator DirectoryIterator = SCPDirectoryIterator(FullDirectoryPath, Pair.second.Extensions);
+		SCPFilesystemView DirectoryIterator = SCPFilesystemView(FullDirectoryPath, Pair.second.Extensions);
 
 		for (SCPPath FilePath : DirectoryIterator)
 		{
@@ -539,7 +539,7 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 			continue;
 		}
 		SCPPath FullPath = root->GetPath() / Pair.second.Path;
-		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::IncludeFiles, SCPDirectoryIterator::Flags::Recursive });
+		SCPFilesystemView DirIterator(FullPath, Pair.second.Extensions, SCPFilesystemView::Options{ SCPFilesystemView::Flags::IncludeFiles, SCPFilesystemView::Flags::Recursive });
 		for (auto File : DirIterator)
 		{
 			if (File.has_filename()) 

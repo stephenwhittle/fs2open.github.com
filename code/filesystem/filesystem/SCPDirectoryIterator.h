@@ -7,7 +7,39 @@
 #include "SCPFlags.h"
 #include <set>
 
+
 class SCPDirectoryIterator
+{
+	class SCPFilesystemView* ViewToIterate = nullptr;
+	bool HasMoreResults = false;
+public:
+	SCPDirectoryIterator(SCPFilesystemView* View)
+		:ViewToIterate(View)
+	{
+		
+	}
+	SCPDirectoryIterator()
+	{
+		HasMoreResults = false;
+	}
+	SCPPath operator*();
+	bool operator!= (const SCPDirectoryIterator& Other)
+	{
+		if (ViewToIterate == nullptr || Other.ViewToIterate== nullptr)
+		{
+			return HasMoreResults != Other.HasMoreResults;
+		}
+		else
+		{
+			return HasMoreResults == Other.HasMoreResults || ViewToIterate == Other.ViewToIterate;
+		}
+	}
+	void operator++()
+	{
+	}
+};
+
+class SCPFilesystemView
 {
 public:
 	enum class Flags
@@ -19,17 +51,17 @@ public:
 	using Options = SCPFlags<Flags>;
 	constexpr static Options DefaultOptions = { Flags::IncludeFiles };
     
-	SCPDirectoryIterator(SCPPath Directory, SCPDirectoryIterator::Options Opts = DefaultOptions);
-    SCPDirectoryIterator(SCPPath Directory, std::set<SCP_string> Extensions, SCPDirectoryIterator::Options Opts = DefaultOptions);
-    SCPDirectoryIterator(SCPPath Directory, std::regex FilterRegex, SCPDirectoryIterator::Options Opts = DefaultOptions);
-	SCPDirectoryIterator(const SCPDirectoryIterator& Iterator);
-	SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator);
-	SCPDirectoryIterator& operator++();
+	SCPFilesystemView(SCPPath Directory, SCPFilesystemView::Options Opts = DefaultOptions);
+    SCPFilesystemView(SCPPath Directory, std::set<SCP_string> Extensions, SCPFilesystemView::Options Opts = DefaultOptions);
+    SCPFilesystemView(SCPPath Directory, std::regex FilterRegex, SCPFilesystemView::Options Opts = DefaultOptions);
+	SCPFilesystemView(const SCPFilesystemView& Iterator);
+	SCPFilesystemView(const SCPFilesystemView&& Iterator);
+	SCPFilesystemView& operator++();
 	SCPPath operator*();
-	bool operator!=(const SCPDirectoryIterator& Other);
-	bool operator==(const SCPDirectoryIterator& Other);
-	SCPDirectoryIterator begin();
-	SCPDirectoryIterator end();
+	bool operator!=(const SCPFilesystemView& Other);
+	bool operator==(const SCPFilesystemView& Other);
+	SCPFilesystemView begin();
+	SCPFilesystemView end();
 
 	//Foreach function?
 private:
@@ -59,7 +91,7 @@ private:
 	}
 
 	template<typename IteratorType>
-	SCPDirectoryIterator& AdvanceToNext(IteratorType Iterator)
+	SCPFilesystemView& AdvanceToNext(IteratorType Iterator)
 	{
 		Iterator++;
 		while (Iterator != ghc::filesystem::end(Iterator) && !PassesFilter(Iterator))

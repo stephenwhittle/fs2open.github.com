@@ -1,6 +1,6 @@
 #include "SCPDirectoryIterator.h"
 
-SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, Options Opts /*= DefaultOptions*/) 
+SCPFilesystemView::SCPFilesystemView(SCPPath Directory, Options Opts /*= DefaultOptions*/) 
 	:InternalIterator(Directory),
 	CurrentOptions(Opts)
 {
@@ -10,7 +10,7 @@ SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, Options Opts /*= D
 	}
 }
 
-SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, std::set<SCP_string> Extensions, Options Opts)
+SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::set<SCP_string> Extensions, Options Opts)
 	:InternalIterator(Directory),
 	Extensions(Extensions),
 	CurrentOptions(Opts)
@@ -24,7 +24,7 @@ SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, std::set<SCP_strin
 	}
 }
 
-SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, std::regex FilterRegex, Options Opts /*= DefaultOptions*/)
+SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::regex FilterRegex, Options Opts /*= DefaultOptions*/)
 	:InternalIterator(Directory),
 	FilterRegex(FilterRegex),
 	CurrentOptions(Opts)
@@ -35,7 +35,7 @@ SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, std::regex FilterR
 	}
 }
 
-SCPDirectoryIterator::SCPDirectoryIterator(const SCPDirectoryIterator& Iterator)
+SCPFilesystemView::SCPFilesystemView(const SCPFilesystemView& Iterator)
 	:InternalIterator(Iterator.InternalIterator),
 	RecursiveInternalIterator(Iterator.RecursiveInternalIterator),
 	FilterRegex(Iterator.FilterRegex),
@@ -43,7 +43,7 @@ SCPDirectoryIterator::SCPDirectoryIterator(const SCPDirectoryIterator& Iterator)
 	CurrentOptions(Iterator.CurrentOptions)
 {}
 
-SCPDirectoryIterator::SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator) 
+SCPFilesystemView::SCPFilesystemView(const SCPFilesystemView&& Iterator) 
 	: InternalIterator(std::move(Iterator.InternalIterator)), 
 	RecursiveInternalIterator(Iterator.RecursiveInternalIterator), 
 	FilterRegex(std::move(Iterator.FilterRegex)),
@@ -51,7 +51,7 @@ SCPDirectoryIterator::SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator
 	CurrentOptions(std::move(CurrentOptions))
 {}
 
-SCPDirectoryIterator& SCPDirectoryIterator::operator++() 
+SCPFilesystemView& SCPFilesystemView::operator++() 
 {
 	//needs to respect the other flags
 	if (CurrentOptions.HasFlag(Flags::Recursive))
@@ -65,12 +65,12 @@ SCPDirectoryIterator& SCPDirectoryIterator::operator++()
 	}
 }
 
-SCPPath SCPDirectoryIterator::operator*() 
+SCPPath SCPFilesystemView::operator*() 
 {
 	return SCPPath(CurrentOptions.HasFlag(Flags::Recursive) ? *RecursiveInternalIterator : *InternalIterator);
 }
 
-bool SCPDirectoryIterator::operator!=(const SCPDirectoryIterator& Other) 
+bool SCPFilesystemView::operator!=(const SCPFilesystemView& Other) 
 {
 	if (CurrentOptions.HasFlag(Flags::Recursive))
 	{
@@ -79,7 +79,7 @@ bool SCPDirectoryIterator::operator!=(const SCPDirectoryIterator& Other)
 	return InternalIterator != Other.InternalIterator;
 }
 
-bool SCPDirectoryIterator::operator==(const SCPDirectoryIterator& Other) 
+bool SCPFilesystemView::operator==(const SCPFilesystemView& Other) 
 {
 	if (CurrentOptions.HasFlag(Flags::Recursive))
 	{
@@ -88,28 +88,28 @@ bool SCPDirectoryIterator::operator==(const SCPDirectoryIterator& Other)
 	return InternalIterator == Other.InternalIterator;
 }
 
-SCPDirectoryIterator SCPDirectoryIterator::begin() 
+SCPFilesystemView SCPFilesystemView::begin() 
 {
 	if (CurrentOptions.HasFlag(Flags::Recursive))
 	{
-		SCPDirectoryIterator BeginIterator = SCPDirectoryIterator(*this);
+		SCPFilesystemView BeginIterator = SCPFilesystemView(*this);
 		BeginIterator.RecursiveInternalIterator     = ghc::filesystem::begin(RecursiveInternalIterator);
 		return BeginIterator;
 	}
-	SCPDirectoryIterator BeginIterator = SCPDirectoryIterator(*this);
+	SCPFilesystemView BeginIterator = SCPFilesystemView(*this);
 	BeginIterator.InternalIterator = ghc::filesystem::begin(InternalIterator);
 	return BeginIterator;
 }
 
-SCPDirectoryIterator SCPDirectoryIterator::end() 
+SCPFilesystemView SCPFilesystemView::end() 
 {
 	if (CurrentOptions.HasFlag(Flags::Recursive))
 	{
-		SCPDirectoryIterator EndIterator = SCPDirectoryIterator(*this);
+		SCPFilesystemView EndIterator = SCPFilesystemView(*this);
 		EndIterator.RecursiveInternalIterator     = ghc::filesystem::end(RecursiveInternalIterator);
 		return EndIterator;
 	}
-	SCPDirectoryIterator EndIterator = SCPDirectoryIterator(*this);
+	SCPFilesystemView EndIterator = SCPFilesystemView(*this);
 	EndIterator.InternalIterator     = ghc::filesystem::end(InternalIterator);
 	return EndIterator;
 }
