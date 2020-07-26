@@ -1,12 +1,15 @@
 #pragma once
-#include <ghc/fs_fwd.hpp>
+//#include <ghc/fs_fwd.hpp>
 #include "FSStdTypes.h"
 #include <regex>
 #include <tl/optional.hpp>
 #include "filesystem/SCPPath.h"
 #include "SCPFlags.h"
 #include <set>
+#include "mpark/variant.hpp"
 
+class ghc::filesystem::directory_iterator;
+class ghc::filesystem::recursive_directory_iterator;
 
 class SCPDirectoryIterator
 {
@@ -62,11 +65,15 @@ public:
 	bool operator==(const SCPFilesystemView& Other);
 	SCPFilesystemView begin();
 	SCPFilesystemView end();
+	SCPFilesystemView& MoveNext()
+	{
 
+	}
 	//Foreach function?
 private:
-	ghc::filesystem::directory_iterator InternalIterator;
-	ghc::filesystem::recursive_directory_iterator RecursiveInternalIterator;
+
+	mpark::variant<ghc::filesystem::directory_iterator, ghc::filesystem::recursive_directory_iterator> InternalIterator;
+
 	
 	template<typename IteratorType>
 	bool PassesFilter(IteratorType Iterator)
