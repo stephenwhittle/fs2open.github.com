@@ -237,7 +237,7 @@ void CMainFrame::OnFileMissionnotes() {
 }
 
 void CMainFrame::OnFredHelp() {
-	auto res = cf_find_file_location("index.html", CF_TYPE_FREDDOCS);
+	auto res = FindFileInfo("index.html", CF_TYPE_FREDDOCS);
 	if (!res.found) {
 		ReleaseWarning(LOCATION, "Could not find FRED help files!");
 		return;

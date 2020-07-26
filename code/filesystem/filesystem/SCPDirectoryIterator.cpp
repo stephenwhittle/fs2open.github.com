@@ -17,6 +17,10 @@ SCPDirectoryIterator::SCPDirectoryIterator(SCPPath Directory, std::set<SCP_strin
 {
 	if (Opts.HasFlag(Flags::Recursive)) {
 		RecursiveInternalIterator = ghc::filesystem::recursive_directory_iterator(Directory);
+		if (!PassesFilter(RecursiveInternalIterator))
+		{
+			AdvanceToNext(RecursiveInternalIterator);
+		}
 	}
 }
 
@@ -49,65 +53,16 @@ SCPDirectoryIterator::SCPDirectoryIterator(const SCPDirectoryIterator&& Iterator
 
 SCPDirectoryIterator& SCPDirectoryIterator::operator++() 
 {
+	//needs to respect the other flags
 	if (CurrentOptions.HasFlag(Flags::Recursive))
 	{
 		//loop the iterator, checking each file if it matches the regex (if set) or extensions 
-		while (RecursiveInternalIterator != ghc::filesystem::end(RecursiveInternalIterator))
-		{
-			RecursiveInternalIterator++;
-			if (RecursiveInternalIterator != ghc::filesystem::end(RecursiveInternalIterator))
-			{
-				if (FilterRegex.has_value())
-				{
-					if (std::regex_search(RecursiveInternalIterator->path().string(), *FilterRegex))
-					{
-						return *this;
-					}
-				}
-				else
-				{
-					for (auto Extension : Extensions)
-					{
-						if (RecursiveInternalIterator->path().extension() == Extension)
-						{
-							return *this;
-						}
-					}
-				}
-			}
-		}
-
+		return AdvanceToNext(RecursiveInternalIterator);
 	}
 	else
 	{
-		//loop the iterator, checking each file if it matches the regex (if set) or extensions 
-		while (InternalIterator != ghc::filesystem::end(InternalIterator))
-		{
-			InternalIterator++;
-			if (InternalIterator != ghc::filesystem::end(InternalIterator))
-			{
-				if (FilterRegex.has_value())
-				{
-					if (std::regex_search(InternalIterator->path().string(), *FilterRegex))
-					{
-						return *this;
-					}
-				}
-				else
-				{
-					for (auto Extension : Extensions)
-					{
-						if (InternalIterator->path().extension() == Extension)
-						{
-							return *this;
-						}
-					}
-				}
-			}
-		}
-
+		return AdvanceToNext(InternalIterator);
 	}
-	return *this;
 }
 
 SCPPath SCPDirectoryIterator::operator*() 

@@ -2,12 +2,61 @@
 #include <memory>
 #include "SQLiteCPP/SQLiteCpp.h"
 #include "SQLiteCPP/VariadicBind.h"
+#include "FSStdTypes.h"
+#include "SCPCFilePathType.h"
+#include "cfile/SCPCFile.h"
 #include "sql.h"
 #include "tl/optional.hpp"
+#include "fmt/ranges.h"
 enum class SCPRootType;
 
-template <typename DataType, uint32_t NumFields>
-class DBResultIterator;
+template<typename DataType, uint32_t NumFields>
+class DBQuery;
+
+template<typename DataType, uint32_t NumFields>
+class DBResultIterator
+{
+	DBQuery<DataType, NumFields>* const QueryBeingIterated = nullptr;
+	bool HasMoreResults = false;
+
+public:
+	DBResultIterator(DBQuery<DataType, NumFields>* Query)
+		:QueryBeingIterated(Query)
+	{
+		HasMoreResults = true;
+	}
+	DBResultIterator()
+	{
+		HasMoreResults = false;
+	}
+	DataType operator*()
+	{
+		return *(*QueryBeingIterated);
+	}
+	bool operator != (const DBResultIterator& Other)
+	{
+		if (QueryBeingIterated == nullptr || Other.QueryBeingIterated == nullptr)
+		{
+			return HasMoreResults != Other.HasMoreResults;
+		}
+		else
+		{
+			return HasMoreResults == Other.HasMoreResults || QueryBeingIterated == Other.QueryBeingIterated;
+		}
+	}
+	void operator++()
+	{
+		if (QueryBeingIterated)
+		{
+			HasMoreResults = ++(*QueryBeingIterated);
+		}
+		else
+		{
+			HasMoreResults = false;
+		}
+	}
+};
+
 
 template<typename DataType, uint32_t NumFields>
 class DBQuery
@@ -15,8 +64,11 @@ class DBQuery
 	SQLite::Statement InternalStatement;
 public:
 	DBQuery(SQLite::Statement&& QueryStatement)
-		: InternalStatement(QueryStatement) {};
-	auto operator*() const
+		: InternalStatement(std::move(QueryStatement)) 
+	{
+		InternalStatement.tryExecuteStep();
+	};
+	DataType operator*()
 	{
 		return InternalStatement.getColumns<DataType, NumFields>();
 	}
@@ -30,169 +82,98 @@ public:
 		}
 	}
 	
-	auto begin()
+	DBResultIterator<DataType, NumFields> begin()
 	{
-		return DBResultIterator<DataType, NumFields>(*this);
+		DBResultIterator<DataType, NumFields> Iterator(this);
+		return Iterator;
 	}
 
-	auto end()
+	DBResultIterator<DataType, NumFields> end() const
 	{
 		return DBResultIterator<DataType, NumFields>();
 	}
 };
 
-template<typename DataType, uint32_t NumFields>
-class DBResultIterator
-{
-	class DBQuery<DataType, NumFields>* Query = nullptr;
-	bool RecordsRemaining = false;
-public:
-	DBResultIterator(DBQuery<DataType, NumFields>& Query)
-		: Query(&Query)
-	{
-		
-	}
-	DBResultIterator()
-	{
-	}
-	bool operator==(DBResultIterator const& Other)
-	{
-		return RecordsRemaining == Other.RecordsRemaining;
-	}
-	bool operator!=(DBResultIterator const& Other)
-	{
-		return RecordsRemaining != Other.RecordsRemaining;
-	}
-	DBResultIterator& operator++()
-	{
-		if (Query == nullptr)
-		{
-			RecordsRemaining = false;
-			return *this;
-		}
-		RecordsRemaining = Query++;
 
-	}
-
-	auto operator*() const
-	{
-		return *Query;
-	}
-};
-
-
-
-// possible filter class for assets, perhaps a little better than a query builder
-class FileQueryBuilder {
+class FileFilter : sql::SelectModel {
   public:
-	enum class ConditionType { Equal, GreaterThan, LessThan, NotEqual };
-
-	class Condition {
-		static const std::string ConditionString(FileQueryBuilder::ConditionType Type)
-		{
-			switch (Type) {
-			case FileQueryBuilder::ConditionType::Equal:
-				return "=";
-				break;
-			case FileQueryBuilder::ConditionType::GreaterThan:
-				return ">";
-				break;
-			case FileQueryBuilder::ConditionType::LessThan:
-				return "<";
-				break;
-			case FileQueryBuilder::ConditionType::NotEqual:
-				return "!=";
-				break;
-			}
-			return "";
-		};
-
-	  public:
-		ConditionType Type;
-		// replace with variant
-		std::string ValueRepresentation;
-		operator std::string() { return fmt::format("{} {}", ConditionString(Type), ValueRepresentation); }
-	};
-	std::map<std::string, Condition> Conditions;
-	std::map<std::string, bool> SortFields;
-
-	FileQueryBuilder& SortBy(std::map<std::string, bool> Fields)
+	using sql::SelectModel::limit;
+	using sql::SelectModel::order_by;
+	using sql::SelectModel::select;
+	using sql::SelectModel::str;
+	using sql::SelectModel::where;
+	FileFilter() : sql::SelectModel() { select("*").from("files"); }
+	FileFilter& FilenameIs(SCP_string Filename)
 	{
-		SortFields = Fields;
+		where(sql::column("Filename") == Filename);
 		return *this;
 	}
-
-	FileQueryBuilder& UID(Condition C)
+	FileFilter& FullPathIs(SCP_string FullPath)
 	{
-		Conditions["uid"] = C;
+		where(sql::column("FullPath") == FullPath);
 		return *this;
 	}
-	FileQueryBuilder& Filename(Condition C)
+	FileFilter& PathTypeIs(SCPCFilePathTypeID PathType)
 	{
-		Conditions["NameExt"] = C;
+		where(sql::column("PathType") == static_cast<uint32_t>(PathType));
 		return *this;
 	}
-	FileQueryBuilder& RootUID(Condition C)
+	FileFilter& InRoot(uint32_t RootUID)
 	{
-		Conditions["RootUID"] = C;
+		where(sql::column("RootUID") == RootUID);
 		return *this;
 	}
-	FileQueryBuilder& PathType(Condition C)
+	FileFilter& LocationMatches(SCPCFileLocationFlags LocationFilter)
 	{
-		Conditions["PathType"] = C;
+		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
 		return *this;
 	}
-	FileQueryBuilder& WriteTime(Condition C)
-	{
-		Conditions["WriteTime"] = C;
+	FileFilter& SortByPathType(bool Ascending) 
+	{ 
+		order_by(fmt::format("PathType {}", Ascending ? "ASC" : "DESC"));
 		return *this;
 	}
-	FileQueryBuilder& Size(Condition C)
+	FileFilter& ExtensionIsOneOf(std::vector<std::string> Extensions)
 	{
-		Conditions["Size"] = C;
+		std::string ExtensionList = fmt::format("{},", Extensions);
+		ExtensionList.pop_back();
+		where(fmt::format("EXT_FILTER(Filename, {})", ExtensionList));
 		return *this;
-	}
-	FileQueryBuilder& FullPath(Condition C)
-	{
-		Conditions["FullPath"] = C;
-		return *this;
-	}
-	SQLite::Statement GetQuery(SQLite::Database& DB)
-	{
-		std::string WhereStr = "";
-		if (Conditions.size() > 0) {
-			WhereStr = "WHERE ";
-			for (auto CurrentCondition : Conditions) {
-				WhereStr.append(fmt::format("{} {},", CurrentCondition.first, CurrentCondition.second));
-			}
-			WhereStr.pop_back(); // remove last trailing comma
-		}
-		std::string SortStr = "";
-		if (SortFields.size() > 0) {
-			SortStr = "ORDER BY ";
-			for (auto Field : SortFields) {
-				SortStr.append(fmt::format("{} {},", Field.first, Field.second ? "ASC" : "DESC"));
-			}
-			SortStr.pop_back();
-		}
-		return SQLite::Statement(DB, fmt::format("SELECT * from files {} {};", WhereStr, SortStr));
 	}
 };
 
+class RootFilter : sql::SelectModel {
+  public:
+	using sql::SelectModel::limit;
+	using sql::SelectModel::order_by;
+	using sql::SelectModel::select;
+	using sql::SelectModel::str;
+	using sql::SelectModel::where;
+	using sql::SelectModel::SelectModel;
+	RootFilter() : sql::SelectModel() { select("*").from("roots"); }
+	RootFilter(RootFilter& Other) = default;
+	RootFilter& TypeIs(SCPRootType RootType)
+	{
+		where(sql::column("Type") == static_cast<uint32_t>(RootType));
+		return *this;
+	}
 
+	RootFilter& LocationMatches(SCPCFileLocationFlags LocationFilter)
+	{
+		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
+		return *this;
+	}
+};
 
 class SCPCFileDatabase
 {
 	SQLite::Database InternalDB;
-	SQLite::Statement AddRootStatement;
-	SQLite::Statement AddFileStatement;
-	SQLite::Statement GetRootByIDStatement;
-	SQLite::Statement GetFileByIDStatement;
+	
 
 public:
 	using StatementType = SQLite::Statement;
 	
-	SCPCFileDatabase();;
+	SCPCFileDatabase();
 
 	uint32_t AddRoot(class SCPRootInfo NewRoot);
 	uint32_t AddFile(class SCPCFileInfo NewFile);
@@ -205,47 +186,12 @@ public:
 	using FileQuery = DBQuery<SCPCFileInfo, 9>;
 	FileQuery AllFilesWhere(std::string WhereClause);
 
-	FileQuery Files(class FileQueryBuilder QueryBuilder)
+	FileQuery Files(class FileFilter& Filter)
 	{
-		return FileQuery(QueryBuilder.GetQuery(InternalDB));
+		return FileQuery(SQLite::Statement(InternalDB, Filter.str()));
+	}
+	RootQuery Roots(class RootFilter& Filter)
+	{
+		return RootQuery(SQLite::Statement(InternalDB, Filter.str()));
 	}
 };
-
-class FileFinder : sql::SelectModel
-{
-public:
-	using sql::SelectModel::limit;
-	using sql::SelectModel::where;
-	using sql::SelectModel::select;
-	FileFinder()
-		:sql::SelectModel()
-	{
-		select("*").from("files");
-	}
-	FileFinder& FilenameIs(SCP_string Filename)
-	{
-		where(sql::column("Filename") == Filename);
-		return *this;
-	}
-	FileFinder& FullPathIs(SCP_string FullPath)
-	{
-		where(sql::column("FullPath") == FullPath);
-		return *this;
-	}
-	FileFinder& PathTypeIs(SCPCFilePathTypeID PathType)
-	{
-		where(sql::column("PathType") == static_cast<uint32_t>(PathType));
-		return *this;
-	}
-	FileFinder& InRoot(uint32_t RootUID)
-	{
-		where(sql::column("RootUID") == RootUID);
-		return *this;
-	}
-	FileFinder& LocationMatches(SCPCFileLocationFlags LocationFilter)
-	{
-		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
-		return *this;
-	}
-};
-

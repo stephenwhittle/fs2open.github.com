@@ -35,7 +35,39 @@ public:
 private:
 	ghc::filesystem::directory_iterator InternalIterator;
 	ghc::filesystem::recursive_directory_iterator RecursiveInternalIterator;
+	
+	template<typename IteratorType>
+	bool PassesFilter(IteratorType Iterator)
+	{
+		if (!CurrentOptions.HasFlag(Flags::IncludeDirectories) && Iterator->is_directory()) {
+			continue;
+		}
+		if (!CurrentOptions.HasFlag(Flags::IncludeFiles) && Iterator->is_regular_file()) {
+			continue;
+		}
+		if (FilterRegex.has_value()) {
+			if (std::regex_search(Iterator->path().string(), *FilterRegex)) {
+				return *this;
+			}
+		} else {
+			for (auto Extension : Extensions) {
+				if (Iterator->path().extension() == Extension) {
+					return *this;
+				}
+			}
+		}
+	}
 
+	template<typename IteratorType>
+	SCPDirectoryIterator& AdvanceToNext(IteratorType Iterator)
+	{
+		Iterator++;
+		while (Iterator != ghc::filesystem::end(Iterator) && !PassesFilter(Iterator))
+		{
+			Iterator++;
+		}
+		return *this;
+	}
 	std::set<SCP_string> Extensions;
 	tl::optional<std::regex> FilterRegex;
 	Options CurrentOptions;

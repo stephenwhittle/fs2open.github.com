@@ -141,7 +141,7 @@ bool Editor::loadMission(const std::string& mission_name, int flags) {
 	clearMission();
 
 	std::string filepath = mission_name;
-	auto res = cf_find_file_location(filepath.c_str(), CF_TYPE_MISSIONS);
+	auto res = FindFileInfo(filepath.c_str(), CF_TYPE_MISSIONS);
 	if (res.found) {
 		// We found this file in the CFile system
 		if (res.offset == 0) {

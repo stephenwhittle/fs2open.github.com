@@ -3,15 +3,12 @@
 #include "cfile/SCPCFileInfo.h"
 #include "cfile/SCPCFileModule.h"
 #include "cfile/cfilesystem.h"
+#include "filesystem/SCPPath.h"
 #include "tl/optional.hpp"
 #include "../sqlite3/sqlite3.h"
-
+#include "SQLiteCpp/VariadicBind.h"
  SCPCFileDatabase::SCPCFileDatabase()
-	: InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE),
-	  AddRootStatement(InternalDB, R"(INSERT INTO roots VALUES ?,?,?,?)"),
-	  AddFileStatement(InternalDB, R"(INSERT INTO files VALUES ?,?,?,?,?,?,?,?,?)"),
-	  GetRootByIDStatement(InternalDB, R"(SELECT * from roots WHERE uid = ?)"),
-	  GetFileByIDStatement(InternalDB, R"(SELECT * from files WHERE uid = ?)")
+	: InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE)
 {
 	InternalDB.exec(R"(
 	CREATE TABLE roots 
@@ -37,6 +34,11 @@
 		DataPtr INTEGER
 	)	
 	)");
+
+	
+	
+	
+	
 
 	/// CUSTOM SQL FUNCTIONS
 	auto HasFlag = [](sqlite3_context* context, int argc, sqlite3_value** argv) {
@@ -84,12 +86,43 @@
 							DirFlagFilter,
 							nullptr,
 							nullptr);
+	auto ExtensionFilter = [](sqlite3_context* context, int argc, sqlite3_value** argv) {
+		if (argc < 2)
+		{
+			sqlite3_result_error(context, "Invalid number of arguments to EXT_FILTER", -1);
+		}
+		size_t FilenameLength = sqlite3_value_bytes(argv[0]);
+		const char* RawFileName = (const char*) sqlite3_value_text(argv[0]);
+		SCPPath Filename = SCPPath::FromU8(std::string(RawFileName, RawFileName + FilenameLength));
+		if (Filename.has_extension())
+		{
+			for (int ExtensionIndex = 1; ExtensionIndex < argc; ExtensionIndex++)
+			{
+				size_t ExtensionLength   = sqlite3_value_bytes(argv[ExtensionIndex]);
+				const char* RawExtension = (const char*)sqlite3_value_text(argv[ExtensionIndex]);
+				if (Filename.extension().string() == std::string(RawExtension, RawExtension + ExtensionLength))
+				{
+					sqlite3_result_int(context, 1);
+				}
+			}
+		}
+		sqlite3_result_int(context, 0);
+	};
+
+	sqlite3_create_function(InternalDB.getHandle(), "EXT_FILTER", -1, SQLITE_UTF8, nullptr, ExtensionFilter, nullptr, nullptr);
 }
 
 uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 {
-	bind(AddRootStatement,
-		 NewRoot.uid,
+	if (NewRoot.Type != SCPRootType::InMemory) {
+		GOutputDevice->Message("Adding Root %s\r\n", NewRoot.Path.string());
+	}
+	else
+	{
+		GOutputDevice->Message("Adding In-memory Root");
+	}
+	auto AddRootStatement = SQLite::Statement(InternalDB, R"(INSERT INTO roots (Path, Type, LocationFlags) VALUES (?,?,?); )");
+	SQLite::bind(AddRootStatement,
 		 NewRoot.Path.string(),
 		 static_cast<uint32_t>(NewRoot.Type),
 		 NewRoot.location_flags.RawValue());
@@ -101,14 +134,16 @@ uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 
 uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 {
-	bind(AddFileStatement,
-		 NewFile.uid,
+	GOutputDevice->Message("Adding File %s\r\n", NewFile.GetFullPath());
+	auto AddFileStatement = SQLite::Statement(InternalDB, R"(INSERT INTO files (NameExt, RootUID, PathType, WriteTime, Size, PackOffset, FullPath, DataPtr) VALUES (?,?,?,?,?,?,?,?); )");
+
+	SQLite::bind(AddFileStatement,
 		 NewFile.name_ext,
 		 NewFile.root_index,
 		 static_cast<uint32_t>(NewFile.pathtype_index),
 		 NewFile.write_time,
-		 NewFile.size,
-		 NewFile.pack_offset,
+		 static_cast<intmax_t>(NewFile.size),
+		 static_cast<intmax_t>(NewFile.pack_offset),
 		 NewFile.real_name.string(),
 		 (uintptr_t)NewFile.data);
 	AddFileStatement.exec();
@@ -119,7 +154,8 @@ uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 
 tl::optional<SCPRootInfo> SCPCFileDatabase::GetRootByID(uint32_t RootUID)
 {
-	GetRootByIDStatement.bind(0, RootUID);
+	auto GetRootByIDStatement = SQLite::Statement(InternalDB, R"(SELECT * from roots WHERE uid = ?)");
+	GetRootByIDStatement.bind(1, RootUID);
 	if (GetRootByIDStatement.executeStep()) {
 		return GetRootByIDStatement.getColumns<SCPRootInfo, 4>();
 	}
@@ -128,7 +164,8 @@ tl::optional<SCPRootInfo> SCPCFileDatabase::GetRootByID(uint32_t RootUID)
 
 tl::optional<SCPCFileInfo> SCPCFileDatabase::GetFileByID(uint32_t FileUID)
 {
-	GetFileByIDStatement.bind(0, FileUID);
+	auto GetFileByIDStatement = SQLite::Statement(InternalDB, R"(SELECT * from files WHERE uid = ?)");
+	GetFileByIDStatement.bind(1, FileUID);
 	if (GetFileByIDStatement.executeStep()) {
 		return GetFileByIDStatement.getColumns<SCPCFileInfo, 9>();
 	}
@@ -138,7 +175,8 @@ tl::optional<SCPCFileInfo> SCPCFileDatabase::GetFileByID(uint32_t FileUID)
 SCPCFileDatabase::RootQuery SCPCFileDatabase::AllRootsOfType(SCPRootType Type)
 {
 	SQLite::Statement QueryRootsByType(InternalDB, R"(SELECT * from roots WHERE Type = ?)");
-	QueryRootsByType.bind(static_cast<uint32_t>(Type));
+	QueryRootsByType.bind(1,static_cast<uint32_t>(Type));
+	//QueryRootsByType.exec();
 	return RootQuery(std::move(QueryRootsByType));
 }
 

@@ -83,18 +83,7 @@ const std::map<SCPCFilePathTypeID, SCPCFilePathType> PathTypes =
 	{ SCPCFilePathTypeID::InterfaceCSS,		{SCPCFilePathTypeID::InterfaceCSS,		SCPPath("data") / "interface" / "css",			{".rcss"},										SCPCFilePathTypeID::Interface	}}
 };
 
-SCPCFilePathTypeID GetPathTypeID(default_file DefaultFile)
-{
-	SCPPath DefFilePath(DefaultFile.path_type);
-	for (auto PathInfoPair : PathTypes)
-	{
-		if (SCPPath::Compare(PathInfoPair.second.Path, DefFilePath))
-		{
-			return PathInfoPair.first;
-		}
-	}
-	return SCPCFilePathTypeID::Invalid;
-}
+
 /*
 
 // During cfile_init, verify that Pathtypes[n].index == n for each item

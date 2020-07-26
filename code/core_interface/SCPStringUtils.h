@@ -3,17 +3,17 @@
 
 namespace StringUtils
 {
-	SCP_string ToLower(const SCP_string& InString)
+	inline SCP_string ToLower(const SCP_string& InString)
 	{
-		SCP_string LoweredString;
+		SCP_string LoweredString(InString.size(), 0);
 		std::transform(InString.begin(), InString.end(), LoweredString.begin(), [](unsigned char c) {return (char) std::tolower(c); });
 		return LoweredString;
 	}
-	void MakeLower(SCP_string& InString)
+	inline void MakeLower(SCP_string& InString)
 	{
 		std::transform(InString.begin(), InString.end(), InString.begin(), [](unsigned char c) { return (char) std::tolower(c); });
 	}
-	SCP_string TrimWhitespace(const SCP_string& InString)
+	inline SCP_string TrimWhitespace(const SCP_string& InString)
 	{
 		static const char* WhitespaceCharacters = " \t\n\r\f\v";
 		SCP_string Result = InString;

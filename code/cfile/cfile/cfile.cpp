@@ -504,7 +504,7 @@ int cf_exists(const char *filename, int dir_type)
 	if ( (filename == NULL) || !strlen(filename) )
 		return 0;
 
-	auto find_res = cf_find_file_location(filename, dir_type);
+	auto find_res = FindFileInfo(filename, dir_type);
 
 	return find_res.found && !find_res.offset;
 }
@@ -517,8 +517,9 @@ int cf_exists_full(const char *filename, int dir_type)
 	if ( (filename == NULL) || !strlen(filename) )
 		return 0;
 
-	return cf_find_file_location(filename, dir_type).found;
+	return FindFileInfo(filename, dir_type).found;
 }
+/*
 
 // same as the above, but with extension check
 int cf_exists_full_ext(const char *filename, int dir_type, const int num_ext, const char **ext_list)
@@ -530,7 +531,7 @@ int cf_exists_full_ext(const char *filename, int dir_type, const int num_ext, co
 		return 0;
 
 	return cf_find_file_location_ext(filename, num_ext, ext_list, dir_type).found;
-}
+}*/
 
 #ifdef _WIN32
 void cf_attrib(const char *filename, int set, int clear, int dir_type)
@@ -747,7 +748,7 @@ CFILE* _cfopen(const char* source_file, int line, const char* filename, const ch
 	char copy_file_path[MAX_PATH_LEN];  // FIX change in memory from cf_find_file_location
 	strcpy_s(copy_file_path, filename);
 
-	auto find_res = cf_find_file_location( copy_file_path, dir_type, localize, location_flags , LanguagePrefix);
+	auto find_res = FindFileInfo( copy_file_path, dir_type, localize, location_flags , LanguagePrefix);
 	if ( find_res.found ) {
 
 		// Fount it, now create a cfile out of it

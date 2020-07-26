@@ -4,16 +4,13 @@
 
 bool SCPFilesystemModule::StartupModule() 
 { 
-	SCPPath ExePath = SCPApplication::Get().ExecutablePath;
-
-	if (ExePath.has_extension()) {
-		ExePath.remove_filename();
-	}
-
-	if (ExePath.root_path() == ExePath) {
+	//SCPPath ExePath = SCPApplication::Get().ExecutablePath;
+	
+	SCPPath CurrentWorkingDirectory = WorkingDirectory.GetCurrent();
+	if (CurrentWorkingDirectory.root_path() == CurrentWorkingDirectory) {
 		GOutputDevice->Message("Freespace2/FRED cannot be run from a drive root!");
+		return false;
 	}
-
-	WorkingDirectory.Set(ExePath);
+	GOutputDevice->Message("Running Freespace2/FRED from %s", CurrentWorkingDirectory);
 	return true; 
 }

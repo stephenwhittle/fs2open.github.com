@@ -2063,7 +2063,7 @@ void labviewer_make_background_window(Button* /*caller*/)
 	SCP_map<SCP_string, SCP_vector<SCP_string>> directories;
 
 	for (const auto& filename : missions) {
-		auto res = cf_find_file_location((filename + ".fs2").c_str(), CF_TYPE_MISSIONS);
+		auto res = FindFileInfo((filename + ".fs2").c_str(), CF_TYPE_MISSIONS);
 
 		if (res.found) {
 			auto location = get_directory_or_vp(res.full_name.c_str());

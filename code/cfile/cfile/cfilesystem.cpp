@@ -153,78 +153,7 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
  *
  * @return A structure which describes the found file
  */
-SCPCFileInfo cf_find_file_location(const SCPPath filespec, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
-{
-	Assert(!filespec.empty());
 
-	// see if we have something other than just a filename
-	// our current rules say that any file that specifies a direct
-	// path will try to be opened on that path.  If that open
-	// fails, then we will open the file based on the extension
-	// of the file
-
-	// NOTE: full path should also include localization, if so desired
-	if (filespec.has_parent_path())
-	{
-		SCPFile LocatedFile(filespec);
-		if (LocatedFile.Exists())
-		{	
-			CFileLocation res(filespec, LocatedFile.FileSize());
-			return res;
-		}
-
-		return CFileLocation();		// If they give a full path, fail if not found.
-	}
-
-	// Search the hard drive for files first.
-	//if the user specifies a path, search that first
-	//else search them in order from Root to the end of PathTypes;
-	
-	//return the result with the information
-
-	//search for the exact path first
-	if (filespec.has_parent_path())
-	{
-		//save these as stored queries ready for binding perhaps
-		FileFinder FindFileWithExactPath();
-		FindFileWithExactPath().where(sql::column("FullPath") == filespec.string());
-
-		//SELECT * FROM files where FullPath = filespec.string()
-		FileQueryBuilder QueryBuilder;
-		QueryBuilder.FullPath({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
-		for (auto FileResult : CFileDatabase().Files(QueryBuilder))
-		{
-			//if we have a result we just want the first one that matches
-			return FileResult;
-		}
-	}
-	// if (localize) {
-	// create localized filespec
-	//SCPPath LocalizedPath = SCPPath(filespec);
-	//LocalizedPath         = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
-	//SELECT * FROM files WHERE Filename == filespec.string() and PathType == PathType and DIR_FILTER(LocationFlags, location_flags) == 1
-
-	FileQueryBuilder QueryBuilder;
-	QueryBuilder.Filename({ FileQueryBuilder::ConditionType::Equal, filespec.string() });
-	if (PathType !=  SCPCFilePathTypeID::Any)
-	{
-		FileFinder().FilenameIs(filespec.string()).PathTypeIs(PathType).LocationMatches(location_flags);
-
-		QueryBuilder.PathType({ FileQueryBuilder::ConditionType::Equal, PathType });
-	}
-	for (auto FileResult : CFileDatabase().Files(QueryBuilder)) 
-	{
-		//check location flags here
-		// if we have a result we just want the first one that matches
-		return FileResult;
-	}
-	//then search for the file name in the specific folder
-	//Filename(filespec.string), PathType(pathtype)
-	//and if a location_flags set was specified then filter those results
-	//then if localized version not found
-	//do the same with the un localized name
-	return CFileLocation();
-}
 
 // -- from parselo.cpp --
 extern char *stristr(char *str, const char *substr);
@@ -244,119 +173,16 @@ extern char *stristr(char *str, const char *substr);
  *
  * @return A structure containing information about the found file
  */
-CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_num, const char** ext_list, int pathtype, bool localize /*= false*/, SCP_string LanguagePrefix /*= ""*/)
+/*
+
+CFileLocationExt cf_find_file_location_ext( SCPPath filename, const int ext_num, const char** ext_list, SCPCFilePathTypeID pathtype, bool localize / *= false* /, SCP_string LanguagePrefix / *= ""* /)
 {
-	int cur_ext, i;
-    uint ui;
-	int cfs_slow_search = 0;
-	char longname[MAX_PATH_LEN];
-	char filespec[MAX_FILENAME_LEN];
-	char *p = NULL;
-	
-	Assert( (filename != NULL) && (strlen(filename) < MAX_FILENAME_LEN) );
-	Assert( (ext_list != NULL) && (ext_num > 1) );	// if we are searching for just one ext
-													// then this is the wrong function to use
 
 
 	// if we have a full path already then fail.  this function if for searching via filter only!
-#ifdef SCP_UNIX
-	if ( strpbrk(filename, "/") ) {			// do we have a full path already?
-#else
-	if ( strpbrk(filename,"/\\:")  ) {		// do we have a full path already?
-#endif
-		Int3();
-		return CFileLocationExt();
-	}
-
 	// Search the hard drive for files first.
-	uint num_search_dirs = 0;
-	int search_order[CF_MAX_PATH_TYPES];
-
-	if ( CF_TYPE_SPECIFIED(pathtype) )	{
-		search_order[num_search_dirs++] = pathtype;
-	} else {
-		for (i = CF_TYPE_ROOT; i < CF_MAX_PATH_TYPES; i++)
-			search_order[num_search_dirs++] = i;
-	}
-
-	memset( longname, 0, sizeof(longname) );
-	memset( filespec, 0, sizeof(filespec) );
-
-	// strip any existing extension
-	strncpy(filespec, filename, MAX_FILENAME_LEN-1);
-
-	for (ui = 0; ui < num_search_dirs; ui++) {
-		// always hit the disk if we are looking in only one path
-		if (num_search_dirs == 1) {
-			cfs_slow_search = 1;
-		}
-		// otherwise hit based on a directory type
-		else {
-			switch (search_order[ui])
-			{
-				case CF_TYPE_ROOT:
-				case CF_TYPE_DATA:
-				case CF_TYPE_SINGLE_PLAYERS:
-				case CF_TYPE_MULTI_PLAYERS:
-				case CF_TYPE_MULTI_CACHE:
-				case CF_TYPE_MISSIONS:
-				case CF_TYPE_CACHE:
-					cfs_slow_search = 1;
-					break;
-			}
-		}
-
-		if ( !cfs_slow_search )
-			continue;
-
-		for (cur_ext = 0; cur_ext < ext_num; cur_ext++) {
-			// strip any extension and add the one we want to check for
-			// (NOTE: to be fully retail compatible, we need to support multiple periods for something like *_1.5.wav,
-			//        which means that we need to strip a length of >2 only, assuming that all valid ext are at least 2 chars)
-			p = strrchr(filespec, '.');
-			if ( p && (strlen(p) > 2) )
-				(*p) = 0;
-
-			strcat_s( filespec, ext_list[cur_ext] );
- 
+	GetDefaultFilePath()
 			GetDefaultFilePath( longname, sizeof(longname)-1, search_order[ui], filespec, localize, (uint32_t)CF_LOCATION_ALL, LanguagePrefix );
-
-#if defined _WIN32
-			_finddata_t findstruct;
-
-			intptr_t findhandle = _findfirst(longname, &findstruct);
-			if (findhandle != -1) {
-				CFileLocationExt res(cur_ext);
-				res.found = true;
-				res.size = static_cast<size_t>(findstruct.size);
-
-				_findclose(findhandle);
-
-				res.offset = 0;
-				res.full_name = longname;
-
-				return res;
-			}
-#endif
-			{
-				FILE *fp = fopen(longname, "rb" );
-
-				if (fp) {
-					CFileLocationExt res(cur_ext);
-					res.found = true;
-					res.size = static_cast<size_t>(filelength( fileno(fp) ));
-
-					fclose(fp);
-
-					res.offset = 0;
-					res.full_name = longname;
-
-					return res;
-				}
-			}
-		}
-	}
-
 	// Search the pak files and CD-ROM.
 
 	// first off, make sure that we don't have an extension
@@ -505,6 +331,7 @@ CFileLocationExt cf_find_file_location_ext( const char* filename, const int ext_
 	return CFileLocationExt();
 }
 
+*/
 
 // Returns true if filename matches filespec, else zero if not
 int cf_matches_spec(const char *filespec, const char *filename)
@@ -548,8 +375,9 @@ const char *Get_file_list_child = NULL;
 int Skip_packfile_search = 0;
 bool Skip_memory_files = false;
 
+//stupid function to specify searching in a subfolder 
 static bool verify_file_list_child()
-{
+{/*
 	if (Get_file_list_child == NULL) {
 		return false;
 	}
@@ -568,7 +396,7 @@ static bool verify_file_list_child()
 	// no ':' or spaces
 	if ( strchr(Get_file_list_child, ':') || strchr(Get_file_list_child, ' ') ) {
 		return false;
-	}
+	}*/
 
 	return true;
 }

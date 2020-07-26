@@ -2,7 +2,7 @@
 include(WriteCompilerDetectionHeader)
 
 set(CMAKE_CXX_STANDARD_REQUIRED 11)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 set(REQUIRED_CXX_FEATURES cxx_rvalue_references cxx_nullptr)
 

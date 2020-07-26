@@ -42,7 +42,7 @@ enum class SCPCFilePathTypeID
 	FredDocs = 37,
 	InterfaceMarkup = 38,
 	InterfaceCSS = 39,
-	Any = -1
+	Any = 999
 
 };
 

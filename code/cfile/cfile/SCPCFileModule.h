@@ -48,20 +48,16 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	
 	constexpr static std::array<uint, 256> CRCTable = MakeCRCTable<256>();
 
-	int GetNextEmptyBlockIndex();
-
-	tl::optional<CFILE&> GetNextEmptyBlock();
-
-	CFILE* CFOpenFileFillBlock(const char* source, int line, FILE* fp, int type);
-	CFILE* CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type);
 
 	void BuildPackListForRoot(uint32_t RootID);
 	//this may be better off taking in an actual root or rootid
-	void AddModRoots(const char* rootDirectory, SCPCFileLocationFlags basic_location);
+	void AddModRoots(const SCPPath Directory, SCPCFileLocationFlags BasicLocation);
+	void AddModRoots(const char* Directory, SCPCFileLocationFlags basic_location);
 	void BuildRootList(const char* cdrom_dir);
 	void BuildCFileDatabase(const char* cdrom_dir);
 	void BuildFileList();
-	void AddFilesFromRoot(SCPRootInfo Root);
+	void AddFilesFromRoot(class SCPRootInfo Root);
+	SCP_string GetDefaultFilePath(SCPCFilePathTypeID PathType, SCP_string Filename = "", bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	int GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename = nullptr, bool localize = false, SCPCFileLocationFlags location_flags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	void PopulateFilesInMemoryRoot(uint32_t RootID); 
 	void PopulateFilesInPackFile(uint32_t RootID);
@@ -108,6 +104,7 @@ public:
 	//CFILE destructor should be responsible for calling fstream/close things
 	std::unique_ptr<CFILE> CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode);
 	
+	tl::optional<SCPCFileInfo> FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/);
 private:
 
 	//may want to try to put this in a pointer or something so we don't need the full definition in the header

@@ -33,65 +33,6 @@ typedef struct VP_FILE {
 } VP_FILE;
 
 
-int SCPCFileModule::GetNextEmptyBlockIndex() 
-{
-	int i;
-	CFILE* cfile;
-	/*
-
-	for (i = 0; i < SCPCFileModule::MAX_CFILE_BLOCKS; i++) {
-		cfile = &Cfile_block_list[i];
-		if (cfile->type == CFILE_BLOCK_UNUSED) {
-			cfile->data = nullptr;
-			cfile->fp   = nullptr;
-			cfile->type = CFILE_BLOCK_USED;
-			return i;
-		}
-	}*/
-
-	// If we've reached this point, a free Cfile_block could not be found
-	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
-
-	// Dump a list of all opened files
-	mprintf(("Out of cfile blocks! Currently opened files:\n"));
-	DumpOpenedFileList();
-
-	UNREACHABLE(
-		"There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"
-		"This is probably caused by a programming or scripting error where a file does not get closed."); // out of free
-																										  // cfile
-																										  // blocks
-	return -1;
-}
-
-//todo: @SCPCFileModule ascertain if we need to hold onto the pointer for a Cfile or not
-//destructor can call cfclose if need be
-tl::optional<CFILE&> SCPCFileModule::GetNextEmptyBlock() 
-{
-	/*for (CFILE& CurrentFile : Cfile_block_list)
-	{
-		if (CurrentFile.type == CFILE_BLOCK_UNUSED)
-		{
-			CurrentFile.data = nullptr;
-			CurrentFile.fp = nullptr;
-			CurrentFile.type = CFILE_BLOCK_UNUSED;
-			return CurrentFile;
-		}
-	}*/
-	nprintf(("Warning", "A free Cfile_block could not be found.\n"));
-
-	// Dump a list of all opened files
-	mprintf(("Out of cfile blocks! Currently opened files:\n"));
-	DumpOpenedFileList();
-
-	UNREACHABLE(
-		"There are no more free cfile blocks. This means that there are too many files opened by FSO.\n"
-		"This is probably caused by a programming or scripting error where a file does not get closed."); // out of free
-																										  // cfile
-																										  // blocks
-	return {};
-}
-
 bool SCPCFileModule::StartupModule() 
 {
 	static bool InitializationGuard = false;
@@ -151,31 +92,6 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 //font manager is the only thing that ever calls localize - true
 //could probably expose something on the localization service that localizes the file path passed in actually
 
-CFILE* SCPCFileModule::CFOpenFileFillBlock(const char* source, int line, FILE* fp, int type)
-{
-
-	tl::optional<CFILE&> File = GetNextEmptyBlock();
-	if (!File) {
-		fclose(fp);
-		return nullptr;
-	} else {
-		return &File.value();
-	}
-}
-
-CFILE*
-SCPCFileModule::CFOpenInMemoryFileFillBlock(const char* source, int line, const void* data, size_t size, int dir_type)
-{
-	int cfile_block_index;
-
-	cfile_block_index = GetNextEmptyBlockIndex();
-	if (cfile_block_index == -1) {
-		return NULL;
-	} else {
-
-	}
-}
-
 
 void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 {
@@ -184,18 +100,19 @@ void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 
 	for (auto Pair : PathTypes) {
 		SCPCFilePathType PathInfo = Pair.second;
-		for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->GetPath() / PathInfo.Path)) {
-			if (SCPPath::Compare(DirectoryEntry.path().extension(), ".vp")) 
-			{
-				SCPRootInfo NewRoot =
-					SCPRootInfo(DirectoryEntry.path(), SCPRootType::PackFile, Root->GetLocationFlags());
-				CFileDatabase().AddRoot(NewRoot);
+		if (ghc::filesystem::exists(Root->GetPath() / PathInfo.Path)) {
+			for (const auto& DirectoryEntry : ghc::filesystem::directory_iterator(Root->GetPath() / PathInfo.Path)) {
+				if (SCPPath::Compare(DirectoryEntry.path().extension(), ".vp")) {
+					SCPRootInfo NewRoot =
+						SCPRootInfo(DirectoryEntry.path(), SCPRootType::PackFile, Root->GetLocationFlags());
+					CFileDatabase().AddRoot(NewRoot);
+				}
 			}
 		}
 	}
 }
 
-void SCPCFileModule::AddModRoots(const char* rootDirectory, SCPCFileLocationFlags basic_location)
+void SCPCFileModule::AddModRoots(const char* Directory, SCPCFileLocationFlags basic_location)
 {
 	auto CmdlineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
 	auto& ModList      = CmdlineModule->CurrentOptions->ModList;
@@ -207,38 +124,37 @@ void SCPCFileModule::AddModRoots(const char* rootDirectory, SCPCFileLocationFlag
 		// for (const char* cur_pos=Cmdline_mod; strlen(cur_pos) != 0; cur_pos+= (strlen(cur_pos)+1))
 		{
 
-			SCPPath RootPath = SCPPath(rootDirectory) / cur_pos;
+			SCPPath RootPath = SCPPath(Directory) / cur_pos;
 
-			if (RootPath.string().size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
+		/*	if (RootPath.string().size() + 1 >= CF_MAX_PATHNAME_LENGTH) {
 				GOutputDevice->Error(LOCATION,
 									 "The length of mod directory path '%s' exceeds the maximum of %d!\n",
 									 RootPath.c_str(),
 									 CF_MAX_PATHNAME_LENGTH);
 			}
+*/
 
 			SCPRootInfo root(RootPath,
 							 SCPRootType::Path,
 							 basic_location |
 								 (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
-			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
-			if (!CFileModule.has_value()) {
-				// throw
-			}
-			auto RootID = CFileModule->AddRoot(root);
+			auto RootID = AddRoot(root);
 			// add the root to the database and then pass the ID to the next function?
-			CFileModule->BuildPackListForRoot(RootID);
+			BuildPackListForRoot(RootID);
 
 			primary = false;
 		}
 	}
 }
 
+void SCPCFileModule::AddModRoots(const SCPPath Directory, SCPCFileLocationFlags BasicLocation) 
+{
+	AddModRoots(Directory.c_str(), BasicLocation);
+}
+
 void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 {
 	auto CmdLineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
-
-
-	SCPRootInfo* root = nullptr;
 
 	if (SCPApplication::Get().GetLegacyMode())
 	{
@@ -265,7 +181,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	{
 		// =========================================================================
 		// now look for mods under the users HOME directory to use before system ones
-		AddModRoots(Cfile_user_dir, SCPCFileLocation::UserDirectory);
+		AddModRoots(UserDirectory, SCPCFileLocation::UserDirectory);
 		// =========================================================================
 
 		// =========================================================================
@@ -274,7 +190,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 		if (!(CmdLineModule && CmdLineModule->CurrentOptions->ModList.has_value())) {
 			HomeDirFlags.SetFlag(SCPCFileLocation::PrimaryMod);
 		}
-		SCPRootInfo HomeDirRoot = SCPRootInfo(Cfile_user_dir, SCPRootType::Path, HomeDirFlags);
+		SCPRootInfo HomeDirRoot = SCPRootInfo(UserDirectory, SCPRootType::Path, HomeDirFlags);
 		
 		uint32_t HomeDirRootID = AddRoot(HomeDirRoot);
 		BuildPackListForRoot(HomeDirRootID);
@@ -301,7 +217,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 
 	//======================================================
 	 // Check the real CD if one...
-	if (cdrom_dir && (strlen(cdrom_dir) < CF_MAX_PATHNAME_LENGTH)) {
+	if (cdrom_dir) {
 		//======================================================
 		// Next, check any VP files in the CD-ROM directory.
 		SCPRootInfo CDRoot = SCPRootInfo(cdrom_dir, SCPRootType::Path, SCPCFileLocationFlags::Empty());
@@ -337,7 +253,8 @@ void SCPCFileModule::BuildFileList()
 	
 	//query database for all roots
 	//then switch on root type
-	for (SCPRootInfo& CurrentRoot : CFileDatabase().AllRoots())
+	RootFilter Filter;
+	for (SCPRootInfo CurrentRoot : CFileDatabase().Roots(Filter))
 	{
 		switch (CurrentRoot.GetType())
 		{
@@ -353,6 +270,17 @@ void SCPCFileModule::BuildFileList()
 		}
 	}
 	
+}
+
+SCPCFilePathTypeID GetPathTypeID(default_file DefaultFile)
+{
+	SCPPath DefFilePath(DefaultFile.path_type);
+	for (auto PathInfoPair : PathTypes) {
+		if (SCPPath::Compare(PathInfoPair.second.Path, DefFilePath)) {
+			return PathInfoPair.first;
+		}
+	}
+	return SCPCFilePathTypeID::Invalid;
 }
 
 void SCPCFileModule::PopulateFilesInMemoryRoot(uint32_t RootID) {
@@ -414,7 +342,6 @@ int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, 
 		{
 			if (CheckLocationFlags(Root.GetLocationFlags(), location_flags)) {
 				// We found a valid root
-				Assert(CF_TYPE_SPECIFIED(pathtype));
 				SCPPath RawPath = Root.GetPath();
 				if (filename) {
 					RawPath /= filename;
@@ -432,12 +359,53 @@ int SCPCFileModule::GetDefaultFilePath(char* path, uint path_max, int pathtype, 
 						}
 					}
 				}
+				strncpy(path, RawPath.c_str(), path_max);
+				//don't we have to return here if theres no filename but a root was valid?
 				break;
 			}
 		}
 	}
 
 	return 1;
+}
+
+SCP_string SCPCFileModule::GetDefaultFilePath( SCPCFilePathTypeID PathType, SCP_string Filename,
+									   bool Localize /*= false*/,
+									   SCPCFileLocationFlags LocationFlags /*= SCPCFileLocationALL*/,
+									   SCP_string LanguagePrefix /*= ""*/)
+{
+	if (SCPPath(Filename).has_parent_path())
+	{
+		// Already has full path
+		return Filename;
+	}
+	else {
+		RootFilter Filter;
+		Filter.TypeIs(SCPRootType::Path).LocationMatches(LocationFlags);
+
+		for (SCPRootInfo Root : CFileDatabase().Roots(Filter))
+		{
+			if (CheckLocationFlags(Root.GetLocationFlags(), LocationFlags)) {
+				// We found a valid root
+				SCPPath RawPath = Root.GetPath();
+				if (!Filename.empty()) {
+					RawPath /= Filename;
+					// localize filename
+					if (Localize) {
+
+						SCPPath LocalizedPath = RawPath;
+						LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+						return LocalizedPath;
+					}
+				}
+				return RawPath;
+				//don't we have to return here if theres no filename but a root was valid?
+				break;
+			}
+		}
+	}
+
+	return "";
 }
 
 void SCPCFileModule::PopulateFilesInPackFile(uint32_t RootID)
@@ -532,14 +500,14 @@ void SCPCFileModule::PopulateFilesInPackFile(uint32_t RootID)
 
 void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 {
-	int i;
 	int num_files = 0;
 
 	tl::optional<SCPRootInfo> root = CFileDatabase().GetRootByID(RootID);
 	Assert(root);
 	mprintf(("Searching root '%s' ... ", root->GetPath()));
 
-#ifndef WIN32
+/*
+
 	try {
 		auto current = root->path;
 		const auto prefPathEnd = root->path + strlen(root->path);
@@ -561,13 +529,8 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 	catch (const std::exception& e) {
 		Error(LOCATION, "UTF-8 error while checking the root path \"%s\": %s", root->path, e.what());
 	}
-#endif
+*/
 
-	char search_path[CF_MAX_PATHNAME_LENGTH];
-#ifdef SCP_UNIX
-	// This map stores the mapping between a specific path type and the actual path that we use for it
-	SCP_unordered_map<int, SCP_string> pathTypeToRealPath;
-#endif
 
 	for (auto Pair : PathTypes)
 	{
@@ -576,12 +539,15 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 			continue;
 		}
 		SCPPath FullPath = root->GetPath() / Pair.second.Path;
-		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::Recursive });
+		SCPDirectoryIterator DirIterator(FullPath, Pair.second.Extensions, SCPDirectoryIterator::Options{ SCPDirectoryIterator::Flags::IncludeFiles, SCPDirectoryIterator::Flags::Recursive });
 		for (auto File : DirIterator)
 		{
-			SCPCFileInfo FileInfo(File, RootID, Pair.first);
-			CFileDatabase().AddFile(FileInfo);
-			num_files++;
+			if (File.has_filename()) 
+			{
+				SCPCFileInfo FileInfo(File, RootID, Pair.first);
+				CFileDatabase().AddFile(FileInfo);
+				num_files++;
+			}
 		}
 	}
 
@@ -650,7 +616,7 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 			if (!Mode.Is({ SCPCFileMode::MemoryMapped, SCPCFileMode::Read, SCPCFileMode::Binary }))
 			{
 				GOutputDevice->Error("Memory-mapped IO only supports read-only, binary mode!");
-				return;
+				return {};
 			}
 		}
 		// use the loose file constructor
@@ -664,5 +630,51 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 		//use in-memory constructor
 		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, FileInfo.GetFileSize(), FileInfo.GetDataPointer());
 	}
+	return {};
+}
+
+
+
+tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
+{
+	Assert(!FilePath.empty());
+
+	//search for the exact path first
+	if (FilePath.has_parent_path())
+	{
+		for (auto FileResult : CFileDatabase().Files(FileFilter().FullPathIs(FilePath.string())))
+		{
+			//if we have a result we just want the first one that matches
+			return FileResult;
+		}
+	}
+
+	FileFilter Filter;
+	Filter.LocationMatches(location_flags);
+	Filter.SortByPathType(true);
+
+	if (localize)
+	{
+		SCPPath LocalizedPath = SCPPath(FilePath);
+		LocalizedPath = LocalizedPath.remove_filename() / LanguagePrefix / LocalizedPath.filename();
+
+		Filter.FilenameIs(LocalizedPath.string());
+	}
+	else
+	{
+		Filter.FilenameIs(FilePath.string());
+	}
+
+	if (PathType != SCPCFilePathTypeID::Any)
+	{
+		Filter.PathTypeIs(PathType);
+	}
+
+	for (auto FileResult : CFileDatabase().Files(Filter))
+	{
+		return FileResult;
+	}
+
+	//return empty optional
 	return {};
 }

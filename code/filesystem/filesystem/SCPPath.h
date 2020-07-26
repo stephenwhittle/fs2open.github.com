@@ -33,4 +33,8 @@ public:
 		assign(InPath.c_str());
 		return *this;
 	}
+	static SCPPath FromU8(std::string UTF8String)
+	{
+		return ghc::filesystem::u8path(UTF8String);
+	}
 };

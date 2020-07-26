@@ -7,7 +7,7 @@
 #include "FSAssert.h"
 #include "SCPCFilePathType.h"
 #include "SCPMembuf.h"
-
+#include "filesystem/SCPPath.h"
 enum class SCPCFileMode
 {
 	Append = 1,
@@ -88,7 +88,7 @@ public:
 
 	//TODO: do we want to pass in the CFileInfo ID for these?
 	//TODO: delete copy constructor, perhaps delete move constructor too
-	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath PackFilePath, std::uintmax_t Offset, std::uintmax_t Size)
+	CFILE(const SCPCallPermit<class SCPCFileModule>&, SCPPath PackFilePath, std::uintmax_t Offset, std::uintmax_t Size)
 		:CurrentDataSource(EDataSource::PackFile),
 		MemoryMappedFileView(&MemoryMappedFileBuffer),
 		InMemoryFileView(&InMemoryFileBuffer),
@@ -99,7 +99,7 @@ public:
 		UnderlyingFile.seekp(Offset);
 	}
 
-	CFILE(SCPCallPermit<class SCPCFileModule>, SCPPath FilePath, SCPCFileModeFlags Mode)
+	CFILE(const SCPCallPermit<class SCPCFileModule>&, SCPPath FilePath, SCPCFileModeFlags Mode)
 		:CurrentDataSource(EDataSource::LooseFile),
 		MemoryMappedFileView(&MemoryMappedFileBuffer),
 		InMemoryFileView(&InMemoryFileBuffer)
@@ -108,7 +108,7 @@ public:
 		{
 			CurrentDataSource = EDataSource::MemoryMapped;
 			mem_mapped = true;
-			MemoryMappedFile = mio::mmap_source(FilePath);
+			MemoryMappedFile = mio::mmap_source(FilePath.string());
 			MemoryMappedFileBuffer = SCPMembuf(MemoryMappedFile.begin(), MemoryMappedFile.end());
 			return;
 		}
@@ -128,7 +128,7 @@ public:
 
 	}
 
-	CFILE(SCPCallPermit<class SCPCFileModule>, uintmax_t Size, void* DataPointer)
+	CFILE(const SCPCallPermit<class SCPCFileModule>&, uintmax_t Size, void* DataPointer)
 		:CurrentDataSource(EDataSource::InMemory),
 		MemoryMappedFileView(&MemoryMappedFileBuffer),
 		InMemoryFileBuffer((const SCPMembuf::byte*) DataPointer, Size),

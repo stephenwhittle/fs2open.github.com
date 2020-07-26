@@ -16,16 +16,13 @@ class SCPMembuf : public std::streambuf
 	SCPMembuf& operator= (const SCPMembuf& Other)
 	{
 		SCPMembuf TmpBuf(Other);
-		std::swap(begin_, TmpBuf.begin_);
-		std::swap(end_, TmpBuf.end_);
-		std::swap(current_, TmpBuf.current_);
-
+		std::swap(*this, TmpBuf);
+		return *this;
 	}
 	SCPMembuf& operator= (SCPMembuf&& Other)
 	{
-		std::swap(begin_, Other.begin_);
-		std::swap(end_, Other.end_);
-		std::swap(current_, Other.current_);
+		std::swap(*this, Other);
+		return *this;
 	}
 
   protected:

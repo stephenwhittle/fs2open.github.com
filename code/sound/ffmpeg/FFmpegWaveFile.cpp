@@ -160,7 +160,7 @@ bool FFmpegWaveFile::Open(const char* pszFilename, bool keep_ext)
 				throw FFmpegException("Unknown file extension.");
 			}
 
-			auto res = cf_find_file_location(pszFilename, CF_TYPE_ANY, false);
+			auto res = FindFileInfo(pszFilename, CF_TYPE_ANY, false);
 
 			if (!res.found) {
 				throw FFmpegException("File not found.");
