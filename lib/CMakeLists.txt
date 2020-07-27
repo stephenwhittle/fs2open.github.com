@@ -61,3 +61,5 @@ include(peglib.cmake)
 add_subdirectory(vulkan-hpp)
 
 add_subdirectory(optick)
+
+add_subdirectory(doctest)

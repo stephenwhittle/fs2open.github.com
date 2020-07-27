@@ -560,6 +560,12 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 
 bool SCPCFileModule::CheckLocationFlags(const SCPCFileLocationFlags FlagsToCheck, const SCPCFileLocationFlags DesiredFlags) 
 {
+	//TODO: @SCPCfileModule verify this is expected behaviour
+	if (DesiredFlags == SCPCFileLocationALL)
+	{
+		return true;
+	}
+
 	bool RootOK = false;
 	if (DesiredFlags.HasFlag(SCPCFileLocation::GameRootDirectory) ||
 		DesiredFlags.HasFlag(SCPCFileLocation::UserDirectory) || 
@@ -654,7 +660,7 @@ tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, 
 
 	FileFilter Filter;
 	Filter.LocationMatches(location_flags);
-	Filter.SortByPathType(true);
+	Filter.SortByPathTypeAscending(true);
 
 	if (localize)
 	{

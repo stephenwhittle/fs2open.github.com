@@ -112,6 +112,19 @@
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(), "EXT_FILTER", -1, SQLITE_UTF8, nullptr, ExtensionFilter, nullptr, nullptr);
+
+	auto RegexMatch = [](sqlite3_context* context, int argc, sqlite3_value** argv) {
+		if (argc < 2) {
+			sqlite3_result_error(context, "Invalid number of arguments to REGEXP", -1);
+		}
+		size_t PatternLength   = sqlite3_value_bytes(argv[0]);
+		const char* Pattern = (const char*)sqlite3_value_text(argv[0]);
+
+		size_t InputLength = sqlite3_value_bytes(argv[1]);
+		const char* Input = (const char*)sqlite3_value_text(argv[1]);
+	};
+
+	sqlite3_create_function(InternalDB.getHandle(), "regexp", -1, SQLITE_UTF8, nullptr, RegexMatch, nullptr, nullptr);
 }
 
 uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)

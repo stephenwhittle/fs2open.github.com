@@ -130,7 +130,12 @@ class FileFilter : sql::SelectModel {
 		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
 		return *this;
 	}
-	FileFilter& SortByPathType(bool Ascending) 
+	FileFilter& SortByFilenameAscending(bool Ascending)
+	{
+		order_by(fmt::format("Filename {}", Ascending ? "ASC" : "DESC"));
+		return *this;
+	}
+	FileFilter& SortByPathTypeAscending(bool Ascending) 
 	{ 
 		order_by(fmt::format("PathType {}", Ascending ? "ASC" : "DESC"));
 		return *this;
@@ -140,6 +145,11 @@ class FileFilter : sql::SelectModel {
 		std::string ExtensionList = fmt::format("{},", Extensions);
 		ExtensionList.pop_back();
 		where(fmt::format("EXT_FILTER(Filename, {})", ExtensionList));
+		return *this;
+	}
+	FileFilter& ExtensionMatchesRegex(std::string Regexp)
+	{
+		where(fmt::format("Filename REGEXP {}", Regexp));
 		return *this;
 	}
 };

@@ -4,6 +4,9 @@
 #include "module/SCPModuleManager.h"
 #include "SCPApplication.h"
 #include "SCPProfiling.h"
+#define DOCTEST_CONFIG_IMPLEMENT
+#include "doctest/doctest.h"
+
 int main(int argc, char* const argv[])
 {
 	FS2_PROF_APP("Code Tests");
@@ -11,6 +14,7 @@ int main(int argc, char* const argv[])
 	SCPApplication::Get().SetCommandLine(argc, argv);
 	//auto ParsedOptions = GCmdLineParser.GetOptions(argc, argv);
 	//
-	auto CfileModule = SCPModuleManager::GetModule<SCPCFileModule>();
-	
+	doctest::Context CurrentContext;
+	int Result = CurrentContext.run();
+	return Result;
 }

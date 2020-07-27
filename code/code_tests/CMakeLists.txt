@@ -1,5 +1,5 @@
-add_executable(code_tests codetests.cpp stub.cpp)
-target_link_libraries(code_tests PUBLIC core cfile cmdline)
+add_executable(code_tests codetests.cpp stub.cpp cfile.cpp)
+target_link_libraries(code_tests PUBLIC core cfile cmdline doctest)
 option(FSO_INSTRUMENT_CODE "Use MSVC instrumentation to profile performance" OFF)
 if (FSO_INSTRUMENT_CODE)
 target_link_options(code_tests PUBLIC "/PROFILE")

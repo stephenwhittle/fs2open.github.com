@@ -14,15 +14,18 @@
 //#include "cfile/cfile.h"
 #include "localization/localize.h"
 #include "config/osregistry.h"
+#include "cfile/SCPCFileDatabase.h"
 #include "parse/parselo.h"
 #include "parse/SCPParser.h"
 #include "fhash.h"
 //#include "playerman/player.h"
 //#include "mod_table/mod_table.h"
+#include "module/SCPModuleManager.h"
+#include "cfile/SCPCFileModule.h"
+#include "cfile/SCPCFileInfo.h"
 #include "filesystem/SCPPath.h"
 #include "localization/SCPLanguageTable.h"
 #include "localization/SCPLanguageTableDescriptor.h"
-#include "cfile/cfile.h"
 #include "FSAssert.h"
 #include "SCPCmdOptions.h"
 #include "SCPApplication.h"
@@ -138,13 +141,23 @@ void lcl_init(int lang_init)
 	{
 		mprintf(("TABLES: Unable to parse '%s'!  Error message = %s.\n", "strings.tbl", e.what()));
 	}
+/*
 	SCP_vector<SCP_string> StringTableFileNames;
 	cf_get_file_list(StringTableFileNames, CF_TYPE_TABLES,"*-lcl.tbm", CF_SORT_REVERSE);
-	
-	for (SCP_string FileName : StringTableFileNames)
+*/
+
+	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+	Assert(CFileModule);
+
+	FileFilter StringTableFiles;
+	StringTableFiles.PathTypeIs(SCPCFilePathTypeID::Tables);
+	StringTableFiles.SortByFilenameAscending(false);
+	StringTableFiles.ExtensionMatchesRegex("*-lcl.tbm");
+
+	for (SCPCFileInfo StringTableFileInfo : CFileModule->CFileDatabase().Files(StringTableFiles))
 	{
-		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
-		SCPParser::LoadIntoTable(*LanguageTableData, LanguagesFile, std::move(StringTableBuffer), FileName);
+		SCP_buffer StringTableBuffer = read_file_text(StringTableFileInfo.GetFullPath().c_str(), CF_TYPE_TABLES);
+		SCPParser::LoadIntoTable(*LanguageTableData, LanguagesFile, std::move(StringTableBuffer), StringTableFileInfo.GetFullPath().filename());
 	}
 
 	//parse_modular_table(NOX("*-lcl.tbm"), parse_stringstbl_quick);

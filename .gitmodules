@@ -31,3 +31,6 @@
 [submodule "lib/optick"]
 	path = lib/optick
 	url = https://github.com/bombomby/optick.git
+[submodule "lib/doctest"]
+	path = lib/doctest
+	url = https://github.com/onqtam/doctest.git
