@@ -98,7 +98,8 @@ class SCPModuleManager
 			auto NewModulePtr = std::make_unique<T>(std::move(ConstructModuleWithDeps<T>(Dependencies)));
 			if (NewModulePtr)
 			{
-				Assert(NewModulePtr->StartupModule());
+				bool ModuleInitOK = NewModulePtr->StartupModule();
+				Assert(ModuleInitOK);
 				return NewModulePtr;
 			}
 		}

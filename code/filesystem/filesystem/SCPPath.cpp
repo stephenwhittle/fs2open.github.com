@@ -5,13 +5,19 @@
 
 bool SCPPath::Compare(const SCPPath& Left, const SCPPath& Right, bool CaseSensitive /*= false*/) 
 {
+	std::string LeftString = Left.string();
+	std::string RightString = Right.string();
+	if (LeftString.size() != RightString.size())
+	{
+		return false;
+	}
 	if (CaseSensitive)
 	{
 		return Left.string() == Right.string();
 	}
 	else
 	{
-		return StringUtils::ToLower(Left.string()) == StringUtils::ToLower(Right.string());
+		return StringUtils::ToLower(LeftString) == StringUtils::ToLower(RightString);
 	}
 }
 

@@ -7,6 +7,8 @@
 #include "tl/optional.hpp"
 #include "../sqlite3/sqlite3.h"
 #include "SQLiteCpp/VariadicBind.h"
+#include "SCPProfiling.h"
+
  SCPCFileDatabase::SCPCFileDatabase()
 	: InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE)
 {
@@ -134,6 +136,7 @@ uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 
 uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 {
+	FS2_PROF_EVENT();
 	GOutputDevice->Message("Adding File %s\r\n", NewFile.GetFullPath());
 	auto AddFileStatement = SQLite::Statement(InternalDB, R"(INSERT INTO files (NameExt, RootUID, PathType, WriteTime, Size, PackOffset, FullPath, DataPtr) VALUES (?,?,?,?,?,?,?,?); )");
 
@@ -154,6 +157,7 @@ uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 
 tl::optional<SCPRootInfo> SCPCFileDatabase::GetRootByID(uint32_t RootUID)
 {
+	FS2_PROF_EVENT();
 	auto GetRootByIDStatement = SQLite::Statement(InternalDB, R"(SELECT * from roots WHERE uid = ?)");
 	GetRootByIDStatement.bind(1, RootUID);
 	if (GetRootByIDStatement.executeStep()) {
@@ -164,6 +168,7 @@ tl::optional<SCPRootInfo> SCPCFileDatabase::GetRootByID(uint32_t RootUID)
 
 tl::optional<SCPCFileInfo> SCPCFileDatabase::GetFileByID(uint32_t FileUID)
 {
+	FS2_PROF_EVENT();
 	auto GetFileByIDStatement = SQLite::Statement(InternalDB, R"(SELECT * from files WHERE uid = ?)");
 	GetFileByIDStatement.bind(1, FileUID);
 	if (GetFileByIDStatement.executeStep()) {

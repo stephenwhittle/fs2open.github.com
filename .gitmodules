@@ -28,3 +28,6 @@
 [submodule "lib/sql-builder"]
 	path = lib/sql-builder
 	url = https://github.com/JackLilhammers/sql-builder.git
+[submodule "lib/optick"]
+	path = lib/optick
+	url = https://github.com/bombomby/optick.git

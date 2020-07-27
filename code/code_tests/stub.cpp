@@ -2,7 +2,7 @@
 #include "FSStdTypes.h"
 #include "FSIntegerTypes.h"
 #include "FSAssert.h"
-#include <iostream>
+#include "fmt/core.h"
 
 class SCPConsoleOutputDevice : public FSOutputDeviceBase
 {
@@ -10,44 +10,45 @@ class SCPConsoleOutputDevice : public FSOutputDeviceBase
 protected:
 	void PrintImpl(const char* ID, const char* Message) override
 	{
-		std::cout << Message << std::endl;
+		fmt::print(Message);
 	}
 
 
 	void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) override
 	{
-		std::cout << Expression << std::endl;
-		if (Message) std::cout << Message << std::endl;
+		fmt::print(Expression);
+		fmt::print(Message);
 	}
 
 
 	void WarningImpl(const char* File, int Line, const char* Message) override
 	{
-		std::cout << Message << std::endl;
+		fmt::print(Message);
 	}
 
 
 	void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) override
 	{
-		std::cout << FileOrMessage << std::endl;
+		fmt::print(FileOrMessage);
 	}
 
 
 	void MessageImpl(const char* Message) override
 	{
-		std::cout << Message << std::endl;
+		fmt::print(Message);
 	}
 
 public:
 	void Init() override
 	{
-		std::cout << "Console Output Initialized" << std::endl;
+		std::ios::sync_with_stdio(false);
+		fmt::print("Console Output Initialized");
 	}
 
 
 	void Close() override
 	{
-		std::cout << "Console Output Closed" << std::endl;
+		fmt::print("Console Output Closed");
 	}
 
 };

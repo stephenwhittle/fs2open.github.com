@@ -14,7 +14,7 @@
 #include "FSAssert.h"
 #include "FSOutputDeviceBase.h"
 #include "SCPApplication.h"
-
+#include "SCPProfiling.h"
 #include <utility>
 
 
@@ -95,6 +95,7 @@ bool cf_packfile_sort_func(const cf_root_sort &r1, const cf_root_sort &r2)
 
 void SCPCFileModule::BuildPackListForRoot(uint32_t RootID)
 {
+	FS2_PROF_EVENT();
 	tl::optional<SCPRootInfo> Root = CFileDatabase().GetRootByID(RootID);
 	Assert(Root.has_value());
 
@@ -154,6 +155,7 @@ void SCPCFileModule::AddModRoots(const SCPPath Directory, SCPCFileLocationFlags 
 
 void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 {
+	FS2_PROF_EVENT();
 	auto CmdLineModule = SCPModuleManager::GetModule<SCPCmdlineModule>();
 
 	if (SCPApplication::Get().GetLegacyMode())
@@ -235,7 +237,7 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 
 void SCPCFileModule::BuildCFileDatabase(const char* cdrom_dir)
 {
-
+	FS2_PROF_EVENT();
 	mprintf(("Building file index...\n"));
 
 	// build the list of searchable roots
