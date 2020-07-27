@@ -275,6 +275,7 @@ void SCPCFileModule::BuildFileList()
 SCPCFilePathTypeID GetPathTypeID(default_file DefaultFile)
 {
 	SCPPath DefFilePath(DefaultFile.path_type);
+	DefFilePath /= "";
 	for (auto PathInfoPair : PathTypes) {
 		if (SCPPath::Compare(PathInfoPair.second.Path, DefFilePath)) {
 			return PathInfoPair.first;
@@ -316,7 +317,7 @@ void SCPCFileModule::AddFilesFromRoot(SCPRootInfo Root)
 			continue;
 		}
 		SCPPath FullDirectoryPath = Root.GetPath() / Pair.second.Path;
-		SCPFilesystemView DirectoryIterator = SCPFilesystemView(FullDirectoryPath, Pair.second.Extensions);
+		SCPFilesystemView DirectoryIterator = SCPFilesystemView(FullDirectoryPath, Pair.second.Extensions, { SCPFilesystemView::Flags::IncludeFiles, SCPFilesystemView::Flags::Recursive });
 
 		for (SCPPath FilePath : DirectoryIterator)
 		{
@@ -534,7 +535,7 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 
 	for (auto Pair : PathTypes)
 	{
-		if (Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
+		if (Pair.first == SCPCFilePathTypeID::Invalid || Pair.first == SCPCFilePathTypeID::SinglePlayers || Pair.first == SCPCFilePathTypeID::MultiPlayers)
 		{
 			continue;
 		}

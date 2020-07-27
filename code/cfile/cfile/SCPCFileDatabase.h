@@ -74,7 +74,9 @@ public:
 	}
 	bool operator++()
 	{
-		if (SQLite::OK == InternalStatement.tryExecuteStep()) {
+		auto QueryStatus = InternalStatement.tryExecuteStep();
+		//Dirty hack because SQLiteCPP does not define the return codes
+		if ( QueryStatus == SQLite::OK || QueryStatus == 100) {
 			return true;
 		}
 		else {

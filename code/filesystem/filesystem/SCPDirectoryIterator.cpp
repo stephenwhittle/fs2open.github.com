@@ -1,115 +1,104 @@
 #include "SCPDirectoryIterator.h"
+#include "filesystem/SCPFile.h"
 
 SCPFilesystemView::SCPFilesystemView(SCPPath Directory, Options Opts /*= DefaultOptions*/) 
-	:InternalIterator(Directory),
-	CurrentOptions(Opts)
+	:CurrentOptions(Opts)
 {
-	if (Opts.HasFlag(Flags::Recursive))
+	if (!SCPFile(Directory).Exists())
 	{
-		RecursiveInternalIterator = ghc::filesystem::recursive_directory_iterator(Directory);
+		InternalIterator = ghc::filesystem::directory_iterator();
 	}
-}
-
-SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::set<SCP_string> Extensions, Options Opts)
-	:InternalIterator(Directory),
-	Extensions(Extensions),
-	CurrentOptions(Opts)
-{
-	if (Opts.HasFlag(Flags::Recursive)) {
-		RecursiveInternalIterator = ghc::filesystem::recursive_directory_iterator(Directory);
-		if (!PassesFilter(RecursiveInternalIterator))
-		{
-			AdvanceToNext(RecursiveInternalIterator);
+	else 
+	{
+		if (Opts.HasFlag(Flags::Recursive)) {
+			InternalIterator = ghc::filesystem::recursive_directory_iterator(Directory);
+		} else {
+			InternalIterator = ghc::filesystem::directory_iterator(Directory);
 		}
 	}
 }
 
-SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::regex FilterRegex, Options Opts /*= DefaultOptions*/)
-	:InternalIterator(Directory),
-	FilterRegex(FilterRegex),
-	CurrentOptions(Opts)
+SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::set<SCP_string> Extensions, Options Opts)
+	:SCPFilesystemView(Directory, Opts)
 {
-	if (Opts.HasFlag(Flags::Recursive))
-	{
-		RecursiveInternalIterator = ghc::filesystem::recursive_directory_iterator(Directory);
-	}
+	this->Extensions = Extensions;
 }
 
-SCPFilesystemView::SCPFilesystemView(const SCPFilesystemView& Iterator)
-	:InternalIterator(Iterator.InternalIterator),
-	RecursiveInternalIterator(Iterator.RecursiveInternalIterator),
-	FilterRegex(Iterator.FilterRegex),
-	Extensions(Iterator.Extensions),
-	CurrentOptions(Iterator.CurrentOptions)
-{}
-
-SCPFilesystemView::SCPFilesystemView(const SCPFilesystemView&& Iterator) 
-	: InternalIterator(std::move(Iterator.InternalIterator)), 
-	RecursiveInternalIterator(Iterator.RecursiveInternalIterator), 
-	FilterRegex(std::move(Iterator.FilterRegex)),
-	Extensions(std::move(Extensions)),
-	CurrentOptions(std::move(CurrentOptions))
-{}
-
-SCPFilesystemView& SCPFilesystemView::operator++() 
+SCPFilesystemView::SCPFilesystemView(SCPPath Directory, std::regex FilterRegex, Options Opts /*= DefaultOptions*/)
+	:SCPFilesystemView(Directory, Opts)
 {
-	//needs to respect the other flags
-	if (CurrentOptions.HasFlag(Flags::Recursive))
-	{
-		//loop the iterator, checking each file if it matches the regex (if set) or extensions 
-		return AdvanceToNext(RecursiveInternalIterator);
-	}
-	else
-	{
-		return AdvanceToNext(InternalIterator);
-	}
+	this->FilterRegex = FilterRegex;
+}
+
+
+bool SCPFilesystemView::operator++() 
+{
+	return MoveNext();
 }
 
 SCPPath SCPFilesystemView::operator*() 
 {
-	return SCPPath(CurrentOptions.HasFlag(Flags::Recursive) ? *RecursiveInternalIterator : *InternalIterator);
+	return GetCurrentDirectoryEntry().path();
 }
 
 bool SCPFilesystemView::operator!=(const SCPFilesystemView& Other) 
 {
-	if (CurrentOptions.HasFlag(Flags::Recursive))
-	{
-		return RecursiveInternalIterator != Other.RecursiveInternalIterator;
-	}
 	return InternalIterator != Other.InternalIterator;
 }
 
 bool SCPFilesystemView::operator==(const SCPFilesystemView& Other) 
 {
-	if (CurrentOptions.HasFlag(Flags::Recursive))
-	{
-		return RecursiveInternalIterator == Other.RecursiveInternalIterator;
-	}
 	return InternalIterator == Other.InternalIterator;
 }
 
-SCPFilesystemView SCPFilesystemView::begin() 
+SCPDirectoryIterator SCPFilesystemView::begin() 
 {
-	if (CurrentOptions.HasFlag(Flags::Recursive))
-	{
-		SCPFilesystemView BeginIterator = SCPFilesystemView(*this);
-		BeginIterator.RecursiveInternalIterator     = ghc::filesystem::begin(RecursiveInternalIterator);
-		return BeginIterator;
-	}
-	SCPFilesystemView BeginIterator = SCPFilesystemView(*this);
-	BeginIterator.InternalIterator = ghc::filesystem::begin(InternalIterator);
-	return BeginIterator;
+	return SCPDirectoryIterator(this);
 }
 
-SCPFilesystemView SCPFilesystemView::end() 
+SCPDirectoryIterator SCPFilesystemView::end() 
 {
-	if (CurrentOptions.HasFlag(Flags::Recursive))
+	return SCPDirectoryIterator();
+}
+
+ghc::filesystem::directory_entry SCPFilesystemView::GetCurrentDirectoryEntry()
+{
+	return mpark::visit([this](auto&& Iterator) { return *Iterator; }, InternalIterator);
+}
+
+bool SCPFilesystemView::MoveNext()
+{
+	return mpark::visit([this](auto&& Iterator) { return AdvanceToNext(Iterator); }, InternalIterator);
+}
+
+ SCPDirectoryIterator::SCPDirectoryIterator(SCPFilesystemView* View) : ViewToIterate(View)
+{
+	HasMoreResults = View->MoveNext();
+}
+
+ SCPDirectoryIterator::SCPDirectoryIterator() { HasMoreResults = false; }
+
+SCPPath SCPDirectoryIterator::operator*() 
+{
+	if (ViewToIterate != nullptr && HasMoreResults)
 	{
-		SCPFilesystemView EndIterator = SCPFilesystemView(*this);
-		EndIterator.RecursiveInternalIterator     = ghc::filesystem::end(RecursiveInternalIterator);
-		return EndIterator;
+		return *(*ViewToIterate);
 	}
-	SCPFilesystemView EndIterator = SCPFilesystemView(*this);
-	EndIterator.InternalIterator     = ghc::filesystem::end(InternalIterator);
-	return EndIterator;
+	return SCPPath();
+}
+
+void SCPDirectoryIterator::operator++()
+{
+	if (ViewToIterate != nullptr && HasMoreResults) {
+		HasMoreResults = ViewToIterate->MoveNext();
+	}
+}
+
+bool SCPDirectoryIterator::operator!=(const SCPDirectoryIterator& Other)
+{
+	if (ViewToIterate == nullptr || Other.ViewToIterate == nullptr) {
+		return HasMoreResults != Other.HasMoreResults;
+	} else {
+		return HasMoreResults != Other.HasMoreResults || ViewToIterate != Other.ViewToIterate;
+	}
 }
