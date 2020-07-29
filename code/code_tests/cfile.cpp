@@ -1,6 +1,7 @@
 #include "doctest/doctest.h"
 #include "module/SCPModuleManager.h"
 #include "cfile/SCPCFileModule.h"
+#include "cfile/SCPCFileInfo.h"
 TEST_SUITE("CFile Module")
 {
 	tl::optional<SCPCFileModule> ModuleHandle;
@@ -9,6 +10,14 @@ TEST_SUITE("CFile Module")
 	{
 		ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
 		REQUIRE(ModuleHandle);
+	}
+	TEST_CASE("CFileModule GetDefaultFilePath")
+	{
+
+	}
+	TEST_CASE("CFile Database Find file")
+	{
+		REQUIRE(ModuleHandle->FindFileInfo("ships.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, ""));
 	}
 	TEST_CASE("CFile Module CheckLocationFlags")
 	{

@@ -644,7 +644,7 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 
 
 
-tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
+tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, SCPCFileLocationFlags location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
 	Assert(!FilePath.empty());
 

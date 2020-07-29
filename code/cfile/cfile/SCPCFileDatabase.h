@@ -66,7 +66,7 @@ public:
 	DBQuery(SQLite::Statement&& QueryStatement)
 		: InternalStatement(std::move(QueryStatement)) 
 	{
-		InternalStatement.tryExecuteStep();
+		InternalStatement.executeStep();
 	};
 	DataType operator*()
 	{
@@ -107,7 +107,7 @@ class FileFilter : sql::SelectModel {
 	FileFilter() : sql::SelectModel() { select("*").from("files"); }
 	FileFilter& FilenameIs(SCP_string Filename)
 	{
-		where(sql::column("Filename") == Filename);
+		where(sql::column("NameExt") == Filename);
 		return *this;
 	}
 	FileFilter& FullPathIs(SCP_string FullPath)
@@ -127,12 +127,12 @@ class FileFilter : sql::SelectModel {
 	}
 	FileFilter& LocationMatches(SCPCFileLocationFlags LocationFilter)
 	{
-		where(fmt::format("DIR_FILTER(LocationFlags, {}) = 1", LocationFilter.RawValue()));
+		where(fmt::format("RootUID IN (select uid from roots where DIR_FILTER(LocationFlags, {}) = 1)", LocationFilter.RawValue()));
 		return *this;
 	}
 	FileFilter& SortByFilenameAscending(bool Ascending)
 	{
-		order_by(fmt::format("Filename {}", Ascending ? "ASC" : "DESC"));
+		order_by(fmt::format("NameExt {}", Ascending ? "ASC" : "DESC"));
 		return *this;
 	}
 	FileFilter& SortByPathTypeAscending(bool Ascending) 
@@ -144,12 +144,12 @@ class FileFilter : sql::SelectModel {
 	{
 		std::string ExtensionList = fmt::format("{},", Extensions);
 		ExtensionList.pop_back();
-		where(fmt::format("EXT_FILTER(Filename, {})", ExtensionList));
+		where(fmt::format("EXT_FILTER(NameExt, {})", ExtensionList));
 		return *this;
 	}
 	FileFilter& ExtensionMatchesRegex(std::string Regexp)
 	{
-		where(fmt::format("Filename REGEXP {}", Regexp));
+		where(fmt::format("NameExt REGEXP {}", Regexp));
 		return *this;
 	}
 };

@@ -104,7 +104,7 @@ public:
 	//CFILE destructor should be responsible for calling fstream/close things
 	std::unique_ptr<CFILE> CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode);
 	
-	tl::optional<SCPCFileInfo> FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, uint32_t location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/);
+	tl::optional<SCPCFileInfo> FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, SCPCFileLocationFlags location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/);
 private:
 
 	//may want to try to put this in a pointer or something so we don't need the full definition in the header

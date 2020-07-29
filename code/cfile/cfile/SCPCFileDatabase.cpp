@@ -50,11 +50,16 @@
 
 			if ((Value & DesiredFlag) == DesiredFlag) {
 				sqlite3_result_int(context, 1);
+				return;
 			} else {
 				sqlite3_result_int(context, 0);
+				return;
 			}
 		}
-		sqlite3_result_error(context, "Invalid number of arguments to HAS_FLAG", -1);
+		else
+		{
+			sqlite3_result_error(context, "Invalid number of arguments to HAS_FLAG", -1);
+		}
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(),
@@ -73,11 +78,16 @@
 
 			if (SCPCFileModule::CheckLocationFlags(Value, DesiredFlags)) {
 				sqlite3_result_int(context, 1);
+				return;
 			} else {
 				sqlite3_result_int(context, 0);
+				return;
 			}
 		}
-		sqlite3_result_error(context, "Invalid number of arguments to DIR_FILTER", -1);
+		else
+		{
+			sqlite3_result_error(context, "Invalid number of arguments to DIR_FILTER", -1);
+		}
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(),
@@ -92,6 +102,7 @@
 		if (argc < 2)
 		{
 			sqlite3_result_error(context, "Invalid number of arguments to EXT_FILTER", -1);
+			return;
 		}
 		size_t FilenameLength = sqlite3_value_bytes(argv[0]);
 		const char* RawFileName = (const char*) sqlite3_value_text(argv[0]);
@@ -105,6 +116,7 @@
 				if (Filename.extension().string() == std::string(RawExtension, RawExtension + ExtensionLength))
 				{
 					sqlite3_result_int(context, 1);
+					return;
 				}
 			}
 		}
