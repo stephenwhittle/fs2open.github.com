@@ -162,7 +162,7 @@ uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 {
 	FS2_PROF_EVENT();
-	GOutputDevice->Message("Adding File %s\r\n", NewFile.GetFullPath());
+	GOutputDevice->Message("Adding File %s\r\n", NewFile.GetFileName());
 	auto AddFileStatement = SQLite::Statement(InternalDB, R"(INSERT INTO files (NameExt, RootUID, PathType, WriteTime, Size, PackOffset, FullPath, DataPtr) VALUES (?,?,?,?,?,?,?,?); )");
 
 	SQLite::bind(AddFileStatement,

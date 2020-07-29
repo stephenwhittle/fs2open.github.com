@@ -54,7 +54,7 @@ class SCPCFileInfo {
 	template<typename T>
 	SCPCFileInfo(SCPPath Filename, uint32_t RootUID, SCPCFilePathTypeID PathType, uintmax_t Size, T* DataPointer) //in-memory file
 		:uid(0), name_ext(Filename.filename()), root_index(RootUID), pathtype_index(PathType), write_time(0), size(Size), pack_offset(0), data((void*)DataPointer) {};
-
+	SCP_string GetFileName() const { return name_ext; }
 	uint32_t GetAssociatedRootID() const { return uid; }
 	SCPPath GetFullPath() const { return real_name; }
 	uintmax_t GetFileSize() const { return size; }

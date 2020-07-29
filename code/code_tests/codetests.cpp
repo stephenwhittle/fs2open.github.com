@@ -15,6 +15,7 @@ int main(int argc, char* const argv[])
 	//auto ParsedOptions = GCmdLineParser.GetOptions(argc, argv);
 	//
 	doctest::Context CurrentContext;
+	//CurrentContext.setOption("success", true);
 	int Result = CurrentContext.run();
 	return Result;
 }

@@ -33,7 +33,7 @@ public:
 	{
 		return *(*QueryBeingIterated);
 	}
-	bool operator != (const DBResultIterator& Other)
+	bool operator != (const DBResultIterator& Other) const
 	{
 		if (QueryBeingIterated == nullptr || Other.QueryBeingIterated == nullptr)
 		{
