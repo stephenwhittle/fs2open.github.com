@@ -14,11 +14,6 @@
 
 class SCPCFileModule : public SCPModule<SCPCFileModule> 
 {
-	//cfiles themselves may need a table too
-	//rootID, fileID, uintptr_t to a vector of unique/shared ptrs
-
-
-
 	template <unsigned int Index>
 	constexpr static unsigned int CalculateCRCTableEntry()
 	{
@@ -64,7 +59,6 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void PopulateLooseFilesInRoot(uint32_t RootID);
 	
 public:
-	static constexpr int MAX_CFILE_BLOCKS = 64;
 	virtual bool StartupModule() override;
 	virtual void ShutdownModule() override;
 	
@@ -89,7 +83,7 @@ public:
 	};
 
 	void DumpOpenedFileList();
-	//should be made private at best
+	//Deprecated. Use CFileDatabase().AddRoot() instead
 	uint32_t AddRoot(class SCPRootInfo Root);
 	//need to delete the copy constructor too
 	static SCPCFileModule ConstructModule(SCPCmdlineModule& Dependency, SCPFilesystemModule& FSDependency)
@@ -105,9 +99,4 @@ public:
 	std::unique_ptr<CFILE> CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode);
 	
 	tl::optional<SCPCFileInfo> FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, SCPCFileLocationFlags location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/);
-private:
-
-	//may want to try to put this in a pointer or something so we don't need the full definition in the header
-	//std::array<CFILE, MAX_CFILE_BLOCKS> Cfile_block_list{};
-	//std::array<std::unique_ptr<class SCPCFileInfo>, 512 * 128>;
 };

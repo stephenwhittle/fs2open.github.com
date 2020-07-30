@@ -58,6 +58,10 @@ TEST_SUITE("CFile Module")
 	{
 
 	}
+	TEST_CASE("CFile Open memory-mapped file")
+	{
+
+	}
 
 	TEST_CASE("CFile Module CheckLocationFlags")
 	{
