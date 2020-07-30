@@ -35,6 +35,30 @@ TEST_SUITE("CFile Module")
 	{
 		REQUIRE(ModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, {SCPCFileLocation::MemoryRoot}, ""));
 	}
+	TEST_CASE("CFile Open in-memory file")
+	{
+		auto FileInfo = ModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, { SCPCFileLocation::MemoryRoot }, "");
+		REQUIRE(FileInfo);
+		
+		SUBCASE("CFile can't be opened in write-only mode")
+		{
+			REQUIRE(!ModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Write}));
+		}
+
+		SUBCASE("In-memory file opened in read-only mode")
+		{
+			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Read}));
+		}
+	}
+	TEST_CASE("CFile Open loose file") 
+	{
+
+	}
+	TEST_CASE("CFile Open packed file") 
+	{
+
+	}
+
 	TEST_CASE("CFile Module CheckLocationFlags")
 	{
 		SUBCASE("Filter same as checked flags")

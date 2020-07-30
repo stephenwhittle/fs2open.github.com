@@ -183,10 +183,13 @@ uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 tl::optional<SCPRootInfo> SCPCFileDatabase::GetRootByID(uint32_t RootUID)
 {
 	FS2_PROF_EVENT();
-	auto GetRootByIDStatement = SQLite::Statement(InternalDB, R"(SELECT * from roots WHERE uid = ?)");
-	GetRootByIDStatement.bind(1, RootUID);
-	if (GetRootByIDStatement.executeStep()) {
-		return GetRootByIDStatement.getColumns<SCPRootInfo, 4>();
+	RootFilter Filter;
+	Filter.RootUID(RootUID);
+	auto Query = Roots(Filter);
+	auto Root = Query.begin();
+	if (Root != Query.end())
+	{
+		return *Root;
 	}
 	return {};
 }

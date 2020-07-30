@@ -164,6 +164,11 @@ class RootFilter : sql::SelectModel {
 	using sql::SelectModel::SelectModel;
 	RootFilter() : sql::SelectModel() { select("*").from("roots"); }
 	RootFilter(RootFilter& Other) = default;
+	RootFilter& RootUID(uint32_t UID)
+	{
+		where(sql::column("uid") == UID);
+		return *this;
+	}
 	RootFilter& TypeIs(SCPRootType RootType)
 	{
 		where(sql::column("Type") == static_cast<uint32_t>(RootType));
