@@ -50,17 +50,37 @@ TEST_SUITE("CFile Module")
 			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Read}));
 		}
 	}
+	
 	TEST_CASE("CFile Open loose file") 
 	{
+		auto FileInfo =
+			ModuleHandle->FindFileInfo("ships.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
 
+		SUBCASE("Find loose file")
+		{
+			REQUIRE(FileInfo);
+		}
+		SUBCASE("Open it")
+		{
+			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
+		}
 	}
+
 	TEST_CASE("CFile Open packed file") 
 	{
-
+		auto FileInfo = ModuleHandle->FindFileInfo("test2.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
+		REQUIRE(FileInfo);
+		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 	}
 	TEST_CASE("CFile Open memory-mapped file")
 	{
 
+	}
+	TEST_CASE("Override default file")
+	{
+		auto FileInfo = ModuleHandle->FindFileInfo("controlconfigdefaults.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
+		REQUIRE(FileInfo);
+		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 	}
 
 	TEST_CASE("CFile Module CheckLocationFlags")

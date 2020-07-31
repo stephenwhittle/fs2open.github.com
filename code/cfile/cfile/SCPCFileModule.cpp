@@ -134,16 +134,18 @@ void SCPCFileModule::AddModRoots(const char* Directory, SCPCFileLocationFlags ba
 									 CF_MAX_PATHNAME_LENGTH);
 			}
 */
+			if (SCPFile::Exists(RootPath)) 
+			{
+				SCPRootInfo root(RootPath,
+								 SCPRootType::Path,
+								 basic_location |
+									 (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
+				auto RootID = AddRoot(root);
+				// add the root to the database and then pass the ID to the next function?
+				BuildPackListForRoot(RootID);
 
-			SCPRootInfo root(RootPath,
-							 SCPRootType::Path,
-							 basic_location |
-								 (primary ? SCPCFileLocation::PrimaryMod : SCPCFileLocation::SecondaryMods));
-			auto RootID = AddRoot(root);
-			// add the root to the database and then pass the ID to the next function?
-			BuildPackListForRoot(RootID);
-
-			primary = false;
+				primary = false;
+			}
 		}
 	}
 }
@@ -288,7 +290,7 @@ SCPCFilePathTypeID GetPathTypeID(default_file DefaultFile)
 
 void SCPCFileModule::PopulateFilesInMemoryRoot(uint32_t RootID) {
 	int num_files = 0;
-	mprintf(("Searching memory root ... "));
+	mprintf(("Searching memory root ... \n"));
 
 	auto default_files = defaults_get_all();
 	for (auto& default_file : default_files) {
@@ -445,7 +447,7 @@ void SCPCFileModule::PopulateFilesInPackFile(uint32_t RootID)
 	VP_header.index_offset = INTEL_INT(VP_header.index_offset); //-V570
 	VP_header.num_files = INTEL_INT(VP_header.num_files); //-V570
 
-	mprintf(("Searching root pack '%s' ... ", root->GetPath()));
+	mprintf(("Searching root pack '%s' ... \n", root->GetPath()));
 
 	// Read index info
 	fseek(fp, VP_header.index_offset, SEEK_SET);
@@ -507,7 +509,7 @@ void SCPCFileModule::PopulateLooseFilesInRoot(uint32_t RootID)
 
 	tl::optional<SCPRootInfo> root = CFileDatabase().GetRootByID(RootID);
 	Assert(root);
-	mprintf(("Searching root '%s' ... ", root->GetPath()));
+	mprintf(("Searching root '%s' ... \n", root->GetPath()));
 
 /*
 
