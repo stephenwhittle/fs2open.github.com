@@ -82,6 +82,8 @@ public:
 class SCPCmdLineOptions
 {
 public:
+	SCPCmdLineOptions(const SCPCmdLineOptions& Other) = default;
+	SCPCmdLineOptions() = default;
 	//So long as you want all the options to be universally accessible these will be actual variables stored here rather than 
 	//stored in their respective modules
 	//Retail Options

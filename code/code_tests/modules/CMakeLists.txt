@@ -1,0 +1,1 @@
+target_sources(code_tests PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/cfile/cfile.cpp ${CMAKE_CURRENT_SOURCE_DIR}/config/config.cpp ${CMAKE_CURRENT_SOURCE_DIR}/cmdline/cmdline.cpp)

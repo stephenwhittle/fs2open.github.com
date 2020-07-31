@@ -6,7 +6,7 @@
 #include "cfile/SCPRootInfo.h"
 TEST_SUITE("CFile Module")
 {
-	tl::optional<SCPCFileModule> ModuleHandle;
+	tl::optional<SCPCFileModule&> ModuleHandle;
 	
 	TEST_CASE("CFile Module Initialization")
 	{
@@ -106,7 +106,7 @@ TEST_SUITE("CFile Module")
 		}
 		SUBCASE("Filter requires different value")
 		{
-			REQUIRE(!SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory},
+			REQUIRE_FALSE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory},
 														{SCPCFileLocation::UserDirectory}));
 		}
 		SUBCASE("Filter only specifying root type should accept flags that match but also have a mod location set")
@@ -115,12 +115,12 @@ TEST_SUITE("CFile Module")
 		}
 		SUBCASE("Original fs2open check_location_flags test")
 		{
-			REQUIRE(!SCPCFileModule::CheckLocationFlags({ SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory }, { SCPCFileLocation::UserDirectory }));
+			REQUIRE_FALSE(SCPCFileModule::CheckLocationFlags({ SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory }, { SCPCFileLocation::UserDirectory }));
 			REQUIRE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::GameRootDirectory}));
 			REQUIRE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::TopLevelDirectory}));
-			REQUIRE(!SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::PrimaryMod}));
-			REQUIRE(!SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::SecondaryMods}));
-			REQUIRE(!SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::GameRootDirectory , SCPCFileLocation::PrimaryMod}));
+			REQUIRE_FALSE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::PrimaryMod}));
+			REQUIRE_FALSE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::SecondaryMods}));
+			REQUIRE_FALSE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::GameRootDirectory , SCPCFileLocation::PrimaryMod}));
 			REQUIRE(SCPCFileModule::CheckLocationFlags({SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}, {SCPCFileLocation::GameRootDirectory , SCPCFileLocation::TopLevelDirectory}));
 		}
 	}
