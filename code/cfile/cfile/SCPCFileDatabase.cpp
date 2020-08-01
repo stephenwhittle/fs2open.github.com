@@ -134,6 +134,8 @@
 
 		size_t InputLength = sqlite3_value_bytes(argv[1]);
 		const char* Input = (const char*)sqlite3_value_text(argv[1]);
+
+
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(), "regexp", -1, SQLITE_UTF8, nullptr, RegexMatch, nullptr, nullptr);

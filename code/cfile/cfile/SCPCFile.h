@@ -187,7 +187,7 @@ public:
 			}
 
 			// WMC - Slap a NULL character on here for the odd error where we forgot a #End
-			raw_text[file_len] = '\0';
+			raw_text[RealLength] = '\0';
 			SeekAbsolute(0);
 			return raw_text;
 	}

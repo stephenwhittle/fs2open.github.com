@@ -8,7 +8,8 @@ TEST_SUITE("CFile Module")
 {
 	tl::optional<SCPCFileModule&> ModuleHandle;
 	//TODO: additional tests for seeking etc
-
+	//TODO: regex matching
+	//TODO: sort reverse test
 	TEST_CASE("CFile Module Initialization")
 	{
 		ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();

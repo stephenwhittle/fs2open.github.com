@@ -283,20 +283,22 @@ void alpha_colors_init()
 	auto ColorsTable = CFileModule->FindFileInfo("colors.tbl", SCPCFilePathTypeID::Tables);
 	if (ColorsTable.has_value())
 	{
-		CFileModule->CFileOpen(*ColorsTable, { SCPCFileMode::Read });
-	}
-	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
-		SCP_buffer RootColorTableBuffer = read_file_text("colors.tbl", CF_TYPE_TABLES);
-		// moving the buffer into the function as we don't require it afterwards
+		auto RootTable = CFileModule->CFileOpen(*ColorsTable, { SCPCFileMode::Read });
+		SCP_buffer RootColorTableBuffer = RootTable->ReadAllContentsIntoBuffer();
 		SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");
 	}
 	
-	SCP_vector<SCP_string> ColorTableFileNames;
-	cf_get_file_list(ColorTableFileNames, CF_TYPE_TABLES, "*-clr.tbm", CF_SORT_REVERSE);
-
-	for (SCP_string FileName : ColorTableFileNames) {
-		SCP_buffer StringTableBuffer = read_file_text(FileName.c_str(), CF_TYPE_TABLES);
-		SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(StringTableBuffer), FileName);
+	FileFilter ColorTableFilter;
+	ColorTableFilter.FilenameMatchesRegex("*-clr.tbm");
+	ColorTableFilter.PathTypeIs(SCPCFilePathTypeID::Tables);
+	for (SCPCFileInfo FileInfo : CFileModule->CFileDatabase().Files(ColorTableFilter))
+	{
+		auto Table = CFileModule->CFileOpen(FileInfo, { SCPCFileMode::Read });
+		if (Table)
+		{
+			SCP_buffer TableBuffer = Table->ReadAllContentsIntoBuffer();
+			SCPParser::LoadIntoTable(*gColors, ColorsFile, std::move(TableBuffer), FileInfo.GetFileName());
+		}
 	}
 }
 /*

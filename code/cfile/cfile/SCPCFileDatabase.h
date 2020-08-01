@@ -147,7 +147,7 @@ class FileFilter : sql::SelectModel {
 		where(fmt::format("EXT_FILTER(NameExt, {})", ExtensionList));
 		return *this;
 	}
-	FileFilter& ExtensionMatchesRegex(std::string Regexp)
+	FileFilter& FilenameMatchesRegex(std::string Regexp)
 	{
 		where(fmt::format("NameExt REGEXP {}", Regexp));
 		return *this;
