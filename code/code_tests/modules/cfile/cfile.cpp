@@ -82,7 +82,10 @@ TEST_SUITE("CFile Module")
 		REQUIRE(FileInfo);
 		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 	}
+	TEST_CASE("FindFileInfo returns results in the correct order")
+	{
 
+	}
 	TEST_CASE("CFile Module CheckLocationFlags")
 	{
 		SUBCASE("Filter same as checked flags")

@@ -12,7 +12,6 @@
 
 #include <cstdarg>
 
-#include "cfile/cfile.h"
 #include "log/generic_log.h"
 #include "FSAssert.h"
 #include "SCPLimits.h"

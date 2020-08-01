@@ -142,11 +142,18 @@
 uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 {
 	if (NewRoot.Type != SCPRootType::InMemory) {
-		GOutputDevice->Message("Adding Root %s\r\n", NewRoot.Path.string());
+		if (!SCPFile::Exists(NewRoot.Path.string()))
+		{
+			GOutputDevice->Message("Adding *Virtual* Root %s\r\n", NewRoot.Path.string());
+		}
+		else
+		{
+			GOutputDevice->Message("Adding Root %s\r\n", NewRoot.Path.string());
+		}
 	}
 	else
 	{
-		GOutputDevice->Message("Adding In-memory Root");
+		GOutputDevice->Message("Adding In-memory Root\r\n");
 	}
 	auto AddRootStatement = SQLite::Statement(InternalDB, R"(INSERT INTO roots (Path, Type, LocationFlags) VALUES (?,?,?); )");
 	SQLite::bind(AddRootStatement,

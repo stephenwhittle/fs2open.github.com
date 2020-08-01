@@ -52,7 +52,6 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void BuildCFileDatabase(const char* cdrom_dir);
 	void BuildFileList();
 	void AddFilesFromRoot(class SCPRootInfo Root);
-	SCP_string GetDefaultFilePath(SCPCFilePathTypeID PathType, SCP_string Filename = "", bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	int GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename = nullptr, bool localize = false, SCPCFileLocationFlags location_flags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	void PopulateFilesInMemoryRoot(uint32_t RootID); 
 	void PopulateFilesInPackFile(uint32_t RootID);
@@ -81,6 +80,7 @@ public:
 		static SCPCFileDatabase Database;
 		return Database;
 	};
+	SCP_string GetDefaultFilePath(SCPCFilePathTypeID PathType, SCP_string Filename = "", bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 
 	void DumpOpenedFileList();
 	//Deprecated. Use CFileDatabase().AddRoot() instead

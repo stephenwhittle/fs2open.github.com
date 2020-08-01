@@ -134,8 +134,8 @@ void SCPCFileModule::AddModRoots(const char* Directory, SCPCFileLocationFlags ba
 									 CF_MAX_PATHNAME_LENGTH);
 			}
 */
-			if (SCPFile::Exists(RootPath)) 
-			{
+			//if (SCPFile::Exists(RootPath)) 
+			//{
 				SCPRootInfo root(RootPath,
 								 SCPRootType::Path,
 								 basic_location |
@@ -145,7 +145,7 @@ void SCPCFileModule::AddModRoots(const char* Directory, SCPCFileLocationFlags ba
 				BuildPackListForRoot(RootID);
 
 				primary = false;
-			}
+			//}
 		}
 	}
 }
@@ -208,9 +208,10 @@ void SCPCFileModule::BuildRootList(const char* cdrom_dir)
 	{
 		SCPRootInfo WorkingDirectoryRoot = 
 			SCPRootInfo(FSModule->WorkingDirectory.GetCurrent(), SCPRootType::Path, { SCPCFileLocation::GameRootDirectory, SCPCFileLocation::TopLevelDirectory });
+		AddModRoots(FSModule->WorkingDirectory.GetCurrent().c_str(), SCPCFileLocation::GameRootDirectory);
+
 		uint32_t WorkingDirectoryRootID = AddRoot(WorkingDirectoryRoot);
 
-		AddModRoots(FSModule->WorkingDirectory.GetCurrent().c_str(), SCPCFileLocation::GameRootDirectory);
 		BuildPackListForRoot(WorkingDirectoryRootID);
 
 	}
@@ -662,7 +663,7 @@ tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, 
 
 	FileFilter Filter;
 	Filter.LocationMatches(location_flags);
-	Filter.SortByPathTypeAscending(true);
+	Filter.SortByPathTypeAscending(false);
 
 	if (localize)
 	{
