@@ -34,8 +34,11 @@ public:
 		if (OpenLogFiles.find(LogType) == OpenLogFiles.end())
 		{
 			auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
-			SCP_string LogFilePath = CFileModule->GetDefaultFilePath(SCPCFilePathTypeID::Data, LogFileNames.at(LogType));
-
+			OpenLogFiles[LogType] = CFileModule->OpenDefaultFileForWrite(LogFileNames.at(LogType), SCPCFilePathTypeID::Data);
 		}
+		Assertion(OpenLogFiles[LogType] != nullptr, "Couldn't open log file %s for writing!", LogFileNames.at(LogType));
+		SCP_string LogLine = fmt::sprintf(Format, Args...);
+		LogLine += "\n";
+		OpenLogFiles[LogType]->WriteString(LogLine);
 	}
 };

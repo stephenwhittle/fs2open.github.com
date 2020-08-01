@@ -7,7 +7,8 @@
 TEST_SUITE("CFile Module")
 {
 	tl::optional<SCPCFileModule&> ModuleHandle;
-	
+	//TODO: additional tests for seeking etc
+
 	TEST_CASE("CFile Module Initialization")
 	{
 		ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();

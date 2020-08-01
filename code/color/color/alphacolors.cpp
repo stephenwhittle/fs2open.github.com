@@ -11,6 +11,12 @@
 #include "color/SCPColorTable.h"
 #include "color/SCPColorTableDescriptor.h"
 #include "parse/SCPParser.h"
+
+#include "module/SCPModuleManager.h"
+#include "cfile/SCPCFileModule.h"
+#include "cfile/SCPCfileInfo.h"
+#include "cfile/SCPCFile.h"
+
 #include "FSStdTypes.h"
 #include "NOX.h"
 SCP_map<SCP_string, team_color> Team_Colors;
@@ -272,7 +278,13 @@ void alpha_colors_init()
 {
 	//initialize the global colors pointer
 	gColors = std::make_unique<SCPColorSet>(SCPColorSet::DefaultColors());
-
+	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
+	Assert(CFileModule);
+	auto ColorsTable = CFileModule->FindFileInfo("colors.tbl", SCPCFilePathTypeID::Tables);
+	if (ColorsTable.has_value())
+	{
+		CFileModule->CFileOpen(*ColorsTable, { SCPCFileMode::Read });
+	}
 	if (cf_exists_full("colors.tbl", CF_TYPE_TABLES)) {
 		SCP_buffer RootColorTableBuffer = read_file_text("colors.tbl", CF_TYPE_TABLES);
 		// moving the buffer into the function as we don't require it afterwards
