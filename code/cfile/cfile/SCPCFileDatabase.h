@@ -20,10 +20,10 @@ class DBResultIterator
 	bool HasMoreResults = false;
 
 public:
-	DBResultIterator(DBQuery<DataType, NumFields>* Query)
+	DBResultIterator(DBQuery<DataType, NumFields>* Query, bool RowAvailable)
 		:QueryBeingIterated(Query)
 	{
-		HasMoreResults = true;
+		HasMoreResults = RowAvailable;
 	}
 	DBResultIterator()
 	{
@@ -86,7 +86,7 @@ public:
 	
 	DBResultIterator<DataType, NumFields> begin()
 	{
-		DBResultIterator<DataType, NumFields> Iterator(this);
+		DBResultIterator<DataType, NumFields> Iterator(this, InternalStatement.hasRow());
 		return Iterator;
 	}
 

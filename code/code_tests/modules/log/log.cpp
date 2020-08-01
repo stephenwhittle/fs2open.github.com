@@ -14,4 +14,8 @@ TEST_SUITE("SCPLogModule Tests")
 	{
 		ModuleHandle->LogPrintF(SCPLogType::Events, "TestEvent %s", "TestArgument");
 	}
+	TEST_CASE("LogPrintF Multi")
+	{
+		ModuleHandle->LogPrintF(SCPLogType::Multiplayer, "TestMulti %s", "TestArgument");
+	}
 }

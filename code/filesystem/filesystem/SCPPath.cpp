@@ -62,3 +62,17 @@ SCPPath SCPPath::AddExtensionIfMissing(SCP_string Filename, SCP_string Extension
 	}
 	return TmpFilePath;
 }
+
+bool SCPPath::CreateDirectories(SCPPath DirectoryPath) 
+{
+	//TODO: @SCPPath make this more robust
+	if (DirectoryPath.has_extension())
+	{
+		return ghc::filesystem::create_directories(DirectoryPath.remove_filename());
+	}
+	else
+	{
+		return ghc::filesystem::create_directories(DirectoryPath);
+	}
+	
+}

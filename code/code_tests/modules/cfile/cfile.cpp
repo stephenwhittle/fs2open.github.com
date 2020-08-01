@@ -64,6 +64,10 @@ TEST_SUITE("CFile Module")
 		{
 			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 		}
+		SUBCASE("Read it")
+		{
+
+		}
 	}
 
 	TEST_CASE("CFile Open packed file") 
@@ -71,10 +75,11 @@ TEST_SUITE("CFile Module")
 		auto FileInfo = ModuleHandle->FindFileInfo("test2.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
 		REQUIRE(FileInfo);
 		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
+		SUBCASE("Read it") {}
 	}
 	TEST_CASE("CFile Open memory-mapped file")
 	{
-
+		SUBCASE("Read it") {}
 	}
 	TEST_CASE("Override default file")
 	{

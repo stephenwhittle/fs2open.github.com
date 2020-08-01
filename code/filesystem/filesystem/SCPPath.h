@@ -22,6 +22,7 @@ public:
 	static const char* GetFilename(const char* InPath);
 	static char* GetFilename(char* InPath);
 	static SCPPath AddExtensionIfMissing(SCP_string Filename, SCP_string ExtensionToAdd);
+	static bool CreateDirectories(SCPPath DirectoryPath);
 	SCPPath(const ghc::filesystem::path& InPath)
 		:ghc::filesystem::path(InPath) {};
 	SCPPath(const SCP_string& InString)

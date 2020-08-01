@@ -17,7 +17,8 @@ protected:
 	void AssertImpl(const char* Expression, const char* File, int Line, const char* Message) override
 	{
 		fmt::print(Expression);
-		fmt::print(Message);
+		if (Message != nullptr) fmt::print(Message);
+		throw;
 	}
 
 

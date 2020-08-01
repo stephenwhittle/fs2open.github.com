@@ -52,6 +52,7 @@ class SCPCFileModule : public SCPModule<SCPCFileModule>
 	void BuildCFileDatabase(const char* cdrom_dir);
 	void BuildFileList();
 	void AddFilesFromRoot(class SCPRootInfo Root);
+	SCP_string GetDefaultFilePath(SCPCFilePathTypeID PathType, SCP_string Filename = "", bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	int GetDefaultFilePath(char* path, uint path_max, int pathtype, const char* filename = nullptr, bool localize = false, SCPCFileLocationFlags location_flags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	void PopulateFilesInMemoryRoot(uint32_t RootID); 
 	void PopulateFilesInPackFile(uint32_t RootID);
@@ -80,8 +81,7 @@ public:
 		static SCPCFileDatabase Database;
 		return Database;
 	};
-	SCP_string GetDefaultFilePath(SCPCFilePathTypeID PathType, SCP_string Filename = "", bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
-
+	
 	void DumpOpenedFileList();
 	//Deprecated. Use CFileDatabase().AddRoot() instead
 	uint32_t AddRoot(class SCPRootInfo Root);
@@ -97,6 +97,6 @@ public:
 
 	//CFILE destructor should be responsible for calling fstream/close things
 	std::unique_ptr<CFILE> CFileOpen(const class SCPCFileInfo FileInfo, SCPCFileModeFlags Mode);
-	
+	std::unique_ptr<CFILE> OpenDefaultFileForWrite(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool Localize = false, SCPCFileLocationFlags LocationFlags = SCPCFileLocationALL, SCP_string LanguagePrefix = "");
 	tl::optional<SCPCFileInfo> FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, SCPCFileLocationFlags location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/);
 };

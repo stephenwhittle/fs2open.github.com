@@ -31,6 +31,8 @@ TEST_SUITE("Filesystem Module")
 		//compare, case insensitive
 		//get filename component
 		//Add extension if missing
+		//create directories, filename included
+		//create directories, no filename;
 	}
 	TEST_CASE("SCPDirectoryIterator")
 	{

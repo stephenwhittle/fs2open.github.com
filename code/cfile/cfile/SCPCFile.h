@@ -8,6 +8,7 @@
 #include "SCPCFilePathType.h"
 #include "SCPMembuf.h"
 #include "filesystem/SCPPath.h"
+#include "filesystem/SCPFile.h"
 enum class SCPCFileMode
 {
 	Append = 1,
@@ -113,19 +114,25 @@ public:
 			return;
 		}
 
-		std::fstream::openmode DesiredMode;
+		std::fstream::openmode DesiredMode = 0;
 
 		if (Mode.HasFlag(SCPCFileMode::Write))
 		{
-			DesiredMode = std::ios::out;
+			DesiredMode = std::ios::out | std::ios::app;
 			Writeable = true;
+			SCPPath::CreateDirectories(FilePath);
+		}
+		else
+		{
+			Assertion(SCPFile::Exists(FilePath), "Cannot open a non-existing file for read-only access!");
 		}
 
 		DesiredMode |= (std::ios::in | std::ios::binary);
 
 		// open the file using mode settings
+		
 		UnderlyingFile.open(FilePath.c_str(), DesiredMode);
-
+		Assert(UnderlyingFile.good());
 	}
 
 	CFILE(const SCPCallPermit<class SCPCFileModule>&, uintmax_t Size, void* DataPointer)
@@ -224,7 +231,20 @@ public:
 	void SeekEnd() {};
 	void Tell() {};
 	void WriteChar() {};
-	void WriteString() {};
+	bool WriteString(SCP_string StrToWrite) 
+	{
+		Assert(Writeable);
+		if (CurrentDataSource == EDataSource::LooseFile)
+		{
+			UnderlyingFile << StrToWrite;
+			UnderlyingFile.flush();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
 
 
 };

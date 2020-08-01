@@ -602,7 +602,7 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 {
 	if (!Mode.HasFlag(SCPCFileMode::Read))
 	{
-		GOutputDevice->Error("Attempted to open a file in write-only mode");
+		GOutputDevice->Error("Attempted to open a file in write-only mode\r\n");
 		return {};
 	}
 
@@ -616,7 +616,8 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 	switch (FileRoot->GetType() )
 	{
 	case SCPRootType::Path:
-		
+		//Assertion(!SCPFile::Exists(FileInfo.GetFullPath()), "Do not call CFileOpen for a file that does not exist!");
+
 		if (Mode.HasFlag(SCPCFileMode::MemoryMapped))
 		{
 			SCPFile MemMappedFile(FileInfo.GetFullPath());
@@ -646,6 +647,27 @@ std::unique_ptr<CFILE> SCPCFileModule::CFileOpen(const class SCPCFileInfo FileIn
 }
 
 
+
+std::unique_ptr<CFILE> SCPCFileModule::OpenDefaultFileForWrite(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool Localize /*= false*/, SCPCFileLocationFlags LocationFlags /*= SCPCFileLocationALL*/, SCP_string LanguagePrefix /*= ""*/)
+{
+	auto ExistingFile = FindFileInfo(FilePath, PathType, Localize, LocationFlags, LanguagePrefix);
+	if (ExistingFile)
+	{
+		tl::optional<SCPRootInfo> FileRoot = CFileDatabase().GetRootByID(ExistingFile->GetAssociatedRootID());
+
+		if (!FileRoot.has_value()) {
+			GOutputDevice->Warning(LOCATION, "Write access requested for an existing default file which has an invalid Root ID");
+			return {};
+		}
+		Assertion(FileRoot->GetType() == SCPRootType::Path, "Cannot open an existing default file for writing as it was not a loose file");
+		return CFileOpen(ExistingFile.value(), { SCPCFileMode::Read, SCPCFileMode::Write, SCPCFileMode::Binary });
+	}
+	else
+	{
+		SCP_string DefaultFilePath = GetDefaultFilePath(PathType, FilePath, Localize, LocationFlags, LanguagePrefix);
+		return std::make_unique<CFILE>(SCPCallPermit<SCPCFileModule>{}, SCPPath(DefaultFilePath), SCPCFileModeFlags { SCPCFileMode::Read, SCPCFileMode::Write, SCPCFileMode::Binary });
+	}
+}
 
 tl::optional<SCPCFileInfo> SCPCFileModule::FindFileInfo(const SCPPath FilePath, SCPCFilePathTypeID PathType, bool localize /*= false*/, SCPCFileLocationFlags location_flags /*= CF_LOCATION_ALL*/, SCP_string LanguagePrefix /*= ""*/)
 {
