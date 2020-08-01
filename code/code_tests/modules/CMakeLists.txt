@@ -5,6 +5,7 @@ set (test_sources
 	cmdline/cmdline.cpp
 	filesystem/filesystem.cpp
 	log/log.cpp
+	color/color.cpp
 )
 
 list (TRANSFORM test_sources PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/")

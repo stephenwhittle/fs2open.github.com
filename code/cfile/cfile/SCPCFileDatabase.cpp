@@ -8,7 +8,7 @@
 #include "../sqlite3/sqlite3.h"
 #include "SQLiteCpp/VariadicBind.h"
 #include "SCPProfiling.h"
-
+#include <regex>
  SCPCFileDatabase::SCPCFileDatabase()
 	: InternalDB(":memory:", SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE)
 {
@@ -134,8 +134,15 @@
 
 		size_t InputLength = sqlite3_value_bytes(argv[1]);
 		const char* Input = (const char*)sqlite3_value_text(argv[1]);
-
-
+		std::regex PatternRegex = std::regex(Pattern, std::regex_constants::icase);
+		if (std::regex_search(Input, PatternRegex))
+		{
+			sqlite3_result_int(context, 1);
+		}
+		else
+		{
+			sqlite3_result_int(context, 0);
+		}
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(), "regexp", -1, SQLITE_UTF8, nullptr, RegexMatch, nullptr, nullptr);
