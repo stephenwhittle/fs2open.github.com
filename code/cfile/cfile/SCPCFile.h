@@ -53,6 +53,8 @@ class CFILE
 {
 
 private:
+	enum class CFileEncryptionMagic;
+	CFileEncryptionMagic DetectFileEncryption();
 	enum class EDataSource
 	{
 		NotInitialized,
@@ -162,35 +164,7 @@ public:
 
 	SCPCFilePathTypeID GetDirectoryType() { return dir_type; }
 
-	SCP_buffer ReadAllContentsIntoBuffer()
-	{
-			SCP_buffer raw_text = SCP_buffer(size + 1);
-			ReadBytes(raw_text.Data(), std::min(size, (uintmax_t)10));
-
-			file_is_encrypted = is_encrypted(raw_text.Data());
-			SeekAbsolute(0);
-
-			//this will need to calculate the offset
-			uintmax_t RealLength = check_encoding_and_skip_bom(mf, filename);
-
-			if (file_is_encrypted) {
-				int unscrambled_len;
-				SCP_buffer unscrambled_text = SCP_buffer(RealLength + 1);
-
-				ReadBytes(unscrambled_text.Data(), RealLength);
-				
-				// unscramble text
-				unencrypt(unscrambled_text.Data(), file_len, raw_text.Data(), &unscrambled_len);
-				file_len = unscrambled_len;
-			} else {
-				cfread(raw_text.Data(), RealLength);
-			}
-
-			// WMC - Slap a NULL character on here for the odd error where we forgot a #End
-			raw_text[RealLength] = '\0';
-			SeekAbsolute(0);
-			return raw_text;
-	}
+	SCP_buffer ReadAllContentsIntoBuffer();
 
 	template<typename DestinationType>
 	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount)
@@ -256,10 +230,10 @@ public:
 
 	}
 
-	void SeekAbsolute(uintmax_t Position) {};
-	void SeekRelative() {};
-	void SeekEnd() {};
-	void Tell() {};
+	void SeekAbsolute(uintmax_t Position);
+	void SeekRelative(std::intmax_t Offset);
+	//void SeekEnd() {};
+	std::uintmax_t Tell();
 	void WriteChar() {};
 	bool WriteString(SCP_string StrToWrite) 
 	{

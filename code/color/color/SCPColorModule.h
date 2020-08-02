@@ -10,7 +10,7 @@ public:
 
 	void ShutdownModule() override {}
 	
-	std::unique_ptr<SCPColorSet> Colors;
+	std::unique_ptr<class SCPColorSet> Colors;
 
 	static SCPColorModule ConstructModule(class SCPCFileModule&)
 	{

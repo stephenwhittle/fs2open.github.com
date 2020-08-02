@@ -152,7 +152,7 @@ void lcl_init(int lang_init)
 	FileFilter StringTableFiles;
 	StringTableFiles.PathTypeIs(SCPCFilePathTypeID::Tables);
 	StringTableFiles.SortByFilenameAscending(false);
-	StringTableFiles.ExtensionMatchesRegex("*-lcl.tbm");
+	StringTableFiles.FilenameMatchesRegex("*-lcl.tbm");
 
 	for (SCPCFileInfo StringTableFileInfo : CFileModule->CFileDatabase().Files(StringTableFiles))
 	{

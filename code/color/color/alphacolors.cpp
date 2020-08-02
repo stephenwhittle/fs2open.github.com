@@ -5,7 +5,7 @@
  * or otherwise commercially exploit the source or things you created based on the 
  * source.
  *
-*/ 
+ 
 
 #include "color/alphacolors.h"
 #include "color/SCPColorTable.h"
@@ -242,38 +242,15 @@ color *Color_netplayer[NETPLAYER_COLORS] = {
 
 std::unique_ptr<SCPColorSet> gColors;
 
-template <>
-tl::optional<SCPColorReference> construct(const SCPParsedTableData& InData)
-{
-	auto ColorString = construct<std::string>(InData);
-	if (ColorString.has_value()) {
-		if ((ColorString->size() == 2) && (*(ColorString->begin()) == '$')) {
-			// Return a color reference to the specified tag
-			return SCPColorReference((*ColorString)[1]);
-		} else {
-			return SCPColorReference(*ColorString);
-		}
-	}
-	return tl::optional<SCPColorReference>();
-}
 
-template <>
-tl::optional<team_color> construct(const SCPParsedTableData& InData)
-{
-	tl::optional<std::string> StripeColor = construct<std::string>(*InData.nodes[1]);
-	tl::optional<std::string> BaseColor = construct<std::string>(*InData.nodes[2]);
-	team_color NewColor;
-	return NewColor;
-}
 
 // -----------------------------------------------------------------------------------
 // ALPHA FUNCTIONS
 //
 
-/**
+*
 * CommanderDJ: initialise alpha colors based on colors.tbl
 * Made modular and given a wider range of features by MageKing17
-*/
 void alpha_colors_init()
 {
 	//initialize the global colors pointer
@@ -301,7 +278,6 @@ void alpha_colors_init()
 		}
 	}
 }
-/*
 
 void parse_colors(const char *filename)
 {
@@ -379,8 +355,6 @@ void parse_colors(const char *filename)
 		return;
 	}
 }
-*/
-/*
 
 void parse_everything_else(const char *filename)
 {

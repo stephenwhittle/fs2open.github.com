@@ -1,6 +1,9 @@
 #include "FSStdTypes.h"
 #include "cfile/SCPCFileModule.h"
+#include "cfile/SCPCFileInfo.h"
 #include "color/SCPColorModule.h"
+#include "color/SCPColorTable.h"
+#include "color/SCPColorTableDescriptor.h"
 #include "module/SCPModuleManager.h"
 #include "parse/SCPParser.h"
 

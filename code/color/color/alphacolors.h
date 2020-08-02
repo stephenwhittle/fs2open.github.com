@@ -20,6 +20,7 @@
 
 // Colors for UI
 // See FreeSpace.cpp for usage
+/*
 
 #define INTERFACE_COLORS 13
 extern color Color_text_normal, Color_text_subselected, Color_text_selected;
@@ -61,62 +62,6 @@ extern char default_recommendation_color;
 extern char default_loop_briefing_color;
 
 
-class SCPColorSet;
-
-class SCPColorReference
-{
-	tl::optional<std::string> ColorName;
-	tl::optional<char> ColorTag;
-	tl::optional<color&> ResolvedColorReference;
-	tl::optional<color> SpecifiedColor;
-public:
-	SCPColorReference(std::string Name)
-		:ColorName(Name) {};
-	
-	SCPColorReference(color ColorToUse)
-		: SpecifiedColor(ColorToUse) {};
-	
-	SCPColorReference(char ColorTag)
-		: ColorTag(ColorTag) {};
-	
-	SCPColorReference(const SCPColorReference& Other)
-		:ColorName(Other.ColorName),
-		ColorTag(Other.ColorTag),
-		ResolvedColorReference(Other.ResolvedColorReference),
-		SpecifiedColor(Other.SpecifiedColor) {};
-	
-	SCPColorReference()
-		:SpecifiedColor(color()) {};
-
-	color& operator=(const SCPColorReference& InColorRef)
-	{
-		if (SpecifiedColor.has_value()) 
-		{
-			return *SpecifiedColor;
-		}
-
-		if (!ResolvedColorReference.has_value())
-		{
-			if (ColorName.has_value())
-			{
-				//resolve color name;
-			}
-			else if (ColorTag.has_value())
-			{
-				//resolve color by tag;
-			}
-			
-		}
-
-		return *ResolvedColorReference;
-	}
-};
-
-template<>
-tl::optional<SCPColorReference> construct(const SCPParsedTableData& InData);
-
-template<>
-tl::optional<team_color> construct(const SCPParsedTableData& InData);
 
 extern std::unique_ptr<SCPColorSet> gColors;
 
@@ -125,6 +70,6 @@ extern std::unique_ptr<SCPColorSet> gColors;
 //
 
 //initialize alpha colors based on colors.tbl
-void alpha_colors_init();
+void alpha_colors_init();*/
 
 #endif

@@ -1,6 +1,6 @@
 #pragma once
 #include "parse/SCPTable.h"
-#include "color/alphacolors.h"
+#include "color/SCPColor.h"
 
 
 
