@@ -1,0 +1,1547 @@
+#Mission Info
+
+$Version: 0.10
+$Name: Training Mission 3
+$Author: Brad Johnson
+$Created: 01/05/98 at 11:44:52
+$Modified: 05/20/98 at 14:27:18
+$Notes:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is a FRED created mission
+$End Notes:
+
+$Mission Desc:
+Put mission description here
+$end_multi_text
+
++Game Type Flags: 4
+
++Flags: 0
+
++Red Alert: 0
+
++Scramble: 0
+
++Disallow Support: 1
+
++Player Entry Delay:
+1.000000
+
++Viewer pos: -148.500580, 806.825806, -570.996399
++Viewer orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.643206, 0.765693,
+	0.000000, -0.765693, 0.643206
+
+#Plot Info
+
+$Tour: Blah
+$Pre-Briefing Cutscene: Blah
+$Pre-Mission Cutscene: Blah
+$Next Mission Success: Blah
+$Next Mission Partial: Blah
+$Next Mission Failure: Blah
+
+#Command Briefing
+
+#Briefing
+$start_briefing
+$num_stages: 2
+$start_stage
+$multi_text
+Welcome to the final phase of basic training.  In this phase, your dogfight ability will be put to the test.
+
+$end_multi_text
+$voice: Btm3_brief_01.wav
+$camera_pos: -148.500580, 806.825806, -570.996399
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.643206, 0.765693,
+	0.000000, -0.765693, 0.643206
+$camera_time: 500
+$num_lines: 0
+$num_icons: 1
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 22
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: Alpha 1
++id: 1
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$start_stage
+$multi_text
+You will be required to engage multiple waves of fighter drones.  Some will be armed.  You are expected to destroy as many of them as possible.  Good luck.
+$end_multi_text
+$voice: Btm3_brief_02.wav
+$camera_pos: -148.500580, 806.825806, -570.996399
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.643206, 0.765693,
+	0.000000, -0.765693, 0.643206
+$camera_time: 500
+$num_lines: 0
+$num_icons: 2
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 22
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: Alpha 1
++id: 1
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 1
+$team: Hostile
+$class: GTDR Amazon
+$pos: 157.299118, -0.000002, 139.690765
+$label: Drones
++id: 2
+$hlight: 1
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$end_briefing
+
+#Debriefing_info
+
+$Num stages: 3
+
+$Formula: ( and
+   ( is-destroyed-delay
+      0
+      "Drone 08"
+      "Drone 09"
+      "Drone 10"
+      "Drone 11"
+      "Drone 12"
+      "Drone 13"
+      "Drone 14"
+      "Drone 15"
+      "Drone 16"
+      "Drone 17"
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   You destroyed all ten drones. Congratulations.  This completes your basic training.  Welcome to the GTA League of Defense.
+$end_multi_text
+$Voice: Btm3_debrief_01.wav
+$Recommendation text:
+   
+$end_multi_text
+
+$Formula: ( and
+   ( not
+      ( is-destroyed-delay
+         0
+         "Drone 08"
+         "Drone 09"
+         "Drone 10"
+         "Drone 11"
+         "Drone 12"
+         "Drone 13"
+         "Drone 14"
+         "Drone 15"
+         "Drone 16"
+         "Drone 17"
+      )
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   You were unable to destroy all of the drones.  Dogfighting skills are what keep pilots alive and will win this war.  Without them you cannot be accepted into the ranks of the GTA League of Defense.
+$end_multi_text
+$Voice: Btm3_debrief_02.wav
+$Recommendation text:
+   Practice your dogfighting skills.
+$end_multi_text
+
+$Formula: ( special-check 2000 ) 
+$Multi text
+   Firing upon your Instructor is grounds for immediate failure.  You will be required to redo this stage of training.
+$end_multi_text
+$Voice: training_traitor.wav
+$Recommendation text:
+   Don't shoot at your Instructor.
+$end_multi_text
+
+#Players		;! 1 total
+
+$Starting Shipname: Alpha 1
+$Ship Choices: (
+)
+
++Weaponry Pool: (
+	"ML-16 Laser"	2
+	"Disruptor"	1
+	"MX-50"	40
+	"Fury"	40
+)
+
+#Objects		;! 19 total
+
+$Name: Alpha 1		;! Object #0
+$Class: GTF Apollo
+$Team: Friendly
+$Location: 0.000000, 0.000000, 0.000000
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "ML-16 Laser" "ML-16 Laser" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" "player-start" )
++Group: 0
+
+$Name: Instructor		;! Object #1
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -50.531948, 0.000232, 92.127235
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "ML-16 Laser" "" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "invulnerable" )
++Orders Accepted: 0		;! note that this is a bitfield!!!
++Group: 0
+
+$Name: Drone 01		;! Object #2
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 17.643118, -0.000001, 417.588470
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-stay-still "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" )
+$Arrival Location: In front of ship
++Arrival Distance: 300
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( is-event-true-delay
+   "Lead Indicator"
+   10
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" )
++Group: 0
+
+$Name: Drone 02		;! Object #3
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -109.943199, 0.000005, 372.094635
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 50
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" )
+$Arrival Location: Near Ship
++Arrival Distance: 700
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( is-event-true-delay
+   "Player Kill Drone 3"
+   8
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" )
++Group: 0
+
+$Name: Drone 03		;! Object #4
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 157.779968, 0.000001, 409.151489
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 50
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" )
+$Arrival Location: Near Ship
++Arrival Distance: 650
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( is-event-true-delay
+   "Player Kill Drone 3"
+   8
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" )
++Group: 0
+
+$Name: Drone 04		;! Object #5
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 23.353788, -0.000021, 204.500397
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-evade-ship "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 700
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( is-event-true-delay
+      "2 New Drones 1 1/2"
+      10
+   )
+   ( > ( hits-left "Alpha 1" ) 49 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 50 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 06		;! Object #6
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 193.800644, -0.000023, 93.130875
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" )
+$Arrival Location: Near Ship
++Arrival Distance: 700
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( has-arrived-delay 4 "Drone 05" ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 05		;! Object #7
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 120.797600, 0.000020, 93.130852
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" )
+$Arrival Location: Near Ship
++Arrival Distance: 650
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( is-event-true-delay "Retry" 0 ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 07		;! Object #8
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 169.739548, 0.000012, 186.250671
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-evade-ship "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 700
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( is-event-true-delay
+   "Destroy Drones 5 and 6"
+   5
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( < ( hits-left "Alpha 1" ) 15 ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 08		;! Object #9
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -501.305725, 0.000133, 205.530960
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 25
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 850
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( or
+   ( is-event-true-delay "Incoming" 6 ) 
+   ( is-event-true-delay "Incoming 2" 6 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 08" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 09		;! Object #10
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -401.720581, 0.000140, 198.022842
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 25
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 800
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( or
+   ( is-event-true-delay "Incoming" 6 ) 
+   ( is-event-true-delay "Incoming 2" 6 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 08" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 10		;! Object #11
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -508.281677, 0.000128, 99.653923
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 35
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 850
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 08" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 08"
+         "Drone 09"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 10" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 11		;! Object #12
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -404.965485, 0.000142, 97.945419
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 35
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 800
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 08" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 08"
+         "Drone 09"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 10" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 12		;! Object #13
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -505.157104, 0.000125, 1.752362
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 50
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 850
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 10" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 10"
+         "Drone 11"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 12" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 13		;! Object #14
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -407.516815, 0.000169, -1.357010
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 50
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 800
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 10" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 10"
+         "Drone 11"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 12" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 14		;! Object #15
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -506.968323, 0.000081, -101.717972
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 75
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 850
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 12" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 12"
+         "Drone 13"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 14" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 15		;! Object #16
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -400.516052, 0.000077, -100.313683
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 75
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 800
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 12" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 12"
+         "Drone 13"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 30 "Drone 14" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 16		;! Object #17
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -503.557739, 0.000148, -196.478531
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 850
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 14" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 14"
+         "Drone 15"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 45 "Drone 16" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+$Name: Drone 17		;! Object #18
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -397.860718, 0.000090, -204.063690
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-chase "Alpha 1" 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Near Ship
++Arrival Distance: 800
+$Arrival Anchor: Alpha 1
+$Arrival Cue: ( and
+   ( or
+      ( has-arrived-delay 30 "Drone 14" ) 
+      ( is-destroyed-delay
+         0
+         "Drone 14"
+         "Drone 15"
+      )
+   )
+   ( > ( hits-left "Alpha 1" ) 14 ) 
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( or
+   ( < ( hits-left "Alpha 1" ) 15 ) 
+   ( has-arrived-delay 45 "Drone 16" ) 
+)
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Group: 0
+
+#Wings		;! 1 total
+
+$Name: Alpha
+$Waves: 1
+$Wave Threshold: 0
+$Special Ship: 0		;! Alpha 1
+
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 1 total
+	"Alpha 1"
+)
++Hotkey: 0
++Flags:( )
+
+#Events		;! 43 total
+
+$Formula: ( when
+   ( has-time-elapsed 3 ) 
+   ( training-msg
+      "Welcome"
+      "Welcome"
+      0
+      9
+   )
+)
++Name: Welcome
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Target Instructor" ) 
+   ( key-reset "T" ) 
+)
++Name: Target Instuctor
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( targeted "Instructor" ) 
+   ( add-goal
+      "Instructor"
+      ( ai-waypoints-once
+         "Waypoint path 1"
+         89
+      )
+   )
+)
++Name: Instructor Fly
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Target Instructor
++Objective key: Press $t$
+
+$Formula: ( when
+   ( <
+      ( distance
+         "Waypoint path 1:1"
+         "Instructor"
+      )
+      10
+   )
+   ( training-msg "Lead Indicator" ) 
+   ( flash-hud-gauge "LEAD_INDICATOR" ) 
+)
++Name: Lead Indicator
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( has-arrived-delay 3 "Drone 01" ) 
+   ( training-msg "Target Drone" ) 
+)
++Name: Target Drone
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( and
+      ( targeted "Drone 01" ) 
+      ( is-event-incomplete "End Mission 3" ) 
+   )
+   ( training-msg "Review" "Review" 0 9 ) 
+   ( flash-hud-gauge "TARGET_MONITOR" ) 
+)
++Name: Review
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Target Drone
++Objective key: Press $T$
+
+$Formula: ( when
+   ( is-event-incomplete "End Mission 3" ) 
+   ( training-msg
+      "Hull Strength"
+      "Hull Strength"
+      0
+      8
+   )
+   ( flash-hud-gauge "TARGER_MINI_ICON" ) 
+)
++Name: Hull Strength
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-incomplete "End Mission 3" ) 
+   ( unprotect-ship "Drone 01" ) 
+   ( training-msg
+      "Instructor Hurt Drone"
+   )
+   ( flash-hud-gauge "TARGER_MINI_ICON" ) 
+   ( add-goal
+      "Instructor"
+      ( ai-chase "Drone 01" 89 ) 
+   )
+)
++Name: Unprotect Drone
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( < ( hits-left "Drone 01" ) 80 ) 
+   ( protect-ship "Drone 01" ) 
+   ( clear-goals "Instructor" ) 
+   ( add-goal
+      "Instructor"
+      ( ai-stay-still "Alpha 1" 89 ) 
+   )
+   ( add-goal
+      "Drone 01"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Protect Drone
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-incomplete "End Mission 3" ) 
+   ( training-msg
+      "Player Kill Drone"
+      "Player Kill Drone"
+      0
+      8
+   )
+   ( key-reset "M" ) 
+)
++Name: Player Kill Drone
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( and
+      ( key-pressed "M" ) 
+      ( is-event-incomplete "End Mission 3" ) 
+   )
+   ( training-msg
+      "Player Kill Drone 2"
+      "Player Kill Drone 2"
+      0
+      9
+   )
+)
++Name: Player Kill Drone 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Match Speed
++Objective key: Press $M$
+
+$Formula: ( when
+   ( is-destroyed-delay 0 "Drone 01" ) 
+   ( training-msg
+      "Player Kill Drone 3"
+      "Player Kill Drone 3"
+      0
+      8
+   )
+)
++Name: Player Kill Drone 3
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Destroy Drone
+
+$Formula: ( when
+   ( has-arrived-delay
+      0
+      "Drone 02"
+      "Drone 03"
+   )
+   ( training-msg "2 New Drones" ) 
+)
++Name: 2 New Drones
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Auto Targeting" ) 
+)
++Name: 2 New Drones 1 1/2
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( is-destroyed-delay
+      0
+      "Drone 02"
+      "Drone 03"
+   )
+   ( training-msg "2 New Drones Dead" ) 
+)
++Name: 2 New Drones 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Destroy 2 and 3
+
+$Formula: ( when
+   ( has-arrived-delay 0 "Drone 04" ) 
+   ( training-msg "Firing Drone" ) 
+)
++Name: Firing Drone
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( has-arrived-delay 12 "Drone 04" ) 
+   ( add-goal
+      "Drone 04"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Firing Drone 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( has-arrived-delay 12 "Drone 07" ) 
+   ( add-goal
+      "Drone 07"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Firing Drone 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( < ( hits-left "Alpha 1" ) 25 ) 
+      ( is-event-incomplete "Incoming" ) 
+   )
+   ( training-msg "End Mission" ) 
+   ( add-goal
+      "Instructor"
+      ( ai-guard "Alpha 1" 89 ) 
+   )
+)
++Name: End Mission
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( key-pressed "Alt-J" ) 
+   ( do-nothing ) 
+)
++Name: End Mission Directive
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Jump Back To Base
++Objective key: Press $alt-j$
+
+$Formula: ( when ( false ) ( do-nothing ) ) 
++Name: Dummy Event
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( has-departed-delay 0 "Drone 04" ) 
+      ( is-event-incomplete "End Mission" ) 
+   )
+   ( training-msg
+      "The Player Sucks"
+      "The Player Sucks"
+      0
+      9
+   )
+)
++Name: The Player Sucks
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Retry" ) 
+)
++Name: Retry
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-destroyed-delay
+      0
+      "Drone 06"
+      "Drone 05"
+   )
+   ( training-msg "2 New Drones Dead" ) 
+)
++Name: Destroy Drones 5 and 6
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Destroy 5 and 6
+
+$Formula: ( when
+   ( has-arrived-delay 0 "Drone 07" ) 
+   ( training-msg "Retry 2" ) 
+)
++Name: Retry 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-destroyed-delay 4 "Drone 04" ) 
+   ( training-msg "Incoming" ) 
+)
++Name: Incoming
++Repeat Count: 1
++Interval: 1
++Objective: Destroy Drone 4
+
+$Formula: ( when
+   ( is-destroyed-delay 4 "Drone 07" ) 
+   ( training-msg "Incoming" ) 
+)
++Name: Incoming 2
++Repeat Count: 1
++Interval: 1
++Objective: Destroy Drone 7
+
+$Formula: ( when
+   ( and
+      ( < ( hits-left "Alpha 1" ) 15 ) 
+      ( has-arrived-delay 0 "Drone 08" ) 
+   )
+   ( training-msg "End Mission 2" ) 
+)
++Name: End Mission 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 08" ) 
+      ( is-destroyed-delay 0 "Drone 09" ) 
+   )
+   ( do-nothing ) 
+)
++Name: Destroy 08 and 09
++Repeat Count: 1
++Interval: 1
++Objective: Destroy 8 and 9
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 10" ) 
+      ( is-destroyed-delay 0 "Drone 11" ) 
+   )
+   ( do-nothing ) 
+)
++Name: Destroy 10 and 11
++Repeat Count: 1
++Interval: 1
++Objective: Destroy 10 and 11
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 12" ) 
+      ( is-destroyed-delay 0 "Drone 13" ) 
+   )
+   ( do-nothing ) 
+)
++Name: Destroy 12 and 13
++Repeat Count: 1
++Interval: 1
++Objective: Destroy 12 and 13
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 14" ) 
+      ( is-destroyed-delay 0 "Drone 15" ) 
+   )
+   ( do-nothing ) 
+)
++Name: Destroy 14 and 15
++Repeat Count: 1
++Interval: 1
++Objective: Destroy 14 and 15
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 16" ) 
+      ( is-destroyed-delay 0 "Drone 17" ) 
+   )
+   ( do-nothing ) 
+)
++Name: Destroy 16 and 17
++Repeat Count: 1
++Interval: 1
++Objective: Destroy 16 and 17
+
+$Formula: ( when
+   ( is-destroyed-delay
+      0
+      "Drone 08"
+      "Drone 09"
+      "Drone 10"
+      "Drone 11"
+      "Drone 12"
+      "Drone 13"
+      "Drone 14"
+      "Drone 15"
+      "Drone 16"
+      "Drone 17"
+   )
+   ( training-msg "All Destroyed" ) 
+)
++Name: All Destroyed
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( key-pressed "Alt-J" ) 
+   ( do-nothing ) 
+)
++Name: All Destroyed Directive
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Jump Back To Base
++Objective key: Press $alt-j$
+
+$Formula: ( when ( false ) ( do-nothing ) ) 
++Name: Dummy Event 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 0 "Drone 01" ) 
+      ( is-event-incomplete
+         "Player Kill Drone 2"
+      )
+   )
+   ( training-msg "End Mission 3" ) 
+)
++Name: End Mission 3
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( key-pressed "Alt-J" ) 
+   ( do-nothing ) 
+)
++Name: End Mission 3 Directive
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Jump Back To Base
++Objective key: Press $alt-j$
+
+$Formula: ( when ( false ) ( do-nothing ) ) 
++Name: Dummy Event 3
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( or
+         ( has-departed-delay
+            0
+            "Drone 16"
+            "Drone 17"
+         )
+         ( is-destroyed-delay
+            0
+            "Drone 16"
+            "Drone 17"
+         )
+         ( and
+            ( is-destroyed-delay 0 "Drone 16" ) 
+            ( has-departed-delay 0 "Drone 17" ) 
+         )
+         ( and
+            ( is-destroyed-delay 0 "Drone 17" ) 
+            ( has-departed-delay 0 "Drone 16" ) 
+         )
+      )
+      ( is-event-false-delay
+         "All Destroyed"
+         0
+      )
+   )
+   ( training-msg "End Mission 4" ) 
+)
++Name: End Mission 4
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( key-pressed "Alt-J" ) 
+   ( do-nothing ) 
+)
++Name: End Mission 4 Directive
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Jump Back To Base
++Objective key: Press $alt-j$
+
+$Formula: ( when
+   ( is-goal-true-delay
+      "Dogfight Training"
+      0
+   )
+   ( grant-promotion ) 
+)
++Name: Promotion time
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( is-goal-true-delay
+         "Dogfight Training"
+         0
+      )
+      ( is-previous-goal-true
+         "btm-02"
+         "Combat Training"
+      )
+      ( is-previous-goal-true
+         "btm-01"
+         "Flight Training"
+      )
+   )
+   ( grant-medal "Wings" ) 
+)
++Name: Wings
++Repeat Count: 1
++Interval: 1
+
+#Goals		;! 1 total
+
+$Type: Primary
++Name: Dogfight Training
+$Message: Complete Basic Dogfight Training
+$Rating: 10
+$Formula: ( is-event-true-delay
+   "All Destroyed"
+   0
+)
+
+#Waypoints		;! 1 lists total
+
+$Name: Waypoint path 1
+$List: (		;! 2 points in list
+	( -133.398270, -0.000141, 223.086761 )
+	( 211.280518, 0.000063, 347.929138 )
+)
+
+#Messages		;! 187 total
+
+
+$Name: Welcome
+$Message: Welcome to Phase Three of your training.  This phase will cover dog fighting techniques.
++Wave Name: Btm3_01.wav
+
+$Name: Target Instructor
+$Message: First, target my ship.  [Press $T$]
++Wave Name: Btm3_02.wav
+
+$Name: Lead Indicator
+$Message: You'll notice as I move, a circular indicator moves in front of my ship.  That is the lead indicator.  It indicates where you need to fire your primary weapon to hit your target.
++Wave Name: Btm3_03.wav
+
+$Name: Target Drone
+$Message: Target the unarmed drone that has just arrived.  [Press $T$]
++Wave Name: Btm3_04.wav
+
+$Name: Review
+$Message: The target box in the lower left-hand corner of the HUD displays the distance to and hull integrity of your target.
++Wave Name: Btm3_05.wav
+
+$Name: Hull Strength
+$Message: Your target's hull strength is also shown in the lower part of your reticle.
++Wave Name: Btm3_06.wav
+
+$Name: Instructor Hurt Drone
+$Message: As I shoot the drone, notice its hull integrity drop slowly.
++Wave Name: Btm3_07.wav
+
+$Name: Player Kill Drone
+$Message: A good dog fighting tactic is matching speeds with your target.  I want you to match speeds with the drone.  [Press $M$]
++Wave Name: Btm3_08.wav
+
+$Name: Player Kill Drone 2
+$Message: You should be on the move at all times during a dogfight.  Now destroy the drone.
++Wave Name: Btm3_09.wav
+
+$Name: Player Kill Drone 3
+$Message: Don't forget you also have missiles.  [Press $spacebar$]
++Wave Name: Btm3_10.wav
+
+$Name: 2 New Drones
+$Message: Two new unarmed drones have arrived.  Destroy both of them.  Remember to match their speed.  [Press $M$]
++Wave Name: Btm3_11.wav
+
+$Name: 2 New Drones Dead
+$Message: Good job.
++Wave Name: Btm3_12.wav
+
+$Name: Firing Drone
+$Message: This drone is armed.  It will start firing upon you in as little as 10 seconds.  Destroy it.
++Wave Name: Btm3_13.wav
+
+$Name: The Player Sucks
+$Message: Pilot, what are you doing, taking this much damage from a drone?!  Imagine what the Vasudans will do to you!
++Wave Name: Btm3_14.wav
+
+$Name: Retry
+$Message: Try this again.  Here come two more unarmed drones.  Destroy them.
++Wave Name: Btm3_15.wav
+
+$Name: Retry 2
+$Message: Here is an armed drone.  You have 10 seconds before it opens fire.  Destroy it.
++Wave Name: Btm3_16.wav
+
+$Name: End Mission
+$Message: Pilot, you are by no means ready to go to battle.  Jump back to base for rescheduling of training Phase 3.  [Press $alt-j$]
++Wave Name: Btm3_17.wav
+
+$Name: Incoming
+$Message: Now comes the fun part.  Five pairs of armed drones will jump in.  Destroy as many as you can.
++Wave Name: Btm3_18.wav
+
+$Name: End Mission 2
+$Message: Looks like you've had enough.  Report back to base.  [Press $alt-j$]
++Wave Name: Btm3_19.wav
+
+$Name: End Mission 3
+$Message: Inability to follow instructions results in immediate failure.  Jump back to base for rescheduling of training Phase 3.  [Press $alt-j$]
++Wave Name: Btm3_20.wav
+
+$Name: All Destroyed
+$Message: Great job, pilot.  Basic training is complete.  Return to base.  [Press $alt-j$]
++Wave Name: Btm3_21.wav
+
+$Name: End Mission 4
+$Message: Basic training is complete.  Let's head back to base.  [Press $alt-j$]
++Wave Name: Btm3_22.wav
+
+$Name: Auto Targeting
+$Message: An easy way to target new hostiles is by using auto targeting.  [Press $alt-h$]  This will automatically target your nearest hostile after your current target has either left the area or has been destroyed.
++Wave Name: Btm3_23.wav
+
+#Reinforcements		;! 0 total
+
+
+#Background bitmaps		;! 1 total
+
+$Num stars: 500
+$Ambient light level: 0
++Nebula: Nebula01
++Color: Grey blue
++Pitch: 0
++Bank: 0
++Heading: 0
+
+$Bitmap: Sun01
+$Orientation:
+	0.002323, 0.257756, 0.966207,
+	-0.973649, 0.220919, -0.056594,
+	-0.228041, -0.940615, 0.251477
+$Rotation rate: 0.000000
+$Distance: 10.000000
+$Light: 0
+
+#Asteroid Fields
+
+#Music
+
+$Event Music: 1: Fortress
+$Briefing Music: BRIEF1
+
+#End
+

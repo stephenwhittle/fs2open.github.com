@@ -1,0 +1,1934 @@
+;
+;  weapons.tbl
+;
+;  file to specify the weapon characteristics for Freespace weapons
+;
+;  weapons fall into three categories -- see weapon.doc in the
+;  freespace Specs folder for more information.
+
+; Real FreeSpace weapons!
+; From weapons.doc, Adam's spec.
+; 7 Light Laser Cannon: Much like Descent lasers.  Less powerful than Heavies.
+; 7 Heavy Laser Cannon: Self-explanatory.  Fires slightly slower.
+; 7 Mass Driver Cannon: Fires shells of some sort, but oddly uses energy, since it's a cannon.
+; 7 Flail Cannon: Rapid-fire energy-based weapon.  Shoots many smaller, rapid lasers.
+; 7 Neutron Flux Cannon: Similar to Heavy Lasers, but more punch.  Could use a better name here.
+;
+; --------------------
+; Ordering of entries:
+; --------------------
+;
+; All primary weapons are listed in the first section, followed by secondary weapons in the next.
+; Within each of these 2 sections, normal weapons should be listed first, followed by weapons
+; that are only allowed on big ships, and following that, weapons that aren't allowed on any ships.
+;
+; -------------------------------
+; A note regarding weapon sounds:
+; -------------------------------
+;	The index corresponds to the sounds.tbl index.  If you want a new weapon sound, you must first
+;	add it to sounds.tbl.  If you don't want to assign a sound, put -1 as the index.
+;
+; ---------------
+; Missile damage:
+; ---------------
+; The following fields determine the missile damage:
+;	$Damage:				The damage applied within the inner radius of the blast
+;	$Inner Radius:		The radius at which damage is 100% of $Damage field
+;							(0 for impact only)
+;	$Outer Radius:		The radius at which damage is applied.  $Damage decreases
+;							linearly from $Inner Radius to $Outer Radius
+;	$Shockwave Speed:	The speed of the shockwave (0 for no shockwave)
+;
+; ---------------
+; Interface Art:
+; ---------------
+;
+; $Icon:	filename that holds icon frames used in weapons selection
+; $Anim: filename that holds weapon animation used in weapons selection
+; 
+; ---------------
+; Misc
+; ----------------
+; $Impact Explosion:    Filename of animation to play when weapon impacts
+; $Impact Explosion Radius:  How big the explosion is. Required if Impact Explosion is not none
+;
+#Primary Weapons
+
+;; All these descriptions are from Duncan's weapons doc in the specs directory.  I added in little translations
+;; to help me fix the numbers for the weapons.  All weapons are in approximately the order of power, as well as the
+;; order in which you will have access to them.
+
+; ----------------------------------------------------------------------------------
+
+$Name:					@ML-16 Laser
++Title:					GTW ML-16 Laser
++Description:
+Standard issue
+Medium Hull Damage
+Minimal Shield Damage
+$end_multi_text
++Tech Description:
+GTW ML-16 
+
+Argon laser weapon - uses transparent ceramic technology in order to create an optical system that is extremely durable and stable under battle conditions - provides adequate destructive damage to the hull of enemy ships by vaporizing molecular bonds at the target area and destabilizing molecular bonds across the grain of the hull material.
+
+The GTA issues ML-16 Lasers to every fighter and bomber in service.
+$end_multi_text
+$Model File:			none
+; The following fields (preceded by @) are only required for laser 
+; rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow06
+@Laser Color:        190, 150, 250
+@Laser Length:       7.0
+@Laser Head Radius:  0.90
+@Laser Tail Radius:  0.30
+$Mass:					0.2
+$Velocity:				450.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.2				;; in seconds
+$Damage:				5
+$Armor Factor:			1.0
+$Shield Factor:		0.1
+$Subsystem Factor:	0.3
+$Lifetime:				2.0				;;	How long this thing lives
+$Energy Consumed:		0.20				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				76					;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					("in tech database" "player allowed")
+$Trail:					NO					;; Trail cannot be set if Exhaust is set
+$Icon:					icongun08		
+$Anim:					LoadGun01
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+$Name:					@Disruptor		;;	the anti-subsystem weapon
++Title:					GTW-41 Disruptor Cannon
++Description:
+Standard issue
+Tactical Weapon
+Damages Subsystems
+$end_multi_text
++Tech Description:
+GTW - 41 Disruptor Cannon 
+
+A gas-focused krypton laser - when the ship is in flight, the chamber of the GTW-41 rotates at a constant speed - a small amount of NO2 is injected into the container .05 ms prior to the emission of the laser light - the rotation  of the NO2 in the chamber focuses the laser pulse to a state that is only very slightly (1%) diffused - after the laser pulse is emitted from the chamber into space, the chamber expels the NO2 into space (thus expelling ionized molecules and moisture) - the process repeats for each subsequent burst of laser energy - as this laser is very slightly diffused, it is not effective as a destructive weapon, but as a tactical weapon - the Disruptor Cannon is best suited and is used for the permanent disabling of enemy ship subsystems.
+
+The Disruptor Cannon should be utilized in all capture operations in order to minimize risk of targets destruction.
+$end_multi_text
+$Model File:			none ;	laser1-1.pof
+@Laser Bitmap:			laserglow02
+@Laser Color:        150, 150, 250
+@Laser Length:       9.0
+@Laser Head Radius:  0.90
+@Laser Tail Radius:  0.30
+$Mass:					0.2
+$Velocity:				475.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.3				;; in seconds
+$Damage:				15					;;	Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Armor Factor:			0.5
+$Shield Factor:			0.1
+$Subsystem Factor:		1.0
+$Lifetime:				1.35
+$Energy Consumed:		0.25				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				104					;;	The sound it makes when fired
+$ImpactSnd:				105					;; The sound it makes when it hits something
+$Flags:					("Puncture" "in tech database" "player allowed")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun02
+$Anim:					LoadGun02
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+;; GTW - 41x Advanced Disruptor Cannon 
+;; a gas-focused krypton laser; when the ship is in flight, the chamber of the GTW-41 rotates at a constant speed; 
+;; a small amount of NO2 is injected into the container .05 ms prior to the emission of the laser light; the rotation 
+;; of the NO2 in the chamber focuses the laser pulse to a state that is only very slightly (1%) diffused; after the laser 
+;; pulse is emitted from the chamber into space, the chamber expels the NO2 into space (thus expelling ionized molecules 
+;; and moisture); the process repeats for each subsequent burst of laser energy; as this laser is very slightly diffused, 
+;; it is not effective as a destructive weapon, but as a tactical weapon; the Disruptor Cannon is best suited and is used 
+;; for the permanent disabling of enemy ship subsystems.
+;; (Translation: This is the main weapon that terran and vasudan ships will use to disable and disarm other ships.  It doesn't
+;; do much regular damage against a ship, making it useful mainly for subsystem attacking.  You should know about this laser
+;; already)
+$Name:					D-Advanced		;;	the anti-subsystem weapon
++Title:					GTW-41x Advanced Disruptor
++Description:
+Advanced Version
+Tactical Weapon
+Damages Subsystems
+$end_multi_text
++Tech Description:
+GTW - 41x Advanced Disruptor Cannon
+
+The Advanced Disruptor Cannon is much like the GTW-41 Disruptor.  However, its speed and higher subsystems damage make it much more useful in operations against faster moving targets.
+$end_multi_text
+$Model File:			none ;	laser1-1.pof
+@Laser Bitmap:			laserglow02
+@Laser Color:        150, 150, 250
+@Laser Length:       15.0
+@Laser Head Radius:  0.90
+@Laser Tail Radius:  0.30
+$Mass:					0.2
+$Velocity:				575.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.6				;; in seconds
+$Damage:				25					;;	Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Armor Factor:			0.0
+$Shield Factor:			1.0
+$Subsystem Factor:		1.0
+$Lifetime:				1.5
+$Energy Consumed:		0.75				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				104					;;	The sound it makes when fired
+$ImpactSnd:				105					;; The sound it makes when it hits something
+$Flags:					("player allowed" "Puncture")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun09
+$Anim:					LoadGun06
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+;; GTW -15 Avenger
+;; a rapid-fire, computer-controlled radar and gun system; capable of firing at a rate of more than 4500 rounds per minute; 
+;; used primarily for close-defense situations; uses closed-loop radar technology to locate, identify, and direct a stream 
+;; of highly destructive 45mm projectiles to the target.
+;; (Translation: This weapon does twice as much damage as the ML-16, but its slower and doesn't fire nearly as fast.  However,
+;; it is still preferred over the ML-16 in any ship that can carry it.  It's extra damage against hulls make it ont of the 
+;; best big ship attacking weapons.  It's also good against the Vasudan fighters.  However, it's poor anti-shield capabilities
+;; make it a bad choice for dogfighting Shivans, although many still consider it better than the ML-16)
+;; (Note: This was originally called the Phalanx.)
+$Name:					@Avenger
++Title:					GTW-15 Avenger Cannon
++Description:
+Special Issue
+Projectile Weapon
+Low Shield Damage
+$end_multi_text
++Tech Description:
+GTW -15 Avenger
+
+A rapid-fire, computer-controlled radar and gun system - capable of firing at a rate of more than 4500 rounds per minute - used primarily for close-defense situations - uses closed-loop radar technology to locate, identify, and direct a stream of highly destructive 45mm projectiles to the target.
+
+With the advent of shield technology, the GTW-15 is preferred over the ML-16 in any ship that can carry it.  It's extra damage against hulls make it one of the best anti cruiser weapons.  It has also proven very effective against Vasudan fighters.  However, it's substandard anti-shield capabilities make it a poor choice for dogfighting Shivans, although far better than the ML-16.
+$end_multi_text
+$Model File:			none
+@Laser Bitmap:			laserglow04
+@Laser Color:        140, 140, 60
+@Laser Length:       10.0
+@Laser Head Radius:  1.20
+@Laser Tail Radius:  0.60
+$Mass:					0.4
+$Velocity:				525.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.25 			;; in seconds
+$Damage:				16
+$Armor Factor:			1.25
+$Shield Factor:			0.85
+$Subsystem Factor:		0.35
+$Lifetime:				1.9
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				78					;; The sound it makes when fired
+$ImpactSnd:				81					;; The sound it makes when it hits something
+$Flags:					("player allowed")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun01
+$Anim:					LoadGun03
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+$Name:					@Flail
++Title:					GTW-32 Flail Rifle
++Description:
+Special Issue
+Low Energy Usage
+Kinetic Weapon
+Moderate Shield Damage
+$end_multi_text
++Tech Description:
+GTW - 32 Flail
+
+A rapid-fire, low energy, ceramic optic focused, krypton laser - used in tactical situations to distract or lead an enemy to their destruction at the hands of other allied fighters - this weapon, if used over an extended period of in-flight battle, can destroy an enemy fighter, but, as a destructive weapon, should only be used as a last resort.
+
+The fast firing rate and high mass of the Flail make it great for changing the velocity vector of an enemy fighter or bomber.  It is slightly more effective than the Avenger against shields, rated at damage/second.  Its low energy consumption rate makes it useful for prolonged engagements.  Note, however, that once you have taken out an enemy's shields, switching to another weapon is advised.
+$end_multi_text
+$Model File:			none
+@Laser Bitmap:			laserglow04
+@Laser Color:			120, 120, 30
+@Laser Length:			1.0
+@Laser Head Radius:		1.0
+@Laser Tail Radius:		1.0
+$Mass:					3.0
+$Velocity:				1000.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.15				;; in seconds
+$Damage:				3
+$Armor Factor:			0.5
+$Shield Factor:			4.0
+$Subsystem Factor:		0.2
+$Lifetime:				1.2				;;	How long this thing lives
+$Energy Consumed:		0.10				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				82					;; The sound it makes when fired
+$ImpactSnd:				83					;; The sound it makes when it hits something
+$Flags:					("player allowed")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun06
+$Anim:					LoadGun04
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+$Name:					Prometheus
++Title:					GTW-5 Prometheus Cannon
++Description:
+Prototype
+High Energy Usage
+High Hull Damage
+Moderate Shield Damage
+$end_multi_text
++Tech Description:
+GTW - 5 Prometheus
+
+Named after the Titan who gave fire to humanity, the Prometheus is a laser-based weapon - an advanced radar and X-ray tracking system lock on the target and determine the target's material structure - argon laser focused via transparent ceramic optics - the laser is generated at the destructive frequency (full out-of-phase) for the target's material structure - emitted no more than .02 ms after targeting and activation by the pilot, the Prometheus stands as one of the GTA's most effective deterrents to enemy attack, an effective form of defense for GTA pilots, and as a durable, portable, and highly destructive offensive tool.
+
+The Prometheus works best against target hulls.  Against shields, it only achieves mediocre performance.  It's slow speed and high energy consumption work against it as well.  However, the primary advantage of the Prometheus is that it can be equipped on almost any fighter in the GTA.
+$end_multi_text
+$Model File:			none
+@Laser Bitmap:			laserglow03
+@Laser Color:        20, 150, 20
+@Laser Length:       10.0
+@Laser Head Radius:  1.0
+@Laser Tail Radius:  1.0
+$Mass:					0.2
+$Velocity:				450.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.3				;; in seconds
+$Damage:				20
+$Armor Factor:			1.3
+$Shield Factor:		0.7
+$Subsystem Factor:	0.35
+$Lifetime:				2.0
+$Energy Consumed:		0.40				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				84					;; The sound it makes when fired
+$ImpactSnd:				85					;; The sound it makes when it hits something
+$Flags:					("player allowed")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun03
+$Anim:					LoadGun05
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+;; Debug Laser
+;; Do we still need this thing?
+$Name:					Debug Laser	;; fires one bolt, nice for debugging
+$Model File:			t-laser.pof
+$Mass:					0.2
+$Velocity:				210.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.2				;; in seconds
+$Damage:					11
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	1.0
+$Lifetime:				3.0				;;	How long this thing lives
+$Energy Consumed:		0.0				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				86					;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					()
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+$Name:					Banshee
++Title:					GTW-7 Banshee
++Description:
+Special Issue
+EM Weapon
+Very High Energy Usage
+Extreme Shield Damage
+$end_multi_text
++Tech Description:
+GTW - 7 Banshee 
+
+An electromagnetic weapon - sends rapid pulses of exceptionally strong electromagnetic energy resulting in a 1.63 x 105 J blast that forces its way through any known shield technology and produces a dramatic shearing effect which quickly destroys the target ship's materials - named for the fact that in an atmosphere, the pulse creates an atmospheric disturbance similar to a quasi-human scream at 180 dB - uses up a tremendous amount of available ship energy - already, it is has been used by many GTA fighter aces and test pilots as a coup de grace, although such a use for this massively powerful offensive weapon is officially viewed as poor sportsmanship by the GTA.
+
+The GTW-7's impressive anti-shielding capabilities make it the weapon of choice against the Shivans.  The main limitation of this weapon is low weapons compatibility.  It can only be fitted on a GTF Valkyrie or a GTF Hercules.
+$end_multi_text
+$Model File:			none
+@Laser Bitmap:			laserglow06
+@Laser Color:			190, 150, 250
+@Laser Length:			25.0
+@Laser Head Radius:		0.75
+@Laser Tail Radius:		0.25
+$Mass:					0.5
+$Velocity:				650.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.4				;; in seconds
+$Damage:				26
+$Armor Factor:			0.7
+$Shield Factor:			1.2
+$Subsystem Factor:		0.35
+$Lifetime:				1.5
+$Energy Consumed:		1.60				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				106					;; The sound it makes when fired
+$ImpactSnd:				85					;; The sound it makes when it hits something
+$Flags:					("player allowed")
+$Trail: NO
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+;; GTW - T Training laser 
+;; low damage, only used for training purposes
+$Name:					@Training
+$Model File:			none
+@Laser Bitmap:			laserglow03
+@Laser Color:			100, 200, 100
+@Laser Length:			15.0
+@Laser Head Radius:		0.5
+@Laser Tail Radius:		0.25
+$Mass:					0.2
+$Velocity:				200.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.5 				;; in seconds
+$Damage:				5
+$Armor Factor:			1.0
+$Shield Factor:			0.2
+$Subsystem Factor:		0.0
+$Lifetime:				4.0
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				84					;; The sound it makes when fired
+$ImpactSnd:				85					;; The sound it makes when it hits something
+$Flags:					()
+$Trail: NO
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+$Name:					@Vasudan Light Laser
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:			200, 30, 30
+@Laser Length:			3.0
+@Laser Head Radius:		0.90
+@Laser Tail Radius:		0.30
+$Mass:					0.1
+$Velocity:				300.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.5				;; in seconds
+$Damage:				  5
+$Armor Factor:			1.0
+$Shield Factor:			0.2
+$Subsystem Factor:		1.0
+$Lifetime:				3.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				107				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					( )
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+;; GTW - 99 Railgun
+;; Secret weapon 2
+;;$Name:					Railgun		;;	the anti-subsystem weapon
+;;$Model File:			none ;	laser1-1.pof
+;;@Laser Bitmap:			laserglow02
+;;@Laser Color:        150, 150, 250
+;;@Laser Length:       100.0
+;;@Laser Head Radius:  0.30
+;;@Laser Tail Radius:  0.30
+;;$Mass:					0.2
+;;$Velocity:				1000.0				;; speed of the weapon (initially) -- may or may not change
+;;$Fire Wait:				2.0				;; in seconds
+;;$Damage:				30					;;	Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+;;$Armor Factor:			1.0
+;;$Shield Factor:			1.0
+;;$Subsystem Factor:		1.0
+;;$Lifetime:				1.5
+;;$Energy Consumed:		5.0				;; Energy used when fired
+;;$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+;;$Homing:				NO
+;;$LaunchSnd:				 80					;;	The sound it makes when fired
+;;$ImpactSnd:				105					;; The sound it makes when it hits something
+;;$Flags:					("player allowed")
+;;$Trail:					YES						;; Trail cannot be set if Exhaust is set
+;;	+Head Width:		0.3						;; Width of trail nearest missile
+;;	+Tail Width:		0.05						;; Width of trail before it "evaporates"
+;;	+Life:				2.0						;; how many seconds before trail disappears
+;;	+Bitmap:			MissileTrail03			;; Bitmap used to draw trail
+;;$Icon:					icongun04
+;;$Anim:					LoadGun04
+;;$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+;; GTW - 99 Shield Breaker 
+;; Secret weapon 1
+$Name:					Shield Breaker		;;	the anti-subsystem weapon
+$Model File:			none ;	laser1-1.pof
+@Laser Bitmap:			laserglow06
+@Laser Color:			190, 150, 250
+@Laser Length:			0.0
+@Laser Head Radius:		2.0
+@Laser Tail Radius:		2.0
+$Mass:					0.2
+$Velocity:				400.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.3				;; in seconds
+$Damage:				40					;;	Note, as a puncture weapon, hull damage is reduced by 75%.  Base amount done to subsystems.
+$Armor Factor:			0.0
+$Shield Factor:			1.0
+$Subsystem Factor:		0.0
+$Lifetime:				4.0
+$Energy Consumed:		0.2				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				 86					;;	The sound it makes when fired
+$ImpactSnd:				105					;; The sound it makes when it hits something
+$Flags:					()
+$Trail:					NO
+$Icon:					icongun07
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+
+; ----------------------------------------------------------------------------------
+; SHIVAN PRIMARY WEAPONS
+;----------------------------------------------------------------------------------
+
+;; Shivan weapons are all pretty much equal, just different levels of energy consumption and damage and speed.
+
+; ----------------------------------------------------------------------------------
+$Name:					Shivan Light Laser
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       7.0
+@Laser Head Radius:  0.90
+@Laser Tail Radius:  0.30
+$Mass:					0.2
+$Velocity:				450.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.3				;; in seconds
+$Damage:				8
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	1.0
+$Lifetime:				2.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				100				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					()
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun07
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+$Name:					Shivan Heavy Laser
+$Model File:			none ;	laser1-1.pof
+@Laser Bitmap:			laserglow01
+@Laser Color:        200, 31, 30
+@Laser Length:       7.0
+@Laser Head Radius:  0.90
+@Laser Tail Radius:  0.30
+$Mass:					0.2
+$Velocity:				475.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.5				;; in seconds
+$Damage:					15
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	1.0
+$Lifetime:				2.0
+$Energy Consumed:		0.40				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				103					;;	The sound it makes when fired
+$ImpactSnd:				79					;; The sound it makes when it hits something
+$Flags:					()
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+$Name:					Shivan Mega Laser
+$Model File:			none ;	laser1-1.pof
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       15.0
+@Laser Head Radius:  0.50
+@Laser Tail Radius:  0.30
+$Mass:					0.3
+$Velocity:				400.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.75				;; in seconds
+$Damage:				30
+$Armor Factor:			1.0
+$Shield Factor:			0.6
+$Subsystem Factor:		1.0
+$Lifetime:				1.5
+$Energy Consumed:		0.90				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				108					;;	The sound it makes when fired
+$ImpactSnd:				79					;; The sound it makes when it hits something
+$Flags:					()
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 1 (for later missions)
+;; Avenger Derivitave
+$Name:					@Terran Turret
+$Model File:			none
+@Laser Bitmap:			laserglow04
+@Laser Color:        140, 140, 60
+@Laser Length:       10.0
+@Laser Head Radius:  4.20
+@Laser Tail Radius:  1.60
+$Mass:					0.4
+$Velocity:				275.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				1.0 			;; in seconds
+$Damage:				35
+$Armor Factor:			1.25
+$Shield Factor:			0.85
+$Subsystem Factor:		0.75
+$Lifetime:				5.0
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				110				;; The sound it makes when fired
+$ImpactSnd:				81					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun03
+$Anim:					LoadGun02
+$Impact Explosion:	none
+
+
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 1 (for later missions)
+;; Avenger Derivitave
+$Name:					Terran Huge Turret
+$Model File:			none
+@Laser Bitmap:			laserglow03
+@Laser Color:        20, 150, 20
+@Laser Length:       20.0
+@Laser Head Radius:  6.40
+@Laser Tail Radius:  2.60
+$Mass:					0.4
+$Velocity:				175.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				3.0 			;; in seconds
+$Damage:					100
+$Armor Factor:			1.25
+$Shield Factor:			0.5
+$Subsystem Factor:		0.75
+$Lifetime:				12.0
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				111					;; The sound it makes when fired
+$ImpactSnd:				81					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun03
+$Anim:					LoadGun02
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+;; Terran Turret Laser 2 (for later missions)
+;; ML-16 Derivitave
+$Name:					@Terran Turret Weak
+$Model File:			none
+@Laser Bitmap:			laserglow04
+@Laser Color:        140, 140, 60
+@Laser Length:       10.0
+@Laser Head Radius:  4.20
+@Laser Tail Radius:  1.60
+$Mass:					0.4
+$Velocity:				275.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				1.0 			;; in seconds
+$Damage:				35
+$Armor Factor:			1.25
+$Shield Factor:			0.15
+$Subsystem Factor:		0.15
+$Lifetime:				5.0
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				78					;; The sound it makes when fired
+$ImpactSnd:				81					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun03
+$Anim:					LoadGun02
+$Impact Explosion:	none
+
+;---------------------------------------------------------------
+$Name:					Shivan Turret Laser
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       7.0
+@Laser Head Radius:  3.30
+@Laser Tail Radius:  1.90
+$Mass:					1.5
+$Velocity:				250.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				1.2				;; in seconds
+$Damage:				60
+$Armor Factor:			1.0
+$Shield Factor:			1.0
+$Subsystem Factor:		1.0
+$Lifetime:				5.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				114				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+;---------------------------------------------------------------
+; Only used in Lucifer, as of May 21, 1998.
+$Name:					Shivan Weak Turret Laser
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       7.0
+@Laser Head Radius:  3.30
+@Laser Tail Radius:  1.90
+$Mass:					1.5
+$Velocity:				350.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				0.7				;; in seconds
+$Damage:					20
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	1.0
+$Lifetime:				5.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				103				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+;---------------------------------------------------------------
+$Name:					Shivan Megafunk Turret
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       13.0
+@Laser Head Radius:  6.30
+@Laser Tail Radius:  2.90
+$Mass:					3.0
+$Velocity:				120.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				3.4				;; in seconds
+$Damage:				130
+$Armor Factor:			1.5
+$Shield Factor:			0.25
+$Subsystem Factor:		1.0
+$Lifetime:				12.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				115				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+
+;---------------------------------------------------------------
+$Name:					Shivan Super Laser
+$Model File:			none ; laser1-1.pof
+; The following fields (preceded by @) are only required for laser (the 3 ellipse
+; thing) rendering, which requires that "Model File:" be none.
+; These are the same values that used to be hard-coded:
+@Laser Bitmap:			laserglow01
+@Laser Color:        250, 30, 30
+@Laser Length:       0.0
+@Laser Head Radius:  0.30
+@Laser Tail Radius:  0.30
+$Mass:					100.0
+$Velocity:				1000.0				;; speed of the weapon (initially) -- may or may not change
+$Fire Wait:				10.0				;; in seconds
+$Damage:				15000
+$Armor Factor:			1.0
+$Shield Factor:			1.0
+$Subsystem Factor:		1.0
+$Lifetime:				30.0				;;	How long this thing lives
+$Energy Consumed:		0.30				;; Energy used when fired
+$Cargo Size:			0.0				;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				114				;; The sound it makes when fired
+$ImpactSnd:				77					;; The sound it makes when it hits something
+$Flags:					("Big Ship" "Huge")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		40.0						;; Width of trail nearest missile
+	+Tail Width:		20.0						;; Width of trail before it "evaporates"
+	+Life:				5.0					;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					icongun05
+$Anim:					LoadGun07
+$Impact Explosion:	none
+
+
+
+
+#End
+
+;=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=
+#Secondary Weapons
+
+; ----------------------------------------------------------------------------------
+$Name:					@MX-50
++Title:					GTM MX-50
++Description:
+Standard Issue
+Fire and Forget
+$end_multi_text
++Tech Description:
+GTM MX-50
+
+Suitable for all space battles - defensive and offensive - medium payload (16.5 Kt) - infrared tracking and semi-intelligent targeting - pilot chooses desired target, and the MX-50 tracks the chosen target based off the emission of heat from the - engine, the weapon bays, and the cockpit of the target ship - the MX-50 will always attack a target that is determined to be hostile by the onboard computer of any GTA combat vessel, thus ensuring a higher kill rate, should the pilot find himself in a heated battle situation where precise aiming might be difficult.
+
+Early experiments with energy based defenses like the deflector array at Ross 128 have shown that this weapon is exceedingly weak against anything besides steel based targets.
+$end_multi_text
+$Model File:			MX-50.pof
+$Mass:					5.0
+$Velocity:				150.0
+$Fire Wait:				0.75
+$Damage:				25						;; damage applied when within inner radius
+$Blast Force:			200.0
+$Inner Radius:			20.0					;; radius at which damage is full
+$Outer Radius:			40.0					;; max radius for attenuated damage
+$Shockwave Speed:		0.0					;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.4
+$Subsystem Factor:		1.0
+$Lifetime:				10.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			4.0					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				HEAT					;; Legal: HEAT, ASPECT
+	+Turn Time:			0.7
+	+View Cone:			70.0					;; See 70/2 = 35 degrees from ahead to maintain lock.
+$LaunchSnd:				87						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			4.0					;; number of missiles/sec that are rearmed
+$Flags:					( "in tech database" "player allowed")						;; 
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	
+	+Head Width:		0.2						;; Width of trail nearest missile
+	+Tail Width:		0.1						;; Width of trail before it "evaporates"
+	+Life:				0.2						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail01			;; Bitmap used to draw trail
+$Icon:					iconmissile01
+$Anim:					LoadMissile01
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+$Name:					Enemy MX-50
+$Model File:			MX-50.pof
+$Mass:					5.0
+$Velocity:				150.0
+$Fire Wait:				0.75
+$Damage:				15						;; damage applied when within inner radius
+$Blast Force:			200.0
+$Inner Radius:			20.0					;; radius at which damage is full
+$Outer Radius:			40.0					;; max radius for attenuated damage
+$Shockwave Speed:		0.0					;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.4
+$Subsystem Factor:		1.0
+$Lifetime:				12.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			4.0					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				HEAT					;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+View Cone:			40.0					;; See 70/2 = 35 degrees from ahead to maintain lock.
+$LaunchSnd:				87						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			4.0					;; number of missiles/sec that are rearmed
+$Flags:					()						;; 
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	
+	+Head Width:		0.2						;; Width of trail nearest missile
+	+Tail Width:		0.1						;; Width of trail before it "evaporates"
+	+Life:				0.2						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail01			;; Bitmap used to draw trail
+$Icon:					iconmissile01
+$Anim:					LoadMissile01
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+
+; ----------------------------------------------------------------------------------
+
+$Name:					D-Missile
++Title:					GTM-31 Disruptor Missile
++Description:
+Advanced Prototype
+Tactical Missile
+Disrupts Subsystems
+$end_multi_text
++Tech Description:
+GTM - 31 Disruptor Missile
+
+Advanced signal processing - high precision interception capability - small payload (9 Kt), combining both conventional explosives and a localized blast of energy caused by the effect of impact upon the laser-propulsion system of the missile - designed to temporarily disable subsystems on hostile targets.
+
+The D-Missile is designed to temporarily stop a cruiser or destroyer from firing its laser turrets.  The effect will last about 10 seconds per missile fired, so using these to temporarily disable a cruiser should usually be for suppression until the cruiser is destroyed, or whatever was trying to evade the cruiser has gotten out of range.  Only a few ships can carry these - and they are very scarce - so proper utilization is important.
+$end_multi_text
+$Model File:			Disruptor.pof
+$Mass:					0.4
+$Velocity:				80.0
+$Fire Wait:				5.00
+$Damage:				1						;; damage applied when within inner radius
+$Blast Force:			1.0
+$Inner Radius:			10.0					;; radius at which damage is full
+$Outer Radius:			400.0					;; max radius for attenuated damage
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			0.0
+$Shield Factor:			0.0
+$Subsystem Factor:		1.0
+$Lifetime:				15.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			8.0					;; Amount of space taken up in weapon cargo
+$Homing:				YES
+	+Type:				ASPECT					;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+Min Lock Time:	2.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	70						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				89						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			0.2					;; number of missiles/sec that are rearmed
+$Flags:					("Huge" "Bomb" "No Dumbfire" "Electronics" "player allowed")	;;	Does special damage to electronics.
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					iconmissile07
+$Anim:					LoadMissile02
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+; ----------------------------------------------------------------------------------
+;; (Translation: fire off a bunch of these at close range targets and watch the sparks fly!)
+
+$Name:					@Fury
++Title:					GTM-3 Fury Missile
++Description:
+Standard Issue
+Maximum Compatibility
+$end_multi_text
++Tech Description:
+GTM - 2 Fury
+
+Small, fast dumbfire missiles - fired in swarms - GTA fighters can carry more Fury missiles than conventional missiles, due to their small size - used for distraction and other tactical measures - very small payload (3 Kt).
+
+Use is recommended in close combat situations and against larger targets where tracking is a non issue.
+$end_multi_text
+$Model File:			Fury.pof
+$Mass:					0.1
+$Velocity:				300.0
+$Fire Wait:				0.30
+$Damage:				30						;; damage applied when within inner radius
+$Blast Force:			0.2
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		0.5
+$Subsystem Factor:		0.6
+$Lifetime:				3.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			0.5					;; Amount of space taken up in weapon cargo
+$Homing:				NO
+$LaunchSnd:				90						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			12.0					;; number of missiles/sec that are rearmed
+$Flags:					( "in tech database" "player allowed")			
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.1						;; Width of trail nearest missile
+	+Tail Width:		0.2						;; Width of trail before it "evaporates"
+	+Life:				0.3						;; how many seconds before trail disappears
+	+Bitmap:				MissileTrail01			;; Bitmap used to draw trail
+$Icon:					iconmissile02
+$Anim:					LoadMissile03
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	3.0
+
+; ----------------------------------------------------------------------------------
+;; GTM - 4 Hornet
+;; infrared and ultraviolet tracking; designed to fire in small groups of 4 missiles per burst; light medium payload per 
+;; missile (12 Kt); semi-intelligent on-board tracking; single-pass kill probability will not exceed 60% on average; designed 
+;; as an offensive version of the Fury.  
+;; (Translation: Our "swarm" missile, reminiscent of robotech, this missile can take out an unshielded fighter without any
+;; difficulty.  It's four missile system almost guarantees one or two hits, and its speed is quite amazing.  Twice as powerful 
+;; against naked hulls.)
+$Name:					@Hornet
++Title:					GTM-4 Hornet Swarm Missile
++Description:
+Special Issue
+Swarm Type
+Slow Target Lock
+$end_multi_text
++Tech Description:
+GTM - 4 Hornet
+
+Infrared and ultraviolet tracking - designed to fire in small groups of 4 missiles per burst - light medium payload per  missile (12 Kt) - semi-intelligent on-board tracking - single-pass kill probability will not exceed 60% on average -designed as an offensive version of the Fury.
+
+As a "swarm" based weapon, this missile can take out an unshielded fighter without any difficulty.  It's four missile system almost guarantees one or two hits, and its speed is quite amazing.  Twice as powerful against naked hulls.
+$end_multi_text
+$Model File:			Hornet.pof
+$Mass:					0.1
+$Velocity:				190.0
+$Fire Wait:				2.0
+$Damage:				25.0						;; damage applied when within inner radius
+$Blast Force:			0.2
+$Inner Radius:			10.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			20.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			2.0
+$Shield Factor:		1.0
+$Subsystem Factor:	0.3
+$Lifetime:				7.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			1.0					;; Amount of space taken up in weapon cargo
+$Homing:				YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.15
+	+Min Lock Time:	3.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	60						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				102						;; The sound it makes when fired
+$ImpactSnd:          88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			1.0					;; number of missiles/sec that are rearmed
+$Flags:					("Swarm" "player allowed")			;;	
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.5						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail03			;; Bitmap used to draw trail
+$Icon:					iconmissile05
+$Anim:					LoadMissile06
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+
+
+$Name:					Hornet#Weak
+$Model File:			Hornet.pof
+$Mass:					0.1
+$Velocity:				190.0
+$Fire Wait:				2.0
+$Damage:				15.0						;; damage applied when within inner radius
+$Blast Force:			0.2
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.2
+$Subsystem Factor:		0.3
+$Lifetime:				6.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			1.0					;; Amount of space taken up in weapon cargo
+$Homing:				YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.6
+	+Min Lock Time:	3.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	60						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				102						;; The sound it makes when fired
+$ImpactSnd:          88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			1.0					;; number of missiles/sec that are rearmed
+$Flags:					("Swarm")			;;	
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.5						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile05
+$Anim:					LoadMissile06
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+
+; ----------------------------------------------------------------------------------
+$Name:					Interceptor
++Title:					GTM-9 Interceptor
++Description:
+Standard Issue
+Fast Target Lock
+$end_multi_text
++Tech Description:
+GTM - 9 Interceptor
+
+All-aspect seeking - laser tracking senses energy reflected off a target from the primary weapon systems of the target, increasing single-pass kill probability - medium payload (18.5 Kt) - missile is designed to pierce reinforced hull, thus 
+securing itself to the target, prior to detonating (15 ms delay).
+
+This is the standard issue fighter-killer in the GTA.  Designed to take out fighters with minimum hassle, a simple lock is all that is needed to grab the enemies attention.  Short lock time, good speed, and decent payload makes this the best
+missile to use against all but the strongest ships.  It's effectiveness against large targets, however, is less than a typical laser run, making this primarily a ship to ship missile.
+$end_multi_text
+$Model File:			Interceptor.pof
+$Mass:					15.0
+$Velocity:				250.0
+$Fire Wait:				2.0
+$Damage:				150						;; damage applied when within inner radius
+$Blast Force:			60.0
+$Inner Radius:			0.0						;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0						;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.8
+$Subsystem Factor:		0.5
+$Lifetime:				5.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			4.0					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+Min Lock Time:	2.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	70						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				91						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			2.0					;; number of missiles/sec that are rearmed
+$Flags:					("player allowed")
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.5						;; Width of trail before it "evaporates"
+	+Life:				0.7						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile06
+$Anim:					LoadMissile04
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	7.0
+
+
+$Name:					Interceptor#Weak
+$Model File:			Interceptor.pof
+$Mass:					15.0
+$Velocity:				250.0
+$Fire Wait:				3.0
+$Damage:					60						;; damage applied when within inner radius
+$Blast Force:			60.0
+$Inner Radius:			0.0						;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0						;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.8
+$Subsystem Factor:		0.5
+$Lifetime:				5.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			2.66					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+Min Lock Time:	2.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	70						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				91						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			2.0					;; number of missiles/sec that are rearmed
+$Flags:					()
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.5						;; Width of trail before it "evaporates"
+	+Life:				0.7						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile06
+$Anim:					LoadMissile04
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	7.0
+
+
+; ----------------------------------------------------------------------------------
+;; 
+$Name:					@Phoenix V
++Title:					GTM Phoenix V
++Description:
+Special Issue
+Anti-Bomber Missile
+Slow Target Lock
+$end_multi_text
++Tech Description:
+GTM Phoenix V 
+
+All-aspect seeking - same tracking system as the Interceptor - large payload (50 Kt), but slower than the Interceptor - one of the best fire-and-forget missiles ever developed - many fighter pilots within the GTA regard the Phoenix V as the weapon of choice against high value, heavily defended targets.
+
+The number one bomber killer in our arsenal, this is the single most damaging missile that can be equipped on a fighter craft.  The longer lock time and slower speed make it less of a dogfight weapon and more of an anti- bomber warhead.  It's extra damage against shields makes it especially useful against the Shivan bombers.
+$end_multi_text
+$Model File:			Phoenix.pof
+$Mass:					20.0
+$Velocity:				175.0
+$Fire Wait:				5.0
+$Damage:				350						;; damage applied when within inner radius
+$Blast Force:			200.0
+$Inner Radius:			10.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			30.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		0.5
+$Subsystem Factor:	0.8
+$Lifetime:				10.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			8.0					;; Amount of space taken up in weapon cargo
+$Homing:				YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			3.0
+	+Min Lock Time:	3.5					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	50						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				92						;; The sound it makes when fired
+$ImpactSnd:             88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			0.33				;; number of missiles/sec that are rearmed
+$Flags:					("player allowed" "Bomber+")
+$Trail:					YES					;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.5						;; Width of trail before it "evaporates"
+	+Life:				0.3						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail04			;; Bitmap used to draw trail
+$Icon:					iconmissile09
+$Anim:					LoadMissile05
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	9.0
+
+
+; ----------------------------------------------------------------------------------
+
+$Name:					Synaptic
++Title:					GTM-1 Synaptic Bomb
++Description:
+Advanced Bomb
+Wing Attack Cluster Explosion
+Area Effect
+$end_multi_text
++Tech Description:
+GTM - 1 Synaptic Bomb
+
+Missile propulsion unit carrying several small intelligent "bomblets" - when distance to target is less than 100 m or when time to impact is less than 2 sec., bomblets direct missile to the most vulnerable part of the ship of those parts of the ship facing the missile - bomblets then separate from missile propulsion unit and form a sphere - inertia continues to carry bomblets in the direction of the target - the missile propulsion unit continues to advance toward the target - when the missile hits the target or 1.5 sec. after the missile should have hit the target, the bomblets explode - the spherical shape of the formation of the bomblets helps to ensure a fairly even level of damage across a sensitive area on the target - the spherical shape also ensures that the target will not be able to effectively maneuver away from the blast, thus "pinning" the target to a specific area in space - can also act as dumbfire - medium payload per bomblet (15 Kt) - very small payload for missile (2 Kt).
+
+Nicknamed the "Earthshaker" by the bomber pilots who tested this, it is a bombers best defense against fighters.  The Synaptic Bomb can do a lot of damage to a lot of ships at one time.
+$end_multi_text
+$Model File:			Synaptic.pof
+$Mass:					20.0
+$Velocity:				90.0
+$Fire Wait:				5.0
+$Damage:				60						;; damage applied when within inner radius
+$Blast Force:			1000.0
+$Inner Radius:			50.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			100.0					;; max radius for attenuated damage 
+$Shockwave Speed:		80.0					;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.75
+$Subsystem Factor:		1.0
+$Lifetime:				2.5
+$Energy Consumed:		0.0
+$Cargo Size:			15.0
+$Homing:				NO
+$LaunchSnd:				93
+$ImpactSnd:				101					;;	shockwave impact sound
+$FlyBySnd:				-1
+$Rearm Rate:			0.1
+$Flags:					("player allowed" 
+							 "Spawn Cluster Baby,15"					;; Create 15 "Cluster Baby" children on detonation
+							 "Bomb"	)					;; Bomb = can be targeted	
+							 ;;"Remote Detonate" )		;; Remote Detonate = another fire press detonates
+
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.75						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail04			;; Bitmap used to draw trail
+$Icon:					iconmissile03
+$Anim:					LoadMissile07
+$Impact Explosion:	ExpMissileHit1
+$Impact Explosion Radius:	10.0
+
+
+
+; ----------------------------------------------------------------------------------
+$Name:					@Stiletto
++Title:					GTM-43 Stiletto
++Description:
+Standard Issue
+Tactical Missile
+Destroys Subsystems
+$end_multi_text
++Tech Description:
+GTM - 43 Stiletto
+
+Heat seeking - laser tracking similar to the Interceptor - missile is protected by a small shield system, allowing for greater success in payload delivery during busy melee situations and intense firefights - fast, but low in-flight maneuverability compared to other missiles of comparable size - low maneuverability due to the size of the missile's payload (60 Kt) and on-board shield system.
+
+With the ability to take out most subsystems in one hit, and as simple to fire as an MX-50, the GTM-43 is the best ship disabling bomb developed by the GTA.  Effective against turrets, engines and any other kind of subsystem, the Stiletto is a valuable asset to a bombers arsenal.  However, it's slow, unmanageable, and it can't do any real hull damage.
+$end_multi_text
+$Model File:			Stiletto.pof
+$Mass:					10.0
+$Velocity:				150.0
+$Fire Wait:				2.0
+$Damage:				775						;; damage applied when within inner radius
+$Blast Force:			40.0
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			0.01
+$Shield Factor:		0.0
+$Subsystem Factor:	1.0
+$Lifetime:				15.0
+$Energy Consumed:		0.0
+$Cargo Size:			8.0
+$Homing:				YES
+	+Type:				HEAT					;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+View Cone:			40.0					;; See 70/2 = 35 degrees from ahead to maintain lock.
+$LaunchSnd:				95
+$ImpactSnd:				88
+$FlyBySnd:				-1
+$Rearm Rate:			0.5
+$Flags:					("Huge" "Puncture" "player allowed"				;;	Puncture = punches through armor to subsystem.
+							 "Bomb" )					;; Bomb = can be targeted	
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					iconmissile08
+$Anim:					LoadMissile08
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	8.0
+
+
+
+; ----------------------------------------------------------------------------------
+
+$Name:					Tsunami
++Title:					GTM-3 Tsunami Bomb
++Description:
+Special Issue
+Anti-Cruiser Bomb
+Tactical Anti-Matter Warhead
+Long Lock/Reload Time
+$end_multi_text
++Tech Description:
+GTM - 3 Tsunami
+
+Intelligent tracking similar to GTA targeting system - prior to launch, communicates with ship computer, gathering data about enemy target types and whereabouts - slow, low maneuverability - antimatter warhead (500 tonne3 mass-to-energy conversion) - due to instability of antimatter, no more than 10 may be carried on board a GTA bomber at any given time, unless pilot is granted a special permit by an appropriate governing body.
+
+The Tsunami has now become the standard Terran bomb used to take out large targets.  It's short life requires that you get within 1500 meters of the target before sending it off, and since it needs a lock to be fired, it takes a brave pilot to fly straight enough for long enough to let one of these fly.  A few Tsunami's will take out almost any ship, barring a destroyer.  The antimatter warhead also washes over shields a little, so as long as it isn't too close to the center of the blast, a fighter or bomber has a good chance of surviving detonation.
+$end_multi_text
+$Model File:			Tsunami.pof
+$Mass:					25.0
+$Velocity:				60.0
+$Fire Wait:				20.0
+;; note, damage toned down until ai and turrets start shooting at bombs.
+$Damage:				1500					;; damage applied when within inner radius
+$Blast Force:			1000.0
+$Inner Radius:			50.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			150.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		80						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.02
+$Subsystem Factor:		2.0
+$Lifetime:				25.0                    ;; temporary fix for problem locking onto big ships.
+$Energy Consumed:		0.0
+$Cargo Size:			15.0
+$Homing:				YES
+	+Type:					ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:				1.0
+	+Min Lock Time:		6.0				;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:		25					;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:   50				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:		15					;; Extra pixels to move after catching up
+$LaunchSnd:				96
+$ImpactSnd:          88
+$FlyBySnd:				-1
+$Rearm Rate:			0.05
+$Flags:					("Bomb" "Huge" "No Dumbfire" "player allowed")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	+Head Width:		0.5						;; Width of trail nearest missile
+	+Tail Width:		1.75						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail04			;; Bitmap used to draw trail
+
+$Icon:					iconmissile04
+$Anim:					LoadMissile09
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	15.0
+
+; ----------------------------------------------------------------------------------
+
+
+$Name:					Harbinger
++Title:					GTM-N1 Harbinger Bomb
++Description:
+Prototype
+Anti-Capital Ship Bomb
+Tactical Fusion Warhead
+Extremely Long Lock/Reload Time
+$end_multi_text
++Tech Description:
+GTM - N1 Harbinger
+
+Fusion bomb surrounded by 3 salted fission bombs - propulsion unit is a half-size version of a regulation GTA fighter thruster (Class II) - given the weight of the payloads, the missile is slow despite the power of the thruster - as the Harbinger is exceptionally large, GTA bombers are limited to carrying 6 of these weapons at any given time - the resultant shock wave from this weapon is potentially deadly, due to the size of the payloads (5000 Mt in total) - use near allied installations or allied ship groupings is strongly discouraged by the GTA - most effective when used in preemptive defensive strike against non-military installations.
+
+The Harbinger is our best chance of destroying the Lucifer.
+$end_multi_text
+$Model File:			Harbinger.pof
+$Mass:					35.0
+$Velocity:				50.0
+$Fire Wait:				30.0
+$Damage:				3200					;; damage applied when within inner radius
+$Blast Force:			2000.0
+$Inner Radius:			100.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			250.0					;; max radius for attenuated damage 
+$Shockwave Speed:		75						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		0.01
+$Subsystem Factor:	16.0
+$Lifetime:				30.0
+$Energy Consumed:		0.0
+$Cargo Size:			40.0
+$Homing:				YES
+	+Type:					ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:				1.5
+	+Min Lock Time:		7.0				;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:		25					;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:   50				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:		15					;; Extra pixels to move after catching up
+$LaunchSnd:				97
+$ImpactSnd:				101					;;	shockwave impact sound
+$FlyBySnd:				-1
+$Rearm Rate:			0.02
+$Flags:					("Bomb" "Huge" "No Dumbfire" "player allowed")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	+Head Width:		0.5						;; Width of trail nearest missile
+	+Tail Width:		2.0						;; Width of trail before it "evaporates"
+	+Life:				2.0						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile10
+$Anim:					LoadMissile10
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	15.0
+
+
+; ----------------------------------------------------------------------------------
+;; GTM - N1 Harbinger (endgame version)
+
+
+$Name:					Harbinger#End
+$Model File:			Harbinger.pof
+$Mass:					35.0
+$Velocity:				90.0
+$Fire Wait:				10.0
+$Damage:					3200					;; damage applied when within inner radius
+$Blast Force:			2000.0
+$Inner Radius:			1.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			20.0					;; max radius for attenuated damage 
+$Shockwave Speed:		75						;; velocity of shockwave.  0 for none.
+$Armor Factor:			0.5
+$Shield Factor:		0.01
+$Subsystem Factor:	20.0
+$Lifetime:				20.0
+$Energy Consumed:		0.0
+$Cargo Size:			40.0
+$Homing:					YES
+	+Type:					ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:				1.5
+	+Min Lock Time:		3.0				;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:		35					;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:   60				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:		15					;; Extra pixels to move after catching up
+$LaunchSnd:				97
+$ImpactSnd:				101					;;	shockwave impact sound
+$FlyBySnd:				-1
+$Rearm Rate:			0.02
+$Flags:					("Bomb" "Huge" "No Dumbfire")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	+Head Width:		0.5						;; Width of trail nearest missile
+	+Tail Width:		2.0						;; Width of trail before it "evaporates"
+	+Life:				2.0						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile10
+$Anim:					LoadMissile10
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	15.0
+
+
+; ----------------------------------------------------------------------------------
+;; Unknown bomb?
+;; Would be nice to know who uses this and what it is for.
+;; It's a shivan bomb.  It's just like Tsunami, only Shivan.
+
+$Name:					Unknown Bomb
+$Model File:			Tsunami.pof
+$Mass:					25.0
+$Velocity:				60.0
+$Fire Wait:				20.0
+;; note, damage toned down until ai and turrets start shooting at bombs.
+$Damage:				1500					;; damage applied when within inner radius
+$Blast Force:			1000.0
+$Inner Radius:			5.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			30.0					;; max radius for attenuated damage (0 for impact only)
+$Shockwave Speed:		80						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.0
+$Subsystem Factor:		2.0
+$Lifetime:				25.0                    ;; temporary fix for problem locking onto big ships.
+$Energy Consumed:		0.0
+$Cargo Size:			15.0
+$Homing:				YES
+	+Type:					ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:				1.0
+	+Min Lock Time:		6.0				;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:		25					;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:   50				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:		15					;; Extra pixels to move after catching up
+$LaunchSnd:				96
+$ImpactSnd:          88
+$FlyBySnd:				-1
+$Rearm Rate:			0.05
+$Flags:					("Bomb" "Huge" "No Dumbfire")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	+Head Width:		0.5						;; Width of trail nearest missile
+	+Tail Width:		1.75						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail04			;; Bitmap used to draw trail
+
+$Icon:					iconmissile04
+$Anim:					LoadMissile09
+$Impact Explosion:	none
+
+; ----------------------------------------------------------------------------------
+;; Another Unknown Bomb?
+;; Would be nice to know who uses this and what it is for.
+;; Shivan, just like harbinger, only it's shivan
+
+$Name:					Unknown Megabomb
+$Model File:			Harbinger.pof
+$Mass:					35.0
+$Velocity:				50.0
+$Fire Wait:				30.0
+$Damage:				3200					;; damage applied when within inner radius
+$Blast Force:			2000.0
+$Inner Radius:			100.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			450.0					;; max radius for attenuated damage 
+$Shockwave Speed:		75						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		0.0
+$Subsystem Factor:	1.0
+$Lifetime:				30.0
+$Energy Consumed:		0.0
+$Cargo Size:			40.0
+$Homing:				YES
+	+Type:					ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:				1.5
+	+Min Lock Time:		12.0				;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:		25					;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:   50				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:		15					;; Extra pixels to move after catching up
+$LaunchSnd:				97
+$ImpactSnd:				101					;;	shockwave impact sound
+$FlyBySnd:				-1
+$Rearm Rate:			0.02
+$Flags:					("Bomb" "Huge" "No Dumbfire")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	+Head Width:		0.5						;; Width of trail nearest missile
+	+Tail Width:		2.0						;; Width of trail before it "evaporates"
+	+Life:				2.0						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile10
+$Anim:					LoadMissile10
+$Impact Explosion:	none
+
+
+
+; ----------------------------------------------------------------------------------
+; Big ship weapons
+; ----------------------------------------------------------------------------------
+
+; ----------------------------------------------------------------------------------
+
+
+
+$Name:					@Fusion Mortar
+$Model File:			harbinger.pof
+$Mass:					0.1
+$Velocity:				100.0
+$Fire Wait:				1.0
+$Damage:				80						;; damage applied when within inner radius
+$Blast Force:			0.2
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	1.0
+$Lifetime:				20.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			1.0					;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				102						;; The sound it makes when fired
+$ImpactSnd:          88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			1.0					;; number of missiles/sec that are rearmed
+$Flags:					("Big Ship" "Huge")			;;	
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.75						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:				MissileTrail01			;; Bitmap used to draw trail
+$Icon:					iconmissile08
+$Anim:					LoadMissile06
+$Impact Explosion:	none
+
+
+;; Vasudan
+
+$Name:					Vasudan Flux Cannon
+$Model File:			Tsunami.pof
+$Mass:					10.0
+$Velocity:				80.0
+$Fire Wait:				5.0
+$Damage:				500						;; damage applied when within inner radius
+$Blast Force:			0.2
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		0.1
+$Subsystem Factor:	1.0
+$Lifetime:				15.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			1.0					;; Amount of space taken up in weapon cargo
+$Homing:					NO
+$LaunchSnd:				102						;; The sound it makes when fired
+$ImpactSnd:          88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			5.0					;; number of missiles/sec that are rearmed
+$Flags:					("Big Ship" "Huge")			;;	
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.1.5						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile08
+$Anim:					LoadMissile06
+$Impact Explosion:	none
+
+;; Other big ship weapons
+
+
+$Name:					Shivan Cluster
+$Model File:			Synaptic.pof
+$Mass:					20.0
+$Velocity:				90.0
+$Fire Wait:				20.0
+$Damage:				60						;; damage applied when within inner radius
+$Blast Force:			1000.0
+$Inner Radius:			50.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			100.0					;; max radius for attenuated damage 
+$Shockwave Speed:		80.0					;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.75
+$Subsystem Factor:		1.0
+$Lifetime:				5.0
+$Energy Consumed:		0.0
+$Cargo Size:			15.0
+$Homing:				NO
+$LaunchSnd:				93
+$ImpactSnd:				101					;;	shockwave impact sound
+$FlyBySnd:				-1
+$Rearm Rate:			0.1
+$Flags:					("Big Ship" "Spawn Cluster Baby Weak,8"					;; Create 15 "Cluster Baby" children on detonation
+							 "Bomb"						;; Bomb = can be targeted	
+							 "Remote Detonate" )		;; Remote Detonate = another fire press detonates
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.75						;; Width of trail before it "evaporates"
+	+Life:				1.5						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail04			;; Bitmap used to draw trail
+$Icon:					iconmissile03
+$Anim:					LoadMissile07
+$Impact Explosion:	none
+
+$Name:					FighterKiller
+$Model File:			Interceptor.pof
+$Mass:					15.0
+$Velocity:				190.0
+$Fire Wait:				8.0
+$Damage:				100						;; damage applied when within inner radius
+$Blast Force:			60.0
+$Inner Radius:			0.0						;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0						;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.8
+$Subsystem Factor:		0.5
+$Lifetime:				5.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			4.0					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+Min Lock Time:	2.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	70						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				91						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			2.0					;; number of missiles/sec that are rearmed
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					iconmissile06
+$Anim:					LoadMissile04
+$Impact Explosion:	none
+
+$Name:					Swarmer
+$Model File:			Hornet.pof
+$Mass:					15.0
+$Velocity:				250.0
+$Fire Wait:				15.0
+$Damage:					60						;; damage applied when within inner radius
+$Blast Force:			60.0
+$Inner Radius:			0.0						;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0						;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:			0.8
+$Subsystem Factor:		0.5
+$Lifetime:				5.0
+$Energy Consumed:		0.0					;; Energy used when fired
+$Cargo Size:			4.0					;; Amount of space taken up in weapon cargo
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				ASPECT				;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+Min Lock Time:	2.0					;; Minimum lock time (in seconds)
+	+Lock Pixels/Sec:	70						;; Pixels moved per sec while locking
+	+Catch-up Pixels/Sec:100				;; Pixels moved per sec while catching up
+	+Catch-up Penalty:	30					;; Extra pixels to move after catching up
+$LaunchSnd:				91						;; The sound it makes when fired
+$ImpactSnd:				88						;; The sound it makes when it hits something
+$FlyBySnd:				-1
+$Rearm Rate:			2.0					;; number of missiles/sec that are rearmed
+$Flags:					("Big Ship")
+$Trail:					NO						;; Trail cannot be set if Exhaust is set
+$Icon:					iconmissile06
+$Anim:					LoadMissile04
+$Impact Explosion:	none
+
+
+; ----------------------------------------------------------------------------------
+; No ship weapons (these weapons can't be placed on any ships.  They are by-products)
+; ----------------------------------------------------------------------------------
+
+
+$Name:					Cluster Baby
+$Model File:			hornet.pof
+$Mass:					1.2
+$Velocity:				175.0
+$Fire Wait:				0.5
+$Damage:				35					;; damage applied when within inner radius
+$Blast Force:			5.0
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	0.5
+$Lifetime:				6.0
+$Energy Consumed:		0.0
+$Cargo Size:			2.0
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				HEAT		;; Legal: HEAT, ASPECT
+	+Turn Time:			1.5
+	+View Cone:			180.0
+$LaunchSnd:				94
+$ImpactSnd:          88
+$FlyBySnd:				-1
+$Rearm Rate:			1.0
+$Flags:					("No Ship")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.75						;; Width of trail before it "evaporates"
+	+Life:				1.0						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile08
+$Anim:					LoadMissile06
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+$Name:					Cluster Baby Weak
+$Model File:			mx-50.pof
+$Mass:					1.2
+$Velocity:				175.0
+$Fire Wait:				0.5
+$Damage:					30					;; damage applied when within inner radius
+$Blast Force:			5.0
+$Inner Radius:			0.0					;; radius at which damage is full (0 for impact only)
+$Outer Radius:			0.0					;; max radius for attenuated damage 
+$Shockwave Speed:		0						;; velocity of shockwave.  0 for none.
+$Armor Factor:			1.0
+$Shield Factor:		1.0
+$Subsystem Factor:	0.5
+$Lifetime:				8.0
+$Energy Consumed:		0.0
+$Cargo Size:			2.0
+$Homing:					YES
+	;; the following indented fields are only required when $Homing is YES
+	+Type:				HEAT		;; Legal: HEAT, ASPECT
+	+Turn Time:			1.0
+	+View Cone:			180.0
+$LaunchSnd:				94
+$ImpactSnd:          88
+$FlyBySnd:				-1
+$Rearm Rate:			1.0
+$Flags:					("No Ship")
+$Trail:					YES						;; Trail cannot be set if Exhaust is set
+	;; The following indented fields are only required when $Trail is YES
+	+Head Width:		0.25						;; Width of trail nearest missile
+	+Tail Width:		0.75						;; Width of trail before it "evaporates"
+	+Life:				1.0						;; how many seconds before trail disappears
+	+Bitmap:			MissileTrail02			;; Bitmap used to draw trail
+$Icon:					iconmissile08
+$Anim:					LoadMissile06
+$Impact Explosion:			ExpMissileHit1
+$Impact Explosion Radius:	5.0
+
+
+#End
+
+#Beam Weapons
+
+#End
+
+; ********** Countermeasure Section **********
+
+#Countermeasures
+
+; MK, 5/22/97, Type One countermeasure, first pass.
+; So far, no rendering information, just uses explosion bitmap.
+; Chaff (or whatever) pieces are projected backward in a hemisphere.
+; JAS, 1/29/98, added a model name for how it renders.
+$Name:					Type One
+$Velocity:				30.0				;; speed relative to ship, rear-fired until POF info added, MK, 5/22/97
+$Fire Wait:				0.5
+$Lifetime Min:			1.0				;; Minimum lifetime
+$Lifetime Max:			2.0				;; Maximum lifetime.  Actual lifetime is rand(min..max).
+$LaunchSnd:				99             ;; countermeasure 1 fired
+$Model:					cmeasure01.pof		;;	What pof file this uses
+
+#End
+
+; $Player Weapon Precedence is used in weapon selection when a default specified by the mission
+; designer is not available to the player.  The next weapon on the list is used in its place
+; (assuming that weapon is allowed for the player).
+;
+; ordering:  most powerful energy weapon -> least powerful energy weapon
+;            most powerful missile -> least powerful missle
+;
+$Player Weapon Precedence: (
+	"Banshee"
+	"Prometheus"
+	"Avenger"
+	"ML-16 Laser"
+	"Flail"
+	"Disruptor"
+	"Training"
+	"Harbinger"
+	"Tsunami"
+	"Disruptor Missile"
+	"Synaptic"
+	"Stiletto"
+	"Phoenix V"
+	"Hornet"
+	"Interceptor"
+	"Fury"
+	"MX-50"
+)
+       

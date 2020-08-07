@@ -14,7 +14,8 @@ bool SCPColorModule::StartupModule()
 	auto CFileModule = SCPModuleManager::GetModule<SCPCFileModule>();
 	Assert(CFileModule);
 	auto ColorsTable = CFileModule->FindFileInfo("colors.tbl", SCPCFilePathTypeID::Tables);
-	if (ColorsTable.has_value()) {
+	if (ColorsTable.has_value()) 
+	{
 		auto RootTable                  = CFileModule->CFileOpen(*ColorsTable, {SCPCFileMode::Read});
 		SCP_buffer RootColorTableBuffer = RootTable->ReadAllContentsIntoBuffer();
 		SCPParser::LoadIntoTable(*Colors, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");

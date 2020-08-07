@@ -1,12 +1,124 @@
 #include "cfile/SCPCFile.h"
 #include "SCPEndian.h"
-enum class CFile::CFileEncryptionMagic
+enum class CFILE::CFileEncryptionMagic
 {
 	NotEncrypted = 0,
 	OldSignature = INTEL_INT(0xdeadbeef),
 	NewSignature = INTEL_INT(0x5c331a55),
 	EightBitSignature = INTEL_INT(0xcacacaca)
 };
+
+enum class CFILE::CFileTextEncoding
+{
+	UTF8,
+	WindowsLatin1,
+	Iso88951,
+	Ascii,
+	UnsupportedUTF,
+	Unknown
+};
+template <std::size_t Size>
+CFileTextEncoding CFILE::DetectFileEncoding(const char (&Buffer)[Size])
+{
+	if (Size < 2)
+	{
+		return CFileTextEncoding::Unknown;
+	}
+	uint32_t BOM = 0;
+	for (uint32_t ByteIndex = 0; ByteIndex < std::min(Size, 4); ByteIndex++)
+	{
+		(uint8_t*)(&BOM)[ByteIndex] = Buffer[ByteIndex];
+	}
+	if (
+		INTEL_INT(BOM) == INTEL_INT(0x0000feff)|| //UTF32BE
+		INTEL_INT(BOM) == INTEL_INT(0xfffe0000) //UTF32LE
+		)
+	{
+		return CFileTextEncoding::UnsupportedUTF;
+	} 
+	else if (INTEL_INT(BOM) & INTEL_INT(0xefbbbf00))
+	{
+		return CFileTextEncoding::UTF8;
+	}
+	else if (INTEL_INT(BOM) & INTEL_INT(0xfeff0000)) //UTF16BE
+	{
+		return CFileTextEncoding::UnsupportedUTF;
+	}
+	else if (INTEL_INT(BOM) & INTEL_INT(0xfffe0000)) //UTF16LE
+	{
+		return CFileTextEncoding::UnsupportedUTF;
+	}
+	bool HasByteAbove7F = false;
+	bool Has8859ControlCharacters = false;
+	bool ValidatesAsUTF8 = true;
+	char PreviousByte = 0;
+
+	auto ValidateUTF8 = [&ValidatesAsUTF8, &PreviousByte](char Byte)
+	{
+		if (
+			ValidatesAsUTF8 &&
+			(Byte == 0x00) ||
+			(Byte == 0xC0) ||
+			(Byte == 0xC1) ||
+			((Byte >= 0xF5) && (Byte <= 0xFF))
+			)
+		{
+			ValidatesAsUTF8 = false;
+		}
+		//Check that tail bytes (0x80-0xBF) are preceded by 0xC2-0xF4 OR a tail byte
+		if ((Byte >= 0x80) && (Byte <= 0xBF))
+		{
+			if (
+				!((PreviousByte >= 0x80) && (PreviousByte <= 0xBF)) &&
+				!((PreviousByte >= 0xC2) && (PreviousByte <= 0xF4))
+				)
+			{
+				ValidatesAsUTF8 = false;
+			}
+		}
+	};
+	auto ValidateWindowsLatin = [&Has8859ControlCharacters](char Byte)
+	{
+		if ((Byte >= 0x80) && (Byte <= 0x9F))
+		{
+			&Has8859ControlCharacters = true;
+		}
+	};
+	auto ValidateASCII = [&HasByteAbove7F](char Byte)
+	{
+		if (Byte > 0x7F)
+		{
+			HasByteAbove7F = false;
+		}
+	};
+	//iterate through all the other characters in the file
+	for (uint32_t ByteIndex = 0; ByteIndex < Size; ByteIndex++)
+	{
+		auto Byte = Buffer[ByteIndex];
+		ValidateUTF8(Byte);
+		//Check that the character is in the valid UTF8 range
+		ValidateWindowsLatin(Byte);
+		ValidateASCII(Byte);
+		PreviousByte = Byte;
+	}
+
+	if (ValidatesAsUTF8)
+	{
+		return CFileTextEncoding::UTF8;
+	}
+	else if (Has8859ControlCharacters)
+	{
+		return CFileTextEncoding::WindowsLatin1;
+	}
+	else if (!HasByteAbove7F)
+	{
+		return CFileTextEncoding::Ascii;
+	}
+	else
+	{
+		return CFileTextEncoding::Unknown;
+	}
+}
 
 
 CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption() 
@@ -33,13 +145,27 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	return CFileEncryptionMagic::NotEncrypted;
 }
 
-SCP_buffer CFILE::ReadAllContentsIntoBuffer()
+SCP_buffer CFILE::UTF8Normalize()
 {
+	std::uintmax_t OldPosition = Tell();
+	SeekAbsolute(0);
 	SCP_buffer raw_text = SCP_buffer(size + 1);
-	ReadBytes(raw_text.Data(), std::min(size, (uintmax_t)10));
+	ReadBytes(raw_text.Data(), size);
 	CFileEncryptionMagic FileEncryption = DetectFileEncryption();
-	std::uintmax_t OldPosition          = Tell();
-
+	
+	//possibly pass in a boolean for the bom too?
+	switch (DetectFileEncoding(raw_text.Data()));
+	{
+	case CFileTextEncoding::UTF8:
+		break;
+	case CFileTextEncoding::WindowsLatin1:
+		break;
+	case CFileTextEncoding::Ascii:
+		break;
+	case CFileTextEncoding::Unknown:
+	default:
+		break;
+	}
 	// this will need to calculate the offset
 	uintmax_t RealLength = check_encoding_and_skip_bom(mf, filename);
 
@@ -52,7 +178,8 @@ SCP_buffer CFILE::ReadAllContentsIntoBuffer()
 		// unscramble text
 		unencrypt(unscrambled_text.Data(), file_len, raw_text.Data(), &unscrambled_len);
 		file_len = unscrambled_len;
-	} else {
+	} else 
+	{
 		ReadBytes(raw_text.Data(), RealLength);
 	}
 
@@ -60,6 +187,14 @@ SCP_buffer CFILE::ReadAllContentsIntoBuffer()
 	raw_text[RealLength] = '\0';
 	SeekAbsolute(OldPosition);
 	return raw_text;
+}
+
+std::uintmax_t CFILE::GetSize() 
+{
+	//size should be valid for all file types
+	//leaving this function here in case that changes in future
+	//and size has to be dynamically calculated
+	return size;
 }
 
 void CFILE::SeekAbsolute(uintmax_t Position) 

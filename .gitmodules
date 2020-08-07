@@ -34,3 +34,6 @@
 [submodule "lib/doctest"]
 	path = lib/doctest
 	url = https://github.com/onqtam/doctest.git
+[submodule "lib/tutf8e"]
+	path = lib/tutf8e
+	url = https://github.com/nigels-com/tutf8e.git

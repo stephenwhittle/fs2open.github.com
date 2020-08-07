@@ -1,0 +1,555 @@
+$Name: The Main Freespace Campaign
+$Type: single
++Description:
+A fourteen year war between the Terrans and Vasudans leads into something far more sinister.  This is the story of the Great War.
+
+$end_multi_text
+
++Starting Ships: ( "GTF Apollo" )
+
++Starting Weapons: ( "ML-16 Laser"  "Disruptor"  "MX-50"  "Fury" )
+
+
+$Mission: Btm-01.fsm
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "Btm-01.fsm"
+         "Flight Training"
+      )
+      ( next-mission "BTM-02.FSM" )
+   )
+   ( ( true ) ( next-mission "Btm-01.fsm" ) )
+)
+
++Level: 0
++Position: 1
+
+$Mission: BTM-02.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "BTM-02.FSM"
+         "Combat Training"
+      )
+      ( next-mission "Btm-03.FSM" )
+   )
+   ( ( true ) ( next-mission "BTM-02.FSM" ) )
+)
+
++Level: 1
++Position: 1
+
+$Mission: Btm-03.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "Btm-03.FSM"
+         "Dogfight Training"
+      )
+      ( next-mission "SM1-01.fsm" )
+   )
+   ( ( true ) ( next-mission "Btm-03.FSM" ) )
+)
+
++Level: 2
++Position: 1
+
+$Mission: SM1-01.fsm
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "SM1-01.fsm"
+         "Protect the Orff"
+      )
+      ( next-mission "sm1-02a.FSM" )
+   )
+   ( ( true ) ( next-mission "SM1-01.fsm" ) )
+)
+
++Level: 3
++Position: 1
+
+$Mission: sm1-02a.FSM
++Flags: 0
++Formula: ( cond
+   ( ( true ) ( next-mission "btm-04.FSM" ) )
+)
+
++Level: 4
++Position: 1
+
+$Mission: btm-04.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "btm-04.FSM"
+         "Advanced Training"
+      )
+      ( next-mission "SM1-03a.fsm" )
+   )
+   ( ( true ) ( next-mission "btm-04.FSM" ) )
+)
+
++Level: 5
++Position: 1
+
+$Mission: SM1-03a.fsm
++Flags: 0
++Formula: ( cond
+   (
+      ( or
+         ( is-previous-goal-true
+            "SM1-03a.fsm"
+            "Destroy Freighters"
+         )
+         ( is-previous-goal-true
+            "SM1-03a.fsm"
+            "Destroy second wave"
+         )
+      )
+      ( next-mission "sm1-04a.FSM" )
+   )
+   ( ( true ) ( next-mission "SM1-03a.fsm" ) )
+)
+
++Level: 6
++Position: 1
+
+$Mission: sm1-04a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm1-04a.FSM"
+         "Capture the Omega"
+      )
+      ( next-mission "SM1-05a.fsm" )
+   )
+   ( ( true ) ( next-mission "sm1-04a.FSM" ) )
+)
+
++Level: 7
++Position: 1
+
+$Mission: SM1-05a.fsm
++Briefing Cutscene: ancients1.mve
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "SM1-05a.fsm"
+         "Escort Plato"
+      )
+      ( next-mission "sm1-06a.FSM" )
+   )
+   ( ( true ) ( next-mission "SM1-05a.fsm" ) )
+)
+
++Level: 8
++Position: 1
+
+$Mission: sm1-06a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm1-06a.FSM"
+         "Escort Galatea"
+      )
+      ( next-mission "SM1-07a.fsm" )
+   )
+   ( ( true ) ( next-mission "sm1-06a.FSM" ) )
+)
+
++Level: 9
++Position: 1
+
+$Mission: SM1-07a.fsm
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-event-true
+         "SM1-07a.fsm"
+         "Trap alert!"
+      )
+      ( next-mission "sm1-08a.FSM" )
+   )
+   ( ( true ) ( next-mission "SM1-07a.fsm" ) )
+)
+
++Level: 10
++Position: 1
+
+$Mission: sm1-08a.FSM
++Briefing Cutscene: lab.mve
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm1-08a.FSM"
+         "Escort Shield"
+      )
+      ( next-mission "btm-05.FSM" )
+   )
+   ( ( true ) ( next-mission "sm1-08a.FSM" ) )
+)
+
++Level: 11
++Position: 1
+
+$Mission: btm-05.FSM
++Flags: 0
++Formula: ( cond
+   ( ( true ) ( next-mission "sm1-09a.FSM" ) )
+)
+
++Level: 12
++Position: 1
+
+$Mission: sm1-09a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( and
+         ( is-previous-event-true
+            "sm1-09a.FSM"
+            "Shivans arrives"
+         )
+         ( not
+            ( is-previous-event-true
+               "sm1-09a.FSM"
+               "Taranis dead"
+            )
+         )
+      )
+      ( next-mission "sm1-10a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm1-09a.FSM" ) )
+)
+
++Level: 13
++Position: 1
+
+$Mission: sm1-10a.FSM
++Briefing Cutscene: commandbrief.mve
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm1-10a.FSM"
+         "Capture the Taranis"
+      )
+      ( next-mission "sm2-01a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm1-10a.FSM" ) )
+)
+
++Level: 14
++Position: 1
+
+$Mission: sm2-01a.FSM
++Briefing Cutscene: ancients2.mve
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm2-01a.FSM"
+         "Meet Destroyer"
+      )
+      ( next-mission "sm2-02a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-01a.FSM" ) )
+)
+
++Level: 15
++Position: 1
+
+$Mission: sm2-02a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm2-02a.FSM"
+         "Save Asimov"
+      )
+      ( next-mission "sm2-03a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-02a.FSM" ) )
+)
+
++Level: 16
++Position: 1
+
+$Mission: sm2-03a.FSM
++Briefing Cutscene: Hallfight.mve
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm2-03a.FSM"
+         "Eliminate Shivan Presence"
+      )
+      ( next-mission "sm2-04a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-03a.FSM" ) )
+)
+
++Level: 17
++Position: 1
+
+$Mission: sm2-04a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-event-true
+         "sm2-04a.FSM"
+         "Mission done"
+      )
+      ( next-mission "sm2-05a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-04a.FSM" ) )
+)
+
++Level: 18
++Position: 1
+
+$Mission: sm2-05a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm2-05a.FSM"
+         "Guard the Galatea"
+      )
+      ( next-mission "sm2-06a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-05a.FSM" ) )
+)
+
++Level: 19
++Position: 1
+
+$Mission: sm2-06a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm2-06a.FSM"
+         "Protect the Shivan Cargo"
+      )
+      ( next-mission "sm2-07a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-06a.FSM" ) )
+)
+
++Level: 20
++Position: 1
+
+$Mission: sm2-07a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-event-false
+         "sm2-07a.FSM"
+         "Arjuna destroyed"
+      )
+      ( next-mission "sm2-08a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-07a.FSM" ) )
+)
+
++Level: 21
++Position: 1
+
+$Mission: sm2-08a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( is-previous-event-true
+         "sm2-08a.FSM"
+         "Give warp back"
+      )
+      ( next-mission "sm2-09a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-08a.FSM" ) )
+)
+
++Level: 22
++Position: 1
+
+$Mission: sm2-09a.FSM
++Briefing Cutscene: ancients3.mve
++Flags: 0
++Formula: ( cond
+   ( ( true ) ( next-mission "sm2-10a.FSM" ) )
+)
+
++Level: 23
++Position: 1
+
+$Mission: sm2-10a.FSM
++Flags: 0
++Formula: ( cond
+   (
+      ( and
+         ( is-previous-event-true
+            "sm2-10a.FSM"
+            "Lucifer here"
+         )
+         ( is-previous-event-true
+            "sm2-10a.FSM"
+            "Death of the Galatea"
+         )
+      )
+      ( next-mission "sm3-01a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm2-10a.FSM" ) )
+)
+
++Level: 24
++Position: 1
+
+$Mission: sm3-01a.FSM
++Briefing Cutscene: ancients4.mve
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm3-01a.FSM"
+         "Secure Area"
+      )
+      ( next-mission "sm3-02a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-01a.FSM" ) )
+)
+
++Level: 25
++Position: 1
+
+$Mission: sm3-02a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-event-false
+         "sm3-02a.FSM"
+         "Replay mission"
+      )
+      ( next-mission "sm3-03a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-02a.FSM" ) )
+)
+
++Level: 26
++Position: 1
+
+$Mission: sm3-03a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm3-03a.FSM"
+         "Defend Terminal"
+      )
+      ( next-mission "sm3-04a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-03a.FSM" ) )
+)
+
++Level: 27
++Position: 1
+
+$Mission: sm3-04a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-event-true
+         "sm3-04a.FSM"
+         "End of mission red alert"
+      )
+      ( next-mission "sm3-05a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-04a.FSM" ) )
+)
+
++Level: 28
++Position: 1
+
+$Mission: sm3-05a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm3-05a.FSM"
+         "One Omega"
+      )
+      ( next-mission "sm3-06a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-05a.FSM" ) )
+)
+
++Level: 29
++Position: 1
+
+$Mission: sm3-06a.FSM
++Briefing Cutscene: ancients5.mve
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm3-06a.FSM"
+         "Escort one Omega"
+      )
+      ( next-mission "sm3-07a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-06a.FSM" ) )
+)
+
++Level: 30
++Position: 1
+
+$Mission: sm3-07a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-goal-true
+         "sm3-07a.FSM"
+         "Escort the Bastion"
+      )
+      ( next-mission "sm3-08a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-07a.FSM" ) )
+)
+
++Level: 31
++Position: 1
+
+$Mission: sm3-08a.FSM
++Flags: 1
++Formula: ( cond
+   (
+      ( is-previous-event-true
+         "sm3-08a.FSM"
+         "You're there"
+      )
+      ( next-mission "sm3-09a.FSM" )
+   )
+   ( ( true ) ( next-mission "sm3-08a.FSM" ) )
+)
+
++Level: 32
++Position: 1
+
+$Mission: sm3-09a.FSM
++Flags: 1
+
++Level: 33
++Position: 1
+
+#End
+

@@ -55,6 +55,11 @@ class CFILE
 private:
 	enum class CFileEncryptionMagic;
 	CFileEncryptionMagic DetectFileEncryption();
+	enum class CFileTextEncoding;
+	//Takes in the buffer as a reference to avoid copy overhead
+	template<std::size_t Size>
+	CFileTextEncoding DetectFileEncoding(const char(&Buffer)[Size]);
+
 	enum class EDataSource
 	{
 		NotInitialized,
@@ -112,6 +117,7 @@ public:
 			CurrentDataSource = EDataSource::MemoryMapped;
 			mem_mapped = true;
 			MemoryMappedFile = mio::mmap_source(FilePath.string());
+			size = MemoryMappedFile.size();
 			MemoryMappedFileBuffer = SCPMembuf(MemoryMappedFile.begin(), MemoryMappedFile.end());
 			return;
 		}
@@ -130,9 +136,9 @@ public:
 		}
 
 		DesiredMode |= (std::ios::in | std::ios::binary);
+		size = SCPFile::FileSize(FilePath);
 
 		// open the file using mode settings
-		
 		UnderlyingFile.open(FilePath.c_str(), DesiredMode);
 		Assert(UnderlyingFile.good());
 	}
@@ -164,8 +170,8 @@ public:
 
 	SCPCFilePathTypeID GetDirectoryType() { return dir_type; }
 
-	SCP_buffer ReadAllContentsIntoBuffer();
-
+	SCP_buffer UTF8Normalize();
+	std::uintmax_t GetSize();
 	template<typename DestinationType>
 	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount)
 	{
@@ -173,15 +179,18 @@ public:
 
 		case CFILE::EDataSource::MemoryMapped:
 			MemoryMappedFileView.read((char*)Destination, ElementSize * ElementCount);
+			MemoryMappedFileView.clear();
 			return MemoryMappedFileView.gcount();
 			break;
 		case CFILE::EDataSource::LooseFile:
 		case CFILE::EDataSource::PackFile:
 			UnderlyingFile.read((char*)Destination, ElementSize * ElementCount);
+			UnderlyingFile.clear();
 			return UnderlyingFile.gcount();
 			break;
 		case CFILE::EDataSource::InMemory:
 			InMemoryFileView.read((char*)Destination, ElementSize * ElementCount);
+			InMemoryFileView.clear();
 			return InMemoryFileView.gcount();
 			break;
 		case CFILE::EDataSource::NotInitialized:
@@ -199,15 +208,18 @@ public:
 		
 		case CFILE::EDataSource::MemoryMapped:
 			MemoryMappedFileView.read((char*)Destination, Count);
+			MemoryMappedFileView.clear();
 			return MemoryMappedFileView.gcount();
 			break;
 		case CFILE::EDataSource::LooseFile:
 		case CFILE::EDataSource::PackFile:
 			UnderlyingFile.read((char*)Destination, Count);
+			UnderlyingFile.clear();
 			return UnderlyingFile.gcount();
 			break;
 		case CFILE::EDataSource::InMemory:
 			InMemoryFileView.read((char*)Destination, Count);
+			InMemoryFileView.clear();
 			return InMemoryFileView.gcount();
 			break;
 		case CFILE::EDataSource::NotInitialized:
@@ -252,6 +264,8 @@ public:
 
 
 };
+
+
 
 /*
 // This allows to use std::unique_ptr with CFILE

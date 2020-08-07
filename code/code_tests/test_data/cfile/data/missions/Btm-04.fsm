@@ -1,0 +1,1417 @@
+#Mission Info
+
+$Version: 0.10
+$Name: Basic Training Stage 4
+$Author: Jim Boone
+$Created: 04/16/98 at 17:36:43
+$Modified: 05/20/98 at 15:42:23
+$Notes:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This is a FRED created mission
+$End Notes:
+
+$Mission Desc:
+Put mission description here$end_multi_text
+
++Game Type Flags: 4
+
++Flags: 0
+
++Red Alert: 0
+
++Scramble: 0
+
++Disallow Support: 0
+
++Player Entry Delay:
+1.000000
+
++Viewer pos: 616.945801, 938.041138, 167.739502
++Viewer orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.073429, 0.997301,
+	0.000000, -0.997301, 0.073429
+
+#Plot Info
+
+$Tour: Blah
+$Pre-Briefing Cutscene: Blah
+$Pre-Mission Cutscene: Blah
+$Next Mission Success: Blah
+$Next Mission Partial: Blah
+$Next Mission Failure: Blah
+
+#Command Briefing
+
+#Briefing
+$start_briefing
+$num_stages: 1
+$start_stage
+$multi_text
+Welcome to Advanced Training.  In today's course you will learn the basics of messaging, countermeasures, and the support ship.
+$end_multi_text
+$voice: btm4_brief_01.wav
+$camera_pos: 616.945801, 938.041138, 167.739502
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.073429, 0.997301,
+	0.000000, -0.997301, 0.073429
+$camera_time: 500
+$num_lines: 0
+$num_icons: 2
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 758.135132, -0.000019, 139.520966
+$label: Alpha 1
++id: 1
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 443.773285, -9.999992, 340.086731
+$label: Instructor
++id: 2
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$end_briefing
+
+#Debriefing_info
+
+$Num stages: 3
+
+$Formula: ( and
+   ( is-event-true-delay
+      "Class Dismissed"
+      0
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   Well done Pilot.  You have completed phase one of advanced training.
+$end_multi_text
+$Voice: btm4_debrief_01.wav
+$Recommendation text:
+   
+$end_multi_text
+
+$Formula: ( and
+   ( is-event-false-delay
+      "Class Dismissed"
+      0
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   Why did you leave before the training was completed?  You need to stay for the whole lesson in order to get credit for completing the course.
+$end_multi_text
+$Voice: btm4_debrief_02.wav
+$Recommendation text:
+   Do not leave the mission until the instructor tells you.
+$end_multi_text
+
+$Formula: ( special-check 2000 ) 
+$Multi text
+   Firing upon your Instructor is grounds for immediate failure.  You will be required to redo this stage of training.
+$end_multi_text
+$Voice: training_traitor.wav
+$Recommendation text:
+   Don't shoot at your Instructor.
+$end_multi_text
+
+#Players		;! 1 total
+
+$Starting Shipname: Alpha 1
+$Ship Choices: (
+	"GTF Ulysses"	5
+	"GTF Apollo"	5
+	"GTF Valkyrie"	5
+	"GTF Hercules"	5
+	"GTB Athena"	5
+	"GTB Medusa"	5
+	"GTB Ursa"	5
+	"SF Dragon#3 (Player)"	5
+)
+
++Weaponry Pool: (
+	"ML-16 Laser"	2
+	"MX-50"	20
+)
+
+#Objects		;! 8 total
+
+$Name: Alpha 1		;! Object #0
+$Class: GTF Apollo
+$Team: Friendly
+$Location: 0.000000, 0.000000, 0.000000
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "ML-16 Laser" "ML-16 Laser" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" "player-start" "invulnerable" )
++Group: 0
++Score: 12
+
+$Name: Instructor		;! Object #1
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -58.099998, -10.000000, 87.500000
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
++AI Class: General
+$AI Goals: ( goals ( ai-stay-still "Alpha 1" 50 ) )
+$Cargo 1: Nothing
++Initial Velocity: 33
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "" "" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" "invulnerable" )
++Orders Accepted: 0		;! note that this is a bitfield!!!
++Group: 0
++Score: 10
+
+$Name: Freighter 01		;! Object #2
+$Class: GTFR Chronos
+$Team: Hostile
+$Location: 362.553497, -0.000753, 497.531464
+$Orientation:
+	-0.019202, 0.000000, 0.999816,
+	0.000000, 1.000000, 0.000000,
+	-0.999816, 0.000000, -0.019202
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-play-dead 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 10
++Initial Shields: 100
++Subsystem: Pilot
++Subsystem: turreta
+$Arrival Location: Hyperspace
++Arrival Delay: 12
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" "no-arrival-music" )
++Orders Accepted: 0		;! note that this is a bitfield!!!
++Group: 0
++Score: 20
+
+$Name: Epsilon 1		;! Object #3
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -259.889404, 0.000062, 464.417236
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "Disruptor" "ML-16 Laser" )
++Secondary Banks: ( "" "" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Orders Accepted: 49159		;! note that this is a bitfield!!!
++Group: 0
++Score: 10
+
+$Name: Epsilon 2		;! Object #4
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -359.875580, 49.999977, 564.464172
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "Disruptor" "ML-16 Laser" )
++Secondary Banks: ( "" "" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Orders Accepted: 49159		;! note that this is a bitfield!!!
++Group: 0
++Score: 10
+
+$Name: Epsilon 3		;! Object #5
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -159.875610, 49.999977, 564.464172
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Primary Banks: ( "Disruptor" "ML-16 Laser" )
++Secondary Banks: ( "" "" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Orders Accepted: 49159		;! note that this is a bitfield!!!
++Group: 0
++Score: 10
+
+$Name: Freighter 02		;! Object #6
+$Class: GTFR Chronos
+$Team: Hostile
+$Location: 363.028259, -0.000477, 569.718994
+$Orientation:
+	-0.039194, 0.000000, 0.999232,
+	0.000000, 1.000000, 0.000000,
+	-0.999232, 0.000000, -0.039194
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-play-dead 89 ) )
+$Cargo 1: Nothing
++Initial Hull: 10
++Initial Shields: 100
++Subsystem: Pilot
++Subsystem: turreta
+$Arrival Location: Hyperspace
+$Arrival Cue: ( is-event-true-delay
+   "freighter 01 dead"
+   3
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "protect-ship" "no-shields" "no-arrival-music" )
++Orders Accepted: 0		;! note that this is a bitfield!!!
++Group: 0
++Score: 20
+
+$Name: GTC Neptune		;! Object #7
+$Class: GTC Leviathan
+$Team: Hostile
+$Location: 1202.900024, 50.000000, 352.200012
+$Orientation:
+	-0.019203, 0.000000, 0.999816,
+	0.000000, 1.000000, 0.000000,
+	-0.999816, 0.000000, -0.019203
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-play-dead 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Subsystem: turret01
++Primary Banks: ( "" )
++Subsystem: turret02
++Primary Banks: ( "" )
++Subsystem: turret03
++Primary Banks: ( "" )
++Subsystem: turret04
++Primary Banks: ( "" )
++Subsystem: turret05
++Primary Banks: ( "" )
++Subsystem: turret06
++Primary Banks: ( "" )
++Subsystem: turret07
++Primary Banks: ( "" )
++Subsystem: turret08
++Primary Banks: ( "" )
++Subsystem: turret09a-01-main
++AI Class: General
++Secondary Banks: ( "MX-50" )
++Sbank Ammo: ( 0 )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( is-event-true-delay
+   "Dummy Missiles"
+   1
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( is-event-true-delay
+   "Class Dismissed"
+   0
+)
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" "no-arrival-music" )
++Orders Accepted: 0		;! note that this is a bitfield!!!
++Group: 0
++Score: 100
+
+#Wings		;! 2 total
+
+$Name: Alpha
+$Waves: 1
+$Wave Threshold: 0
+$Special Ship: 0		;! Alpha 1
+
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 1 total
+	"Alpha 1"
+)
++Hotkey: 0
++Flags:( )
+
+$Name: Epsilon
+$Waves: 1
+$Wave Threshold: 0
+$Special Ship: 0		;! Epsilon 1
+
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 3 total
+	"Epsilon 1"
+	"Epsilon 2"
+	"Epsilon 3"
+)
+$AI Goals: ( goals ( ai-stay-still "Alpha 1" 50 ) )
++Flags:( "reinforcement" "no-arrival-music" "no-arrival-message" )
+
+#Events		;! 57 total
+
+$Formula: ( when
+   ( has-time-elapsed 3 ) 
+   ( training-msg "Greeting" ) 
+)
++Name: Greetings
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( is-event-true-delay "Greetings" 5 ) 
+   ( training-msg "Freighter Arrival" ) 
+)
++Name: Freighter arrival
++Repeat Count: 1
++Interval: 1
++Chained: 4
+
+$Formula: ( when
+   ( targeted "Freighter 01" 2 ) 
+   ( training-msg "Reinforcements" ) 
+)
++Name: Reinforcements
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Target Freighter 01
++Objective key: Press $h$
+
+$Formula: ( when
+   ( has-arrived-delay 1 "Epsilon" ) 
+   ( training-msg "Good job." ) 
+)
++Name: Good job
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Call reinforcements
++Objective key: Press [$c$], [4], [1]
+
+$Formula: ( when
+   ( is-event-true-delay "Good job" 3 ) 
+   ( training-msg "Make sure target" ) 
+)
++Name: Make sure target
++Repeat Count: 1
++Interval: 1
++Chained: 3
+
+$Formula: ( when
+   ( and
+      ( targeted "Freighter 01" ) 
+      ( is-event-true-delay
+         "Make sure target"
+         5
+      )
+   )
+   ( training-msg "Disarm 1" ) 
+   ( key-reset "C" ) 
+)
++Name: Disarm 1
++Repeat Count: 1
++Interval: 1
++Chained: 5
+
+$Formula: ( when
+   ( key-pressed "C" ) 
+   ( do-nothing ) 
+)
++Name: Directive C
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay "Disarm 1" 8 ) 
+   ( training-msg "Disarm 2" ) 
+)
++Name: Press C 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-subsystem-destroyed-delay
+      "Freighter 01"
+      "turreta"
+      1
+   )
+   ( training-msg "Not Destroy" ) 
+)
++Name: not destroy
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Order Disarm
++Objective key: Press [$c$], [2], [1], [3]
+
+$Formula: ( when
+   ( is-subsystem-destroyed-delay
+      "Freighter 01"
+      "turreta"
+      10
+   )
+   ( training-msg "Disable 1" ) 
+)
++Name: Disable 1
++Repeat Count: 1
++Interval: 1
++Chained: 11
+
+$Formula: ( when
+   ( is-event-true-delay "Disable 1" 9 ) 
+   ( training-msg "Disable 2" ) 
+)
++Name: Disable 2
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( and
+      ( <
+         ( hits-left-subsystem
+            "Freighter 01"
+            "engine 1"
+         )
+         90
+      )
+      ( is-event-true-delay "Disable 2" 11 ) 
+   )
+   ( training-msg "Disable 3" ) 
+)
++Name: Disable 3
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Order Disable
++Objective key: Press [$c$], [2], [1], [2]
+
+$Formula: ( when
+   ( is-disabled-delay 1 "Freighter 01" ) 
+   ( training-msg "Destroy 1" ) 
+)
++Name: Destroy 1
++Repeat Count: 1
++Interval: 1
++Chained: 17
+
+$Formula: ( when
+   ( is-event-true-delay "Destroy 1" 6 ) 
+   ( training-msg "Destroy 3" ) 
+)
++Name: Destroy 3
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( and
+      ( is-event-true-delay "Destroy 3" 12 ) 
+      ( is-destroyed-delay 1 "Freighter 01" ) 
+   )
+   ( training-msg "Destroy 2" ) 
+)
++Name: Destroy 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Order Destroy
++Objective key: Press [$c$], [2], [1], [1]
+
+$Formula: ( when
+   ( is-destroyed-delay 0 "Freighter 02" ) 
+   ( add-goal
+      "Epsilon"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: don't kill freighter 02
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 2 "Freighter 01" ) 
+      ( is-event-true-delay "Destroy 2" 3 ) 
+   )
+   ( training-msg "First attack order" ) 
+)
++Name: freighter 01 dead
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( has-arrived-delay 3 "Freighter 02" ) 
+   ( training-msg "Destroy Freighter 2" ) 
+)
++Name: Destroy Freighter 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-destroyed-delay 0 "Freighter 02" ) 
+   ( do-nothing ) 
+)
++Name: Directive Destroy 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Order Destroy
++Objective key: Press [$c$], [2], [1], [1]
+
+$Formula: ( when
+   ( and
+      ( is-destroyed-delay 1 "Freighter 02" ) 
+      ( is-event-true-delay
+         "Destroy Freighter 2"
+         11
+      )
+   )
+   ( training-msg
+      "Destroy Freighter 2 (2)"
+   )
+)
++Name: Destroy Freighter 2 (2)
++Repeat Count: 1
++Interval: 1
++Chained: 5
+
+$Formula: ( when
+   ( is-destroyed-delay 6 "Freighter 02" ) 
+   ( training-msg "Epsilon leave" ) 
+)
++Name: ep leave
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( is-event-true-delay "ep leave" 5 ) 
+   ( training-msg "Epsilon leave 2" ) 
+)
++Name: ep leave 2
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( has-departed-delay 1 "Epsilon" ) 
+   ( training-msg "Epsilon Gone" ) 
+)
++Name: ep gone
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Order Departure
++Objective key: Press [$c$], [2], [1], [0]
+
+$Formula: ( when
+   ( is-event-true-delay "ep gone" 4 ) 
+   ( training-msg "Countermeasures" ) 
+)
++Name: Countermeasures
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Countermeasures"
+      13
+   )
+   ( training-msg "Dummy missiles" ) 
+)
++Name: Dummy Missiles
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Dummy Missiles"
+      13
+   )
+   ( training-msg "Describe" ) 
+)
++Name: Describe
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( is-event-true-delay "Describe" 9 ) 
+   ( training-msg "Run" ) 
+)
++Name: Run
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay "Run" 11 ) 
+   ( training-msg "Run 2" ) 
+)
++Name: Run 2
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay "Run 2" 3 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Fire 2
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( key-pressed "X" ) 
+   ( do-nothing ) 
+)
++Name: Press X
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Launch Countermeasures
++Objective key: Press $x$
+
+$Formula: ( when
+   ( is-event-true-delay "Fire 2" 4 ) 
+   ( training-msg "The Trick" ) 
+)
++Name: The Trick
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay "The Trick" 11 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: Stop Firing
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay "Stop Firing" 5 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Go
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay "Go" 10 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: Stop
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay "Stop" 5 ) 
+   ( clear-goals "GTC Neptune" ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Go 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay "Go 2" 10 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: Stop 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( protect-ship "Instructor" ) 
+)
++Name: protect instructor
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay "Go" 2 ) 
+   ( training-msg "Sharp Turns" ) 
+)
++Name: Sharp Turns
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay "Go 2" 2 ) 
+   ( training-msg "Evaded" ) 
+)
++Name: Evaded
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( or
+      ( special-check 100 ) 
+      ( is-event-true-delay "Stop 2" 0 ) 
+   )
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: No Countermeasures
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay
+      "No Countermeasures"
+      1
+   )
+   ( training-msg
+      "Out of Countermeasures"
+   )
+)
++Name: Out of Countermeasures
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Out of Countermeasures"
+      6
+   )
+   ( training-msg "Out of 2" ) 
+)
++Name: Out of 2
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( key-pressed "C" ) 
+   ( do-nothing ) 
+)
++Name: Directive C (2)
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Call Support
++Objective key: Press [$c$], [5]
+
+$Formula: ( when
+   ( is-event-true-delay "Out of 2" 8 ) 
+   ( training-msg "Explain Support" ) 
+)
++Name: Explain Support
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Explain Support"
+      14
+   )
+   ( training-msg "More support" ) 
+)
++Name: More Support
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "More Support"
+      8
+   )
+   ( training-msg "More Support 2" ) 
+)
++Name: More Support 2
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "More Support 2"
+      8
+   )
+   ( training-msg "Even more support" ) 
+)
++Name: Even More Support
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Even More Support"
+      14
+   )
+   ( training-msg "More countermeasures" ) 
+)
++Name: More Countermeasures
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( is-event-true-delay
+      "More Countermeasures"
+      6
+   )
+   ( clear-goals "GTC Neptune" ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: reloaded
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay "reloaded" 10 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: Stop 4
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay "Stop 4" 5 ) 
+   ( clear-goals "GTC Neptune" ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-chase "Alpha 1" 89 ) 
+   )
+)
++Name: Go 5
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay "Go 5" 10 ) 
+   ( add-goal
+      "GTC Neptune"
+      ( ai-play-dead 89 ) 
+   )
+)
++Name: Stop 5
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay "Stop 5" 3 ) 
+   ( training-msg "Class Dismissed" ) 
+)
++Name: Class Dismissed
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( key-pressed "Alt-J" ) 
+   ( do-nothing ) 
+)
++Name: Event name
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Return to Base
++Objective key: Press $alt-j$
+
+$Formula: ( when
+   ( or
+      ( is-event-false-delay
+         "Reinforcements"
+         0
+      )
+      ( is-event-false-delay "Good job" 0 ) 
+      ( is-event-false-delay
+         "not destroy"
+         0
+      )
+      ( is-event-false-delay "Disable 3" 0 ) 
+   )
+   ( training-msg "faliure" ) 
+)
++Name: Mission failed
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( add-goal
+      "Instructor"
+      ( ai-warp-out 89 ) 
+   )
+)
++Name: out of here
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when ( true ) ( do-nothing ) ) 
++Name: get outta here
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Return to Base
++Objective key: Press $alt-j$
+
+#Goals		;! 1 total
+
+$Type: Primary
++Name: Advanced Training
+$Message: Complete Advanced Training
+$Rating: 10
+$Formula: ( is-event-true-delay
+   "Class Dismissed"
+   0
+)
++No music
+
+#Waypoints		;! 0 lists total
+
+
+#Messages		;! 204 total
+
+
+$Name: Greeting
+$Message: All right Alpha 1.  Now you're going to learn about messaging and countermeasures.
++Wave Name: btm4_1.wav
+
+$Name: Freighter Arrival
+$Message: Here comes your first target.  Go ahead and target Freighter 01.
++Wave Name: btm4_2.wav
+
+$Name: Reinforcements
+$Message: Good.  Now, call in some reinforcements.  Press the communications [$c$] key to bring up the messaging window.  From there, press the [4] key followed by the [1] key and your reinforcements will arrive.
++Wave Name: btm4_3.wav
+
+$Name: Good job.
+$Message: Good job.
++Wave Name: btm4_4.wav
+
+$Name: Disarm 1
+$Message: Now I am going to show you how to disarm your target using your wingmen.  Press the communications [$c$] key to bring up your messaging box again.
++Wave Name: btm4_5.wav
+
+$Name: Disarm 2
+$Message: Now, select [2] to send your orders to a wing rather than just a ship, then the [1] key to choose Epsilon wing.  By choosing Epsilon wing, you are sending your orders to that wing only.  Finally press the [3] key to "Disarm Target".
++Wave Name: btm4_6.wav
+
+$Name: Not Destroy
+$Message: Observe that your wingmen have made every effort not to destroy your target.  They will only attempt to disarm, thus making sure your target will no longer be able to attack you with any of its weapons.
++Wave Name: btm4_7.wav
+
+$Name: Disable 1
+$Message: The next step will be to disable your target.  By giving this order to your wingmen, they will take out the engines of your target, thus disabling it from moving.
++Wave Name: btm4_8.wav
+
+$Name: Disable 2
+$Message: You will once again bring up the messaging window by pressing the communications [$c$] key.  Next, select [2] for "wing", and [1] for "epsilon".  Finally, press the [2] key to disable your target.
++Wave Name: btm4_9.wav
+
+$Name: Disable 3
+$Message: As you can see, your wingmen are now taking out the engines of Freighter 01.  It won't take them long to knock out the engines of this freighter, but keep in mind that other targets can require many more hits to disable it than this freighter does.
++Wave Name: btm4_10.wav
+
+$Name: Destroy 1
+$Message: Now it's time to put that freighter out of its misery.  Order your wingmen to destroy the freighter.
++Wave Name: btm4_11.wav
+
+$Name: Destroy 2
+$Message: Well done pilot!
++Wave Name: btm4_12.wav
+
+$Name: Destroy 3
+$Message: Press the communications [$c$] button to bring up the messaging window, followed by the [2] key to select a wing, then the [1] key to select Epsilon wing.  Finally press the [1] key to have them destroy your target.
++Wave Name: btm4_13.wav
+
+$Name: First attack order
+$Message: Well, how does it feel to have ordered your first kill?  Hope you enjoyed it because I want you to do it again.
++Wave Name: btm4_14.wav
+
+$Name: Destroy Freighter 2
+$Message: I want you to order Epsilon wing to destroy Freighter 02.  Have you remembered your previous instruction?  If you need to, you can look on your directives for previous instructions of this same goal.
++Wave Name: btm4_15.wav
+
+$Name: Destroy Freighter 2 (2)
+$Message: Nicely done Alpha 1.  I think you've got this down.
++Wave Name: btm4_16.wav
+
+$Name: Epsilon leave
+$Message: OK pilot, now that you've had your fun I want to to order Epsilon wing to depart.
++Wave Name: btm4_17.wav
+
+$Name: Epsilon Gone
+$Message: Good job.
++Wave Name: btm4_18.wav
+
+$Name: Countermeasures
+$Message: All right pilot, now it's time to learn about countermeasures.  A countermeasure presents a new target for the pursuing missile to go after, thus causing the missile to avoid your ship.  As you will soon see this does not always work.
++Wave Name: btm4_19.wav
+
+$Name: Dummy missiles
+$Message: For this lesson we are bringing in one of our Leviathan class cruisers.  Their gunner will be getting practice hitting a moving target, you.   Don't worry, these are just dummy missiles designed to give you a feel for live fire.
++Wave Name: btm4_20.wav
+
+$Name: Describe
+$Message: In a few seconds the Neptune will begin to launch missiles at you.  Once the missiles are incoming, you will press the countermeasures [$x$] key to release your countermeasures.
++Wave Name: btm4_21.wav
+
+$Name: Run
+$Message: You should also immediately increase your forward velocity to maximum, and fly away from the pusuing missile.  In fact, you should be using your afterburners a great deal of the time.
++Wave Name: btm4_22.wav
+
+$Name: The Trick
+$Message: Then when the missile is nearly upon you, launch the countermeasure.  Listen to the beeping sound of the missile lock to gauge the distance of the missile.  The quicker the beeps, the closer the missile.
++Wave Name: btm4_23.wav
+
+$Name: Sharp Turns
+$Message: While you are launching your countermeasures, you will also try turning your ship about in sharp movements.  This will further help you to avoid being hit by the missile.
++Wave Name: btm4_24.wav
+
+$Name: Support Ship
+$Message: That gives us just enough time to squeeze in one more lesson.
++Wave Name: btm4_25.wav
+
+$Name: Out of Countermeasures
+$Message: It's time for you to reload your countermeasures.  To do this you will need to call in a support ship.
++Wave Name: btm4_26.wav
+
+$Name: Explain Support
+$Message: In order for the support ship to dock, you must bring your ship to a complete stop.  The support ship will then automatically dock with you.  Check your  indicator in the lower portion of the HUD which shows the ETA for the support ship.
++Wave Name: btm4_27.wav
+
+$Name: More support
+$Message: The support ship's primary purpose is twofold.  First, it will reload your ship with any secondary weapons and countermeasures.
++Wave Name: btm4_28.wav
+
+$Name: Even more support
+$Message: Finally, the support ship is capable of making minor repairs to you ship.  It can fully repair any damaged or destroyed subsystem on your ship.  However, the support ship is not capable of repairing your main hull.
++Wave Name: btm4_29.wav
+
+$Name: More countermeasures
+$Message: All right pilot, now for a little more paractice with countermeasures.  The Neptune is going to fire at you again.  Take evasive actions.
++Wave Name: btm4_30.wav
+
+$Name: Class Dismissed
+$Message: All right Pilot, I believe that will be enough for today.  The Neptune needs to continue its training elsewhere and you've had enough for one day.  You've done a good job, considering you're just a rookie.  Return to base.
++Wave Name: btm4_31.wav
+
+$Name: Make sure target
+$Message: First, make sure that you still have Freighter 01 targeted.
++Wave Name: btm4_32.wav
+
+$Name: Epsilon leave 2
+$Message: To do this, press the communications [$c$] key to bring up the messaging window.  Select [2] for wing, and [1] for Epsilon.  Finally, press [0] for Depart.
++Wave Name: btm4_33.wav
+
+$Name: Dummy Missiles 2
+$Message: Don't worry, the missiles being fired at you are not armed and will not harm you at all.
++Wave Name: btm4_34.wav
+
+$Name: Run 2
+$Message: You will use your afterburners to help maintain a high speed.  Additionally, you should try to keep the missile pointer at a 3 or 9 o'clock position.
++Wave Name: btm4_35.wav
+
+$Name: Out of 2
+$Message: You will do this by pressing the communications [$c$] key to bring up your messaging window, followed by the [5] key for Rearm.
++Wave Name: btm4_36.wav
+
+$Name: Explain Support 2
+$Message: Check your indicator in the lower central portion of the HUD which shows the ETA for the support ship.
++Wave Name: btm4_37.wav
+
+$Name: More Support 2
+$Message: Keep in mind a support ship can only load as many weapons as it has on board.  It may not be enough to fully reload you.
++Wave Name: btm4_38.wav
+
+$Name: Evaded
+$Message: When you have succesfully evaded a missile, an indicator will come up in the upper portion of your targeting reticle.  This will alert you to the fact that you indeed evaded the missile.
++Wave Name: btm4_39.wav
+
+$Name: faliure
+$Message: Inability to follow instructions results in immediate failure.  Jump back to base to reschedule training phase one.
++Wave Name: btm1_39.wav
+
+#Reinforcements		;! 1 total
+
+$Name: Epsilon
+$Type: Attack/Protect
+$Num times: 1
++Arrival Delay: 0
++No Messages: ( )
++Yes Messages: ( )
+
+#Background bitmaps		;! 1 total
+
+$Num stars: 500
+$Ambient light level: 0
++Nebula: Nebula01
++Color: Blue
++Pitch: 0
++Bank: 0
++Heading: 0
+
+$Bitmap: Sun01
+$Orientation:
+	0.021409, 0.250098, 0.967984,
+	-0.992573, 0.121286, -0.009384,
+	-0.119750, -0.960594, 0.250837
+$Rotation rate: 0.000000
+$Distance: 10.000000
+$Light: 0
+
+#Asteroid Fields
+
+#Music
+
+$Event Music: 2: March
+$Briefing Music: BRIEF2
+
+#End
+

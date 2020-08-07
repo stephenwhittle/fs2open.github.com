@@ -1,0 +1,1501 @@
+#Mission Info
+
+$Version: 0.10
+$Name: Advanced Training #2
+$Author: Mike Kulas
+$Created: 04/14/98 at 12:04:25
+$Modified: 05/20/98 at 15:29:55
+$Notes:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+This mission was jointly created by Mike and FrEd.
+$End Notes:
+
+$Mission Desc:
+Training Mission #5.  Aspect seekers, shield system.$end_multi_text
+
++Game Type Flags: 4
+
++Flags: 0
+
++Red Alert: 0
+
++Scramble: 0
+
++Disallow Support: 0
+
++Player Entry Delay:
+1.000000
+
++Viewer pos: 0.000000, 130.519958, -211.246841
++Viewer orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.866025, 0.500000,
+	0.000000, -0.500000, 0.866025
+
+#Plot Info
+
+$Tour: Blah
+$Pre-Briefing Cutscene: Blah
+$Pre-Mission Cutscene: Blah
+$Next Mission Success: Blah
+$Next Mission Partial: Blah
+$Next Mission Failure: Blah
+
+#Command Briefing
+
+#Briefing
+$start_briefing
+$num_stages: 4
+$start_stage
+$multi_text
+Welcome to Advanced Training.
+$end_multi_text
+$voice: btm5_brief_01.wav
+$camera_pos: 0.000000, 130.519958, -211.246841
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.866025, 0.500000,
+	0.000000, -0.500000, 0.866025
+$camera_time: 500
+$num_lines: 0
+$num_icons: 2
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: Alpha 1
++id: 1
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: -55.773571, 0.000002, -19.765221
+$label: Instructor
++id: 2
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$start_stage
+$multi_text
+As you know, research has been completed on the new shielding technology.  Shields are being added to all fighters and bombers.  In this training mission, you will be instructed on the use of your shield system.
+$end_multi_text
+$voice: btm5_brief_02.wav
+$camera_pos: 0.000000, 44.125141, -83.803986
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.866025, 0.500000,
+	0.000000, -0.500000, 0.866025
+$camera_time: 500
+$num_lines: 0
+$num_icons: 2
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: Alpha 1
++id: 1
+$hlight: 1
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: -55.773571, 0.000002, -19.765221
+$label: Instructor
++id: 2
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$start_stage
+$multi_text
+In addition to the shield technology, the new Interceptor aspect seeking missiles is now available.  They are more powerful than the MX-50s, but require a lock before they may be fired.  You will learn how to properly use the Interceptor in this mission.
+$end_multi_text
+$voice: btm5_brief_03.wav
+$camera_pos: 0.000000, 528.071533, -239.085648
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.466876, 0.884323,
+	0.000000, -0.884323, 0.466876
+$camera_time: 500
+$num_lines: 0
+$num_icons: 3
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: Alpha 1
++id: 1
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: -55.773571, 0.000002, -19.765221
+$label: Instructor
++id: 2
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Hostile
+$class: GTDR Amazon
+$pos: 133.129669, 0.000013, 138.439835
+$label: Drone 1
++id: 3
+$hlight: 1
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$start_stage
+$multi_text
+The shield is an important addition to your ship.  And the Interceptors are a formidable addition to your arsenal.  You must learn how to use them well.
+$end_multi_text
+$voice: btm5_brief_04.wav
+$camera_pos: 0.000000, 111.262589, -222.365067
+$camera_orient:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 0.866025, 0.500000,
+	0.000000, -0.500000, 0.866025
+$camera_time: 500
+$num_lines: 0
+$num_icons: 2
+$Flags: 0
+$Formula: ( true ) 
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: 0.000000, 0.000000, 0.000000
+$label: alpha 1
++id: 1
+$hlight: 1
+$multi_text
+$end_multi_text
+$end_icon
+$start_icon
+$type: 0
+$team: Friendly
+$class: GTF Apollo
+$pos: -55.773571, 0.000002, -19.765221
+$label: Instructor
++id: 2
+$hlight: 0
+$multi_text
+$end_multi_text
+$end_icon
+$end_stage
+$end_briefing
+
+#Debriefing_info
+
+$Num stages: 3
+
+$Formula: ( and
+   ( is-event-true-delay
+      "Instructor Warps Out"
+      0
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   Congratulations.  You have completed your training.
+$end_multi_text
+$Voice: btm5_debrief_01.wav
+$Recommendation text:
+   
+$end_multi_text
+
+$Formula: ( and
+   ( not
+      ( is-event-true-delay
+         "Instructor Warps Out"
+         0
+      )
+   )
+   ( not ( special-check 2000 ) ) 
+)
+$Multi text
+   You departed before completing training.  You must complete this training mission before continuing.
+$end_multi_text
+$Voice: btm5_debrief_02.wav
+$Recommendation text:
+   
+$end_multi_text
+
+$Formula: ( special-check 2000 ) 
+$Multi text
+   Firing upon your Instructor is grounds for immediate failure.  You will be required to redo this stage of training.
+$end_multi_text
+$Voice: training_traitor.wav
+$Recommendation text:
+   Don't shoot at your Instructor.
+$end_multi_text
+
+#Players		;! 1 total
+
+$Starting Shipname: alpha 1
+$Ship Choices: (
+	"GTF Ulysses"	5
+	"GTF Apollo"	5
+	"GTF Valkyrie"	5
+	"GTF Hercules"	5
+	"GTB Athena"	5
+	"GTB Medusa"	5
+	"GTB Ursa"	5
+	"SF Dragon#3 (Player)"	5
+)
+
++Weaponry Pool: (
+	"ML-16 Laser"	2
+	"Interceptor#Weak"	80
+)
+
+#Objects		;! 6 total
+
+$Name: alpha 1		;! Object #0
+$Class: GTF Apollo
+$Team: Friendly
+$Location: 88.581749, 0.000014, 7.793905
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Subsystem: Pilot
++Primary Banks: ( "ML-16 Laser" "ML-16 Laser" )
++Secondary Banks: ( "Interceptor#Weak" "Interceptor#Weak" )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "player-start" )
++Group: 0
++Score: 12
+
+$Name: Instructor		;! Object #1
+$Class: GTF Apollo
+$Team: Friendly
+$Location: -55.773571, 0.000002, -19.765221
+$Orientation:
+	1.000000, 0.000000, 0.000000,
+	0.000000, 1.000000, 0.000000,
+	0.000000, 0.000000, 1.000000
+$IFF: IFF 1
+$AI Behavior: None
+$AI Goals: ( goals ( ai-waypoints-once "Waypoint path 1" 50 ) )
+$Cargo 1: Nothing
++Initial Hull: 100
++Subsystem: Pilot
++Primary Banks: ( "" "" )
++Secondary Banks: ( "" "" )
++Sbank Ammo: ( 0 0 )
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "invulnerable" "no-dynamic" )
++Group: 0
++Score: 10
+
+$Name: Freighter 1		;! Object #2
+$Class: GTFR Poseidon#2 (weakened)
+$Team: Hostile
+$Location: -98.477180, 0.000039, 414.979065
+$Orientation:
+	0.000000, 0.000000, -1.000000,
+	0.000000, 1.000000, 0.000000,
+	1.000000, 0.000000, 0.000000
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Hull: 100
++Initial Shields: 100
++Subsystem: Pilot
++Subsystem: turret01
+$Damage: 100
++Subsystem: turret02
+$Damage: 100
++Subsystem: turret03
+$Damage: 100
++Subsystem: turret04
+$Damage: 100
+$Arrival Location: Hyperspace
+$Arrival Cue: ( is-event-true-delay
+   "Arrive Freighter 1"
+   0
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Orders Accepted: 257		;! note that this is a bitfield!!!
++Group: 0
++Score: 20
+
+$Name: Drone 1		;! Object #3
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: 154.600006, 0.000000, 339.700012
+$Orientation:
+	-0.368550, 0.000000, 0.929608,
+	0.000000, 1.000000, 0.000000,
+	-0.929608, 0.000000, -0.368550
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Velocity: 100
++Initial Hull: 35
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Group: 0
+
+$Name: DroneB 1		;! Object #4
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -1575.400024, 0.000000, 1421.500000
+$Orientation:
+	-0.157485, 0.000000, -0.987521,
+	0.000000, 1.000000, 0.000000,
+	0.987521, 0.000000, -0.157485
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Velocity: 100
++Initial Hull: 35
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Group: 0
+
+$Name: DroneB 2		;! Object #5
+$Class: GTDR Amazon
+$Team: Hostile
+$Location: -1554.185669, -0.000056, 1375.548950
+$Orientation:
+	-0.135845, 0.000000, -0.990730,
+	0.000000, 1.000000, 0.000000,
+	0.990730, 0.000000, -0.135845
+$IFF: IFF 1
+$AI Behavior: None
+$Cargo 1: Nothing
++Initial Velocity: 100
++Initial Hull: 35
++Initial Shields: 100
++Subsystem: Pilot
+$Arrival Location: Hyperspace
+$Arrival Cue: ( false ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Determination: 10
++Flags: ( "cargo-known" "no-shields" )
++Group: 0
+
+#Wings		;! 3 total
+
+$Name: Alpha
+$Waves: 1
+$Wave Threshold: 0
+$Special Ship: 0		;! alpha 1
+
+$Arrival Location: Hyperspace
+$Arrival Cue: ( true ) 
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 1 total
+	"alpha 1"
+)
++Hotkey: 0
++Flags:( )
+
+$Name: Drone
+$Waves: 2
+$Wave Threshold: 0
+$Special Ship: 0		;! Drone 1
+
+$Arrival Location: Hyperspace
++Arrival delay: 6
+$Arrival Cue: ( is-event-true-delay
+   "Destroy First Drone"
+   2
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 1 total
+	"Drone 1"
+)
+$AI Goals: ( goals ( ai-waypoints "Waypoint path 4" 50 ) )
++Flags:( "ignore-count" "no-arrival-music" "no-arrival-message" "no-dynamic" )
+
+$Name: DroneB
+$Waves: 2
+$Wave Threshold: 0
+$Special Ship: 0		;! DroneB 1
+
+$Arrival Location: Hyperspace
++Arrival delay: 5
+$Arrival Cue: ( is-event-true-delay
+   "Killed Last Drone"
+   0
+)
+$Departure Location: Hyperspace
+$Departure Cue: ( false ) 
+$Ships: (		;! 2 total
+	"DroneB 1"
+	"DroneB 2"
+)
+$AI Goals: ( goals ( ai-waypoints "Waypoint path 1" 50 ) )
++Flags:( "no-arrival-music" "no-arrival-message" "no-dynamic" )
+
+#Events		;! 57 total
+
+$Formula: ( when
+   ( are-waypoints-done-delay
+      "Instructor"
+      "Waypoint path 1"
+      0
+   )
+   ( training-msg "Start of Mission" ) 
+)
++Name: Mission Start
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Mission Start"
+      8
+   )
+   ( training-msg "Explain Seeker 1" ) 
+)
++Name: Explain Aspect Seekers
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Explain Aspect Seekers"
+      8
+   )
+   ( training-msg "Explain Seeker 2" ) 
+)
++Name: Explain Seeker 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Explain Seeker 2"
+      7
+   )
+   ( training-msg "Explain Seeker 3" ) 
+)
++Name: Explain Seeker 3
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Explain Seeker 3"
+      10
+   )
+   ( training-msg "Arrive Freighter 1" ) 
+)
++Name: Arrive Freighter 1
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( add-goal
+      "Instructor"
+      ( ai-waypoints-once
+         "Waypoint path 2"
+         89
+      )
+   )
+)
++Name: Don't Attack Freighter 1
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Attack Hornet"
+      "Attack Hornet"
+      0
+      3
+   )
+)
++Name: Attack Hornet
++Repeat Count: 1
++Interval: 1
++Chained: 2
+
+$Formula: ( when
+   ( targeted "Freighter 1" ) 
+   ( training-msg "Attack Hornet 2" ) 
+)
++Name: Attack Hornet 2
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Target Freighter 1
++Objective key: Press $H$
+
+$Formula: ( when
+   ( special-check 0 ) 
+   ( training-msg "Fire at Hornet" ) 
+   ( key-reset "Spacebar" ) 
+)
++Name: Attained Apsect Lock 1
++Repeat Count: 1
++Interval: 1
++Chained: 13
+
+$Formula: ( when
+   ( key-pressed "Spacebar" ) 
+   ( training-msg "Hornet Description" ) 
+)
++Name: Hornet Description
++Repeat Count: 1
++Interval: 1
++Chained: 4
++Objective: Fire Interceptor
++Objective key: Press $spacebar$
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Hornet Desc 1a" ) 
+   ( flash-hud-gauge "WEAPONS_GAUGE" ) 
+)
++Name: Hornet Desc 1a
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( and
+      ( is-event-true-delay
+         "Hornet Description"
+         0
+      )
+      ( key-pressed "Spacebar" ) 
+   )
+   ( key-reset "Spacebar" ) 
+)
++Name: Clear Spacebar
++Repeat Count: 1
++Interval: 1
++Objective: Fire Interceptor
++Objective key: Press $spacebar$
+
+$Formula: ( when
+   ( key-pressed "Spacebar" ) 
+   ( flash-hud-gauge "WEAPONS_GAUGE" ) 
+)
++Name: Flash Weapons
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( is-event-true-delay
+      "Hornet Desc 1a"
+      8
+   )
+   ( training-msg "Hornet Desc 2" ) 
+)
++Name: Hornet Desc 2
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Hornet Subsys" ) 
+   ( set-subsystem-strength
+      "Freighter 1"
+      "weapons"
+      100
+   )
+)
++Name: Hornet Subsys
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( targeted "Freighter 1" 0 "weapons" ) 
+   ( training-msg "Hornet Subsys 2" ) 
+)
++Name: Target Weapons
++Repeat Count: 1
++Interval: 1
++Chained: 4
++Objective: Target Weapons subsystem
++Objective key: Press $s$
+
+$Formula: ( when
+   ( special-check 2 ) 
+   ( training-msg "Destroy Weapons" ) 
+)
++Name: Fire at Weapons
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( is-subsystem-destroyed-delay
+      "Freighter 1"
+      "weapons"
+      1
+   )
+   ( training-msg "Weapons Destroyed" ) 
+)
++Name: Weapons Destroyed
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Destroy Weapons
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Destroy Freighter 1" ) 
+)
++Name: Destroy Freighter 1
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( is-destroyed-delay 1 "Freighter 1" ) 
+   ( training-msg
+      "Freighter 1 Destroyed"
+   )
+)
++Name: Freighter 1 Destroyed
++Repeat Count: 1
++Interval: 1
++Chained: 1
++Objective: Destroy Freighter 1
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Discuss Moving Targets"
+   )
+)
++Name: Discuss Moving Targets
++Repeat Count: 1
++Interval: 1
++Chained: 4
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Talk About Drones" ) 
+)
++Name: Talk About Drones
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Destroy First Drone" ) 
+)
++Name: Destroy First Drone
++Repeat Count: 1
++Interval: 1
++Chained: 11
+
+$Formula: ( when
+   ( special-check 11 ) 
+   ( do-nothing ) 
+)
++Name: Verify Adequate Hornets
++Repeat Count: 1
++Interval: 1
++Chained: 5
+
+$Formula: ( when
+   ( is-destroyed-delay 1 "Drone" ) 
+   ( training-msg "Killed Last Drone" ) 
+)
++Name: Killed Last Drone
++Repeat Count: 1
++Interval: 1
++Chained: 0
++Objective: Destroy Drones
+
+$Formula: ( when
+   ( special-check 11 ) 
+   ( training-msg "Kill DroneB a" ) 
+)
++Name: Kill DroneB a
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( is-destroyed-delay 0 "DroneB" ) 
+   ( training-msg "Killed DroneB" ) 
+)
++Name: Killed DroneB
++Repeat Count: 1
++Interval: 1
++Chained: 6
++Objective: Destroy DroneB fighters
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Describe Shield" ) 
+)
++Name: Describe Shield
++Repeat Count: 1
++Interval: 1
++Chained: 5
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Describe Shield 2" ) 
+)
++Name: Describe Shield 2
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Describe Shield 3" ) 
+)
++Name: Describe Shield 3
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( true ) 
+   ( flash-hud-gauge
+      "PLAYER_SHIELD_ICON"
+   )
+)
++Name: Flash Shield
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Describe Shield 4" ) 
+)
++Name: Describe Shield 4
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Shield Quadrant Show" ) 
+)
++Name: Shield Quadrant Show
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( special-check 3 ) 
+   ( training-msg "Shield Damage Front" ) 
+)
++Name: Shield Damage Front
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( special-check 4 ) 
+   ( training-msg
+      "Shield Damage Front Much"
+   )
+)
++Name: Shield Damage Front Much
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Shield Repairs" ) 
+)
++Name: Shield Repairs
++Repeat Count: 1
++Interval: 1
++Chained: 10
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Shield Repairs Watch" ) 
+)
++Name: Shield Repairs Watch
++Repeat Count: 1
++Interval: 1
++Chained: 8
+
+$Formula: ( when
+   ( special-check 5 ) 
+   ( training-msg "Shield Repairs Done" ) 
+)
++Name: Shield Repair Fast
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Shield Equalize Explain"
+   )
+)
++Name: Shield Equalize Explain
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( special-check 4 ) 
+   ( training-msg
+      "Shield Damage Front Again"
+   )
+   ( key-reset "Q" ) 
+)
++Name: Shield Damage Front Again
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( key-pressed "Q" ) 
+   ( training-msg
+      "Shields Equalized Well Done"
+   )
+)
++Name: Shield Equalize Wait
++Repeat Count: 1
++Interval: 1
++Chained: 9
++Objective: Balance Shields
++Objective key: Press $q$
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Shield Damage 3 Quadrants"
+   )
+)
++Name: Shield Damage 3 Quadrants
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( special-check 6 ) 
+   ( training-msg
+      "Shield Maximize Quadrant"
+   )
+)
++Name: Shield Maximize Quadrant
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Shield Maximize Front"
+   )
+)
++Name: Shield Maximize Front
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( special-check 7 ) 
+   ( training-msg
+      "Shield Front Maximized"
+   )
+)
++Name: Shield Front Maximized
++Repeat Count: 1
++Interval: 1
++Chained: 1
++Objective: Maximize Front Quadrant
++Objective key: Press $Up Arrow$
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg
+      "Shield Front Maximized 2"
+   )
+)
++Name: Shield Front Maximized 2
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( special-check 9 ) 
+   ( do-nothing ) 
+)
++Name: Zero Side Quadrants
++Repeat Count: 1
++Interval: 1
++Chained: 0
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "Shield Maximize Rear" ) 
+)
++Name: Shield Maximize Rear
++Repeat Count: 1
++Interval: 1
++Chained: 7
+
+$Formula: ( when
+   ( special-check 8 ) 
+   ( training-msg
+      "Shield Rear Maximized"
+   )
+)
++Name: Shield Rear Maximized
++Repeat Count: 1
++Interval: 1
++Chained: 1
++Objective: Maximize Rear Quadrant
++Objective key: Press $Down Arrow$
+
+$Formula: ( when
+   ( true ) 
+   ( add-goal
+      "Instructor"
+      ( ai-waypoints-once
+         "Waypoint path 3"
+         89
+      )
+   )
+)
++Name: Prepare to Leave
++Repeat Count: 1
++Interval: 1
++Chained: 9
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "All Finished" ) 
+)
++Name: All Finished
++Repeat Count: 1
++Interval: 1
++Chained: 3
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "All Finished 2" ) 
+)
++Name: All Finished 2
++Repeat Count: 1
++Interval: 1
++Chained: 6
+
+$Formula: ( when
+   ( true ) 
+   ( training-msg "All Finished 3" ) 
+)
++Name: All Finished 3
++Repeat Count: 1
++Interval: 1
++Chained: 5
+
+$Formula: ( when
+   ( true ) 
+   ( add-goal
+      "Instructor"
+      ( ai-warp-out 89 ) 
+   )
+)
++Name: Instructor Warps Out
++Repeat Count: 1
++Interval: 1
++Chained: 4
+
+$Formula: ( when
+   ( and
+      ( not
+         ( has-arrived-delay 0 "DroneB" ) 
+      )
+      ( special-check 10 ) 
+   )
+   ( training-msg "Suggest Rearm" ) 
+)
++Name: Low on Hornets?
++Repeat Count: 1
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( has-arrived-delay 0 "DroneB" ) 
+      ( special-check 12 ) 
+   )
+   ( training-msg "Suggest Rearm" ) 
+)
++Name: Very Low on Hornets?
++Repeat Count: 3
++Interval: 1
+
+$Formula: ( when
+   ( and
+      ( is-goal-true-delay
+         "Advanced Tech Training"
+         0
+      )
+      ( is-previous-goal-true
+         "btm-04"
+         "Advanced Training"
+      )
+      ( is-previous-event-true
+         "btm-03"
+         "Wings"
+      )
+   )
+   ( grant-medal "Wings" ) 
+)
++Name: Grant Medal
++Repeat Count: 1
++Interval: 1
+
+#Goals		;! 1 total
+
+$Type: Primary
++Name: Advanced Tech Training
+$Message: Complete Advanced Technology Training
+$Rating: 10
+$Formula: ( is-event-true-delay
+   "Instructor Warps Out"
+   0
+)
+
+#Waypoints		;! 5 lists total
+
+$Name: Waypoint path 1
+$List: (		;! 2 points in list
+	( -52.845528, -0.000045, 3.018352 )
+	( -35.621635, 0.000002, 46.647881 )
+)
+
+$Name: Waypoint path 2
+$List: (		;! 2 points in list
+	( -94.190353, 0.000040, 95.212753 )
+	( -188.355392, -0.000115, 125.607307 )
+)
+
+$Name: Waypoint path 3
+$List: (		;! 3 points in list
+	( -193.817047, -0.000002, 247.537949 )
+	( -114.918739, 0.000032, 287.005798 )
+	( -53.776886, 0.000036, 352.010468 )
+)
+
+$Name: Waypoint path 4
+$List: (		;! 4 points in list
+	( -210.235458, -0.000013, 195.058426 )
+	( 71.055565, 0.000019, -24.597565 )
+	( -13.811650, 0.000045, -61.235504 )
+	( -380.543243, 0.000006, 247.537979 )
+)
+
+$Name: Waypoint path 5
+$List: (		;! 3 points in list
+	( 349.666046, -0.000014, 1114.499878 )
+	( -859.243652, 0.000091, 261.349701 )
+	( 468.580475, 0.000031, 9.344703 )
+)
+
+#Messages		;! 211 total
+
+
+$Name: Start of Mission
+$Message: All right.  First we'll cover use of the aspect seeking Interceptor missiles.  Note that you are fully equipped with Interceptors.
++Wave Name: btm5_01.wav
+
+$Name: Explain Seeker 1
+$Message: Unlike heat seeking missiles, such as the MX-50, you must acquire a lock on your target in order for an aspect seeker to home.
++Wave Name: btm5_02.wav
+
+$Name: Explain Seeker 2
+$Message: However, the aspect seeker is well worth this effort, as its homing ability is much stronger.
++Wave Name: btm5_03.wav
+
+$Name: Explain Seeker 3
+$Message: Once fired, the aspect seeker will track its target anywhere in space.  Once the heat seeker loses track of its target, it is not likely to reacquire lock.
++Wave Name: btm5_04.wav
+
+$Name: Arrive Freighter 1
+$Message: Freighter 1 is now entering.  Let's see how you do with those Interceptors.
++Wave Name: btm5_05.wav
+
+$Name: Attack Hornet
+$Message: Target the freighter. [Press $H$]
++Wave Name: btm5_06.wav
+
+$Name: Attack Hornet 2
+$Message: Notice the red indicator moving towards your target.  That's the Aspect Diamond.  Once it has moved onto your target, you'll see the lock indicator.  This indicates your Interceptors are locked and ready to fire.
++Wave Name: btm5_07.wav
+
+$Name: Fire at Hornet
+$Message: Now, fire one Interceptor at the freighter.
++Wave Name: btm5_08.wav
+
+$Name: Hornet Description
+$Message: Note how fast the Interceptor moves.  They also deliver quite a payload.
++Wave Name: btm5_09.wav
+
+$Name: Hornet Desc 2
+$Message: Note that the Interceptor is nearly useless if fired before lock as been attained.  This is a crucial difference between the Interceptor and the MX-50.
++Wave Name: btm5_10.wav
+
+$Name: Hornet Subsys
+$Message: Now, target the Weapons subsystem on the freighter. [Press $S$ until targeted.]
++Wave Name: btm5_11.wav
+
+$Name: Hornet Subsys 2
+$Message: Good.  Now, wait until you have attained lock on the Weapons subsystem.
++Wave Name: btm5_12.wav
+
+$Name: Destroy Weapons
+$Message: Now, fire your Interceptors until the Weapons subsystem has been destroyed.
++Wave Name: btm5_13.wav
+
+$Name: Weapons Destroyed
+$Message: Well done.  Note your Interceptors will be effective in destroying subsystems on large targets.
++Wave Name: btm5_14.wav
+
+$Name: Destroy Freighter 1
+$Message: Now, unload your Interceptors until you've destroyed Freighter 1.
++Wave Name: btm5_15.wav
+
+$Name: Freighter 1 Destroyed
+$Message: Excellent job.  Now it's time to destroy some moving targets.
++Wave Name: btm5_16.wav
+
+$Name: Hornet Desc 1a
+$Message: A round of Interceptors can be fired every 3 seconds.  Fire another round and note the countdown timer in your Weapons Gauge.
++Wave Name: btm5_17.wav
+
+$Name: Describe Shield
+$Message: Your ship is equipped with the new shielding technology.  It is able to absorb a large amount of incoming weapon energy.
++Wave Name: btm5_18.wav
+
+$Name: Describe Shield 2
+$Message: As the shield absorbs damage, it becomes weaker.  However, it automatically regenerates itself over time.
++Wave Name: btm5_19.wav
+
+$Name: Describe Shield 3
+$Message: Your shield integrity gauge is located at the lower right of your HUD.  It is flashing now.
++Wave Name: btm5_20.wav
+
+$Name: Describe Shield 4
+$Message: Your shield is divided into four quadrants, each able to withstand a certain amount of damage.
++Wave Name: btm5_21.wav
+
+$Name: Shield Quadrant Show
+$Message: When a quadrant of your shield suffers damage, the corresponding section of your Shield Integrity gauge will flash.  Observe.
++Wave Name: btm5_22.wav
+
+$Name: Shield Damage Front
+$Message: Note the front of your shield is flashing as if you've taken damage.
++Wave Name: btm5_23.wav
+
+$Name: Shield Damage Front Much
+$Message: Note how the gauge changes as your shield takes more damage.  When a shield quadrant has been destroyed, all damage will pass through to the underlying hull.
++Wave Name: btm5_24.wav
+
+$Name: Shield Repairs
+$Message: Note that your shield automatically recharges over time.  I will accelerate this process to save time.
++Wave Name: btm5_25.wav
+
+$Name: Shield Repairs Watch
+$Message: Now observe as the front quadrant of your shield repairs itself to full strength.
++Wave Name: btm5_26.wav
+
+$Name: Shield Repairs Done
+$Message: Now your shield has recharged back to full strength.  Next we'll cover shield management.
++Wave Name: btm5_27.wav
+
+$Name: Shield Equalize Explain
+$Message: There are a number of ways you can manage your shield.  The simplest is the Equalize Quadrants function.
++Wave Name: btm5_28.wav
+
+$Name: Shields Equalized Well Done
+$Message: Well done.  Note that your front section has been largely recharged.  This came at the expense of shield energy from the three other quadrants.
++Wave Name: btm5_29.wav
+
+$Name: Shield Damage Front Again
+$Message: I have damaged your front shield quadrant again.  Now use your Equalize Quadrants function to repair your front quadrant.  [Press $q$]
++Wave Name: btm5_30.wav
+
+$Name: Shield Damage 3 Quadrants
+$Message: I'm now going to reduce most of your shield strength.  Note that three of your four quadrants are now near zero strength.
++Wave Name: btm5_31.wav
+
+$Name: Shield Maximize Quadrant
+$Message: Now you'll learn how to maximize shield strength in a specific quadrant.
++Wave Name: btm5_32.wav
+
+$Name: Shield Maximize Front
+$Message: First, you'll maximize the strength in your front quadrant.  [Press $Up Arrow$ several times.]
++Wave Name: btm5_33.wav
+
+$Name: Shield Front Maximized
+$Message: Well done.  Note that your front quadrant is at full strength, while the others were drained.
++Wave Name: btm5_34.wav
+
+$Name: Shield Front Maximized 2
+$Message: Maximizing your front shield quadrant is especially useful when you're attacking a large ship against its turret fire.
++Wave Name: btm5_35.wav
+
+$Name: Shield Maximize Rear
+$Message: Now I want you to maximize your rear shield quadrant.  [Press $Down Arrow$ several times.]
++Wave Name: btm5_36.wav
+
+$Name: Shield Rear Maximized
+$Message: If you're pursuing an important objective and are being attacked from the rear, maximizing your rear shield quadrant can be very useful.
++Wave Name: btm5_37.wav
+
+$Name: All Finished
+$Message: Well done, Pilot.  Aspect seeking missiles are an important part of your arsenal.  Use them well.
++Wave Name: btm5_38.wav
+
+$Name: All Finished 2
+$Message: And proper shield management can make all the difference in a crucial battle.
++Wave Name: btm5_39.wav
+
+$Name: All Finished 3
+$Message: This concludes your training.  Return to base.
++Wave Name: btm5_40.wav
+
+$Name: Discuss Moving Targets
+$Message: In order to gain aspect lock on a moving target, you must keep the target's lock box in a fixed location inside your HUD reticle.
++Wave Name: btm5_41.wav
+
+$Name: Talk About Drones
+$Message: I will now call in fighter drones.  When the first drone enters, target it and acquire lock.  Try to keep the target indicator in the center of your HUD reticle.
++Wave Name: btm5_42.wav
+
+$Name: Destroy First Drone
+$Message: Once you have acquired lock, fire an Interceptor to destroy the drone.  Note, these drones will not be using countermeasures.
++Wave Name: btm5_43.wav
+
+$Name: Killed Last Drone
+$Message: Well done.  Now let's try something a little more difficult.  Wings of two drones will appear at once.  Destroy them all.
++Wave Name: btm5_44.wav
+
+$Name: Killed DroneB
+$Message: All right.  Now we'll move on to your shield system.
++Wave Name: btm5_45.wav
+
+$Name: Kill DroneB a
+$Message: Note that you'll need to be in range of these drones before you can gain aspect lock.  Fly towards them.
++Wave Name: btm5_46.wav
+
+$Name: Suggest Rearm
+$Message: You're low on Interceptors. You should rearm soon. [Press $Shift-R$]
++Wave Name: btm5_47.wav
+
+#Reinforcements		;! 0 total
+
+
+#Background bitmaps		;! 1 total
+
+$Num stars: 500
+$Ambient light level: 0
++Nebula: Nebula01
++Color: Blue
++Pitch: 0
++Bank: 0
++Heading: 0
+
+$Bitmap: Sun01
+$Orientation:
+	0.813764, 0.122790, 0.568077,
+	-0.577915, 0.274663, 0.768488,
+	-0.061667, -0.953668, 0.294473
+$Rotation rate: 0.000000
+$Distance: 10.000000
+$Light: 1
+
+#Asteroid Fields
+
+#Music
+
+$Event Music: 2: March
+$Briefing Music: BRIEF2
+
+#End
+

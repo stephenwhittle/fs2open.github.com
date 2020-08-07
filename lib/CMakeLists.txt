@@ -63,3 +63,5 @@ add_subdirectory(vulkan-hpp)
 add_subdirectory(optick)
 
 add_subdirectory(doctest)
+
+add_subdirectory(tutf8e)

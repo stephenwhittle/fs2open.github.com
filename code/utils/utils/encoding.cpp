@@ -268,3 +268,103 @@ bool guessLatin1Encoding(const char* aBuf, size_t aLen) {
 }
 }
 
+//0x80-0x9f =  windows 1252
+//otherwise if there are no single-byte cahracters between 80 and bf it is utf8
+/*
+std::string iso_8859_1_to_utf8(std::string &str)
+{
+	string strOut;
+	for (std::string::iterator it = str.begin(); it != str.end(); ++it)
+	{
+		uint8_t ch = *it;
+		if (ch < 0x80) {
+			strOut.push_back(ch);
+		}
+		else {
+			strOut.push_back(0xc0 | ch >> 6);
+			strOut.push_back(0x80 | (ch & 0x3f));
+		}
+	}
+	return strOut;
+}
+*/
+
+/*
+
+ In real ISO Latin-1, character codes in the range 127-159 are undefined
+
+I've been working on a similar "guess the encoding" problem. The best solution involves knowing the encoding. Barring
+that, you can make educated guesses to distinguish between UTF-8 and ISO-8859-1.
+
+To answer the general question of how to detect if a string is properly encoded UTF-8, you can verify the following
+things:
+
+	No byte is 0x00, 0xC0, 0xC1, or in the range 0xF5-0xFF.
+	Tail bytes (0x80-0xBF) are always preceded by a head byte 0xC2-0xF4 or another tail byte.
+	Head bytes should correctly predict the number of tail bytes (eg, any byte in 0xC2-0xDF should be followed by
+exactly one byte in the range 0x80-0xBF).
+
+If a string passes all those tests, then it's interpretable as valid UTF-8. That doesn't guarantee that it is UTF-8, but
+it's a good predictor.
+
+Legal input in ISO-8859-1 will likely have no control characters (0x00-0x1F and 0x80-0x9F) other than line separators.
+Looks like 0x7F isn't defined in ISO-8859-1 either.
+
+(I'm basing this off of Wikipedia pages for UTF-8 and ISO-8859-1.)
+
+
+
+ASCII
+
+If your data contains no bytes above 0x7F, then it's ASCII. (Or a 7-bit ISO646 encoding, but those are very obsolete.)
+UTF-8
+
+If your data validates as UTF-8, then you can safely assume it is UTF-8. Due to UTF-8's strict validation rules, false
+positives are extremely rare. ISO-8859-1 vs. windows-1252
+
+The only difference between these two encodings is that ISO-8859-1 has the C1 control characters where windows-1252 has
+the printable characters €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ. I've seen plenty of files that use curly quotes or dashes, but
+none that use C1 control characters. So don't even bother with them, or ISO-8859-1, just detect windows-1252 instead.
+
+
+US-ASCII
+
+No BOM, but you don't need one. ASCII can be easily identified by the lack of bytes in the 80-FF range.
+UTF-8
+
+BOM is EF BB BF. But you can't rely on this. Lots of UTF-8 files don't have a BOM, especially if they originated on
+non-Windows systems.
+
+But you can safely assume that if a file validates as UTF-8, it is UTF-8. False positives are rare.
+
+Specifically, given that the data is not ASCII, the false positive rate for a 2-byte sequence is only 3.9% (1920/49152).
+For a 7-byte sequence, it's less than 1%. For a 12-byte sequence, it's less than 0.1%. For a 24-byte sequence, it's less
+than 1 in a million. UTF-16
+
+BOM is FE FF (for BE) or FF FE (for LE). Note that the UTF-16LE BOM is found at the start of the UTF-32LE BOM, so check
+UTF-32 first.
+
+If you happen to have a file that consists mainly of ISO-8859-1 characters, having half of the file's bytes be 00 would
+also be a strong indicator of UTF-16.
+
+Otherwise, the only reliable way to recognize UTF-16 without a BOM is to look for surrogate pairs (D[8-B]xx D[C-F]xx),
+but non-BMP characters are too rarely-used to make this approach practical. XML
+
+If your file starts with the bytes 3C 3F 78 6D 6C (i.e., the ASCII characters "<?xml"), then look for an encoding=
+declaration. If present, then use that encoding. If absent, then assume UTF-8, which is the default XML encoding.
+
+If you need to support EBCDIC, also look for the equivalent sequence 4C 6F A7 94 93.
+
+In general, if you have a file format that contains an encoding declaration, then look for that declaration rather than
+trying to guess the encoding. None of the above
+
+There are hundreds of other encodings, which require more effort to detect. I recommend trying Mozilla's charset
+detector or a .NET port of it. A reasonable default
+
+If you've ruled out the UTF encodings, and don't have an encoding declaration or statistical detection that points to a
+different encoding, assume ISO-8859-1 or the closely related Windows-1252. (Note that the latest HTML standard requires
+a “ISO-8859-1” declaration to be interpreted as Windows-1252.)
+
+
+
+*/
