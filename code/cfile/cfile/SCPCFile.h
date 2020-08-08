@@ -4,7 +4,9 @@
 #include <mio/mmap.hpp>
 #include "SCPCallPermit.h"
 #include "SCPFlags.h"
+#include "SCPEndian.h"
 #include "FSAssert.h"
+#include "FSStdTypes.h"
 #include "SCPCFilePathType.h"
 #include "SCPMembuf.h"
 #include "filesystem/SCPPath.h"
@@ -53,12 +55,18 @@ class CFILE
 {
 
 private:
-	enum class CFileEncryptionMagic;
+	enum class CFileEncryptionMagic : uint32_t
+	{
+		NotEncrypted = 0,
+		OldSignature = INTEL_INT(0xdeadbeef),
+		NewSignature = INTEL_INT(0x5c331a55),
+		EightBitSignature = INTEL_INT(0xcacacaca)
+	};
 	CFileEncryptionMagic DetectFileEncryption();
 	enum class CFileTextEncoding;
 	//Takes in the buffer as a reference to avoid copy overhead
-	template<std::size_t Size>
-	CFileTextEncoding DetectFileEncoding(const char(&Buffer)[Size]);
+	CFileTextEncoding DetectFileEncoding(const char* Buffer, std::size_t Size);
+	
 
 	enum class EDataSource
 	{
@@ -89,7 +97,6 @@ public:
 	std::uintmax_t size; // for packed files
 
 	
-
 	
 	/*
 	//also cftemp but may be special for that one*/
@@ -169,7 +176,8 @@ public:
 	void Delete() {};
 
 	SCPCFilePathTypeID GetDirectoryType() { return dir_type; }
-
+	//todo: refactor this into a free function that operates on SCP_buffers and some kind of 
+	//non-owning view
 	SCP_buffer UTF8Normalize();
 	std::uintmax_t GetSize();
 	template<typename DestinationType>

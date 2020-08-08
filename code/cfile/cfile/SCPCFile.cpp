@@ -1,12 +1,6 @@
 #include "cfile/SCPCFile.h"
 #include "SCPEndian.h"
-enum class CFILE::CFileEncryptionMagic
-{
-	NotEncrypted = 0,
-	OldSignature = INTEL_INT(0xdeadbeef),
-	NewSignature = INTEL_INT(0x5c331a55),
-	EightBitSignature = INTEL_INT(0xcacacaca)
-};
+
 
 enum class CFILE::CFileTextEncoding
 {
@@ -17,34 +11,30 @@ enum class CFILE::CFileTextEncoding
 	UnsupportedUTF,
 	Unknown
 };
-template <std::size_t Size>
-CFileTextEncoding CFILE::DetectFileEncoding(const char (&Buffer)[Size])
+
+CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size_t Size)
 {
 	if (Size < 2)
 	{
 		return CFileTextEncoding::Unknown;
 	}
-	uint32_t BOM = 0;
-	for (uint32_t ByteIndex = 0; ByteIndex < std::min(Size, 4); ByteIndex++)
-	{
-		(uint8_t*)(&BOM)[ByteIndex] = Buffer[ByteIndex];
-	}
+	uint32_t BOM = *((uint32_t*)Buffer);
 	if (
-		INTEL_INT(BOM) == INTEL_INT(0x0000feff)|| //UTF32BE
-		INTEL_INT(BOM) == INTEL_INT(0xfffe0000) //UTF32LE
+		INTEL_INT(BOM) == INT_LE(0x0000feff)|| //UTF32BE
+		INTEL_INT(BOM) == INT_LE(0xfffe0000) //UTF32LE
 		)
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	} 
-	else if (INTEL_INT(BOM) & INTEL_INT(0xefbbbf00))
+	else if ((INTEL_INT(BOM) & INT_LE(0xefbbbf00)) == INT_LE(0xefbbbf00))
 	{
 		return CFileTextEncoding::UTF8;
 	}
-	else if (INTEL_INT(BOM) & INTEL_INT(0xfeff0000)) //UTF16BE
+	else if ((INTEL_INT(BOM) & INT_LE(0xfeff0000)) == INT_LE(0xfeff0000)) //UTF16BE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
-	else if (INTEL_INT(BOM) & INTEL_INT(0xfffe0000)) //UTF16LE
+	else if ((INTEL_INT(BOM) & INT_LE(0xfffe0000)) == INT_LE(0xfffe0000)) //UTF16LE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
@@ -81,7 +71,7 @@ CFileTextEncoding CFILE::DetectFileEncoding(const char (&Buffer)[Size])
 	{
 		if ((Byte >= 0x80) && (Byte <= 0x9F))
 		{
-			&Has8859ControlCharacters = true;
+			Has8859ControlCharacters = true;
 		}
 	};
 	auto ValidateASCII = [&HasByteAbove7F](char Byte)
@@ -154,7 +144,7 @@ SCP_buffer CFILE::UTF8Normalize()
 	CFileEncryptionMagic FileEncryption = DetectFileEncryption();
 	
 	//possibly pass in a boolean for the bom too?
-	switch (DetectFileEncoding(raw_text.Data()));
+	switch (DetectFileEncoding(raw_text.Data(), raw_text.Size))
 	{
 	case CFileTextEncoding::UTF8:
 		break;
@@ -167,7 +157,7 @@ SCP_buffer CFILE::UTF8Normalize()
 		break;
 	}
 	// this will need to calculate the offset
-	uintmax_t RealLength = check_encoding_and_skip_bom(mf, filename);
+	/*uintmax_t RealLength = check_encoding_and_skip_bom(mf, filename);
 
 	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
 		int unscrambled_len;
@@ -181,10 +171,10 @@ SCP_buffer CFILE::UTF8Normalize()
 	} else 
 	{
 		ReadBytes(raw_text.Data(), RealLength);
-	}
+	}*/
 
 	// WMC - Slap a NULL character on here for the odd error where we forgot a #End
-	raw_text[RealLength] = '\0';
+	//raw_text[RealLength] = '\0';
 	SeekAbsolute(OldPosition);
 	return raw_text;
 }
@@ -229,11 +219,11 @@ void CFILE::SeekRelative(std::intmax_t Offset)
 		UnderlyingFile.seekg(Offset, std::ios_base::cur);
 		break;
 	case EDataSource::PackFile:
-		
-		std::intmax_t DesiredPosition = Tell() + Offset;
+		{
+			std::intmax_t DesiredPosition = Tell() + Offset;
 
-		Assertion((DesiredPosition >= lib_offset) && (DesiredPosition <= lib_offset + size), "Packed CFile seek request was out of bounds!");
-
+			Assertion((DesiredPosition >= lib_offset) && (DesiredPosition <= lib_offset + size), "Packed CFile seek request was out of bounds!");
+		}
 		UnderlyingFile.seekg(Offset, std::ios_base::cur);
 		break;
 	case EDataSource::MemoryMapped:
@@ -255,7 +245,7 @@ std::uintmax_t CFILE::Tell()
 		return UnderlyingFile.tellg();
 		break;
 	case EDataSource::PackFile:
-		return UnderlyingFile.tellg() - lib_offset;
+		return (std::uintmax_t)UnderlyingFile.tellg() - lib_offset;
 		break;
 	case EDataSource::MemoryMapped:
 		return MemoryMappedFileView.tellg();

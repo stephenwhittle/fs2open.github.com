@@ -109,7 +109,10 @@ constexpr inline uint16_t INTEL_SHORT(uint16_t const a){
 constexpr inline uint32_t INTEL_INT(uint32_t const a){
     return SCPEndianImpl::to_le(a, SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }
-
+constexpr inline uint32_t INT_LE(uint32_t const a)
+{
+	return SCPEndianImpl::to_le(a, SCPEndianImpl::be_tag<true>{});
+}
 constexpr inline uint64_t INTEL_LONG(uint64_t const a){
     return SCPEndianImpl::to_le(a, SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }

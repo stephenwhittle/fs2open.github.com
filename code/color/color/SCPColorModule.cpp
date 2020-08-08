@@ -17,7 +17,7 @@ bool SCPColorModule::StartupModule()
 	if (ColorsTable.has_value()) 
 	{
 		auto RootTable                  = CFileModule->CFileOpen(*ColorsTable, {SCPCFileMode::Read});
-		SCP_buffer RootColorTableBuffer = RootTable->ReadAllContentsIntoBuffer();
+		SCP_buffer RootColorTableBuffer = RootTable->UTF8Normalize();
 		SCPParser::LoadIntoTable(*Colors, ColorsFile, std::move(RootColorTableBuffer), "colors.tbl");
 	}
 
@@ -27,8 +27,9 @@ bool SCPColorModule::StartupModule()
 	for (SCPCFileInfo FileInfo : CFileModule->CFileDatabase().Files(ColorTableFilter)) {
 		auto Table = CFileModule->CFileOpen(FileInfo, {SCPCFileMode::Read});
 		if (Table) {
-			SCP_buffer TableBuffer = Table->ReadAllContentsIntoBuffer();
+			SCP_buffer TableBuffer = Table->UTF8Normalize();
 			SCPParser::LoadIntoTable(*Colors, ColorsFile, std::move(TableBuffer), FileInfo.GetFileName());
 		}
 	}
+	return true;
 }

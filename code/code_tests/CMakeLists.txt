@@ -1,4 +1,4 @@
-add_executable(code_tests codetests.cpp stub.cpp )
+add_executable(code_tests codetests.cpp stub.cpp  "modules/cfile/encoding_tests.cpp")
 add_subdirectory(modules)
 target_link_libraries(code_tests PUBLIC core cfile cmdline log color doctest)
 option(FSO_INSTRUMENT_CODE "Use MSVC instrumentation to profile performance" OFF)
