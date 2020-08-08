@@ -7,7 +7,7 @@
 #include "SCPFlags.h"
 #include <set>
 #include "mpark/variant.hpp"
-
+#include "fmt/format.h"
 class ghc::filesystem::directory_iterator;
 class ghc::filesystem::recursive_directory_iterator;
 
@@ -48,7 +48,7 @@ public:
 	bool MoveNext();
 	//Foreach function?
 private:
-
+	friend class SCPDirectoryIterator;
 	mpark::variant<ghc::filesystem::directory_iterator, ghc::filesystem::recursive_directory_iterator> InternalIterator;
 
 	ghc::filesystem::directory_entry GetCurrentDirectoryEntry();
@@ -106,7 +106,8 @@ private:
 		}
 		return Iterator != ghc::filesystem::end(Iterator);
 	}
-
+	//Helper function for Directory iterator constructor
+	bool HasMoreResults();
 	std::set<SCP_string> Extensions;
 	tl::optional<std::regex> FilterRegex;
 	Options CurrentOptions;

@@ -144,7 +144,8 @@ SCP_buffer CFILE::UTF8Normalize()
 	CFileEncryptionMagic FileEncryption = DetectFileEncryption();
 	
 	//possibly pass in a boolean for the bom too?
-	switch (DetectFileEncoding(raw_text.Data(), raw_text.Size))
+	//using internal size not buffer size here so we don't look at any null terminator at the end of the buffer
+	switch (DetectFileEncoding(raw_text.Data(), size))
 	{
 	case CFileTextEncoding::UTF8:
 		break;

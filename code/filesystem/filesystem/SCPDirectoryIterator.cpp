@@ -70,10 +70,27 @@ bool SCPFilesystemView::MoveNext()
 {
 	return mpark::visit([this](auto&& Iterator) { return AdvanceToNext(Iterator); }, InternalIterator);
 }
-
+bool SCPFilesystemView::HasMoreResults()
+{
+	return mpark::visit([this](auto&& Iterator) { return Iterator != ghc::filesystem::end(Iterator); }, InternalIterator);
+}
  SCPDirectoryIterator::SCPDirectoryIterator(SCPFilesystemView* View) : ViewToIterate(View)
 {
-	HasMoreResults = View->MoveNext();
+	 if (View->HasMoreResults())
+	 {
+		 if (!View->CurrentFileMatchesFilter())
+		 {
+			 HasMoreResults = View->MoveNext();
+		 }
+		 else
+		 {
+			 HasMoreResults = true; //No need to advance as the first file matches the filter
+		 }
+	 }
+	 else
+	 {
+		 HasMoreResults = false;
+	 }
 }
 
  SCPDirectoryIterator::SCPDirectoryIterator() { HasMoreResults = false; }

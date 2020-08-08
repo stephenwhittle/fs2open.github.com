@@ -71,7 +71,10 @@ TEST_SUITE("CFile Module")
 
 		}
 	}
+	TEST_CASE("DIRECTORY ITERATOR")
+	{
 
+	}
 	TEST_CASE("CFile Open packed file") 
 	{
 		auto FileInfo = ModuleHandle->FindFileInfo("test2.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
