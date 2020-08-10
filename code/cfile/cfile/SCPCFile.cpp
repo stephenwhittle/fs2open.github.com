@@ -5,6 +5,7 @@
 enum class CFILE::CFileTextEncoding
 {
 	UTF8,
+	UTF8BOM,
 	WindowsLatin1,
 	Iso88951,
 	Ascii,
@@ -19,22 +20,25 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 		return CFileTextEncoding::Unknown;
 	}
 	uint32_t BOM = *((uint32_t*)Buffer);
+	uint32_t BOM2 = LittleEndian(BOM);
+	SeekAbsolute(0);
+	
 	if (
-		INTEL_INT(BOM) == INT_LE(0x0000feff)|| //UTF32BE
-		INTEL_INT(BOM) == INT_LE(0xfffe0000) //UTF32LE
+		INTEL_INT(BOM) == 0x0000feff_FromBigEndian32|| //UTF32LE
+		INTEL_INT(BOM) == 0xfffe0000_FromBigEndian32 //UTF32BE
 		)
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	} 
-	else if ((INTEL_INT(BOM) & INT_LE(0xefbbbf00)) == INT_LE(0xefbbbf00))
+	else if ((INTEL_INT(BOM) & 0xEFBBBF00_FromBigEndian32) == 0xEFBBBF00_FromBigEndian32) //00bfbbef
 	{
-		return CFileTextEncoding::UTF8;
+		return CFileTextEncoding::UTF8BOM;
 	}
-	else if ((INTEL_INT(BOM) & INT_LE(0xfeff0000)) == INT_LE(0xfeff0000)) //UTF16BE
+	else if ((INTEL_INT(BOM) & 0xfeff0000_FromBigEndian32) == 0xfeff0000_FromBigEndian32) //UTF16LE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
-	else if ((INTEL_INT(BOM) & INT_LE(0xfffe0000)) == INT_LE(0xfffe0000)) //UTF16LE
+	else if ((INTEL_INT(BOM) & 0xFFFE0000_FromBigEndian32) == 0xfffe0000_FromBigEndian32) //UTF16BE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
@@ -119,13 +123,13 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	ReadBytes(&Magic, 4);
 	switch (INTEL_INT(Magic))	
 	{
-	case INTEL_INT(0xdeadbeef):
+	case 0xdeadbeef_FromBigEndian32 :
 		return CFileEncryptionMagic::OldSignature;
 		break;
-	case INTEL_INT(0x5c331a55):
+	case 0x5c331a55_FromBigEndian32 :
 		return CFileEncryptionMagic::NewSignature;
 		break;
-	case INTEL_INT(0xcacacaca):
+	case 0xcacacaca_FromBigEndian32 :
 		return CFileEncryptionMagic::EightBitSignature;
 		break;
 	default:
@@ -139,43 +143,34 @@ SCP_buffer CFILE::UTF8Normalize()
 {
 	std::uintmax_t OldPosition = Tell();
 	SeekAbsolute(0);
+	//add one extra byte of null padding
 	SCP_buffer raw_text = SCP_buffer(size + 1);
 	ReadBytes(raw_text.Data(), size);
 	CFileEncryptionMagic FileEncryption = DetectFileEncryption();
 	
-	//possibly pass in a boolean for the bom too?
+	
+	uintmax_t PayloadOffset = 0;
+	//convert to switch/case later
 	//using internal size not buffer size here so we don't look at any null terminator at the end of the buffer
-	switch (DetectFileEncoding(raw_text.Data(), size))
+	if (DetectFileEncoding(raw_text.Data(), size) == CFileTextEncoding::UTF8BOM)
 	{
-	case CFileTextEncoding::UTF8:
-		break;
-	case CFileTextEncoding::WindowsLatin1:
-		break;
-	case CFileTextEncoding::Ascii:
-		break;
-	case CFileTextEncoding::Unknown:
-	default:
-		break;
+		PayloadOffset += 3;
 	}
-	// this will need to calculate the offset
-	/*uintmax_t RealLength = check_encoding_and_skip_bom(mf, filename);
-
-	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
-		int unscrambled_len;
-		SCP_buffer unscrambled_text = SCP_buffer(RealLength + 1);
-
-		ReadBytes(unscrambled_text.Data(), RealLength);
-
-		// unscramble text
-		unencrypt(unscrambled_text.Data(), file_len, raw_text.Data(), &unscrambled_len);
-		file_len = unscrambled_len;
-	} else 
+	if (FileEncryption != CFileEncryptionMagic::NotEncrypted)
 	{
-		ReadBytes(raw_text.Data(), RealLength);
-	}*/
+		PayloadOffset += 4;
+	}
 
-	// WMC - Slap a NULL character on here for the odd error where we forgot a #End
-	//raw_text[RealLength] = '\0';
+	SCP_buffer BufferWithoutBom = raw_text.CopyRange(raw_text.begin() + PayloadOffset, raw_text.end());
+	raw_text                    = std::move(BufferWithoutBom);
+
+	// this will need to calculate the offset
+	
+	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
+		unencrypt(raw_text, FileEncryption);
+	}
+
+
 	SeekAbsolute(OldPosition);
 	return raw_text;
 }

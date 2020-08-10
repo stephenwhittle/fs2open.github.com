@@ -7,6 +7,15 @@
 TEST_CASE("Encoding" * doctest::test_suite("CFile Module"))
 {
 	auto ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
+	SUBCASE("Encrypted file")
+	{
+		auto EncryptedFileInfo = ModuleHandle->FindFileInfo("weapons_encrypted.tbl", SCPCFilePathTypeID::Tables);
+		if (EncryptedFileInfo)
+		{
+			auto CFile = ModuleHandle->CFileOpen(EncryptedFileInfo.value(), { SCPCFileMode::Read });
+			CFile->UTF8Normalize();
+		}
+	}
 	SUBCASE("Handle UTF8")
 	{
 		auto UTF8FileInfo = ModuleHandle->FindFileInfo("utf8.tbl", SCPCFilePathTypeID::Tables);

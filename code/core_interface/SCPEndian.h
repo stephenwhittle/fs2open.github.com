@@ -6,7 +6,7 @@
 namespace SCPEndianImpl{
 
     template<typename UINT>
-    UINT byteswap(UINT const a);
+    constexpr UINT byteswap(UINT const a);
 
    
 
@@ -109,7 +109,7 @@ constexpr inline uint16_t INTEL_SHORT(uint16_t const a){
 constexpr inline uint32_t INTEL_INT(uint32_t const a){
     return SCPEndianImpl::to_le(a, SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }
-constexpr inline uint32_t INT_LE(uint32_t const a)
+constexpr inline uint32_t LittleEndian(uint32_t const a)
 {
 	return SCPEndianImpl::to_le(a, SCPEndianImpl::be_tag<true>{});
 }
@@ -124,4 +124,9 @@ constexpr inline float INTEL_FLOAT(float const a){
 constexpr inline float INTEL_FLOAT(const float* a)
 {
 	return SCPEndianImpl::to_le(*a, SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
+}
+
+constexpr inline uint32_t operator "" _FromBigEndian32(unsigned long long Literal)
+{
+	return SCPEndianImpl::to_le(static_cast<uint32_t>(Literal), SCPEndianImpl::be_tag<true>{});
 }

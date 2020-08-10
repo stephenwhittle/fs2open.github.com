@@ -17,7 +17,7 @@
 
 #include "cfile/encrypt.h"
 #include "FSIntegerTypes.h"
-
+#include "FSStdTypes.h"
 
 #if BYTE_ORDER == BIG_ENDIAN
 const uint Encrypt_new_signature			= 0x551a335c;		// new encrpytion
@@ -173,15 +173,13 @@ void encrypt(char *text, int text_len, char *scrambled_text, int *scrambled_len,
 //				scrambled_len	=>	number of bytes of scrambled text
 //				text				=>	storage for unscrambled ascii data
 //				text_len			=>	actual number of bytes of unscrambled data
-void unencrypt(char *scrambled_text, int scrambled_len, char *text, int *text_len)
+void unencrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType)
 {
-#ifdef ENCRYPT_NEW
-	// check if we are an old FS1 style encryption before moving to new type
-	if ( !is_old_encrypt(scrambled_text) ) {
-		unencrypt_new(scrambled_text, scrambled_len, text, text_len);
+	if (EncryptionType == CFILE::CFileEncryptionMagic::NewSignature)
+	{
+		UnencryptNew(scrambled_text);
 		return;
 	}
-#endif
 
 	int i, num_runs;
 	int scramble_offset = 0;
@@ -190,32 +188,46 @@ void unencrypt(char *scrambled_text, int scrambled_len, char *text, int *text_le
 
 	uint encrypt_id;
 
+	//unnecessary check as we already look at the encryption earlier
 	// Only decrypt files that start with unique signature
-	memcpy(&encrypt_id, scrambled_text, 4);
+	/*memcpy(&encrypt_id, scrambled_text, 4);
 
 	if ( (encrypt_id != Encrypt_signature) && (encrypt_id !=  Encrypt_signature_8bit) ) {
 		memcpy(text, scrambled_text, scrambled_len);
 		*text_len = scrambled_len;
 		return;
-	}	
+	}	*/
 
-	scrambled_text += 4;
-	scrambled_len -= 4;
+	//Skip the first 32-bit word
+	/*scrambled_text += 4;
+	scrambled_len -= 4;*/
 
 	// First decrypt stage: undo XOR operation
+	uintmax_t ByteIndex = 0;
+	for (auto& CurrentByte : scrambled_text)
+	{
+		CurrentByte ^= ByteIndex;
+		ByteIndex++;
+	}
+
+/*
 	for ( i =0; i < scrambled_len; i++ ) {
 		scrambled_text[i] ^= i;
 	}
-
-	if (encrypt_id == Encrypt_signature_8bit) {
+*/
+	if (EncryptionType == CFILE::CFileEncryptionMagic::EightBitSignature)
+	{
+		return;
+	}
+	/*if (encrypt_id == Encrypt_signature_8bit) {
 		memcpy(text, scrambled_text, scrambled_len);
 		*text_len = scrambled_len;
 		return;
-	}
+	}*/
 
 	// Second decrypt stage: remove chars from 7 bit packing to 8 bit boundries
-	num_runs = (int) (scrambled_len / 7.0f );
-	if ( scrambled_len % 7 ) {
+	num_runs = (int) (scrambled_text.Size / 7.0f );
+	if (scrambled_text.Size % 7 ) {
 		num_runs++;
 	}
 

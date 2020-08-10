@@ -28,7 +28,8 @@ const char *encrypt_type(char *scrambled_text);
 void encrypt(char *text, int text_len, char *scrambled_text, int *scrambled_len, int use_8bit, bool new_encrypt = true);
 
 // Decrypt scrambled_text
-void unencrypt(char *scrambled_text, int scrambled_len, char *text, int *text_len);
 
+
+void unencrypt(class SCP_buffer& scrambled_text, class CFILE::CFileEncryptionMagic EncryptionType);
 #endif
 

@@ -57,10 +57,10 @@ class CFILE
 private:
 	enum class CFileEncryptionMagic : uint32_t
 	{
-		NotEncrypted = 0,
-		OldSignature = INTEL_INT(0xdeadbeef),
-		NewSignature = INTEL_INT(0x5c331a55),
-		EightBitSignature = INTEL_INT(0xcacacaca)
+		NotEncrypted,
+		OldSignature,
+		NewSignature,
+		EightBitSignature
 	};
 	CFileEncryptionMagic DetectFileEncryption();
 	enum class CFileTextEncoding;

@@ -73,7 +73,10 @@ TEST_SUITE("CFile Module")
 	}
 	TEST_CASE("DIRECTORY ITERATOR")
 	{
-
+		//correct number of files in folder
+		//recursive vs non recursive mode
+		//filtering on extension
+		//filtering on file type etc
 	}
 	TEST_CASE("CFile Open packed file") 
 	{

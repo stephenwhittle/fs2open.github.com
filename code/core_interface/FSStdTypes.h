@@ -58,7 +58,7 @@ public:
 	SCP_buffer(SCP_buffer&& Source) noexcept
 		:Size(Source.Size),
 		InternalData(std::move(Source.InternalData)) {};
-
+	
 	SCP_buffer(const SCP_buffer&) = delete;
 	SCP_buffer& operator=(const SCP_buffer&) = delete;
 	SCP_buffer& operator=(SCP_buffer&& Source) noexcept
@@ -66,17 +66,26 @@ public:
 		if (this != &Source)
 		{
 			InternalData = std::move(Source.InternalData);
-			Size = Source.Size;
+			Size = std::move(Source.Size);
 		}
 		return *this;
 	}
 	size_t Size;
+	
+	SCP_buffer CopyRange(const_iterator Start, const_iterator End) 
+	{
+		SCP_buffer RangedCopy = SCP_buffer(End - Start);
+		std::copy(Start, End, RangedCopy.begin());
+		return RangedCopy;
+	}
+
 	SCP_buffer Clone() const
 	{
 		SCP_buffer MyClone = SCP_buffer(Size);
 		std::copy(begin(), end(), MyClone.begin());
 		return MyClone;
 	}
+	
 	inline char* const Data() const { return InternalData.get(); }
 	inline char* const begin() const { return InternalData.get(); }
 	inline char* const end() const { return InternalData.get() + Size; }
