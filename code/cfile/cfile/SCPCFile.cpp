@@ -2,16 +2,7 @@
 #include "SCPEndian.h"
 
 
-enum class CFILE::CFileTextEncoding
-{
-	UTF8,
-	UTF8BOM,
-	WindowsLatin1,
-	Iso88951,
-	Ascii,
-	UnsupportedUTF,
-	Unknown
-};
+
 
 CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size_t Size)
 {
@@ -20,25 +11,25 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 		return CFileTextEncoding::Unknown;
 	}
 	uint32_t BOM = *((uint32_t*)Buffer);
-	uint32_t BOM2 = LittleEndian(BOM);
+
 	SeekAbsolute(0);
 	
 	if (
-		INTEL_INT(BOM) == 0x0000feff_FromBigEndian32|| //UTF32LE
-		INTEL_INT(BOM) == 0xfffe0000_FromBigEndian32 //UTF32BE
+		BOM == INTEL_INT(0x0000feff) || //UTF32LE
+		BOM == INTEL_INT(0xfffe0000) //UTF32BE
 		)
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	} 
-	else if ((INTEL_INT(BOM) & 0xEFBBBF00_FromBigEndian32) == 0xEFBBBF00_FromBigEndian32) //00bfbbef
+	else if ((BOM & 0xEFBBBF00_FromBigEndian32) == 0xEFBBBF00_FromBigEndian32) //00bfbbef
 	{
 		return CFileTextEncoding::UTF8BOM;
 	}
-	else if ((INTEL_INT(BOM) & 0xfeff0000_FromBigEndian32) == 0xfeff0000_FromBigEndian32) //UTF16LE
+	else if ((BOM & INTEL_INT(0xfeff0000)) == INTEL_INT(0xfeff0000)) //UTF16LE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
-	else if ((INTEL_INT(BOM) & 0xFFFE0000_FromBigEndian32) == 0xfffe0000_FromBigEndian32) //UTF16BE
+	else if ((BOM & INTEL_INT(0xFFFE0000)) == INTEL_INT(0xfffe0000)) //UTF16BE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
@@ -121,15 +112,15 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	SeekAbsolute(0);
 	uint32_t Magic = 0;
 	ReadBytes(&Magic, 4);
-	switch (INTEL_INT(Magic))	
+	switch (Magic)	
 	{
-	case 0xdeadbeef_FromBigEndian32 :
+	case INTEL_INT(0xdeadbeef):
 		return CFileEncryptionMagic::OldSignature;
 		break;
-	case 0x5c331a55_FromBigEndian32 :
+	case INTEL_INT(0x5c331a55):
 		return CFileEncryptionMagic::NewSignature;
 		break;
-	case 0xcacacaca_FromBigEndian32 :
+	case INTEL_INT(0xcacacaca):
 		return CFileEncryptionMagic::EightBitSignature;
 		break;
 	default:
@@ -167,7 +158,7 @@ SCP_buffer CFILE::UTF8Normalize()
 	// this will need to calculate the offset
 	
 	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
-		unencrypt(raw_text, FileEncryption);
+		//unencrypt(raw_text, FileEncryption);
 	}
 
 

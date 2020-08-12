@@ -55,17 +55,8 @@ class CFILE
 {
 
 private:
-	enum class CFileEncryptionMagic : uint32_t
-	{
-		NotEncrypted,
-		OldSignature,
-		NewSignature,
-		EightBitSignature
-	};
-	CFileEncryptionMagic DetectFileEncryption();
-	enum class CFileTextEncoding;
+	
 	//Takes in the buffer as a reference to avoid copy overhead
-	CFileTextEncoding DetectFileEncoding(const char* Buffer, std::size_t Size);
 	
 
 	enum class EDataSource
@@ -95,7 +86,26 @@ public:
 	std::uintmax_t lib_offset;
 	
 	std::uintmax_t size; // for packed files
+	enum class CFileEncryptionMagic : uint32_t
+	{
+		NotEncrypted,
+		OldSignature,
+		NewSignature,
+		EightBitSignature
+	};
 
+	enum class CFileTextEncoding
+	{
+		UTF8,
+		UTF8BOM,
+		WindowsLatin1,
+		Iso88951,
+		Ascii,
+		UnsupportedUTF,
+		Unknown
+	};
+	CFileTextEncoding DetectFileEncoding(const char* Buffer, std::size_t Size);
+	CFileEncryptionMagic DetectFileEncryption();
 	
 	
 	/*
@@ -208,8 +218,7 @@ public:
 		return 0;
 	}
 
-	template <typename DestinationType>
-	int ReadBytes(DestinationType* Destination, size_t Count)
+	template <typename DestinationType>std::uintmax_t ReadBytes(DestinationType* Destination, size_t Count)
 	{
 		switch (CurrentDataSource)
 		{

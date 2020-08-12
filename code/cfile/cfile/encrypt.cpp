@@ -177,7 +177,7 @@ void unencrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic Encryptio
 {
 	if (EncryptionType == CFILE::CFileEncryptionMagic::NewSignature)
 	{
-		UnencryptNew(scrambled_text);
+		//UnencryptNew(scrambled_text);
 		return;
 	}
 
@@ -234,72 +234,71 @@ void unencrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic Encryptio
 	for ( i =0; i < num_runs; i++ ) {
 		// a run consists of 8 chars packed into 56 bits (instead of 64)
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 1) & 0x7f);
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 1) & 0x7f);
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size ) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 2) & 0x3f);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 6) & 0x40 );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 2) & 0x3f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 6) & 0x40 );
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 3) & 0x1f);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 5) & 0x60 );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 3) & 0x1f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 5) & 0x60 );
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 4) & 0x0f);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 4) & 0x70 );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 4) & 0x0f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 4) & 0x70 );
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 5) & 0x07);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 3) & 0x78 );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 5) & 0x07);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 3) & 0x78 );
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 6) & 0x03);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 2) & 0x7c );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 6) & 0x03);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 2) & 0x7c );
 		byte_offset++;
 		scramble_offset++;
 
-		if ( scramble_offset >= scrambled_len ) {
+		if ( scramble_offset >= scrambled_text.Size) {
 			break;
 		}
 
-		text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 7) & 0x01);
-		text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 1) & 0x7e );
+		scrambled_text[byte_offset] = (char)((scrambled_text[scramble_offset] >> 7) & 0x01);
+		scrambled_text[byte_offset] |= ( (scrambled_text[scramble_offset-1] << 1) & 0x7e );
 		byte_offset++;
 
 		maybe_last = (char)(scrambled_text[scramble_offset] & 0x7f);
 		if ( maybe_last > 0 ) {
-			text[byte_offset] = maybe_last;
+			scrambled_text[byte_offset] = maybe_last;
 			byte_offset++;
 			scramble_offset++;
 		}
 	}
 
-	*text_len = byte_offset;
 }
 
 #define NUM_LVL1_KEYS					11

@@ -3,19 +3,19 @@
 #include "log/SCPLogModule.h"
 TEST_SUITE("SCPLogModule Tests")
 {
-	tl::optional<SCPLogModule&> ModuleHandle;
+	tl::optional<SCPLogModule&> LogModuleHandle;
 
 	TEST_CASE("SCPLogModule Init")
 	{
-		ModuleHandle = SCPModuleManager::GetModule<SCPLogModule>();
-		REQUIRE(ModuleHandle);
+		LogModuleHandle = SCPModuleManager::GetModule<SCPLogModule>();
+		REQUIRE(LogModuleHandle);
 	}
 	TEST_CASE("LogPrintF Events")
 	{
-		ModuleHandle->LogPrintF(SCPLogType::Events, "TestEvent %s", "TestArgument");
+		LogModuleHandle->LogPrintF(SCPLogType::Events, "TestEvent %s", "TestArgument");
 	}
 	TEST_CASE("LogPrintF Multi")
 	{
-		ModuleHandle->LogPrintF(SCPLogType::Multiplayer, "TestMulti %s", "TestArgument");
+		LogModuleHandle->LogPrintF(SCPLogType::Multiplayer, "TestMulti %s", "TestArgument");
 	}
 }

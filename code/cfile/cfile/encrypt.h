@@ -12,6 +12,8 @@
 #ifndef __ENCRYPT_H__
 #define __ENCRYPT_H__
 
+#include "cfile/SCPCFile.h"
+
 // initialize encryption
 void encrypt_init();
 
@@ -30,6 +32,6 @@ void encrypt(char *text, int text_len, char *scrambled_text, int *scrambled_len,
 // Decrypt scrambled_text
 
 
-void unencrypt(class SCP_buffer& scrambled_text, class CFILE::CFileEncryptionMagic EncryptionType);
+void unencrypt(class SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType);
 #endif
 

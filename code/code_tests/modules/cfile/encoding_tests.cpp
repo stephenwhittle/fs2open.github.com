@@ -6,63 +6,69 @@
 
 TEST_CASE("Encoding" * doctest::test_suite("CFile Module"))
 {
-	auto ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
+	auto EncodingModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
 	SUBCASE("Encrypted file")
 	{
-		auto EncryptedFileInfo = ModuleHandle->FindFileInfo("weapons_encrypted.tbl", SCPCFilePathTypeID::Tables);
+		auto EncryptedFileInfo = EncodingModuleHandle->FindFileInfo("weapons_encrypted.tbl", SCPCFilePathTypeID::Tables);
 		if (EncryptedFileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(EncryptedFileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			auto CFile = EncodingModuleHandle->CFileOpen(EncryptedFileInfo.value(), { SCPCFileMode::Read });
+			REQUIRE(CFile->DetectFileEncryption() != CFILE::CFileEncryptionMagic::NotEncrypted);
 		}
 	}
 	SUBCASE("Handle UTF8")
 	{
-		auto UTF8FileInfo = ModuleHandle->FindFileInfo("utf8.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("utf8.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UTF8);
 		}
 	}
 	SUBCASE("Handle UTF8 BOM")
 	{
-		auto UTF8FileInfo = ModuleHandle->FindFileInfo("utf8bom.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("utf8bom.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo) {
-			auto CFile = ModuleHandle->CFileOpen(UTF8FileInfo.value(), {SCPCFileMode::Read});
-			CFile->UTF8Normalize();
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), {SCPCFileMode::Read});
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UTF8BOM);
 		}
 	}
 	SUBCASE("Handle Windows/Latin")
 	{
-		auto UTF8FileInfo = ModuleHandle->FindFileInfo("latin.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("latin.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::WindowsLatin1);
 		}
 	}
 	SUBCASE("Handle Unknown UTF encodings")
 	{
-		auto UTF8FileInfo = ModuleHandle->FindFileInfo("utf32be.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("utf32be.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
 			CFile->UTF8Normalize();
 		}
-		auto UTF16FileInfo = ModuleHandle->FindFileInfo("utf16le.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF16FileInfo = EncodingModuleHandle->FindFileInfo("utf16le.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF16FileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(UTF16FileInfo.value(), { SCPCFileMode::Read });
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF16FileInfo.value(), { SCPCFileMode::Read });
 			CFile->UTF8Normalize();
 		}
 	}
 	SUBCASE("Handle ASCII")
 	{
-		auto UTF8FileInfo = ModuleHandle->FindFileInfo("ascii.tbl", SCPCFilePathTypeID::Tables);
+		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("ascii.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo)
 		{
-			auto CFile = ModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
 			CFile->UTF8Normalize();
 		}
 	}

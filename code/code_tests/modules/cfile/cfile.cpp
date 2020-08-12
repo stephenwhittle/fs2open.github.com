@@ -6,14 +6,14 @@
 #include "cfile/SCPRootInfo.h"
 TEST_SUITE("CFile Module")
 {
-	tl::optional<SCPCFileModule&> ModuleHandle;
+	tl::optional<SCPCFileModule&> CFileModuleHandle;
 	//TODO: additional tests for seeking etc
 	//TODO: regex matching
 	//TODO: sort reverse test
 	TEST_CASE("CFile Module Initialization")
 	{
-		ModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
-		REQUIRE(ModuleHandle);
+		CFileModuleHandle = SCPModuleManager::GetModule<SCPCFileModule>();
+		REQUIRE(CFileModuleHandle);
 	}
 	TEST_CASE("CFileModule GetDefaultFilePath")
 	{
@@ -23,40 +23,40 @@ TEST_SUITE("CFile Module")
 	{
 		FileFilter default_settings;
 		default_settings.FilenameIs("game_settings.tbl");
-		auto Results = ModuleHandle->CFileDatabase().Files(default_settings);
+		auto Results = CFileModuleHandle->CFileDatabase().Files(default_settings);
 		REQUIRE(Results.begin() != Results.end());
 	}
 	TEST_CASE("CFile find in-memory root")
 	{
 		RootFilter InMemoryRoot;
 		InMemoryRoot.TypeIs(SCPRootType::InMemory);
-		auto Results = ModuleHandle->CFileDatabase().Roots(InMemoryRoot);
+		auto Results = CFileModuleHandle->CFileDatabase().Roots(InMemoryRoot);
 		REQUIRE(Results.begin() != Results.end());
 	}
 	TEST_CASE("CFile Database Find in-memory file")
 	{
-		REQUIRE(ModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, {SCPCFileLocation::MemoryRoot}, ""));
+		REQUIRE(CFileModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, {SCPCFileLocation::MemoryRoot}, ""));
 	}
 	TEST_CASE("CFile Open in-memory file")
 	{
-		auto FileInfo = ModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, { SCPCFileLocation::MemoryRoot }, "");
+		auto FileInfo = CFileModuleHandle->FindFileInfo("game_settings.tbl", SCPCFilePathTypeID::Tables, false, { SCPCFileLocation::MemoryRoot }, "");
 		REQUIRE(FileInfo);
 		
 		SUBCASE("CFile can't be opened in write-only mode")
 		{
-			REQUIRE(!ModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Write}));
+			REQUIRE(!CFileModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Write}));
 		}
 
 		SUBCASE("In-memory file opened in read-only mode")
 		{
-			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Read}));
+			REQUIRE(CFileModuleHandle->CFileOpen(*FileInfo, {SCPCFileMode::Read}));
 		}
 	}
 	
 	TEST_CASE("CFile Open loose file") 
 	{
 		auto FileInfo =
-			ModuleHandle->FindFileInfo("ships.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
+			CFileModuleHandle->FindFileInfo("ships.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
 
 		SUBCASE("Find loose file")
 		{
@@ -64,7 +64,7 @@ TEST_SUITE("CFile Module")
 		}
 		SUBCASE("Open it")
 		{
-			REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
+			REQUIRE(CFileModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 		}
 		SUBCASE("Read it")
 		{
@@ -80,9 +80,9 @@ TEST_SUITE("CFile Module")
 	}
 	TEST_CASE("CFile Open packed file") 
 	{
-		auto FileInfo = ModuleHandle->FindFileInfo("test2.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
+		auto FileInfo = CFileModuleHandle->FindFileInfo("test2.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
 		REQUIRE(FileInfo);
-		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
+		REQUIRE(CFileModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 		SUBCASE("Read it") {}
 	}
 	TEST_CASE("CFile Open memory-mapped file")
@@ -91,9 +91,9 @@ TEST_SUITE("CFile Module")
 	}
 	TEST_CASE("Override default file")
 	{
-		auto FileInfo = ModuleHandle->FindFileInfo("controlconfigdefaults.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
+		auto FileInfo = CFileModuleHandle->FindFileInfo("controlconfigdefaults.tbl", SCPCFilePathTypeID::Tables, false, SCPCFileLocationALL, "");
 		REQUIRE(FileInfo);
-		REQUIRE(ModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
+		REQUIRE(CFileModuleHandle->CFileOpen(*FileInfo, { SCPCFileMode::Read }));
 	}
 	TEST_CASE("FindFileInfo returns results in the correct order")
 	{
