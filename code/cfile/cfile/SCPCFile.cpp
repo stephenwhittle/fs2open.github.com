@@ -13,23 +13,28 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	uint32_t BOM = *((uint32_t*)Buffer);
 
 	SeekAbsolute(0);
-	
+	constexpr uint32_t UTF8BomSequence = 0xefbbbf00_AsBigEndian32;
+	constexpr uint32_t UTF16BESequence = 0xfeff0000_AsBigEndian32;
+	constexpr uint32_t UTF16LESequence = 0xfffe0000_AsBigEndian32;
+	constexpr uint32_t UTF32BESequence = 0x0000feff_AsBigEndian32;
+	constexpr uint32_t UTF32LESequence = 0xfffe0000_AsBigEndian32;
+
 	if (
-		BOM == INTEL_INT(0x0000feff) || //UTF32LE
-		BOM == INTEL_INT(0xfffe0000) //UTF32BE
+		BOM == UTF32LESequence || //UTF32LE
+		BOM == UTF32BESequence //UTF32BE
 		)
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	} 
-	else if ((BOM & 0xEFBBBF00_FromBigEndian32) == 0xEFBBBF00_FromBigEndian32) //00bfbbef
+	else if ((BOM & UTF8BomSequence) == UTF8BomSequence) //00bfbbef
 	{
 		return CFileTextEncoding::UTF8BOM;
 	}
-	else if ((BOM & INTEL_INT(0xfeff0000)) == INTEL_INT(0xfeff0000)) //UTF16LE
+	else if ((BOM & UTF16LESequence) == UTF16LESequence) //UTF16LE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
-	else if ((BOM & INTEL_INT(0xFFFE0000)) == INTEL_INT(0xfffe0000)) //UTF16BE
+	else if ((BOM & UTF16BESequence) == UTF16BESequence) //UTF16BE
 	{
 		return CFileTextEncoding::UnsupportedUTF;
 	}
@@ -38,7 +43,7 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	bool ValidatesAsUTF8 = true;
 	char PreviousByte = 0;
 
-	auto ValidateUTF8 = [&ValidatesAsUTF8, &PreviousByte](char Byte)
+	auto ValidateUTF8 = [&ValidatesAsUTF8, &PreviousByte](uint8_t Byte)
 	{
 		if (
 			ValidatesAsUTF8 &&
@@ -62,14 +67,14 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 			}
 		}
 	};
-	auto ValidateWindowsLatin = [&Has8859ControlCharacters](char Byte)
+	auto ValidateWindowsLatin = [&Has8859ControlCharacters](uint8_t Byte)
 	{
 		if ((Byte >= 0x80) && (Byte <= 0x9F))
 		{
 			Has8859ControlCharacters = true;
 		}
 	};
-	auto ValidateASCII = [&HasByteAbove7F](char Byte)
+	auto ValidateASCII = [&HasByteAbove7F](uint8_t Byte)
 	{
 		if (Byte > 0x7F)
 		{
@@ -79,7 +84,7 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	//iterate through all the other characters in the file
 	for (uint32_t ByteIndex = 0; ByteIndex < Size; ByteIndex++)
 	{
-		auto Byte = Buffer[ByteIndex];
+		uint8_t Byte = Buffer[ByteIndex];
 		ValidateUTF8(Byte);
 		//Check that the character is in the valid UTF8 range
 		ValidateWindowsLatin(Byte);
@@ -114,13 +119,13 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	ReadBytes(&Magic, 4);
 	switch (Magic)	
 	{
-	case INTEL_INT(0xdeadbeef):
+	case 0xdeadbeef_AsLittleEndian32:
 		return CFileEncryptionMagic::OldSignature;
 		break;
-	case INTEL_INT(0x5c331a55):
+	case 0x5c331a55_AsLittleEndian32:
 		return CFileEncryptionMagic::NewSignature;
 		break;
-	case INTEL_INT(0xcacacaca):
+	case 0xcacacaca_AsLittleEndian32:
 		return CFileEncryptionMagic::EightBitSignature;
 		break;
 	default:
@@ -238,6 +243,7 @@ std::uintmax_t CFILE::Tell()
 		return MemoryMappedFileView.tellg();
 		break;
 	default:
+		throw;
 		break;
 	}
 }

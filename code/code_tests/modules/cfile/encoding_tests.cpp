@@ -50,26 +50,35 @@ TEST_CASE("Encoding" * doctest::test_suite("CFile Module"))
 	}
 	SUBCASE("Handle Unknown UTF encodings")
 	{
-		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("utf32be.tbl", SCPCFilePathTypeID::Tables);
-		if (UTF8FileInfo)
+		auto UTF32FileInfo = EncodingModuleHandle->FindFileInfo("utf32be.tbl", SCPCFilePathTypeID::Tables);
+		if (UTF32FileInfo)
 		{
-			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			auto CFile = EncodingModuleHandle->CFileOpen(UTF32FileInfo.value(), { SCPCFileMode::Read });
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UnsupportedUTF);
+			
 		}
+
 		auto UTF16FileInfo = EncodingModuleHandle->FindFileInfo("utf16le.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF16FileInfo)
 		{
 			auto CFile = EncodingModuleHandle->CFileOpen(UTF16FileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UnsupportedUTF);
+
 		}
 	}
-	SUBCASE("Handle ASCII")
+	SUBCASE("Handle ASCII as valid UTF-8")
 	{
 		auto UTF8FileInfo = EncodingModuleHandle->FindFileInfo("ascii.tbl", SCPCFilePathTypeID::Tables);
 		if (UTF8FileInfo)
 		{
 			auto CFile = EncodingModuleHandle->CFileOpen(UTF8FileInfo.value(), { SCPCFileMode::Read });
-			CFile->UTF8Normalize();
+			SCP_buffer FileBuffer = SCP_buffer(CFile->GetSize());
+			CFile->ReadBytes(FileBuffer.Data(), FileBuffer.Size);
+			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UTF8);
 		}
 	}
 }

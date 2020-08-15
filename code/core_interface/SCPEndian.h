@@ -126,7 +126,13 @@ constexpr inline float INTEL_FLOAT(const float* a)
 	return SCPEndianImpl::to_le(*a, SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }
 
-constexpr inline uint32_t operator "" _FromBigEndian32(unsigned long long Literal)
+constexpr inline uint32_t operator "" _AsBigEndian32(unsigned long long Literal)
 {
-	return SCPEndianImpl::to_le(static_cast<uint32_t>(Literal), SCPEndianImpl::be_tag<true>{});
+	//byteswaps IF we are not BIG-endian
+	return SCPEndianImpl::to_le(static_cast<uint32_t>(Literal), SCPEndianImpl::be_tag<!SCPEndianImpl::isBE::value>{});
+}
+constexpr inline uint32_t operator"" _AsLittleEndian32(unsigned long long Literal)
+{
+	// byteswaps IF we are not BIG-endian
+	return SCPEndianImpl::to_le(static_cast<uint32_t>(Literal), SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }
