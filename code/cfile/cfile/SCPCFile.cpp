@@ -146,22 +146,34 @@ SCP_buffer CFILE::UTF8Normalize()
 	
 	
 	uintmax_t PayloadOffset = 0;
+	//can probably perform the decryption here - I don't think its possible to have encrypted non-ASCII files
+	//so we don't have to worry about how an encrypted header and a BOM interact
+	if (FileEncryption != CFileEncryptionMagic::NotEncrypted)
+	{
+		PayloadOffset += 4;
+	}
 
 	// using internal size not buffer size here so we don't look at any null terminator at the end of the buffer
 	CFileTextEncoding FileEncoding = DetectFileEncoding(FileContents.Data(), size);
+
+	//If we either can't detect the encoding, or we don't support it, or the buffer is already UTF8, no need for further action
+	if ((FileEncoding == CFileTextEncoding::Unknown) || 
+		(FileEncoding == CFileTextEncoding::UnsupportedUTF) || 
+		(FileEncoding == CFileTextEncoding::UTF8))
+	{
+		SeekAbsolute(OldPosition);
+		return FileContents;
+	}
 
 	//convert to switch/case later if we want to handle the other types
 	if (FileEncoding == CFileTextEncoding::UTF8BOM)
 	{
 		PayloadOffset += 3;
 	}
-	if (FileEncryption != CFileEncryptionMagic::NotEncrypted)
-	{
-		PayloadOffset += 4;
-	}
+
 
 	SCP_buffer BufferWithoutBom = FileContents.CopyRange(FileContents.begin() + PayloadOffset, FileContents.end());
-	FileContents                    = std::move(BufferWithoutBom);
+	FileContents = std::move(BufferWithoutBom);
 
 	if (FileEncoding == CFileTextEncoding::WindowsLatin1)
 	{
@@ -176,7 +188,7 @@ SCP_buffer CFILE::UTF8Normalize()
 	}
 	
 	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
-		//unencrypt(raw_text, FileEncryption);
+		Decrypt(FileContents, FileEncryption);
 	}
 
 
@@ -259,4 +271,136 @@ std::uintmax_t CFILE::Tell()
 		throw;
 		break;
 	}
+}
+
+
+//	input:	scrambled_text	=>	scrambled text
+//				scrambled_len	=>	number of bytes of scrambled text
+//				text				=>	storage for unscrambled ascii data
+//				text_len			=>	actual number of bytes of unscrambled data
+void CFILE::Decrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType)
+{
+	if (EncryptionType == CFILE::CFileEncryptionMagic::NewSignature)
+	{
+		//UnencryptNew(scrambled_text);
+		return;
+	}
+
+	int i, num_runs;
+	int byte_offset = 0;
+	char maybe_last = 0;
+
+	
+
+	//unnecessary check as we already look at the encryption earlier
+	// Only decrypt files that start with unique signature
+	/*memcpy(&encrypt_id, scrambled_text, 4);
+
+	if ( (encrypt_id != Encrypt_signature) && (encrypt_id !=  Encrypt_signature_8bit) ) {
+		memcpy(text, scrambled_text, scrambled_len);
+		*text_len = scrambled_len;
+		return;
+	}	*/
+
+	//Skip the first 32-bit word
+	/*scrambled_text += 4;
+	scrambled_len -= 4;*/
+
+	// First decrypt stage: undo XOR operation
+	uintmax_t ByteIndex = 0;
+	for (auto& CurrentByte : scrambled_text)
+	{
+		CurrentByte ^= ByteIndex;
+		ByteIndex++;
+	}
+
+/*
+	for ( i =0; i < scrambled_len; i++ ) {
+		scrambled_text[i] ^= i;
+	}
+*/
+	if (EncryptionType == CFILE::CFileEncryptionMagic::EightBitSignature)
+	{
+		return;
+	}
+	/*if (encrypt_id == Encrypt_signature_8bit) {
+		memcpy(text, scrambled_text, scrambled_len);
+		*text_len = scrambled_len;
+		return;
+	}*/
+
+	// Second decrypt stage: remove chars from 7 bit packing to 8 bit boundries
+	num_runs = (int) (scrambled_text.Size / 7.0f );
+	if (scrambled_text.Size % 7 ) {
+		num_runs++;
+	}
+
+	for ( i =0; i < num_runs; i++ ) {
+		// a run consists of 8 chars packed into 56 bits (instead of 64)
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 1) & 0x7f);
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size ) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 2) & 0x3f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 6) & 0x40 );
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 3) & 0x1f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 5) & 0x60 );
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 4) & 0x0f);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 4) & 0x70 );
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 5) & 0x07);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 3) & 0x78 );
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 6) & 0x03);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 2) & 0x7c );
+		byte_offset++;
+
+
+		if ( byte_offset >= scrambled_text.Size) {
+			break;
+		}
+
+		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 7) & 0x01);
+		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 1) & 0x7e );
+		byte_offset++;
+
+		maybe_last = (char)(scrambled_text[byte_offset] & 0x7f);
+		if ( maybe_last > 0 ) {
+			scrambled_text[byte_offset] = maybe_last;
+			byte_offset++;
+
+		}
+	}
+
 }

@@ -186,8 +186,7 @@ void unencrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic Encryptio
 	int byte_offset = 0;
 	char maybe_last = 0;
 
-	uint encrypt_id;
-
+	
 	//unnecessary check as we already look at the encryption earlier
 	// Only decrypt files that start with unique signature
 	/*memcpy(&encrypt_id, scrambled_text, 4);

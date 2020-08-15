@@ -189,6 +189,8 @@ public:
 	//todo: refactor this into a free function that operates on SCP_buffers and some kind of 
 	//non-owning view
 	SCP_buffer UTF8Normalize();
+	void Decrypt(class SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType);
+
 	std::uintmax_t GetSize();
 	template<typename DestinationType>
 	int Read(DestinationType* Destination, size_t ElementSize, size_t ElementCount)
