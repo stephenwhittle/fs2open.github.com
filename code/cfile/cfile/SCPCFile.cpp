@@ -1,6 +1,6 @@
 #include "cfile/SCPCFile.h"
 #include "SCPEndian.h"
-
+#include "tutf8e.h"
 
 
 
@@ -140,15 +140,18 @@ SCP_buffer CFILE::UTF8Normalize()
 	std::uintmax_t OldPosition = Tell();
 	SeekAbsolute(0);
 	//add one extra byte of null padding
-	SCP_buffer raw_text = SCP_buffer(size + 1);
-	ReadBytes(raw_text.Data(), size);
+	SCP_buffer FileContents = SCP_buffer(size + 1);
+	ReadBytes(FileContents.Data(), size);
 	CFileEncryptionMagic FileEncryption = DetectFileEncryption();
 	
 	
 	uintmax_t PayloadOffset = 0;
-	//convert to switch/case later
-	//using internal size not buffer size here so we don't look at any null terminator at the end of the buffer
-	if (DetectFileEncoding(raw_text.Data(), size) == CFileTextEncoding::UTF8BOM)
+
+	// using internal size not buffer size here so we don't look at any null terminator at the end of the buffer
+	CFileTextEncoding FileEncoding = DetectFileEncoding(FileContents.Data(), size);
+
+	//convert to switch/case later if we want to handle the other types
+	if (FileEncoding == CFileTextEncoding::UTF8BOM)
 	{
 		PayloadOffset += 3;
 	}
@@ -157,10 +160,20 @@ SCP_buffer CFILE::UTF8Normalize()
 		PayloadOffset += 4;
 	}
 
-	SCP_buffer BufferWithoutBom = raw_text.CopyRange(raw_text.begin() + PayloadOffset, raw_text.end());
-	raw_text                    = std::move(BufferWithoutBom);
+	SCP_buffer BufferWithoutBom = FileContents.CopyRange(FileContents.begin() + PayloadOffset, FileContents.end());
+	FileContents                    = std::move(BufferWithoutBom);
 
-	// this will need to calculate the offset
+	if (FileEncoding == CFileTextEncoding::WindowsLatin1)
+	{
+		const char InvalidCharacter = ' ';
+		std::size_t OutputBufferSize = 0;
+		tutf8e_encoder_buffer_length(tutf8e_encoder_windows_1252, FileContents.Data(), &InvalidCharacter, FileContents.Size, &OutputBufferSize);
+	
+		SCP_buffer NormalizedOutput = SCP_buffer(OutputBufferSize);
+
+		tutf8e_encoder_buffer_encode(tutf8e_encoder_windows_1252, FileContents.Data(), FileContents.Size, &InvalidCharacter, NormalizedOutput.Data(), &OutputBufferSize);
+		FileContents = std::move(NormalizedOutput);
+	}
 	
 	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
 		//unencrypt(raw_text, FileEncryption);
@@ -168,7 +181,7 @@ SCP_buffer CFILE::UTF8Normalize()
 
 
 	SeekAbsolute(OldPosition);
-	return raw_text;
+	return FileContents;
 }
 
 std::uintmax_t CFILE::GetSize() 
