@@ -81,4 +81,9 @@ TEST_CASE("Encoding" * doctest::test_suite("CFile Module"))
 			REQUIRE(CFile->DetectFileEncoding(FileBuffer.Data(), FileBuffer.Size) == CFILE::CFileTextEncoding::UTF8);
 		}
 	}
+
+	SUBCASE("UTF-8 Normalization")
+	{
+
+	}
 }

@@ -1,6 +1,8 @@
 
 set (test_sources 
-	cfile/cfile.cpp 
+	cfile/cfile.cpp
+	cfile/encoding_tests.cpp 
+	cfile/encryption_tests.cpp
 	config/config.cpp 
 	cmdline/cmdline.cpp
 	filesystem/filesystem.cpp
