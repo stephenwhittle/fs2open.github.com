@@ -89,7 +89,10 @@ public:
 	inline char* const Data() const { return InternalData.get(); }
 	inline char* const begin() const { return InternalData.get(); }
 	inline char* const end() const { return InternalData.get() + Size; }
-	inline char& operator[](size_t Index) const { return InternalData[Index]; }
+	inline char& operator[](size_t Index) const 
+	{ 
+		return InternalData[Index]; 
+	}
 };
 
 #if __cplusplus < 201402L

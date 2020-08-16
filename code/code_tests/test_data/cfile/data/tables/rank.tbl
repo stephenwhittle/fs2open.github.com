@@ -1,0 +1,119 @@
+; Ranks.tbl 
+; Will contain data for :
+; 1.) player rank names
+; 2.) player rank scores
+;
+; Do not change the ordering of the sections in this table. Also do not add items to the list
+;
+;
+;
+; Casting Notes:
+;	Terran Captain 1(M) - ES  = 1_*
+;	Terran Captain 2(F) - SH  = 3_*
+
+
+
+[RANK NAMES]
+$Name:	Ensign
+$Points:	0
+$Bitmap:	medal16.pcx
+$Promotion Voice Base: rank_0.wav
+$Promotion Text:
+
+Dang, you're still an ensign!  You must have gotten busted!
+
+$end_multi_text
+
+$Name: Lieutenant Junior Grade
+$Points:	4000
+$Bitmap:	medal16a.pcx
+$Promotion Voice Base: rank_a.wav
+$Promotion Text:
+
+Congratulations.  Your achievements have been noted and you are duly awarded the rank Lieutenant Junior Grade.
+
+$end_multi_text
+
+$Name:	Lieutenant
+$Points:	10000
+$Bitmap:	medal16b.pcx
+$Promotion Voice Base: rank_b.wav
+$Promotion Text:
+
+Per GTAR 64-2a you are hereby promoted to the rank of Lieutenant.  Congratulations.
+
+$end_multi_text
+
+$Name:	Lieutenant Commander
+$Points:	22000
+$Bitmap:	medal16c.pcx
+$Promotion Voice Base: rank_c.wav
+$Promotion Text:
+
+Congratulations, your achievements have been noted and you are duly awarded the rank of Lieutenant Commander.
+
+$end_multi_text
+
+$Name:	Commander
+$Points:	50000
+$Bitmap:	medal16d.pcx
+$Promotion Voice Base: rank_d.wav
+$Promotion Text:
+
+Because of your consistent sense of duty and obvious skill as a leader, you have been promoted to the rank of Commander.
+
+$end_multi_text
+
+$Name:	Captain
+$Points:	150000
+$Bitmap:	medal16e.pcx
+$Promotion Voice Base: rank_e.wav
+$Promotion Text:
+
+For displaying a commanding nature and the ability to lead others you are hereby promoted to Captain.  Congratulations!
+
+$end_multi_text
+
+;; the Brass
+$Name:	Commodore
+$Points:	400000
+$Bitmap:	medal16f.pcx
+$Promotion Voice Base: rank_f.wav
+$Promotion Text:
+
+For outstanding service through the war, leading many successful missions, and promoting a sense of honor and pride in the Alliance you have been promoted to the rank of Commodore. 
+$end_multi_text
+
+$Name:	Rear Admiral
+$Points:	2000000
+$Bitmap:	medal16g.pcx
+$Promotion Voice Base: rank_g.wav
+$Promotion Text:
+
+We aren't sure how you've done it, but you are hereby promoted to the prestigious rank of Rear Admiral.  (We think you cheated.)
+
+$end_multi_text
+
+$Name:	Vice Admiral
+$Points:	5000000
+$Bitmap:	medal16h.pcx
+$Promotion Voice Base: rank_h.wav
+$Promotion Text:
+
+You really must have cheated to get this rank!  Do you want to sit behind a desk or something?  That is what Vice Admirals do.
+
+$end_multi_text
+
+$Name:	Admiral
+$Points:	9000000
+$Bitmap:	medal16i.pcx
+$Promotion Voice Base: rank_i.wav
+$Promotion Text:
+
+You really have got to stop cheating.  This could become a natural thing for you... and that would be bad.  Go on Admiral Cheater
+I think you have to perform some ceremony or inspection or something.
+
+$end_multi_text
+
+#End
+       

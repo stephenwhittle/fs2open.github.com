@@ -1,5 +1,8 @@
 #include "cfile/SCPCFile.h"
 #include "SCPEndian.h"
+#include "SCPBitOps.h"
+#include <iostream>
+#include <bitset>
 #include "tutf8e.h"
 
 
@@ -328,79 +331,42 @@ void CFILE::Decrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic Encr
 		*text_len = scrambled_len;
 		return;
 	}*/
+	
+	auto Position = 0;
+	
+	auto DecryptedSize = (((scrambled_text.Size ) * 8))/ 7;
+	SCP_buffer DecryptedBuffer(DecryptedSize);
+	for (int i = 0; i < DecryptedSize; i++)
+	{
+		if (Position >= scrambled_text.Size) {
+			break;
+		}
+		uint16_t CombinedValue = 0;
+		uint8_t BitOffset = i % 8;
+		if (BitOffset == 0)
+		{
+			//std::cout << i << ":" << std::bitset<8>(MaskHighBits<std::uint8_t>( 0, 7 - BitOffset)) <<" -- " << i+1 << ":" << std::bitset<8>(MaskLowBits<std::uint8_t>( 0, BitOffset)) << " -- Mask" << std::endl;
+			//std::cout << i << ":" << std::bitset<8>(scrambled_text[Position]) <<" -- " << i+1 << ":" << std::bitset<8>(scrambled_text[Position+1]) << " -- Raw" << std::endl;
+			//std::cout << i << ":" << std::bitset<8>(scrambled_text[Position] & MaskHighBits<std::uint8_t>( 0, 7 - BitOffset)) <<" -- " << i+1 << ":" << std::bitset<8>(scrambled_text[Position+1] & MaskLowBits<std::uint8_t>( 0, BitOffset)) << std::endl;
 
-	// Second decrypt stage: remove chars from 7 bit packing to 8 bit boundries
-	num_runs = (int) (scrambled_text.Size / 7.0f );
-	if (scrambled_text.Size % 7 ) {
-		num_runs++;
+			//CombinedValue = ((scrambled_text[Position] & MaskHighBits<std::uint8_t>(0, 7 - BitOffset)) << 8) | (scrambled_text[Position + 1] & MaskLowBits<std::uint8_t>(0, BitOffset));
+			//CombinedValue = CombinedValue >> 9;
+
+			CombinedValue = ((scrambled_text[Position] & MaskHighBits<std::uint8_t>(0, 7 - BitOffset)));
+			CombinedValue = CombinedValue >> 1;
+		}
+		else
+		{
+			//std::cout << i << ":" << std::bitset<8>(MaskLowBits<std::uint8_t>( 0, BitOffset)) <<" -- " << i+1 << ":" << std::bitset<8>(MaskHighBits<std::uint8_t>( 0, 7 - BitOffset)) << " -- Mask" <<std::endl;
+			//std::cout << i << ":" << std::bitset<8>(scrambled_text[Position]) <<" -- " << i+1 << ":" << std::bitset<8>(scrambled_text[Position+1]) << " -- Raw" << std::endl;
+			//std::cout << i << ":" << std::bitset<8>(scrambled_text[Position] & MaskLowBits<std::uint8_t>( 0, BitOffset)) <<" -- " << i+1 << ":" << std::bitset<8>(scrambled_text[Position+1] & MaskHighBits<std::uint8_t>( 0, 7 - BitOffset)) << std::endl;
+
+			CombinedValue = ((scrambled_text[Position] & MaskLowBits<std::uint8_t>(0, BitOffset)) << 8) | (scrambled_text[Position + 1] & MaskHighBits<std::uint8_t>(0, 7 - BitOffset));
+			CombinedValue = CombinedValue >> (BitOffset + 1);
+			Position++;
+		}
+		//std::cout << (unsigned char)CombinedValue;
+		DecryptedBuffer[i] = ((unsigned char)CombinedValue);
 	}
-
-	for ( i =0; i < num_runs; i++ ) {
-		// a run consists of 8 chars packed into 56 bits (instead of 64)
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 1) & 0x7f);
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size ) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 2) & 0x3f);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 6) & 0x40 );
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 3) & 0x1f);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 5) & 0x60 );
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 4) & 0x0f);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 4) & 0x70 );
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 5) & 0x07);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 3) & 0x78 );
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 6) & 0x03);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 2) & 0x7c );
-		byte_offset++;
-
-
-		if ( byte_offset >= scrambled_text.Size) {
-			break;
-		}
-
-		scrambled_text[byte_offset] = (char)((scrambled_text[byte_offset] >> 7) & 0x01);
-		scrambled_text[byte_offset] |= ( (scrambled_text[byte_offset-1] << 1) & 0x7e );
-		byte_offset++;
-
-		maybe_last = (char)(scrambled_text[byte_offset] & 0x7f);
-		if ( maybe_last > 0 ) {
-			scrambled_text[byte_offset] = maybe_last;
-			byte_offset++;
-
-		}
-	}
-
+	scrambled_text = std::move(DecryptedBuffer);
 }

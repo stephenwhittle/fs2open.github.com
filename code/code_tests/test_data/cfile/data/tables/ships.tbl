@@ -1,0 +1,4173 @@
+;  file to indicate all ship types and their physical characteristics (such as physics info, etc)
+;  format is a simple form of the mission files
+;
+;  Some general comments about some of the fields
+;
+;  Velocities are specified in (freespace) units/second.  You can currently only
+;  specify velocities in the linear directions.  Rotational velocities are still
+;  currently speified with thrust (until I get this fixed).  Rotation time is the
+;  amount of time (in seconds) to complete 1 revolution in the given direction
+;  (x is pitch, y is heading, and z is bank).
+;
+;  Damp affects how quickly you will accel/decal to your target velocity.  Higher damp
+;  means slow acceleration and deceleration.  The lower this number, the faster 
+;  the ship responds.   For example, specifying a value of 0.0 means there is no
+;  damping, in other words, people would say, "this has no physics, like Wing
+;  Commander."   The more damping, the harder to control, but the more smoothly
+;  it moves.
+;
+;  Accelerations:
+;   All the acceleration numbers are damp factors for how fast the thing 
+;   changes speed.   0 would mean instantaneous velocity changes, and the
+;   bigger the number, the slower the acceleration.  Sort of backwards, but...
+;   forward_accel - The damp factor for when the ship is trying to go faster
+;   forward_decel - The damp factor for when the ship is trying to slow down
+;   slide_accel - The damp factor for left/right/up/down/reverse acceleration.
+;   slide_decel - The damp factor for left/right/up/down/reverse deceleration.
+;
+;	Energy Transfer System:
+;	$Power Output		=>	energy is produced per second by the ship's reactor
+;   $Max Oclk Speed		=>	the max forward speed of the ship when 100% energy
+;									is directed at the engines
+;   $Max Weapon Eng		=>	how much weapon energy can be stored (related to $Energy Cosumed
+;									field in weapons.tbl)
+;
+;	Afterburners:
+;	 $Afterburner			=> YES if afterburner present, NO otherwise
+;
+;	 The following parameters must be present if $Afterburner is YES, otherwise comment
+;   out or delete them:
+;
+;	+Aburn Max Vel:			=> x,y,z velocity when afterburner engaged
+;	+Aburn For accel:		=> forward accel when afterburner engaged
+;	+Aburn Fuel:			=> fuel capacity of afterburners
+;	+Aburn Burn Rate:		=> rate in fuel/second that afterburners consume fuel
+;	+Aburn Rec Rate:		=> rate in fuel/second that afterburners recover fuel
+;
+;	$Subsystem:			name, percent_damage, turret_turn_360_time
+;		$Default PBanks:	( "weapon1" "weapon2" )
+;		$Default SBanks:	( "missile1" "missile2" )
+;		$SBank Capacity:	( 50, 100 )
+;
+; A note regarding ship sounds:
+;	The index for ship sounds corresponds to the index in sounds.tbl.
+;  If you don't want to assign a sound, put -1 as the index.
+/*
+********************************************************************* 
+   John Explains Physics:
+
+   $Density doesn't affect physics except in the case of collisions.
+
+   $Damp is how fast your velocity vector "clamps" onto your forward
+   vector.   0.0 is instantaneous, the bigger, the slower.  So, for 
+   all you people that want velocity different than heading, set this
+   number to 10.0 or something and give it a try.  
+
+   $Rotdamp is how "loose" your turning is.   The bigger the looser.
+   For instance, 0.0 would be what people consider "no physics".  A
+   Mustang Cobra, for instance, would be about 0.1 and a 1965 Cadillac
+   with flat tires would probably pull a good 1.0...  You probably won't
+   get any satisfaction changing this.
+
+   $Max Velocity is obvious except there are three numbers which mean
+   left/right slide, up/down slide, and forward speed.  Reverse speed
+   in $Rear Velocity.
+
+   $Rotation time is how long it would take you to turn all the way 
+   around when turning full force and neglecting the $RotDamp 
+   accelerations.  In other words, if you hold hown, left turn and
+   turn around three times, this would be how long the 2nd rotation
+   took.   The only funny thing here is it goes pitch, heading, bank.
+
+   $Forward accel is how fast your ship can accelerate to your desired
+   speed.  Like $Damp, it means, how fast your actual velocity "clamps"
+   to your desired velocity.  0.0 would be instantaneous, bigger is 
+   slower.
+   
+   $Forward decel is about the same as $Forward accel except it is how
+   fast you can slow down.  Hoffoss- Putting 100.0 here would make it
+   so you couldn't stop of your own VOLITION, unless you turned the
+   opposite direction and applied thrust.  That would be an OUTRAGE! --MK
+********************************************************************* 
+*/
+
+#Ship Classes
+
+;=====>> TERRANS <<=======
+
+
+$Name:				GTF Ulysses
+$Short name:		TFight
+$Species:			Terran
++Type:				Advanced Space Superiority
++Maneuverability:	Excellent
++Armor:				Light
++Manufacturer:		Triton Dynamics
++Description:
+Excellent all-around fighter.
+Offers superior maneuverability and
+a high top speed.  Smaller missile
+payload than other GTA fighters.
+$end_multi_text
++Tech Description:
+Developed in a joint operation by the Vasudan and Terran governments, the GTF Ulysses is an Excellent all-around fighter.  It offers superior maneuverability and a high top speed.
+$end_multi_text
++Length:          16 m
++Gun Mounts:      4
++Missile Banks:   1
+$POF file:			fighter01.pof
+$Detail distance:	(0, 80, 300, 900)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 70.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		3.0, 2.6, 5.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Flail" "Prometheus" "Avenger" "D-Advanced")
+$Default PBanks:	( "Avenger" "ML-16 Laser" )
+$Allowed SBanks:	( "MX-50" "Fury" "D-Missile" "Hornet" "Hornet#Weak" "Interceptor" "Interceptor#Weak" "EMP")
+$Default SBanks:	( "MX-50" )
+$SBank Capacity:	( 40 )
+$Shields:			380
+$Power Output:		2.0
+$Max Oclk Speed:	94.0
+$Max Weapon Eng:	80.0
+$Hitpoints:			180
+$Flags:				( "player_ship" "default_player_ship" "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 150.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	25
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -22
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f01
+$Ship_icon:			iconfighter01
+$Ship_anim:			ssfighter01
+$Ship_overhead:	loadfighter01
+$Score:             25
+$Subsystem:			communication,	10, 0
+$Subsystem:			navigation,		10, 0
+$Subsystem:			weapons,			20, 0
+$Subsystem:			sensors,			10, 0
+$Subsystem:			engines,			35, 0
+
+
+$Name:				@GTF Apollo
+$Short name:		TFight4
+$Species:			Terran
++Type:				Space Superiority
++Maneuverability:	Fair
++Armor:				Medium
++Manufacturer:		Han-Ronald Corp.
++Description:
+Original space superiority
+of the GTA fleet.  Highly versatile,
+often doubles as assault type.
+Low weapon compatibility.
+$end_multi_text
++Tech Description:
+The Apollo is the most common GTA fighter.  It is highly versatile and can perform multiple roles, including space superiority, interception and assault.
+$end_multi_text
++Length:          21 m
++Gun Mounts:      4
++Missile Banks:   2
+
+$POF file:			fighter04.pof
+$Detail distance:	(0, 70, 300, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 60.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		3.2, 3.2, 6.0
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		900.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Flail" "Avenger" "Prometheus")
+$Default PBanks:	( "Avenger" "ML-16 Laser" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Hornet" "Hornet#Weak" "Interceptor#Weak")
+$Default SBanks:	( "MX-50" "MX-50" )
+$SBank Capacity:	( 40, 40 )
+$Shields:			350
+$Power Output:		2.0
+$Max Oclk Speed:	82.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			240
+$Flags:				( "player_ship" "default_player_ship" "fighter" "in tech database" )
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 140.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	25
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -31
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f04
+$Ship_icon:			iconfighter04
+$Ship_anim:			ssfighter04
+$Ship_overhead:	loadfighter04
+$Score:             10
+$Subsystem:			communications,	10,0.0
+$Subsystem:			engine,				35,0.0
+$Subsystem:			navigation,			10,0.0
+$Subsystem:			sensors,				10,0.0
+$Subsystem:			weapons,				20,0.0
+
+
+$Name:				GTF Valkyrie
+$Short name:		TFight5
+$Species:			Terran
++Type:				Interceptor
++Maneuverability:	Good
++Armor:				Light
++Manufacturer:		Han-Ronald Corp.
++Description:
+High speed recon and bomber-
+intercept fighter.  Offers high
+weapon compatibility and payload.
+$end_multi_text
++Tech Description:
+Using the old GTF Angel Scout Fighter as a template, the GTA created the Valkyrie Interceptor Fighter.  It has two additional engines, as well as an additional set of primary hardpoints.  This makes the Valkyrie the best bomber interceptor in the fleet.  Its speed is unmatched in the GTA, and its maneuverability is above average.  Its only drawbacks are a small secondary payload and weak hull.
+$end_multi_text
++Length:          16 m
++Gun Mounts:      4
++Missile Banks:   1
+
+$POF file:			fighter05.pof
+$Detail distance:	(0, 130, 300, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.3
+$Rotdamp:			0.27
+$Max Velocity:		0.0, 0.0, 85.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		3.5, 3.5, 3.5
+$Rear Velocity:		0.0
+$Forward accel:		1.0		
+$Forward decel:		0.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		10.0
+$Expl blast:		400.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Prometheus" "Banshee")
+$Default PBanks:	( "ML-16 Laser" "Prometheus" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Phoenix V" "Hornet" "Hornet#Weak" "Interceptor#Weak")
+$Default SBanks:	( "MX-50" )
+$SBank Capacity:	( 60 )
+$Shields:			200
+$Power Output:		2.0
+$Max Oclk Speed:	100.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			200
+$Flags:				( "player_ship" "default_player_ship" "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 165.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		400.0
+	+Aburn Burn Rate:	40.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -24
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f05
+$Ship_icon:			iconfighter05
+$Ship_anim:			ssfighter05
+$Ship_overhead:	loadfighter05
+$Score:             25
+$Subsystem:			communication,		10,0.0
+$Subsystem:			engine,				35,0.0
+$Subsystem:			navigation,			10,0.0
+$Subsystem:			sensors,				10,0.0
+$Subsystem:			weapons,				20,0.0
+
+
+$Name:				GTF Hercules
+$Short name:		TFight6
+$Species:			Terran
++Type:				Heavy Assault
++Maneuverability:	Average
++Armor:				Medium
++Manufacturer:		Han-Ronald Corp
++Description:
+Low max velocity offset by its
+tremendous offensive capabilities.
+High weapon capacity.
+$end_multi_text
++Tech Description:
+The Hercules is the slowest and most unmanageable fighter in the fleet.  This is offset, however, by its overpowering weaponry and shielding.  It carries 6 primary weapons, as well as two full secondary banks.  This heavy assault fighter is best suited for small target attacks and bomber escort.
+$end_multi_text
++Length:          20 m
++Gun Mounts:      6
++Missile Banks:   2
+
+$POF file:			fighter06.pof
+$Detail distance:	(0, 180, 300, 1100)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 50.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		4.0, 4.5, 4.0
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		25.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Banshee")
+$Default PBanks:	( "Avenger" "Disruptor" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Phoenix V" "Hornet" "Hornet#Weak")
+$Default SBanks:	( "Interceptor" "Fury" )
+$SBank Capacity:	( 60, 60 )
+$Shields:			600
+$Power Output:		3.0
+$Max Oclk Speed:	64.0
+$Max Weapon Eng:	150.0
+$Hitpoints:			250
+$Flags:				( "player_ship" "default_player_ship" "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 120.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	60.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	25
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -30
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f06
+$Ship_icon:			iconfighter06
+$Ship_anim:			ssfighter06
+$Ship_overhead:	loadfighter06
+$Score:             15
+$Subsystem:			sensors,				10,0.0
+$Subsystem:			communications,	10,0.0
+$Subsystem:			weapons,				10,0.0
+$Subsystem:			navigation,			10,0.0
+$Subsystem:			engine,				35,0.0
+
+
+$Name:				GTB Athena
+$Short name:		TBomb1
+$Species:			Terran
++Type:				Light Bomber
++Maneuverability:	Average
++Armor:				Medium
++Manufacturer:		Dynamic Metamer
++Description:
+Excellent for hit-and-run bombing.
+Good speed for its size, with a high
+capacity afterburner reserve.
+$end_multi_text
++Tech Description:
+The smallest bomber in the fleet, the Athena has oftentimes been mistaken for a fighter.  However, one should not be fooled by its small size.  The Athena can carry light bombs, and most missiles.  It also has the ability to dogfight well.  Its strong shielding and hull make it the favored "Lightning Bomber" of the GTA.
+$end_multi_text
++Length:          20 m
++Gun Mounts:      4
++Missile Banks:   2
+
+$POF file:			bomber01.pof
+$Detail distance:	(0, 180, 300, 1100)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.55
+$Max Velocity:		0.0, 0.0, 60.0
+$Rotation time:		4.5, 4.5, 5.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	75.0
+$Expl damage:		25.0
+$Expl blast:		1500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Avenger" "Disruptor" "Flail")
+$Default PBanks:	( "Avenger" "Flail" )
+$Allowed SBanks:	( "D-Missile" "Fury" "Phoenix V" "Synaptic" "Stiletto" "Hornet#Weak" "Interceptor")
+$Default SBanks:	( "Phoenix V" "Stiletto" )
+$SBank Capacity:	( 80, 80 )
+$Shields:			500
+$Power Output:		3.0
+$Max Oclk Speed:	75.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			250
+$Flags:				( "player_ship" "default_player_ship" "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 120.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		400.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	30
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -33
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b01
+$Ship_icon:			iconbomber01
+$Ship_anim:			ssbomber01
+$Ship_overhead:	loadbomber01
+$Score:             15
+$Subsystem:			communications,	10,	0.0
+$Subsystem:			navigation,			10,	0.0
+$Subsystem:			weapons,				20,	0.0
+$Subsystem:			sensors,				10,	0.0
+$Subsystem:			engine 2,			15,	0.0
+$Subsystem:			engine 1,			15,	0.0
+
+
+$Name:				GTB Medusa
+$Short name:		TBomb4
+$Species:			Terran
++Type:				Heavy Bomber
++Maneuverability:	Poor
++Armor:				Heavy
++Manufacturer:		Han-Ronald Corp.
++Description:
+Suitable for any size target.
+Carries most missile types, but few
+cannons.  Armed with defensive
+turret, but still requires escort.
+$end_multi_text
++Tech Description:
+The Medusa is the standard attack bomber in the GTA.  Its strong shielding and large secondary capacity make it the favored attack craft against cruiser class targets.  As the first bomber to carry the Tsunami bomb, the Medusa is considered the staple of any bomber pilots career.
+$end_multi_text
++Length:          36 m
++Gun Mounts:      2
++Missile Banks:   3
+
+$POF file:			bomber04.pof
+$Detail distance:	(0, 180, 350, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.35
+$Rotdamp:			0.55
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		5.0, 4.5, 5.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		25.0
+$Expl blast:		2000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Avenger" "Prometheus" )
+$Default PBanks:	( "Avenger"	)
+$Allowed SBanks:	( "MX-50" "Hornet" "Phoenix V" "Stiletto" "Synaptic" "Tsunami"  "Hornet#Weak")
+$Default SBanks:	( "Hornet" "MX-50" "Tsunami" )
+$SBank Capacity:	( 40, 80, 80 )
+$Shields:			700
+$Power Output:		4.0
+$Max Oclk Speed:	65.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			350
+$Flags:				( "player_ship" "default_player_ship" "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 100.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	35
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -51
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b04
+$Ship_icon:			iconbomber04
+$Ship_anim:			ssbomber04
+$Ship_overhead:	loadbomber04
+$Score:             17
+$Subsystem:			turret01a,5,1.0
+$Default PBanks:	( "Avenger" )
+;;	$Default PBanks:	( "Flail" )
+$Subsystem:			communications,	10,	0.0
+$Subsystem:			navigation,			10,	0.0
+$Subsystem:			weapons,				20,	0.0
+$Subsystem:			sensors,				10,	0.0
+$Subsystem:			engine,				35,	0.0
+
+
+$Name:				GTB Ursa
+$Short name:		TBomb5
+$Species:			Terran
++Type:				Assault Bomber
++Maneuverability:	Very Poor
++Armor:				Heavy
++Manufacturer:		Han-Ronald Corp.
++Description:
+Designed to annihilate capital
+ships and cruisers.  Slow but
+offers unparalleled assault
+bombing capability.
+$end_multi_text
++Tech Description:
+The Ursa is the first bomber designed specifically for the purpose of annihilating capital ships.  It carries a massive payload and is the only bomber in the GTA which can equip the Harbinger Bomb.  Strong shielding and hull make the Ursa very difficult to destroy.
+$end_multi_text
++Length:          41 m
++Gun Mounts:      5
++Missile Banks:   3
+
+$POF file:			bomber05.pof
+$Detail distance:	(0, 250, 400, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.55
+$Max Velocity:		0.0, 0.0, 45.0
+$Rotation time:		5.5, 6.0, 6.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	75.0
+$Expl outer rad:	150.0
+$Expl damage:		30.0
+$Expl blast:		2000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" )
+$Default PBanks:	( "Avenger" "Avenger" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Hornet" "Phoenix V" "Synaptic" "Stiletto" "Tsunami" "Harbinger" )
+$Default SBanks:	( "MX-50" "Synaptic" "Tsunami" )
+$SBank Capacity:	( 80, 80, 80 )
+$Shields:			850
+$Power Output:		4.5
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	150.0
+$Hitpoints:			550
+$Flags:				( "player_ship" "default_player_ship" "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 90.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	80.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	40
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -69
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b05
+$Ship_icon:			iconbomber05
+$Ship_anim:			ssbomber05
+$Ship_overhead:	loadbomber05
+$Score:             20
+$Subsystem:			communications,	10,	0.0
+$Subsystem:			navigation,			10,	0.0
+$Subsystem:			weapons,				20,	0.0
+$Subsystem:			sensors,				10,	0.0
+$Subsystem:			engine,				35,	0.0
+$Subsystem:			b05-turreta,1,1.0
+	$Default PBanks:	( "Banshee" )
+
+
+
+$Name:				@GTDR Amazon
+$Short name:		TDrone
+$Species:			Terran
++Tech Description:
+The Amazon is a simple drone, used for basic combat training.  They are unmanned, and carry only the weakest of weaponry.
+$end_multi_text
+$POF file:			Drone01.pof
+$Detail distance:	(0, 80, 300, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 70.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		4.0, 4.0, 6.0
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "Training" )
+$Default PBanks:	( "Training" )
+$Allowed SBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			100
+$Power Output:		2.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	50.0
+$Hitpoints:			150
+$Flags:				( "fighter"  "in tech database")
+$AI Class:			Lieutenant
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, -2.0, -49
+$Closeup_zoom:		0.5
+$Subsystem:			communications,	10, 0
+$Subsystem:			navigation,			5, 0
+$Subsystem:			weapons,				5, 0
+$Subsystem:			sensors,				5, 0
+$Subsystem:			engine,				50, 0
+
+$Name:				GTDR Amazon Advanced
+$Short name:		TDrone2
+$Species:			Terran
++Tech Description:
+The Advanced Amazon is a larger drone, used by the GTA for subsystem and large target training.  They are unmanned and inexpensive.
+$end_multi_text
+$POF file:			Drone02.pof
+$Detail distance:	(0, 400, 600, 3000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		7.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+;$Shields:			0
+$Shields:			0
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			5000
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 19.0, -190
+$Closeup_zoom:		0.5
+$Subsystem:			communication,	2,		 0.0
+$Subsystem:			weapons,			3,		 0.0
+$Subsystem:			sensors,			3, 	 0.0
+$Subsystem:			engine,			5,		 0.0
+
+
+$Name:				@GTS Centaur
+$Short name:		TSup
+$Species:			Terran
++Tech Description:
+The Centaur support ship is designed to get in and out of battle as quick as possible.  It is fast, and quite maneuverable, allowing it to dock with fighters in a minimum amount of time.  Most notable about the Centaur, however, is its extremely large explosion radius.  The amount of warheads carried on a support ship makes it very dangerous to be close to an exploding Centaur.
+$end_multi_text
+$POF file:			support01.pof
+$Detail distance:	(0, 130, 250, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.3
+$Max Velocity:		0.0, 0.0, 70.0		;;	We agreed on 60, but we also agreed to decrease 40%.  I lowered from 120 to 70.
+$Rotation time:		3.0, 3.0, 3.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		0.25		;;	lower numbers mean faster acceleration.
+$Slide accel:		0.0
+$Slide decel:		0.0
+
+;; Lots of weapons onboard means big explosion
+$Expl inner rad:	100.0
+$Expl outer rad:	200.0
+$Expl damage:		100.0
+$Expl blast:		4000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			500
+$Power Output:		1.0
+$Max Oclk Speed:	100.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			500
+$Flags:				( "repair_rearm"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:         135			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -29
+$Closeup_zoom:		0.5
+$Score:             50
+$Subsystem:			communication,	    30,	0.0
+$Subsystem:			engines,			50,	0.0
+$Subsystem:			sensors,			10,	0.0
+
+;; ========= SPECIAL NON-DOCKING SUPPORT SHIP =========================================
+
+$Name:				GTS Centaur#Charon
+$Short name:		TSup2
+$Species:			Terran
+$POF file:			support01.pof
+$Detail distance:	(0, 130, 250, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.3
+$Max Velocity:		0.0, 0.0, 70.0		;;	We agreed on 60, but we also agreed to decrease 40%.  I lowered from 120 to 70.
+$Rotation time:		3.0, 3.0, 3.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		0.25		;;	lower numbers mean faster acceleration.
+$Slide accel:		0.0
+$Slide decel:		0.0
+
+;; Lots of weapons onboard means big explosion
+$Expl inner rad:	100.0
+$Expl outer rad:	200.0
+$Expl damage:		100.0
+$Expl blast:		4000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			500
+$Power Output:		1.0
+$Max Oclk Speed:	100.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			500
+$Flags:				( "freighter" "ship copy" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:         135			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -29
+$Closeup_zoom:		0.5
+$Score:             50
+$Subsystem:			communication,	    30,	0.0
+$Subsystem:			engines,			50,	0.0
+$Subsystem:			sensors,			10,	0.0
+
+
+;; ==================================================================================
+
+
+$Name:				GTFR Poseidon
+$Short name:		TFreight2
+$Species:			Terran
++Tech Description:
+The Poseidon is the standard military freighter in the GTA.  It is designed to protect its cargo from any kind of attack, and has four turrets with which to do so.
+$end_multi_text
+$POF file:			freighter02.pof
+$Detail distance:	(0, 140, 400, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		15.0, 15.0, 15.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		1.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		50.0
+$Expl blast:		500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		30.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			2000
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, -4.0, -75
+$Closeup_zoom:		0.6
+$Score:             20
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret03,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret04,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			communication,		10,	0.0
+$Subsystem:			navigation,			5,		0.0
+$Subsystem:			weapons,				20,	0.0
+$Subsystem:			sensors,				10,	0.0
+$Subsystem:			engine,				30,	0.0
+
+;; Added by MK on 4/14/98 for training.
+$Name:				GTFR Poseidon#2 (weakened)
+$Short name:		TFreight2
+$Species:			Terran
+$POF file:			freighter02.pof
+$Detail distance:	(0, 140, 400, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		15.0, 15.0, 15.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		1.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		50.0
+$Expl blast:		500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		30.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			500
+$Flags:				( "freighter" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, -4.0, -75
+$Closeup_zoom:		0.6
+$Score:             20
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret03,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret04,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			communication,		 5,	0.0
+$Subsystem:			navigation,			 5,	0.0
+$Subsystem:			weapons,				10,	0.0
+$Subsystem:			sensors,				 5,	0.0
+$Subsystem:			engine,				15,	0.0
+
+;; Cargo doesn't move well.  These cargo2's are also weaker than their cargo3 counterpart.
+$Name:				@TC 2
+$Short name:		TCar2
+$Species:			Terran
++Tech Description:
+The TC2 is the standard issue cargo container in the GTA for deep space cargo transport.  It has all the electronics and systems needed to preserve any cargo within it at whatever conditions are necessary.  TC2s are cheap to manufacture, and heavily used throughout the Alliance.
+$end_multi_text
+$POF file:			cargo02.pof
+$Detail distance:	(0, 300, 500, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		25.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			300
+$Flags:				( "cargo"  "in tech database")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -63
+$Closeup_zoom:		0.55
+$Score:             0
+
+
+$Name:				TSC 2
+$Short name:		TCar2
+$Species:			Terran
+$POF file:			cargo02.pof
+$Detail distance:	(0, 300, 500, 1300)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		25.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			600
+$Flags:				( "cargo" )
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -63
+$Closeup_zoom:		0.55
+$Score:             0
+
+
+
+$Name:				GTFR Chronos
+$Short name:		TFreight3
+$Species:			Terran
++Tech Description:
+The Chronos is a freighter of civilian design.  As the Terran Vasudan war dragged on, more and more of these vessels were commissioned by the GTA for use in military operations.  These vessels are slow but strong.
+$end_multi_text
+$POF file:			freighter03.pof
+$Detail distance:	(0, 400, 600, 3000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 40.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		5.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	200.0
+$Expl damage:		75.0
+$Expl blast:		2500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+;$Shields:			0
+$Shields:			0
+$Power Output:		1.0
+$Max Oclk Speed:	50.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			10000
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 19.0, -200
+$Closeup_zoom:		0.5
+$Score:             20
+$Subsystem:			bridge,			10,	 0.0
+$Subsystem:			communication,	5,		 0.0
+$Subsystem:			navigation,		5,		 0.0
+$Subsystem:			weapons,			10,	 0.0
+$Subsystem:			sensors,			10,	 0.0
+$Subsystem:			engine 1,		10,	 0.0
+$Subsystem:			engine 2,		10,	 0.0
+$Subsystem:			engine 3,		10,	 0.0
+$Subsystem:			turreta,			5,		20.0
+	$Default PBanks:	( "Avenger" )
+
+;; The slightly stronger Armored Cargo is reinforced for font line operations.  It can take a few more hits then 02, but it's still just
+;; a sitting duck, and a popular target for the Shivans.
+$Name:				@TAC 1
+$Short name:		TCar3
+$Species:			Terran
++Tech Description:
+The TAC 1 (Called the TacOne by most pilots) is a heavily armored container, usually for carrying volatile or dangerous substances.  It is also the preferred supply container for use in front line operations.
+$end_multi_text
+$POF file:			cargo03.pof
+$Detail distance:	(0, 350, 500, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		35.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			1200
+$Flags:				( "cargo"  "in tech database")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -98
+$Closeup_zoom:		0.55
+$Score:             5
+
+;; Terran Tech Container is another container,
+$Name:				TTC 1
+$Short name:		TTCar
+$Species:			Terran
++Tech Description:
+The TTC 1 is another example of civilian equipment used by the GTA League of Defense.  It is primarily a Tech Container, used for research purposes, especially Zero-G development operations.  It is not very strong, however, and is often a target of enemy attacks.
+$end_multi_text
+$POF file:			cargo07.pof
+$Detail distance:	(0, 350, 500, 900)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	100.0
+$Expl damage:		50.0
+$Expl blast:		150.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			800
+$Flags:				( "cargo"  "in tech database")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -86
+$Closeup_zoom:		0.25
+$Score:             5
+
+
+$Name:				@GTC Fenris
+$Short name:		TCruise
+$Species:			Terran
++Tech Description:
+The mainstay of the Terran Fleet, these vessels have served in both strike and defense purposes.  From nose to tail it measures 260 meters.  With a full array of weapon systems and a strong enough hull to withstand the strongest enemy warheads, a Fenris Cruiser can be found in almost any system that the GTA is operating in.  The Fenris cruiser was originally designed as a strike weapon, hence its fast speed and decent turning rate.  It was later decided that a second line of cruisers would be produced, for defensive purposes, once it became apparent that the V-T war wouldn't be over in a few months.
+$end_multi_text
+$POF file:			cruiser01.pof
+$Detail distance:	(0, 400, 800, 3500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 20.0
+$Rotation time:		40.0, 40.0, 40.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		5.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	125.0
+$Expl outer rad:	650.0
+$Expl damage:		200.0
+$Expl blast:		3500.0
+$Expl Propagates:	YES						;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	500.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		90.0
+$Max Oclk Speed:	25.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			8000
+$Flags:				( "cruiser"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       128			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -315
+$Closeup_zoom:		0.5
+$Score:             100
+$Subsystem:			turret01, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret02, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret03, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret04, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret05, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret06, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret07, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret08, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret09a-01-main, 4, 10.0
+	$Default SBanks:	( "Fusion Mortar" )
+$Subsystem:			radar01a-dish,	 5, 0.0
+$Subsystem:			sensors,			 4, 0
+$Subsystem:			communication,  4, 0.0
+$Subsystem:			navigation,		 4, 0.0
+$Subsystem:			weapons,			 4, 0.0
+$Subsystem:			engine,			30, 0.0
+
+
+$Name:				GTC Leviathan
+$Short name:		TMDBCruise
+$Species:			Terran
++Tech Description:
+After the Vasudans began making incursions into GTA space, command decided that it needed a new defensive cruiser.  Changes to the Fenris led to the GTC Leviathan line of cruisers, produced as mobile defense battleships.  Their speed and maneuverability were greatly reduced in tradeoff for more powerful weapons and a stronger hull.  Production was discontinued when the GTA thought they would win the Vasudan war after the Battle of Gulnara, and then the production was started up again after the defeat at the Talania system.  Because of the on-again off-again nature of this vessel's production, almost all of the Leviathan Cruisers have different armaments, but all have consistent hulls and speeds.
+$end_multi_text
+$POF file:			cruiser01.pof
+$Detail distance:	(0, 400, 800, 3500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 10.0
+$Rotation time:		80.0, 130.0, 100.0
+$Rear Velocity:		0.0
+$Forward accel:		18.0		
+$Forward decel:		7.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	125.0
+$Expl outer rad:	675.0
+$Expl damage:		250.0
+$Expl blast:		3500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		90.0
+$Max Oclk Speed:	10.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			35000
+$Flags:				( "cruiser"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       128			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -315
+$Closeup_zoom:		0.5
+$Score:             300
+$Subsystem:			turret01, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret02, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret03, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret04, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret05, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret06, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret07, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret08, 2, 5.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret09a-01-main, 8, 10.0
+	$Default SBanks:	( "Fighterkiller" )
+$Subsystem:			radar01a-dish,	 5, 0.0
+$Subsystem:			sensors,			 4, 0
+$Subsystem:			communication,  4, 0.0
+$Subsystem:			navigation,		 4, 0.0
+$Subsystem:			weapons,			 14, 0.0
+$Subsystem:			engine,			20, 0.0
+
+
+$Name:				GTSC Faustus
+$Short name:		TSci1
+$Species:			Terran
++Tech Description:
+The Faustus Science vessel was, and still is, a civilian craft. However, in the 14 years since the Terran-Vasudan war began, more and more of these were commissioned by the GTA in order to pursue military research.  However, its obvious value, poor fighting capabilities, and lack of speed make it a prime target for enemy ships; hence, you will rarely find many of these anywhere near the front lines of battle.
+$end_multi_text
+$POF file:			science01.pof
+$Detail distance:	(0, 400, 600, 3500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 25.0
+$Rotation time:		120.0, 120.0, 100.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		5.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	200.0
+$Expl outer rad:	500.0
+$Expl damage:		150.0
+$Expl blast:		3000.0
+$Expl Propagates:	YES						;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	500.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		20.0
+$Max Oclk Speed:	35.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			3000
+$Flags:				( "cruiser"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -245
+$Closeup_zoom:		0.5
+$Score:             50
+$Subsystem:			science01a-solar1, 8, 0.0
+$Subsystem:			turret01, 2, 1.0
+	$Default PBanks:	( "Terran Turret Weak" )
+$Subsystem:			turret02, 2, 1.0
+	$Default PBanks:	( "Terran Turret Weak" )
+$Subsystem:			turret03, 2, 1.0
+	$Default PBanks:	( "Terran Turret Weak" "Disruptor" )
+	$Default SBanks:	( "Fury" "MX-50" )
+	$SBank Capacity:	( 50,50 )
+$Subsystem:			turret04, 2, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			turret05, 2, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			turret06, 2, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			navigation,		10, 0.0
+$Subsystem:			communication,	10, 0.0
+$Subsystem:			weapons,			10, 0.0
+$Subsystem:			engine,			25, 0.0
+$Subsystem:			sensors,			10, 0.0
+
+$Name:				GTSC Faustus#2 (big blast)
+$Short name:		TSci1a
+$Species:			Terran
+$POF file:			science01.pof
+$Detail distance:	(0, 400, 600, 3500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 25.0
+$Rotation time:		120.0, 120.0, 100.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		5.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	2000.0
+$Expl outer rad:	4000.0
+$Expl damage:		4000.0
+$Expl blast:		5000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	2000.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		20.0
+$Max Oclk Speed:	35.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			5000
+$Flags:				( "cruiser" "ship copy" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       127			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -245
+$Closeup_zoom:		0.5
+$Score:             50
+$Subsystem:			science01a-solar1, 8, 0.0
+$Subsystem:			turret01, 1, 1.0
+	$Default PBanks:	( "Terran Turret Weak" )
+$Subsystem:			turret02, 1, 1.0
+	$Default PBanks:	( "Terran Turret Weak" )
+$Subsystem:			turret03, 1, 1.0
+	$Default PBanks:	( "Terran Turret Weak" "Disruptor" )
+	$Default SBanks:	( "Fury" "MX-50" )
+	$SBank Capacity:	( 50,50 )
+$Subsystem:			turret04, 1, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			turret05, 1, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			turret06, 1, 1.0
+	$Default PBanks:	( "ML-16 Laser" )
+$Subsystem:			navigation,		10, 0.0
+$Subsystem:			communication,	10, 0.0
+$Subsystem:			weapons,			10, 0.0
+$Subsystem:			engine,			15, 0.0
+$Subsystem:			sensors,			10, 0.0
+
+
+
+$Name:				GTD Orion
+$Short name:		TCap
+$Species:			Terran
++Tech Description:
+The Orion is the capital ship of the GTA.  Measuring a frightening 2.1 kilometers in length, the cost to build one of these far outweighs the cost of paying the crew of this ship for 3 years.  There is no more important symbol of Terran Pride than a ship like the Galatea or the Intrepid cruising past a colonized planet, patrolling the system and ensuring safety.  In the course of the 14 year war, very few of these have ever been lost, making the destruction of an Orion a truly horrible defeat.
+$end_multi_text
+$POF file:			capital01.pof
+$Detail distance:	(0, 1500, 3000, 14000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 15.0
+$Rotation time:		150.0, 150.0, 150.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		6500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	8.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100000
+$Flags:				( "capital" "in tech database" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       136			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -2820
+$Closeup_zoom:		0.5
+$Score:             1750
+$Subsystem:			Turret01a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret02a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret03a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret04a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret05a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret06, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret07, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret08, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret09, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret10, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret11, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret12, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret13, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret14, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret15, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret16, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			RadarDish01,	2, 0.0
+$Subsystem:			RadarDish02,	2, 0.0
+$Subsystem:			RadarDish03,	2, 0.0
+$Subsystem:			navigation,		5, 0.0
+$Subsystem:			communication,	5, 0.0
+$Subsystem:			weapons,			15, 0.0
+$Subsystem:			sensors,			5, 0.0
+$Subsystem:			engines,			35, 0.0
+$Subsystem:			fighterbay,		0, 0.0
+
+;; This is a duplicate of the Orion entry.  It's only difference is that it's logo marks it as the
+;; GTD Galatea.
+
+$Name:				GTD Orion#1 (Galatea)
+$Short name:		TCap
+$Species:			Terran
+$POF file:			capital01a.pof
+$Detail distance:	(0, 1500, 3000, 14000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 15.0
+$Rotation time:		150.0, 150.0, 150.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		6500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	8.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100000
+$Flags:				( "capital" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       136			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -2820
+$Closeup_zoom:		0.5
+$Score:             1750
+$Subsystem:			Turret01a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret02a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret03a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret04a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret05a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret06, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret07, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret08, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret09, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret10, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret11, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret12, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret13, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret14, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret15, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret16, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			RadarDish01,	2, 0.0
+$Subsystem:			RadarDish02,	2, 0.0
+$Subsystem:			RadarDish03,	2, 0.0
+$Subsystem:			navigation,		5, 0.0
+$Subsystem:			communication,	5, 0.0
+$Subsystem:			weapons,			15, 0.0
+$Subsystem:			sensors,			5, 0.0
+$Subsystem:			engines,			35, 0.0
+$Subsystem:			fighterbay,		0, 0.0
+
+;; This is a duplicate of the Orion entry.  Only difference is the pof file, which is modified
+;; to display the Bastion logo on the side instead of Galatea.  -AP 3/11/98
+
+$Name:				GTD Orion#2 (Bastion)
+$Short name:		TCap
+$Species:			Terran
+$POF file:			capital01b.pof
+$Detail distance:	(0, 1500, 3000, 14000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 15.0
+$Rotation time:		150.0, 150.0, 150.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		6500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	8.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100000
+$Flags:				( "capital" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       136			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -2820
+$Closeup_zoom:		0.5
+$Score:             1750
+$Subsystem:			Turret01a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret02a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret03a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret04a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret05a, 1.875, 3.0
+	$Default PBanks:	( "Terran Huge Turret" "Terran Huge Turret" "Terran Huge Turret" )
+$Subsystem:			Turret06, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret07, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret08, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret09, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret10, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret11, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret12, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret13, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret14, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret15, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret16, 0.625, 2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			RadarDish01,	2, 0.0
+$Subsystem:			RadarDish02,	2, 0.0
+$Subsystem:			RadarDish03,	2, 0.0
+$Subsystem:			navigation,		5, 0.0
+$Subsystem:			communication,	5, 0.0
+$Subsystem:			weapons,			15, 0.0
+$Subsystem:			sensors,			5, 0.0
+$Subsystem:			engines,			35, 0.0
+$Subsystem:			fighterbay,		0, 0.0
+
+
+$Name:				GTI Arcadia
+$Short name:		TInst
+$Species:			Terran
++Tech Description:
+Early Terran space stations were constructed much smaller, and were mostly used for Zero-G research purposes.  Later on, with advancements in space construction technologies, stations grew bigger and bigger.  When the first Arcadia-class station was commissioned, GTA decided to rename it to an Installation rather than a Space Station.  Used for a variety of purposes, almost all major systems are home to at least one Installation, which is often used as the center of trade and communications.  Home to scores of small ship, including repair vessels, fighters, and transports, an Arcadia class Installation is always a safe haven for a convoy of attack ships, returning from battle.  Where the Orion is the symbol of Terran power, the Arcadia is the shining beacon of stability.
+$end_multi_text
+$POF file:			install01.pof
+$Detail distance:	(0, 2000, 6500, 18000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		200.0, 200.0, 200.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		6500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		1.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100000
+$Flags:				( "capital"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       136			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -2762
+$Closeup_zoom:		0.5
+$Score:             1000
+$Subsystem:			sensors,			5, 0
+$Subsystem:			weapons,			5, 0
+$Subsystem:			communication,	5, 0
+$Subsystem:			Turret01,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret02,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret03,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret04,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret05,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret06,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret07,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret08,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret09,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret10,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret11,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret12,		1,2.0
+$Default SBanks:	( "FighterKiller" )
+$Subsystem:			Turret13,		1,3.0
+$Default SBanks:	( "FighterKiller" )
+$Subsystem:			Turret14,		1,3.0
+$Default SBanks:	( "FighterKiller" )
+$Subsystem:			Turret15,		1,3.0
+$Default SBanks:	( "FighterKiller" )
+$Subsystem:			Turret16,		1,3.0
+$Default SBanks:	( "FighterKiller" )
+$Subsystem:			Turret17,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret18,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret19,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret20,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret21,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret22,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret23,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret24,		1,2.0
+$Default PBanks:	( "Terran Turret" )
+$Subsystem:			RadarDish01,		2,3.0
+$Subsystem:			fighterbay,		0,0.0
+
+
+$Name:				@GTT Elysium
+$Short name:		TTran
+$Species:			Terran
++Tech Description:
+Since the start of space colonization, this standard transport has been used by everyone, both civilian and military.  While it has undergone minor changes time and again, it remains a simple design: A vehicle meant to transport personnel from one place to another.
+$end_multi_text
+$POF file:			transport01.pof
+$Detail distance:	(0, 200, 450, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.6
+$Max Velocity:		0.0, 0.0, 40.0
+$Rotation time:		4.0, 7.0, 6.0
+$Rear Velocity:		0.0
+$Forward accel:		6.0		
+$Forward decel:		1.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	200.0
+$Expl damage:		200.0
+$Expl blast:		500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		8.0
+$Max Oclk Speed:	55.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			3500
+$Flags:				( "transport"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 3.0, -60
+$Closeup_zoom:		0.5
+$Score:             10
+$Subsystem:			engine,			25, 0
+$Subsystem:			navigation,		15, 0
+$Subsystem:			communication,	 5, 0
+$Subsystem:			sensors,			10, 0
+$Subsystem:			weapons,			10, 0
+$Subsystem:			turret01,		 5, 20.0
+	$Default PBanks:	( "ML-16 Laser" )
+
+;; They mark things.
+$Name:				Terran NavBuoy
+$Short name:		JBuoy
+$Species:			Terran
+$POF file:			navbuoy.pof
+$Detail distance:	(0, 100)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			100
+$Flags:				("no_collide" "navbuoy")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -14
+$Closeup_zoom:		0.5
+
+$Name:				Asteroid
+$Short name:		Asteroid
+$Species:			Terran
+$POF file:			asteroid01.pof
+$Detail distance:	(0, 100)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			100
+$Flags:				("no_collide" "navbuoy")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -14
+$Closeup_zoom:		0.5
+
+
+$Name:				GTSG Watchdog
+$Short name:		TSGun
+$Species:			Terran
++Tech Description:
+The Watchdog is the standard unmanned defensive sentry turret for the GTA.  It fires two standard plasma bursts at any nearby hostile targets.
+$end_multi_text
+$POF file:			GunPlatform01.pof
+$Detail distance:	(0, 100, 500)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:	20.0, 20.0, 20.0
+$Rear Velocity:	0.0
+$Forward accel:	0.0		
+$Forward decel:	0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			20
+$Flags:				("sentrygun"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.5, -14
+$Closeup_zoom:		0.5
+$Score:             3
+$Subsystem:			turret01a, 20, 1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret02a, 20, 1.0
+	$Default PBanks:	( "Terran Turret" )
+
+
+
+$Name:				GTSG Cerberus
+$Short name:		TSGun2
+$Species:			Terran
++Tech Description:
+The Cerberus is an advanced version of the Watchdog, with stronger weaponry and the ability to withstand more damage.
+$end_multi_text
+$POF file:			GunPlatform01.pof
+$Detail distance:	(0, 100, 500)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:	20.0, 20.0, 20.0
+$Rear Velocity:	0.0
+$Forward accel:	0.0		
+$Forward decel:	0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			150
+$Flags:				("sentrygun"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.5, -14
+$Closeup_zoom:		0.5
+$Score:             6
+$Subsystem:			turret01a, 20, 1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret02a, 20, 1.0
+	$Default PBanks:	( "Avenger" )
+
+;; They are used for escaping.  Not too fast, not too strong.  Easy targets if there are no fighters in the area to protect them.
+$Name:				GTEP Hermes
+$Short name:		TPod
+$Species:			Terran
++Tech Description:
+The Hermes Escape pod has been used since the destruction of the GTD Goliath over 12 years ago.  They are used by the crews of destroyers and installations to escape destruction.  It is always best to be prepared.
+$end_multi_text
+$POF file:			escapepod01.pof
+$Detail distance:	(0, 80, 300, 500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 40.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		4.0, 4.0, 4.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( )
+$Default PBanks:	( )
+$Allowed SBanks:	( )
+$Default SBanks:	( )
+$SBank Capacity:	( )
+$Shields:			100
+$Power Output:		2.0
+$Max Oclk Speed:	55.0
+$Max Weapon Eng:	50.0
+$Hitpoints:			200
+$Flags:				( "escapepod"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -22
+$Closeup_zoom:		0.5
+$Score:             10
+$Subsystem:			engine,			50, 0
+
+;=====>> VASUDANS <<=======
+$Name:				@PVF Anubis
+$Short name:		VFight
+$Species:			Vasudan
++Type:				Light Skirmish
++Maneuverability:	Good
++Armor:				Light
++Manufacturer:		PVN
++Description:
+Lowest power Vasudan craft. Offers little
+in the way of offensive or defensive capabilities.
+Best used in swarm situations.
+$end_multi_text
++Tech Description:
+The Anubis is the weakest fighter in the Vasudan Navy.  However, they are extremely cheap to manufacture, and are often used in swarm situations to try to overwhelm the opponent with numbers.  A few radical Vasudans have been known to load the ship with explosives and attempt to steer themselves into GTA capital ships.  The first occurrence of this was the battle of Rexias 4, where the GTD Goliath was destroyed by a squadron of kamikaze pilots.
+Due to its lack of afterburners and low weapon capacity, the GTA has classified the Anubis as a class D threat.
+$end_multi_text
++Length:          17 Meters
++Gun Mounts:      2
++Missile Banks:   1
+
+$POF file:			fighter02.pof
+$Detail distance:	(0, 70, 200, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 75.0
+$Rotation time:		3.0, 3.0, 2.5
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		10.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Flail" "Avenger" "Prometheus" "Banshee")
+$Default PBanks:	( "ML-16 Laser"	)
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Hornet" "Hornet#Weak")
+$Default SBanks:	( "Fury" )
+$SBank Capacity:	( 60 )
+$Shields:			200
+$Power Output:		2.0
+$Max Oclk Speed:	90.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			160
+$Flags:				( "player_ship" "fighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       129			;; Engine sound of ship
+$Closeup_pos:		0.0, 1.0, -31
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f02
+$Ship_icon:			iconfighterV02
+$Ship_anim:			ssfighter01
+$Ship_overhead:		loadfightV02
+$Score:             6
+$Subsystem:			engine,			35,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			weapons,			25,0.0
+$Subsystem:			navigation,		 5,0.0
+
+
+$Name:				@PVF Seth
+$Short name:		VFight7
+$Species:			Vasudan
++Type:				Heavy Fighter
++Maneuverability:	Fair
++Armor:				Heavy
++Manufacturer:		PVN
++Description:
+Slow and sluggish, but heavily armored.
+Has high afterburner speed.  Useful for
+hit and run attacks.  High payload capacity.
+$end_multi_text
++Tech Description:
+As the slowest fighter in the PVN, the Seth has earned itself a reputation as the Turtle of the Vasudan fleet.  Even though it is quite compact in size, the Seth can carry a massive payload, and has a lot of shielding.  Its standard impulse engines aren't very powerful, but the Seth gains an incredible speed boost when using its afterburners.  The Seth is primarily used is convoy attacks and capital ship escort duties.
+The GTA considers the PVF Seth to be a Class C threat.
+$end_multi_text
++Length:          16 Meters
++Gun Mounts:      4
++Missile Banks:   2
+
+$POF file:			fighter07.pof
+$Detail distance:	(0, 70, 200, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 55.0
+$Rotation time:		4.0, 5.0, 5.0
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	65.0
+$Expl damage:		15.0
+$Expl blast:		1200.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Flail" "Prometheus" "Avenger" "Banshee")
+$Default PBanks:	(	"ML-16 Laser" "Avenger" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Phoenix V" "Hornet" "Hornet#Weak" "Stiletto")
+$Default SBanks:	( "MX-50" "Stiletto" )
+$SBank Capacity:	( 40, 80 )
+$Shields:			580
+$Power Output:		3.0
+$Max Oclk Speed:	72.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			280
+$Flags:				( "player_ship" "fighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 130.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	40
+$Scan time:			2000
+$EngineSnd:			129			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.5, -27
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f07
+$Ship_icon:			iconfighterV07
+$Ship_anim:			ssfighter01
+$Ship_overhead:		loadfightV07
+$Score:             15
+$Subsystem:			engine 1,			35,0.0
+$Subsystem:			weapons,				15,0.0
+$Subsystem:			navigation,			 5,0.0
+$Subsystem:			sensors,				 5,0.0
+$Subsystem:			communications,	 5,0.0
+
+
+$Name:				@PVF Horus
+$Short name:		VFight8
+$Species:			Vasudan
++Type:				Interceptor
++Maneuverability:	Very Good
++Armor:				Medium
++Manufacturer:		PVN
++Description:
+Extremely fast with good weapons compatibility.
+Very useful in any kind of engagement.
+$end_multi_text
++Tech Description:
+The Horus interceptor can outrun any ship in the PVN or the GTA.  This makes it extremely dangerous.  Its above average weapons capacity, combined with its good maneuverability and shielding make this one of the most well designed Interceptors in the galaxy.  This ship is responsible for the destruction of more GTA bombers than any other.
+As a C class threat, Horus interceptors should be dealt with as quickly as possible.
+$end_multi_text
++Length:          19 Meters
++Gun Mounts:      4
++Missile Banks:   2
+
+$POF file:			fighter08.pof
+$Detail distance:	(0, 70, 200, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 90.0
+$Rotation time:		3.5, 4.0, 3.8
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	65.0
+$Expl damage:		20.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Flail" "Avenger" "Prometheus" "Banshee")
+$Default PBanks:	( "Avenger" "Flail" )
+$Allowed SBanks:	( "MX-50" "Fury" "Interceptor" "Phoenix V" "Hornet" "Hornet#Weak")
+$Default SBanks:	( "MX-50" "Phoenix V" )
+$SBank Capacity:	( 40, 40 )
+$Shields:			200
+$Power Output:		2.0
+$Max Oclk Speed:	110.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			120
+$Flags:				( "player_ship" "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 170.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	25
+$Scan time:			2000
+$EngineSnd:       129			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -31
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f08
+$Ship_icon:			iconfighterV08
+$Ship_anim:			ssfighter01
+$Ship_overhead:	loadfightV08
+$Score:             15
+$Subsystem:			weapons,				15,0.0
+$Subsystem:			communications,	 5,0.0
+$Subsystem:			navigation,			 5,0.0
+$Subsystem:			sensors,				 5,0.0
+$Subsystem:			engine,				35,0.0
+
+
+$Name:				PVF Thoth
+$Short name:		VFight9
+$Species:			Vasudan
++Type:				Advanced Space Superiority
++Maneuverability:	Excellent
++Armor:				Light
++Manufacturer:		PVN/Hammer Of Light
++Description:
+Excellent fighter.  Small and hard to hit,
+with speed and maneuverability to match.  Good
+payload makes it the most versatile fighter in
+the PVN.
+$end_multi_text
++Tech Description:
+The Thoth is the most dangerous ship to be created by the PVN.  Manufactured solely at the Altairian Ship Yards, the Thoth has only been produced in small numbers as of yet.  When the Altairian Yards defected to the Hammer of Light rebels, the production of Thoths by the PVN dropped to nil.  The Thoth is now completely in the hands of the Hammer of Light.
+What makes the Thoth so versatile is its small size, extremely high maneuverability, and advanced weapon systems.  It is extremely difficult to hit, in the hands of a skilled pilot.  The design for the Thoth was simultaneous with the design for the Ulysses, and these two ships were designed by some of the same technicians.  Thus they are quite a match for our Ulysses class fighters.  This is why they are considered a B class threat.  Any non registered Thoths should be destroyed immediately, and their presence reported upon completion of the mission.
+$end_multi_text
++Length:          17 Meters
++Gun Mounts:      4
++Missile Banks:   1
+
+$POF file:			fighter09.pof
+$Detail distance:	(0, 70, 200, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 65.0
+$Rotation time:		2.7, 2.7, 3.0
+$Rear Velocity:		0.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus")
+$Default PBanks:	( "Prometheus"	)
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Hornet" "Hornet#Weak")
+$Default SBanks:	( "Interceptor" )
+$SBank Capacity:	( 80 )
+$Shields:			200
+$Power Output:		2.5
+$Max Oclk Speed:	78.0
+$Max Weapon Eng:	150.0
+$Hitpoints:			200
+$Flags:				( "player_ship" "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 130.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       129			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -27
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f09
+$Ship_icon:			iconfighterV09
+$Ship_anim:			ssfighter01
+$Ship_overhead:	loadfightV09
+$Score:             20
+$Subsystem:			weapons,				15,0.0
+$Subsystem:			sensors,				 5,0.0
+$Subsystem:			communications,	 5,0.0
+$Subsystem:			navigation,			 5,0.0
+$Subsystem:			engine,				35,0.0
+
+
+$Name:				PVB Osiris
+$Short name:		VBomb6
+$Species:			Vasudan
++Type:				Bomber
++Maneuverability:	Poor
++Armor:				Heavy
++Manufacturer:		PVN
++Description:
+Low maneuverability and low top speed.  However,
+carries good payload including space bombs. Most
+commonly used in cruiser strikes.
+$end_multi_text
++Tech Description:
+The Osiris has now become the standard bomber for use in PVN operations.  It has replaced the Amun, correcting many of the faults of its predecessor.  It is not quite as sturdy, but it has nearly the same weapons capacity, and is faster and more maneuverable.
+The Osiris should be considered a C class threat to Fenris class cruisers, and a D class threat otherwise.
+$end_multi_text
++Length:          40 Meters
++Gun Mounts:      2
++Missile Banks:   3
+
+$POF file:			bomber06.pof
+$Detail distance:	(0, 100, 300, 900)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.55
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		5.0, 5.0, 5.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0
+$Forward decel:		2.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	75.0
+$Expl outer rad:	125.0
+$Expl damage:		20.0
+$Expl blast:		1500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Banshee")
+$Default PBanks:	( "Avenger"	)
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Phoenix V" "Stiletto" "Tsunami")
+$Default SBanks:	( "Synaptic" "Stiletto" "Phoenix V" )
+$SBank Capacity:	( 40, 40, 20 )
+$Shields:			600
+$Power Output:		3.0
+$Max Oclk Speed:	64.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			600
+$Flags:				( "player_ship" "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 100.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	35
+$Scan time:			2000
+$EngineSnd:       130			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -64
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b06
+$Ship_icon:			iconBomberV06
+$Ship_anim:			ssfighter01
+$Ship_overhead:	loadbombV06
+$Score:             10
+$Subsystem:			Turret01,1,1.0
+	$Default PBanks:	( "Prometheus" )
+$Subsystem:			Turret02,1,1.0
+	$Default PBanks:	( "Prometheus" )
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			communication,	 5,0.0
+$Subsystem:			engine,			35,0.0
+
+
+$Name:				PVB Amun
+$Short name:		VBomb7
+$Species:			Vasudan
++Type:				Heavy Bomber
++Maneuverability:	Very Poor
++Armor:				Heavy
++Manufacturer:		PVN
++Description:
+Lowest maneuverability and extremely low top speed.
+Moving target, but the heaviest bomber in the PVN.
+Used against capital ships.
+$end_multi_text
++Tech Description:
+The Amun is the Vasudans heaviest bomber class ship.  It carries a massive payload and has been responsible for the destruction of at least 3 Orion class destroyers in the past 2 years.  Fortunately, it is slow and has low maneuverability, making it an easy target for our fighters.  Fighter pilots should be wary of the two turrets on this ship: they are not to be ignored.
+The Amun is considered a B class threat to all cruisers and capital ships.  They should be given top priority in target selection during escort operations.
+$end_multi_text
++Length:          30 Meters
++Gun Mounts:      4
++Missile Banks:   3
+$POF file:			bomber07.pof
+$Detail distance:	(0, 140, 250, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.55
+$Max Velocity:		0.0, 0.0, 40.0
+$Rotation time:		6.0, 5.5, 10.0
+$Rear Velocity:		0.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	175.0
+$Expl damage:		20.0
+$Expl blast:		1500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Banshee")
+$Default PBanks:	( "Banshee" "Avenger" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Stiletto" "Fury" "Interceptor" "Phoenix V" "Hornet" "Hornet#Weak" "Tsunami" "Harbinger")
+$Default SBanks:	( "Tsunami" "Synaptic" "Synaptic" )
+$SBank Capacity:	( 60, 60, 80 )
+$Shields:			800
+$Power Output:		3.5
+$Max Oclk Speed:	45.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			625
+$Flags:				( "player_ship" "bomber" "in tech database")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 80.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	70.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	40
+$Scan time:			2000
+$EngineSnd:       130			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -43
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b07
+$Ship_icon:			iconBomberV07
+$Ship_anim:			ssfighter01
+$Ship_overhead:		loadbombV07
+$Score:             15
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Banshee" )
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Banshee" )
+$Subsystem:			communication,	 5,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			weapons,			15,0.0
+
+$Name:				PVS Scarab
+$Short name:		VSup
+$Species:			Vasudan
++Tech Description:
+The Scarab is very similar to our Centaur: We believe the Vasudans stole the design of this ship from us.  It is used for in flight rearming of fighters and bombers.  In longer engagements, these ships can mean the difference between victory and defeat.  The major difference between this ship and the Centaur is that the Scarab is unmanned.
+$end_multi_text
+$POF file:			support02.pof
+$Detail distance:	(0, 130, 250, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.3
+$Max Velocity:		0.0, 0.0, 70.0		;;	We agreed on 60, but we also agreed to decrease 40%.  I lowered from 120 to 70.
+$Rotation time:		3.0, 3.0, 3.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		0.25		;;	lower numbers mean faster acceleration.
+$Slide accel:		0.0
+$Slide decel:		0.0
+
+;; Lots of weapons onboard means big explosion
+$Expl inner rad:	100.0
+$Expl outer rad:	200.0
+$Expl damage:		100.0
+$Expl blast:		4000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			500
+$Power Output:		1.0
+$Max Oclk Speed:	100.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			500
+$Flags:				( "repair_rearm"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:         135			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -29
+$Closeup_zoom:		0.5
+$Score:             50
+$Subsystem:			communication,	    30,	0.0
+$Subsystem:			engines,			50,	0.0
+$Subsystem:			sensors,			10,	0.0
+
+$Name:				PVT Isis
+$Short name:		VTran
+$Species:			Vasudan
++Tech Description:
+The Isis transport is quite fast and maneuverable for a ship of its size.  Most often it is used for personnel transfer, although occasionally they have been known to act as repair ships and tugboats.  It is well protected with its turrets, and it is not unheard of for the PVN to use a wing of Isises to conduct an assault on a fortified position.
+$end_multi_text
+$POF file:			transport02.pof
+$Detail distance:	(0, 100, 250, 800)
+$Show damage:		YES
+$Density:			2
+$Damp:				0.2
+$Rotdamp:			0.6
+$Max Velocity:		0.0, 0.0, 35.0
+$Rotation time:		4.0, 7.0, 10.0
+$Rear Velocity:		0.0
+$Forward accel:		6.0		
+$Forward decel:		1.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		2.0
+$Max Oclk Speed:	42.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			5000
+$Flags:				( "transport"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       131			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -30
+$Closeup_zoom:		0.5
+$Score:             15
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			communication,	 5,0.0
+$Subsystem:			engine,			25,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			weapons,			15,0.0
+
+
+$Name:				PVFR Bast
+$Short name:		VFreight1
+$Species:			Vasudan
++Tech Description:
+The Bast freighter is unarmed, and considered a non threat.  We believe that it is mainly used by Vasudan civilians, but we have seen some in front line operations.  It has very low target value, but should be destroyed, as any kind of resupply ship is a danger to the GTA.
+$end_multi_text
+$POF file:			freighter01.pof
+$Detail distance:	(0, 100, 250, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.6
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		5.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			2000
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       130			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -43
+$Closeup_zoom:		0.5
+$Score:             20
+$Subsystem:			communication,	 5,0.0
+$Subsystem:			engines,			25,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			sensors,			 5,0.0
+
+$Name:				@VC 3
+$Short name:		TCar1
+$Species:			Vasudan
++Tech Description:
+The standard Vasudan cargo container is only slightly different from our own.  The primary difference is that the Vasudan cargo containers are atmospheric as well as deep-space.  Vasudans used cargo containers well before we did, as they needed to transport raw materials from other systems to their own barren world.  Our cargo container was modelled after theirs, although ours is slightly superior in durability.
+$end_multi_text
+$POF file:			cargo01.pof
+$Detail distance:	(0, 200, 350, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			300
+$Flags:				( "cargo"  "in tech database")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -22
+$Closeup_zoom:		0.6
+$Score:             0
+
+$Name:				@PVFR Ma'at
+$Short name:		VFreight5
+$Species:			Vasudan
++Tech Description:
+With three turrets, the Ma'at is a hairy target for GTA pilots to attack.  However, it is slow enough that it can be destroyed with enough patience.  As always, supply ships for the PVN are considered to be valid targets.
+$end_multi_text
+$POF file:			freighter05.pof
+$Detail distance:	(0, 200, 400, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		7.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	200.0
+$Expl damage:		200.0
+$Expl blast:		1800.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+;$Shields:			0
+$Shields:			0		
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			4500
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       130			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -71
+$Closeup_zoom:		0.5
+$Score:             10
+$Subsystem:			turret01,	3,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret02,	3,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			communication,  5,0.0
+$Subsystem:			engine,			25,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			turret03,		 3,1.0
+	$Default PBanks:	( "Avenger" )
+
+
+$Name:				@VAC 4
+$Short name:		VCar5
+$Species:			Vasudan
++Tech Description:
+the VAC 4 series of cargo is much like its normal counterpart, only it has much more plating.  However, this container is no more dangerous than the standard version, and is nothing more than ML-16 bait without protection of some kind.
+$end_multi_text
+$POF file:			cargo04.pof
+$Detail distance:	(0, 200, 350, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			1200
+$Flags:				( "cargo"  "in tech database")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -41
+$Closeup_zoom:		0.6
+$Score:             3
+
+$Name:				PVFR Satis
+$Short name:		VFreight4
+$Species:			Vasudan
++Tech Description:
+The dreaded Satis freighter was thought to be a warship when it was first encountered in the Aldebaran Encounter.  It has five turrets and a strong hull, making it quite dangerous to the inexperienced pilot.  However, most experienced pilots in the GTA know enough to attack the Satis' main weakness: its weak plating around the turrets.  Disarming a Satis is most often the best way to destroy it.
+While capturing supply ships is often an intelligent plan, the Satis has been considered dangerous enough to rank as a Class C threat.  Treat it as one. 
+$end_multi_text
+$POF file:			freighter04.pof
+$Detail distance:	(0, 300, 450, 1800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		7.0		
+$Forward decel:		4.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	300.0
+$Expl damage:		100.0
+$Expl blast:		2000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+;$Shields:			250		
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			5000
+$Flags:				( "freighter"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       130			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -175
+$Closeup_zoom:		0.4
+$Score:             20
+$Subsystem:			Turret01-main,3,2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret02,3,2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret03,3,2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret04,3,2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			Turret05,3,2.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			communication,	 5,0.0
+$Subsystem:			engine,			25,0.0
+$Subsystem:			navigation,		 5,0.0
+$Subsystem:			sensors,			 5,0.0
+$Subsystem:			weapons,			15,0.0
+
+$Name:				PVC Aten
+$Short name:		VCruise2
+$Species:			Vasudan
++Tech Description:
+The Aten class cruiser, while far stronger than most of the Vasudans warships, falls short as a attack cruiser.  It does not have the armor or the firepower to stand up to GTA weaponry.  With a cruiser speed of 25 m/s and only six weapon turrets, the Aten just cannot muster the kind of firepower needed to do real damage to targets of size.
+Most GTA pilots have learned to exploit the primary weakness of the Aten: its extremely weak weapons subsystem.
+The Aten class cruiser is considered by the GTA to be a Class B threat.
+$end_multi_text
+$POF file:			cruiser02.pof
+$Detail distance:	(0, 550, 850, 4500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 25.0
+$Rotation time:		110.0, 110.0, 75.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		5.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	150.0
+$Expl outer rad:	650.0
+$Expl damage:		200.0
+$Expl blast:		10000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	500.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		90.0
+$Max Oclk Speed:	55.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			18000
+$Flags:				( "cruiser" "in tech database" )
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       131			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -317
+$Closeup_zoom:		0.5
+$Score:             80
+$Subsystem:			turret01a,0.833,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret02a,0.833,1.0
+	$Default PBanks:	( "Avenger" )
+$Subsystem:			turret03,0.833,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret04,0.833,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret05,0.833,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret06,0.833,1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			engine,			15,0.0
+$Subsystem:			communications,	 5,0.0
+$Subsystem:			sensors,				 5,0.0
+$Subsystem:			navigation,			 5,0.0
+$Subsystem:			weapons,				 5,0.0
+
+
+$Name:				PVD Typhon
+$Short name:		VDestroy
+$Species:			Vasudan
++Tech Description:
+Where the Aten cruiser failed, the Typhon succeeded well past expectations.  The Typhon is an incredible work of engineering and the model of Vasudan technology.  When the first one was sighted at the Vega Engagement, it was laughed at by our technicians as a foolish display of non utilitarian design.  The subsequent destruction of the GTD Eisenhower and the total decimation of the 4th fleet changed their minds very quickly.  The Typhon should never be underestimated.  It wields massive weaponry, and has more armor plating than any Terran Destroyer.  Its only known weakness is its turret armor, which is significant, but lower than expected.  In the two years since this ship first appeared, we have only managed to destroy two of them.
+The Typhon is considered a Class A threat to any ships within the same system.  Do not engage without backup.
+$end_multi_text
+$POF file:			capital03.pof
+$Detail distance:	(0, 3500, 4500, 14000 )
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 15.0
+$Rotation time:		150.0, 150.0, 150.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	150.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		3000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	45.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			120000
+$Flags:				( "capital"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       137			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -2560
+$Closeup_zoom:		0.5
+$Score:             2000
+$Subsystem:			turret01,0.125,0.5
+	$Default PBanks:	( "Terran Huge Turret" )
+$Subsystem:			turret02,0.125,0.5
+	$Default PBanks:	( "Terran Huge Turret" )
+$Subsystem:			turret03,0.125,0.5
+	$Default PBanks:	( "Terran Huge Turret" )
+$Subsystem:			turret04,0.125,0.5
+	$Default PBanks:	( "Terran Huge Turret" )
+$Subsystem:			turret05,0.125,0.5
+	$Default PBanks:	( "Terran Huge Turret" )
+$Subsystem:			turret06,0.125,0.5
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret07,0.125,0.5
+	$Default SBanks:	( "FighterKiller" )
+	;should be VasudanFlux
+$Subsystem:			turret08,0.125,0.5
+	$Default SBanks:	( "FighterKiller" )
+	;should be VasudanFlux
+$Subsystem:			turret09,0.125,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret10,0.375,0.5
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret11,0.375,0.5
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret12,0.375,0.5
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret13,0.375,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret14,0.375,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret15,0.375,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			navigation,		5,0.0
+$Subsystem:			weapons,			5,0.0
+$Subsystem:			sensors,			5,0.0
+$Subsystem:			engine,			15,0.0
+$Subsystem:			communication,	5,0.0
+$Subsystem:			fighterbay 1,	0,0.0
+$Subsystem:			fighterbay 2,	0,0.0
+
+;; Like most turrets, the Ankh guards things.
+$Name:				PVSG Ankh
+$Short name:		VSGun
+$Species:			Vasudan
++Tech Description:
+The Ankh is the standard Vasudan sentry gun.  Its most common usage is guarding supply depots.  However, since the development of the Anubis, its usage has dropped off significantly.
+$end_multi_text
+$POF file:			GunPlatform02.pof
+$Detail distance:	(0, 100, 500)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:	20.0, 20.0, 20.0
+$Rear Velocity:	0.0
+$Forward accel:	0.0		
+$Forward decel:	0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			20
+$Flags:				("sentrygun"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, -1.5, -20
+$Closeup_zoom:		0.5
+$Score:             4
+$Subsystem:			turret01a, 20, 1.0
+	$Default PBanks:	( "Terran Turret" )
+$Subsystem:			turret02a, 20, 1.0
+	$Default PBanks:	( "Terran Turret" )
+
+;; Vasudan escape pod
+$Name:				PVEP Ra
+$Short name:		VPod
+$Species:			Vasudan
++Tech Description:
+The Ra has been used by Vasudans since our first encounter with them.  Every Vasudan capital ship has a few of these lifeboats.
+$end_multi_text
+$POF file:			escapepod02.pof
+$Detail distance:	(0, 120, 450, 750)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.35
+$Max Velocity:		0.0, 0.0, 40.0			;; in x/y/z -- z only specified forward.  use special tokens for backward movement
+$Rotation time:		4.0, 4.0, 4.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( )
+$Default PBanks:	( )
+$Allowed SBanks:	( )
+$Default SBanks:	( )
+$SBank Capacity:	( )
+$Shields:			100
+$Power Output:		2.0
+$Max Oclk Speed:	55.0
+$Max Weapon Eng:	50.0
+$Hitpoints:			200
+$Flags:				( "escapepod"  "in tech database")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       126			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -22
+$Closeup_zoom:		0.75
+$Score:             10
+$Subsystem:			engine,			50, 0
+
+
+$Name:				SF Dragon
+$Short name:		SFight
+$Species:			Shivan
++Tech Description:
+The Shivan Dragon is easily the most impressive fightercraft we have yet seen.  Its maneuverability is unmatched, and it has quite a few other advantages, including a good top speed, powerful afterburners, and strong shields.  It is the only Shivan fighter we have been able to study up close, and we have learned a great deal about Shivan engineering from it.
+It seems that the Shivan shield systems are extremely strong, but their hulls are far weaker than our own.  They also rely on primary weapons far more then secondaries, as evidenced by the Dragon's small capacity.
+The GTA considers the Dragon as a Class A threat.
+$end_multi_text
+$POF file:			fighter03.pof
+$Detail distance:	(0, 80, 160, 500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.4
+$Max Velocity:		20.0, 20.0, 75.0
+$Rotation time:		2.5, 2.0, 2.0
+$Rear Velocity:		30.0
+$Forward accel:		2.0		
+$Forward decel:		0.75
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	25.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	( "Shivan Heavy Laser" "Shivan Heavy Laser" )
+$Default SBanks:	( "Interceptor" )
+$SBank Capacity:	( 20 )
+$Shields:			700
+$Power Output:		2.0
+$Max Oclk Speed:	90.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100
+$Flags:				( "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 150.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		200.0
+	+Aburn Burn Rate:	60.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.5, -16
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f03
+$Score:             25
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+
+; Weak shivan fighter.
+
+$Name:				SF Dragon#2 (Weakened)
+$Short name:		SFighta2
+$Species:			Shivan
+$POF file:			fighter03.pof
+$Detail distance:	(0, 80, 160, 500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 75.0
+$Rotation time:		2.5, 2.0, 2.0
+$Rear Velocity:		30.0
+$Forward accel:		2.0		
+$Forward decel:		0.75
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	15.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	( "Shivan Heavy Laser" "Shivan Heavy Laser" )
+$Default SBanks:	( "Fury" )
+$SBank Capacity:	( 20 )
+$Shields:			700
+$Power Output:		0.0
+$Max Oclk Speed:	90.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100
+$Flags:				( "fighter" "ship copy" )
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 110.0	;; decrease afterburner power, else sm2-07a is so hard.
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		200.0
+	+Aburn Burn Rate:	60.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.5, -16
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f03
+$Score:             15
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+;; Player shivan
+$Name:				SF Dragon#3 (Player)
+$Short name:		SFighta3
+$Species:			Terran
+$POF file:			fighter03.pof
+$Detail distance:	(0, 80, 160, 500)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.1
+$Rotdamp:			0.4
+$Max Velocity:		0.0, 0.0, 75.0
+$Rotation time:		2.5, 2.0, 2.0
+$Rear Velocity:		0.0
+$Forward accel:		2.0		
+$Forward decel:		0.75
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		25.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Allowed PBanks:	( "ML-16 Laser" "Disruptor" "Avenger" "Flail" "Prometheus" "Banshee")
+$Default PBanks:	( "Avenger" "Prometheus" )
+$Allowed SBanks:	( "MX-50" "D-Missile" "Fury" "Interceptor" "Phoenix V" "Hornet")
+$Default SBanks:	( "Interceptor" )
+$SBank Capacity:	( 20 )
+$Shields:			700
+$Power Output:		2.0
+$Max Oclk Speed:	90.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100
+$Flags:				( "fighter" "ship copy" "player_ship")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.5, 95.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		200.0
+	+Aburn Burn Rate:	60.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	30
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -16
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f03
+$Ship_icon:			iconfighter01
+$Ship_anim:			ssfighter01
+$Ship_overhead:		loadfighter01
+$Score:             15
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+
+$Name:				SF Basilisk
+$Short name:		SFight10
+$Species:			Shivan
++Tech Description:
+The Basilisk seems to be a Shivan heavy attack fighter.  It is not as maneuverable as other Shivan fighters, but it packs quite a punch, and it is very resistant to our weaponry.  Most often they have been used in attacking our supply convoys and transports.
+Treat the Basilisk as a Class C threat.
+$end_multi_text
+$POF file:			fighter10.pof
+$Detail distance:	(0, 80, 220, 900)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		15.0, 15.0, 65.0
+$Rotation time:		3.5, 3.5, 4.0
+$Rear Velocity:		20.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	33.0
+$Expl outer rad:	66.0
+$Expl damage:		20.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	(	"Shivan Mega Laser" "Shivan Heavy Laser" )
+$Default SBanks:	( "Phoenix V" "Hornet" )
+$SBank Capacity:	( 80, 80 )
+$Shields:			950
+$Power Output:		2.25
+$Max Oclk Speed:	68.0
+$Max Weapon Eng:	150.0
+$Hitpoints:			100
+$Flags:				( "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 110.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, -2.0, -35
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f10
+$Score:             12
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communications,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SF Manticore
+$Short name:		SFight11
+$Species:			Shivan
++Tech Description:
+We believe that the Manticore is a Shivan interceptor.  It has a very high top speed, and its maneuverability is quite good.  However, its shield system isn't strong enough to withstand constant fighting for long, which leads us to believe the Manticore's primary purpose is to destroy enemy bombers.
+The Manticore ranks as a Class B threat.
+$end_multi_text
+$POF file:			fighter11.pof
+$Detail distance:	(0, 70, 200, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.3
+$Max Velocity:		25.0, 25.0, 87.0
+$Rotation time:		3.2, 3.2, 3.2
+$Rear Velocity:		25.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	15.0
+$Expl outer rad:	55.0
+$Expl damage:		15.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	(	"Shivan Mega Laser" )
+$Default SBanks:	( "Interceptor" "MX-50" )
+$SBank Capacity:	( 40, 40 )
+$Shields:			500
+$Power Output:		1.5
+$Max Oclk Speed:	120.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100
+$Flags:				( "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 155.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	70.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -28
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f11
+$Score:             12
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communications,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+
+
+$Name:				SF Scorpion
+$Short name:		SFight12
+$Species:			Shivan
++Tech Description:
+We originally thought the Scorpion was the Shivans best fighter.  However, we now believe that the Scorpion is nothing more than a Shivan scout ship.  Their vast numbers and seeming unimportance to the Shivan war effort leads us to this belief.  Regardless of its purpose, the Scorpion is highly maneuverable, fast, and difficult to destroy.  It can also do damage equivalent to our space superiority fighters.
+In the event that you encounter Scorpions, regard them as a Class C threat.
+$end_multi_text
+$POF file:			fighter12.pof
+$Detail distance:	(0, 80, 200, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.4
+$Max Velocity:		20.0, 20.0, 70.0
+$Rotation time:		2.0, 2.0, 2.0
+$Rear Velocity:		20.0
+$Forward accel:		3.0		
+$Forward decel:		1.5
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	15.0
+$Expl outer rad:    45.0
+$Expl damage:		10.0
+$Expl blast:        500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	( "Shivan Light Laser" "Shivan Heavy Laser" )
+$Default SBanks:	( "MX-50" )
+$SBank Capacity:	( 40 )
+$Shields:			600
+$Power Output:		2.0
+$Max Oclk Speed:	72.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			180
+$Flags:				( "fighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		YES
+	+Aburn Max Vel:	0.0, 0.0, 140.0
+	+Aburn For accel:	0.7
+	+Aburn Fuel:		300.0
+	+Aburn Burn Rate:	50.0
+	+Aburn Rec Rate:	25.0
+$Countermeasures:	20
+$Scan time:			2000
+$EngineSnd:       132			;; Engine sound of ship
+$Closeup_pos:		0.0, 2.0, -25
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-f12
+$Score:             10
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SB Shaitan
+$Short name:		SBomb1
+$Species:			Shivan
++Tech Description:
+The Shaitan bomber is only slightly superior to our own bombers - it's shielding is better, but its capacity seems to be far worse.  Perhaps the Shivans were so assured that they would only need one payload to destroy a target.
+We consider the Shaitan to be a Class C threat.
+$end_multi_text
+$POF file:			bomber03.pof
+$Detail distance:	(0, 80, 220, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.5
+$Max Velocity:		15.0, 15.0, 60.0
+$Rotation time:		4.0, 3.0, 10.0
+$Rear Velocity:		15.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		20.0
+$Expl blast:		1200.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	( "Shivan Light Laser" "Shivan Heavy Laser" )
+$Default SBanks:	( "MX-50" )
+$SBank Capacity:	( 40 )
+$Shields:			1000
+$Power Output:		3.0
+$Max Oclk Speed:	72.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			400
+$Flags:				( "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       133			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -31
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b03
+$Score:             15
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SB Nephilim
+$Short name:		SBomb8
+$Species:			Shivan
++Tech Description:
+The Nephilim class bomber is the most alien of the Shivan ships.  We are still unsure as to why the Shivans chose this odd shape for arguably their most powerful attack craft.  However, with four primary cannons and two turrets, as well as a massive payload, the Nephilim is undoubtedly a serious threat to the GTA.  We have already lost two Orion class destroyers to a wing of Nephilims.  Unless we learn a weakness soon, we will most likely lose two more.
+The Nephilim has been designated a Class A threat to GTA destroyers and cruisers.  In unpopulated systems, it is to be considered a Class B threat.
+$end_multi_text
+$POF file:			bomber08.pof
+$Detail distance:	(0, 90, 250, 1000)
+$Show damage:		YES
+$Density:			2
+$Damp:				0.2
+$Rotdamp:			0.5
+$Max Velocity:		12.0, 12.0, 60.0
+$Rotation time:		6.0, 6.0, 6.0
+$Rear Velocity:		12.0
+$Forward accel:		4.0		
+$Forward decel:		2.0
+$Slide accel:		2.0
+$Slide decel:		2.0
+$Expl inner rad:	75.0
+$Expl outer rad:	150.0
+$Expl damage:		25.0
+$Expl blast:		1500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	( "Shivan Light Laser" )
+$Default SBanks:	( "MX-50" "Synaptic" "Phoenix V" "MX-50" )
+$SBank Capacity:	( 40, 40, 40, 40 )
+$Shields:			1600
+$Power Output:		4.0
+$Max Oclk Speed:	72.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			500
+$Flags:				( "bomber" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       133		;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -75
+$Closeup_zoom:		0.5
+$Shield_icon:		shield-b08
+$Score:             18
+$Subsystem:			turret01,5,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret02,5,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				ST Azrael
+$Short name:		STran3
+$Species:			Shivan
++Tech Description:
+The Azrael is most likely a Shivan transport.  While we are not completely sure of its uses, we do know that they can house many Shivans.  It is not very heavily armored, and its weaponry is not too strong.  This makes the Azrael the most common target for capture attempts.
+$end_multi_text
+$POF file:			transport03.pof
+$Detail distance:	(0, 165, 360, 900)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.6
+$Max Velocity:		0.0, 0.0, 55.0
+$Rotation time:		4.0, 7.0, 10.0
+$Rear Velocity:		0.0
+$Forward accel:		6.0		
+$Forward decel:		1.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		1000.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		8.0
+$Max Oclk Speed:	42.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			2000
+$Flags:				( "transport" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			5000
+$EngineSnd:       133			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -55
+$Closeup_zoom:		0.5
+$Score:             10
+$Subsystem:			turret01a,5,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret02a,5,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret03a,5,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communications,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SFR Mephisto
+$Short name:		SFreight6
+$Species:			Shivan
++Tech Description:
+The Mephisto freighter behaves much like one of our own.  Only it is far more powerful and dangerous.  Very little data is available on this ship class.
+$end_multi_text
+$POF file:			freighter06.pof
+$Detail distance:	(0, 160, 350, 1000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		7.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	50.0
+$Expl outer rad:	150.0
+$Expl damage:		75.0
+$Expl blast:		1500.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+;$Shields:			250		
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			5000
+$Flags:				( "freighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			8000
+$EngineSnd:       133			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -66
+$Closeup_zoom:		0.5
+$Score:             30
+$Subsystem:			turret01,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret02,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret03,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret04,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communication,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SC 5
+$Short name:		SCar6
+$Species:			Shivan
++Tech Description:
+We believe that the Shivans use cargo containers such as these as storage depots.  We have yet to see a Shivan land on a planet.  This leads us to believe that the Shivans plan on keeping all of their materials and resources in deep space.
+$end_multi_text
+$POF file:			cargo05.pof
+$Detail distance:	(0, 200, 500, 800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			300
+$Flags:				( "cargo" "in tech database multi")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -35
+$Closeup_zoom:		0.5
+$Score:             0
+
+
+$Name:				SFR Asmodeus
+$Short name:		SFreight7
+$Species:			Shivan
++Tech Description:
+Almost no data is available on the Asmodeus freighter.  We are aware that it has a strong hull and four turrets.  Any further data on this ship should be immediately delivered to Terran Intelligence.
+$end_multi_text
+$POF file:			freighter07.pof
+$Detail distance:	(0, 350, 600, 1800)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.7
+$Max Velocity:		0.0, 0.0, 50.0
+$Rotation time:		25.0, 25.0, 25.0
+$Rear Velocity:		0.0
+$Forward accel:		7.0		
+$Forward decel:		1.5
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	75.0
+$Expl outer rad:	150.0
+$Expl damage:		50.0
+$Expl blast:		1500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0		
+$Power Output:		1.0
+$Max Oclk Speed:	60.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			8000
+$Flags:				( "freighter" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			10000
+$EngineSnd:       133			;; Engine sound of ship
+$Closeup_pos:		0.0, -10.0, -168
+$Closeup_zoom:		0.5
+$Score:             30
+$Subsystem:			a-turret01,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			a-turret02,2,1.0
+	$Default PBanks:	( "Disruptor" )
+$Subsystem:			a-turret03,2,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			a-turret04,2,1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			sensors,			10,0.0
+$Subsystem:			communications,	10,0.0
+$Subsystem:			engine,			35,0.0
+$Subsystem:			weapons,			15,0.0
+$Subsystem:			navigation,		 5,0.0
+
+$Name:				SAC 2
+$Short name:		SCar7
+$Species:			Shivan
++Tech Description:
+What we have dubbed the Sac-2 is simply a more heavily armored form of the standard Shivan cargo container.  We believe that this is where the Shivans keep their more precious supplies.  Sac-2s are to be captured or destroyed at every opportunity.
+$end_multi_text
+$POF file:			cargo06.pof
+$Detail distance:	(0, 200, 350, 700)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:		20.0, 20.0, 20.0
+$Rear Velocity:		0.0
+$Forward accel:		0.0		
+$Forward decel:		0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	25.0
+$Expl outer rad:	75.0
+$Expl damage:		50.0
+$Expl blast:		100.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			1200
+$Flags:				( "cargo" "in tech database multi")
+$AI Class:			none
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 4.0, -63
+$Closeup_zoom:		0.5
+$Score:             0
+
+
+$Name:				SC Lilith
+$Short name:		TCruise3
+$Species:			Shivan
++Tech Description:
+While far more rare than its counterpart, the Cain-class cruiser, the Lilith is one of the most ferocious cruisers we have had the misfortune of combating.  It has extremely strong weapon systems, as well as a very thick armor which our cannons can barely penetrate.  One for one, the Lilith can easily destroy any of our cruisers.  It is for this reason that they should be considered a primary target for all bomber squadrons in the GTA.
+The Lilith should be considered a Class A threat to any ships that encounter it.
+$end_multi_text
+$POF file:			cruiser03.pof
+$Detail distance:	(0, 500, 1000, 3000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 20.0
+$Rotation time:		110.0, 110.0, 75.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		5.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	600.0
+$Expl damage:		200.0
+$Expl blast:		2000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		90.0
+$Max Oclk Speed:	12.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			75000
+$Flags:				( "cruiser" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			15000
+$EngineSnd:       134			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -279
+$Closeup_zoom:		0.5
+$Score:             450
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret03,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret04,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret05,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret06,1,1.0
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret07,3,1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			turret08,4,1.0
+	$Default SBanks:	( "Shivan Cluster" )
+$Subsystem:			turret09,4,1.0
+	$Default SBanks:	( "Shivan Cluster" )
+$Subsystem:			sensors,			5,0.0
+$Subsystem:			communication,	3,0.0
+$Subsystem:			engine,			15,0.0
+$Subsystem:			weapons,			10,0.0
+$Subsystem:			navigation,		 2.5,0.0
+;; I added in this Strike Cruiser because I needed a ship besides the Cruiser, one that had docking
+;; bays.  This is a strike cruiser, it's faster and can hold ships, but at the expense of hull.
+;; - SS
+$Name:				SC Cain
+$Short name:		TStrCruise
+$Species:			Shivan
++Tech Description:
+The Cain is by far the most common cruiser in the Shivan fleet.  It is also the weakest.  However, the Cain should not be underestimated.  It has many turrets, as well as a cluster bomb defensive mechanism.  As a strike cruiser, the Cain mostly appears in attacks against GTA or PVN capital ships and cruisers.  In these cases, it should be destroyed immediately.  The primary weakness of the Cain appears to be its unshielded turrets.  Most of the turrets on the Cain can be destroyed with minimal damage.
+The Cain is a Class B threat.
+$end_multi_text
+$POF file:			cruiser03.pof
+$Detail distance:	(0, 500, 1000, 3000)
+$Show damage:		YES
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.0
+$Max Velocity:		0.0, 0.0, 30.0
+$Rotation time:		70.0, 70.0, 50.0
+$Rear Velocity:		0.0
+$Forward accel:		10.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	600.0
+$Expl damage:		200.0
+$Expl blast:		2000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		90.0
+$Max Oclk Speed:	12.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			20000
+$Flags:				( "cruiser" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			15000
+$EngineSnd:       134			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -279
+$Closeup_zoom:		0.5
+$Score:             100
+$Subsystem:			turret01,1,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret02,1,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret03,1,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret04,1,1.0
+	$Default PBanks:	( "Shivan Light Laser" )
+$Subsystem:			turret05,1,1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			turret06,1,1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			turret07,2.0,1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			turret08,2.5,1.0
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret09,2.5,1.0
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			sensors,			5,0.0
+$Subsystem:			communication,	5,0.0
+$Subsystem:			engine,			10,0.0
+$Subsystem:			weapons,			7,0.0
+$Subsystem:			navigation,		 5,0.0
+
+
+$Name:				SD Demon
+$Short name:		SDestroyer
+$Species:			Shivan
++Tech Description:
+While the Demon-class Destroyer is easily one of the most massive ships we have yet seen, it is not the biggest or most powerful in the Shivan armada.  However, it is still quite dangerous, with a plethora of missile turrets and two full squadrons of fighters.  It is suggested that these capital ships be destroyed by bombers, as all cruisers that have attempted to engage a Demon have been destroyed.
+The Demon is a Class A threat in any allied system.
+$end_multi_text
+$POF file:			capital04.pof
+$Detail distance:	(0, 1000, 3000, 22000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 20.0
+$Rotation time:		200.0, 200.0, 200.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	2400.0
+$Expl damage:		400.0
+$Expl blast:		6500.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	24.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			100000
+$Flags:				( "capital" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			10000
+$EngineSnd:       138			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -3440
+$Closeup_zoom:		0.37
+$Score:           1200
+$Subsystem:			turret01-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret02-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret03a-base,0.6,0.5
+	$Default PBanks:	( "Shivan Megafunk Turret" )
+$Subsystem:			turret04-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret05-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret06a-base,0.6,0.5
+	$Default PBanks:	( "Shivan Megafunk Turret" )
+$Subsystem:			turret07a-base,0.6,0.5
+	$Default PBanks:	( "Shivan Megafunk Turret" )
+$Subsystem:			turret08-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret09-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret10-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret11-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret12-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret13-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret14-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret15-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret16-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret17-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret18-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret19-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret20-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret21-base,0.4,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret22,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret23,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret24,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret25,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret26,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			navigation,		  4,0.0
+$Subsystem:			weapons,			 10,0.0
+$Subsystem:			sensors,			 10,0.0
+$Subsystem:			engine,			  5,0.0
+$Subsystem:			communication,	  2,0.0
+$Subsystem:			fighterbay 1,		0,0.0
+$Subsystem:			fighterbay 2,		0,0.0
+
+$Name:				SD Lucifer
+$Short name:		SSuperD
+$Species:			Shivan
++Tech Description:
+The Lucifer is the greatest threat to the survival of the GTA, the PVN, and both the Terran and Vasudan species.  It wields three massive Flux Cannons which can destroy one of our capital ships in a few hits.  These same cannons have been seen bombarding colonized worlds.  With four full fighter squadrons, and a massive array of defensive turrets, the Lucifer would be extremely difficult to destroy.
+The fact that it is protected by a sheath shielding system which makes it completely impervious to any kind of kinetic or plasma damage makes it impossible to destroy.  We have yet to find a way to breach this shielding technology.  It is hoped that a solution will be found soon.
+Assuming that a solution is found, we have managed to gather enough data on the Lucifer to destroy it.  In a recon mission, we were able to determine that the Lucifer is powered by five reactors across its surface.  If these reactors are destroyed in a short amount of time, the Lucifer will be stopped.
+If we cannot stop the Lucifer, we do not expect to be able to defeat the Shivans.
+We have no way of knowing if there are more than one Lucifer-class destroyer.  However, any that exist should be considered more dangerous than a Class A threat.
+$end_multi_text
+$POF file:			capital02.pof
+$Detail distance:	(0, 1000, 3000, 20000)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			1.5
+$Max Velocity:		0.0, 0.0, 15.0
+$Rotation time:		200.0, 200.0, 200.0
+$Rear Velocity:		0.0
+$Forward accel:		20.0		
+$Forward decel:		10.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	100.0
+$Expl outer rad:	4000.0
+$Expl damage:		1000.0
+$Expl blast:		4000.0
+$Expl Propagates:	YES							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	600.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		100.0
+$Max Oclk Speed:	24.0
+$Max Weapon Eng:	100.0
+$Hitpoints:			800000
+$Flags:				( "capital")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			20000
+$EngineSnd:       138			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -3440
+$Closeup_zoom:		0.5
+$Score:             4000
+$Subsystem:			turret01,1.0,6.5
+	$Default PBanks:	( "Shivan Super Laser" )
+$Subsystem:			turret02,1.0,6.5
+	$Default PBanks:	( "Shivan Super Laser" )
+$Subsystem:			turret03,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret04,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret05,0.5,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret06,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret07,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret08,0.25,0.5
+	$Default SBanks:	( "FighterKiller" )
+$Subsystem:			turret09,1.0,6.5
+	$Default SBanks:	( "Shivan Cluster" )
+$Subsystem:			turret10,0.25,0.5
+	$Default SBanks:	( "Shivan Cluster" )
+$Subsystem:			turret11,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret12,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret13,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret14,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret15,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret16,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			turret17,0.5,0.5
+	$Default PBanks:	( "Shivan Turret Laser" )
+$Subsystem:			navigation,		  4,0.0
+$Subsystem:			weapons,			 1,0.0
+$Subsystem:			sensors,			 10,0.0
+$Subsystem:			engine 1,		 5,0.0
+$Subsystem:			engine 2,		 5,0.0
+$Subsystem:			communication,	  2,0.0
+$Subsystem:			fighterbay 1,		0,0.0
+$Subsystem:			fighterbay 2,		0,0.0
+$Subsystem:			reactor 1,  1.085,0.0
+$Subsystem:			reactor 2,  1.085,0.0
+$Subsystem:			reactor 3,  1.085,0.0
+$Subsystem:			reactor 4,  1.085,0.0
+$Subsystem:			reactor 5,  1.085,0.0
+
+
+$Name:				SSG Trident
+$Short name:		SSGun
+$Species:			Shivan
++Tech Description:
+We believe that the sole purpose of the Trident is to guard Shivan repair and supply depots.  It is not too strong, but in mass quantities, can be dangerous.
+$end_multi_text
+$POF file:			GunPlatform03.pof
+$Detail distance:	(0, 100, 500)
+$Show damage:		NO
+$Density:			1
+$Damp:				0.2
+$Rotdamp:			0.2
+$Max Velocity:		0.0, 0.0, 0.0
+$Rotation time:	20.0, 20.0, 20.0
+$Rear Velocity:	0.0
+$Forward accel:	0.0		
+$Forward decel:	0.0
+$Slide accel:		0.0
+$Slide decel:		0.0
+$Expl inner rad:	0.0
+$Expl outer rad:    0.0
+$Expl damage:		0.0
+$Expl blast:        0.0
+$Expl Propagates:	NO							;; If set to Yes, then when the ship dies, the explosion propagates through it.
+$Shockwave Speed:	0.0						;; speed shockwave expands at, 0 means no shockwave
+$Default PBanks:	()
+$Default SBanks:	()
+$SBank Capacity:	()
+$Shields:			0
+$Power Output:		0.0
+$Max Oclk Speed:	0.0
+$Max Weapon Eng:	0.0
+$Hitpoints:			100
+$Flags:				("sentrygun" "in tech database multi")
+$AI Class:			Captain
+$Afterburner:		NO
+$Countermeasures:	0
+$Scan time:			2000
+$EngineSnd:       -1			;; Engine sound of ship
+$Closeup_pos:		0.0, 0.0, -14
+$Closeup_zoom:		1.18
+$Score:             5
+$Subsystem:			turret01a, 20, 1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+$Subsystem:			turret02a, 20, 1.0
+	$Default PBanks:	( "Shivan Heavy Laser" )
+
+;=====>> TEST STUFF <<=======
+
+
+#End
+
+; $Player Ship Precedence is used in ship selection when a ship specified by the mission
+; designer is not available to the player.  The next ship on the list is used in its place
+; (assuming that ship is allowed for the player).
+;
+
+$Player Ship Precedence: (
+	"GTF Ulysses"
+	"GTF Hercules"
+	"GTF Valkyrie"
+	"GTF Apollo"
+	"GTB Athena"
+	"GTB Medusa"
+	"GTB Ursa"
+)

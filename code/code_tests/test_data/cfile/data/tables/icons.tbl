@@ -1,0 +1,154 @@
+; icons.tbl
+;
+; Table file for specifying which filenames are to be used for the breifing
+; icons.  
+;
+; Anim Contents:
+;
+; regular (2 frames):	0: normal icon
+;								1: selected icon
+;
+; fade: animation for fading from near-transparent to regular color
+;
+; highlight: animation for emphasizing an icon
+;
+
+#Start
+
+; ICON_FIGHTER
+$Name:	iconfighter							; regular
+$Name:	FadeFighter									; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_FIGHTER_WING
+$Name:	iconfighterW						; regular
+$Name:	FadeFighterW						; fade anim
+$Name:	iconhighlight02					; highlight anim
+
+; ICON_CARGO
+$Name:	iconcargo							; regular
+$Name:	FadeCargo									; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_CARGO_WING
+$Name:	iconcargoW							; regular
+$Name:	FadeCargoW							; fade anim
+$Name:	iconhighlight02					; highlight anim
+
+; ICON_LARGESHIP
+$Name:	iconbigship							; regular
+$Name:	FadeBigShip							; fade anim
+$Name:	iconhighlight07					; highlight anim
+
+; ICON_LARGESHIP_WING
+$Name:	iconbigshipW						; regular
+$Name:	FadeBigShipW						; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_CAPITAL
+$Name:	iconcapital							; regular
+$Name:	FadeCapital							; fade anim
+$Name:	iconhighlight06					; highlight anim
+
+; ICON_PLANET
+$Name:	iconplanet							; regular
+$Name:	FadePlanet							; fade anim
+$Name:	iconhighlight03					; highlight anim
+
+; ICON_ASTEROID_FIELD
+$Name:	iconasteroid						; regular
+$Name:	FadeAsteroid						; fade anim
+$Name:	iconhighlight03					; highlight anim
+
+; ICON_WAYPOINT
+$Name:	iconwaypoint						; regular
+$Name:	FadeWaypoint						; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_SUPPORT_SHIP
+$Name:	iconsupport							; regular
+$Name:	FadeSupport							; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_FREIGHTER_NO_CARGO
+$Name:	iconfreighter						; regular
+$Name:	FadeFreighter						; fade anim
+$Name:	iconhighlight01					; highlight anim
+
+; ICON_FREIGHTER_WITH_CARGO
+$Name:	iconfreighterc						; regular
+$Name:	FadeFreighterC						; fade anim
+$Name:	iconhighlight01					; highlight anim
+
+; ICON_FREIGHTER_WING_NO_CARGO
+$Name:	iconfreighterwing					; regular
+$Name:	FadeFreighterW						; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_FREIGHTER_WING_WITH_CARGO
+$Name:	iconfreightercwing				; regular
+$Name:	FadeFreighterCW					; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_INSTALLATION
+$Name:	iconInstallation					; regular
+$Name:	FadeInstallation					; fade anim
+$Name:	iconhighlight03					; highlight anim
+
+; ICON_BOMBER
+$Name:	iconbomber							; regular
+$Name:	FadeBomber							; fade anim
+$Name:	iconhighlight07					; highlight anim
+
+; ICON_BOMBER_WING
+$Name:	iconbomberW							; regular
+$Name:	FadeBomberW							; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_CRUISER
+$Name:	iconcruiser							; regular
+$Name:	FadeCruiser							; fade anim
+$Name:	iconhighlight01					; highlight anim
+
+; ICON_CRUISER_WING
+$Name:	iconcruiserW						; regular
+$Name:	FadeCruiserW						; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_UNKNOWN
+$Name:	iconunknown							; regular
+$Name:	FadeUnknown							; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_UNKNOWN_WING
+$Name:	iconunknownW						; regular
+$Name:	FadeUnknownW						; fade anim
+$Name:	iconhighlight01					; highlight anim
+
+; ICON_FIGHTER_PLAYER
+$Name:	iconfighterP						; regular
+$Name:	FadeFighterP						; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+; ICON_FIGHTERW_PLAYER
+$Name:	iconfighterWP						; regular
+$Name:	FadeFighterWP						; fade anim
+$Name:	iconhighlight02					; highlight anim
+
+; ICON_BOMBER_PLAYER
+$Name:	iconbomberP							; regular
+$Name:	FadeBomberP							; fade anim
+$Name:	iconhighlight07					; highlight anim
+
+; ICON_BOMBERW_PLAYER
+$Name:	iconbomberWP						; regular
+$Name:	FadeBomberWP						; fade anim
+$Name:	iconhighlight05					; highlight anim
+
+; ICON_JUMP_NODE
+$Name:	iconwaypoint						; regular
+$Name:	FadeWaypoint						; fade anim
+$Name:	iconhighlight04					; highlight anim
+
+#End
+  

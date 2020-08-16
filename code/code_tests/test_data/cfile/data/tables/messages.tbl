@@ -1,0 +1,1248 @@
+;;
+;; This file is messages.tbl.  It specifies all generic messages that can be sent to the player
+;; during the mission (at least for single player).  Format is as follows:
+;;
+;; #Personas
+;; $Persona: <name>				;; persona name
+;;
+;; repeat the above '$Persona:' field for as many personas as needed
+;;
+;; $Name: <name>					;; name is an identifier used in Freespace to play the message
+;; $Message: <message>			;; message is what actualy gets displayed to the player
+;; +Persona: <persona name>	;; name of persona for this message.  Must match one of the above personas
+;; +Wave Name: <wave file>		;; optional name of a wave file to play with this message
+;; +Avi Name: <avi file>		;; optional name of a flick to play with this message
+;;
+;;
+;;  Casting NOTES:
+;;	Wingman 1	- ES
+;;	Wingman 2 	- PS
+;;	Wingman 3 	- SH
+;;	Wingman 4 	- JY
+;;	Wingman 5	- JC
+;;	Wingman 6	- MA
+;;	Large Vasudan	- MA
+;;	Terran Command	- RB
+;;	Large	  	- L-**
+;;	Support   	- L-JW
+;;
+
+
+#Personas
+
+$Persona: Wingman 1	  
+$Type: wingman
+
+$Persona: Wingman 2
+$Type: wingman
+
+$Persona: Wingman 3
+$Type: wingman
+
+$Persona: Wingman 4
+$Type: wingman
+
+$Persona: Wingman 5
+$Type: wingman
+
+$Persona: Wingman 6
+$Type: wingman
++Vasudan
+
+$Persona: Support Ship
+$Type: support
+
+$Persona: Large Ship
+$Type: large
+
+$Persona: Large Ship Vasudan
+$Type: large
++Vasudan
+
+$Persona: Terran Command
+$Type: Command
+
+#Messages
+
+
+;; ALL CLEAR ..................................................................................
+
+$Name: All Clear
+$Message: Is that the best they can do?
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_allclear.wav
+
+$Name: All Clear
+$Message: Radar's clean and clear.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_allclear.wav
+
+$Name: All Clear
+$Message: Glad that's over.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_allclear.wav
+
+$Name: All Clear
+$Message: Area secured.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_allclear.wav
+
+$Name: All Clear
+$Message: I think that's all of them.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_allclear.wav
+
+$Name: All Clear
+$Message: Area secured.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_allclear.wav
+
+;; ARRIVAL (Enemy) ...................................................................
+
+$Name: Arrive Enemy
+$Message: Enemy wing just arrived!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_arrival.wav
+
+$Name: Arrive Enemy
+$Message: Heads up we have company!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_arrival.wav
+
+$Name: Arrive Enemy
+$Message: Heads up, we've got visitors!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_arrival.wav
+
+$Name: Arrive Enemy
+$Message: New bandits in the area.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_arrival.wav
+
+$Name: Arrive Enemy
+$Message: New hostiles in the area!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_arrival.wav
+
+$Name: Arrive Enemy
+$Message: Enemy presence detected.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_arrival.wav
+
+$Name:Arrive Enemy
+$Message: Enemy wing has just arrived!
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_arrival.wav
+
+;; ATTACK MY TARGET ...........................................................................
+
+$Name: Attack Target
+$Message: Breaking to attack!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_attack.wav
+
+$Name: Attack Target
+$Message: Affirmative Sir, attacking your target!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_attack.wav
+
+$Name: Attack Target
+$Message: Attacking your target!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_attack.wav
+
+$Name: Attack Target
+$Message: Attacking now Sir.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_attack.wav
+
+$Name: Attack Target
+$Message: Target aquired.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_attack.wav
+
+$Name: Attack Target
+$Message: Target aquired.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_attack.wav
+
+;; BACKUP ARRIVAL (previously named "REINFORCEMENTS") .........................................
+
+$Name: Backup
+$Message: Reinforcements awaiting orders.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_backup.wav
+
+$Name: Backup
+$Message: Reinforcements here Sir, awaiting orders.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_backup.wav
+
+$Name: Backup
+$Message: Reinforcements here Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_backup.wav
+
+$Name: Backup
+$Message: Reinforcements here Sir.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_backup.wav
+
+$Name: Backup
+$Message: Reinforcements awaiting orders.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_backup.wav
+
+$Name: Backup
+$Message: Reinforcements awaiting orders.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_backup.wav
+
+;; BETA WING ARRIVAL ..........................................................................
+
+$Name: Beta Arrived
+$Message: Beta wing has arrived, awaiting orders.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_beta.wav
+
+$Name: Beta Arrived
+$Message: Beta wing has arrived.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_beta.wav
+
+$Name: Beta Arrived
+$Message: Beta wing has arrived, awaiting orders.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_beta.wav
+
+$Name: Beta Arrived
+$Message: Beta wing has arrived.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_beta.wav
+
+$Name: Beta Arrived
+$Message: Beta wing has arrived, awaiting orders.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_beta.wav
+
+;; CHECK YOUR SIX .............................................................................
+
+$Name: Check 6
+$Message: You've got a bogie on your tail!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Check6.wav
+
+$Name: Check 6
+$Message: Check your six pilot!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Check6.wav
+
+$Name: Check 6
+$Message: Fighter on your tail Sir!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Check6.wav
+
+$Name: Check 6
+$Message: Watch your back Sir!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Check6.wav
+
+$Name: Check 6
+$Message: Watch your back Sir!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Check6.wav
+
+;; DEATH (previously wingman scream)...................................................
+
+$Name: Death
+$Message: Aaaaaaaah!!!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Death.wav
+
+$Name: Death
+$Message: Noooooooo!!!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Death.wav
+
+$Name: Death
+$Message: Aaaaaaaah!!!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Death.wav
+
+$Name: Death
+$Message: Damn it!!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Death.wav
+
+$Name: Death
+$Message: Nooooooooo!!!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Death.wav
+
+$Name: Death
+$Message: Our flame will not be extinguished!
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_Death.wav
+
+;; DELTA WING ARRIVAL .........................................................................
+
+$Name: Delta Arrived
+$Message: Delta wing has arrived, awaiting orders.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Delta.wav
+
+$Name: Delta Arrived
+$Message: Delta wing has arrived, awaiting orders.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Delta.wav
+
+$Name: Delta Arrived
+$Message: Delta wing has arrived, awaiting orders.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Delta.wav
+
+$Name: Delta Arrived
+$Message: Delta wing has arrived, awaiting orders.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Delta.wav
+
+$Name: Delta Arrived
+$Message: Delta wing has arrived, awaiting orders.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Delta.wav
+
+;; DEPART (previously named "WARPOUT") ........................................................
+
+$Name: Depart
+$Message: Yes Sir, leaving battle area.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_depart.wav
+
+$Name: Depart
+$Message: I'm outta here.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_depart.wav
+
+$Name: Depart
+$Message: Subspace node activated.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_depart.wav
+
+$Name: Depart
+$Message: That's affirmative Sir, departing now.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_depart.wav
+
+$Name: Depart
+$Message: Roger Sir, entering subspace.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_depart.wav
+
+$Name: Depart
+$Message: Entering subspace.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_depart.wav
+
+$Name: Depart
+$Message: That's affirmative Sir, departing now.
++Persona: Support Ship
++Avi Name: Head-TP1
++Wave Name: S_depart.wav
+
+$Name: Depart
+$Message: Entering subspace.
++Persona: Large Ship Vasudan
++Avi Name: Head-VP1
++Wave Name: 6_depart.wav
+
+;; DISABLE TARGET .............................................................................
+
+$Name: Disable Target
+$Message: Roger, disabling your target.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Disable.wav 
+
+$Name: Disable Target
+$Message: Yes Sir, disabling target.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Disable.wav 
+
+$Name: Disable Target
+$Message: Roger, disabling your target.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Disable.wav 
+
+$Name: Disable Target
+$Message: Roger, disabling your target.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Disable.wav
+
+$Name: Disable Target
+$Message: Affirmative, targeting the engine.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Disable.wav
+
+$Name: Disable Target
+$Message: Affirmative, targeting the engines.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_Disable.wav
+
+;; DISARM TARGET ..............................................................................
+
+$Name: Disarm Target
+$Message: Affirmative Sir, disarming your target.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Disarm.wav 
+
+$Name: Disarm Target
+$Message: Disarming target Sir.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Disarm.wav 
+
+$Name: Disarm Target
+$Message: Affirmative Sir, disarming your target.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Disarm.wav 
+
+$Name: Disarm Target
+$Message: Roger Sir, disarming your target.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Disarm.wav 
+
+$Name: Disarm Target
+$Message: Affirmative Sir, disarming your target.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Disarm.wav 
+
+$Name: Disarm Target
+$Message: Affirmative, disarming your target.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_Disarm.wav 
+
+;; ENGAGE ENEMY ...............................................................................
+
+$Name: Engage
+$Message: Engaging enemy.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_engage.wav
+
+$Name: Engage
+$Message: Engaging enemy.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_engage.wav
+
+$Name: Engage
+$Message: Engaging now Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_engage.wav
+
+$Name: Engage
+$Message: Engaging now Sir.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_engage.wav
+
+$Name: Engage
+$Message: Breaking to attack.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_engage.wav
+
+$Name: Engage
+$Message: Engaging enemy.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_engage.wav
+
+;; EPSILON ARRIVAL ............................................................................
+
+$Name: Epsilon Arrived
+$Message: Epsilon wing has arrived, awaiting orders.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_epsilon.wav
+
+$Name: Epsilon Arrived
+$Message: Epsilon wing has arrived.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_epsilon.wav
+
+$Name: Epsilon Arrived
+$Message: Epsilon wing has arrived, awaiting orders.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_epsilon.wav
+
+$Name: Epsilon Arrived
+$Message: Epsilon wing has arrived.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_epsilon.wav
+
+$Name: Epsilon Arrived
+$Message: Epsilon wing has arrived, awaiting orders.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_epsilon.wav
+				 
+;; GAMMA ARRIVAL ..............................................................................
+
+$Name: Gamma Arrived
+$Message: Gamma Wing has arrived, awaiting orders.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_gamma.wav
+
+$Name: Gamma Arrived
+$Message: Gamma Wing has arrived.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_gamma.wav
+
+$Name: Gamma Arrived
+$Message: Gamma Wing has arrived, awaiting orders.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_gamma.wav
+
+$Name: Gamma Arrived
+$Message: Gamma Wing has arrived.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_gamma.wav
+
+$Name: Gamma Arrived
+$Message: Gamma Wing has arrived, awaiting orders.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_gamma.wav
+
+;; HELP (REDUDANT TO ASSIST??) ................................................................
+
+$Name: Help
+$Message: Taking damage, request cover!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_help.wav
+
+$Name: Help
+$Message: Could one of you flyboys give me some cover?
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_help.wav
+
+$Name: Help
+$Message: Hull taking serious damage!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_help.wav
+
+$Name: Help
+$Message: Hull taking serious damage!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_help.wav
+
+$Name: Help
+$Message: I'm losing systems, help me out!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_help.wav
+
+$Name: Help
+$Message: Taking severe damage.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_help.wav
+
+;; IGNORE TARGET ..............................................................................
+
+$Name: Ignore Target
+$Message: Yes Sir, disregarding target.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_ignore.wav
+
+$Name: Ignore Target
+$Message: Roger Sir, ignoring your target.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_ignore.wav
+
+$Name: Ignore Target
+$Message: Roger disregarding your target.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_ignore.wav
+
+$Name: Ignore Target
+$Message: Roger disregarding your target.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_ignore.wav
+
+$Name: Ignore Target
+$Message: Yes Sir, ignoring target.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_ignore.wav
+
+$Name: Ignore Target
+$Message: Ignoring target.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_ignore.wav
+
+
+;; NEGATIVE REPLIES ...........................................................................
+
+$Name: No
+$Message: Sorry Sir, I can't do that.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_no.wav
+
+$Name: No
+$Message: Not here Sir.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_no.wav
+
+$Name: No
+$Message: I cannot comply Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_no.wav
+
+$Name: No
+$Message: Cannot comply Sir.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_no.wav
+
+$Name: No
+$Message: No can do Sir.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_no.wav
+
+$Name: No
+$Message: I cannot do that.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_no.wav
+
+;; NO TARGET ..................................................................................
+
+$Name: No Target
+$Message: Select a target Sir!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_notarget.wav
+
+$Name: No Target
+$Message: You have nothing targeted Sir.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_notarget.wav
+
+$Name: No Target
+$Message: You have nothing targeted Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_notarget.wav
+
+$Name: No Target
+$Message: Which target Sir?
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_notarget.wav
+
+$Name: No Target
+$Message: Target? What target?
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_notarget.wav
+
+$Name: No Target
+$Message: We require target data.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_notarget.wav
+
+;; Oops 1 (Player "accidentally" fires upon friendly ..........................................
+
+$Name: Oops 1
+$Message: Cease firing on friendly craft.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_oops1.wav
+
+$Name: Oops 1
+$Message: Aim at the hostiles pilot.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_oops1.wav
+
+$Name: Oops 1
+$Message: I'm on your side pilot.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_oops1.wav
+
+$Name: Oops 1
+$Message: Damn it, don't shoot me.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_oops1.wav
+
+$Name: Oops 1
+$Message: Hey, I'm on your side pilot.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_oops1.wav
+
+$Name: Oops 1
+$Message: Firing upon us negates the treaty Terran.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_oops1.wav
+
+$Name: Oops 1
+$Message: You are firing on friendly targets pilot.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_oops1.wav
+
+;; PLAYER KILLED (previously "player died")...........................................
+
+$Name: Player Dead
+$Message: Ship down! Ship down!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_p_dead.wav
+
+$Name: Player Dead
+$Message: Alpha one, please respond!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_p_dead.wav
+
+$Name: Player Dead
+$Message: We've lost Alpha 1!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_p_dead.wav
+
+$Name: Player Dead
+$Message: Alpha one is down!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_p_dead.wav
+
+$Name: Player Dead
+$Message: We've lost a friendly.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_p_dead.wav
+
+$Name: Player Dead
+$Message: The blood you draw, is your own!!
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_p_dead.wav
+
+;; PRAISE .....................................................................................
+
+$Name: Praise
+$Message: Great shot!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_praise.wav
+
+$Name: Praise
+$Message: Good kill!	
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_praise.wav
+
+$Name: Praise
+$Message: Impressive pilot!
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_praise.wav
+
+$Name: Praise
+$Message: Impressive pilot!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_praise.wav
+
+$Name: Praise
+$Message: Excellent job pilot!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_praise.wav
+
+$Name: Praise
+$Message: Impressive for a Terran.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_praise.wav
+
+;; REARM ......................................................................................
+
+$Name: Rearm
+$Message: I'm out of missles! Calling in a support ship!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_rearm.wav
+
+$Name: Rearm
+$Message: I need to rearm! Calling in a support ship.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_rearm.wav
+
+$Name: Rearm
+$Message: I need to rearm! Calling in some support.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_rearm.wav
+
+$Name: Rearm
+$Message: I need to rearm.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_rearm.wav
+
+$Name: Rearm
+$Message: I need to rearm, calling in support.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_rearm.wav
+
+$Name: Rearm
+$Message: Weapons array diminished, Calling in for support.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_rearm.wav
+
+;; REPAIR .....................................................................................
+
+$Name: Repair
+$Message: Sir, calling in for repair!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_repair.wav
+
+$Name: Repair
+$Message: Taking heavy damage, need to repair.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_repair.wav
+
+$Name: Repair
+$Message: This crate's about to blow, calling in for support.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_repair.wav
+
+$Name: Repair
+$Message: Sir I need a repair ship.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_repair.wav
+
+$Name: Repair
+$Message: This crate's about to blow, calling in for repair!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_repair.wav
+
+;; STRAY ............................................................................
+
+$Name: Stray
+$Message: Your staying to far from mission objectives!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Stray.wav
+
+$Name: Stray
+$Message: Where are you going pilot?
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Stray.wav
+
+$Name: Stray
+$Message: Where are you going pilot?
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Stray.wav
+
+$Name: Stray
+$Message: Where are you going pilot?
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Stray.wav
+
+$Name: Stray
+$Message: Where are you going Terran?
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_Stray.wav
+
+
+;; TRAITOR ...........................................................................
+
+$Name: Traitor
+$Message: You'll pay for that traitor.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_Traitor.wav
+
+$Name: Traitor
+$Message: You'll pay for your treason pilot.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_Traitor.wav
+
+$Name: Traitor
+$Message: You will pay for your treason pilot.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_Traitor.wav
+
+$Name: Traitor
+$Message: You will pay for your treason pilot.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_Traitor.wav
+
+$Name: Traitor
+$Message: You will pay for your treason pilot.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_Traitor.wav
+
+$Name: Traitor
+$Message: You have tested our patience long enough Terran.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_Traitor.wav
+
+$Name: Traitor
+$Message: All Terran pilots, shoot to kill Alpha One.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_Traitor.wav 
+
+;; YES ...............................................................................
+
+$Name: yes
+$Message: Affirmative Sir.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_yes.wav
+
+$Name: yes
+$Message: I'm on it.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_yes.wav
+
+$Name: yes
+$Message: Roger that Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_yes.wav
+
+$Name: yes
+$Message: Yes Sir.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_yes.wav
+
+$Name: yes
+$Message: Yes Sir.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_yes.wav
+
+$Name: yes
+$Message: As you wish.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_yes.wav
+
+;; SUPPORT SHIP SECTION ..............................................................
+
+$Name: On Way
+$Message: Roger Sir, on our way.
++Persona: Support Ship
++Avi Name: Head-TP1
++Wave Name: S_onway.wav
+
+$Name: Rearm On Way
+$Message: We're already on our way, Sir.
++Persona: Support Ship
++Avi Name: Head-TP1
++Wave Name: S_onway2.wav
+
+$Name: 	Rearm warping in
+$Message: Support ship being deployed.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_help.wav
+
+$Name: Repair Done
+$Message: Rearming complete, Sir.
++Persona: Support Ship
++Avi Name: Head-TP1
++Wave Name: S_rearm.wav
+
+$Name: Repair Aborted
+$Message: Rearming sequence aborted.
++Persona: Support Ship
++Avi Name: Head-TP1
++Wave Name: S_abort.wav
+
+$Name: Support Killed
+$Message: Support has been destroyed.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_S_Dead.wav 
+
+; MISC TERRAN COMMAND
+
+$Name: All Alone
+$Message: Alpha1 your all alone. No reinforcements available.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: TC_Loner.wav
+
+$Name: Instructor Hit
+$Message: You are firing on friendly targets pilot.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_oops1.wav
+
+$Name: Instructor Attack
+$Message: Have you lost your mind?  Training is terminated!  Return to base.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_oops2.wav
+
+$Name: Stray Warning
+$Message: You are ordered to return at once pilot.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_stray.wav
+
+$Name: Stray Warning Final
+$Message: Pilot, you are being removed from battle because of your insubordination.
++Persona: Terran Command
++Avi Name: Head-CM1
++Wave Name: TC_strayfinal.wav
+
+#End
+
+/*  ****NOT SUPPORTED BUT IN MissionMessage.cpp Anyhow... *****
+
+----NEW WINGMAN DATA--------------------------------------------------------
+
+;; DOCK MSG FOR LARGE SHIP ONLY, UNIQUE PERSONA NEEDED
+
+$Name: Docking start
+$Message: Moving in to dock, Sir.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_in2dock.wav
+
+;;********* This is listed as "Permission" in the MissionMessage.cpp but tha
+;;   Should be changed to Request 1, Request 2 and Request 3 when implemented.
+;; READY TO ENGAGE (1/3) [not supported]......................................................................
+
+$Name: Request 1
+$Message: I'm ready to go!
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_request1.wav
+
+$Name: Request 1
+$Message: I'm ready when you are Sir.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_request1.wav
+
+$Name: Request 1
+$Message: I'm ready when you are Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_request1.wav
+
+$Name: Request 1
+$Message: Request permission to engage enemy.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_request1.wav
+
+$Name: Request 1
+$Message: Ready to engage Sir.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_request1.wav
+
+$Name: Request 1
+$Message: Ready to engage.
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_request1.wav
+
+;; READY TO ENGAGE (2/3) [not supported]......................................................................
+
+$Name: Request 2
+$Message: Request permission to engage enemy.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_request2.wav
+
+$Name: Request 2
+$Message: What are you waiting for? Let's go!
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_request2.wav
+
+$Name: Request 2
+$Message: It's time to engage Sir.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_request2.wav
+
+$Name: Request 2
+$Message: What are you waiting for? Let's go!
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_request2.wav
+
+$Name: Request 2
+$Message: What are you waiting for? Let's go!
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_request2.wav
+
+$Name: Request 2
+$Message: It is time to engage the enemy!
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_request2.wav
+
+;; READY TO ENGAGE (3/3) [not supported]......................................................................
+
+$Name: Request 3
+$Message: Beaking to attack.
++Persona: Wingman 1
++Avi Name: Head-TP1
++Wave Name: 1_request3.wav
+
+$Name: Request 3
+$Message: I'm going after them.
++Persona: Wingman 2
++Avi Name: Head-TP3
++Wave Name: 2_request3.wav
+
+$Name: Request 3
+$Message: I'm going after them.
++Persona: Wingman 3
++Avi Name: Head-TP2
++Wave Name: 3_request3.wav
+
+$Name: Request 3
+$Message: Beaking to attack.
++Persona: Wingman 4
++Avi Name: Head-TP2
++Wave Name: 4_request3.wav
+
+$Name: Request 3
+$Message: Engaging enemy.
++Persona: Wingman 5
++Avi Name: Head-TP1
++Wave Name: 5_request3.wav
+
+$Name: Request 3
+$Message: Breaking to attack!
++Persona: Wingman 6
++Avi Name: Head-VP1
++Wave Name: 6_request3.wav
+
+ 
+#End
+*/

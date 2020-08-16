@@ -133,6 +133,6 @@ constexpr inline uint32_t operator "" _AsBigEndian32(unsigned long long Literal)
 }
 constexpr inline uint32_t operator"" _AsLittleEndian32(unsigned long long Literal)
 {
-	// byteswaps IF we are not BIG-endian
+	// byteswaps IF we are BIG-endian
 	return SCPEndianImpl::to_le(static_cast<uint32_t>(Literal), SCPEndianImpl::be_tag<SCPEndianImpl::isBE::value>{});
 }

@@ -1,0 +1,483 @@
+#End  ; Take this line out to use tooltips
+
+#UI
+
+$Mask Filename: Barracks-m
+
+0,		Create pilot
+5,		Accept
+6,		Help
+7,		Options
+8,		Medals
+11,	Remove
+12,	Set Active
+13,	Clone pilot
+14,	Single Player
+15,	Multi Player
+16,	Convert pilot
+17,	Barracks
+18,	Pilot Stats
+
+$Mask Filename: Brief-m
+0,		Briefing
+1,		Ship Selection
+2,		Weapons Loadout
+5,		Commit
+6,		Help
+7,		Options
+14,	@Close
+
+$Mask Filename: ChoosePilot-M
+
+0,		Create pilot
+11,	Remove
+12,	Set Active
+13,	Clone Pilot
+14,	Single Player
+15,	Multi Player
+16,	Choose Pilot
+
+$Mask Filename: Campaign-M
+4,		Select
+5,		Help
+6,		Options
+7,		Restart Campaign
+8,		Campaigns
+9,		Campaign Information
+
+$Mask Filename: CommandBrief-M
+4,		Help
+5,		Options
+6,		Continue
+8,		GTA Command Briefing
+
+$Mask Filename: ControlConfig-M
+0,		Targeting
+1,		Ship
+2,		Weapons
+3,		Miscellaneous
+6,		Alt
+7,		Shift
+8,		Enable
+9,		Invert
+10,	Cancel
+11,	Undo
+12,	Reset Defaults
+13,	Search Mode
+14,	Bind Mode
+15,	Help
+16,	Accept
+17,	@Conflict
+18,	Clear Conflict
+19,	Clear All
+20,	Clear Selected
+
+$Mask Filename: Credits-M
+0,		Technical Database
+1,		Mission Simulator
+2,		Cutscenes
+3,		Credits
+4,		Exit
+
+$Mask Filename: Debrief-M
+0,		Debriefing
+1,		Statistics
+4,		Replay Mission
+5,		Recommendations
+10,	Help
+11,	Options
+12,	Accept
+18,	@.Medal
+19,	@.Rank
+20,	@.Badge
+21,	Pilot Info
+22,	@Medal
+23,	@Rank
+24,	@Badge
+25,	Kick
+
+$Mask Filename: F1-M
+2,		Options
+3,		Continue
+
+$Mask Filename: Hotkeys-M
+4,		Cancel
+5,		Accept
+6,		Help
+7,		Options
+8,		Clear
+9,		Reset
+10,	Hotkey Assignment
+11,	Key Group
+
+$Mask Filename: HUDConfig-M
+27,	Amber
+28,	Blue
+29,	Green
+30,	On
+31,	Off
+32,	Popup
+36,	Reset
+37,	Accept
+43,	HUD Config
+44,	Brightness
+
+$Mask Filename: LoadMission-M
+0,		Technical Database
+1,		Mission Simulator
+2,		Cutscenes
+3,		Credits
+6,		Single Missions
+7,		Campaign Missions
+8,		Help
+9,		Commit
+10,	Options
+11,	Mission
+12,	Filename
+
+$Mask Filename: Medals-M
+17,	Exit
+
+$Mask Filename: MissionLog-M
+2,		Messages
+3,		Events
+4,		Objectives
+5,		Continue
+6,		Complete
+7,		Incomplete
+8,		Failed
+9,		Mission Log
+
+$Mask Filename: MultiCreate-M
+6,		Missions
+7,		Campaigns
+10,	Cancel
+13,	Accept
+16,	Kick
+17,	Close
+18,	All
+19,	Coop
+20,	Team
+21,	Dogfight
+23,	Create Game
+24,	Players
+25,	Team
+26,	Pilot Information
+27,   Host Options
+
+$Mask Filename: MultiHost-M
+
+0,		Highest Rank
+1,		Team Leader
+2,		Any Player
+3,		Host
+4,		Highest Rank
+5,		Team Leader
+6,		Any Player
+7,		Host
+9,		Highest Rank
+10,	Team Leader
+11,	Any Player
+12,	Host
+14,	On
+15,	Off
+18,	Accept
+25,	AI Orders
+26,	End Mission
+27,	Skill Level
+28,	Observers
+29,	Time Limit
+30,	Respawn Limit
+31,	Kill Limit
+32,	Voice Transmission
+33,	Voice Quality
+34,	Message Duration
+35,	Per Player Voice Wait
+36,	Host Modifies Ships
+37,	Host Setup
+
+$Mask Filename: MultiInGame-M
+0,		Cancel
+1,		Join
+2,		Select Ship
+3,		Name
+4,		Class
+5,		Hull
+6,		Shield
+
+$Mask Filename: MultiJoin-M
+3,		Refresh
+6,		Cancel
+7,		Join
+8,		Help
+9,		Options
+10,	Create Game
+11,	Status
+12,	Server
+13,	Players
+14,	Ping
+15,	Join as Observer
+16,	Join Game
+
+$Mask Filename: MultiJoinWait-M
+2,		Team 1
+3,		Team 2
+4,		Cancel
+8,		Players
+9,		Pilot Information
+
+$Mask Filename: MultiStart-M
+0,		Open
+1,		Closed
+2,		Password Protected
+3,		Restricted
+4,		Allow Rank
+5,		Or Below
+6,		Or Above
+9		Help
+10,	Options
+11,	Accept
+14,	Title
+15,	Game Type
+
+$Mask Filename: MultiSynch-M
+2,		Cancel
+3,		@Launch
+4,		Kick
+5,		Status
+6,		Players
+7,		Status
+
+$Mask Filename: OptionsDetail-M
+0,		Options
+1,		Multi
+2,		Detail
+3,		Exit Game
+5,		Controls Config
+6,		HUD Config
+7,		Accept
+50,	Low
+51,	Medium
+52,	High
+53,	Very High
+54,	Custom
+80,	Engine Glow
+37,	off
+38,	on
+81,	Nebulas
+39,	off
+40,	on
+82,	Target View Rendering
+41,	off
+42,	on
+83,	Effects Alpha Blending
+43,	off
+44,	on
+84,	Preset Detail Levels
+132,	Model Detail
+133,	Model Update
+134,	3D Hardware Textures
+135,	Weapon Rendering
+136,	Impact Effects
+137,	Shield Hit Effect
+138,	Stars
+139,	Particles
+140,	Lighting
+
+$Mask Filename: OptionsMain-M
+0,		Options
+1,		Multi
+2,		Detail
+3,		Exit Game
+5,		Controls Config
+6,		HUD Config
+7,		Accept
+70,	Briefing Voice
+58,	off
+59,	on
+62,	Off
+63,	On
+71,	Volume
+72,	Skill Level
+73,	Brightness
+74,	Effects
+75,	Music
+76,	Voice
+77,	Joystick
+78,	Sensitivity
+79,	Dead Zone
+80,	Mouse
+81,	Sensitivity
+
+$Mask Filename: OptionsMultiGen-M
+0,		Options
+1,		Multi
+2,		Detail
+3,		Exit Game
+5,		Controls Config
+6,		HUD Config
+7,		Accept
+85,	Add
+86,	Remove
+89,	Yes
+90,	No
+91,	VMT
+92,	Voice
+93,	General
+94,	Low
+95,	Medium
+96,	High
+97,	Yes
+98,	No
+99,	/Multidata
+100,	/Missions
+101,	Never
+102,	Before Game
+120,	IP Address
+121,	Broadcast Locally
+122,	Login
+123,	Password
+124,	Object Update
+125,	Pilot / Squad Images
+126,	Transfer Missions
+127,	Flush Cache
+
+$Mask Filename: OptionsMultiVox-M
+0,		Options
+1,		Multi
+2,		Detail
+3,		Exit Game
+5,		Controls Config
+6,		HUD Config
+7,		Accept
+85,	Add
+86,	Remove
+89,	Yes
+90,	No
+91,	VMT
+92,	Voice
+93,	General
+105,	On
+106,	Off
+107,	Mute
+120,	IP Address
+121,	Broadcast Locally
+122,	Login
+123,	Password
+128,	Mic Test
+129,	Quality
+130,	Voice Transmission
+131,	Ignore
+
+$Mask Filename: Password-M
+0,		Cancel
+1,		Commit
+2,		Enter Password
+
+$Mask Filename: MPPause-M
+2,		Exit Mission
+4,		Mission Paused
+
+$Mask Filename: PilotInfo-M
+3,		Close
+4,		Pilot Information
+5,		Stats
+
+$Mask Filename: RedAlert-M
+4,		Continue
+5,		Replay Mission
+6,		Briefing
+
+$Mask Filename: ShipSelect-M
+0,		Briefing
+1,		Ship Selection
+2,		Weapons Loadout
+5,		Commit
+6,		Help
+7,		Options
+39,	Reset 
+40,	Available Ships
+41,	Type
+42,	Length
+43,	Max Velocity
+44,	Maneuverability
+45,	Armor
+46,	Gun Mounts
+47,	Missile Banks
+48,	Manufacturer
+49,	@ship_name
+50,	@ship_Type
+53,	@ship_Maneuverability
+54,	@ship_Armor
+57,	@ship_Manufacturer
+58,	@ship_desc
+
+$Mask Filename: TeamSelect-M
+0,		Briefing
+1,		Ship Selection
+2,		Weapons Loadout
+9,		Commit
+34,	Lock Players
+35,	Ship Information
+36,	Available Ships
+37,	Alpha
+38,	Beta
+39,	Gamma
+
+$Mask Filename: TechData-M
+0,		Technical Database
+1,		Mission Simulator
+2,		Cutscenes
+3,		Credits
+4,		Ships
+5,		Weapons
+6,		Species
+13,	Help
+14,	Options
+15,	Continue
+20,	GTA Technical Database
+
+$Mask Filename: TechShipData-M
+0,		Technical Database
+1,		Mission Simulator
+2,		Cutscenes
+3,		Credits
+4,		Ships
+5,		Weapons
+6,		Species
+13,	Help
+14,	Options
+15,	Continue
+20,	GTA Technical Database
+21,	Ships
+
+$Mask Filename: ViewFootage-M
+0,		Technical Database
+1,		Mission Simulator
+2,		Cutscenes
+3,		Credits
+6,		Play
+7,		Exit
+8,		Help
+9,		Options
+10,	Cutscene Description
+
+$Mask Filename: WeaponLoadout-M
+0,		Briefing
+1,		Ship Selection
+2,		Weapons Loadout
+5,		Commit
+6,		Help
+7,		Options
+39,	Reset
+40,	@weapon_name
+41,	@weapon_desc
+
+
+
+#Ships
+
+#Weapons
+
+#End
+     

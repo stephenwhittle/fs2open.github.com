@@ -1,0 +1,15 @@
+#Debriefing_info
+
+$Num stages: 1
+
+$Formula: ( true ) 
+$Multi text
+   Willfully firing on allied ships is a capital offense, punishable by death.  You are hereby stripped of your rank and your citizenship in the GTA.  You will appear at 0700 hours at the League of Defense Justice Ministry for your court martial.
+
+$end_multi_text
+$Voice: traitor_debrief.wav
+
+$Recommendation text:
+   Don't fire upon friendly ships.
+
+$end_multi_text
