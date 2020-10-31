@@ -188,8 +188,10 @@ public:
 	SCPCFilePathTypeID GetDirectoryType() { return dir_type; }
 	//todo: refactor this into a free function that operates on SCP_buffers and some kind of 
 	//non-owning view
-	SCP_buffer UTF8Normalize();
-	void Decrypt(class SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType);
+	//UTF8Normalize should be the free function as well as decrypt
+	//This function is now CFile-Specific
+	SCP_buffer LoadAsText();
+	void DecryptBuffer(class SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType);
 
 	std::uintmax_t GetSize();
 	template<typename DestinationType>

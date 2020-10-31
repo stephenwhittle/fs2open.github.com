@@ -44,42 +44,42 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	bool HasByteAbove7F = false;
 	bool Has8859ControlCharacters = false;
 	bool ValidatesAsUTF8 = true;
-	char PreviousByte = 0;
+	unsigned char PreviousChar = 0;
 
-	auto ValidateUTF8 = [&ValidatesAsUTF8, &PreviousByte](uint8_t Byte)
+	auto ValidateUTF8 = [&ValidatesAsUTF8, &PreviousChar](unsigned char NextChar)
 	{
 		if (
 			ValidatesAsUTF8 &&
-			(Byte == 0x00) ||
-			(Byte == 0xC0) ||
-			(Byte == 0xC1) ||
-			((Byte >= 0xF5) && (Byte <= 0xFF))
+			(NextChar == 0x00) ||
+			(NextChar == 0xC0) ||
+			(NextChar == 0xC1) ||
+			((NextChar >= 0xF5) && (NextChar <= 0xFF))
 			)
 		{
 			ValidatesAsUTF8 = false;
 		}
 		//Check that tail bytes (0x80-0xBF) are preceded by 0xC2-0xF4 OR a tail byte
-		if ((Byte >= 0x80) && (Byte <= 0xBF))
+		if ((NextChar >= 0x80) && (NextChar <= 0xBF))
 		{
 			if (
-				!((PreviousByte >= 0x80) && (PreviousByte <= 0xBF)) &&
-				!((PreviousByte >= 0xC2) && (PreviousByte <= 0xF4))
+				!((PreviousChar >= 0x80) && (PreviousChar <= 0xBF)) &&
+				!((PreviousChar >= 0xC2) && (PreviousChar <= 0xF4))
 				)
 			{
 				ValidatesAsUTF8 = false;
 			}
 		}
 	};
-	auto ValidateWindowsLatin = [&Has8859ControlCharacters](uint8_t Byte)
+	auto ValidateWindowsLatin = [&Has8859ControlCharacters](unsigned char NextChar)
 	{
-		if ((Byte >= 0x80) && (Byte <= 0x9F))
+		if ((NextChar >= 0x80) && (NextChar <= 0x9F))
 		{
 			Has8859ControlCharacters = true;
 		}
 	};
-	auto ValidateASCII = [&HasByteAbove7F](uint8_t Byte)
+	auto ValidateASCII = [&HasByteAbove7F](unsigned char NextChar)
 	{
-		if (Byte > 0x7F)
+		if (NextChar > 0x7F)
 		{
 			HasByteAbove7F = false;
 		}
@@ -87,12 +87,12 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	//iterate through all the other characters in the file
 	for (uint32_t ByteIndex = 0; ByteIndex < Size; ByteIndex++)
 	{
-		uint8_t Byte = Buffer[ByteIndex];
+		unsigned char Byte = Buffer[ByteIndex];
 		ValidateUTF8(Byte);
 		//Check that the character is in the valid UTF8 range
 		ValidateWindowsLatin(Byte);
 		ValidateASCII(Byte);
-		PreviousByte = Byte;
+		PreviousChar = Byte;
 	}
 
 	if (ValidatesAsUTF8)
@@ -123,12 +123,15 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	switch (Magic)	
 	{
 	case 0xdeadbeef_AsLittleEndian32:
+		SeekAbsolute(OldFilePosition);
 		return CFileEncryptionMagic::OldSignature;
 		break;
 	case 0x5c331a55_AsLittleEndian32:
+		SeekAbsolute(OldFilePosition);
 		return CFileEncryptionMagic::NewSignature;
 		break;
 	case 0xcacacaca_AsLittleEndian32:
+		SeekAbsolute(OldFilePosition);
 		return CFileEncryptionMagic::EightBitSignature;
 		break;
 	default:
@@ -138,7 +141,7 @@ CFILE::CFileEncryptionMagic CFILE::DetectFileEncryption()
 	return CFileEncryptionMagic::NotEncrypted;
 }
 
-SCP_buffer CFILE::UTF8Normalize()
+SCP_buffer CFILE::LoadAsText()
 {
 	std::uintmax_t OldPosition = Tell();
 	SeekAbsolute(0);
@@ -191,7 +194,7 @@ SCP_buffer CFILE::UTF8Normalize()
 	}
 	
 	if (FileEncryption != CFileEncryptionMagic::NotEncrypted) {
-		Decrypt(FileContents, FileEncryption);
+		DecryptBuffer(FileContents, FileEncryption);
 	}
 
 
@@ -277,11 +280,7 @@ std::uintmax_t CFILE::Tell()
 }
 
 
-//	input:	scrambled_text	=>	scrambled text
-//				scrambled_len	=>	number of bytes of scrambled text
-//				text				=>	storage for unscrambled ascii data
-//				text_len			=>	actual number of bytes of unscrambled data
-void CFILE::Decrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType)
+void CFILE::DecryptBuffer(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic EncryptionType)
 {
 	if (EncryptionType == CFILE::CFileEncryptionMagic::NewSignature)
 	{
@@ -289,7 +288,6 @@ void CFILE::Decrypt(SCP_buffer& scrambled_text, CFILE::CFileEncryptionMagic Encr
 		return;
 	}
 
-	int i, num_runs;
 	int byte_offset = 0;
 	char maybe_last = 0;
 

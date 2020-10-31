@@ -27,7 +27,6 @@
  #include <sys/stat.h>
 #endif
 
-#include "globalincs/alphacolors.h"
 #include "globalincs/crashdump.h"
 #include "globalincs/mspdb_callstack.h"
 #include "globalincs/version.h"
@@ -41,7 +40,6 @@
 #include "asteroid/asteroid.h"
 #include "autopilot/autopilot.h"
 #include "bmpman/bmpman.h"
-#include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
 #include "cmeasure/cmeasure.h"
 #include "cutscene/cutscenes.h"
