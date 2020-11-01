@@ -3,7 +3,7 @@ INCLUDE(source_groups.cmake)
 
 INCLUDE(voice_rec.cmake)
 
-ADD_LIBRARY(code STATIC ${source_files} ${VOICE_REC_FILES})
+ADD_LIBRARY(code STATIC ${source_files} ${VOICE_REC_FILES} "core_interface/SCPStrongInteger.h")
 
 target_compile_features(code PUBLIC ${REQUIRED_CXX_FEATURES})
 
@@ -106,6 +106,10 @@ target_link_libraries(code PUBLIC module)
 
 target_link_libraries(code PUBLIC vulkan-hpp)
 
+#add_subdirectory(bmpman)
+
+#target_link_libraries(code PUBLIC bmpman)
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)
@@ -141,6 +145,7 @@ else()
 		MESSAGE("Unknown compiler for global includes. This will probably break the build.")
 	ENDIF()
 endif()
+
 
 if (FSO_RELEASE_LOGGING)
 	target_compile_definitions(code PUBLIC SCP_RELEASE_LOGGING)

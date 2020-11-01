@@ -1,16 +1,14 @@
 #include "localization/SCPLanguageTable.h"
 #include "parse/SCPTableFormatDescriptor.h"
 
-
+// clang-format off
 const DeserializationHandlers<SCPLanguageConfiguration> SCPTableBase<SCPLanguageConfiguration>::Deserializers = 
 {
-	{SCPTableFormatDescriptor::GetVariableName("$Language"),
-	 DeserializeToField(&SCPLanguageConfiguration::Language)},
+	{SCPTableFormatDescriptor::GetVariableName("$Language"), DeserializeToField(&SCPLanguageConfiguration::Language)},
 	{SCPTableFormatDescriptor::GetVariableName("+Extension"), DeserializeToField(&SCPLanguageConfiguration::Extension)},
-	{SCPTableFormatDescriptor::GetVariableName("+Special Character Index"), 
-		DeserializeToField(&SCPLanguageConfiguration::SpecialCharacterIndex)}
+	{SCPTableFormatDescriptor::GetVariableName("+Special Character Index"), DeserializeToField(&SCPLanguageConfiguration::SpecialCharacterIndex)}
 };
-
+// clang-format on
 
 void CreateLanguageConfiguration(SCPLanguageTable* ClassInstance, const SCPParsedTableData& InData)
 {

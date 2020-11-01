@@ -22,7 +22,7 @@
 #endif
 
 #include "bmpman/bmpman.h"
-
+#include "SCPLimits.h"
 #include <array>
 
 /**

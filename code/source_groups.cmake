@@ -42,12 +42,6 @@ add_file_folder("Autopilot"
 	autopilot/autopilot.h
 )
 
-# Bmpman files
-add_file_folder("Bmpman"
-	bmpman/bm_internal.h
-	bmpman/bmpman.cpp
-	bmpman/bmpman.h
-)
 
 # Camera files
 add_file_folder("Camera"

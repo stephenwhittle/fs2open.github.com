@@ -3,15 +3,23 @@
 #include "peglib.h"
 #include "tl/optional.hpp"
 
-///These operators concatenate two grammar symbols into a sequence
-///overloads are included to prepend and append symbols into a sequence as well as joining the elements of two sequences into a new sequence
+/// <summary>
+/// Concatenate two grammar symbols into a sequence
+/// Overloads are included to prepend and append symbols into a sequence, as well as concatenating two sequences into a
+/// new sequence
+/// </summary>
+/// <param name="a">The first symbol or sequence</param>
+/// <param name="b">The second symbol or sequence</param>
+/// <returns>A new sequence containing elements from both A and B, in that order</returns>
 std::shared_ptr<peg::Sequence> operator& (const std::shared_ptr<peg::Sequence>& a, const std::shared_ptr<peg::Ope>& b);
 std::shared_ptr<peg::Sequence> operator& (const std::shared_ptr<peg::Ope>& a, const std::shared_ptr<peg::Sequence>& b);
 std::shared_ptr<peg::Sequence> operator& (const std::shared_ptr<peg::Sequence>& a, const std::shared_ptr<peg::Sequence>& b);
 std::shared_ptr<peg::Sequence> operator& (const std::shared_ptr<peg::Ope>& a, const std::shared_ptr<peg::Ope>& b);
 
 
+/// <summary>
 /// Object containing a grammar describing the file format for a modular table
+/// </summary>
 class SCPTableFormatDescriptor
 {
 

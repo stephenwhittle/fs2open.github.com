@@ -10,17 +10,17 @@
 #ifndef _GRAPHICS_H
 #define _GRAPHICS_H
 
-#include "globalincs/flagset.h"
+//#include "globalincs/flagset.h"
 #include "FSColorTypes.h"
-#include "globalincs/pstypes.h"
+//#include "globalincs/pstypes.h"
 
-#include "bmpman/bmpman.h"
-#include "cfile/cfile.h"
+//#include "bmpman/bmpman.h"
+#include "cfile/SCPCFile.h"
 #include "graphics/grinternal.h"
 #include "graphics/tmapper.h"
 #include "io/cursor.h"
-#include "math/vecmat.h"
-#include "osapi/osapi.h"
+//#include "math/vecmat.h"
+//#include "osapi/osapi.h"
 
 // Forward definition
 namespace graphics {

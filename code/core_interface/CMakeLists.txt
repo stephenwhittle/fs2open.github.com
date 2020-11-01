@@ -12,3 +12,11 @@ if (FS2_ENABLE_PROFILING)
 	else()
 	set(OPTICK_ENABLED OFF CACHE STRING "" FORCE)
 endif()
+
+option(FS2_GENERATE_XML_DOC "Generate XML documentation" OFF)
+
+if (FS2_GENERATE_XML_DOC)
+	if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+		target_compile_options(core INTERFACE "/doc")
+	endif()
+endif()

@@ -80,6 +80,7 @@ void lcl_get_language_name(char *lang_name);
 
 // set our current language
 void lcl_set_language(int lang);
+/*
 
 void lcl_stuff_string(SCP_string& outstr, int type, const char* terminators);
 
@@ -91,6 +92,7 @@ void lcl_stuff_string_line(char* outstr, int len);
 
 // get a fonts special characters index
 ubyte lcl_get_font_index(int font_num);
+*/
 
 // NOTE : generally you should only care about the above functions. Below are very low level functions
 //        which should already be well entrenched in FreeSpace. If you think you need to use one of the below

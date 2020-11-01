@@ -7,6 +7,10 @@
 //TODO: @SCPApplication refactor FredRunning into some other kind of thing, preferably a global function or static member function for SCPApp?
 extern int Fred_running;  // Is Fred running, or FreeSpace?
 extern int Lcl_current_lang;
+
+/// <summary>
+/// Core singleton class, contains raw command-line args and configuration paths
+/// </summary> 
 class SCPApplication
 {
 private:

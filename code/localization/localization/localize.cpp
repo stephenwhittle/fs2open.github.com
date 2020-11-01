@@ -22,6 +22,7 @@
 #include "SCPApplication.h"
 #include "SCPCmdOptions.h"
 #include "SCPModTable.h"
+#include "SCPCompiler.h"
 #include "cfile/SCPCFileInfo.h"
 #include "cfile/SCPCFileModule.h"
 #include "filesystem/SCPPath.h"
@@ -129,18 +130,12 @@ void lcl_init(int lang_init)
 
 	tl::optional<SCPCFileInfo> StringTableInfo = CFileModule->FindFileInfo("strings.tbl", SCPCFilePathTypeID::Tables);
 	if (StringTableInfo.has_value()) {
-		auto StringTableCFile = CFileModule->CFileOpen(StringTableInfo.value(), {SCPCFileMode::Read});
-		auto FileEncryptionType = StringTableCFile->DetectFileEncryption();
-		SCP_buffer RootStringTableBuffer(StringTableCFile->GetSize() - 4);
-		StringTableCFile->SeekAbsolute(4);
-		StringTableCFile->ReadBytes(RootStringTableBuffer.Data(), RootStringTableBuffer.Size);
-		if (FileEncryptionType != CFILE::CFileEncryptionMagic::NotEncrypted) {
-			CFileModule->DecryptBuffer(RootStringTableBuffer, FileEncryptionType);
-		}
+		auto RootStringTableCFile = CFileModule->CFileOpen(StringTableInfo.value(), {SCPCFileMode::Read});
+		
 
 		// moving the buffer into the function as we don't require it afterwards
 		tl::optional<SCPLanguageTable> LanguageTableData = SCPParser::CreateBaseTable<SCPLanguageTable>(
-			LanguagesFile, std::move(RootStringTableBuffer), "strings.tbl");
+			LanguagesFile, RootStringTableCFile->LoadAsText(), "strings.tbl");
 
 		FileFilter StringTableFiles;
 		StringTableFiles.PathTypeIs(SCPCFilePathTypeID::Tables);
@@ -149,8 +144,10 @@ void lcl_init(int lang_init)
 
 		for (SCPCFileInfo StringTableFileInfo : CFileModule->CFileDatabase().Files(StringTableFiles))
 		{
-			SCP_buffer StringTableBuffer = read_file_text(StringTableFileInfo.GetFullPath().c_str(), CF_TYPE_TABLES);
-			SCPParser::LoadIntoTable(*LanguageTableData, LanguagesFile, std::move(StringTableBuffer),
+			auto StringTableCFile = CFileModule->CFileOpen(StringTableFileInfo, {SCPCFileMode::Read});
+
+
+			SCPParser::LoadIntoTable(*LanguageTableData, LanguagesFile, StringTableCFile->LoadAsText(),
 									 StringTableFileInfo.GetFullPath().filename());
 		}
 
@@ -229,7 +226,7 @@ void lcl_close()
 // parses the string.tbl to see which languages are supported. Doesn't read in any strings.
 void parse_stringstbl_quick(const char* filename)
 {
-	lang_info language;
+	/*lang_info language;
 	int lang_idx;
 	int i;
 
@@ -300,14 +297,14 @@ void parse_stringstbl_quick(const char* filename)
 	{
 		mprintf(("WMCGUI: Unable to parse '%s'!  Error message = %s.\n", filename, e.what()));
 		return;
-	}
+	}*/
 }
 
 // Unified function for loading strings.tbl and tstrings.tbl (and their modular versions).
 // The "external" parameter controls which format to load: true for tstrings.tbl, false for strings.tbl
 void parse_stringstbl_common(const char* filename, const bool external)
 {
-	char chr, buf[4096];
+	/*char chr, buf[4096];
 	char language_tag[512];
 	int z, index;
 	char* p_offset = NULL;
@@ -438,7 +435,7 @@ void parse_stringstbl_common(const char* filename, const bool external)
 			}
 
 			// write into Xstr_table (for strings.tbl) or Lcl_ext_str (for tstrings.tbl)
-			/*if (Parsing_modular_table) {
+			/ *if (Parsing_modular_table) {
 				if ( external && (Lcl_ext_str.find(index) != Lcl_ext_str.end()) ) {
 					vm_free((void *) Lcl_ext_str[index]);
 					Lcl_ext_str.erase(Lcl_ext_str.find(index));
@@ -446,7 +443,7 @@ void parse_stringstbl_common(const char* filename, const bool external)
 					vm_free((void *) Xstr_table[index].str);
 					Xstr_table[index].str = NULL;
 				}
-			}*/
+			}* /
 
 			if (external && (Lcl_ext_str.find(index) != Lcl_ext_str.end()))
 			{
@@ -500,7 +497,7 @@ void parse_stringstbl_common(const char* filename, const bool external)
 	{
 		mprintf(("TABLES: Unable to parse 'controlconfigdefaults.tbl'!  Error message = %s.\n", e.what()));
 		return;
-	}
+	}*/
 }
 
 void parse_stringstbl(const char* filename)
