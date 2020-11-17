@@ -84,7 +84,7 @@ public:
 	
 	void DumpOpenedFileList();
 	//Deprecated. Use CFileDatabase().AddRoot() instead
-	uint32_t AddRoot(class SCPRootInfo Root);
+	uint64_t AddRoot(class SCPRootInfo Root);
 	//need to delete the copy constructor too
 	static SCPCFileModule ConstructModule(SCPCmdlineModule& Dependency, SCPFilesystemModule& FSDependency)
 	{

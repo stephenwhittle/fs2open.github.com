@@ -38,12 +38,12 @@ std::shared_ptr<peg::Sequence> operator&(const std::shared_ptr<peg::Ope>& a, con
 
 SCPTableFormatDescriptor::SCPTableFormatDescriptor()
 {
-	g["Comment"] <= peg::tok(peg::seq(peg::chr(';'), peg::zom(peg::ncls("\r\n")), peg::cls("\r\n")));
+	g["Comment"] <= peg::tok(peg::seq(peg::zom(peg::cls(" \t")),peg::chr(';'), peg::zom(peg::ncls("\r\n")), peg::oom(peg::cls("\r\n"))));
 	g["Comment"].name = "Comment";
 
 	g[peg::WHITESPACE_DEFINITION_NAME] <= OneOf(
-		peg::zom(peg::cls(" \t\r\n")),
-		g["Comment"]
+		peg::oom(g["Comment"]),
+		peg::zom(peg::cls(" \t\r\n"))
 	);
 	g["Number"] <=
 		peg::opt(peg::chr('-'))
@@ -89,6 +89,7 @@ SCPTableFormatDescriptor::SCPTableFormatDescriptor()
 	g["Boolean"] <=
 		OneOf(g["True"], g["False"]);
 
+	//TODO: @SCPTableFormatDescriptor remove trailing spaces and tabs from strings
 	g["String"] <=
 		peg::tok(peg::oom(peg::ncls("$:#;+\r\n")));
 
@@ -108,7 +109,7 @@ std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::OptionalVariable(const std::
 {
 	std::string MangledVariableName = GetVariableName(VariableName);
 
-	g[MangledVariableName] <= peg::seq(Literal(VariableName), peg::ign(g["VarSeparator"]), g["Value"]);
+	g[MangledVariableName] <= peg::seq(Literal(VariableName), peg::ign(g["VarSeparator"]), g["Value"], peg::ign(g[peg::WHITESPACE_DEFINITION_NAME]));
 	g[MangledVariableName].name = MangledVariableName;
 	return peg::opt(g[MangledVariableName]);
 }
@@ -117,7 +118,7 @@ std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::RequiredVariable(const std::
 {
 	std::string MangledVariableName = GetVariableName(VariableName);
 
-	g[MangledVariableName] <= peg::seq(Literal(VariableName), peg::ign(g["VarSeparator"]), g["Value"]);
+	g[MangledVariableName] <= peg::seq(Literal(VariableName), peg::ign(g["VarSeparator"]), g["Value"], peg::ign(g[peg::WHITESPACE_DEFINITION_NAME]));
 	g[MangledVariableName].name = MangledVariableName;
 	return g[MangledVariableName];
 }
@@ -153,10 +154,10 @@ std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::Section(const std::string Se
 
 	g[MangledSectionName] <= peg::csc(
 		peg::seq(
-			peg::seq(peg::chr('#'), CaptureOp),
+			peg::seq(peg::chr('#'), CaptureOp, peg::ign(g[peg::WHITESPACE_DEFINITION_NAME])),
 			Contents,
-			peg::seq(Literal("#End"), Optional(peg::bkr(SectionName)))
-		));
+			peg::seq(Literal("#End"), Optional(peg::bkr(SectionName)), peg::ign(g[peg::WHITESPACE_DEFINITION_NAME])
+		)));
 	g[MangledSectionName].name = MangledSectionName;
 	return g[MangledSectionName];
 }
@@ -182,8 +183,8 @@ void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const s
 	auto& rule = g[RuleName];
 	size_t prev_pos = 0;
 	rule.tracer_enter = [&](const char* name, const char* s, size_t /*n*/,
-		const peg::SemanticValues& /*sv*/, const peg::Context& c,
-		const peg::any& /*dt*/) {
+		const peg::SemanticValues& sv, const peg::Context& c,
+		const peg::any& dt) {
 			auto pos = static_cast<size_t>(s - c.s);
 			auto backtrack = (pos < prev_pos ? "*" : "");
 			std::string indent;

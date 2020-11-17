@@ -8,6 +8,7 @@ set (test_sources
 	filesystem/filesystem.cpp
 	log/log.cpp
 	color/color.cpp
+	asteroid/asteroid.cpp
 )
 
 list (TRANSFORM test_sources PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/")

@@ -30,12 +30,6 @@ add_file_folder("Anim"
 	anim/packunpack.h
 )
 
-# Asteroid files
-add_file_folder("Asteroid"
-	asteroid/asteroid.cpp
-	asteroid/asteroid.h
-)
-
 # Autopilot files
 add_file_folder("Autopilot"
 	autopilot/autopilot.cpp

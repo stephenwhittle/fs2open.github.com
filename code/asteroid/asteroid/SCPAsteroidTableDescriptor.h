@@ -16,7 +16,7 @@ auto AsteroidDataEntry = AsteroidsFile.Define(
 	AsteroidsFile.RequiredVariable("$Name") & 
 	AsteroidsFile.RequiredVariable("$POF file1") &
 	AsteroidsFile.RequiredVariable("$POF file2") & 
-	AsteroidsFile.RequiredVariable("$POF file3") &
+	AsteroidsFile.OptionalVariable("$POF file3") &
 	AsteroidsFile.RequiredVariable("$Detail distance") &
 	AsteroidsFile.RequiredVariable("$Max Speed") & 
 	AsteroidsFile.OptionalVariable("$Damage Type") &
@@ -35,8 +35,8 @@ auto AsteroidGrouping = AsteroidsFile.Define("AsteroidDataGroup",
 	AsteroidDataEntry);
 
 auto AsteroidsTable = AsteroidsFile.Define("Root", 
-	AsteroidsFile.Section("Asteroid Types") &
-	AsteroidsFile.ListOf(AsteroidGrouping, false) &
+	AsteroidsFile.Section("Asteroid Types",
+		AsteroidsFile.ListOf(AsteroidGrouping, false)) &
 	AsteroidsFile.RequiredVariable("$Impact Explosion") &
 	AsteroidsFile.RequiredVariable("$Impact Explosion Radius") &
 	AsteroidsFile.OptionalVariable("$Briefing Icon Closeup Model") &

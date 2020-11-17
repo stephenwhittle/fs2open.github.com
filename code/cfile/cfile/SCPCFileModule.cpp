@@ -69,7 +69,7 @@ void SCPCFileModule::DumpOpenedFileList()
 	}*/
 }
 
-uint32_t SCPCFileModule::AddRoot(SCPRootInfo Root) 
+uint64_t SCPCFileModule::AddRoot(SCPRootInfo Root) 
 {
 	return CFileDatabase().AddRoot(Root);
 }

@@ -192,8 +192,8 @@ public:
 	
 	SCPCFileDatabase();
 
-	uint32_t AddRoot(class SCPRootInfo NewRoot);
-	uint32_t AddFile(class SCPCFileInfo NewFile);
+	uint64_t AddRoot(class SCPRootInfo NewRoot);
+	uint64_t AddFile(class SCPCFileInfo NewFile);
 	tl::optional<SCPRootInfo> GetRootByID(uint32_t RootUID);
 
 	tl::optional<SCPCFileInfo> GetFileByID(uint32_t FileUID);

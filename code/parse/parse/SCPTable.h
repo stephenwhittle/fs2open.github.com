@@ -97,6 +97,10 @@ public:
 	{
 		PropertyValues.push_back(InitialValue);
 	}
+	operator bool()
+	{
+		return PropertyValues.size() > 0;
+	}
 	operator tl::optional<T> &()
 	{
 		if (PropertyValues.size() > 0)

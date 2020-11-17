@@ -148,7 +148,7 @@
 	sqlite3_create_function(InternalDB.getHandle(), "regexp", -1, SQLITE_UTF8, nullptr, RegexMatch, nullptr, nullptr);
 }
 
-uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
+uint64_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 {
 	if (NewRoot.Type != SCPRootType::InMemory) {
 		if (!SCPFile::Exists(NewRoot.Path.string()))
@@ -175,7 +175,7 @@ uint32_t SCPCFileDatabase::AddRoot(SCPRootInfo NewRoot)
 	return InternalDB.getLastInsertRowid();
 }
 
-uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
+uint64_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 {
 	FS2_PROF_EVENT();
 	GOutputDevice->Message("Adding File %s\r\n", NewFile.GetFileName());
@@ -189,7 +189,7 @@ uint32_t SCPCFileDatabase::AddFile(SCPCFileInfo NewFile)
 		 static_cast<intmax_t>(NewFile.size),
 		 static_cast<intmax_t>(NewFile.pack_offset),
 		 NewFile.real_name.string(),
-		 (uintptr_t)NewFile.data);
+		 (long long)(NewFile.data));
 	AddFileStatement.exec();
 	AddFileStatement.reset();
 	AddFileStatement.clearBindings();

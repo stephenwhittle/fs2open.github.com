@@ -110,6 +110,9 @@ target_link_libraries(code PUBLIC vulkan-hpp)
 
 #target_link_libraries(code PUBLIC bmpman)
 
+add_subdirectory(asteroid)
+
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)
