@@ -62,6 +62,7 @@ class SCPCmdLineOption : public tl::optional<T>
 
 public:
 	using tl::optional<T>::operator=;
+	using tl::optional<T>::operator==;
 	SCPCmdLineOption(const char* Name, const char* HelpText, bool FSOOnly, OptionsCategory Category = OptionsCategory::Misc, FlagGroup Group = FlagGroup::None)
 		: tl::optional<T>(),
 		Name(Name),

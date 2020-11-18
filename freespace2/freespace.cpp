@@ -27,6 +27,15 @@
  #include <sys/stat.h>
 #endif
 
+// Refactored includes
+#include "module/SCPModuleManager.h"
+#include "cmdline/SCPCmdlineModule.h"
+#include "cmdline/SCPCmdLine.h"
+
+
+
+
+
 #include "globalincs/crashdump.h"
 #include "globalincs/mspdb_callstack.h"
 #include "globalincs/version.h"
@@ -6383,15 +6392,21 @@ int game_main(int argc, char *argv[])
 	tmp_mem = nullptr;
 #endif // _WIN32
 
+	tl::optional<SCPCmdlineModule&> CmdlineModule;
 
-	if ( !parse_cmdline(argc, argv) ) {
+	//If we couldn't init the cmdline module or it initialized but couldn't parse the cmdline options
+	if (!CmdlineModule || !CmdlineModule->CurrentOptions)
+	{
 		return 1;
 	}
-
-
-	if (Is_standalone){
-		nprintf(("Network", "Standalone running\n"));
+	
+	//using explicit == to compare the value of the optional, not wether the optional has a value
+	if (CmdlineModule->CurrentOptions->bStandalone == true)
+	{
+		//Log Network category, "Standalone running"
 	}
+
+
 
 	game_init();
 
@@ -6403,25 +6418,27 @@ int game_main(int argc, char *argv[])
 	game_stop_time();
 
 	// maybe spew pof stuff
-	if (Cmdline_spew_pof_info) {
+	if (CmdlineModule->CurrentOptions->bPofSpew == true) {
 		game_spew_pof_info();
 		game_shutdown();
 		return 0;
 	}
 
 	// maybe spew VP CRCs, and exit
-	if (Cmdline_verify_vps) {
+	if (CmdlineModule->CurrentOptions->bVerifyVPs == true) {
 		extern void cfile_spew_pack_file_crcs();
 		cfile_spew_pack_file_crcs();
 		game_shutdown();
 		return 0;
 	}
 
-	if (!Is_standalone) {
+	if (!CmdlineModule->CurrentOptions->bStandalone == true)
+	{
 		movie::play("intro.mve");
 	}
 
-	if (Is_standalone) {
+	if (CmdlineModule->CurrentOptions->bStandalone == true)
+	{
 		gameseq_post_event(GS_EVENT_STANDALONE_MAIN);
 	} else {
 		gameseq_post_event(GS_EVENT_GAME_INIT);		// start the game rolling -- check for default pilot, or go to the pilot select screen
