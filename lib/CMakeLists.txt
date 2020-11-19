@@ -65,3 +65,5 @@ add_subdirectory(optick)
 add_subdirectory(doctest)
 
 add_subdirectory(tutf8e)
+
+include(leksysini.cmake)

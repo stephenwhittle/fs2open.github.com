@@ -37,3 +37,6 @@
 [submodule "lib/tutf8e"]
 	path = lib/tutf8e
 	url = https://github.com/nigels-com/tutf8e.git
+[submodule "lib/LeksysINI"]
+	path = lib/LeksysINI
+	url = https://github.com/Lek-sys/LeksysINI.git

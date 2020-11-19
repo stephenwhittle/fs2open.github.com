@@ -11,4 +11,12 @@ class SCPConfigModule : public SCPModule<SCPConfigModule> {
 	{
 		return SCPConfigModule();
 	}
+
+	template<typename ValueType>
+	void WriteConfigValue(class SCP_string SectionName, SCP_string KeyName, ValueType KeyValue);
+
+	template<typename ValueType>
+	tl::optional<ValueType> ReadConfigValue(SCP_string SectionName, SCP_string KeyName);
+
+
 };

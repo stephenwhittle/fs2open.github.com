@@ -1614,13 +1614,12 @@ void game_init()
 	load_filter_info();
 #endif
 
-	// encrypt stuff
-	encrypt_init();
 
 	// Initialize the timer before the os
 	timer_init();
 
-	if (LoggingEnabled) {
+	if (LoggingEnabled)
+	{
 		GOutputDevice->Init();
 	}
 
