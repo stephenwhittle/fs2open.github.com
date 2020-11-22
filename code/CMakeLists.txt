@@ -112,6 +112,8 @@ target_link_libraries(code PUBLIC vulkan-hpp)
 
 add_subdirectory(asteroid)
 
+add_subdirectory(mod_table)
+target_link_libraries(code PUBLIC mod_table)
 
 enable_clang_tidy(code)
 

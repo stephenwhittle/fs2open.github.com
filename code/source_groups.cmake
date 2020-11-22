@@ -590,11 +590,6 @@ add_file_folder("MissionUI"
 	missionui/redalert.h
 )
 
-# mod_table files
-add_file_folder("mod_table"
-	mod_table/mod_table.cpp
-	mod_table/mod_table.h
-)
 
 # Model files
 add_file_folder("Model"

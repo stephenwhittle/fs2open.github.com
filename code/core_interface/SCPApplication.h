@@ -1,12 +1,23 @@
 #pragma once
 #include <vector>
 #include <ghc/fs_fwd.hpp>
+#include "FSStdTypes.h"
 
 #include platform_header_core_SCPGetPrefsPath
 
 //TODO: @SCPApplication refactor FredRunning into some other kind of thing, preferably a global function or static member function for SCPApp?
 extern int Fred_running;  // Is Fred running, or FreeSpace?
 extern int Lcl_current_lang;
+
+
+namespace SCP
+{
+	namespace Constants
+	{
+		const ::SCP_string ConfigFileName = "fs2_open.ini";
+	}
+}
+
 
 /// <summary>
 /// Core singleton class, contains raw command-line args and configuration paths
