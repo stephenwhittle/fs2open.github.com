@@ -265,6 +265,9 @@ void os_deinit();
 // for the app name, which is where registry keys are stored.
 void os_init(const char * wclass, const char * title, const char * app_name)
 {
+
+
+
 	if (app_name == nullptr || !app_name[0])
 	{
 		os_init_registry_stuff(Osreg_company_name, title);

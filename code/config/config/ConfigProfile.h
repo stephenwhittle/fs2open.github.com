@@ -1,49 +1,55 @@
 #pragma once
 #include "FSOutputDeviceBase.h"
-#include "iniparser.hpp"
+#include "FSStdTypes.h"
 #include "filesystem/SCPPath.h"
-
+#include "iniparser.hpp"
+#include "tl/optional.hpp"
 namespace SCP
 {
 	class ConfigProfile
 	{
 	public:
-		ConfigProfile(SCPPath ConfigProfilePath)
+		ConfigProfile(SCPPath ConfigProfilePath) : FilePath(ConfigProfilePath)
 		{
 			if (!UnderlyingFile.Load(ConfigProfilePath.string()))
 			{
-				switch (UnderlyingFile.LastResult().error_code)
+				if (UnderlyingFile.LastResult().error_code == INI_ERR_INVALID_FILENAME)
 				{
-					case INI_ERR_PARSING_ERROR:
-						GOutputDevice->Message("Parse error when loading config profile at {}. Will use safe defaults",
-											   ConfigProfilePath.string());
-						break;
-					case INI_ERR_INVALID_FILENAME:
-						GOutputDevice->Message("Config profile at {} missing. Will use safe defaults",
-											   ConfigProfilePath.string());
-						break;
-					case 0: //No error
-						break;
-					default:
-						GOutputDevice->Message("Unknown error when loading config profile at {}. Will use safe defaults",
-											   ConfigProfilePath.string());
+					GOutputDevice->Message("Config profile at %s missing. Will use defaults\r\n",
+										   ConfigProfilePath.string());
 				}
 			}
 		}
 
 		template<typename ValueType>
-		void WriteConfigValue(class SCP_string SectionName, SCP_string KeyName, ValueType KeyValue)
+		void WriteConfigValue(SCP_string SectionName, SCP_string KeyName, ValueType KeyValue)
 		{
 			UnderlyingFile.GetSection(SectionName)->SetValue(KeyName, KeyValue);
+			Commit();
 		}
 
 		template<typename ValueType>
 		tl::optional<ValueType> ReadConfigValue(SCP_string SectionName, SCP_string KeyName)
 		{
-			UnderlyingFile.GetSection(SectionName).GetValue(KeyName).AsT<ValueType>();
+			INI::Section* CurrentSection = UnderlyingFile.GetSection(SectionName);
+			if (CurrentSection)
+			{
+				for (auto CurrentKey : CurrentSection->GetSectionKeys())
+				{
+					if (CurrentKey == KeyName)
+					{
+						return CurrentSection->GetValue(KeyName).AsT<ValueType>();
+					}
+				}
+			}
+			return {};
 		}
-
+		void Commit()
+		{
+			UnderlyingFile.Save(FilePath);
+		}
 	private:
 		INI::File UnderlyingFile;
+		SCPPath FilePath;
 	};
 } // namespace SCP

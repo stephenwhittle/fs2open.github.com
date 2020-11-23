@@ -3,6 +3,7 @@
 #include "module/SCPModuleBase.h"
 #include "config/ConfigProfile.h"
 #include "SCPApplication.h"
+#include "FSStdTypes.h"
 
 class SCPConfigModule : public SCPModule<SCPConfigModule> {
   public:
@@ -21,15 +22,15 @@ class SCPConfigModule : public SCPModule<SCPConfigModule> {
 	}
 
 	template<typename ValueType>
-	void WriteConfigValue(class SCP_string SectionName, SCP_string KeyName, ValueType KeyValue)
+	void WriteConfigValue( SCP_string SectionName, SCP_string KeyName, ValueType KeyValue)
 	{
-		Config->WriteConfigValue(SectionName, KeyName, KeyValue);
+		Config.WriteConfigValue<ValueType>(SectionName, KeyName, KeyValue);
 	}
 
 	template<typename ValueType>
 	tl::optional<ValueType> ReadConfigValue(SCP_string SectionName, SCP_string KeyName)
 	{
-		return Config->ReadConfigValue(SectionName, KeyName);
+		return Config.ReadConfigValue<ValueType>(SectionName, KeyName);
 	}
 
 private:
