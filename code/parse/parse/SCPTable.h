@@ -173,6 +173,19 @@ auto ReplaceValue(SCPTableProperty<FieldType> ClassType::*Field)
 	};
 }
 
+template<typename ClassType, typename FieldType>
+auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::* Field)
+{
+	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		std::vector<FieldType>& Container = ClassInstance->*Field;
+		tl::optional<FieldType> ParsedValue = construct<FieldType>(InData);
+		if (ParsedValue)
+		{
+			Container.push_back(*ParsedValue);
+		}
+	};
+}
+
 class SCPVersionInfo
 {
 public:

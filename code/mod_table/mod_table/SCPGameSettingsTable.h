@@ -97,7 +97,7 @@ namespace SCP
 	class SoundSettingsSubsection : public SCPTableBase<SoundSettingsSubsection>
 	{
 	public:
-		SoundSettingsSubsection() : DefaultSoundVolume(1.0), DefaultMusicVolume(0.5), DefaultVoiceVolume(0.7) {};
+		SoundSettingsSubsection() : DefaultSoundVolume(1.0f), DefaultMusicVolume(0.5f), DefaultVoiceVolume(0.7f) {};
 		SCPTableProperty<float> DefaultSoundVolume;
 		SCPTableProperty<float> DefaultMusicVolume;
 		SCPTableProperty<float> DefaultVoiceVolume;
@@ -174,6 +174,7 @@ namespace SCP
 			  SexpSettings(SexpSettingsSubsection()),
 			  GraphicsSettings(GraphicsSettingsSubsection()),
 			  NetworkSettings(NetworkSettingsSubsection()),
+			  SoundSettings(SoundSettingsSubsection()),
 			  FredSettings(FredSettingsSubsection()),
 			  OtherSettings(OtherSettingsSubsection()) {};
 		SCPTableProperty<GameSettingsSubsection> GameSettings;
@@ -182,6 +183,7 @@ namespace SCP
 		SCPTableProperty<SexpSettingsSubsection> SexpSettings;
 		SCPTableProperty<GraphicsSettingsSubsection> GraphicsSettings;
 		SCPTableProperty<NetworkSettingsSubsection> NetworkSettings;
+		SCPTableProperty<SoundSettingsSubsection> SoundSettings;
 		SCPTableProperty<FredSettingsSubsection> FredSettings;
 		SCPTableProperty<OtherSettingsSubsection> OtherSettings;
 	};

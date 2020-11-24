@@ -29,13 +29,13 @@ namespace SCP
 		& GameSettingsFile.OptionalVariable("$Default Campaign File Name")
 
 		& GameSettingsFile.Optional(
-			GameSettingsFile.RequiredVariable("#Ignored Campaign File Names")
+			GameSettingsFile.Literal("#Ignored Campaign File Names")
 			& GameSettingsFile.ListOf(
 				GameSettingsFile.RequiredVariable("$Campaign File Name")
 			)
 		)
 		& GameSettingsFile.Optional(
-			GameSettingsFile.RequiredVariable("#Ignored Mission File Names")
+			GameSettingsFile.Literal("#Ignored Mission File Names")
 			& GameSettingsFile.ListOf(
 				GameSettingsFile.RequiredVariable("$Mission File Name")
 			)
@@ -67,16 +67,20 @@ namespace SCP
 		& GameSettingsFile.OptionalVariable("$Shield Pain Flash Factor")
 		& GameSettingsFile.OptionalVariable("$BMPMAN Slot Limit")
 		& GameSettingsFile.Optional(
-			GameSettingsFile.ObjectHeader("$EMP Arc Color")
-			& GameSettingsFile.OptionalVariable("+Primary Color Option 1")
-			& GameSettingsFile.OptionalVariable("+Primary Color Option 2")
-			& GameSettingsFile.OptionalVariable("+Secondary Color Option 1")
+			GameSettingsFile.Define("EMP Color Section",
+				GameSettingsFile.ObjectHeader("$EMP Arc Color")
+				& GameSettingsFile.OptionalVariable("+Primary Color Option 1")
+				& GameSettingsFile.OptionalVariable("+Primary Color Option 2")
+				& GameSettingsFile.OptionalVariable("+Secondary Color Option 1")
+			)
 		)
 		& GameSettingsFile.Optional(
-			GameSettingsFile.ObjectHeader("$Damage Arc Color")
-			& GameSettingsFile.OptionalVariable("+Primary Color Option 1")
-			& GameSettingsFile.OptionalVariable("+Primary Color Option 2")
-			& GameSettingsFile.OptionalVariable("+Secondary Color Option 1")
+			GameSettingsFile.Define("Damage Color Section",
+				GameSettingsFile.ObjectHeader("$Damage Arc Color")
+				& GameSettingsFile.OptionalVariable("+Primary Color Option 1")
+				& GameSettingsFile.OptionalVariable("+Primary Color Option 2")
+				& GameSettingsFile.OptionalVariable("+Secondary Color Option 1")
+			)
 		)
 	);
 
