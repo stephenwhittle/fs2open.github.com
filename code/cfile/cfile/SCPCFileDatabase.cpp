@@ -134,15 +134,24 @@
 
 		size_t InputLength = sqlite3_value_bytes(argv[1]);
 		const char* Input = (const char*)sqlite3_value_text(argv[1]);
-		std::regex PatternRegex = std::regex(Pattern, std::regex_constants::icase);
-		if (std::regex_search(Input, PatternRegex))
+		try
 		{
-			sqlite3_result_int(context, 1);
+			std::regex PatternRegex = std::regex(Pattern, std::regex_constants::icase);
+			if (std::regex_search(Input, PatternRegex))
+			{
+				sqlite3_result_int(context, 1);
+			}
+			else
+			{
+				sqlite3_result_int(context, 0);
+			}
 		}
-		else
+		catch (const std::exception& e)
 		{
+			GOutputDevice->Error("SCPCFileDatabase.cpp", 151, "CFileDatabase SQL Error: %s", e.what());
 			sqlite3_result_int(context, 0);
 		}
+		
 	};
 
 	sqlite3_create_function(InternalDB.getHandle(), "regexp", -1, SQLITE_UTF8, nullptr, RegexMatch, nullptr, nullptr);

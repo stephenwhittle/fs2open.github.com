@@ -1,4 +1,4 @@
-add_executable(code_tests codetests.cpp stub.cpp)
+add_executable(code_tests codetests.cpp stub.cpp "modules/mod_table/mod_table.cpp")
 add_subdirectory(modules)
 target_link_libraries(code_tests PUBLIC core cfile cmdline log color doctest asteroid mod_table)
 option(FSO_INSTRUMENT_CODE "Use MSVC instrumentation to profile performance" OFF)

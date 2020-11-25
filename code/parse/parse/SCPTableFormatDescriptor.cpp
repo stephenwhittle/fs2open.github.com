@@ -193,7 +193,7 @@ void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const s
 				indent += "|";
 			}
 			std::cout << "E " << pos << backtrack << "\t" << indent << name
-				<< " #" << c.trace_ids.back() << std::endl;
+				<< " #" << c.trace_ids.back() <<std::endl;
 			prev_pos = static_cast<size_t>(pos);
 	};
 	rule.tracer_leave = [&](const char* name, const char* s, size_t /*n*/,
@@ -215,7 +215,7 @@ void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const s
 				const auto& tok = sv.tokens[0];
 				token += " '" + std::string(tok.first, tok.second) + "'";
 			}
-			if (len > 0)
+			if (len > 0 && len != static_cast<size_t>(-1))
 			{
 				std::cout << "L " << pos << "\t" << indent << name << " #"
 					<< c.trace_ids.back() << choice.str() << token << (sv.c_str() != nullptr ? sv.c_str() : "") << std::endl;

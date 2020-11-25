@@ -7,7 +7,7 @@ namespace SCP
 	SCPTableFormatDescriptor GameSettingsFile;
 	// clang-format off
 	auto GameSettingsSection = GameSettingsFile.Define("GameSettingsSection",
-		GameSettingsFile.Literal("#GAME SETTINGS")
+		GameSettingsFile.LiteralToken("#GAME SETTINGS")
 		& GameSettingsFile.Optional(
 			GameSettingsFile.OneOf(
 				GameSettingsFile.ObjectHeader("$Minimum Version"),
@@ -25,26 +25,26 @@ namespace SCP
 	);
 
 	auto CampaignSettingsSection = GameSettingsFile.Define("CampaignSettingsSection",
-		GameSettingsFile.Literal("#CAMPAIGN SETTINGS")
+		GameSettingsFile.LiteralToken("#CAMPAIGN SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Default Campaign File Name")
 
 		& GameSettingsFile.Optional(
 			GameSettingsFile.Literal("#Ignored Campaign File Names")
 			& GameSettingsFile.ListOf(
-				GameSettingsFile.RequiredVariable("$Campaign File Name")
+				GameSettingsFile.RequiredVariable("$Campaign File Name"), true
 			)
 		)
 		& GameSettingsFile.Optional(
 			GameSettingsFile.Literal("#Ignored Mission File Names")
 			& GameSettingsFile.ListOf(
-				GameSettingsFile.RequiredVariable("$Mission File Name")
+				GameSettingsFile.RequiredVariable("$Mission File Name"), true
 			)
 		)
 		& GameSettingsFile.OptionalVariable("$Red-alert applies to delayed ships")
 	);
 
 	auto HudSettingsSection = GameSettingsFile.Define("HudSettingsSection",
-		GameSettingsFile.Literal("#HUD SETTINGS")
+		GameSettingsFile.LiteralToken("#HUD SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Directive Wait Time")
 		& GameSettingsFile.OptionalVariable("$Cutscene camera displays HUD")
 		& GameSettingsFile.OptionalVariable("$Cutscene camera disables HUD")
@@ -53,13 +53,13 @@ namespace SCP
 	);
 
 	auto SEXPSettingsSection = GameSettingsFile.Define("SEXPSettingsSection",
-		GameSettingsFile.Literal("#SEXP SETTINGS")
+		GameSettingsFile.LiteralToken("#SEXP SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Loop SEXPs Then Arguments")
 		& GameSettingsFile.OptionalVariable("$Use Alternate Chaining Behavior")
 		);
 
 	auto GraphicsSettingsSection = GameSettingsFile.Define("GraphicsSettingsSection",
-		GameSettingsFile.Literal("#GRAPHICS SETTINGS")
+		GameSettingsFile.LiteralToken("#GRAPHICS SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Enable External Shaders")
 		& GameSettingsFile.OptionalVariable("$Default Detail Level")
 		& GameSettingsFile.OptionalVariable("$Briefing Window FOV")
@@ -85,25 +85,25 @@ namespace SCP
 	);
 
 	auto NetworkSettingsSection = GameSettingsFile.Define("NetworkSettingsSection",
-		GameSettingsFile.Literal("#NETWORK SETTINGS")
+		GameSettingsFile.LiteralToken("#NETWORK SETTINGS")
 		& GameSettingsFile.OptionalVariable("$FS2NetD port")
 	);
 
 	auto SoundSettingsSection = GameSettingsFile.Define("SoundSettingsSection",
-		GameSettingsFile.Literal("#SOUND SETTINGS")
+		GameSettingsFile.LiteralToken("#SOUND SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Default Sound Volume")
 		& GameSettingsFile.OptionalVariable("$Default Music Volume")
 		& GameSettingsFile.OptionalVariable("$Default Voice Volume")
 	);
 
 	auto FredSettingsSection = GameSettingsFile.Define("FredSettingsSection",
-		GameSettingsFile.Literal("#FRED SETTINGS")
+		GameSettingsFile.LiteralToken("#FRED SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Disable Hard Coded Message Head Ani Files")
 		& GameSettingsFile.OptionalVariable("$Enable scripting in FRED")
 	);
 
 	auto OtherSettingsSection = GameSettingsFile.Define("OtherSettingsSection",
-		GameSettingsFile.Literal("#OTHER SETTINGS")
+		GameSettingsFile.LiteralToken("#OTHER SETTINGS")
 		& GameSettingsFile.OptionalVariable("$Fixed Turret Collisions")
 		& GameSettingsFile.OptionalVariable("$Damage Impacted Subsystem First")
 		& GameSettingsFile.OptionalVariable("$Default ship select effect")
@@ -130,7 +130,7 @@ namespace SCP
 		& GameSettingsFile.OptionalVariable("+AI respect tabled turn time and rotdamp")
 	);
 
-	auto GameSettingsTable = GameSettingsFile.Define("Root", 
+	auto GameSettingsTopLevel = GameSettingsFile.Define("Root", 
 		GameSettingsFile.Optional(GameSettingsSection)
 		& GameSettingsFile.Optional(CampaignSettingsSection)
 		& GameSettingsFile.Optional(HudSettingsSection)
@@ -140,7 +140,7 @@ namespace SCP
 		& GameSettingsFile.Optional(SoundSettingsSection)
 		& GameSettingsFile.Optional(FredSettingsSection)
 		& GameSettingsFile.Optional(OtherSettingsSection)
-		& GameSettingsFile.Literal("#END")
+		& GameSettingsFile.LiteralToken("#END")
 	);
 
 	// clang-format on

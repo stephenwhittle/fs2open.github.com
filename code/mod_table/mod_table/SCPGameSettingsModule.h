@@ -1,24 +1,20 @@
 #pragma once
 #include "FSStdTypes.h"
+#include "cfile/SCPCFileModule.h"
+#include "mod_table/SCPGameSettingsTable.h"
 #include "module/SCPModuleBase.h"
-
 namespace SCP
 {
 	class GameSettingsModule : public SCPModule<GameSettingsModule>
 	{
 	public:
-		virtual bool StartupModule() override
-		{
-			return true;
-		};
+		virtual bool StartupModule() override;
 		virtual void ShutdownModule() override {}
 
-		static GameSettingsModule ConstructModule()
-		{
-			return GameSettingsModule();
-		}
+		static GameSettingsModule ConstructModule(class SCPCFileModule& CFileDependency);
 
 	private:
+		tl::optional<GameSettingsTable> LoadedSettings;
 	};
 
-}
+} // namespace SCP

@@ -30,7 +30,14 @@ protected:
 
 	void ErrorImpl(const char* FileOrMessage, int Line = -1, const char* FormattedMessage = nullptr) override
 	{
-		fmt::print(FileOrMessage);
+		if (FormattedMessage)
+		{
+			fmt::print("{}@L{} : {}", FileOrMessage, Line, FormattedMessage);
+		}
+		else
+		{
+			fmt::print(FileOrMessage);
+		}
 	}
 
 

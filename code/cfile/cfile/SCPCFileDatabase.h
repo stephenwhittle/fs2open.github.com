@@ -149,7 +149,7 @@ class FileFilter : sql::SelectModel {
 	}
 	FileFilter& FilenameMatchesRegex(std::string Regexp)
 	{
-		where(fmt::format("NameExt REGEXP {}", Regexp));
+		where(fmt::format("NameExt REGEXP('{}')", Regexp));
 		return *this;
 	}
 };

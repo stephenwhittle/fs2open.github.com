@@ -123,4 +123,114 @@ namespace
 		{SCPTableFormatDescriptor::GetSectionName("SoundSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::FredSettings)},
 		{SCPTableFormatDescriptor::GetSectionName("OtherSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::OtherSettings)}
 	};
-	// clang-format on
+// clang-format on
+
+template<>
+tl::optional<SCP::GameSettingsTable> construct(const SCPParsedTableData& InData)
+{
+	SCP::GameSettingsTable Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::GameSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::GameSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::CampaignSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::CampaignSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::HUDSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::HUDSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::SexpSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::SexpSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::GraphicsSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::GraphicsSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::NetworkSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::NetworkSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::FredSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::FredSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::SoundSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::SoundSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}
+
+template<>
+tl::optional<SCP::OtherSettingsSubsection> construct(const SCPParsedTableData& InData)
+{
+	SCP::OtherSettingsSubsection Table;
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+	return Table;
+}

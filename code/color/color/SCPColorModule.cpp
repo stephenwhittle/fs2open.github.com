@@ -22,7 +22,7 @@ bool SCPColorModule::StartupModule()
 	}
 
 	FileFilter ColorTableFilter;
-	ColorTableFilter.FilenameMatchesRegex("*-clr.tbm");
+	ColorTableFilter.FilenameMatchesRegex(".*-clr\.tbm");
 	ColorTableFilter.PathTypeIs(SCPCFilePathTypeID::Tables);
 	for (SCPCFileInfo FileInfo : CFileModule->CFileDatabase().Files(ColorTableFilter)) {
 		auto Table = CFileModule->CFileOpen(FileInfo, {SCPCFileMode::Read});

@@ -187,4 +187,36 @@ namespace SCP
 		SCPTableProperty<FredSettingsSubsection> FredSettings;
 		SCPTableProperty<OtherSettingsSubsection> OtherSettings;
 	};
+
+	
 } // namespace SCP
+
+template<>
+tl::optional<SCP::GameSettingsTable> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::GameSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::CampaignSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::HUDSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::SexpSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::GraphicsSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::NetworkSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::FredSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::SoundSettingsSubsection> construct(const SCPParsedTableData& InData);
+
+template<>
+tl::optional<SCP::OtherSettingsSubsection> construct(const SCPParsedTableData& InData);
