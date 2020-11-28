@@ -113,15 +113,15 @@ namespace
 
 	const DeserializationHandlers<SCP::GameSettingsTable> SCPTableBase<SCP::GameSettingsTable>::Deserializers = 
 	{
-		{SCPTableFormatDescriptor::GetSectionName("GameSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::GameSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("CampaignSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::CampaignSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("HudSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::HudSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("SEXPSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::SexpSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("GraphicsSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::GraphicsSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("NetworkSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::NetworkSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("FredSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::SoundSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("SoundSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::FredSettings)},
-		{SCPTableFormatDescriptor::GetSectionName("OtherSettingsSection"), DeserializeToField(&SCP::GameSettingsTable::OtherSettings)}
+		{"GameSettingsSection", Merge(&SCP::GameSettingsTable::GameSettings)},
+		{"CampaignSettingsSection", Merge(&SCP::GameSettingsTable::CampaignSettings)},
+		{"HudSettingsSection", Merge(&SCP::GameSettingsTable::HudSettings)},
+		{"SEXPSettingsSection", Merge(&SCP::GameSettingsTable::SexpSettings)},
+		{"GraphicsSettingsSection", Merge(&SCP::GameSettingsTable::GraphicsSettings)},
+		{"NetworkSettingsSection", Merge(&SCP::GameSettingsTable::NetworkSettings)},
+		{"FredSettingsSection", Merge(&SCP::GameSettingsTable::SoundSettings)},
+		{"SoundSettingsSection", Merge(&SCP::GameSettingsTable::FredSettings)},
+		{"OtherSettingsSection", Merge(&SCP::GameSettingsTable::OtherSettings)}
 	};
 // clang-format on
 

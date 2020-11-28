@@ -1,0 +1,7 @@
+<?xml  version="1.0" encoding="utf-8" ?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+<Type Name="SCPTableProperty&lt;*&gt;">
+    <DisplayString Condition="PropertyValues.size() > 0">{{value={PropertyValues[PropertyValues.size() -1]}}</DisplayString>
+    <DisplayString Condition="PropertyValues.size() == 0">{{empty}}</DisplayString>
+</Type>
+</AutoVisualizer>

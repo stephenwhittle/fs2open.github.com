@@ -1,0 +1,27 @@
+#GAME SETTINGS
+$Minimum version:
++Major: 3
++Minor: 7
++Build: 3
++Revision: 20151121
+
+#CAMPAIGN SETTINGS
+   $Default Campaign File Name: bp.fc2
+   
+   #Ignored Campaign File Names
+   ;;$Campaign File Name: FreeSpace2.fc2
+   
+#HUD SETTINGS
+	$Directive Wait Time: 				1000
+	$Cutscene camera displays HUD: 		NO
+   
+#GRAPHICS SETTINGS
+   $Briefing Window FOV: 0.5
+   $Shield Pain Flash Factor: -1
+
+#SOUND SETTINGS
+   $Default Sound Volume: 0.6
+   $Default Music Volume: 0.3
+   $Default Voice Volume: 1.0
+    
+   #END

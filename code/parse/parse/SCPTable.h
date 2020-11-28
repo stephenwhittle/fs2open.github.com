@@ -28,7 +28,19 @@ tl::optional<T> construct(const SCPParsedTableData& InData)
 template<>
 inline tl::optional<bool> construct(const SCPParsedTableData& InData)
 {
-	return tl::optional<bool>(InData.nodes[0]->nodes[0]->nodes[0]->token == "true");
+	if ((InData.nodes[0]->nodes[0]->nodes[0]->token == "true") || (InData.nodes[0]->nodes[0]->nodes[0]->token == "YES"))
+	{
+		return true;
+	}
+	else if ((InData.nodes[0]->nodes[0]->nodes[0]->token == "false") ||
+			 (InData.nodes[0]->nodes[0]->nodes[0]->token == "NO"))
+	{
+		return false;
+	}
+	else
+	{
+		return {};
+	}
 }
 
 template<>
@@ -97,11 +109,11 @@ public:
 	{
 		PropertyValues.push_back(InitialValue);
 	}
-	operator bool()
+	bool IsSet()
 	{
 		return PropertyValues.size() > 0;
 	}
-	operator tl::optional<T> &()
+	operator tl::optional<T&>()
 	{
 		if (PropertyValues.size() > 0)
 		{
@@ -109,10 +121,15 @@ public:
 		}
 		else
 		{
-			return tl::optional<T>();
+			return tl::optional<T&>();
 		}
 	}
 	operator T&()
+	{
+		Assert(PropertyValues.size() > 0);
+		return PropertyValues.back();
+	}
+	T& operator->()
 	{
 		Assert(PropertyValues.size() > 0);
 		return PropertyValues.back();
@@ -131,7 +148,6 @@ public:
 
 		return *this;
 	}
-
 	void ReplaceValue(const T& OverrideValue)
 	{
 		if (PropertyValues.size())
@@ -174,7 +190,7 @@ auto ReplaceValue(SCPTableProperty<FieldType> ClassType::*Field)
 }
 
 template<typename ClassType, typename FieldType>
-auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::* Field)
+auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::*Field)
 {
 	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
 		std::vector<FieldType>& Container = ClassInstance->*Field;
@@ -182,6 +198,19 @@ auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::* Field)
 		if (ParsedValue)
 		{
 			Container.push_back(*ParsedValue);
+		}
+	};
+}
+
+template<typename ClassType, typename FieldType>
+auto Merge(SCPTableProperty<FieldType> ClassType::*Field)
+{
+	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		SCPTableBase<FieldType>& Instance = static_cast<SCPTableBase<FieldType>&>(ClassInstance->*Field);
+
+		for (auto Node : InData.nodes)
+		{
+			Instance.Deserialize(Node->name, *Node);
 		}
 	};
 }

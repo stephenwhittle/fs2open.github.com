@@ -67,7 +67,7 @@ void DeserializeAsteroidGroup(SCP::AsteroidTable* ClassInstance, const SCPParsed
 		NewGroup.MediumAsteroid.ReplaceValue(construct<SCP::AsteroidInfo>(*(InData.nodes[1])));
 		NewGroup.LargeAsteroid.ReplaceValue(construct<SCP::AsteroidInfo>(*(InData.nodes[2])));
 
-		if (ClassInstance->AsteroidGroups)
+		if (ClassInstance->AsteroidGroups.IsSet())
 		{
 			SCP_vector<SCP::AsteroidGroup>& GroupList = ClassInstance->AsteroidGroups;
 			GroupList.push_back(NewGroup);
