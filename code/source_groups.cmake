@@ -1093,42 +1093,7 @@ add_file_folder("Ship"
 	ship/ship_flags.h
 )
 
-# Sound files
-add_file_folder("Sound"
-	sound/audiostr.cpp
-	sound/audiostr.h
-	sound/channel.h
-	sound/ds.cpp
-	sound/ds.h
-	sound/ds3d.cpp
-	sound/ds3d.h
-	sound/dscap.cpp
-	sound/dscap.h
-	sound/fsspeech.cpp
-	sound/fsspeech.h
-	sound/IAudioFile.h
-	sound/openal.cpp
-	sound/openal.h
-	sound/phrases.xml
-	sound/rtvoice.cpp
-	sound/rtvoice.h
-	sound/sound.cpp
-	sound/sound.h
-	sound/speech.cpp
-	sound/speech.h
-	sound/voicerec.cpp
-	sound/voicerec.h
-)
 
-if (FSO_BUILD_WITH_FFMPEG)
-	# Sound -> ffmpeg files
-	add_file_folder("Sound\\\\FFmpeg"
-		sound/ffmpeg/FFmpegAudioReader.cpp
-		sound/ffmpeg/FFmpegAudioReader.h
-		sound/ffmpeg/FFmpegWaveFile.cpp
-		sound/ffmpeg/FFmpegWaveFile.h
-	)
-endif()
 
 # Species_Defs files
 add_file_folder("Species_Defs"

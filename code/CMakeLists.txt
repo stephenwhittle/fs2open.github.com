@@ -115,6 +115,9 @@ add_subdirectory(asteroid)
 add_subdirectory(mod_table)
 target_link_libraries(code PUBLIC mod_table)
 
+add_subdirectory(sound)
+target_link_libraries(code PUBLIC sound)
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)

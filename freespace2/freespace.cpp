@@ -25,168 +25,25 @@
 #endif
 
 // Refactored includes
-#include "NOX.h"
-#include "SDLGraphicsOperations.h"
-#include "anim/animplay.h"
-#include "asteroid/asteroid.h"
-#include "autopilot/autopilot.h"
-#include "bmpman/bmpman.h"
 #include "cmdline/SCPCmdLine.h"
 #include "cmdline/SCPCmdlineModule.h"
 #include "cmdline/cmdline.h"
-#include "cmeasure/cmeasure.h"
-#include "config/osregistry.h"
-#include "cutscene/cutscenes.h"
-#include "cutscene/movie.h"
-#include "cutscene/player.h"
-#include "debris/debris.h"
-#include "debugconsole/console.h"
-#include "decals/decals.h"
-#include "events/events.h"
-#include "exceptionhandler/exceptionhandler.h"
-#include "filesystem/SCPPath.h"
-#include "fireball/fireballs.h"
-#include "freespace.h"
-#include "freespaceresource.h"
-#include "gamehelp/contexthelp.h"
-#include "gamehelp/gameplayhelp.h"
-#include "gamesequence/gamesequence.h"
-#include "gamesnd/eventmusic.h"
-#include "gamesnd/gamesnd.h"
-#include "globalincs/crashdump.h"
-#include "globalincs/mspdb_callstack.h"
-#include "globalincs/version.h"
-#include "graphics/font.h"
-#include "graphics/light.h"
-#include "graphics/matrix.h"
-#include "graphics/shadows.h"
-#include "headtracking/headtracking.h"
-#include "hud/hud.h"
-#include "hud/hudconfig.h"
-#include "hud/hudescort.h"
-#include "hud/hudlock.h"
-#include "hud/hudmessage.h"
-#include "hud/hudparse.h"
-#include "hud/hudshield.h"
-#include "hud/hudsquadmsg.h"
-#include "hud/hudtargetbox.h"
-#include "iff_defs/iff_defs.h"
-#include "io/cursor.h"
-#include "io/joy.h"
-#include "io/joy_ff.h"
-#include "io/key.h"
-#include "io/mouse.h"
-#include "io/timer.h"
-#include "jumpnode/jumpnode.h"
-#include "lab/lab.h"
-#include "lab/wmcgui.h" //So that GUI_System can be initialized
-#include "levelpaging.h"
-#include "libs/discord/discord.h"
-#include "libs/ffmpeg/FFmpeg.h"
-#include "lighting/lighting.h"
-#include "localization/localize.h"
-#include "math/staticrand.h"
-#include "menuui/barracks.h"
-#include "menuui/credits.h"
-#include "menuui/mainhallmenu.h"
-#include "menuui/optionsmenu.h"
-#include "menuui/playermenu.h"
-#include "menuui/readyroom.h"
-#include "menuui/snazzyui.h"
-#include "menuui/techmenu.h"
-#include "menuui/trainingmenu.h"
-#include "mission/missionbriefcommon.h"
-#include "mission/missioncampaign.h"
-#include "mission/missiongoals.h"
-#include "mission/missionhotkey.h"
-#include "mission/missionload.h"
-#include "mission/missionlog.h"
-#include "mission/missionmessage.h"
-#include "mission/missionparse.h"
-#include "mission/missiontraining.h"
-#include "missionui/fictionviewer.h"
-#include "missionui/missionbrief.h"
-#include "missionui/missioncmdbrief.h"
-#include "missionui/missiondebrief.h"
-#include "missionui/missionloopbrief.h"
-#include "missionui/missionpause.h"
-#include "missionui/missionscreencommon.h"
-#include "missionui/missionshipchoice.h"
-#include "missionui/missionweaponchoice.h"
-#include "missionui/redalert.h"
 #include "mod_table/SCPGameSettingsModule.h"
 #include "mod_table/SCPGameSettingsTable.h"
-#include "mod_table/mod_table.h"
+#include "cfile/SCPCFileModule.h"
+#include "cfile/SCPCFileInfo.h"
+#include "cfile/SCPCFileDatabase.h"
+#include "config/SCPConfigModule.h"
+
+
 #include "module/SCPModuleManager.h"
-#include "nebula/neb.h"
-#include "nebula/neblightning.h"
-#include "network/multi.h"
-#include "network/multi_dogfight.h"
-#include "network/multi_endgame.h"
-#include "network/multi_fstracker.h"
-#include "network/multi_ingame.h"
-#include "network/multi_log.h"
-#include "network/multi_pause.h"
-#include "network/multi_pxo.h"
-#include "network/multi_rate.h"
-#include "network/multi_respawn.h"
-#include "network/multi_voice.h"
-#include "network/multimsgs.h"
-#include "network/multiteamselect.h"
-#include "network/multiui.h"
-#include "network/multiutil.h"
-#include "network/stand_gui.h"
-#include "object/objcollide.h"
-#include "object/objectsnd.h"
-#include "object/waypoint.h"
-#include "observer/observer.h"
-#include "options/Option.h"
-#include "options/OptionsManager.h"
-#include "osapi/osapi.h"
-#include "osapi/outwnd.h"
-#include "parse/encrypt.h"
-#include "parse/generic_log.h"
-#include "parse/parselo.h"
-#include "parse/sexp.h"
-#include "parse/sexp/sexp_lookup.h"
-#include "particle/ParticleManager.h"
-#include "particle/particle.h"
-#include "pilotfile/pilotfile.h"
-#include "playerman/managepilot.h"
-#include "playerman/player.h"
-#include "popup/popup.h"
-#include "popup/popupdead.h"
-#include "radar/radar.h"
-#include "radar/radarsetup.h"
-#include "render/3d.h"
-#include "render/batching.h"
-#include "scpui/rocket_ui.h"
-#include "scripting/api/objs/gamestate.h"
-#include "scripting/hook_api.h"
-#include "scripting/scripting.h"
-#include "ship/afterburner.h"
-#include "ship/awacs.h"
-#include "ship/ship.h"
-#include "ship/shipcontrails.h"
-#include "ship/shipfx.h"
-#include "ship/shiphit.h"
-#include "sound/audiostr.h"
-#include "sound/ds.h"
-#include "sound/fsspeech.h"
-#include "sound/sound.h"
-#include "sound/voicerec.h"
-#include "starfield/starfield.h"
-#include "starfield/supernova.h"
-#include "stats/medals.h"
-#include "stats/stats.h"
-#include "tracing/Monitor.h"
-#include "tracing/tracing.h"
-#include "weapon/beam.h"
-#include "weapon/emp.h"
-#include "weapon/flak.h"
-#include "weapon/muzzleflash.h"
-#include "weapon/shockwave.h"
-#include "weapon/weapon.h"
+
+#include "NOX.h"
+
+#include "filesystem/SCPPath.h"
+#include "freespace.h"
+#include "freespaceresource.h"
+
 #include <SDL.h>
 #include <SDL_main.h>
 #include <cinttypes>
@@ -1772,6 +1629,9 @@ void game_init()
 		std_init_standalone();
 	}
 
+
+	// Put the checksumming code into the CFile database possibly?
+	// verify in the multiplayer code
 	// verify that he has a valid ships.tbl (will Game_ships_tbl_valid if so)
 	verify_ships_tbl();
 
@@ -1779,10 +1639,13 @@ void game_init()
 	verify_weapons_tbl();
 
 	Use_joy_mouse = 0;
-	Use_low_mem = os_config_read_uint(nullptr, NOX("LowMem"), 0);
+	auto ConfigModule = SCPModuleManager::GetModule<SCPConfigModule>();
+	Assert(ConfigModule);
+
+	Use_low_mem = ConfigModule->ReadConfigValue<int>("", NOX("LowMem")).value_or(0);
 
 #ifndef NDEBUG
-	Use_fullscreen_at_startup = os_config_read_uint(nullptr, NOX("ForceFullscreen"), 1);
+	Use_fullscreen_at_startup = ConfigModule->ReadConfigValue<bool>("", NOX("ForceFullscreen")).value_or(1);
 #endif
 
 	// change FPS cap if told to do so (for those who can't use vsync or where vsync isn't enough)
@@ -7837,6 +7700,7 @@ int Game_ships_tbl_checksums[NUM_SHIPS_TBL_CHECKSUMS] = {
 
 void verify_ships_tbl()
 {
+
 	// detect if the packfile exists
 	CFILE* detect = cfopen("ships.tbl", "rb");
 	Game_ships_tbl_valid = 0;
