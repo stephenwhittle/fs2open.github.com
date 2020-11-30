@@ -32,8 +32,10 @@ public:
 	{
 		return std::static_pointer_cast<peg::Ope>(std::make_shared<peg::LiteralString>(String, true));
 	}
-	auto LiteralToken(const std::string& String) {
-		return peg::seq(peg::ign(g[peg::WHITESPACE_DEFINITION_NAME]), std::make_shared<peg::LiteralString>(String, true),
+	auto LiteralToken(const std::string& String)
+	{
+		return peg::seq(peg::ign(g[peg::WHITESPACE_DEFINITION_NAME]),
+						std::make_shared<peg::LiteralString>(String, true),
 						peg::ign(g[peg::WHITESPACE_DEFINITION_NAME]));
 	}
 	// PEG element matching a single character
@@ -79,6 +81,12 @@ public:
 		return EmptyAllowed ? peg::Repetition::zom(peg::cho(GetDecl("Comment"), ope))
 							: peg::Repetition::oom(peg::cho(GetDecl("Comment"), ope));
 	}
+
+	std::shared_ptr<peg::Ope> WordDelimited(std::string DelimiterClass)
+	{
+		return peg::oom(peg::ncls(DelimiterClass));
+	}
+
 	// Matches a section ('#SectionName <Content elements> #End SectionName')
 	std::shared_ptr<peg::Ope> Section(const std::string SectionName, const std::shared_ptr<peg::Ope>& Contents);
 
@@ -87,6 +95,10 @@ public:
 
 	// Helper function to add a literal string to the symbol table inline
 	std::shared_ptr<peg::Ope> DefinedLiteral(const std::string SymbolName);
+
+	std::shared_ptr<peg::Ope> Repetition(std::size_t MinReps, std::size_t MaxReps,
+										 const std::shared_ptr<peg::Ope>& Contents);
+
 
 	// Retrieves a symbol previously defined by Define
 	std::shared_ptr<peg::Ope> GetDecl(const std::string SymbolName)

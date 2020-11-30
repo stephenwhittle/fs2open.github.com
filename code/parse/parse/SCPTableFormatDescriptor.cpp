@@ -178,6 +178,12 @@ std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::DefinedLiteral(const std::st
 	return g[MangledLiteralName];
 }
 
+std::shared_ptr<peg::Ope> SCPTableFormatDescriptor::Repetition(std::size_t MinReps, std::size_t MaxReps,
+															   const std::shared_ptr<peg::Ope>& Contents)
+{
+	return peg::rep(Contents, MinReps, MaxReps);
+}
+
 void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const std::string RuleName)
 {
 	auto& rule = g[RuleName];
