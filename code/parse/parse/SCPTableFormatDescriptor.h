@@ -99,6 +99,10 @@ public:
 	std::shared_ptr<peg::Ope> Repetition(std::size_t MinReps, std::size_t MaxReps,
 										 const std::shared_ptr<peg::Ope>& Contents);
 
+	std::shared_ptr<peg::Ope> XMTNoCreateFlag()
+	{
+		return DefinedLiteral("+nocreate");
+	}
 
 	// Retrieves a symbol previously defined by Define
 	std::shared_ptr<peg::Ope> GetDecl(const std::string SymbolName)
