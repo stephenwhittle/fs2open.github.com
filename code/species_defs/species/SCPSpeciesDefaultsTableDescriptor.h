@@ -17,35 +17,40 @@ namespace SCP
 				SpeciesDefaultsFile.RequiredVariable("$Fred Colour")
 			)
 		)
-		& SpeciesDefaultsFile.OptionalVariable("$MiscAnims")
-		& SpeciesDefaultsFile.OptionalVariable("$Debris_Texture")
+		& SpeciesDefaultsFile.Optional(
+			SpeciesDefaultsFile.ObjectHeader("$MiscAnims")
+		)
+		& SpeciesDefaultsFile.OptionalVariable("+Debris_Texture")
 		& SpeciesDefaultsFile.OptionalVariable("+Shield_Hit_ani")
 		& SpeciesDefautltsFile.Optional(
-			SpeciesDefaultsFile.ObjectHeader("$ThrustAnims")
-			& SpeciesDefaultsFile.Optional(
-				SpeciesDefaultsFile.OneOf(
-					SpeciesDefaultsFile.RequiredVariable("+Pri_Normal"),
-					SpeciesDefaultsFile.RequiredVariable("+Normal")
+			SpeciesDefaultsFile.Define("AnimInfo", 
+				SpeciesDefaultsFile.ObjectHeader("$ThrustAnims")
+				& SpeciesDefaultsFile.Optional(
+					SpeciesDefaultsFile.OneOf(
+						SpeciesDefaultsFile.RequiredVariable("+Pri_Normal"),
+						SpeciesDefaultsFile.RequiredVariable("+Normal")
+					)
 				)
-			)
-			& SpeciesDefaultsFile.Optional(
-				SpeciesDefaultsFile.OneOf(
-					SpeciesDefaultsFile.RequiredVariable("+Pri_Afterburn"),
-					SpeciesDefaultsFile.RequiredVariable("+Afterburn")
+				& SpeciesDefaultsFile.Optional(
+					SpeciesDefaultsFile.OneOf(
+						SpeciesDefaultsFile.RequiredVariable("+Pri_Afterburn"),
+						SpeciesDefaultsFile.RequiredVariable("+Afterburn")
+					)
 				)
+				& SpeciesDefaultsFile.OptionalVariable("+Sec_Normal")
+				& SpeciesDefaultsFile.OptionalVariable("+Sec_Afterburn")
+				& SpeciesDefaultsFile.OptionalVariable("+Ter_Normal")
+				& SpeciesDefaultsFile.OptionalVariable("+Ter_Afterburn")
+				& SpeciesDefaultsFile.OptionalVariable("+Dist_Normal")
+				& SpeciesDefaultsFile.OptionalVariable("+Dist_Afterburn")
 			)
-			& SpeciesDefaultsFile.OptionalVariable("+Sec_Normal")
-			& SpeciesDefaultsFile.OptionalVariable("+Sec_Afterburn")
-			& SpeciesDefaultsFile.OptionalVariable("+Ter_Normal")
-			& SpeciesDefaultsFile.OptionalVariable("+Ter_Afterburn")
-			& SpeciesDefaultsFile.OptionalVariable("+Dist_Normal")
-			& SpeciesDefaultsFile.OptionalVariable("+Dist_Afterburn")
 		)
 		& SpeciesDefaultsFile.Optional(
-			SpeciesDefaultsFile.ObjectHeader("$ThrustGlows")
-			& SpeciesDefaultsFile.OptionalVariable("+Normal")
-			& SpeciesDefaultsFile.OptionalVariable("+Afterburn")
-
+			SpeciesDefaultsFile.Define("GlowInfo",
+				SpeciesDefaultsFile.ObjectHeader("$ThrustGlows")
+				& SpeciesDefaultsFile.OptionalVariable("+Normal")
+				& SpeciesDefaultsFile.OptionalVariable("+Afterburn")
+			)
 		)
 		& SpeciesDefaultsFile.OptionalVariable("$AwacsMultiplier")
 		& SpeciesDefaultsFile.OptionalVariable("$Countermeasure type")
