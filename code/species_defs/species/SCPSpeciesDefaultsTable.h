@@ -1,10 +1,11 @@
 #pragma once
 #include "parse/SCPTable.h"
-
+#include "color/SCPColor.h"
+#include "FSStdTypes.h"
 namespace SCP
 {
 
-	class ThrusterAnimInfo : SCPTableBase<SCP::ThrusterAnimInfo>
+	class ThrusterAnimInfo : public SCPTableBase<SCP::ThrusterAnimInfo>
 	{
 		public:
 		SCPTableProperty<SCP_string> PrimaryNormal;
@@ -17,13 +18,13 @@ namespace SCP
 		SCPTableProperty<SCP_string> DistortionAfterburn;
 	};
 
-	class GlowBitmapInfo : SCPTableBase<SCP::GlowBitmapInfo>
+	class GlowBitmapInfo : public SCPTableBase<SCP::GlowBitmapInfo>
 	{
 	public:
 		SCPTableProperty<SCP_string> Normal;
 		SCPTableProperty<SCP_string> Afterburn;
 	};
-	class SpeciesDefaults : SCPTableBase<SCP::SpeciesDefaults>
+	class SpeciesDefaults : public SCPTableBase<SCP::SpeciesDefaults>
 	{
 	public:
 		SCPTableProperty<SCP_string> Name;
@@ -41,7 +42,7 @@ namespace SCP
 	// also another function returning a lambda that checks to see if the parent node has a certain name, and dispatches
 	// differently based on that
 
-	class SpeciesDefaultsTable : SCPTableBase<SCP::SpeciesDefaultsTable>
+	class SpeciesDefaultsTable : public SCPTableBase<SCP::SpeciesDefaultsTable>
 	{
 	public:
 		SCPTableProperty<SCP_vector<SCP::SpeciesDefaults>> Entries;

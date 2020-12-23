@@ -36,7 +36,7 @@ bool SCP::GameSettingsModule::StartupModule()
 	}
 	
 	FileFilter SettingsTableFilter;
-	SettingsTableFilter.FilenameMatchesRegex(".*-mod\.tbm");
+	SettingsTableFilter.FilenameMatchesRegex(".*-mod\\.tbm");
 	SettingsTableFilter.PathTypeIs(SCPCFilePathTypeID::Tables);
 	for (SCPCFileInfo FileInfo : CFileModule->CFileDatabase().Files(SettingsTableFilter))
 	{

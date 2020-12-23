@@ -9,6 +9,8 @@ set (test_sources
 	log/log.cpp
 	color/color.cpp
 	asteroid/asteroid.cpp
+	species_defs/species.cpp
+	mod_table/mod_table.cpp
 )
 
 list (TRANSFORM test_sources PREPEND "${CMAKE_CURRENT_SOURCE_DIR}/")

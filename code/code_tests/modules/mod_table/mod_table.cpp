@@ -5,4 +5,5 @@
 TEST_CASE("game settings init") 
 {
 	tl::optional<SCP::GameSettingsModule&> ModuleHandle = SCPModuleManager::GetModule<SCP::GameSettingsModule>();
+	REQUIRE(ModuleHandle);
 }

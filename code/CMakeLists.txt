@@ -118,6 +118,9 @@ target_link_libraries(code PUBLIC mod_table)
 add_subdirectory(sound)
 target_link_libraries(code PUBLIC sound)
 
+add_subdirectory(species_defs)
+target_link_libraries(code PUBLIC species)
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)

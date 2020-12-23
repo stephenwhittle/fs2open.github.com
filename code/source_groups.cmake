@@ -1094,13 +1094,6 @@ add_file_folder("Ship"
 )
 
 
-
-# Species_Defs files
-add_file_folder("Species_Defs"
-	species_defs/species_defs.cpp
-	species_defs/species_defs.h
-)
-
 # Starfield files
 add_file_folder("Starfield"
 	starfield/nebula.cpp

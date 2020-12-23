@@ -81,7 +81,7 @@ CFILE::CFileTextEncoding CFILE::DetectFileEncoding(const char* Buffer, std::size
 	{
 		if (NextChar > 0x7F)
 		{
-			HasByteAbove7F = false;
+			HasByteAbove7F = true;
 		}
 	};
 	//iterate through all the other characters in the file

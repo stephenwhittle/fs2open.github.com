@@ -22,7 +22,7 @@ namespace SCP
 		)
 		& SpeciesDefaultsFile.OptionalVariable("+Debris_Texture")
 		& SpeciesDefaultsFile.OptionalVariable("+Shield_Hit_ani")
-		& SpeciesDefautltsFile.Optional(
+		& SpeciesDefaultsFile.Optional(
 			SpeciesDefaultsFile.Define("AnimInfo", 
 				SpeciesDefaultsFile.ObjectHeader("$ThrustAnims")
 				& SpeciesDefaultsFile.Optional(
@@ -60,7 +60,7 @@ namespace SCP
 	auto SpeciesDefaultsTableRoot = SpeciesDefaultsFile.Define("Root", 
 		SpeciesDefaultsFile.Section("Species Defs", 
 			SpeciesDefaultsFile.OptionalVariable("$NumSpecies")
-			&SpeciesDefaultsFile.ListOf(SpeciesEntry, true);
+			&SpeciesDefaultsFile.ListOf(SpeciesEntry, true)
 		)
 	);
 }
