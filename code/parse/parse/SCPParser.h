@@ -21,7 +21,7 @@ public:
 		
 		SCP_buffer ProcessedData = util::ConvertFromLatinEncoding(InRawData, Filename);
 		
-		TableFormat.UseRuleToParseInput("Root", ProcessedData.Data(), my_ast);
+		TableFormat.UseRuleToParseInput("Root", ProcessedData, my_ast);
 
 		if (my_ast != nullptr) {
 			return construct<TableType>(*my_ast);
@@ -38,7 +38,7 @@ public:
 
 		SCP_buffer ProcessedData = util::ConvertFromLatinEncoding(InRawData, Filename);
 
-		TableFormat.UseRuleToParseInput("Root", ProcessedData.Data(), my_ast);
+		TableFormat.UseRuleToParseInput("Root", ProcessedData, my_ast);
 
 		if (my_ast != nullptr) {
 			for (auto Node : my_ast->nodes)

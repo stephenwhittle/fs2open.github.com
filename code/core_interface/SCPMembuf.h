@@ -1,50 +1,140 @@
+#include <iosfwd>
 #include <iostream>
 class SCPMembuf : public std::streambuf
 {
-  public:
+public:
 	using byte = char;
-	SCPMembuf() : begin_(nullptr), end_(nullptr), current_(nullptr){};
+	SCPMembuf() {};
 
-	SCPMembuf(const byte* Data, std::uintmax_t Length) : begin_(Data), end_(Data + Length), current_(Data){};
+	SCPMembuf(const byte* Data, std::uintmax_t Length) 
+	{
+		setg(const_cast<byte*>(Data), const_cast<byte*>(Data), const_cast<byte*>(Data + Length));
+	};
 
-	SCPMembuf(const byte* Begin, const byte* End) : begin_(Begin), end_(End), current_(Begin){};
+	SCPMembuf(const byte* Begin, const byte* End)
+	{
+		setg(const_cast<byte*>(Begin), const_cast<byte*>(Begin), const_cast<byte*>(End));
+	};
 
-	SCPMembuf(const SCPMembuf& Other) : begin_(Other.begin_), end_(Other.end_), current_(Other.current_) {};
+	SCPMembuf(const SCPMembuf& Other) : std::streambuf(Other){};
 
-	SCPMembuf(const SCPMembuf&& Other) noexcept : begin_(Other.begin_), end_(Other.end_), current_(Other.current_) {};
+	SCPMembuf(const SCPMembuf&& Other) noexcept : std::streambuf(Other) {};
 
-	SCPMembuf& operator= (const SCPMembuf& Other)
+	SCPMembuf& operator=(const SCPMembuf& Other)
 	{
 		SCPMembuf TmpBuf(Other);
 		std::swap(*this, TmpBuf);
 		return *this;
 	}
-	SCPMembuf& operator= (SCPMembuf&& Other)
+	SCPMembuf& operator=(SCPMembuf&& Other)
 	{
 		std::swap(*this, Other);
 		return *this;
 	}
 
-  protected:
-	int_type underflow() override
+protected:
+	
+	pos_type seekoff(off_type off, std::ios_base::seekdir dir, std::ios_base::openmode which = std::ios_base::in | std::ios_base::out)
 	{
-		return (current_ == end_ ? traits_type::eof() : traits_type::to_int_type(*current_));
+		if (which != std::ios_base::in)
+		{
+			throw std::invalid_argument("basic_memstreambuf::seekoff[which]");
+		}
+
+		if (dir == std::ios_base::beg)
+		{
+			if (off >= 0 && off < egptr() - eback())
+			{
+				setg(eback(), eback() + off, egptr());
+			}
+			else
+			{
+				throw std::out_of_range("basic_memstreambuf::seekoff[beg]");
+			}
+		}
+		else if (dir == std::ios_base::cur)
+		{
+			if ((off >= 0 && off < egptr() - gptr()) || (off < 0 && std::abs(off) < gptr() - eback()))
+			{
+				gbump((int)off);
+			}
+			else if (off) //handle offset of 0
+			{
+				throw std::out_of_range("basic_memstreambuf::seekoff[cur]");
+			}
+		}
+		else if (dir == std::ios_base::end)
+		{
+			if (off <= 0 && std::abs(off) < egptr() - eback())
+			{
+				setg(eback(), egptr() + off, egptr());
+			}
+			else
+			{
+				throw std::out_of_range("basic_memstreambuf::seekoff[end]");
+			}
+		}
+		else
+		{
+			throw std::invalid_argument("basic_memstreambuf::seekoff[dir]");
+		}
+
+		return gptr() - eback();
+	}
+	virtual pos_type seekpos(pos_type pos, std::ios_base::openmode which = std::ios_base::in) override
+	{
+		if (which != std::ios_base::in)
+		{
+			throw std::invalid_argument("basic_memstreambuf::seekpos[which]");
+		}
+
+		if (pos < egptr() - eback())
+		{
+			setg(eback(), eback() + pos, egptr());
+		}
+		else if ((eback() + pos) >= egptr())
+		{
+			setg(eback(), egptr(), egptr());
+		}
+
+		return pos;
+	}
+	virtual std::streamsize showmanyc() override
+	{
+		const auto* ptr = gptr();
+		const auto* end = egptr();
+
+		return (ptr <= end) ? (end - ptr) : 0;
 	}
 
-	int_type uflow() override
+	virtual int_type underflow() override
 	{
-		return (current_ == end_ ? traits_type::eof() : traits_type::to_int_type(*current_++));
-	}
+		const auto* ptr = gptr();
 
-	int_type pbackfail(int_type ch) override
-	{
-		if (current_ == begin_ || (ch != traits_type::eof() && ch != current_[-1])) {
+		if (ptr >= egptr())
+		{
 			return traits_type::eof();
 		}
-		return traits_type::to_int_type(*--current_);
+
+		return traits_type::to_int_type(*ptr);
 	}
-	std::streamsize showmanyc() override { return end_ - current_; }
-	const byte* const begin_;
-	const byte* const end_;
-	const byte* current_;
+	virtual std::streamsize xsgetn(char_type* s, std::streamsize count) override
+	{
+		if (count == 0)
+			return 0;
+
+		const auto* ptr = gptr();
+		const auto to_read = std::min(count, static_cast<std::streamsize>(egptr() - ptr));
+
+		if (to_read == 0)
+		{
+			return traits_type::eof();
+		}
+		else
+		{
+			std::memcpy(s, ptr, to_read);
+			gbump(to_read);
+			return to_read;
+		}
+	}
 };

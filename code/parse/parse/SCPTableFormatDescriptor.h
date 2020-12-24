@@ -2,7 +2,7 @@
 
 #include "peglib.h"
 #include "tl/optional.hpp"
-
+#include "FSStdTypes.h"
 /// <summary>
 /// Concatenate two grammar symbols into a sequence
 /// Overloads are included to prepend and append symbols into a sequence, as well as concatenating two sequences into a
@@ -112,7 +112,7 @@ public:
 
 	// Attempt to parse the input data, storing a tree of parse results into AstPtr
 	template<typename T>
-	bool UseRuleToParseInput(const std::string RuleName, const std::string Input, T& AstPtr)
+	bool UseRuleToParseInput(const std::string RuleName, const SCP_buffer& Input, T& AstPtr)
 	{
 		for (auto& Def : g)
 		{
@@ -124,7 +124,7 @@ public:
 		}
 		g[RuleName].whitespaceOpe = peg::wsp(g[peg::WHITESPACE_DEFINITION_NAME].get_core_operator());
 
-		peg::Definition::Result results = g[RuleName].parse_and_get_value(Input.c_str(), AstPtr);
+		peg::Definition::Result results = g[RuleName].parse_and_get_value(Input.Data(), AstPtr);
 		return results.ret;
 	}
 	// Enables console mode tracing of parsing rules. Intended for debugging only
