@@ -66,7 +66,7 @@ inline tl::optional<color> construct(const SCPParsedTableData& InData)
 	const std::string& ColorText = InData.nodes[0]->nodes[0]->token;
 	SCP_buffer ColorInput(ColorText.size() + 1);
 	std::copy(ColorText.begin(), ColorText.end(), ColorInput.begin());
-	if (ColorRule.UseRuleToParseInput("Color", std::move(ColorInput), my_ast)) 
+	if (ColorRule.UseRuleToParseInput("Color", std::move(ColorInput), my_ast))
 	{
 		int RValue = (int) std::atof(my_ast->nodes[0]->token.c_str());
 		int GValue = (int) std::atof(my_ast->nodes[1]->token.c_str());
@@ -94,7 +94,9 @@ inline tl::optional<int> construct(const SCPParsedTableData& InData)
 template<>
 inline tl::optional<std::string> construct(const SCPParsedTableData& InData)
 {
-	return tl::optional<std::string>(InData.nodes[0]->nodes[0]->token.c_str());
+	std::string TrimmedValue = InData.nodes[0]->nodes[0]->token;
+	TrimmedValue.erase(std::find_if_not(TrimmedValue.rbegin(), TrimmedValue.rend(), std::isspace).base(), TrimmedValue.end());
+	return tl::optional<std::string>(std::move(TrimmedValue));
 }
 
 // all of the deserialization handlers should be modifying fields on the same object
@@ -117,9 +119,22 @@ class SCPTableBase
 	static const DeserializationHandlers<T> Deserializers;
 
 protected:
+	bool bIsModularOverride = false;
+
 public:
+	bool IsModularOverride()
+	{
+		return bIsModularOverride;
+	}
 	void Deserialize(std::string Symbol, const SCPParsedTableData& InData)
 	{
+		//Special handling for the nocreate metadata flag
+		if (Symbol == "+nocreate")
+		{
+			bIsModularOverride = true;
+			return;
+		}
+
 		T* Object = static_cast<T*>(this);
 		auto HandlerIt = Deserializers.find(Symbol);
 		if (HandlerIt != Deserializers.end())
