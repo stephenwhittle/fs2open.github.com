@@ -57,7 +57,7 @@ SCPTableFormatDescriptor::SCPTableFormatDescriptor()
 					peg::chr('.')
 					& peg::oom(peg::cls("0-9"))
 				),
-				peg::apd(peg::oom(peg::cls(" \t\r\n")))
+				peg::npd(peg::cls("0-9"))
 			)
 		);
 	g["QuotedString"] <=
@@ -234,3 +234,60 @@ void SCPTableFormatDescriptor::EnableTracingForRule(bool bEnableTracing, const s
 }
 
 
+void SCPTableFormatDescriptor::EnableTracingAllRules(bool bEnableTracing)
+{
+	for(auto& rule : g)
+	{
+		
+		size_t prev_pos = 0;
+		rule.second.tracer_enter = [&](const char* name, const char* s, size_t /*n*/, const peg::SemanticValues& sv,
+								const peg::Context& c, const peg::any& dt) {
+			auto pos = static_cast<size_t>(s - c.s);
+			auto backtrack = (pos < prev_pos ? "*" : "");
+			std::string indent;
+			auto level = c.trace_ids.size() - 1;
+			while (level--)
+			{
+				indent += "|";
+			}
+			std::cout << "E " << pos << backtrack << "\t" << indent << name << "|" << rule.first << " #" << c.trace_ids.back() << std::endl;
+			prev_pos = static_cast<size_t>(pos);
+		};
+		rule.second.tracer_leave = [&](const char* name, const char* s, size_t /*n*/, const peg::SemanticValues& sv,
+								const peg::Context& c, const peg::any& /*dt*/, size_t len) {
+			auto pos = static_cast<size_t>(s - c.s);
+			if (len != static_cast<size_t>(-1))
+			{
+				pos += len;
+			}
+			std::string indent;
+			auto level = c.trace_ids.size() - 1;
+			while (level--)
+			{
+				indent += "|";
+			}
+			std::stringstream choice;
+			if (sv.choice_count() > 0)
+			{
+				choice << " " << sv.choice() << "/" << sv.choice_count();
+			}
+			std::string token;
+			if (!sv.tokens.empty())
+			{
+				const auto& tok = sv.tokens[0];
+				token += " '" + std::string(tok.first, tok.second) + "'";
+			}
+			if (len > 0 && len != static_cast<size_t>(-1))
+			{
+				std::cout << "L " << pos << "\t" << indent << name << "|" << rule.first << " #" << c.trace_ids.back()
+						  << choice.str()
+						  << token << (sv.c_str() != nullptr ? sv.c_str() : "") << std::endl;
+			}
+			else
+			{
+				std::cout << "L " << pos << "\t" << indent << name << " Failed" << std::endl;
+			}
+		};
+	}
+	
+}

@@ -1,10 +1,13 @@
 #pragma once
 
 #include "FSAssert.h"
+#include "FSColorTypes.h"
+#include "parse/SCPTableFormatDescriptor.h"
 #include "peglib.h"
 #include "tl/optional.hpp"
 #include <functional>
 #include <map>
+
 // https://dev.to/tmr232/that-overloaded-trick-overloading-lambdas-in-c17
 // https://gist.github.com/pyrtsa/2945472
 
@@ -36,6 +39,39 @@ inline tl::optional<bool> construct(const SCPParsedTableData& InData)
 			 (InData.nodes[0]->nodes[0]->nodes[0]->token == "NO"))
 	{
 		return false;
+	}
+	else
+	{
+		return {};
+	}
+}
+
+template<>
+inline tl::optional<color> construct(const SCPParsedTableData& InData)
+{
+	SCPTableFormatDescriptor ColorRule;
+	// clang-format off
+	ColorRule.Define("Color", 
+		ColorRule.Literal("(") 
+		& ColorRule.GetDecl("Float") 
+		& ColorRule.Literal(",") 
+		& ColorRule.GetDecl("Float") 
+		& ColorRule.Literal(",") 
+		& ColorRule.GetDecl("Float") 
+		& ColorRule.Literal(")")
+	);
+	// clang-format on
+
+	std::shared_ptr<SCPParsedTableData> my_ast;
+	const std::string& ColorText = InData.nodes[0]->nodes[0]->token;
+	SCP_buffer ColorInput(ColorText.size() + 1);
+	std::copy(ColorText.begin(), ColorText.end(), ColorInput.begin());
+	if (ColorRule.UseRuleToParseInput("Color", std::move(ColorInput), my_ast)) 
+	{
+		int RValue = (int) std::atof(my_ast->nodes[0]->token.c_str());
+		int GValue = (int) std::atof(my_ast->nodes[1]->token.c_str());
+		int BValue = (int) std::atof(my_ast->nodes[2]->token.c_str());
+		return color(RValue, GValue, BValue, 1);
 	}
 	else
 	{
@@ -193,6 +229,10 @@ template<typename ClassType, typename FieldType>
 auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::*Field)
 {
 	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		if (!(ClassInstance->*Field).IsSet())
+		{
+			(ClassInstance->*Field) = std::vector<FieldType>();
+		}
 		std::vector<FieldType>& Container = ClassInstance->*Field;
 		tl::optional<FieldType> ParsedValue = construct<FieldType>(InData);
 		if (ParsedValue)
@@ -206,6 +246,11 @@ template<typename ClassType, typename FieldType>
 auto Merge(SCPTableProperty<FieldType> ClassType::*Field)
 {
 	return [Field](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		if (!(ClassInstance->*Field).IsSet())
+		{
+			(ClassInstance->*Field) = construct<FieldType>(InData);
+			return;
+		}
 		SCPTableBase<FieldType>& Instance = static_cast<SCPTableBase<FieldType>&>(ClassInstance->*Field);
 
 		for (auto Node : InData.nodes)

@@ -1,13 +1,14 @@
 #pragma once
-#include "parse/SCPTable.h"
-#include "color/SCPColor.h"
 #include "FSStdTypes.h"
+#include "color/SCPColor.h"
+#include "parse/SCPTable.h"
+#include "parse/SCPTableFormatDescriptor.h"
+
 namespace SCP
 {
-
 	class ThrusterAnimInfo : public SCPTableBase<SCP::ThrusterAnimInfo>
 	{
-		public:
+	public:
 		SCPTableProperty<SCP_string> PrimaryNormal;
 		SCPTableProperty<SCP_string> PrimaryAfterburn;
 		SCPTableProperty<SCP_string> SecondaryNormal;
@@ -48,3 +49,50 @@ namespace SCP
 		SCPTableProperty<SCP_vector<SCP::SpeciesDefaults>> Entries;
 	};
 } // namespace SCP
+
+template<>
+inline tl::optional<SCP::SpeciesDefaultsTable> construct(const SCPParsedTableData& InData)
+{
+	SCP::SpeciesDefaultsTable Table;
+
+	for (auto Node : InData.nodes)
+	{
+		Table.Deserialize(Node->name, *Node);
+	}
+
+	return Table;
+}
+
+template<>
+inline tl::optional<SCP::SpeciesDefaults> construct(const SCPParsedTableData& InData)
+{
+	SCP::SpeciesDefaults Entry;
+
+	for (auto Node : InData.nodes)
+	{
+		Entry.Deserialize(Node->name, *Node);
+	}
+	return Entry;
+}
+
+template<>
+inline tl::optional<SCP::ThrusterAnimInfo> construct(const SCPParsedTableData& InData)
+{
+	SCP::ThrusterAnimInfo Entry;
+	for (auto Node : InData.nodes)
+	{
+		Entry.Deserialize(Node->name, *Node);
+	}
+	return Entry;
+}
+
+template<>
+inline tl::optional<SCP::GlowBitmapInfo> construct(const SCPParsedTableData& InData)
+{
+	SCP::GlowBitmapInfo Entry;
+	for (auto Node : InData.nodes)
+	{
+		Entry.Deserialize(Node->name, *Node);
+	}
+	return Entry;
+}

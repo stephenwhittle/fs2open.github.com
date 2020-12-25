@@ -129,4 +129,6 @@ public:
 	}
 	// Enables console mode tracing of parsing rules. Intended for debugging only
 	void EnableTracingForRule(bool bEnableTracing, const std::string RuleName);
+
+	void EnableTracingAllRules(bool bEnableTracing);
 };

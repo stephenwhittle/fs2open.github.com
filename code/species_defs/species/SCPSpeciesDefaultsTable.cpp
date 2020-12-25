@@ -42,6 +42,14 @@ const DeserializationHandlers<SCP::SpeciesDefaults> SCPTableBase<SCP::SpeciesDef
 
 };
 
+void LoadSpeciesDefs(SCP::SpeciesDefaultsTable* ClassInstance, const SCPParsedTableData& InData)
+{
+	for (auto Node : InData.nodes)
+	{
+		ClassInstance->Deserialize(Node->name, *Node);
+	}
+}
+
 const DeserializationHandlers<SCP::SpeciesDefaultsTable> SCPTableBase<SCP::SpeciesDefaultsTable>::Deserializers = {
-	{"SpeciesEntry", DeserializeToField(&SCP::SpeciesDefaultsTable::Entries)}
-};
+	{"SpeciesEntry", PushBack(&SCP::SpeciesDefaultsTable::Entries)},
+	{SCPTableFormatDescriptor::GetSectionName("Species Defs"), LoadSpeciesDefs}};

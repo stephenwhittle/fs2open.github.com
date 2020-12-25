@@ -1,0 +1,92 @@
+#SPECIES DEFS
+
+$Species_Name:		UEF
+$Default IFF:		Friendly
+$FRED Color:		( 128, 0, 128 )
+$MiscAnims:
+	+Debris_Texture:	debris01a
+	+Shield_Hit_ani:	shieldhit01a
+$ThrustAnims:
+	+Pri_Normal: 		<none>
+	+Pri_Afterburn: 	<none>
+	+Sec_Normal: 		thruster02-04
+	+Sec_Afterburn:		piratethruster2
+	+Ter_Normal: 		thruster03-04
+	+Ter_Afterburn: 	thruster03-04a
+$ThrustGlows:
+   +Normal: 			thrusterglow04
+   +Afterburn: 			pirateburnerglow
+$AwacsMultiplier:	1.00
+
+$Species_Name:		UEF-Civ
+$Default IFF:		Friendly
+$FRED Color:		( 128, 0, 128 )
+$MiscAnims:
+	+Debris_Texture:	debris01a
+	+Shield_Hit_ani:	shieldhit01a
+$ThrustAnims:
+	+Pri_Normal: 		<none>
+	+Pri_Afterburn: 	<none>
+	+Sec_Normal: 		thruster02-04
+	+Sec_Afterburn:		piratethruster2
+	+Ter_Normal: 		thruster03-04
+	+Ter_Afterburn: 	thruster03-04a
+$ThrustGlows:
+   +Normal: 			thrusterglow04
+   +Afterburn: 			pirateburnerglow
+$AwacsMultiplier:	1.00
+
+$Species_Name: GTVA-TEI
+$Default IFF: Friendly
+$FRED Color: ( 0, 0, 192 )
+$MiscAnims:
+   +Debris_Texture: debris01a
+	+Shield_Hit_ani:	shieldhit01a
+$ThrustAnims:
+   	+Pri_Normal: 		<none>
+   	+Pri_Afterburn: 	<none>
+   	+Sec_Normal: 		Thruster09-01
+   	+Sec_Afterburn: 	Thruster09-01a
+   	+Ter_Normal: 		Thruster_Col_Helo
+   	+Ter_Afterburn: 	Thruster_Col_Heloa
+$ThrustGlows:
+   	+Normal: 		Thruster_Col_Glow
+   	+Afterburn: 		Thruster_Col_Glow
+$AwacsMultiplier: 1.00
+
+$Species_Name:		GEF
+$Default IFF:		Friendly
+$FRED Color:		( 64, 64, 64 )
+$MiscAnims:
+	+Debris_Texture:	debris01a
+	+Shield_Hit_ani:	shieldhit01a
+$ThrustAnims:
+	+Pri_Normal:	<none>
+	+Pri_Afterburn:	<none>
+	+Sec_Normal:	thruster02-05
+	+Sec_Afterburn:	thruster02-05a
+	+Ter_Normal:	thruster03-05
+	+Ter_Afterburn:	thruster03-05a
+$ThrustGlows:
+	+Normal:	Thruster_Col_Glow
+	+Afterburn:	Thruster_Col_Glow
+$AwacsMultiplier:	1.00
+
+;------------------------
+; Vishnan
+;------------------------
+$Species_Name: Vishnan
+$Default IFF: Friendly
+$FRED Color: ( 0, 128, 0 )
+$MiscAnims:
+   +Debris_Texture: debris01b
+   +Shield_Hit_ani: shieldhit01a
+$ThrustAnims:
+   +Normal: thruster02
+   +Afterburn: thruster02a
+$ThrustGlows:
+   +Normal: thrusterglow02
+   +Afterburn: thrusterglow02a
+$AwacsMultiplier: 1.0
+
+#End
