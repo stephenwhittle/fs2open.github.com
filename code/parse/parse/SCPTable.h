@@ -95,7 +95,8 @@ template<>
 inline tl::optional<std::string> construct(const SCPParsedTableData& InData)
 {
 	std::string TrimmedValue = InData.nodes[0]->nodes[0]->token;
-	TrimmedValue.erase(std::find_if_not(TrimmedValue.rbegin(), TrimmedValue.rend(), std::isspace).base(), TrimmedValue.end());
+	TrimmedValue.erase(std::find_if_not(TrimmedValue.rbegin(), TrimmedValue.rend(), std::isspace).base(),
+					   TrimmedValue.end());
 	return tl::optional<std::string>(std::move(TrimmedValue));
 }
 
@@ -128,8 +129,10 @@ public:
 	}
 	void Deserialize(std::string Symbol, const SCPParsedTableData& InData)
 	{
-		//Special handling for the nocreate metadata flag
-		if (Symbol == "+nocreate")
+		Symbol.erase(std::find_if_not(Symbol.rbegin(), Symbol.rend(), std::isspace).base(), Symbol.end());
+
+		// Special handling for the nocreate metadata flag
+		if (Symbol == "Literal_+nocreate")
 		{
 			bIsModularOverride = true;
 			return;
@@ -255,6 +258,44 @@ auto PushBack(SCPTableProperty<std::vector<FieldType>> ClassType::*Field)
 			Container.push_back(*ParsedValue);
 		}
 	};
+}
+
+template<typename ClassType, typename FieldType, typename XMTKeyType>
+auto PushBackXMT(SCPTableProperty<std::vector<SCPTableBase<FieldType>>> ClassType::*Field,
+				 SCPTableProperty<XMTKeyType> FieldType::*XMTKey)
+{
+	// Dynamically generate deserializer as a lambda
+	return [Field, XMTKey](ClassType* ClassInstance, const SCPParsedTableData& InData) {
+		if (!(ClassInstance->*Field).IsSet())
+		{
+			(ClassInstance->*Field) = std::vector<FieldType>();
+		}
+		std::vector<FieldType>& Container = ClassInstance->*Field;
+		// Parse our AST into our data object
+		tl::optional<FieldType> ParsedValue = construct<FieldType>(InData);
+
+		if (ParsedValue)
+		{
+			// if that was successful, check if the object was a modular override (ie its nocreate flag was set) and
+			// apply the override if we can find a matching object in the container, using the specified key
+			SCPTableBase<FieldType>& EntryRef = static_cast<SCPTableBase<FieldType>>(*ParsedValue);
+			if (EntryRef.IsModularOverride())
+			{
+				auto BaseValue =
+					std::find_if(Container.begin(), Container.end(), [XMTKey, &ParsedValue](const FieldType& Value) {
+						FieldType* ValuePtr = &Value;
+						FieldType* NewPtr = &(ParsedValue.value());
+						return (ValuePtr->*XMTKey) == NewPtr->*XMTKey;
+					});
+				if (BaseValue != Container.end())
+				{
+					// iterate over all the fields and merge ParsedValue's overrides over BaseValues ones
+					// perhaps implement template specialization here ala ::construct, called
+					// ::override or similar (I should probably namespace both of those)
+				}
+			}
+		}
+	}
 }
 
 template<typename ClassType, typename FieldType>

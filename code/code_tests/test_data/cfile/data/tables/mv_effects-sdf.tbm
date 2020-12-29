@@ -1,0 +1,48 @@
+#SPECIES DEFS
+
+$Species_Name:	Terran
++nocreate
+	+Shield_Hit_ani:	shieldhit01a
+$ThrustAnims:
+	+Pri_Normal:	<none>
+	+Pri_Afterburn:	<none>
+	+Sec_Normal:	thruster02-01
+	+Sec_Afterburn:	thruster02-01a
+	+Ter_Normal:	thruster03-01
+	+Ter_Afterburn:	thruster03-01a
+$ThrustGlows:
+	+Normal:	thrusterglow01
+	+Afterburn:	thrusterglow01a
+$Countermeasure Type:	Type One
+
+$Species_Name:	Vasudan
++nocreate
+	+Shield_Hit_ani:	shieldhit02a
+$ThrustAnims:
+	+Pri_Normal:	<none>
+	+Pri_Afterburn:	<none>
+	+Sec_Normal:	thruster02-02
+	+Sec_Afterburn:	thruster02-02a
+	+Ter_Normal:	thruster03-02
+	+Ter_Afterburn:	thruster03-02a
+$ThrustGlows:
+	+Normal:	thrusterglow02
+	+Afterburn:	thrusterglow02a
+$Countermeasure Type:	Vasudan CM
+
+$Species_Name:	Shivan
++nocreate
+	+Shield_Hit_ani:	shieldhit03a
+$ThrustAnims:
+	+Pri_Normal:	<none>
+	+Pri_Afterburn:	<none>
+	+Sec_Normal:	thruster02-03
+	+Sec_Afterburn:	thruster02-03a
+	+Ter_Normal:	thruster03-03
+	+Ter_Afterburn:	thruster03-03a
+$ThrustGlows:
+	+Normal:	thrusterglow03
+	+Afterburn:	thrusterglow03a
+$Countermeasure Type:	Shivan CM
+
+#end
