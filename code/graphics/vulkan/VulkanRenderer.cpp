@@ -5,6 +5,11 @@
 #include "libs/renderdoc/renderdoc.h"
 #include "mod_table/mod_table.h"
 #include "globalincs/version.h"
+#include "module/SCPModuleManager.h"
+#include "graphics/SCPGraphicsModule.h"
+#include "mod_table/SCPGameSettingsModule.h"
+#include "graphics/Viewport.h"
+#include "graphics/GraphicsOperation.h"
 
 #if SDL_VERSION_ATLEAST(2, 0, 6)
 #include <SDL_vulkan.h>
@@ -31,7 +36,7 @@ VkBool32 VKAPI_PTR debugReportCallback(VkDebugReportFlagsEXT /*flags*/, VkDebugR
 #endif
 } // namespace
 
-VulkanRenderer::VulkanRenderer(std::unique_ptr<os::GraphicsOperations> graphicsOps)
+VulkanRenderer::VulkanRenderer(std::unique_ptr<SCP::GraphicsOperations> graphicsOps)
 	: m_graphicsOps(std::move(graphicsOps))
 {
 }
@@ -62,7 +67,7 @@ bool VulkanRenderer::initialize()
 
 bool VulkanRenderer::initDisplayDevice()
 {
-	os::ViewPortProperties attrs;
+	SCP::ViewPortProperties attrs;
 	attrs.enable_opengl = false;
 	attrs.enable_vulkan = true;
 
@@ -75,23 +80,24 @@ bool VulkanRenderer::initDisplayDevice()
 		attrs.title = Window_title;
 	}
 
-	if (Using_in_game_options) {
-		switch (Gr_configured_window_state) {
-		case os::ViewportState::Windowed:
+	if (SCPModuleManager::GetModule<SCP::GameSettingsModule>()->GameSettings()->OtherSettings->EnableIngameOptions)
+	{
+		switch (SCPModuleManager::GetModule<SCP::GraphicsModule>()->GetConfiguredViewportState()) {
+		case SCP::ViewportState::Windowed:
 			// That's the default
 			break;
-		case os::ViewportState::Borderless:
-			attrs.flags.set(os::ViewPortFlags::Borderless);
+		case SCP::ViewportState::Borderless:
+			attrs.flags.set(SCP::ViewPortFlags::Borderless);
 			break;
-		case os::ViewportState::Fullscreen:
-			attrs.flags.set(os::ViewPortFlags::Fullscreen);
+		case SCP::ViewportState::Fullscreen:
+			attrs.flags.set(SCP::ViewPortFlags::Fullscreen);
 			break;
 		}
 	} else {
 		if (!Cmdline_window && !Cmdline_fullscreen_window) {
-			attrs.flags.set(os::ViewPortFlags::Fullscreen);
+			attrs.flags.set(SCP::ViewPortFlags::Fullscreen);
 		} else if (Cmdline_fullscreen_window) {
-			attrs.flags.set(os::ViewPortFlags::Borderless);
+			attrs.flags.set(SCP::ViewPortFlags::Borderless);
 		}
 	}
 

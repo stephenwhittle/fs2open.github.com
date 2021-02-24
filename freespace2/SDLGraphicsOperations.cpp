@@ -6,9 +6,11 @@
 #if SDL_VERSION_ATLEAST(2, 0, 6)
 #include <SDL_vulkan.h>
 #endif
+#include "graphics/Viewport.h"
+#include "graphics/OpenGLContext.h"
 
 namespace {
-void setOGLProperties(const os::ViewPortProperties& props)
+void setOGLProperties(const SCP::ViewPortProperties& props)
 {
 	SDL_GL_ResetAttributes();
 
@@ -32,10 +34,10 @@ void setOGLProperties(const os::ViewPortProperties& props)
 
 	int profile;
 	switch (props.gl_attributes.profile) {
-		case os::OpenGLProfile::Core:
+		case SCP::OpenGLProfile::Core:
 			profile = SDL_GL_CONTEXT_PROFILE_CORE;
 			break;
-		case os::OpenGLProfile::Compatibility:
+		case SCP::OpenGLProfile::Compatibility:
 			profile = SDL_GL_CONTEXT_PROFILE_COMPATIBILITY;
 			break;
 		default:
@@ -45,17 +47,17 @@ void setOGLProperties(const os::ViewPortProperties& props)
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, profile);
 
 	int flags = 0;
-	if (props.gl_attributes.flags[os::OpenGLContextFlags::Debug]) {
+	if (props.gl_attributes.flags[SCP::OpenGLContextFlags::Debug]) {
 		flags |= SDL_GL_CONTEXT_DEBUG_FLAG;
 	}
-	if (props.gl_attributes.flags[os::OpenGLContextFlags::ForwardCompatible]) {
+	if (props.gl_attributes.flags[SCP::OpenGLContextFlags::ForwardCompatible]) {
 		flags |= SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG;
 	}
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, flags);
 }
 }
 
-class SDLOpenGLContext: public os::OpenGLContext {
+class SDLOpenGLContext: public SCP::OpenGLContext {
 	SDL_GLContext _glCtx;
  public:
 	SDLOpenGLContext(SDL_GLContext sdl_gl_context) : _glCtx(sdl_gl_context) {
@@ -65,7 +67,7 @@ class SDLOpenGLContext: public os::OpenGLContext {
 		SDL_GL_DeleteContext(_glCtx);
 	}
 
-	os::OpenGLLoadProc getLoaderFunction() override {
+	SCP::OpenGLLoadProc getLoaderFunction() override {
 		return SDL_GL_GetProcAddress;
 	}
 
@@ -77,11 +79,11 @@ class SDLOpenGLContext: public os::OpenGLContext {
 		return SDL_GL_SetSwapInterval(status) == 0;
 	}
 };
-class SDLWindowViewPort: public os::Viewport {
+class SDLWindowViewPort: public SCP::Viewport {
 	SDL_Window* _window;
-	os::ViewPortProperties _props;
+	SCP::ViewPortProperties _props;
  public:
-	SDLWindowViewPort(SDL_Window* window, const os::ViewPortProperties& props) : _window(window), _props(props) {
+	SDLWindowViewPort(SDL_Window* window, const SCP::ViewPortProperties& props) : _window(window), _props(props) {
 		Assertion(window != nullptr, "Invalid window specified");
 	}
 	~SDLWindowViewPort() override {
@@ -89,7 +91,7 @@ class SDLWindowViewPort: public os::Viewport {
 		_window = nullptr;
 	}
 
-	const os::ViewPortProperties& getProps() const {
+	const SCP::ViewPortProperties& getProps() const {
 		return _props;
 	}
 	SDL_Window* toSDLWindow() override {
@@ -104,17 +106,17 @@ class SDLWindowViewPort: public os::Viewport {
 	void swapBuffers() override {
 		SDL_GL_SwapWindow(_window);
 	}
-	void setState(os::ViewportState state) override {
+	void setState(SCP::ViewportState state) override {
 		switch (state) {
-			case os::ViewportState::Windowed:
+			case SCP::ViewportState::Windowed:
 				SDL_SetWindowFullscreen(_window, 0);
 				SDL_SetWindowBordered(_window, SDL_TRUE);
 				break;
-			case os::ViewportState::Borderless:
+			case SCP::ViewportState::Borderless:
 				SDL_SetWindowFullscreen(_window, 0);
 				SDL_SetWindowBordered(_window, SDL_FALSE);
 				break;
-			case os::ViewportState::Fullscreen:
+			case SCP::ViewportState::Fullscreen:
 				SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN);
 				break;
 			default:
@@ -152,7 +154,7 @@ SDLGraphicsOperations::SDLGraphicsOperations() {
 SDLGraphicsOperations::~SDLGraphicsOperations() {
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
-std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::ViewPortProperties& props)
+std::unique_ptr<SCP::Viewport> SDLGraphicsOperations::createViewport(const SCP::ViewPortProperties& props)
 {
 	uint32_t windowflags = SDL_WINDOW_SHOWN;
 	if (props.enable_opengl) {
@@ -164,13 +166,13 @@ std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::Vi
 		windowflags |= SDL_WINDOW_VULKAN;
 	}
 #endif
-	if (props.flags[os::ViewPortFlags::Borderless]) {
+	if (props.flags[SCP::ViewPortFlags::Borderless]) {
 		windowflags |= SDL_WINDOW_BORDERLESS;
 	}
-	if (props.flags[os::ViewPortFlags::Fullscreen]) {
+	if (props.flags[SCP::ViewPortFlags::Fullscreen]) {
 		windowflags |= SDL_WINDOW_FULLSCREEN;
 	}
-	if (props.flags[os::ViewPortFlags::Resizeable]) {
+	if (props.flags[SCP::ViewPortFlags::Resizeable]) {
 		windowflags |= SDL_WINDOW_RESIZABLE;
 	}
 
@@ -204,9 +206,9 @@ std::unique_ptr<os::Viewport> SDLGraphicsOperations::createViewport(const os::Vi
 		return nullptr;
 	}
 
-	return std::unique_ptr<os::Viewport>(new SDLWindowViewPort(window, props));
+	return std::unique_ptr<SCP::Viewport>(new SDLWindowViewPort(window, props));
 }
-void SDLGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx) {
+void SDLGraphicsOperations::makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx) {
 	if (view == nullptr && ctx == nullptr) {
 		SDL_GL_MakeCurrent(nullptr, nullptr);
 		return;
@@ -218,8 +220,8 @@ void SDLGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::Ope
 	auto sdlCtx = reinterpret_cast<SDLOpenGLContext*>(ctx);
 	sdlCtx->makeCurrent(view->toSDLWindow());
 }
-std::unique_ptr<os::OpenGLContext> SDLGraphicsOperations::createOpenGLContext(os::Viewport* viewport,
-																			  const os::OpenGLContextAttributes& gl_attrs) {
+std::unique_ptr<SCP::OpenGLContext> SDLGraphicsOperations::createOpenGLContext(SCP::Viewport* viewport,
+																			  const SCP::OpenGLContextAttributes& gl_attrs) {
 	auto sdlViewport = reinterpret_cast<SDLWindowViewPort*>(viewport);
 
 	auto props = sdlViewport->getProps();
@@ -246,5 +248,5 @@ std::unique_ptr<os::OpenGLContext> SDLGraphicsOperations::createOpenGLContext(os
 		r, g, b, depth, stencil, db, fsaa_samples));
 
 
-	return std::unique_ptr<os::OpenGLContext>(new SDLOpenGLContext(ctx));
+	return std::unique_ptr<SCP::OpenGLContext>(new SDLOpenGLContext(ctx));
 }

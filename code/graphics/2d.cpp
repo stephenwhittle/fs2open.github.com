@@ -139,9 +139,8 @@ const auto LightingOption = options::OptionBuilder<int>("Graphics.Lighting", "Li
 		})
 		.finish();
 
-os::ViewportState Gr_configured_window_state = os::ViewportState::Windowed;
 
-static bool mode_change_func(os::ViewportState state, bool initial)
+static bool mode_change_func(SCP::ViewportState state, bool initial)
 {
 	Gr_configured_window_state = state;
 
@@ -159,15 +158,15 @@ static bool mode_change_func(os::ViewportState state, bool initial)
 	return true;
 }
 
-static auto WindowModeOption = options::OptionBuilder<os::ViewportState>("Graphics.WindowMode", "Window Mode",
+static auto WindowModeOption = options::OptionBuilder<SCP::ViewportState>("Graphics.WindowMode", "Window Mode",
 																		 "Controls how the game window is created.")
 								   .category("Graphics")
 								   .level(options::ExpertLevel::Beginner)
-								   .values({{os::ViewportState::Fullscreen, "Fullscreen"},
-											{os::ViewportState::Borderless, "Borderless"},
-											{os::ViewportState::Windowed, "Windowed"}})
+								   .values({{SCP::ViewportState::Fullscreen, "Fullscreen"},
+											{SCP::ViewportState::Borderless, "Borderless"},
+											{SCP::ViewportState::Windowed, "Windowed"}})
 								   .importance(98)
-								   .default_val(os::ViewportState::Fullscreen)
+								   .default_val(SCP::ViewportState::Fullscreen)
 								   .change_listener(mode_change_func)
 								   .finish();
 
@@ -1670,7 +1669,7 @@ void gr_activate(int active)
 		if (Cmdline_fullscreen_window || Cmdline_window) {
 			os::getMainViewport()->restore();
 		} else {
-			os::getMainViewport()->setState(os::ViewportState::Fullscreen);
+			os::getMainViewport()->setState(SCP::ViewportState::Fullscreen);
 		}
 	} else {
 		os::getMainViewport()->minimize();

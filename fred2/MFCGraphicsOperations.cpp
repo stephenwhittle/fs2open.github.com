@@ -43,7 +43,7 @@ void MFCViewport::swapBuffers()
 	SwapBuffers(_device_context);
 }
 
-void MFCViewport::setState(os::ViewportState state)
+void MFCViewport::setState(SCP::ViewportState state)
 {
 	// Not implemented
 }
@@ -128,7 +128,7 @@ MFCGraphicsOperations::~MFCGraphicsOperations()
 {
 }
 
-std::unique_ptr<os::Viewport> MFCGraphicsOperations::createViewport(const os::ViewPortProperties& props)
+std::unique_ptr<SCP::Viewport> MFCGraphicsOperations::createViewport(const SCP::ViewportProperties& props)
 {
 	int PixelFormat;
 	PIXELFORMATDESCRIPTOR pfd_test;
@@ -190,7 +190,7 @@ std::unique_ptr<os::Viewport> MFCGraphicsOperations::createViewport(const os::Vi
 		props.pixel_format.red_size, props.pixel_format.green_size, props.pixel_format.blue_size,
 		props.pixel_format.depth_size, props.pixel_format.stencil_size));
 
-	return std::unique_ptr<os::Viewport>(new MFCViewport(_windowHandle, device_context));
+	return std::unique_ptr<SCP::Viewport>(new MFCViewport(_windowHandle, device_context));
 }
 
 static void* gladWGLLoader(const char* name)
@@ -198,7 +198,7 @@ static void* gladWGLLoader(const char* name)
 	return wglGetProcAddress(name);
 }
 
-std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os::Viewport* port, const os::OpenGLContextAttributes& ctx)
+std::unique_ptr<SCP::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(SCP::Viewport* port, const SCP::OpenGLContextAttributes& ctx)
 {
 	auto mfcView = reinterpret_cast<MFCViewport*>(port);
 
@@ -244,7 +244,7 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 			return nullptr;
 		}
 		// Major version is low enough -> just use the fake context
-		return std::unique_ptr<os::OpenGLContext>(new MFCOpenGLContext(temp_ctx));
+		return std::unique_ptr<SCP::OpenGLContext>(new MFCOpenGLContext(temp_ctx));
 	}
 	
 	SCP_vector<int> attrib_list;
@@ -257,16 +257,16 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 	if (GLAD_WGL_ARB_create_context_profile)
 	{
 		attrib_list.push_back(WGL_CONTEXT_PROFILE_MASK_ARB);
-		attrib_list.push_back(ctx.profile == os::OpenGLProfile::Core ?
+		attrib_list.push_back(ctx.profile == SCP::OpenGLProfile::Core ?
 			WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB);
 	}
 
 	int flags = 0;
-	if (ctx.flags[os::OpenGLContextFlags::Debug])
+	if (ctx.flags[SCP::OpenGLContextFlags::Debug])
 	{
 		flags |= WGL_CONTEXT_DEBUG_BIT_ARB;
 	}
-	if (ctx.flags[os::OpenGLContextFlags::ForwardCompatible])
+	if (ctx.flags[SCP::OpenGLContextFlags::ForwardCompatible])
 	{
 		flags |= WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB;
 	}
@@ -313,10 +313,10 @@ std::unique_ptr<os::OpenGLContext> MFCGraphicsOperations::createOpenGLContext(os
 		return nullptr;
 	}
 
-	return std::unique_ptr<os::OpenGLContext>(new MFCOpenGLContext(attrib_ctx));
+	return std::unique_ptr<SCP::OpenGLContext>(new MFCOpenGLContext(attrib_ctx));
 }
 
-void MFCGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx)
+void MFCGraphicsOperations::makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx)
 {
 	if (view == nullptr && ctx == nullptr)
 	{

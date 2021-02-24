@@ -13,8 +13,6 @@
 #include "gropengltexture.h"
 #include "gropengltnl.h"
 
-#include "bmpman/bmpman.h"
-#include "cfile/cfile.h"
 #include "cmdline/cmdline.h"
 #include "ddsutils/ddsutils.h"
 #include "debugconsole/console.h"
@@ -30,6 +28,13 @@
 #include "mod_table/mod_table.h"
 #include "NOX.h"
 #include "SCPApplication.h"
+#include "module/SCPModuleManager.h"
+#include "module/SCPModuleBase.h"
+#include "graphics/SCPGraphicsModule.h"
+#include "graphics/Viewport.h"
+#include "graphics/GraphicsOperation.h"
+#include "mod_table/SCPGameSettingsModule.h"
+#include "mod_table/SCPGameSettingsTable.h"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -76,10 +81,10 @@ GLuint GL_vao = 0;
 SCP_string GL_implementation_id;
 SCP_vector<GLint> GL_binary_formats;
 
-static std::unique_ptr<os::OpenGLContext> GL_context = nullptr;
+static std::unique_ptr<SCP::OpenGLContext> GL_context = nullptr;
 
-static std::unique_ptr<os::GraphicsOperations> graphic_operations = nullptr;
-static os::Viewport* current_viewport = nullptr;
+static std::unique_ptr<SCP::GraphicsOperations> graphic_operations = nullptr;
+static SCP::Viewport* current_viewport = nullptr;
 
 void gr_opengl_clear()
 {
@@ -694,8 +699,8 @@ void opengl_set_vsync(bool enable)
 	}
 }
 
-std::unique_ptr<os::Viewport> gr_opengl_create_viewport(const os::ViewPortProperties& props) {
-	os::ViewPortProperties attrs = props;
+std::unique_ptr<SCP::Viewport> gr_opengl_create_viewport(const SCP::ViewPortProperties& props) {
+	SCP::ViewPortProperties attrs = props;
 	attrs.pixel_format.red_size = Gr_red.bits;
 	attrs.pixel_format.green_size = Gr_green.bits;
 	attrs.pixel_format.blue_size = Gr_blue.bits;
@@ -706,12 +711,12 @@ std::unique_ptr<os::Viewport> gr_opengl_create_viewport(const os::ViewPortProper
 	attrs.pixel_format.multi_samples = os_config_read_uint(NULL, "OGL_AntiAliasSamples", 0);
 
 	attrs.enable_opengl = true;
-	attrs.gl_attributes.profile = os::OpenGLProfile::Core;
+	attrs.gl_attributes.profile = SCP::OpenGLProfile::Core;
 
 	return graphic_operations->createViewport(attrs);
 }
 
-void gr_opengl_use_viewport(os::Viewport* view) {
+void gr_opengl_use_viewport(SCP::Viewport* view) {
 	graphic_operations->makeOpenGLContextCurrent(view, GL_context.get());
 	current_viewport = view;
 
@@ -721,17 +726,17 @@ void gr_opengl_use_viewport(os::Viewport* view) {
 
 int opengl_init_display_device()
 {
-	os::ViewPortProperties attrs;
+	SCP::ViewPortProperties attrs;
 	attrs.enable_opengl = true;
 
 	attrs.gl_attributes.major_version = MIN_REQUIRED_GL_VERSION / 10;
 	attrs.gl_attributes.minor_version = MIN_REQUIRED_GL_VERSION % 10;
 
 #ifndef NDEBUG
-	attrs.gl_attributes.flags.set(os::OpenGLContextFlags::Debug);
+	attrs.gl_attributes.flags.set(SCP::OpenGLContextFlags::Debug);
 #endif
 
-	attrs.gl_attributes.profile = os::OpenGLProfile::Core;
+	attrs.gl_attributes.profile = SCP::OpenGLProfile::Core;
 
 	attrs.display = os_config_read_uint("Video", "Display", 0);
 	attrs.width = (uint32_t) gr_screen.max_w;
@@ -742,23 +747,24 @@ int opengl_init_display_device()
 		attrs.title = Window_title;
 	}
 
-	if (Using_in_game_options) {
-		switch (Gr_configured_window_state) {
-		case os::ViewportState::Windowed:
+	if (SCPModuleManager::GetModule<SCP::GameSettingsModule>()->GameSettings()->OtherSettings->EnableIngameOptions)
+	{
+		switch (SCPModuleManager::GetModule<SCP::GraphicsModule>()->GetConfiguredViewportState()) {
+		case SCP::ViewportState::Windowed:
 			// That's the default
 			break;
-		case os::ViewportState::Borderless:
-			attrs.flags.set(os::ViewPortFlags::Borderless);
+		case SCP::ViewportState::Borderless:
+			attrs.flags.set(SCP::ViewPortFlags::Borderless);
 			break;
-		case os::ViewportState::Fullscreen:
-			attrs.flags.set(os::ViewPortFlags::Fullscreen);
+		case SCP::ViewportState::Fullscreen:
+			attrs.flags.set(SCP::ViewPortFlags::Fullscreen);
 			break;
 		}
 	} else {
 		if (!Cmdline_window && !Cmdline_fullscreen_window) {
-			attrs.flags.set(os::ViewPortFlags::Fullscreen);
+			attrs.flags.set(SCP::ViewPortFlags::Fullscreen);
 		} else if (Cmdline_fullscreen_window) {
-			attrs.flags.set(os::ViewPortFlags::Borderless);
+			attrs.flags.set(SCP::ViewPortFlags::Borderless);
 		}
 	}
 
@@ -787,9 +793,10 @@ int opengl_init_display_device()
 	if (GL_context == nullptr) {
 		return 1;
 	}
+	auto Graphics = SCPModuleManager::GetModule<SCP::GraphicsModule>();
 
-	auto port = os::addViewport(std::move(viewport));
-	os::setMainViewPort(port);
+	auto port = Graphics->AddViewport(std::move(viewport));
+	Graphics->SetMainViewport(port);
 
 	// We can't use gr_use_viewport because that tries to use OpenGL which hasn't been initialized yet
 	graphic_operations->makeOpenGLContextCurrent(port, GL_context.get());

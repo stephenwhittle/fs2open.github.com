@@ -12,6 +12,7 @@
 
 //#include "globalincs/flagset.h"
 #include "FSColorTypes.h"
+#include "SCPFlagset.h"
 //#include "globalincs/pstypes.h"
 
 //#include "bmpman/bmpman.h"
@@ -19,6 +20,7 @@
 #include "graphics/grinternal.h"
 #include "graphics/tmapper.h"
 #include "io/cursor.h"
+#include <memory>
 //#include "math/vecmat.h"
 //#include "osapi/osapi.h"
 
@@ -32,6 +34,14 @@ class GPUMemoryHeap;
 namespace scripting {
 class OverridableHook;
 }
+
+namespace SCP
+{
+	class Viewport;
+	struct ViewportProperties;
+	class GraphicsOperations;
+}
+
 
 extern const float Default_min_draw_distance;
 extern const float Default_max_draw_distance;
@@ -72,8 +82,6 @@ extern bool Gr_enable_vsync;
 
 extern bool Deferred_lighting;
 extern bool High_dynamic_range;
-
-extern os::ViewportState Gr_configured_window_state;
 
 extern const std::shared_ptr<scripting::OverridableHook> OnFrameHook;
 
@@ -802,8 +810,8 @@ typedef struct screen {
 	std::uint64_t (*gf_get_query_value)(int obj);
 	void (*gf_delete_query_object)(int obj);
 
-	std::unique_ptr<os::Viewport> (*gf_create_viewport)(const os::ViewPortProperties& props);
-	void (*gf_use_viewport)(os::Viewport* view);
+	std::unique_ptr<SCP::Viewport> (*gf_create_viewport)(const SCP::ViewportProperties& props);
+	void (*gf_use_viewport)(SCP::Viewport* view);
 
 	void (*gf_bind_uniform_buffer)(uniform_block_type bind_point, size_t offset, size_t size, int buffer);
 
@@ -837,7 +845,7 @@ typedef struct screen {
 
 extern const char *Resolution_prefixes[GR_NUM_RESOLUTIONS];
 
-extern bool gr_init(std::unique_ptr<os::GraphicsOperations>&& graphicsOps, int d_mode = GR_DEFAULT,
+extern bool gr_init(std::unique_ptr<SCP::GraphicsOperations>&& graphicsOps, int d_mode = GR_DEFAULT,
 					int d_width = GR_DEFAULT, int d_height = GR_DEFAULT, int d_depth = GR_DEFAULT);
 
 extern void gr_screen_resize(int width, int height);
@@ -1093,10 +1101,10 @@ inline void gr_delete_query_object(int obj)
 	(*gr_screen.gf_delete_query_object)(obj);
 }
 
-inline std::unique_ptr<os::Viewport> gr_create_viewport(const os::ViewPortProperties& props) {
+inline std::unique_ptr<SCP::Viewport> gr_create_viewport(const SCP::ViewportProperties& props) {
 	return (*gr_screen.gf_create_viewport)(props);
 }
-inline void gr_use_viewport(os::Viewport* view) {
+inline void gr_use_viewport(SCP::Viewport* view) {
 	(*gr_screen.gf_use_viewport)(view);
 }
 inline void gr_set_viewport(int x, int y, int width, int height) {

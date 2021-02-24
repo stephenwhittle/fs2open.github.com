@@ -12,9 +12,16 @@ namespace SCP
 		virtual void ShutdownModule() override {}
 
 		static GameSettingsModule ConstructModule(class SCPCFileModule& CFileDependency);
-		tl::optional<GameSettingsTable> GameSettings()
+		tl::optional<GameSettingsTable&> GameSettings()
 		{
-			return LoadedSettings;
+			if (LoadedSettings)
+			{
+				return {*LoadedSettings};
+			}
+			else
+			{
+				return {};
+			}
 		}
 	private:
 		tl::optional<GameSettingsTable> LoadedSettings;

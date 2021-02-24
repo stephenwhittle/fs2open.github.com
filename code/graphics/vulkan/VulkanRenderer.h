@@ -27,7 +27,7 @@ class VulkanRenderer {
 	bool initializeSurface();
 
 	std::unique_ptr<os::GraphicsOperations> m_graphicsOps;
-	std::unique_ptr<os::Viewport> m_viewPort;
+	std::unique_ptr<SCP::Viewport> m_viewPort;
 
 	vk::UniqueInstance m_vkInstance;
 	vk::UniqueDebugReportCallbackEXT m_debugReport;

@@ -8,7 +8,7 @@ namespace osapi {
 /**
  * @brief A debug window
  *
- * A debug window is a separate os::Viewport which displays additional debug information at runtime.
+ * A debug window is a separate SCP::Viewport which displays additional debug information at runtime.
  */
 class DebugWindow {
 	/**
@@ -19,7 +19,7 @@ class DebugWindow {
 		SCP_string text;
 	};
 
-	os::Viewport* debug_view = nullptr; //!< The viewport in which the debug output is shown
+	SCP::Viewport* debug_view = nullptr; //!< The viewport in which the debug output is shown
 	SDL_Window* debug_sdl_window = nullptr; //!< The SDL window handle of the debug view
 
 	SCP_vector<LineInfo> lines; //!< Finished lines

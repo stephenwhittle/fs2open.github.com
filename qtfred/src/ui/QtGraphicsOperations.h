@@ -10,7 +10,7 @@
 namespace fso {
 namespace fred {
 
-class QtOpenGLContext: public os::OpenGLContext {
+class QtOpenGLContext: public SCP::OpenGLContext {
 	std::unique_ptr<QOpenGLContext> _context;
  public:
 	QtOpenGLContext(std::unique_ptr<QOpenGLContext>&& context);
@@ -22,21 +22,21 @@ class QtOpenGLContext: public os::OpenGLContext {
 	void makeCurrent(QSurface* surface);
 };
 
-class QtViewport: public os::Viewport {
+class QtViewport: public SCP::Viewport {
 	std::unique_ptr<FredView> _viewportWindow;
-	os::ViewPortProperties _viewProps;
+	SCP::ViewportProperties _viewProps;
  public:
-	QtViewport(std::unique_ptr<FredView>&& window, const os::ViewPortProperties& viewProps);
+	QtViewport(std::unique_ptr<FredView>&& window, const SCP::ViewportProperties& viewProps);
 	~QtViewport() override;
 
 	SDL_Window* toSDLWindow() override;
 	std::pair<uint32_t, uint32_t> getSize() override;
 	void swapBuffers() override;
-	void setState(os::ViewportState state) override;
+	void setState(SCP::ViewportState state) override;
 	void minimize() override;
 	void restore() override;
 
-	const os::ViewPortProperties& getViewProperties() const;
+	const SCP::ViewportProperties& getViewProperties() const;
 	FredView* getWindow();
 };
 
@@ -48,12 +48,12 @@ class QtGraphicsOperations: public os::GraphicsOperations {
 	QtGraphicsOperations(Editor* editor);
 	~QtGraphicsOperations() override;
 
-	std::unique_ptr<os::OpenGLContext>
-	createOpenGLContext(os::Viewport* viewport, const os::OpenGLContextAttributes& gl_attrs) override;
+	std::unique_ptr<SCP::OpenGLContext>
+	createOpenGLContext(SCP::Viewport* viewport, const SCP::OpenGLContextAttributes& gl_attrs) override;
 
-	void makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx) override;
+	void makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx) override;
 
-	std::unique_ptr<os::Viewport> createViewport(const os::ViewPortProperties& props) override;
+	std::unique_ptr<SCP::Viewport> createViewport(const SCP::ViewportProperties& props) override;
 };
 
 }

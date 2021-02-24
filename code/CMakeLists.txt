@@ -121,6 +121,9 @@ target_link_libraries(code PUBLIC sound)
 add_subdirectory(species_defs)
 target_link_libraries(code PUBLIC species)
 
+add_subdirectory(graphics)
+target_link_libraries(code PUBLIC graphics)
+
 enable_clang_tidy(code)
 
 IF (FSO_USE_SPEECH)

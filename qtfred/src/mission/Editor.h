@@ -43,7 +43,7 @@ class Editor: public QObject {
 
 	void selectObject(int objId);
 
-	EditorViewport* createEditorViewport(os::Viewport* renderView);
+	EditorViewport* createEditorViewport(SCP::Viewport* renderView);
 
 	/* Schedules updates for all renderes */
 	void updateAllViewports();

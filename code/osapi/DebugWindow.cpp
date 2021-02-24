@@ -3,7 +3,10 @@
 
 #include "DebugWindow.h"
 
-#include "globalincs/alphacolors.h"
+#include "module/SCPModuleManager.h"
+#include "module/SCPModuleBase.h"
+#include "graphics/SCPGraphicsModule.h"
+
 #include "graphics/2d.h"
 namespace {
 uint32_t get_debug_display() {
@@ -35,7 +38,7 @@ uint32_t get_debug_display() {
 namespace osapi {
 
 DebugWindow::DebugWindow() {
-	os::ViewPortProperties attrs;
+	SCP::ViewportProperties attrs;
 	uint32_t display = get_debug_display();
 	attrs.display = display;
 
@@ -47,11 +50,12 @@ DebugWindow::DebugWindow() {
 
 	attrs.title = "FreeSpace Open - Debug Window";
 
-	attrs.flags.set(os::ViewPortFlags::Resizeable); // Make this window resizeable
+	attrs.flags.set(SCP::ViewPortFlags::Resizeable); // Make this window resizeable
 
 	auto debugView = gr_create_viewport(attrs);
 	if (debugView) {
-		debug_view = os::addViewport(std::move(debugView));
+		auto Graphics = SCPModuleManager::GetModule<SCP::GraphicsModule>();
+		debug_view = Graphics->AddViewport(std::move(debugView));
 		debug_sdl_window = debug_view->toSDLWindow();
 
 		if (debug_sdl_window != nullptr) {

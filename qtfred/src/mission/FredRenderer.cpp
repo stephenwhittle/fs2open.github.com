@@ -261,7 +261,7 @@ ViewSettings::ViewSettings() {
 	Show_iff.fill(true);
 }
 
-FredRenderer::FredRenderer(os::Viewport* targetView) : _targetView(targetView) {
+FredRenderer::FredRenderer(SCP::Viewport* targetView) : _targetView(targetView) {
 	init_fred_colors();
 }
 FredRenderer::~FredRenderer() {

@@ -11,7 +11,7 @@
 
 namespace {
 
-QSurfaceFormat getSurfaceFormat(const os::ViewPortProperties& viewProps, const os::OpenGLContextAttributes& glAttrs) {
+QSurfaceFormat getSurfaceFormat(const SCP::ViewportProperties& viewProps, const SCP::OpenGLContextAttributes& glAttrs) {
 	QSurfaceFormat format;
 
 	format.setRedBufferSize(viewProps.pixel_format.red_size);
@@ -27,18 +27,18 @@ QSurfaceFormat getSurfaceFormat(const os::ViewPortProperties& viewProps, const o
 	format.setRenderableType(QSurfaceFormat::OpenGL);
 
 	switch(glAttrs.profile) {
-	case os::OpenGLProfile::Core:
+	case SCP::OpenGLProfile::Core:
 		format.setProfile(QSurfaceFormat::CoreProfile);
 		break;
-	case os::OpenGLProfile::Compatibility:
+	case SCP::OpenGLProfile::Compatibility:
 		format.setProfile(QSurfaceFormat::CompatibilityProfile);
 		break;
 	}
 
-	if (glAttrs.flags[os::OpenGLContextFlags::Debug]) {
+	if (glAttrs.flags[SCP::OpenGLContextFlags::Debug]) {
 		format.setOption(QSurfaceFormat::DebugContext);
 	}
-	if (!glAttrs.flags[os::OpenGLContextFlags::ForwardCompatible]) {
+	if (!glAttrs.flags[SCP::OpenGLContextFlags::ForwardCompatible]) {
 		format.setOption(QSurfaceFormat::DeprecatedFunctions);
 	}
 
@@ -64,8 +64,8 @@ QtGraphicsOperations::~QtGraphicsOperations() {
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-std::unique_ptr<os::OpenGLContext>
-QtGraphicsOperations::createOpenGLContext(os::Viewport* viewport, const os::OpenGLContextAttributes& gl_attrs) {
+std::unique_ptr<SCP::OpenGLContext>
+QtGraphicsOperations::createOpenGLContext(SCP::Viewport* viewport, const SCP::OpenGLContextAttributes& gl_attrs) {
 	auto qtPort = static_cast<QtViewport*>(viewport);
 
 	std::unique_ptr<QOpenGLContext> context(new QOpenGLContext());
@@ -75,10 +75,10 @@ QtGraphicsOperations::createOpenGLContext(os::Viewport* viewport, const os::Open
 		return nullptr;
 	}
 
-	return std::unique_ptr<os::OpenGLContext>(new QtOpenGLContext(std::move(context)));
+	return std::unique_ptr<SCP::OpenGLContext>(new QtOpenGLContext(std::move(context)));
 }
 
-void QtGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx) {
+void QtGraphicsOperations::makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx) {
 	auto qtPort = static_cast<QtViewport*>(view);
 	auto qtContext = static_cast<QtOpenGLContext*>(ctx);
 
@@ -94,19 +94,19 @@ void QtGraphicsOperations::makeOpenGLContextCurrent(os::Viewport* view, os::Open
 	_lastContext = qtContext;
 }
 
-QtViewport::QtViewport(std::unique_ptr<FredView>&& window, const os::ViewPortProperties& viewProps) :
+QtViewport::QtViewport(std::unique_ptr<FredView>&& window, const SCP::ViewportProperties& viewProps) :
 	_viewProps(viewProps) {
 	_viewportWindow = std::move(window);
 }
 QtViewport::~QtViewport() {
 }
 
-std::unique_ptr<os::Viewport> QtGraphicsOperations::createViewport(const os::ViewPortProperties& props) {
+std::unique_ptr<SCP::Viewport> QtGraphicsOperations::createViewport(const SCP::ViewportProperties& props) {
 	std::unique_ptr<FredView> mw(new FredView());
 	mw->getRenderWidget()->setSurfaceFormat(getSurfaceFormat(props, props.gl_attributes));
 
 	auto viewPtr = mw.get();
-	auto view = std::unique_ptr<os::Viewport>(new QtViewport(std::move(mw), props));
+	auto view = std::unique_ptr<SCP::Viewport>(new QtViewport(std::move(mw), props));
 
 	auto renderer = _editor->createEditorViewport(view.get());
 	viewPtr->setEditor(_editor, renderer);
@@ -133,7 +133,7 @@ void QtViewport::swapBuffers() {
 		QOpenGLContext::currentContext()->swapBuffers(_viewportWindow->getRenderSurface());
 	}
 }
-void QtViewport::setState(os::ViewportState  /*state*/) {
+void QtViewport::setState(SCP::ViewportState  /*state*/) {
 	// Not used in FRED
 }
 void QtViewport::minimize() {
@@ -142,7 +142,7 @@ void QtViewport::minimize() {
 void QtViewport::restore() {
 	_viewportWindow->show();
 }
-const os::ViewPortProperties& QtViewport::getViewProperties() const {
+const SCP::ViewportProperties& QtViewport::getViewProperties() const {
 	return _viewProps;
 }
 FredView* QtViewport::getWindow() {

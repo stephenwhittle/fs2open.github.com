@@ -8,7 +8,7 @@
 
 #include <glad/glad_wgl.h>
 
-class MFCViewport : public os::Viewport
+class MFCViewport : public SCP::Viewport
 {
 	HWND _windowHandle = nullptr;
 	HDC _device_context = nullptr;
@@ -23,7 +23,7 @@ public:
 
 	void swapBuffers() override;
 
-	void setState(os::ViewportState state) override;
+	void setState(SCP::ViewportState state) override;
 
 	void minimize() override;
 
@@ -32,7 +32,7 @@ public:
 	HDC getHDC();
 };
 
-class MFCOpenGLContext : public os::OpenGLContext
+class MFCOpenGLContext : public SCP::OpenGLContext
 {
 	// HACK: Since OpenGL apparently likes global state we also have to make this global...
 	static void* _oglDllHandle;
@@ -62,11 +62,11 @@ public:
 
 	~MFCGraphicsOperations() override;
 
-	std::unique_ptr<os::Viewport> createViewport(const os::ViewPortProperties& props) override;
+	std::unique_ptr<SCP::Viewport> createViewport(const SCP::ViewportProperties& props) override;
 
-	std::unique_ptr<os::OpenGLContext> createOpenGLContext(os::Viewport* port, const os::OpenGLContextAttributes& ctx) override;
+	std::unique_ptr<SCP::OpenGLContext> createOpenGLContext(SCP::Viewport* port, const SCP::OpenGLContextAttributes& ctx) override;
 
-	void makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx) override;
+	void makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx) override;
 };
 
 #endif // _MVC_GRAPHICS_OPERATIONS

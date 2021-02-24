@@ -36,8 +36,8 @@ namespace
 	bool checkedLegacyMode = false;
 	bool legacyMode = false;
 
-	SCP_vector<std::unique_ptr<os::Viewport>> viewports;
-	os::Viewport* mainViewPort = nullptr;
+	SCP_vector<std::unique_ptr<SCP::Viewport>> viewports;
+	SCP::Viewport* mainViewPort = nullptr;
 	SDL_Window* mainSDLWindow = nullptr;
 
 	const char* getPreferencesPath()

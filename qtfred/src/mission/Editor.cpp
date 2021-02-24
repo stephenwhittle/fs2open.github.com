@@ -112,7 +112,7 @@ Editor::Editor() : currentObject{ -1 }, Shield_sys_teams(MAX_IFFS, 0), Shield_sy
 	fredApp->runAfterInit([this]() { initialSetup(); });
 }
 
-EditorViewport* Editor::createEditorViewport(os::Viewport* renderView) {
+EditorViewport* Editor::createEditorViewport(SCP::Viewport* renderView) {
 	std::unique_ptr<FredRenderer> renderer(new FredRenderer(renderView));
 	std::unique_ptr<EditorViewport> viewport(new EditorViewport(this, std::move(renderer)));
 

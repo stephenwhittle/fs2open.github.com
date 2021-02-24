@@ -4,18 +4,26 @@
 #pragma once
 
 #include "osapi/osapi.h"
+#include "graphics/GraphicsOperation.h"
+#include <memory>
 
-class SDLGraphicsOperations: public os::GraphicsOperations {
+namespace SCP
+{
+	class Viewport;
+	struct OpenGLContextAttributes;
+}
+
+class SDLGraphicsOperations: public SCP::GraphicsOperations {
  public:
 	SDLGraphicsOperations();
 	~SDLGraphicsOperations() override;
 
-	std::unique_ptr<os::OpenGLContext> createOpenGLContext(os::Viewport* viewport,
-														   const os::OpenGLContextAttributes& gl_attrs) override;
+	std::unique_ptr<SCP::OpenGLContext> createOpenGLContext(SCP::Viewport* viewport,
+														   const SCP::OpenGLContextAttributes& gl_attrs) override;
 
-	void makeOpenGLContextCurrent(os::Viewport* view, os::OpenGLContext* ctx) override;
+	void makeOpenGLContextCurrent(SCP::Viewport* view, SCP::OpenGLContext* ctx) override;
 
-	std::unique_ptr<os::Viewport> createViewport(const os::ViewPortProperties& props) override;
+	std::unique_ptr<SCP::Viewport> createViewport(const SCP::ViewPortProperties& props) override;
 };
 
 #endif // _SDL_GRAPHICS_OPERATIONS

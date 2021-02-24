@@ -133,7 +133,7 @@ protected:
 		else
 		{
 			std::memcpy(s, ptr, to_read);
-			gbump(to_read);
+			gbump((int)to_read);
 			return to_read;
 		}
 	}

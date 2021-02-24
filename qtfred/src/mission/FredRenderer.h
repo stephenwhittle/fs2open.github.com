@@ -48,7 +48,7 @@ class FredRenderer: public QObject {
 	int Fred_outline = 0;
 
 	EditorViewport* _viewport = nullptr;
-	os::Viewport* _targetView = nullptr;
+	SCP::Viewport* _targetView = nullptr;
 
 	FredRenderer(const FredRenderer& other) = delete;
 	FredRenderer& operator=(const FredRenderer& other) = delete;
@@ -56,7 +56,7 @@ class FredRenderer: public QObject {
 	ViewSettings& view();
 
  public:
-	explicit FredRenderer(os::Viewport* targetView);
+	explicit FredRenderer(SCP::Viewport* targetView);
 	~FredRenderer() override;
 
 	void setViewport(EditorViewport* viewport);
