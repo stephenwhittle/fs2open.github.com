@@ -11,8 +11,10 @@ namespace SCP
 	class BitmapFlags : public SCPFlags<std::uint32_t>
 	{};
 
-	struct BitmapDescriptor
+	// bm_extra_info
+	struct AnimationDescriptor
 	{
+		//possibly just look the filename up to get the base filename?
 		BitmapID FirstBitmap;
 		std::uint32_t NumFrames;
 		std::uint32_t KeyframeIndex;
@@ -22,7 +24,7 @@ namespace SCP
 		SCP_string Filename;
 	};
 
-
+	//Replaces struct bitmap 
 	struct BitmapData
 	{
 		std::uint16_t Width;
@@ -33,6 +35,13 @@ namespace SCP
 		BitmapFlags Flags;
 		std::uintptr_t Data;
 		std::uintptr_t Palette;
+	};
+
+	struct BitmapDescriptor
+	{
+		BitmapID ID;
+		AnimationDescriptor AnimationInfo;
+		BitmapData Bitmap;
 	};
 }
 

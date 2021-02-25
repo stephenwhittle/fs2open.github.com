@@ -226,8 +226,6 @@ add_file_folder("GlobalIncs\\\\Toolchain"
 
 # Graphics files
 add_file_folder("Graphics"
-	graphics/2d.cpp
-	graphics/2d.h
 	graphics/decal_draw_list.cpp
 	graphics/decal_draw_list.h
 	graphics/grbatch.cpp

@@ -12,7 +12,7 @@
 #include <windowsx.h>
 #endif
 
-#include "globalincs/alphacolors.h"
+#include "color/alphacolors.h"
 #include "globalincs/systemvars.h"
 
 #include "2d.h"

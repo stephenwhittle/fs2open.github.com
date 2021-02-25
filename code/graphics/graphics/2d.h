@@ -13,6 +13,8 @@
 //#include "globalincs/flagset.h"
 #include "FSColorTypes.h"
 #include "SCPFlagset.h"
+#include "FSMathTypes.h"
+
 //#include "globalincs/pstypes.h"
 
 //#include "bmpman/bmpman.h"
@@ -21,7 +23,7 @@
 #include "graphics/tmapper.h"
 #include "io/cursor.h"
 #include <memory>
-//#include "math/vecmat.h"
+#include "math/vecmat.h"
 //#include "osapi/osapi.h"
 
 // Forward definition

@@ -106,9 +106,9 @@ target_link_libraries(code PUBLIC module)
 
 target_link_libraries(code PUBLIC vulkan-hpp)
 
-#add_subdirectory(bmpman)
+add_subdirectory(bmpman)
 
-#target_link_libraries(code PUBLIC bmpman)
+target_link_libraries(code PUBLIC bmpman)
 
 add_subdirectory(asteroid)
 
